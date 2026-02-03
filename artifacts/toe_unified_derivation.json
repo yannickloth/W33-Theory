@@ -3458,6 +3458,93 @@
     "Qpsi_sum": 0,
     "weight_sums_zero": true
   },
+  "theorem_26": {
+    "name": "N_c = 3 colors forced by double-six geometry",
+    "N_c": 3,
+    "source": "double-six |A|=6, S6->S3xS3",
+    "n_blocks": 10,
+    "LR_duads": 9
+  },
+  "BL_quantization": {
+    "values": [
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "sum": 0,
+    "sum_cubed": 0
+  },
+  "theorem_27": {
+    "name": "B-L charge quantization from E6 weight structure",
+    "BL_quantized": true,
+    "BL_unit": "1/3",
+    "Tr_BL": 0,
+    "Tr_BL3": 0
+  },
+  "neutrino_seesaw": {
+    "dirac_triads": 2,
+    "dirac_forbidden": 0,
+    "M_R_GeV": "6.3e+15",
+    "m_nu_eV": 0.0048
+  },
+  "theorem_28": {
+    "name": "Neutrino seesaw: mass scale from E6 singlet sector",
+    "nu_dirac_survival": 1.0,
+    "nuc_S_triads": 0,
+    "m_nu_eV_estimate": 0.0048,
+    "seesaw_scale": "10^15.8"
+  },
+  "doublet_triplet": {
+    "D2T0": {
+      "total": 6,
+      "forbidden": 1
+    },
+    "D1T2": {
+      "total": 18,
+      "forbidden": 4
+    },
+    "D0T3": {
+      "total": 12,
+      "forbidden": 2
+    },
+    "D0T2": {
+      "total": 9,
+      "forbidden": 2
+    }
+  },
+  "theorem_29": {
+    "name": "Doublet-triplet splitting: firewall asymmetry in Higgs sector",
+    "mu_triads": 2,
+    "mu_forbidden": 0,
+    "DDS_triads": 3,
+    "DDS_forbidden": 1
+  },
+  "w33_landscape": {
+    "points": 40,
+    "k": 12,
+    "lambda": 2,
+    "mu": 4,
+    "lines": 40,
+    "spectrum": {
+      "12": 1,
+      "2": 24,
+      "-4": 15
+    }
+  },
+  "theorem_30": {
+    "name": "Vacuum adjacency: W(3,3) graph encodes vacuum transitions",
+    "srg_params": "SRG(40,12,2,4)",
+    "lines": 40,
+    "spectrum": {
+      "12": 1,
+      "2": 24,
+      "-4": 15
+    }
+  },
   "synthesis": {
     "fundamental_object": "W(3,3)",
     "gauge_group": "E6 = Aut(W33)",

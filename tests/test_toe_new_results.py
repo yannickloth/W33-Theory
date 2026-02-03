@@ -220,3 +220,69 @@ def test_toe_compiled_superpotential_terms_basic():
     assert len(lines) == 12
     for row in lines:
         assert len(row["allowed_triads_cycle"]) == 3
+
+
+def test_toe_generation_coupling_tensors_global_rule():
+    data = _load("artifacts/toe_generation_coupling_tensors.json")
+    assert data["status"] == "ok"
+    counts = data["counts"]
+    assert counts["records"] == 1620
+    assert counts["global_generation_triples"] == 6
+    # The unordered fusion rule on {0,1,2} pairs
+    assert data["generation_fusion_rule_unordered_pairs"] == {
+        "0,1": 0,
+        "0,2": 1,
+        "1,2": 2,
+    }
+    # Spot-check a known Yukawa-oriented signature size
+    sigs = {row["signature"]: row for row in data["oriented_signature_summaries"]}
+    key1 = "H_u,Q -> u^c"
+    key2 = "Q,H_u -> u^c"
+    assert sigs[key1]["counts"]["total"] == 36
+    assert sigs[key2]["counts"]["total"] == 36
+    assert sigs[key1]["counts"]["total"] + sigs[key2]["counts"]["total"] == 72
+
+
+def test_toe_yukawa_affine_textures_has_up_yukawa_forbidden_points():
+    data = _load("artifacts/toe_yukawa_affine_textures.json")
+    assert data["status"] == "ok"
+    assert data["counts"]["texture_types"] == 9
+    up = next(t for t in data["textures"] if t["type"] == ["H_u", "Q", "u^c"])
+    assert up["total_triads"] == 6
+    assert up["forbidden_triads"] == 2
+    forb_coords = []
+    for comp in up["components"]:
+        ex0 = comp["examples"][0]
+        loc = ex0["location"]
+        if loc["kind"] == "forbidden_block":
+            forb_coords.append(tuple(loc["coord_f3_2"]))
+    assert sorted(forb_coords) == [(1, 0), (1, 1)]
+
+
+def test_toe_line_lift_field_compiler_counts_and_structure():
+    data = _load("artifacts/toe_line_lift_field_compiler.json")
+    assert data["status"] == "ok"
+    counts = data["counts"]
+    assert counts["blocks"] == 9
+    assert counts["lines"] == 12
+    assert counts["lifts_per_line"] == 3
+    lines = data["lines"]
+    assert len(lines) == 12
+    for line in lines:
+        assert len(line["blocks"]) == 3
+        assert len(line["points"]) == 3
+        assert len(line["lifts"]) == 3
+        for lift in line["lifts"]:
+            assert len(lift["triad_vertices"]) == 3
+            assert len(lift["triad_fields"]) == 3
+            assert len(lift["per_block_choices"]) == 3
+
+
+def test_toe_affine_line_rewrite_rules_counts():
+    data = _load("artifacts/toe_affine_line_rewrite_rules.json")
+    assert data["status"] == "ok"
+    counts = data["counts"]
+    assert counts["lines"] == 12
+    assert counts["type_trivial"] == 7
+    assert counts["type_nontrivial"] == 5
+    assert counts["distinct_transitions"] == 12
