@@ -130,11 +130,13 @@ def main(argv: Sequence[str] | None = None) -> None:
     bad_edges = set(fw.bad_edges)
 
     couplings: List[Dict[str, object]] = []
+    # Heuristic zero threshold: true nonzero [e_i,e_j] norms are O(10) here; numerical noise is ~1e-12.
+    zero_tol = 1e-6
     for i in range(6):
         for j in range(i + 1, 6):
             c = _comm(e[i], e[j])
             cn = float(np.linalg.norm(c))
-            if cn < 1e-12:
+            if cn < zero_tol:
                 couplings.append(
                     {
                         "pair": [i + 1, j + 1],

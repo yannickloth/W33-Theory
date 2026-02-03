@@ -666,7 +666,8 @@ def _write_md(path: Path, data: dict) -> None:
             lines.append(f"- `{row}`")
         lines.append("")
     if perm is not None:
-        lines.append("## Permutation to canonical E6\n")
+        target = str(dynkin) if dynkin is not None else "rank-6"
+        lines.append(f"## Permutation to canonical {target}\n")
         lines.append(f"- `perm_to_canonical = {perm}`")
         lines.append("")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

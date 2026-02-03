@@ -2,7 +2,7 @@
 """
 Unified Theory of Everything Derivation
 W33 / E8 / E6 x SU(3) Framework
-15 Theorems with Full Computational Verification
+16 Theorems with Full Computational Verification
 
 This script derives the Standard Model from the W33 generalized quadrangle
 (collinearity graph of W(3,3)) embedded in the E8 root system.
@@ -15,8 +15,8 @@ from __future__ import annotations
 
 import json
 import math
-import sys
 from collections import Counter, defaultdict
+from collections.abc import Iterable
 from itertools import combinations, permutations
 from pathlib import Path
 
@@ -46,9 +46,12 @@ E6_SIMPLE = E8_SIMPLE[2:8]
 # SU(3) factor: alpha_1 and beta (both orthogonal to E6)
 SU3_ALPHA = E8_SIMPLE[0]  # (1,-1,0,...,0)
 SU3_BETA = np.array([0, 1, 0, 0, 0, 0, 0, -1], dtype=np.float64)
+SU3_ALPHA_K2 = (2, -2, 0, 0, 0, 0, 0, 0)
+SU3_BETA_K2 = (0, 2, 0, 0, 0, 0, 0, -2)
 
 RESULTS = {}
 THEOREM_COUNT = [0]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def theorem(name):
@@ -130,6 +133,24 @@ def we6_orbits(roots):
     return orbits
 
 
+def e6_key(r: np.ndarray) -> Tuple[int, ...]:
+    """
+    Canonical E6-projection key used across the repo (matches
+    `tools/solve_canonical_su3_gauge_and_cubic.py:e6_key`).
+
+    Works in k2-coordinates (multiply by 2) to stay integral.
+    """
+    rk2 = tuple(int(round(2 * float(x))) for x in r.tolist())
+    a_num = sum(rk2[i] * SU3_ALPHA_K2[i] for i in range(8))  # = 4*<r,alpha>
+    b_num = sum(rk2[i] * SU3_BETA_K2[i] for i in range(8))  # = 4*<r,beta>
+    proj_num = [
+        (2 * a_num + b_num) * SU3_ALPHA_K2[i] + (a_num + 2 * b_num) * SU3_BETA_K2[i]
+        for i in range(8)
+    ]  # = 12 * proj_k2
+    e6_num = [12 * rk2[i] - proj_num[i] for i in range(8)]
+    return tuple(int(x) for x in e6_num)
+
+
 def find_k_cliques(adj, k):
     """Find all k-cliques in adjacency matrix."""
     n = adj.shape[0]
@@ -152,6 +173,48 @@ def find_k_cliques(adj, k):
     for v in range(n):
         backtrack([v], set(range(v + 1, n)) & nbr[v])
     return out
+
+
+def _load_json(path: Path) -> object:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _compose_perm(p: Tuple[int, ...], q: Tuple[int, ...]) -> Tuple[int, ...]:
+    """Return composition p∘q (apply q first, then p)."""
+    return tuple(p[i] for i in q)
+
+
+def _act_on_triads(
+    perm: Tuple[int, ...], triads: Iterable[Tuple[int, int, int]]
+) -> Tuple[Tuple[int, int, int], ...]:
+    out = []
+    for a, b, c in triads:
+        aa = perm[a]
+        bb = perm[b]
+        cc = perm[c]
+        out.append(tuple(sorted((aa, bb, cc))))
+    return tuple(sorted(out))
+
+
+def _cycle_decomposition(perm: Tuple[int, ...]) -> List[Tuple[int, ...]]:
+    n = len(perm)
+    seen = [False] * n
+    cycles = []
+    for i in range(n):
+        if seen[i]:
+            continue
+        if perm[i] == i:
+            seen[i] = True
+            continue
+        cyc = []
+        j = i
+        while not seen[j]:
+            seen[j] = True
+            cyc.append(j)
+            j = perm[j]
+        if len(cyc) > 1:
+            cycles.append(tuple(cyc))
+    return sorted(cycles, key=len, reverse=True)
 
 
 # =========================================================================
@@ -188,11 +251,56 @@ def theorem_2():
 @theorem("Schlafli graph is SRG(27,16,10,8)")
 def theorem_3():
     roots = RESULTS["roots"]
-    orb27 = RESULTS["orb27"]
-    o27 = orb27[0]
+    orbits = RESULTS["orbits"]
+
+    # Choose the canonical 27-orbit used across the repo (E6-id labeling).
+    ref = _load_json(ROOT / "artifacts" / "we6_signed_action_on_27.json")
+    if not isinstance(ref, dict):
+        raise RuntimeError("Invalid we6_signed_action_on_27.json")
+    reference_orbit = ref.get("reference_orbit")
+    if not isinstance(reference_orbit, dict):
+        raise RuntimeError(
+            "Invalid we6_signed_action_on_27.json: missing reference_orbit"
+        )
+    orbit_index = int(reference_orbit["orbit_index"])
+    o27 = list(orbits[int(orbit_index)])
+    if len(o27) != 27:
+        raise RuntimeError(
+            f"Expected 27-orbit at orbit_index={orbit_index}, got size={len(o27)}"
+        )
+
+    # Orbit-local Gram.
     orb_roots = roots[o27]
-    gram = orb_roots @ orb_roots.T
+    gram_pos = orb_roots @ orb_roots.T
     n = 27
+
+    # Reindex orbit-local positions -> canonical E6-id using canonical_su3_gauge_and_cubic.json.
+    canon = _load_json(ROOT / "artifacts" / "canonical_su3_gauge_and_cubic.json")
+    if not isinstance(canon, dict):
+        raise RuntimeError("Invalid canonical_su3_gauge_and_cubic.json")
+    raw_keys = canon.get("e6_keys_27_k2")
+    if not (isinstance(raw_keys, list) and len(raw_keys) == 27):
+        raise RuntimeError(
+            "Invalid canonical_su3_gauge_and_cubic.json: missing e6_keys_27_k2"
+        )
+    e6_keys_27 = [tuple(int(x) for x in k) for k in raw_keys]
+    key_to_e6id = {k: i for i, k in enumerate(e6_keys_27)}
+
+    pos_to_e6id: List[int] = []
+    for ridx in o27:
+        kk = e6_key(roots[int(ridx)])
+        eid = key_to_e6id.get(tuple(int(x) for x in kk))
+        if eid is None:
+            raise RuntimeError("Failed to map orbit vertex to canonical E6 id")
+        pos_to_e6id.append(int(eid))
+    if sorted(pos_to_e6id) != list(range(27)):
+        raise RuntimeError("Orbit->E6-id mapping is not a permutation")
+
+    pos_of_e6id = [0] * 27
+    for pos, eid in enumerate(pos_to_e6id):
+        pos_of_e6id[eid] = pos
+    idx = np.array(pos_of_e6id, dtype=int)
+    gram = gram_pos[np.ix_(idx, idx)]
 
     adj = np.abs(gram - 1.0) < 1e-9
     np.fill_diagonal(adj, False)
@@ -221,7 +329,9 @@ def theorem_3():
     print(f"  Inner product distribution: {dict(ip_counts)}")
 
     RESULTS["adj_0"] = adj
-    RESULTS["o27_0"] = o27
+    RESULTS["orbit_index_27"] = orbit_index
+    # Store the orbit indices in canonical E6-id vertex order.
+    RESULTS["o27_0"] = [int(o27[pos_of_e6id[eid]]) for eid in range(27)]
     RESULTS["gram_0"] = gram
     return {
         "srg": "(27,16,10,8)",
@@ -585,55 +695,31 @@ def theorem_11():
     B0 = RESULTS["B0"]
     R0 = RESULTS["R0"]
 
-    # Find a perfect partition: 9 vertex-disjoint triads covering all 27
-    # Since each vertex is in exactly 5 triads, and 27/3 = 9,
-    # we need a perfect matching in the triad hypergraph.
-
-    def find_partition(triads, used_verts, selected, depth=0):
-        if len(selected) == 9:
-            return list(selected) if len(used_verts) == 27 else None
-        remaining = [v for v in range(27) if v not in used_verts]
-        if not remaining:
-            return None
-        # Pick vertex with fewest available triads (most constrained first)
-        pivot = min(
-            remaining,
-            key=lambda v: sum(
-                1
-                for ti in vert_triads[v]
-                if not any(vv in used_verts for vv in triads[ti])
-            ),
+    # Use the canonical firewall partition (9 meet-triangles that partition all 27 lines)
+    # rather than an arbitrary perfect partition.
+    mapping_path = ROOT / "artifacts" / "firewall_bad_triads_mapping.json"
+    data = _load_json(mapping_path)
+    raw = data.get("bad_triangles_Schlafli_e6id")
+    if not (isinstance(raw, list) and len(raw) == 9):
+        raise RuntimeError(
+            "Invalid firewall_bad_triads_mapping.json: expected 9 bad_triangles_Schlafli_e6id"
         )
-        available = sum(
-            1
-            for ti in vert_triads[pivot]
-            if not any(vv in used_verts for vv in triads[ti])
-        )
-        if available == 0:
-            return None
-        for ti in vert_triads[pivot]:
-            t = triads[ti]
-            if any(v in used_verts for v in t):
-                continue
-            new_used = used_verts | set(t)
-            result = find_partition(triads, new_used, selected + [ti], depth + 1)
-            if result is not None:
-                return result
-        return None
 
-    partition = find_partition(all_triads, set(), [])
-    assert partition is not None, "Should find a perfect triangle partition"
+    forbidden_triads = tuple(sorted(tuple(sorted(int(x) for x in t)) for t in raw))
+    assert len(set(forbidden_triads)) == 9, "Bad triads should be distinct"
+    cover = [v for t in forbidden_triads for v in t]
+    assert (
+        len(cover) == 27 and len(set(cover)) == 27
+    ), "Bad triads must partition the 27 vertices"
 
-    forbidden_triads = [all_triads[i] for i in partition]
-    print(f"  Found partition of 27 into {len(forbidden_triads)} disjoint triads:")
+    all_triads_set = {tuple(t) for t in all_triads}
+    assert set(forbidden_triads).issubset(
+        all_triads_set
+    ), "Bad triads must be among the 45 cubic triads"
+
+    print(f"  Firewall partition: 27 = 9 disjoint bad triads")
     for t in forbidden_triads:
         print(f"    {t}")
-
-    # Verify covers all vertices
-    covered = set()
-    for t in forbidden_triads:
-        covered.update(t)
-    assert len(covered) == 27
 
     # Classify by ABR sector
     A_set = set(A0)
@@ -650,9 +736,148 @@ def theorem_11():
     assert bad_sectors.get("A0B0R3", 0) == 3, f"Should have 3 RRR, got {bad_sectors}"
     assert bad_sectors.get("A1B1R1", 0) == 6, f"Should have 6 ABR, got {bad_sectors}"
 
-    print(f"\n  SELECTION RULES:")
-    print(f"    3 RRR triads -> 3 forbidden Higgs self-couplings")
-    print(f"    6 ABR triads -> 6 forbidden Yukawa couplings")
+    print(f"\n  SELECTION RULES (structural, basis-free):")
+    print(f"    9 bad triads partition the 27")
+    print(f"    Relative to any double-six: 3 are RRR, 6 are ABR")
+
+    # If the exact SM field dictionary has been generated, annotate the forbidden couplings.
+    sm_path = ROOT / "artifacts" / "toe_sm_decomposition_27.json"
+    if sm_path.exists():
+        sm = _load_json(sm_path)
+        per_v = sm.get("per_vertex", [])
+        if isinstance(per_v, list) and per_v and isinstance(per_v[0], dict):
+            field_by = {int(v["i"]): str(v["field"]) for v in per_v}
+            forbidden_fields = [
+                sorted([field_by[i] for i in t]) for t in forbidden_triads
+            ]
+            hist = Counter(tuple(x) for x in forbidden_fields)
+            print(f"\n  Forbidden couplings (SM field language):")
+            for k, v in sorted(hist.items(), key=lambda kv: (-kv[1], kv[0])):
+                print(f"    {list(k)} : {v}")
+
+    # NEW: quotient the 27 by the firewall partition (9 triples). The remaining
+    # 36 allowed triads are exactly 12 'lines' × a Z3 lift.
+    block_of = {}
+    for bi, tri in enumerate(forbidden_triads):
+        for v in tri:
+            block_of[v] = bi
+
+    allowed = [t for t in all_triads if t not in set(forbidden_triads)]
+    assert len(allowed) == 36
+    line_hist = Counter()
+    for a, b, c in allowed:
+        ids = tuple(sorted((block_of[a], block_of[b], block_of[c])))
+        assert (
+            len(set(ids)) == 3
+        ), "Allowed triads must select 3 distinct bad-triad blocks"
+        line_hist[ids] += 1
+    assert len(line_hist) == 12
+    assert set(line_hist.values()) == {3}
+
+    # Verify affine-plane axiom: every pair of points lies on a unique line.
+    pair_hist = Counter()
+    for ids in line_hist:
+        i, j, k = ids
+        for a, b in [(i, j), (i, k), (j, k)]:
+            pair_hist[(min(a, b), max(a, b))] += 1
+    assert len(pair_hist) == 36
+    assert set(pair_hist.values()) == {1}
+
+    print(f"\n  FIREWALL QUOTIENT GEOMETRY:")
+    print(f"    9 bad triads = 9 points")
+    print(f"    12 distinct block-triples from allowed triads = 12 lines")
+    print(f"    Each line has exactly 3 lifts (Z3)")
+    print(f"    -> This is the affine plane AG(2,3) on the 9 points")
+
+    # Double-sixes align perfectly with this affine-plane structure:
+    # each double-six uses exactly 6 of the 9 blocks (2 vertices per block),
+    # omitting 3 blocks which form one of the 12 affine lines.
+    ds_list = RESULTS.get("double_sixes", [])
+    omitted_hist = Counter()
+    if isinstance(ds_list, list) and ds_list:
+        for A, B, _match in ds_list:
+            S = set(A) | set(B)
+            used_blocks = {block_of[v] for v in S}
+            assert len(used_blocks) == 6
+            omitted = tuple(sorted(set(range(9)) - used_blocks))
+            assert (
+                omitted in line_hist
+            ), "Double-six omitted blocks should be an affine line"
+            omitted_hist[omitted] += 1
+        assert len(omitted_hist) == 12
+        assert set(omitted_hist.values()) == {3}
+        print(f"    Double-sixes: omit a line (3 blocks) with 3 Z3 lifts each")
+        RESULTS["double_six_omitted_lines"] = [list(k) for k in sorted(omitted_hist)]
+
+    # Group-theoretic refinement: stabilizer of the bad-triad partition is the W33 vertex stabilizer.
+    action_path = ROOT / "artifacts" / "we6_signed_action_on_27.json"
+    if action_path.exists():
+        action = _load_json(action_path)
+        gen_list = action.get("generators")
+        if not (isinstance(gen_list, list) and len(gen_list) == 6):
+            raise RuntimeError(
+                "Invalid we6_signed_action_on_27.json: expected 6 generators"
+            )
+        gens = [tuple(int(x) for x in g["permutation"]) for g in gen_list]
+        id_perm = tuple(range(27))
+        seen = {id_perm}
+        q = [id_perm]
+        stab: List[Tuple[int, ...]] = []
+
+        bad_canon = tuple(sorted(forbidden_triads))
+        while q:
+            cur = q.pop()
+            if _act_on_triads(cur, bad_canon) == bad_canon:
+                stab.append(cur)
+            for g in gens:
+                nxt = _compose_perm(g, cur)
+                if nxt not in seen:
+                    seen.add(nxt)
+                    q.append(nxt)
+
+        assert len(seen) == 51840, f"Expected |W(E6)|=51840, got {len(seen)}"
+        assert (
+            len(stab) == 1296
+        ), f"Expected vertex stabilizer size 1296, got {len(stab)}"
+
+        # Induced action on 9 blocks.
+        def induced_on_blocks(perm: Tuple[int, ...]) -> Tuple[int, ...]:
+            img = [None] * 9
+            for b, tri in enumerate(forbidden_triads):
+                mapped = {block_of[perm[v]] for v in tri}
+                if len(mapped) != 1:
+                    raise RuntimeError(
+                        "Bad triad partition not preserved setwise by supposed stabilizer element"
+                    )
+                img[b] = next(iter(mapped))
+            return tuple(int(x) for x in img)  # type: ignore[arg-type]
+
+        images = set()
+        kernel: List[Tuple[int, ...]] = []
+        for perm in stab:
+            img = induced_on_blocks(perm)
+            images.add(img)
+            if img == tuple(range(9)):
+                kernel.append(perm)
+
+        assert (
+            len(images) == 432
+        ), f"Expected image size 432 (=|AGL(2,3)|), got {len(images)}"
+        assert len(kernel) == 3, f"Expected kernel size 3, got {len(kernel)}"
+        cyc = _cycle_decomposition(kernel[1]) if len(kernel) > 1 else []
+        assert (
+            sorted(len(c) for c in cyc) == [3] * 9
+        ), "Kernel element should be 9 disjoint 3-cycles"
+
+        print(f"\n  GROUP FACTS (W(E6) action on 27):")
+        print(
+            f"    Stabilizer of firewall partition: 1296 = 51840/40 (W33 vertex stabilizer)"
+        )
+        print(f"    Induced action on 9 blocks: 432 (= AGL(2,3))")
+        print(f"    Kernel: Z3 acting as 9 disjoint 3-cycles on the blocks")
+        RESULTS["firewall_vertex_stabilizer"] = 1296
+        RESULTS["firewall_affine_plane_image"] = 432
+        RESULTS["firewall_affine_plane_kernel"] = 3
 
     # Identify the 6 forbidden oriented pairs
     A_list = RESULTS["A_list"]
@@ -670,55 +895,159 @@ def theorem_11():
 
     RESULTS["forbidden_triads"] = forbidden_triads
     RESULTS["forbidden_pairs"] = forbidden_pairs
-    return {"forbidden_triads": 9, "RRR_forbidden": 3, "ABR_forbidden": 6}
+    RESULTS["firewall_affine_plane_lines"] = [list(t) for t in sorted(line_hist)]
+    return {
+        "forbidden_triads": 9,
+        "RRR_forbidden": 3,
+        "ABR_forbidden": 6,
+        "affine_points": 9,
+        "affine_lines": 12,
+        "z3_lifts_per_line": 3,
+    }
 
 
 # =========================================================================
-# PART IV: PREDICTIONS (Theorems 12-15)
+# PART IV: PREDICTIONS (Theorems 12-16)
 # =========================================================================
 
 
-@theorem("CKM-like mixing from inter-generation coupling asymmetry")
+@theorem("3-generation coupling atlas (3×3→3̄) with firewall selection rules")
 def theorem_12():
-    roots = RESULTS["roots"]
-    orb27 = RESULTS["orb27"]
-    generations = RESULTS["generations"]
+    canon_path = ROOT / "artifacts" / "canonical_su3_gauge_and_cubic.json"
+    canon = _load_json(canon_path)
+    if not isinstance(canon, dict):
+        raise RuntimeError("Invalid canonical_su3_gauge_and_cubic.json")
+    instances = canon.get("instances", {})
+    if not isinstance(instances, dict):
+        raise RuntimeError("Invalid canonical_su3_gauge_and_cubic.json: instances")
+    couplings = instances.get("couplings", [])
+    if not isinstance(couplings, list):
+        raise RuntimeError(
+            "Invalid canonical_su3_gauge_and_cubic.json: instances.couplings"
+        )
 
-    gen_ip_patterns = {}
-    for i, gi in enumerate(generations):
-        for j, gj in enumerate(generations):
-            orb_i = orb27[gi["orbit_3"]]
-            orb_j = orb27[gj["orbit_3"]]
-            gram = roots[orb_i] @ roots[orb_j].T
-            ip_dist = Counter()
-            for val in gram.flatten():
-                ip_dist[round(float(val))] += 1
-            gen_ip_patterns[(i + 1, j + 1)] = dict(sorted(ip_dist.items()))
+    # Forbidden triads come from the (canonical) firewall rule; they partition the 27.
+    forbidden_triads = RESULTS.get("forbidden_triads")
+    if not (isinstance(forbidden_triads, tuple) and len(forbidden_triads) == 9):
+        raise RuntimeError("Expected RESULTS['forbidden_triads'] from Theorem 11")
+    forbidden_set = {tuple(int(x) for x in t) for t in forbidden_triads}
 
-    print(f"  Inter-generation inner product patterns (27_i . 27_j):")
-    for (i, j), pattern in sorted(gen_ip_patterns.items()):
-        label = "SAME" if i == j else "CROSS"
-        print(f"    Gen {i} x Gen {j} [{label}]: {pattern}")
+    # Optional SM field dictionary to classify triads.
+    field_by: dict[int, str] = {}
+    sm_path = ROOT / "artifacts" / "toe_sm_decomposition_27.json"
+    if sm_path.exists():
+        sm = _load_json(sm_path)
+        if isinstance(sm, dict):
+            per_v = sm.get("per_vertex")
+            if isinstance(per_v, list):
+                for row in per_v:
+                    if isinstance(row, dict) and "i" in row and "field" in row:
+                        field_by[int(row["i"])] = str(row["field"])
 
-    same_patterns = [gen_ip_patterns[(i, i)] for i in [1, 2, 3]]
-    assert same_patterns[0] == same_patterns[1] == same_patterns[2]
+    total = len(couplings)
+    forbidden = 0
+    per_orbit_pair: dict[tuple[int, int, int], dict[str, int]] = defaultdict(
+        lambda: {"total": 0, "forbidden": 0}
+    )
+    triad_type_total: Counter[tuple[str, str, str]] = Counter()
+    triad_type_forbidden: Counter[tuple[str, str, str]] = Counter()
 
-    cross_12 = gen_ip_patterns[(1, 2)]
-    same_11 = gen_ip_patterns[(1, 1)]
-    distinct = cross_12 != same_11
-    print(f"\n  Same-gen patterns identical: True")
-    print(f"  Cross-gen != Same-gen: {distinct}")
+    for c in couplings:
+        if not isinstance(c, dict):
+            continue
+        tri = c.get("triad")
+        if not (isinstance(tri, list) and len(tri) == 3):
+            raise RuntimeError("Invalid coupling record: triad")
+        triad = tuple(sorted(int(x) for x in tri))
+        is_bad = triad in forbidden_set
 
-    if distinct:
-        print(f"  -> CKM mixing arises from inter-generation IP asymmetry!")
-        diff_keys = set(cross_12.keys()) | set(same_11.keys())
-        for k in sorted(diff_keys):
-            s = same_11.get(k, 0)
-            c = cross_12.get(k, 0)
-            if s != c:
-                print(f"    ip={k}: same={s}, cross={c}, delta={c-s}")
+        oa = int(c.get("oa"))
+        ob = int(c.get("ob"))
+        ocbar = int(c.get("ocbar"))
+        per_orbit_pair[(oa, ob, ocbar)]["total"] += 1
+        if is_bad:
+            forbidden += 1
+            per_orbit_pair[(oa, ob, ocbar)]["forbidden"] += 1
 
-    return {"same_gen_identical": True, "cross_gen_distinct": distinct}
+        if field_by:
+            fields = tuple(sorted(field_by[i] for i in triad))  # type: ignore[arg-type]
+            triad_type_total[fields] += 1
+            if is_bad:
+                triad_type_forbidden[fields] += 1
+
+    allowed = total - forbidden
+    print(f"  Couplings (3×3→3̄ sector):")
+    print(f"    Total: {total}")
+    print(f"    Firewall-forbidden: {forbidden}")
+    print(f"    Allowed: {allowed}")
+
+    assert total == 1620, f"Expected 1620 couplings, got {total}"
+    assert forbidden == 324, f"Expected 324 forbidden couplings, got {forbidden}"
+    assert allowed == 1296, f"Expected 1296 allowed couplings, got {allowed}"
+
+    # Orbit-pair structure: 3 orbits in the SU(3) family 3, so 3×2=6 ordered pairs (oa≠ob).
+    pairs = []
+    for (oa, ob, ocbar), row in sorted(per_orbit_pair.items()):
+        tot = int(row["total"])
+        forb = int(row["forbidden"])
+        pairs.append(
+            {
+                "oa": oa,
+                "ob": ob,
+                "ocbar": ocbar,
+                "total": tot,
+                "forbidden": forb,
+                "allowed": tot - forb,
+            }
+        )
+    assert len(pairs) == 6, f"Expected 6 ordered orbit pairs, got {len(pairs)}"
+    for row in pairs:
+        assert row["total"] == 270
+        assert row["forbidden"] == 54
+        assert row["allowed"] == 216
+
+    print(f"\n  Per ordered orbit pair (oa,ob)->oc̄:")
+    for row in pairs:
+        print(
+            f"    ({row['oa']},{row['ob']}) -> {row['ocbar']}: {row['allowed']} allowed + {row['forbidden']} forbidden = {row['total']}"
+        )
+
+    RESULTS["three_gen_coupling_counts"] = {
+        "total": total,
+        "forbidden": forbidden,
+        "allowed": allowed,
+        "orbit_pairs": pairs,
+    }
+
+    # Optional: summarize which SM triad-types are most suppressed by the firewall.
+    triad_types = []
+    if field_by:
+        for fields, cnt in triad_type_total.most_common():
+            forb = int(triad_type_forbidden.get(fields, 0))
+            triad_types.append(
+                {
+                    "fields": list(fields),
+                    "total": int(cnt),
+                    "forbidden": forb,
+                    "forbidden_frac": forb / cnt if cnt else 0.0,
+                }
+            )
+        RESULTS["three_gen_coupling_triad_types"] = triad_types
+
+        up = ("H_u", "Q", "u^c")
+        if up in triad_type_total:
+            forb = triad_type_forbidden.get(up, 0)
+            cnt = triad_type_total[up]
+            print(
+                f"\n  Up-Yukawa-type (H_u,Q,u^c): forbidden={forb} / total={cnt} = {forb/cnt:.3f}"
+            )
+
+    return {
+        "couplings_total": total,
+        "couplings_forbidden": forbidden,
+        "couplings_allowed": allowed,
+        "orbit_pairs": pairs,
+    }
 
 
 @theorem("Proton decay suppression from firewall selection rules")
@@ -826,6 +1155,64 @@ def theorem_15():
     return {"coxeter_order": 12, "phase_field": "Z6", "anomaly_free": True}
 
 
+@theorem("Chevalley certificate: recovered E6 Cartan + Serre relations in 27-rep")
+def theorem_16():
+    path = ROOT / "artifacts" / "e6_basis_export_chevalley_27rep.json"
+    data = _load_json(path)
+    if not isinstance(data, dict):
+        raise RuntimeError("Invalid e6_basis_export_chevalley_27rep.json")
+
+    assert data.get("status") == "ok"
+    dims = data.get("dims", {})
+    assert dims == {"cartan": 6, "roots": 72, "total": 78}
+
+    cartan = data.get("cartan", {})
+    assert isinstance(cartan, dict)
+    assert cartan.get("dynkin_type") == "E6"
+    C = cartan.get("cartan_matrix")
+    assert (
+        isinstance(C, list)
+        and len(C) == 6
+        and all(isinstance(r, list) and len(r) == 6 for r in C)
+    )
+    for i in range(6):
+        assert int(C[i][i]) == 2
+        for j in range(6):
+            if i == j:
+                continue
+            assert int(C[i][j]) in (0, -1)
+
+    serre = data.get("serre", {})
+    assert isinstance(serre, dict)
+    assert serre.get("ok") is True
+    assert int(serre.get("n_failures", -1)) == 0
+
+    print(f"  E6 certificate (27-rep basis export):")
+    print(
+        f"    rank = {dims['cartan']}, roots = {dims['roots']}, total = {dims['total']}"
+    )
+    print(f"    Dynkin type = {cartan.get('dynkin_type')}")
+    print(f"    Serre OK at tol={serre.get('tol')}")
+
+    RESULTS["e6_chevalley_certificate"] = {
+        "dims": dims,
+        "dynkin_type": cartan.get("dynkin_type"),
+        "cartan_matrix": C,
+        "serre": {
+            "ok": serre.get("ok"),
+            "n_failures": serre.get("n_failures"),
+            "tol": serre.get("tol"),
+        },
+        "source": data.get("source"),
+    }
+    return {
+        "dynkin_type": cartan.get("dynkin_type"),
+        "serre_ok": True,
+        "rank": dims["cartan"],
+        "roots": dims["roots"],
+    }
+
+
 # =========================================================================
 # SYNTHESIS
 # =========================================================================
@@ -915,7 +1302,7 @@ def main():
     print("=" * 72)
     print("  UNIFIED THEORY OF EVERYTHING DERIVATION")
     print("  W33 / E8 / E6 x SU(3) Framework")
-    print("  15 Theorems with Full Computational Verification")
+    print("  16 Theorems with Full Computational Verification")
     print("=" * 72)
 
     # Part I
@@ -940,6 +1327,7 @@ def main():
     theorem_13()
     theorem_14()
     theorem_15()
+    theorem_16()
 
     # Synthesis
     synthesis()
@@ -966,7 +1354,7 @@ def main():
         json.dump(clean, f, indent=2, default=str)
 
     print(f"\n{'='*72}")
-    print(f"  ALL 15 THEOREMS VERIFIED")
+    print(f"  ALL 16 THEOREMS VERIFIED")
     print(f"  Results saved to: {out_path}")
     print(f"{'='*72}")
 

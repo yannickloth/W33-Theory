@@ -74,7 +74,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     args = p.parse_args(list(argv) if argv is not None else None)
 
     export_dir = args.export_dir
-    if not str(export_dir):
+    if export_dir == Path("") or export_dir.as_posix() in {"", "."}:
         candidate = ROOT / "artifacts" / "e6_27rep_basis_export"
         export_dir = (
             candidate
