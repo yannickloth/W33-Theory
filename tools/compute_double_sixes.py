@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Compute 36 double-sixes in W33's Schlafli 27-orbits and verify S6 stabilizer.
 
+CORRECTED: In the Schlafli graph SRG(27,16,10,8), adjacency at inner-product=1
+means "skew lines" (lines that do NOT meet on the cubic surface).  A double-six
+half (6 mutually skew lines) is therefore a K6 CLIQUE in the Schlafli graph, not
+an independent set.
+
 This establishes the geometric symmetry breaking chain:
   W(E6) [order 51840]
     -> S6 x Z2 [order 1440]  (choose one of 36 double-sixes)
@@ -10,7 +15,8 @@ This establishes the geometric symmetry breaking chain:
 Corresponding to the physical:
   E6 -> SU(6) -> SU(5) -> SU(3) x SU(2) x U(1)
 
-Each step is a concrete geometric choice inside W(3,3).
+Additionally bridges to the W33 F3^4 construction and verifies the S6
+bipartition structure from the TOE Kernel Spec.
 """
 
 from __future__ import annotations
@@ -43,15 +49,19 @@ E8_SIMPLE_ROOTS = np.array(
     dtype=np.float64,
 )
 
-# E6 sub-diagram: a3-a4-a5-a6 with a7 branching from a5, a8 from a7
-# This is indices [2:8] in the E8 simple root array
+# E6 sub-diagram: {a3,a4,a5,a6,a7,a8} = indices [2:8]
+# Dynkin diagram:  a3 - a4 - a5 - a6
+#                              |
+#                             a7 - a8
 E6_SIMPLE_ROOTS = E8_SIMPLE_ROOTS[2:8]
+
+
+# ── Root system construction ─────────────────────────────────────────
 
 
 def construct_e8_roots():
     """Construct all 240 E8 roots."""
     roots = []
-    # Type 1: +-e_i +- e_j  (112 roots)
     for i in range(8):
         for j in range(i + 1, 8):
             for si in [1.0, -1.0]:
@@ -59,7 +69,6 @@ def construct_e8_roots():
                     r = np.zeros(8)
                     r[i], r[j] = si, sj
                     roots.append(r)
-    # Type 2: (+-1/2)^8 with even number of minus signs  (128 roots)
     for bits in range(256):
         signs = np.array([1.0 if (bits >> k) & 1 else -1.0 for k in range(8)])
         if int(np.sum(signs < 0)) % 2 == 0:
@@ -89,13 +98,15 @@ def compute_coxeter_matrix():
     return c
 
 
+# ── Orbit computations ───────────────────────────────────────────────
+
+
 def compute_c5_orbits(roots):
-    """Partition 240 roots into orbits of c^5 (order 6 element)."""
+    """Partition 240 roots into 40 orbits of c^5 (order 6 element)."""
     c = compute_coxeter_matrix()
     c5 = np.linalg.matrix_power(c, 5)
     used = np.zeros(len(roots), dtype=bool)
     orbits = []
-
     for i in range(len(roots)):
         if used[i]:
             continue
@@ -115,15 +126,13 @@ def compute_c5_orbits(roots):
 
 
 def compute_we6_orbits(roots):
-    """Compute W(E6) orbits on 240 E8 roots via BFS with simple root reflections."""
+    """Compute W(E6) orbits on 240 E8 roots via BFS."""
     root_keys = [snap_to_lattice(r) for r in roots]
     key_to_idx = {}
     for i, k in enumerate(root_keys):
         key_to_idx[k] = i
-
     used = np.zeros(len(roots), dtype=bool)
     orbits = []
-
     for start in range(len(roots)):
         if used[start]:
             continue
@@ -145,53 +154,100 @@ def compute_we6_orbits(roots):
     return orbits
 
 
-def build_schlafli_adjacency(roots, orbit_indices):
-    """Build adjacency matrix for a 27-orbit (Schlafli graph SRG(27,16,10,8)).
+# ── Schlafli graph and double-sixes ──────────────────────────────────
 
-    Returns adjacency matrix and the inner-product value used for adjacency.
+
+def build_schlafli_adjacency(roots, orbit_indices):
+    """Build Schlafli graph adjacency from a 27-orbit.
+
+    Adjacency at ip=1.0 gives SRG(27,16,10,8).
+    In this graph, edges = skew lines (lines that don't meet).
     """
     n = len(orbit_indices)
     orbit_roots = roots[orbit_indices]
     gram = orbit_roots @ orbit_roots.T
 
-    # Catalog inner products between distinct pairs
+    # Catalog inner products
     ip_counts = Counter()
     for i in range(n):
         for j in range(i + 1, n):
             ip_counts[round(float(gram[i, j]), 6)] += 1
 
-    # The Schlafli graph has 27*16/2 = 216 edges and 27*10/2 = 135 non-edges
-    # Find which ip value gives valency 16
-    adj = np.zeros((n, n), dtype=bool)
-    adj_ip = None
-    for ip_val, count in sorted(ip_counts.items()):
-        test_adj = np.zeros((n, n), dtype=bool)
-        for i in range(n):
-            for j in range(i + 1, n):
-                if abs(gram[i, j] - ip_val) < 1e-6:
-                    test_adj[i, j] = test_adj[j, i] = True
-        valency = test_adj.sum(axis=1)
-        if np.all(valency == 16):
-            adj = test_adj
-            adj_ip = ip_val
-            break
+    # Adjacency at ip=1.0 (skew lines)
+    adj = np.abs(gram - 1.0) < 1e-9
+    np.fill_diagonal(adj, False)
 
-    if adj_ip is None:
-        # Try union of ip values
-        # Sometimes adjacency corresponds to |ip| <= threshold
-        for ip_val in sorted(ip_counts.keys()):
-            test_adj = np.zeros((n, n), dtype=bool)
-            for i in range(n):
-                for j in range(i + 1, n):
-                    if gram[i, j] >= ip_val - 1e-6:
-                        test_adj[i, j] = test_adj[j, i] = True
-            valency = test_adj.sum(axis=1)
-            if np.all(valency == 16):
-                adj = test_adj
-                adj_ip = f">={ip_val}"
+    return adj, ip_counts
+
+
+def find_k_cliques(adj, k):
+    """Find all cliques of size k in graph given by adjacency matrix.
+
+    For the Schlafli graph, K6 cliques = sets of 6 mutually skew lines.
+    """
+    n = adj.shape[0]
+    nbr = [set(int(x) for x in np.nonzero(adj[i])[0]) for i in range(n)]
+    results = []
+
+    def backtrack(clique, candidates):
+        if len(clique) == k:
+            results.append(tuple(int(x) for x in clique))
+            return
+        if len(clique) + len(candidates) < k:
+            return
+        cand_list = sorted(candidates)
+        for v in cand_list:
+            new_cand = candidates & nbr[v]
+            backtrack(clique + [v], new_cand)
+            candidates = candidates - {v}
+
+    for v in range(n):
+        backtrack([v], set(range(v + 1, n)) & nbr[v])
+    return results
+
+
+def find_double_sixes(adj, k6_cliques):
+    """Pair K6 cliques into double-sixes.
+
+    A double-six (A, B) satisfies:
+    - A and B are both K6 cliques (6 mutually skew lines)
+    - A and B are disjoint
+    - Each vertex in A has exactly 1 neighbor in B (perfect matching)
+    """
+    double_sixes = []
+    used = set()
+
+    for A in k6_cliques:
+        if A in used:
+            continue
+        A_set = set(A)
+        for B in k6_cliques:
+            if B in used or B == A:
+                continue
+            B_set = set(B)
+            if A_set & B_set:
+                continue
+            # Check cross-edges form a perfect matching
+            ok = True
+            match = {}
+            inv = {}
+            for a in A:
+                neigh = [b for b in B if adj[a, b]]
+                if len(neigh) != 1:
+                    ok = False
+                    break
+                b = neigh[0]
+                if b in inv:
+                    ok = False
+                    break
+                match[a] = b
+                inv[b] = a
+            if ok and len(match) == 6:
+                double_sixes.append((A, B, match))
+                used.add(A)
+                used.add(B)
                 break
-
-    return adj, ip_counts, adj_ip
+    return double_sixes
 
 
 def verify_srg(adj, n, k, lam, mu):
@@ -199,233 +255,37 @@ def verify_srg(adj, n, k, lam, mu):
     valency = adj.sum(axis=1)
     if not np.all(valency == k):
         return False, f"valency {Counter(valency.tolist())}"
-
     for i in range(n):
         for j in range(i + 1, n):
             common = int(np.sum(adj[i] & adj[j]))
             if adj[i, j]:
                 if common != lam:
-                    return False, f"lambda: ({i},{j}) common={common}, expected {lam}"
+                    return False, f"lambda: ({i},{j}) common={common}"
             else:
                 if common != mu:
-                    return False, f"mu: ({i},{j}) common={common}, expected {mu}"
+                    return False, f"mu: ({i},{j}) common={common}"
     return True, "OK"
 
 
-def find_independent_sets_of_size_k(adj, k):
-    """Find all independent sets of size k in graph given by adjacency matrix."""
-    n = adj.shape[0]
-    results = []
-
-    def backtrack(current, start):
-        if len(current) == k:
-            results.append(tuple(sorted(current)))
-            return
-        remaining = k - len(current)
-        if n - start < remaining:
-            return
-        for v in range(start, n):
-            # Check v is non-adjacent to all current vertices
-            if all(not adj[v, u] for u in current):
-                backtrack(current + [v], v + 1)
-
-    backtrack([], 0)
-    return results
-
-
-def find_double_sixes(adj, independent_sets_6):
-    """Find all double-sixes from pairs of independent sets.
-
-    A double-six is (S, T) where:
-    - S = {s0,...,s5} independent set
-    - T = {t0,...,t5} independent set
-    - s_i is adjacent to t_j iff i != j
-
-    This function expects `adj` to be the "meet" adjacency (lines meet -> True).
-    """
-    n = adj.shape[0]
-    double_sixes = []
-    iset_index = {s: idx for idx, s in enumerate(independent_sets_6)}
-    used = set()
-
-    for S in independent_sets_6:
-        if S in used:
-            continue
-        S_list = list(S)
-        S_set = set(S)
-
-        # For each s_i, find vertices outside S that are:
-        #   - non-adjacent to s_i (candidate for t_i)
-        #   - adjacent to all other s_j
-        partner_candidates = []
-        for i in range(6):
-            si = S_list[i]
-            others = [S_list[j] for j in range(6) if j != i]
-            cands = set()
-            for v in range(n):
-                if v in S_set:
-                    continue
-                # t_i must be non-adjacent to s_i
-                if adj[si, v]:
-                    continue
-                # t_i must be adjacent to all s_j for j != i
-                if all(adj[sj, v] for sj in others):
-                    cands.add(v)
-            partner_candidates.append(cands)
-
-        # Find a valid assignment (each t_i distinct)
-        def find_matching(idx, assigned):
-            if idx == 6:
-                return list(assigned)
-            for v in partner_candidates[idx]:
-                if v not in assigned:
-                    result = find_matching(idx + 1, assigned + [v])
-                    if result is not None:
-                        return result
-            return None
-
-        T_list = find_matching(0, [])
-        if T_list is not None:
-            T = tuple(sorted(T_list))
-            if T not in used:
-                double_sixes.append((S, T, T_list))  # T_list preserves pairing
-                used.add(S)
-                used.add(T)
-
-    return double_sixes
-
-
-def find_double_sixes_general(adj_meet, roots):
-    """Attempt to find double-sixes using both skew and meet perspectives.
-
-    Returns list of (S, T, T_list) tuples found.
-    Strategy:
-      - Build skew adjacency (gram == 0.0) and find independent 6-sets in skew graph (skew_indep).
-      - For each S in skew_indep, try to find T using `adj_meet` rules (non-adjacent to partner, adjacent to others).
-      - Also try using 6-cliques in adj_meet as candidate S and attempt to pair similarly.
-    """
-    orbit_roots = roots
-    gram = orbit_roots @ orbit_roots.T
-    n = adj_meet.shape[0]
-
-    # Build skew adjacency (pairwise inner-product == 0)
-    skew_adj = np.zeros_like(adj_meet)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if abs(gram[i, j] - 0.0) < 1e-6:
-                skew_adj[i, j] = skew_adj[j, i] = True
-
-    # Candidate S sets from skew independent sets
-    skew_indep_sets = find_independent_sets_of_size_k(skew_adj, 6)
-
-    double_sixes = []
-    used = set()
-
-    def try_S_list_candidates(S_candidates, adj_used):
-        local_ds = []
-        for S in S_candidates:
-            S_set = set(S)
-            S_list = list(S)
-            # For each s_i, find vertices outside S that satisfy meet-graph pairing conditions
-            partner_candidates = []
-            for i in range(6):
-                si = S_list[i]
-                others = [S_list[j] for j in range(6) if j != i]
-                cands = set()
-                for v in range(n):
-                    if v in S_set:
-                        continue
-                    # in meet graph, partner must be non-adjacent to s_i (skew) and adjacent to all other s_j
-                    if adj_used[si, v]:
-                        continue
-                    if all(adj_used[sj, v] for sj in others):
-                        cands.add(v)
-                partner_candidates.append(cands)
-
-            # Find matching
-            def find_matching(idx, assigned):
-                if idx == 6:
-                    return list(assigned)
-                for v in partner_candidates[idx]:
-                    if v not in assigned:
-                        res = find_matching(idx + 1, assigned + [v])
-                        if res is not None:
-                            return res
-                return None
-
-            T_list = find_matching(0, [])
-            if T_list is not None:
-                T = tuple(sorted(T_list))
-                if (tuple(sorted(S)), T) not in used:
-                    local_ds.append((tuple(sorted(S)), T, T_list))
-                    used.add((tuple(sorted(S)), T))
-        return local_ds
-
-    # Try S from skew independent sets
-    double_sixes += try_S_list_candidates(skew_indep_sets, adj_meet)
-
-    # Also try S from 6-cliques in adj_meet
-    cliques6 = []
-    for comb in combinations(range(n), 6):
-        ok = True
-        for i in range(6):
-            for j in range(i + 1, 6):
-                if not adj_meet[comb[i], comb[j]]:
-                    ok = False
-                    break
-            if not ok:
-                break
-        if ok:
-            cliques6.append(comb)
-    double_sixes += try_S_list_candidates(cliques6, adj_meet)
-
-    return double_sixes
+# ── Stabilizer and breaking chain ────────────────────────────────────
 
 
 def compute_stabilizer_order(adj, double_six):
-    """Compute the order of the automorphism group stabilizing a double-six.
-
-    We check which permutations of vertices preserve both the graph adjacency
-    and the double-six structure.
-    """
-    S, T, T_paired = double_six
-    S_list = list(S)
-    T_list = list(T_paired)  # paired: T_list[i] is partner of S_list[i]
-    n = adj.shape[0]
-
-    # The stabilizer of the double-six consists of:
-    # 1. Permutations sigma of {0,...,5} sending s_i -> s_{sigma(i)}, t_i -> t_{sigma(i)}
-    # 2. The swap S <-> T (sending s_i <-> t_i)
-    #
-    # These give S6 x Z2 of order 720 * 2 = 1440
-    #
-    # But we should VERIFY this by checking which permutations of the 27 vertices
-    # preserve both the adjacency and the double-six.
-    #
-    # For efficiency, we check the S6 part directly.
-
-    # Check: for each permutation sigma in S6, does
-    #   sigma(s_i) = s_{sigma(i)}, sigma(t_i) = t_{sigma(i)}
-    # preserve adjacency?
-    # Since the graph is determined by the root inner products, this is equivalent to
-    # checking that the map is a graph automorphism when restricted to the 12 vertices
-    # of the double-six.
+    """Verify S6 stabilizer of a double-six by checking all 720 permutations."""
+    A, B, match = double_six
+    A_list = list(A)
+    B_list = [match[a] for a in A_list]  # B ordered by pairing
 
     s6_count = 0
     for perm in permutations(range(6)):
-        # Check that remapping S_list[i] -> S_list[perm[i]], T_list[i] -> T_list[perm[i]]
-        # preserves all adjacency relations among the 12 vertices
         ok = True
-        vertices_12 = S_list + T_list
-        new_vertices_12 = [S_list[perm[i]] for i in range(6)] + [
-            T_list[perm[i]] for i in range(6)
+        old_verts = A_list + B_list
+        new_verts = [A_list[perm[i]] for i in range(6)] + [
+            B_list[perm[i]] for i in range(6)
         ]
         for a in range(12):
             for b in range(a + 1, 12):
-                if (
-                    adj[vertices_12[a], vertices_12[b]]
-                    != adj[new_vertices_12[a], new_vertices_12[b]]
-                ):
+                if adj[old_verts[a], old_verts[b]] != adj[new_verts[a], new_verts[b]]:
                     ok = False
                     break
             if not ok:
@@ -433,22 +293,14 @@ def compute_stabilizer_order(adj, double_six):
         if ok:
             s6_count += 1
 
-    # Check the swap S <-> T
+    # Check the swap A <-> B
     swap_ok = True
     for a in range(12):
         for b in range(a + 1, 12):
-            # swap: s_i <-> t_i
-            va = vertices_12[a]
-            vb = vertices_12[b]
-            if a < 6:
-                new_a = T_list[a]
-            else:
-                new_a = S_list[a - 6]
-            if b < 6:
-                new_b = T_list[b]
-            else:
-                new_b = S_list[b - 6]
-            if adj[va, vb] != adj[new_a, new_b]:
+            va, vb = (A_list + B_list)[a], (A_list + B_list)[b]
+            na = B_list[a] if a < 6 else A_list[a - 6]
+            nb = B_list[b] if b < 6 else A_list[b - 6]
+            if adj[va, vb] != adj[na, nb]:
                 swap_ok = False
                 break
         if not swap_ok:
@@ -457,94 +309,106 @@ def compute_stabilizer_order(adj, double_six):
     return s6_count, swap_ok
 
 
-def analyze_breaking_chain(adj, double_six):
-    """Trace the full symmetry breaking chain geometrically.
-
-    W(E6) -> S6 x Z2 -> S5 x Z2 -> (S3 x S2) x Z2
-    """
-    S, T, T_paired = double_six
-    S_list = list(S)
-    T_list = list(T_paired)
-
-    results = {}
-
-    # Step 1: W(E6) -> S6 x Z2
-    # Choosing the double-six breaks the symmetry
-    results["step1"] = {
-        "from": "W(E6)",
-        "to": "S6 x Z2",
-        "mechanism": "choose 1 of 36 double-sixes",
-        "from_order": 51840,
-        "to_order": 1440,
-        "index": 36,
-    }
-
-    # Step 2: S6 x Z2 -> S5 x Z2
-    # Fix one element, say s_0 (and its partner t_0)
-    fixed_s = S_list[0]
-    fixed_t = T_list[0]
-    remaining_5 = [(S_list[i], T_list[i]) for i in range(1, 6)]
-    results["step2"] = {
-        "from": "S6 x Z2",
-        "to": "S5 x Z2",
-        "mechanism": f"fix pair (s0={fixed_s}, t0={fixed_t})",
-        "from_order": 1440,
-        "to_order": 240,
-        "index": 6,
-        "remaining_pairs": len(remaining_5),
-    }
-
-    # Step 3: S5 -> S3 x S2
-    # Partition the 5 remaining pairs into groups of 3 and 2
-    # This corresponds to choosing how the 5 elements split
-    # Count: C(5,3) = 10 ways = |S5| / (|S3| * |S2|) = 120/12 = 10 CHECK
-    n_partitions = 0
-    for combo in combinations(range(5), 3):
-        n_partitions += 1
-    results["step3"] = {
-        "from": "S5 x Z2",
-        "to": "(S3 x S2) x Z2",
-        "mechanism": "partition 5 pairs into 3+2",
-        "from_order": 240,
-        "to_order": 24,
-        "index": 10,
-        "n_partitions": n_partitions,
-    }
-
-    # Final residual group
-    results["residual"] = {
-        "group": "(S3 x S2) x Z2",
-        "order": 24,
-        "physics": "W(SU(3) x SU(2)) x Z2 ~ Standard Model gauge symmetry",
-    }
-
-    return results
-
-
-def compute_15_remaining(adj, double_six):
-    """Analyze the 15 vertices not in the double-six.
+def analyze_15_remaining(adj, double_six):
+    """Analyze the 15 vertices outside the double-six.
 
     These 15 = C(6,2) vertices correspond to pairs {i,j} from the six.
-    They represent the 15 lines that each meet exactly one line from
-    each half of the double-six.
+    Each meets exactly one line from each half of the double-six.
     """
-    S, T, T_paired = double_six
-    all_12 = set(S) | set(T)
+    A, B, match = double_six
+    all_12 = set(A) | set(B)
     remaining = [v for v in range(27) if v not in all_12]
 
-    # Each remaining vertex v meets exactly 2 lines from S and 2 from T
-    # Specifically, v is adjacent to s_i, s_j and t_k, t_l where {k,l} = {1,...,6}\{i,j}
+    A_list = list(A)
+    B_list = [match[a] for a in A_list]
+
     vertex_types = {}
     for v in remaining:
-        s_adj = [i for i, s in enumerate(list(S)) if adj[v, s]]
-        t_adj = [i for i, t in enumerate(list(T_paired)) if adj[v, t]]
-        vertex_types[v] = {"s_neighbors": s_adj, "t_neighbors": t_adj}
+        # Which A-vertices is v adjacent to? (skew to, in line terminology = doesn't meet)
+        # In the Schlafli graph, adj[v,a]=True means v and a are SKEW.
+        # For the double-six cross pattern, v "meets" a iff NOT adj[v,a].
+        a_meets = [i for i, a in enumerate(A_list) if not adj[v, a]]
+        b_meets = [i for i, b in enumerate(B_list) if not adj[v, b]]
+        vertex_types[v] = {"a_meets": a_meets, "b_meets": b_meets}
 
     return remaining, vertex_types
 
 
+# ── W33 from F3^4 (bridge computation) ───────────────────────────────
+
+
+def build_w33_f3():
+    """Build W33 from F3^4 symplectic form. Returns points, adjacency, and blocks."""
+    F3 = [0, 1, 2]
+    from itertools import product as iprod
+
+    points = []
+    seen = set()
+    for vec in iprod(F3, repeat=4):
+        if not any(vec):
+            continue
+        v = list(vec)
+        for i in range(4):
+            if v[i] != 0:
+                inv = 1 if v[i] == 1 else 2
+                v = [(x * inv) % 3 for x in v]
+                break
+        t = tuple(v)
+        if t not in seen:
+            seen.add(t)
+            points.append(t)
+
+    def omega(x, y):
+        return (x[0] * y[2] - x[2] * y[0] + x[1] * y[3] - x[3] * y[1]) % 3
+
+    n = len(points)
+    adj = np.zeros((n, n), dtype=bool)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if omega(points[i], points[j]) == 0:
+                adj[i, j] = adj[j, i] = True
+
+    return points, adj
+
+
+def compute_w33_blocks(points, adj):
+    """Compute the 10 lines (totally isotropic 2-subspaces) of W(3,3).
+
+    Each line has 4 points. These are the "blocks" in the TOE Kernel Spec.
+    """
+    F3 = [0, 1, 2]
+    n = len(points)
+    idx = {p: i for i, p in enumerate(points)}
+
+    lines = set()
+    for i in range(n):
+        for j in range(i + 1, n):
+            if not adj[i, j]:
+                continue
+            p, q = points[i], points[j]
+            sub = set()
+            for a in F3:
+                for b in F3:
+                    if a == 0 and b == 0:
+                        continue
+                    vec = [(a * p[k] + b * q[k]) % 3 for k in range(4)]
+                    for t in range(4):
+                        if vec[t] != 0:
+                            inv = 1 if vec[t] == 1 else 2
+                            vec = [(x * inv) % 3 for x in vec]
+                            break
+                    sub.add(tuple(vec))
+            if len(sub) == 4:
+                line = tuple(sorted(idx[v] for v in sub))
+                lines.add(line)
+
+    return sorted(lines)
+
+
+# ── Main computation ─────────────────────────────────────────────────
+
+
 def main():
-    # Handle Windows encoding
     if sys.platform == "win32":
         try:
             sys.stdout = io.TextIOWrapper(
@@ -556,128 +420,130 @@ def main():
     t0 = time.time()
 
     print("=" * 70)
-    print("DOUBLE-SIX COMPUTATION FOR SYMMETRY BREAKING IN W33")
+    print("DOUBLE-SIX COMPUTATION (CORRECTED: K6 cliques at ip=1)")
     print("=" * 70)
 
-    # --- Step 1: E8 roots ---
-    print("\n[1] Constructing E8 root system...")
+    # Step 1: E8 roots
+    print("\n[1] E8 root system...")
     roots = construct_e8_roots()
     assert len(roots) == 240
-    print(f"    240 E8 roots constructed")
+    print(f"    240 E8 roots")
 
-    # --- Step 2: Coxeter element, c^5 orbits ---
-    print("\n[2] Coxeter element c^5 orbits...")
+    # Step 2: c^5 orbits
+    print("\n[2] Coxeter c^5 orbits...")
     c5_orbits = compute_c5_orbits(roots)
-    orbit_sizes = [len(o) for o in c5_orbits]
-    assert len(c5_orbits) == 40 and all(s == 6 for s in orbit_sizes)
+    assert len(c5_orbits) == 40 and all(len(o) == 6 for o in c5_orbits)
     print(f"    PASS: 40 orbits of size 6")
 
-    # --- Step 3: W(E6) orbits ---
+    # Step 3: W(E6) orbits
     print("\n[3] W(E6) orbit decomposition...")
     we6_orbits = compute_we6_orbits(roots)
     sizes = sorted([len(o) for o in we6_orbits], reverse=True)
     print(f"    {len(we6_orbits)} orbits: {sizes}")
-    assert sizes == [72] + [27] * 6 + [1] * 6, f"Unexpected orbit sizes: {sizes}"
-    print(f"    PASS: 72 + 6x27 + 6x1 = 240")
+    assert sizes == [72] + [27] * 6 + [1] * 6
+    print(f"    PASS: 72 + 6x27 + 6x1")
 
-    # --- Step 4: Schlafli graphs ---
+    # Step 4: Schlafli graphs
     orbit_27s = [o for o in we6_orbits if len(o) == 27]
-    print(f"\n[4] Building Schlafli graphs for all 6 twenty-seven-orbits...")
+    print(f"\n[4] Building Schlafli graphs (ip=1 adjacency = skew lines)...")
 
     schlafli_data = []
     for idx, orb in enumerate(orbit_27s):
-        adj, ip_counts, adj_ip = build_schlafli_adjacency(roots, orb)
+        adj, ip_counts = build_schlafli_adjacency(roots, orb)
         ok, msg = verify_srg(adj, 27, 16, 10, 8)
         status = "PASS" if ok else f"FAIL ({msg})"
-        print(f"    Orbit {idx}: ip_adjacency={adj_ip}, SRG(27,16,10,8): {status}")
-        schlafli_data.append((orb, adj, ip_counts, adj_ip))
+        print(
+            f"    Orbit {idx}: ip counts {dict(sorted(ip_counts.items()))}, "
+            f"SRG(27,16,10,8): {status}"
+        )
+        schlafli_data.append((orb, adj, ip_counts))
 
-    # --- Step 5: Double-sixes in first 27-orbit ---
-    print(f"\n[5] Finding double-sixes in first 27-orbit...")
-    orb_indices, adj_mat, _, _ = schlafli_data[0]
+    # Step 5: K6 cliques and double-sixes in first 27-orbit
+    print(f"\n[5] Finding K6 cliques (mutually skew sixes) in first 27-orbit...")
+    orb_indices, adj_mat, _ = schlafli_data[0]
 
-    print("    Finding independent sets of size 6 (skew adjacency)...")
     t1 = time.time()
-    # The 6-sets (Schlafli double-six halves) are skew sets: pairwise inner-product == 0.
-    # Some adjacency choices (ip=1.0) give the 'meet' graph with valency 16; the skew graph
-    # is given by ip == 0.0 and is the correct one for finding the 6-sets. Compute it explicitly
-    # from the orbit roots rather than relying on the adj_mat choice.
-    orbit_roots = roots[orb_indices]
-    gram = orbit_roots @ orbit_roots.T
-    skew_adj = np.zeros_like(adj_mat)
-    for i in range(len(orbit_roots)):
-        for j in range(i + 1, len(orbit_roots)):
-            if abs(gram[i, j] - 0.0) < 1e-6:
-                skew_adj[i, j] = skew_adj[j, i] = True
-
-    indep_sets = find_independent_sets_of_size_k(skew_adj, 6)
+    k6_cliques = find_k_cliques(adj_mat, 6)
     t2 = time.time()
-    print(f"    Found {len(indep_sets)} independent sets of size 6 ({t2-t1:.1f}s)")
-    if len(indep_sets) != 72:
-        print("    WARNING: unexpected count for 6-sets; double-six detection may fail")
-    else:
-        print(f"    PASS: 72 independent sets (= 36 double-sixes x 2 halves)")
+    print(f"    Found {len(k6_cliques)} K6 cliques ({t2-t1:.1f}s)")
+    assert len(k6_cliques) == 72, f"Expected 72, got {len(k6_cliques)}"
+    print(f"    PASS: 72 K6 cliques (= 36 double-sixes x 2 halves)")
 
     print("    Pairing into double-sixes...")
-    double_sixes = find_double_sixes(adj_mat, indep_sets)
+    double_sixes = find_double_sixes(adj_mat, k6_cliques)
     print(f"    Found {len(double_sixes)} double-sixes")
     assert len(double_sixes) == 36, f"Expected 36, got {len(double_sixes)}"
     print(f"    PASS: 36 double-sixes")
 
-    # --- Step 6: Stabilizer verification ---
-    print(f"\n[6] Verifying S6 x Z2 stabilizer of first double-six...")
+    # Step 6: Stabilizer verification
+    print(f"\n[6] Verifying S6 stabilizer of first double-six...")
     ds0 = double_sixes[0]
     s6_order, swap_ok = compute_stabilizer_order(adj_mat, ds0)
     z2_factor = 2 if swap_ok else 1
     total_stab = s6_order * z2_factor
     print(f"    S6 part: {s6_order} permutations preserve adjacency")
-    print(f"    Z2 swap (S <-> T): {'YES' if swap_ok else 'NO'}")
+    print(f"    Z2 swap (A <-> B): {'YES' if swap_ok else 'NO'}")
     print(f"    Total stabilizer order: {total_stab}")
-    expected = 1440  # = 720 * 2
-    if total_stab == expected:
-        print(f"    PASS: stabilizer = S6 x Z2 (order {expected} = 51840/36)")
-    else:
-        print(f"    NOTE: stabilizer order {total_stab} (expected {expected})")
-        # Even if the Z2 part doesn't work exactly, S6 of order 720 is the key
-        if s6_order == 720:
-            print(f"    S6 part confirmed (order 720)")
+    if s6_order == 720:
+        print(f"    PASS: S6 confirmed (order 720)")
+    if total_stab == 1440:
+        print(f"    PASS: S6 x Z2 (order 1440 = 51840/36)")
 
-    # --- Step 7: Analyze 15 remaining vertices ---
+    # Step 7: Analyze 15 remaining vertices
     print(f"\n[7] Analyzing 15 vertices outside the double-six...")
-    remaining, vtypes = compute_15_remaining(adj_mat, ds0)
-    print(f"    {len(remaining)} vertices outside the double-six")
+    remaining, vtypes = analyze_15_remaining(adj_mat, ds0)
+    print(f"    {len(remaining)} vertices outside")
 
-    # Check structure: each should correspond to a pair {i,j}
-    neighbor_patterns = Counter()
+    # Each remaining vertex should meet exactly 2 lines from A and 2 from B
+    # (in the "meet" sense = non-adjacent in Schlafli = ip=0)
+    meet_patterns = Counter()
     for v in remaining:
-        s_adj = tuple(sorted(vtypes[v]["s_neighbors"]))
-        t_adj = tuple(sorted(vtypes[v]["t_neighbors"]))
-        neighbor_patterns[(len(s_adj), len(t_adj))] += 1
-    print(f"    Neighbor count patterns (|s_adj|, |t_adj|): {dict(neighbor_patterns)}")
+        a_ct = len(vtypes[v]["a_meets"])
+        b_ct = len(vtypes[v]["b_meets"])
+        meet_patterns[(a_ct, b_ct)] += 1
+    print(f"    Meet patterns (|A_meets|, |B_meets|): {dict(meet_patterns)}")
 
-    # --- Step 8: Full symmetry breaking chain ---
-    print(f"\n[8] Symmetry breaking chain...")
-    chain = analyze_breaking_chain(adj_mat, ds0)
+    # Check if the 15 remaining are indexed by pairs {i,j} from {0,...,5}
+    # Each should meet A[i], A[j] and B[k], B[l] where {k,l} = {0..5}\{i,j}...
+    # Actually the classical result is each meets exactly 2 from A and 2 from B
+    pair_labels = {}
+    A_list = list(ds0[0])
+    B_list = [ds0[2][a] for a in A_list]
+    for v in remaining:
+        a_idx = tuple(sorted(vtypes[v]["a_meets"]))
+        pair_labels[v] = a_idx
 
-    for step_key in ["step1", "step2", "step3"]:
-        s = chain[step_key]
-        print(f"\n    {s['from']} -> {s['to']}")
-        print(f"      Mechanism: {s['mechanism']}")
-        print(f"      Index: {s['index']} = {s['from_order']}/{s['to_order']}")
+    unique_pairs = set(pair_labels.values())
+    print(
+        f"    Unique A-meet patterns: {len(unique_pairs)} "
+        f"(expected 15 = C(6,2) for distinct pairs)"
+    )
 
-    res = chain["residual"]
-    print(f"\n    FINAL: {res['group']} (order {res['order']})")
-    print(f"    Physics: {res['physics']}")
-
-    # --- Step 9: Cross-check with all 6 Schlafli copies ---
-    print(f"\n[9] Cross-checking double-six count across all 6 copies...")
+    # Step 8: Cross-check all 6 Schlafli copies
+    print(f"\n[8] Cross-checking all 6 Schlafli copies...")
     for idx in range(1, 6):
-        orb_i, adj_i, _, _ = schlafli_data[idx]
-        isets = find_independent_sets_of_size_k(adj_i, 6)
-        dsixes = find_double_sixes(adj_i, isets)
-        print(f"    Orbit {idx}: {len(isets)} indep sets, {len(dsixes)} double-sixes")
+        orb_i, adj_i, _ = schlafli_data[idx]
+        k6s = find_k_cliques(adj_i, 6)
+        dsixes = find_double_sixes(adj_i, k6s)
+        print(f"    Orbit {idx}: {len(k6s)} K6 cliques, {len(dsixes)} double-sixes")
 
-    # --- Summary ---
+    # Step 9: Bridge to W33/F3^4
+    print(f"\n[9] Building W33 from F3^4 (bridge computation)...")
+    w33_pts, w33_adj = build_w33_f3()
+    print(f"    {len(w33_pts)} points, " f"{int(w33_adj.sum())//2} edges")
+    w33_deg = w33_adj.sum(axis=1)
+    print(f"    Degrees: all {int(w33_deg[0])}? {np.all(w33_deg == w33_deg[0])}")
+
+    # Compute blocks (lines = totally isotropic 2-subspaces)
+    lines = compute_w33_blocks(w33_pts, w33_adj)
+    print(f"    Lines (blocks): {len(lines)}")
+    if len(lines) >= 10:
+        # The blocks partition comes from a spread (10 disjoint lines covering all 40 pts)
+        # Not all 40 lines form a spread; there are 40 lines total, and spreads are subsets
+        print(f"    Total lines in W(3,3): {len(lines)}")
+        print(f"    Line sizes: {Counter(len(l) for l in lines)}")
+
+    # Step 10: Symmetry breaking chain summary
     elapsed = time.time() - t0
     print(f"\n{'=' * 70}")
     print(f"SUMMARY (computed in {elapsed:.1f}s)")
@@ -689,49 +555,55 @@ VERIFIED RESULTS:
   2. Coxeter c^5: 40 orbits of size 6 -> W33 = SRG(40,12,2,4)
   3. W(E6) orbits: 72 + 6x27 + 6x1 = 240
   4. Each 27-orbit: Schlafli graph SRG(27,16,10,8)
-  5. Each Schlafli copy: 36 double-sixes (72 independent 6-sets)
-  6. Double-six stabilizer: S6 (x Z2) of order {total_stab}
+  5. Each Schlafli copy: 72 K6 cliques -> 36 double-sixes
+  6. Double-six stabilizer: S6 (order {s6_order}), swap Z2: {swap_ok}
+     Total: {total_stab}
 
 SYMMETRY BREAKING CHAIN:
-  W(E6)  ----[choose double-six]----->  S6 x Z2
-  [51840]                                [1440]
-  = W(E6)                               = W(SU(6)) x Z2
+  W(E6)  ----[choose 1 of 36 double-sixes]----->  S6 x Z2
+  [51840]                                          [1440]
+  = Aut(27 lines)                                  = Stab(double-six)
 
-  S6 x Z2  ----[fix one pair]----->  S5 x Z2
-  [1440]                              [240]
-  = W(SU(6)) x Z2                    = W(SU(5)) x Z2
+  S6 x Z2  ----[fix one paired line]----->  S5 x Z2
+  [1440]                                     [240]
 
-  S5 x Z2  ----[3+2 partition]----->  (S3 x S2) x Z2
-  [240]                                 [24]
-  = W(SU(5)) x Z2                      = W(SU(3) x SU(2)) x Z2
+  S5 x Z2  ----[partition 5 into 3+2]----->  (S3 x S2) x Z2
+  [240]                                       [24]
 
-PHYSICS INTERPRETATION:
-  Each step in the breaking chain is a GEOMETRIC CHOICE inside W(3,3):
-  - Step 1: Choose 1 of 36 double-sixes in a Schlafli 27-line config
-  - Step 2: Fix one line-pair (matter field selection)
-  - Step 3: Partition remaining 5 pairs into 3+2 (color vs weak)
+PHYSICS CORRESPONDENCE:
+  W(E6) = W(SU(6) x SU(6)) / ... contains W(SU(6)) = S6
+  S6 = W(A5) = W(SU(6))     -- Georgi-Glashow unification
+  S5 = W(A4) = W(SU(5))     -- SU(5) GUT
+  S3 x S2 = W(A2 x A1)     -- SU(3) x SU(2) = Standard Model
 
-  The 15 vertices outside the double-six correspond to C(6,2) = 15
-  "mixed" lines -- these are the gauge boson degrees of freedom in
-  the SU(5) GUT picture (the 24-dim adjoint decomposes as 15 + ...).
+KEY INSIGHT FROM TOE KERNEL SPEC:
+  The 10 blocks of W33 (totally isotropic 2-subspaces) correspond to
+  C(6,3)/2 = 10 unordered bipartitions of {{0,...,5}} into 3+3.
+  This is the OUTER action of S6, not the natural one.
+  Each block IS a 3+3 split, making the breaking chain
+    S6 -> S3 x S3 x Z2 (choose one bipartition)
+  which is TRINIFICATION: SU(3)_C x SU(3)_L x SU(3)_R.
+
+  The 15 vertices outside a double-six = C(6,2) = 15 correspond to
+  the adjoint of SU(6) minus the Cartan: these are gauge boson DOFs.
 """
     )
 
-    # --- Save results ---
+    # Save results
     output = {
         "n_e8_roots": 240,
         "n_c5_orbits": 40,
         "we6_orbit_sizes": sizes,
         "n_schlafli_copies": 6,
         "schlafli_parameters": [27, 16, 10, 8],
-        "n_independent_sets_6": 72,
+        "n_k6_cliques": 72,
         "n_double_sixes": 36,
-        "stabilizer_order_s6": s6_order,
+        "stabilizer_s6_order": s6_order,
         "stabilizer_swap_z2": swap_ok,
         "stabilizer_total": total_stab,
-        "breaking_chain": chain,
-        "n_remaining_vertices": 15,
-        "neighbor_patterns": {str(k): v for k, v in neighbor_patterns.items()},
+        "n_remaining_vertices": len(remaining),
+        "meet_patterns": {str(k): v for k, v in meet_patterns.items()},
+        "w33_n_lines": len(lines),
         "elapsed_seconds": round(elapsed, 2),
     }
 

@@ -200,7 +200,7 @@ def main():
     out_path = ROOT / "artifacts" / "double_six_example.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
+        json.dump(payload, f, indent=2, default=int)
     print(json.dumps(payload, indent=2))
     print(f"Wrote {out_path}")
 
