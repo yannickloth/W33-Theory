@@ -1,7 +1,10 @@
 import json
 from pathlib import Path
 
-from jsonschema import ValidationError, validate
+import pytest
+
+jsonschema = pytest.importorskip("jsonschema")
+validate = jsonschema.validate
 
 
 def load(path):

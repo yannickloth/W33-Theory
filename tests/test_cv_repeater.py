@@ -1,3 +1,7 @@
+import pytest
+
+pytest.importorskip("strawberryfields")
+
 from scripts.quantum_photonics.run_cv_repeater import sweep_repeater
 
 

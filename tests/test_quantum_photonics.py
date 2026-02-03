@@ -1,4 +1,11 @@
 def test_imports_and_basic_functions():
+    import pytest
+
+    pytest.importorskip("matplotlib")
+    pytest.importorskip("scipy")
+    pytest.importorskip("strawberryfields")
+    pytest.importorskip("thewalrus")
+
     import importlib
 
     m_gbs = importlib.import_module("scripts.quantum_photonics.run_gbs")
