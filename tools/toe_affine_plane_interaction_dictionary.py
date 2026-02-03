@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter, defaultdict
+from itertools import combinations
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
@@ -325,6 +326,43 @@ def main(argv: Sequence[str] | None = None) -> None:
         )
     ]
 
+    # Parallel classes of AG(2,3): 4 partitions of the 9 points into 3 disjoint lines.
+    line_id_by_blocks = {
+        tuple(r["line_blocks"]): int(r["line_id"]) for r in line_entries
+    }
+    line_by_id = {int(r["line_id"]): r for r in line_entries}
+    line_blocks_all = [tuple(r["line_blocks"]) for r in line_entries]
+
+    parallel_classes = []
+    for trio in combinations(line_blocks_all, 3):
+        pts = set()
+        ok = True
+        for L in trio:
+            s = set(L)
+            if pts & s:
+                ok = False
+                break
+            pts |= s
+        if not ok or len(pts) != 9:
+            continue
+        lids = sorted(int(line_id_by_blocks[tuple(L)]) for L in trio)
+        types = set()
+        for lid in lids:
+            rr = line_by_id[lid]
+            for trow in rr["allowed_triads_cycle"]:
+                types.add(tuple(trow["fields"]))
+        parallel_classes.append(
+            {
+                "line_ids": lids,
+                "lines": [list(x) for x in sorted(trio)],
+                "allowed_triad_types": [list(t) for t in sorted(types)],
+            }
+        )
+
+    parallel_classes = sorted(parallel_classes, key=lambda r: r["line_ids"])
+    if len(parallel_classes) != 4:
+        raise RuntimeError(f"Expected 4 parallel classes, got {len(parallel_classes)}")
+
     out: Dict[str, object] = {
         "status": "ok",
         "counts": {
@@ -339,6 +377,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         },
         "blocks": blocks_out,
         "lines": line_entries,
+        "parallel_classes": parallel_classes,
         "triad_type_to_lines": triad_type_summary,
     }
     _write_json(args.out_json, out)
@@ -368,6 +407,10 @@ def main(argv: Sequence[str] | None = None) -> None:
             md.append(f"  - triad {trow['triad']} fields {trow['fields']}")
         md.append(f"- couplings_total: `{row['couplings_total']}`")
         md.append("")
+    md.append("## Parallel classes (3 disjoint lines covering all 9 points)")
+    for pc in parallel_classes:
+        md.append(f"- lines {pc['line_ids']}: {pc['lines']}")
+    md.append("")
     md.append("## Triad-type to line map (allowed triads only)")
     for row in triad_type_summary:
         md.append(f"- {row['fields']}: lines {row['lines']}")

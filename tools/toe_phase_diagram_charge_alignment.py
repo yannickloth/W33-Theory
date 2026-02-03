@@ -182,6 +182,27 @@ def main(argv: Sequence[str] | None = None) -> None:
     # Summary counts.
     counts = {d.name: int(np.sum(best_label == k)) for k, d in enumerate(dirs)}
 
+    # Ordered/disordered split (same heuristic as v5): drift <= median AND holonomy <= median.
+    drift = np.zeros((n_fw, n_sig), dtype=float)
+    hol = np.zeros((n_fw, n_sig), dtype=float)
+    for i in range(n_fw):
+        row = cells[i]
+        for j in range(n_sig):
+            cell = row[j]
+            drift[i, j] = float(cell["best_charge"]["mean_drift"])
+            hol[i, j] = float(cell["holonomy"]["union_weighted_entropy_nats"])
+    drift_med = float(np.median(drift))
+    hol_med = float(np.median(hol))
+    ordered = np.logical_and(drift <= drift_med, hol <= hol_med)
+    counts_ordered = {
+        d.name: int(np.sum(np.logical_and(best_label == k, ordered)))
+        for k, d in enumerate(dirs)
+    }
+    counts_disordered = {
+        d.name: int(np.sum(np.logical_and(best_label == k, ~ordered)))
+        for k, d in enumerate(dirs)
+    }
+
     # Optional compare to v5 critical boundary.
     v5 = None
     if args.v5_json.exists():
@@ -194,6 +215,9 @@ def main(argv: Sequence[str] | None = None) -> None:
             d.name: {"coeffs": [float(x) for x in d.coeffs.tolist()]} for d in dirs
         },
         "counts_best_label": counts,
+        "thresholds": {"drift_median": drift_med, "holonomy_entropy_median": hol_med},
+        "counts_best_label_ordered": counts_ordered,
+        "counts_best_label_disordered": counts_disordered,
         "cells": [
             [
                 {
@@ -234,6 +258,15 @@ def main(argv: Sequence[str] | None = None) -> None:
     lines.append("## Best-aligned label counts")
     for d in dirs:
         lines.append(f"- {d.name}: `{counts[d.name]}` cells")
+    lines.append("")
+    lines.append("## Best-aligned label counts by phase (ordered vs disordered)")
+    lines.append(
+        f"- ordered criterion: drift ≤ `{drift_med:.4e}` AND holonomy ≤ `{hol_med:.4e}`"
+    )
+    for d in dirs:
+        lines.append(
+            f"- {d.name}: ordered `{counts_ordered[d.name]}`  disordered `{counts_disordered[d.name]}`"
+        )
     lines.append("")
     lines.append("## Sanity checks at corners")
     corners = [(0, 0), (0, n_sig - 1), (n_fw - 1, 0), (n_fw - 1, n_sig - 1)]

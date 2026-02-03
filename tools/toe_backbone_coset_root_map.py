@@ -1,0 +1,209 @@
+#!/usr/bin/env python3
+"""
+Classify **all 72 E6 root operators** (on the 27-rep) as D6-backbone vs 12-dim coset.
+
+This generalizes `tools/toe_backbone_coset_coupling_map.py`, which only classifies
+the subset of roots that appear as outputs of commutators among 6 chosen channels.
+
+Inputs:
+  - artifacts/toe_root_operator_dictionary.npy  (72 root operators as 27×27 matrices)
+  - D6/coset basis export (from More New Work):
+      artifacts/more_new_work_extracted/**/e6_basis_export_full/D6_basis_66.npy
+      artifacts/more_new_work_extracted/**/e6_basis_export_full/coset_basis_12.npy
+
+Method:
+  - Solve x ≈ Σ c_k basis_k in the concatenated 78-dim basis (QR least-squares).
+  - Report Frobenius energy fractions in backbone vs coset.
+
+Outputs:
+  - artifacts/toe_backbone_coset_root_map_all72.json
+  - artifacts/toe_backbone_coset_root_map_all72.md
+"""
+
+from __future__ import annotations
+
+import argparse
+import importlib.util
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+from typing import Dict, List, Sequence, Tuple
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _load_module(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Failed to import {name} from {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _write_json(path: Path, data: Dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+
+
+def _write_md(path: Path, lines: List[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+
+
+def _ensure_root_dict() -> Path:
+    out = ROOT / "artifacts" / "toe_root_operator_dictionary.npy"
+    if out.exists():
+        return out
+    tool = _load_module(
+        ROOT / "tools" / "toe_root_operator_dictionary.py",
+        "toe_root_operator_dictionary",
+    )
+    tool.main([])
+    if not out.exists():
+        raise RuntimeError(
+            "Expected toe_root_operator_dictionary.npy to be written but file missing"
+        )
+    return out
+
+
+def _find_latest_export_full_dir() -> Path:
+    search_root = ROOT / "artifacts" / "more_new_work_extracted"
+    if not search_root.exists():
+        raise RuntimeError(
+            "Missing artifacts/more_new_work_extracted; run tools/ingest_more_new_work.py"
+        )
+    candidates = list(search_root.rglob("e6_basis_export_full"))
+    if not candidates:
+        raise RuntimeError(
+            "Could not find e6_basis_export_full under artifacts/more_new_work_extracted"
+        )
+    candidates.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    return candidates[0]
+
+
+def _prepare_solver(
+    d6: np.ndarray, coset: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    if d6.shape != (66, 27, 27) or coset.shape != (12, 27, 27):
+        raise ValueError("Unexpected D6/coset basis shapes")
+    basis = np.concatenate([d6, coset], axis=0)  # (78,27,27)
+    B = np.column_stack([basis[k].reshape(-1) for k in range(78)])  # (729,78)
+    Q, R = np.linalg.qr(B)  # Q: (729,78), R: (78,78)
+    return Q, R, basis
+
+
+def _decompose(
+    Q: np.ndarray, R: np.ndarray, basis: np.ndarray, x: np.ndarray
+) -> Tuple[float, float, float]:
+    xv = x.reshape(-1)
+    y = Q.conj().T @ xv
+    c = np.linalg.solve(R, y)
+    d6_c = c[:66]
+    co_c = c[66:]
+    d6_part = np.tensordot(d6_c, basis[:66], axes=([0], [0]))
+    co_part = np.tensordot(co_c, basis[66:], axes=([0], [0]))
+    tot = float(np.linalg.norm(xv)) ** 2
+    d6n = float(np.linalg.norm(d6_part.reshape(-1))) ** 2
+    con = float(np.linalg.norm(co_part.reshape(-1))) ** 2
+    recon = d6_part + co_part
+    resid = float(np.linalg.norm((x - recon).reshape(-1)))
+    rel = resid / float(np.linalg.norm(xv)) if float(np.linalg.norm(xv)) else resid
+    if tot == 0.0:
+        return 0.0, 0.0, rel
+    return float(d6n / tot), float(con / tot), float(rel)
+
+
+def main(argv: Sequence[str] | None = None) -> None:
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument(
+        "--out-json",
+        type=Path,
+        default=ROOT / "artifacts" / "toe_backbone_coset_root_map_all72.json",
+    )
+    p.add_argument(
+        "--out-md",
+        type=Path,
+        default=ROOT / "artifacts" / "toe_backbone_coset_root_map_all72.md",
+    )
+    args = p.parse_args(list(argv) if argv is not None else None)
+
+    root = np.load(_ensure_root_dict(), allow_pickle=True).item()
+    keys = np.array(root["keys"], dtype=np.int64)
+    is_pos = np.array(root["is_positive"], dtype=np.int64)
+    mats = np.array(root["mats"], dtype=np.complex128)
+    if mats.shape != (72, 27, 27):
+        raise RuntimeError(f"Unexpected root operator mats shape: {mats.shape}")
+
+    export_full = _find_latest_export_full_dir()
+    d6 = np.load(export_full / "D6_basis_66.npy")
+    coset = np.load(export_full / "coset_basis_12.npy")
+    Q, R, basis = _prepare_solver(d6, coset)
+
+    rows = []
+    counts = Counter()
+    for k in range(72):
+        bb, cc, rel = _decompose(Q, R, basis, mats[k])
+        klass = (
+            "backbone_major"
+            if bb >= 0.60
+            else ("coset_major" if cc >= 0.60 else "mixed")
+        )
+        counts[klass] += 1
+        rows.append(
+            {
+                "root_index": int(k),
+                "key": [int(x) for x in keys[k].tolist()],
+                "is_positive": bool(int(is_pos[k]) == 1),
+                "backbone_frac": float(bb),
+                "coset_frac": float(cc),
+                "rel_resid": float(rel),
+                "class": klass,
+            }
+        )
+
+    out: Dict[str, object] = {
+        "status": "ok",
+        "export_full_dir": str(export_full),
+        "counts": {k: int(v) for k, v in sorted(counts.items())},
+        "roots": rows,
+    }
+    _write_json(args.out_json, out)
+
+    # Markdown summary.
+    lines: List[str] = []
+    lines.append("# TOE: Backbone vs Coset Root Map (all 72 roots)")
+    lines.append("")
+    lines.append(f"- export_full_dir: `{export_full}`")
+    lines.append("")
+    lines.append("## Counts")
+    for k in ["backbone_major", "coset_major", "mixed"]:
+        lines.append(f"- {k}: `{out['counts'].get(k, 0)}`")
+    lines.append("")
+    # Top coset-heavy and backbone-heavy roots.
+    by_coset = sorted(rows, key=lambda r: float(r["coset_frac"]), reverse=True)
+    by_back = sorted(rows, key=lambda r: float(r["backbone_frac"]), reverse=True)
+    lines.append("## Top coset-heavy roots")
+    for r in by_coset[:10]:
+        lines.append(
+            f"- idx {r['root_index']}: coset={r['coset_frac']:.3f} backbone={r['backbone_frac']:.3f} class={r['class']}"
+        )
+    lines.append("")
+    lines.append("## Top backbone-heavy roots")
+    for r in by_back[:10]:
+        lines.append(
+            f"- idx {r['root_index']}: backbone={r['backbone_frac']:.3f} coset={r['coset_frac']:.3f} class={r['class']}"
+        )
+    lines.append("")
+    lines.append(f"- JSON: `{args.out_json}`")
+    _write_md(args.out_md, lines)
+    print(f"Wrote {args.out_json}")
+    print(f"Wrote {args.out_md}")
+
+
+if __name__ == "__main__":
+    main()
