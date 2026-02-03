@@ -3545,6 +3545,42 @@
       "-4": 15
     }
   },
+  "theorem_31": {
+    "name": "Z\u2083-graded E8 Lie algebra: Jacobi identity verified exhaustively",
+    "z3_grading": {
+      "g0": 78,
+      "g1": 81,
+      "g2": 81,
+      "total": 240
+    },
+    "z3_closure": {
+      "checked": 6720,
+      "violations": 0
+    },
+    "jacobi": {
+      "checked": 118944,
+      "failures": 0
+    },
+    "grade_type_counts": {
+      "(2, 2, 2)": 9552,
+      "(1, 2, 2)": 27000,
+      "(0, 2, 2)": 26914,
+      "(0, 1, 2)": 52652,
+      "(0, 0, 2)": 24647,
+      "(1, 1, 2)": 27672,
+      "(0, 0, 1)": 25535,
+      "(0, 0, 0)": 8842,
+      "(0, 1, 1)": 27730,
+      "(1, 1, 1)": 9552
+    },
+    "cross_grade_triples": 212150,
+    "cubic_triads_from_bracket": 135,
+    "su3_epsilon": {
+      "ok": 810,
+      "violations": 0
+    },
+    "verdict": "E8 Lie algebra Jacobi identity VERIFIED exhaustively"
+  },
   "synthesis": {
     "fundamental_object": "W(3,3)",
     "gauge_group": "E6 = Aut(W33)",
