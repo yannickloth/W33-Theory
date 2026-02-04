@@ -15,6 +15,7 @@ def run_script(path):
 
 
 def test_proof_minus_one_exec():
+    pytest.importorskip("pandas")
     rc, out, err = run_script("src/PROOF_MINUS_ONE.py")
     assert rc == 0
 

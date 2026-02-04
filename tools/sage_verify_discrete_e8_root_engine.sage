@@ -1,0 +1,233 @@
+#!/usr/bin/env sage
+"""
+Sage cross-check: discrete (W33 line, phase) E8 root engine.
+
+Verifies (independently in Sage):
+  1) The line-pair discrete inner-product model matches the E8 inner product
+     computed from the Cartan matrix on the 240 roots (given as simple-root coeffs).
+  2) The output-phase affine-dihedral law holds: for each coupled pair (i<j) and each
+     occurring phase-diff d among ip=-1 interactions,
+         pc ≡ a*pa + b   (mod 6)   with a∈{+1,-1}
+     where (a,b) is read from artifacts/w33_line_pair_output_phase_law.json.
+
+Inputs:
+  - artifacts/e8_root_metadata_table.json
+  - artifacts/w33_line_fusion_law.json
+  - artifacts/w33_line_pair_ip_model.json
+  - artifacts/w33_line_pair_phase_fusion_patterns.json
+  - artifacts/w33_line_pair_output_phase_law.json
+
+Outputs:
+  - artifacts/sage_verify_discrete_e8_root_engine.json
+  - artifacts/sage_verify_discrete_e8_root_engine.md
+"""
+
+from sage.all import *
+import json
+import os
+from collections import Counter
+from datetime import datetime
+from itertools import combinations
+
+IN_META = "artifacts/e8_root_metadata_table.json"
+IN_LINES = "artifacts/w33_line_fusion_law.json"
+IN_IP_MODEL = "artifacts/w33_line_pair_ip_model.json"
+IN_DIFF_OUT = "artifacts/w33_line_pair_phase_fusion_patterns.json"
+IN_PHASE_OUT = "artifacts/w33_line_pair_output_phase_law.json"
+
+OUT_JSON = "artifacts/sage_verify_discrete_e8_root_engine.json"
+OUT_MD = "artifacts/sage_verify_discrete_e8_root_engine.md"
+
+
+def load_meta():
+    obj = json.load(open(IN_META, "r"))
+    edge_to_root = {}
+    edge_to_phase = {}
+    root_to_edge = {}
+    for row in obj["rows"]:
+        u, v = row["edge"]
+        e = (min(u, v), max(u, v))
+        r = tuple(int(x) for x in row["root_orbit"])
+        p = int(row["phase_z6"])
+        edge_to_root[e] = r
+        edge_to_phase[e] = p
+        root_to_edge[r] = e
+    if len(edge_to_root) != 240 or len(root_to_edge) != 240:
+        raise RuntimeError("expected 240 edges/roots")
+    return edge_to_root, edge_to_phase, root_to_edge
+
+
+def load_lines():
+    obj = json.load(open(IN_LINES, "r"))
+    per_line = obj["per_line"]
+    if len(per_line) != 40:
+        raise RuntimeError("expected 40 lines")
+    line_vertices = [tuple(int(x) for x in ent["line"]) for ent in per_line]
+    return line_vertices
+
+
+def base_ip_all_diffs(d, r):
+    # matches tools/derive_w33_line_pair_ip_model.py
+    t = (d // 2) % 3
+    parity = d % 2
+    base_even = [1, 0, -1]
+    base_odd = [0, 1, -1]
+    base = base_even if parity == 0 else base_odd
+    return int(base[(r - t) % 3])
+
+
+def main():
+    edge_to_root, edge_to_phase, root_to_edge = load_meta()
+    line_vertices = load_lines()
+
+    # Edge -> line idx.
+    edge_to_line = {}
+    for li, L in enumerate(line_vertices):
+        for u, v in combinations(L, 2):
+            edge_to_line[(min(u, v), max(u, v))] = li
+    if len(edge_to_line) != 240:
+        raise RuntimeError("expected 240 edges in edge_to_line")
+
+    # For each line, phase->root mapping.
+    line_phase_to_root = []
+    for L in line_vertices:
+        m = {}
+        for u, v in combinations(L, 2):
+            e = (min(u, v), max(u, v))
+            p = edge_to_phase[e]
+            m[p] = edge_to_root[e]
+        if set(m.keys()) != set(range(6)):
+            raise RuntimeError("line missing phases 0..5")
+        line_phase_to_root.append(m)
+
+    # E8 Cartan matrix in Sage canonical order.
+    E8 = RootSystem(["E", 8])
+    C = matrix(ZZ, E8.cartan_type().cartan_matrix())
+
+    def ip(a, b):
+        va = vector(ZZ, a)
+        vb = vector(ZZ, b)
+        return int(va * C * vb)
+
+    ip_model = json.load(open(IN_IP_MODEL, "r"))["model"]
+    diff_out = json.load(open(IN_DIFF_OUT, "r"))["pair_summaries"]
+    phase_out = json.load(open(IN_PHASE_OUT, "r"))["pair_summaries"]
+
+    # 1) Verify line-pair ip model against Sage ip on all 36 phase pairs.
+    ip_mismatch_pairs = []
+    for i in range(40):
+        for j in range(i + 1, 40):
+            key = f"{i},{j}"
+            entry = ip_model[key]
+            typ = entry["type"]
+            A = line_phase_to_root[i]
+            B = line_phase_to_root[j]
+            mismatch = 0
+            for pa in range(6):
+                for pb in range(6):
+                    got = ip(A[pa], B[pb])
+                    if typ == "orthogonal":
+                        want = 0
+                    elif typ == "coupled_adjacent":
+                        d = (pa - pb) % 6
+                        d_minus = set(int(x) for x in entry["d_minus"])
+                        d_plus = set(int(x) for x in entry["d_plus"])
+                        if d in d_minus:
+                            want = -1
+                        elif d in d_plus:
+                            want = 1
+                        else:
+                            want = 0
+                    elif typ == "coupled_all_diffs":
+                        d = (pa - pb) % 6
+                        r = pa % 3
+                        rs = int(entry["alignment"]["row_shift_Z2"])
+                        cs = int(entry["alignment"]["col_shift_Z3"])
+                        want = base_ip_all_diffs((d + rs) % 6, (r + cs) % 3)
+                    else:
+                        raise RuntimeError("unknown type")
+                    if got != want:
+                        mismatch += 1
+            if mismatch != 0:
+                ip_mismatch_pairs.append({"pair": [i, j], "mismatch": mismatch, "type": typ})
+
+    # 2) Verify affine output phase law on ip=-1 interactions.
+    phase_law_fail = []
+    for key, v in phase_out.items():
+        i, j = (int(x) for x in key.split(","))
+        A = line_phase_to_root[i]
+        B = line_phase_to_root[j]
+        diff_to_out = diff_out[key]["diff_to_output_line"]
+        diff_aff = v["diff_to_affine_pc_of_pa_mod6"]
+        for pa in range(6):
+            ra = A[pa]
+            for pb in range(6):
+                rb = B[pb]
+                if ip(ra, rb) != -1:
+                    continue
+                d = (pa - pb) % 6
+                rc = tuple(ra[k] + rb[k] for k in range(8))
+                e_out = root_to_edge.get(rc)
+                if e_out is None:
+                    phase_law_fail.append({"pair": key, "reason": "missing_sum_root"})
+                    break
+                out_line = edge_to_line[e_out]
+                if diff_to_out[d] != out_line:
+                    phase_law_fail.append({"pair": key, "reason": "wrong_output_line", "diff": d, "got": out_line, "want": diff_to_out[d]})
+                    break
+                pc = edge_to_phase[e_out]
+                law = diff_aff[str(d)]
+                a = int(law["a"])
+                b = int(law["b"])
+                if (a * pa + b - pc) % 6 != 0:
+                    phase_law_fail.append({"pair": key, "reason": "affine_phase_fail", "diff": d, "pa": pa, "pb": pb, "pc": pc, "a": a, "b": b})
+                    break
+            if phase_law_fail:
+                break
+        if phase_law_fail:
+            break
+
+    status = "ok"
+    if ip_mismatch_pairs or phase_law_fail:
+        status = "fail"
+
+    report = {
+        "status": status,
+        "timestamp": datetime.now().isoformat(),
+        "ip_model": {
+            "ok": not bool(ip_mismatch_pairs),
+            "mismatch_pairs": ip_mismatch_pairs[:10],
+            "mismatch_pair_count": len(ip_mismatch_pairs),
+        },
+        "output_phase_law": {
+            "ok": not bool(phase_law_fail),
+            "first_failure": phase_law_fail[0] if phase_law_fail else None,
+        },
+    }
+
+    def to_py(o):
+        if isinstance(o, Integer):
+            return int(o)
+        if isinstance(o, (list, tuple)):
+            return [to_py(x) for x in o]
+        if isinstance(o, dict):
+            return {str(k): to_py(v) for k, v in o.items()}
+        return o
+
+    os.makedirs("artifacts", exist_ok=True)
+    json.dump(to_py(report), open(OUT_JSON, "w"), indent=2, sort_keys=True)
+
+    md = []
+    md.append("# Sage verify: discrete E8 root engine")
+    md.append("")
+    md.append(f"- status: `{status}`")
+    md.append(f"- ip model ok: `{not bool(ip_mismatch_pairs)}` (mismatch pairs: {len(ip_mismatch_pairs)})")
+    md.append(f"- output phase affine law ok: `{not bool(phase_law_fail)}`")
+    md.append("")
+    md.append(f"_Wrote: `{OUT_JSON}`_")
+    md.append(f"_Wrote: `{OUT_MD}`_")
+    open(OUT_MD, "w").write("\n".join(md) + "\n")
+
+
+if __name__ == "__main__":
+    main()

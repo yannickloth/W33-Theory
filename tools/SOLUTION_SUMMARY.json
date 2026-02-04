@@ -1,0 +1,5 @@
+{
+  "theorem": "W33 \u2194 E8 via Coxeter c^5 orbits",
+  "verified_facts": {
+    "W33_vertices": true,
+    "W33_edges":

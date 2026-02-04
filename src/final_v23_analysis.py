@@ -75,26 +75,38 @@ print("\n" + "=" * 70)
 print("MAPPING TO PARTICLE PHYSICS")
 print("=" * 70)
 
-print("""
+acentric = df[df["centers"] == 0]
+unicentric = df[df["centers"] == 1]
+tricentric = df[df["centers"] == 3]
+
+acentric_hol = acentric["s3_type_startsheet0"].value_counts().to_dict()
+unicentric_hol = unicentric["s3_type_startsheet0"].value_counts().to_dict()
+tricentric_hol = tricentric["s3_type_startsheet0"].value_counts().to_dict()
+
+fermions = len(parity1)
+bosons = len(parity0)
+fermion_boson_ratio = fermions / bosons
+
+print(
+    """
 Based on v23 structure:
 
 ACENTRIC (0 centers): 2880 triangles
   - Parity: 0 (all even)
-  - Holonomy: id (all identity)
-  - Interpretation: Gauge bosons (photons, Z, W)
+  - Holonomy: mixed (id + 3cycle)
+  - Interpretation: even-parity sector (candidate gauge sector)
   - Character: Even parity, no coupling to special points
 
 UNICENTRIC (1 center): 2160 triangles
   - Parity: 1 (all odd)
-  - Holonomy: Mixed (3cycle and transposition)
-  - Interpretation: Fermions (quarks, leptons)
+  - Holonomy: mixed (id + 3cycle + transposition)
+  - Interpretation: odd-parity sector (candidate fermion sector)
   - Character: Odd parity, couples to single special point
 
   Sub-structure:
-    - 3cycle holonomy: 2072 - cyclical structure
-    - Transposition: 1092 - pairwise swaps
-
-  Ratio: 2072/1092 ≈ 1.9 → maybe relates to generation structure?
+    - id holonomy:            {unic_id}
+    - 3cycle holonomy:        {unic_3c}
+    - transposition holonomy: {unic_tr}
 
 TRICENTRIC (3 centers): 240 triangles
   - Parity: 0 (all even)
@@ -105,20 +117,21 @@ TRICENTRIC (3 centers): 240 triangles
 Summary Counts:
   Fermion-like (odd parity): 2160 = 2¹ × 3³ × 10
   Boson-like (even parity): 3120 = 2⁴ × 3 × 5 × 13
-  Ratio: 2160 / 3120 = 2/3
-
-Wow! Fermions to Bosons ratio = 2/3 exactly!
-This might relate to:
-  - Quark flavor families
-  - Lepton flavor families
-  - SU(5) representation theory
-""")
+  Ratio: 2160 / 3120 = {ratio:.6f}
+""".format(
+        unic_id=unicentric_hol.get("id", 0),
+        unic_3c=unicentric_hol.get("3cycle", 0),
+        unic_tr=unicentric_hol.get("transposition", 0),
+        ratio=fermion_boson_ratio,
+    )
+)
 
 print("\n" + "=" * 70)
 print("UNEXPECTED DISCOVERY: 2/3 RATIO")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 Fermion triangles: {len(parity1)}
 Boson triangles:   {len(parity0)}
 Ratio: {len(parity1)}/{len(parity0)} = {len(parity1)/len(parity0):.4f}
@@ -127,41 +140,43 @@ Standard fraction: 2/3 = {2/3:.4f}
 
 Match: {abs(len(parity1)/len(parity0) - 2/3) < 0.0001}
 
-This 2/3 ratio is NOT accidental!
+The ratio is close to 2/3 but not exact in this dataset.
 
 In SU(5) GUT:
   - 5 fundamental rep = 1 boson + 4 fermions → ratio 4/1
   - 10 adjoint has 20 bosons, 5 fermions → ratio 1/4
   - Symmetric 45 = 30 bosons, 15 fermions → ratio 1/2
 
-Our 2/3 = 40 fermions to 60 bosons
-       = 8 × 5 to 12 × 5
-
-Might indicate fundamental fermion-boson content!
-""")
+If a rational explanation exists, it should be derived from the v23 construction
+rather than asserted post-hoc.
+"""
+)
 
 print("\n" + "=" * 70)
 print("S3 TRANSPOSITION vs 3CYCLE ASYMMETRY")
 print("=" * 70)
 
-unicentric = df[df["centers"] == 1]
 trans = len(unicentric[unicentric["s3_type_startsheet0"] == "transposition"])
 cycle = len(unicentric[unicentric["s3_type_startsheet0"] == "3cycle"])
+id_count = len(unicentric[unicentric["s3_type_startsheet0"] == "id"])
 
 print(f"\nUnicentric triangles (fermion-like): {len(unicentric)}")
+print(f"  id: {id_count}")
 print(f"  3-cycles: {cycle}")
 print(f"  Transpositions: {trans}")
 print(f"  Ratio 3cycle:transposition = {cycle}/{trans} = {cycle/trans:.3f}")
 
-print(f"""
+print(
+    f"""
 This {cycle/trans:.1f}:1 ratio might indicate:
   - Different classes of fermions
   - Color triplet vs singlet couplings
   - Generation structure (if ratio relates to 3 generations)
-""")
+"""
+)
 
 # Save summary
-summary_text = f"""
+summary_text = f"""\
 V23 GEOMETRY SUMMARY
 {'='*70}
 
@@ -179,27 +194,24 @@ CLASSIFICATION BY PARITY:
 FERMION-BOSON RATIO:
   Fermions (odd):   2160
   Bosons (even):    3120
-  Ratio: 2/3 (not accidental)
+  Ratio: 2160/3120 = {fermion_boson_ratio:.6f}
 
-S3 HOLONOMY (in unicentric only):
-  Identity:    1068 (49.4%)
-  3-cycles:    2072 (50.6% of unicentric = 39.2% total)
-  Transposition: 1092 (50.6% of unicentric = 20.6% total)
+S3 HOLONOMY BY CENTERS:
+  Centers=0 (acentric):    {acentric_hol}
+  Centers=1 (unicentric):  {unicentric_hol}
+  Centers=3 (tricentric):  {tricentric_hol}
 
 INTERPRETATION:
   • Parity perfectly determines centers
   • Centers determine holonomy type
   • Odd parity ↔ Fermions ↔ Unicentric
   • Even parity ↔ Bosons ↔ Acentric or Tricentric
-  • 2/3 fermion-boson ratio is exact geometric property
+  • The fermion/boson ratio is close to 2/3 but not exact here
 
 This is the DISCRETE GEOMETRY ENCODING OF PARTICLE STATISTICS!
 """
 
-with open(
-    r"C:\Users\wiljd\OneDrive\Documents\GitHub\WilsManifold\claude_workspace\V23_STRUCTURE_SUMMARY.txt",
-    "w",
-) as f:
-    f.write(summary_text)
+out_path = REPO_ROOT / "V23_STRUCTURE_SUMMARY.txt"
+out_path.write_text(summary_text, encoding="utf-8")
 
-print("\n✓ Saved summary to V23_STRUCTURE_SUMMARY.txt")
+print(f"\n✓ Saved summary to {out_path}")

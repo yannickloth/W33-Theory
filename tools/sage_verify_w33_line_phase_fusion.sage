@@ -1,0 +1,276 @@
+#!/usr/bin/env sage
+"""
+Sage cross-check: Z6 phase structure + phase-resolved fusion law on W33 lines.
+
+Using only:
+  - artifacts/e8_root_metadata_table.json  (edge, phase_z6, root_orbit coeffs)
+  - intrinsic W33 construction (points in PG(3,3) with symplectic omega)
+
+Verifies:
+  1) W33 has 40 lines (K4 cliques) and 240 edges.
+  2) Each line’s 6 edge-phases are exactly {0,1,2,3,4,5}.
+  3) On each line, phases label an A2 hexagon: for roots r_p, r_q on a line,
+       <r_p, r_q> depends only on (p-q) mod 6 via:
+         0->2, 1->1, 2->-1, 3->-2, 4->-1, 5->1.
+  4) For every coupled line-pair (i<j), for each phase-diff d that occurs among
+     α·β=-1 interactions, the output roots α+β all land in a single output line
+     (diff-determined output-line selection).
+
+Outputs:
+  - artifacts/sage_verify_w33_line_phase_fusion.json
+  - artifacts/sage_verify_w33_line_phase_fusion.md
+"""
+
+from sage.all import *
+import json
+import os
+from collections import Counter, defaultdict
+from datetime import datetime
+from itertools import combinations
+
+IN_META = "artifacts/e8_root_metadata_table.json"
+OUT_JSON = "artifacts/sage_verify_w33_line_phase_fusion.json"
+OUT_MD = "artifacts/sage_verify_w33_line_phase_fusion.md"
+
+
+def load_maps():
+    obj = json.load(open(IN_META, "r"))
+    root_by_edge = {}
+    phase_by_edge = {}
+    edge_by_root = {}
+    for row in obj["rows"]:
+        u, v = row["edge"]
+        e = (min(u, v), max(u, v))
+        r = tuple(int(x) for x in row["root_orbit"])
+        p = int(row["phase_z6"])
+        root_by_edge[e] = r
+        phase_by_edge[e] = p
+        edge_by_root[r] = e
+    if len(root_by_edge) != 240 or len(edge_by_root) != 240:
+        raise RuntimeError("expected 240 roots/edges in metadata mapping")
+    return root_by_edge, phase_by_edge, edge_by_root
+
+
+def build_w33():
+    # Point ordering must match the python/numpy scripts: iterate F3^4, normalize first nonzero to 1,
+    # and keep first-seen reps.
+    pts = []
+    seen = set()
+    for a in [0, 1, 2]:
+        for b in [0, 1, 2]:
+            for c in [0, 1, 2]:
+                for d in [0, 1, 2]:
+                    if a == b == c == d == 0:
+                        continue
+                    v = [a, b, c, d]
+                    for i in range(4):
+                        if v[i] != 0:
+                            inv = 1 if v[i] == 1 else 2
+                            v = [(inv * x) % 3 for x in v]
+                            break
+                    t = tuple(v)
+                    if t not in seen:
+                        seen.add(t)
+                        pts.append(t)
+    if len(pts) != 40:
+        raise RuntimeError("expected 40 points")
+
+    def omega(x, y):
+        return (x[0] * y[2] - x[2] * y[0] + x[1] * y[3] - x[3] * y[1]) % 3
+
+    adj = matrix(GF(2), 40, 40)
+    edges = []
+    for i in range(40):
+        for j in range(i + 1, 40):
+            if omega(pts[i], pts[j]) == 0:
+                adj[i, j] = 1
+                adj[j, i] = 1
+                edges.append((i, j))
+    if len(edges) != 240:
+        raise RuntimeError("expected 240 edges")
+    return adj, edges
+
+
+def edge_line(adj, u, v):
+    # In SRG(40,12,2,4), each edge has exactly two common neighbors -> its unique line K4.
+    common = [k for k in range(40) if adj[u, k] and adj[v, k]]
+    if len(common) != 2:
+        raise RuntimeError("edge should have exactly 2 common neighbors")
+    return tuple(sorted([u, v, common[0], common[1]]))
+
+
+def main():
+    root_by_edge, phase_by_edge, edge_by_root = load_maps()
+    adj, edges = build_w33()
+
+    # Lines from edge completion.
+    lines = set()
+    edges_by_line = defaultdict(list)
+    for (u, v) in edges:
+        L = edge_line(adj, u, v)
+        lines.add(L)
+        edges_by_line[L].append((u, v))
+    lines = sorted(lines)
+    if len(lines) != 40:
+        raise RuntimeError(f"expected 40 lines; got {len(lines)}")
+    if any(len(edges_by_line[L]) != 6 for L in lines):
+        raise RuntimeError("expected 6 edges per line")
+
+    # Edge->line index (for output classification).
+    line_index = {L: i for i, L in enumerate(lines)}
+    edge_to_line_idx = {}
+    for L in lines:
+        for u, v in combinations(L, 2):
+            e = (min(u, v), max(u, v))
+            edge_to_line_idx[e] = line_index[L]
+    if len(edge_to_line_idx) != 240:
+        raise RuntimeError("expected 240 edges in edge_to_line_idx")
+
+    # E8 Cartan matrix in Sage canonical order (matches root_orbit coeff ordering).
+    E8 = RootSystem(["E", 8])
+    C = matrix(ZZ, E8.cartan_type().cartan_matrix())
+
+    def ip(a, b):
+        va = vector(ZZ, a)
+        vb = vector(ZZ, b)
+        return int(va * C * vb)
+
+    expected_ip_by_diff = {0: 2, 1: 1, 2: -1, 3: -2, 4: -1, 5: 1}
+
+    # Per-line phase checks.
+    per_line_fail = []
+    for L in lines:
+        elist = edges_by_line[L]
+        phases = sorted(phase_by_edge[e] for e in elist)
+        if phases != [0, 1, 2, 3, 4, 5]:
+            per_line_fail.append({"line": L, "reason": "phase_set", "phases": phases})
+            break
+        phase_to_root = {phase_by_edge[e]: root_by_edge[e] for e in elist}
+        # Phase-diff inner product law on the A2 hexagon.
+        for p in range(6):
+            for q in range(6):
+                got = ip(phase_to_root[p], phase_to_root[q])
+                want = expected_ip_by_diff[(p - q) % 6]
+                if got != want:
+                    per_line_fail.append({"line": L, "reason": "phase_ip_law", "p": p, "q": q, "got": got, "want": want})
+                    break
+            if per_line_fail:
+                break
+        if per_line_fail:
+            break
+
+    # Coupled-pair phase fusion determinism:
+    # For each coupled pair (cross ips are (12,12,12)), look at the 12 ip=-1 interactions and ensure:
+    #   - outputs split into exactly two output lines
+    #   - within this pair, each phase-diff d maps to a unique output line.
+    pattern_counts = Counter()
+    fusion_fail = []
+    coupled_pairs = 0
+    for i in range(40):
+        for j in range(i + 1, 40):
+            L1 = lines[i]
+            L2 = lines[j]
+            # Determine if coupled by cross-ip pattern.
+            c = Counter()
+            for e1 in edges_by_line[L1]:
+                r1 = root_by_edge[e1]
+                for e2 in edges_by_line[L2]:
+                    r2 = root_by_edge[e2]
+                    c[ip(r1, r2)] += 1
+            patt = (c.get(0, 0), c.get(-1, 0), c.get(1, 0))
+            if patt == (36, 0, 0):
+                continue
+            if patt != (12, 12, 12):
+                fusion_fail.append({"pair": [i, j], "reason": "unexpected_cross_ip_pattern", "pattern": patt})
+                break
+            coupled_pairs += 1
+
+            # Build phase->root maps (each line has phases 0..5 once).
+            p2r1 = {phase_by_edge[e]: root_by_edge[e] for e in edges_by_line[L1]}
+            p2r2 = {phase_by_edge[e]: root_by_edge[e] for e in edges_by_line[L2]}
+
+            diff_counts = [0] * 6
+            diff_to_out = {}
+            out_lines = set()
+            inter_count = 0
+            for pa in range(6):
+                ra = p2r1[pa]
+                for pb in range(6):
+                    rb = p2r2[pb]
+                    if ip(ra, rb) != -1:
+                        continue
+                    inter_count += 1
+                    d = (pa - pb) % 6
+                    diff_counts[d] += 1
+                    rc = tuple(ra[k] + rb[k] for k in range(8))
+                    e_out = edge_by_root.get(rc)
+                    if e_out is None:
+                        fusion_fail.append({"pair": [i, j], "reason": "missing_sum_root"})
+                        break
+                    out_line = edge_to_line_idx[e_out]
+                    out_lines.add(out_line)
+                    if d in diff_to_out and diff_to_out[d] != out_line:
+                        fusion_fail.append({"pair": [i, j], "reason": "nonunique_output_for_diff", "diff": d})
+                        break
+                    diff_to_out[d] = out_line
+                if fusion_fail:
+                    break
+            if fusion_fail:
+                break
+            if inter_count != 12:
+                fusion_fail.append({"pair": [i, j], "reason": "bad_interaction_count", "got": inter_count})
+                break
+            if len(out_lines) != 2:
+                fusion_fail.append({"pair": [i, j], "reason": "outputs_not_two_lines", "outputs": sorted(list(out_lines))})
+                break
+            pattern_counts[tuple(diff_counts)] += 1
+
+        if fusion_fail:
+            break
+
+    status = "ok"
+    if per_line_fail or fusion_fail:
+        status = "fail"
+
+    report = {
+        "status": status,
+        "timestamp": datetime.now().isoformat(),
+        "counts": {"lines": 40, "edges": 240, "coupled_pairs": coupled_pairs},
+        "per_line_phase": {"ok": not bool(per_line_fail), "first_failure": per_line_fail[0] if per_line_fail else None},
+        "phase_fusion": {"ok": not bool(fusion_fail), "first_failure": fusion_fail[0] if fusion_fail else None},
+        "diff_pattern_counts": {str(k): int(v) for k, v in pattern_counts.items()},
+        "expected_ip_by_phase_diff": expected_ip_by_diff,
+    }
+
+    def to_py(o):
+        if isinstance(o, Integer):
+            return int(o)
+        if isinstance(o, (list, tuple)):
+            return [to_py(x) for x in o]
+        if isinstance(o, dict):
+            return {str(k): to_py(v) for k, v in o.items()}
+        return o
+
+    os.makedirs("artifacts", exist_ok=True)
+    json.dump(to_py(report), open(OUT_JSON, "w"), indent=2, sort_keys=True)
+
+    md = []
+    md.append("# Sage verify: W33 line phase + phase fusion")
+    md.append("")
+    md.append(f"- status: `{status}`")
+    md.append(f"- lines: `{report['counts']['lines']}`")
+    md.append(f"- edges: `{report['counts']['edges']}`")
+    md.append(f"- coupled pairs: `{report['counts']['coupled_pairs']}`")
+    md.append(f"- per-line phase ok: `{report['per_line_phase']['ok']}`")
+    md.append(f"- phase-fusion ok: `{report['phase_fusion']['ok']}`")
+    md.append(f"- diff-pattern histogram keys: `{len(pattern_counts)}`")
+    md.append(f"- JSON: `{OUT_JSON}`")
+    open(OUT_MD, "w").write("\n".join(md) + "\n")
+
+    print(f"status={status}")
+    if status != "ok":
+        raise SystemExit(1)
+
+
+if __name__ == "__main__":
+    main()

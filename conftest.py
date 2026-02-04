@@ -24,8 +24,15 @@ def pytest_ignore_collect(path, config):
     the test run from failing with ImportError on machines without
     those optional packages (e.g., CI runners without Sage or user venvs
     without pandas)."""
+    p = Path(str(path))
+
+    # Only apply this heuristic to Python test files. Scanning the entire repo can be
+    # very noisy and slow, and can trigger surprising capture/log issues.
+    if not (p.suffix == ".py" and p.name.startswith("test_")):
+        return False
+
     try:
-        text = Path(str(path)).read_text()
+        text = p.read_text(encoding="utf-8", errors="ignore")
     except Exception:
         return False
 
@@ -35,7 +42,8 @@ def pytest_ignore_collect(path, config):
                 # trig is a compiled regex pattern, use .search to test
                 if trig.search(text):
                     # skip collecting this test file
-                    print(f"Skipping {path} (requires {mod})")
+                    if getattr(config.option, "verbose", 0) > 0:
+                        print(f"Skipping {path} (requires {mod})")
                     return True
     return False
 
@@ -49,5 +57,5 @@ def main():
             _optional_modules[m] = False
 
 
-if __name__ == "__main__":
-    main()
+# Initialize optional dependency detection at import time so collection behaves as intended.
+main()

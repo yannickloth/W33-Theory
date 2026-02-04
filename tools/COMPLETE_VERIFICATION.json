@@ -1,0 +1,5 @@
+{
+  "theorem": "W33 \u2245 E8 c^5-orbit graph",
+  "verification": {
+    "W33 vertices": true,
+    "W33 edges":

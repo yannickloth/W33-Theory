@@ -38,6 +38,8 @@ external/sage/
 .venv_wsl/
 .venv_toe/
 .venv_tools/
+.venv_test/
+.venv_codex/
 
 # local workspace data
 claude_workspace/data/
@@ -77,3 +79,7 @@ tools/gap/*.zip
 
 # local backups
 backups/
+
+# Large zip bundles
+*.zip
+More New Work/
