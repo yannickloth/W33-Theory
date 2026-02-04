@@ -4668,6 +4668,137 @@
     "free_parameters": 0,
     "verdict": "GRAND CLOSURE: W33 \u2194 E8 \u2194 SM is a complete mathematical equivalence"
   },
+  "theorem_56": {
+    "name": "Firewall as superselection: 27 affine section sectors (Lie-consistent under 36-triad filter)",
+    "closed_sections": 27,
+    "total_sections": 19683,
+    "affine_graphs": true,
+    "worst_jacobi_residual": 2.842170943040401e-14,
+    "verdict": "Firewall-filtered bracket is Lie-consistent on 27 affine section sectors"
+  },
+  "theorem_57": {
+    "name": "Affine firewall sector stabilizer inside e6: D4 \u2295 u(1)^2 (dim 30)",
+    "stabilizer_dim": 30,
+    "derived_dim": 28,
+    "center_dim": 2,
+    "type": "D4 \u2295 u(1)^2",
+    "verdict": "Affine firewall sector breaks e6 to so(8) plus 2D center"
+  },
+  "theorem_58": {
+    "name": "Affine firewall sector triality: 27 = 8 \u2295 8 \u2295 8 \u2295 1 \u2295 1 \u2295 1 under D4 \u2295 u(1)^2",
+    "stabilizer_dim": 30,
+    "center_dim": 2,
+    "decomposition": "27 = 8+8+8+1+1+1",
+    "verdict": "Recovered D4 triality decomposition induced by affine firewall sector"
+  },
+  "theorem_59": {
+    "name": "W(3,3) as 2-qutrit Pauli geometry: SRG(40,12,2,4), 36 spreads, stabilizer MUBs",
+    "srg": {
+      "k": 12,
+      "lambda": 2,
+      "mu": 4,
+      "n": 40
+    },
+    "points": 40,
+    "lines": 40,
+    "spreads": 36,
+    "mub_max_dev": 5.551115123125783e-16,
+    "verdict": "W33 is exactly the 2-qutrit Pauli commutation geometry; spreads give stabilizer MUBs"
+  },
+  "theorem_60": {
+    "name": "AG(2,3) affine duality: 9 forbidden triads form affine plane, Z3 kernel, 4 parallel classes",
+    "affine_points": 9,
+    "affine_lines": 12,
+    "parallel_classes": 4,
+    "z3_lifts": 3,
+    "allowed_triads": 36,
+    "axiom_each_pair_one_line": true,
+    "verdict": "9 forbidden triads form AG(2,3); Z3 kernel organizes 36 allowed into 12x3"
+  },
+  "theorem_61": {
+    "name": "Three-generation coupling census: 1620 cubic couplings, 324 forbidden (20%), uniform across orbit pairs",
+    "total": 1620,
+    "allowed": 1296,
+    "forbidden": 324,
+    "forbidden_fraction": 0.2,
+    "orbit_pairs": 6,
+    "per_pair_total": 270,
+    "per_pair_forbidden": 54,
+    "uniform": true,
+    "verdict": "Firewall removes exactly 20% of couplings uniformly across generations"
+  },
+  "theorem_62": {
+    "name": "Yukawa texture classification: 9 SM field-type classes, firewall selection hierarchy",
+    "triad_classes": 9,
+    "total_components": 39,
+    "total_forbidden": 8,
+    "safe_channels": 2,
+    "verdict": "Firewall creates selection hierarchy among 9 SM interaction types"
+  },
+  "theorem_63": {
+    "name": "Affine interaction dictionary: 4 parallel classes organize 1296 allowed couplings into 12 x 108",
+    "parallel_classes": 4,
+    "lines_per_class": 3,
+    "triads_per_line": 3,
+    "couplings_per_triad": 36,
+    "couplings_per_line": 108,
+    "total_allowed": 1296,
+    "verdict": "AG(2,3) parallel classes give 4-fold decomposition of allowed interactions"
+  },
+  "theorem_64": {
+    "name": "Firewall forbidden fraction hierarchy: Yukawa top (33%), gauge (17%), Higgs (0%)",
+    "top_yukawa_forbidden_frac": 0.3333333333333333,
+    "gauge_forbidden_frac": 0.16666666666666666,
+    "lepton_yukawa_forbidden_frac": 0.5,
+    "higgs_forbidden_frac": 0.0,
+    "verdict": "Firewall creates 4-level selection hierarchy across SM interaction types"
+  },
+  "theorem_65": {
+    "name": "Color-singlet triad structure: every cubic coupling conserves SU(3)_c",
+    "triad_types": 9,
+    "all_color_singlet": true,
+    "verdict": "Every cubic coupling is automatically SU(3)_c color-singlet"
+  },
+  "theorem_66": {
+    "name": "Coupling strengths from E6 weight basis: 15 simple-root commutators, all matched to root operators",
+    "total_commutators": 15,
+    "nonzero": 5,
+    "perfect_matches": 5,
+    "verdict": "All nonzero [E_i,E_j] produce exact root operators in weight basis"
+  },
+  "theorem_67": {
+    "name": "Phase diagram charge alignment: emergent Cartan charges match canonical E6 directions",
+    "canonical_directions": [
+      "Qchi",
+      "Qpsi",
+      "T3",
+      "Y"
+    ],
+    "ordered_cells": 33,
+    "disordered_cells": 88,
+    "verdict": "Emergent charges align to canonical E6 Cartan directions in ordered phase"
+  },
+  "theorem_68": {
+    "name": "Backbone D6 vs coset decomposition: all 15 commutators are mixed class",
+    "total_commutators": 15,
+    "nonzero": 5,
+    "all_mixed": true,
+    "backbone_major": 0,
+    "coset_major": 0,
+    "verdict": "Cubic coupling is irreducibly mixed between D6 backbone and coset"
+  },
+  "theorem_69": {
+    "name": "Grand coupling atlas: W33 geometry controls all 1620 cubic couplings through AG(2,3) x Z3 x SU(3)_fam",
+    "total_couplings": 1620,
+    "allowed": 1296,
+    "forbidden": 324,
+    "affine_plane": "AG(2,3)",
+    "sm_classes": 9,
+    "hierarchy_levels": 4,
+    "orbit_pairs": 6,
+    "all_color_singlet": true,
+    "verdict": "W33 geometry -> AG(2,3) affine plane -> Z3 lifts -> SU(3)_fam controls the ENTIRE cubic coupling atlas"
+  },
   "synthesis": {
     "fundamental_object": "W(3,3)",
     "gauge_group": "E6 = Aut(W33)",

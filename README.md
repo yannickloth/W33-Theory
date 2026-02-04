@@ -6,7 +6,7 @@
 
 **Author:** Wil Dahn
 **Date:** January-February 2026
-**Status:** 55 theorems verified, 44 quantitative predictions
+**Status:** 69 theorems verified, 50+ quantitative predictions
 
 **Canonical definitions:** See `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
@@ -22,7 +22,7 @@ content, three generations, selection rules, and coupling structure --- is not
 postulated but **derived** from W(3,3) embedded in the E8 root system.
 
 The main deliverable is **`tools/toe_unified_derivation.py`**: a self-contained
-Python script that proves 55 theorems from first principles, each verified by
+Python script that proves 69 theorems from first principles, each verified by
 exhaustive computation.
 
 ---
@@ -81,7 +81,7 @@ Standard Model                 (gauge group, 3 generations, Yukawa textures)
 
 ---
 
-## 55 Verified Theorems
+## 69 Verified Theorems
 
 The unified derivation (`tools/toe_unified_derivation.py`) proves these theorems:
 
@@ -190,6 +190,30 @@ The unified derivation (`tools/toe_unified_derivation.py`) proves these theorems
 | 54 | E8 fiber bundle | W33 base, A2 fibers, Z6 structure group |
 | 55 | Grand Closure | W33 ↔ E8 ↔ SM is a complete mathematical equivalence |
 
+### Part XI: Firewall as State-Space Law (Thms 56-59)
+
+| # | Theorem | Key Result |
+|---|---------|------------|
+| 56 | Firewall superselection | 27 affine sections Lie-consistent under 36-triad filter |
+| 57 | Section stabilizer | D4 ⊕ u(1)^2 (dim 30) inside E6 |
+| 58 | D4 triality decomposition | 27 = 8 ⊕ 8 ⊕ 8 ⊕ 1 ⊕ 1 ⊕ 1 |
+| 59 | 2-qutrit Pauli geometry | W33 = Pauli commutation graph, 36 spreads, MUBs |
+
+### Part XII: The Coupling Atlas (Thms 60-69)
+
+| # | Theorem | Key Result |
+|---|---------|------------|
+| 60 | AG(2,3) affine duality | 9 forbidden triads = AG(2,3), Z3 kernel, 4 parallel classes |
+| 61 | Coupling census | 1620 total, 324 (20%) forbidden, uniform across 6 orbit pairs |
+| 62 | Yukawa texture classification | 9 SM field-type classes, 2 fully safe channels |
+| 63 | Affine interaction dictionary | 4 parallel classes × 3 lines × 108 couplings = 1296 allowed |
+| 64 | Forbidden fraction hierarchy | Top Yukawa 33%, gauge 17%, lepton 50%, Higgs 0% |
+| 65 | Color-singlet structure | All 9 triad types conserve SU(3)\_c |
+| 66 | E6 weight-basis commutators | 5/15 nonzero, all match root operators (overlap=1.0) |
+| 67 | Phase diagram alignment | Emergent charges match canonical E6 Cartan directions |
+| 68 | Backbone vs coset | All commutators irreducibly mixed (D6 + coset entangled) |
+| 69 | Grand coupling atlas | AG(2,3) × Z3 × SU(3)\_fam controls all 1620 couplings |
+
 ---
 
 ## What's New vs. Standard E6 GUTs
@@ -246,6 +270,19 @@ This framework differs from textbook E6 grand unification in several ways:
 | 16 | A2 hexagons | 40 (from c^5 orbits) | Thm 47 |
 | 17 | Circle closes | orbit adj = W33 | Thm 48 |
 | 18 | Free parameters | 0 | Thm 53, 55 |
+| 19 | Firewall superselection | 27 affine sections on 3^9 total | Thm 56 |
+| 20 | Section stabilizer | D4 ⊕ u(1)^2 (dim 30) | Thm 57 |
+| 21 | D4 triality | 27 = 8+8+8+1+1+1 | Thm 58 |
+| 22 | W33 spreads | 36 (= MUB sets for 2-qutrit) | Thm 59 |
+| 23 | AG(2,3) parallel classes | 4 | Thm 60 |
+| 24 | Total cubic couplings | 1620 = 45 × 36 | Thm 61 |
+| 25 | Forbidden couplings | 324 (20% exactly) | Thm 61 |
+| 26 | Yukawa texture classes | 9 distinct SM types | Thm 62 |
+| 27 | Safe Higgs channel | H\_d H\_u S: 0% forbidden | Thm 64 |
+| 28 | Top Yukawa suppression | H\_u Q u^c: 33% forbidden | Thm 64 |
+| 29 | All couplings color-singlet | verified all 9 types | Thm 65 |
+| 30 | E6 commutators matched | 5/15 nonzero, overlap=1.0 | Thm 66 |
+| 31 | Backbone+coset entangled | All irreducibly mixed | Thm 68 |
 
 ---
 
@@ -257,7 +294,7 @@ python -m venv .venv_test
 .venv_test/Scripts/pip install numpy   # Windows
 # .venv_test/bin/pip install numpy     # Linux/macOS
 
-# Run all 55 theorems (takes ~15 minutes due to exhaustive Jacobi check)
+# Run all 69 theorems (takes ~15 minutes due to exhaustive Jacobi check)
 .venv_test/Scripts/python -X utf8 tools/toe_unified_derivation.py
 
 # Run tests
@@ -272,7 +309,7 @@ Output is saved to `artifacts/toe_unified_derivation.json`.
 
 ```
 tools/
-  toe_unified_derivation.py     # Main deliverable: 55 theorems
+  toe_unified_derivation.py     # Main deliverable: 69 theorems
   compute_double_sixes.py       # E8 root construction + W(E6) orbits
   e8_lattice_cocycle.py         # Deterministic cocycle for structure constants
   e8_e6_a2_fusion.py            # E8 -> E6 + A2 decomposition
