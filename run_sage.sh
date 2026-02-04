@@ -17,21 +17,29 @@ PYSYM_PATHS=(
     "${REPO_ROOT}/lib/pysymmetry_deck_z2_integration_patch"
 )
 
-# Prefer micromamba sage env, then system sage, then bundled Sage, then Docker
+# Prefer micromamba sage env, then system sage, then bundled Sage, then Docker.
+#
+# NOTE: some machines have micromamba installed but no `sage` env. In that case,
+# fall through to other backends instead of failing.
 if [ -x "$HOME/bin/micromamba" ]; then
-    # Use micromamba run to execute in sage environment
-    SAGE_CMD="$HOME/bin/micromamba run -n sage sage"
-elif command -v sage >/dev/null 2>&1; then
-    SAGE_CMD="sage"
-elif [ -x "${REPO_ROOT}/external/sage/bin/sage" ]; then
-    # Fallback: bundled Sage tree (bash-based). Works only if it is a functional Sage install.
-    SAGE_CMD="${REPO_ROOT}/external/sage/bin/sage"
-elif command -v docker >/dev/null 2>&1; then
-    SAGE_MODE="docker"
-    SAGE_IMAGE="${SAGE_DOCKER_IMAGE:-sagemath/sagemath:10.7}"
-else
-    echo "ERROR: Could not find Sage. Install Sage inside WSL (recommended) or ensure external/sage/bin/sage is usable." >&2
-    exit 1
+    if "$HOME/bin/micromamba" run -n sage sage -v >/dev/null 2>&1; then
+        SAGE_CMD="$HOME/bin/micromamba run -n sage sage"
+    fi
+fi
+
+if [ -z "${SAGE_CMD:-}" ]; then
+    if command -v sage >/dev/null 2>&1; then
+        SAGE_CMD="sage"
+    elif [ -x "${REPO_ROOT}/external/sage/bin/sage" ]; then
+        # Fallback: bundled Sage tree (bash-based). Works only if it is a functional Sage install.
+        SAGE_CMD="${REPO_ROOT}/external/sage/bin/sage"
+    elif command -v docker >/dev/null 2>&1; then
+        SAGE_MODE="docker"
+        SAGE_IMAGE="${SAGE_DOCKER_IMAGE:-sagemath/sagemath:10.7}"
+    else
+        echo "ERROR: Could not find Sage. Install Sage inside WSL (recommended) or ensure external/sage/bin/sage is usable." >&2
+        exit 1
+    fi
 fi
 
 EXTRA_PYTHONPATH=""
