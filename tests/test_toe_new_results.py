@@ -286,3 +286,11 @@ def test_toe_affine_line_rewrite_rules_counts():
     assert counts["type_trivial"] == 7
     assert counts["type_nontrivial"] == 5
     assert counts["distinct_transitions"] == 12
+
+
+def test_toe_heisenberg_connection_model_checks():
+    data = _load("artifacts/toe_heisenberg_connection_model.json")
+    assert data["status"] == "ok"
+    weyl = data["weyl"]
+    assert weyl["ZX_equals_omega_XZ"] is True
+    assert weyl["commutator_matches_minus_det"] is True
