@@ -3581,6 +3581,53 @@
     },
     "verdict": "E8 Lie algebra Jacobi identity VERIFIED exhaustively"
   },
+  "theorem_32": {
+    "name": "Z3-graded bracket spans all graded components (surjectivity)",
+    "g1g2_to_g0": {
+      "span": 78,
+      "target": 78
+    },
+    "g1g1_to_g2": {
+      "span": 81,
+      "target": 81
+    },
+    "g2g2_to_g1": {
+      "span": 81,
+      "target": 81
+    },
+    "verdict": "All bracket images surjective \u2014 E8 non-degenerate under Z3"
+  },
+  "theorem_33": {
+    "name": "E8 Dynkin diagram recovered from trinification weight decomposition",
+    "rank": 8,
+    "positive_roots": 120,
+    "simple_roots": 8,
+    "cartan_det": 1,
+    "dynkin_edges": 7,
+    "branch_degree": 3,
+    "simply_laced": true,
+    "verdict": "E8 Dynkin diagram recovered from trinification decomposition"
+  },
+  "theorem_34": {
+    "name": "Generation selection follows Z3 cyclic fusion algebra",
+    "distinct_triples": 6,
+    "fusion_rule": {
+      "0,1": 2,
+      "0,2": 1,
+      "1,2": 0
+    },
+    "z3_sum_rule": true,
+    "verdict": "Generation mixing governed by Z3 cyclic fusion algebra"
+  },
+  "theorem_35": {
+    "name": "Firewall AG(2,3) holonomy = qutrit Heisenberg commutator curvature",
+    "weyl_commutation": true,
+    "heisenberg_phase_matches": 64,
+    "heisenberg_phase_total": 64,
+    "symplectic_match": true,
+    "nontrivial_holonomies": 48,
+    "verdict": "Firewall holonomy = qutrit Heisenberg curvature (symplectic form on F3^2)"
+  },
   "synthesis": {
     "fundamental_object": "W(3,3)",
     "gauge_group": "E6 = Aut(W33)",
