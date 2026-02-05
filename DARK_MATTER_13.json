@@ -1,0 +1,37 @@
+{
+  "W33_structure": {
+    "total_vertices": 40,
+    "total_edges": 240,
+    "visible_vertices": 27,
+    "dark_vertices": 13
+  },
+  "dark_sector": {
+    "internal_edges": 31,
+    "visible_edges": 115,
+    "portal_edges": 94,
+    "spectrum": [
+      4.9199,
+      1.9103,
+      1.4648,
+      1.2919,
+      1.0,
+      0.8641,
+      0.2584,
+      -0.0767,
+      -1.5283,
+      -1.9803,
+      -2.4397,
+      -2.5725,
+      -3.112
+    ]
+  },
+  "predictions": {
+    "mass_GeV": [
+      118.44444444444444,
+      46.47304347826087,
+      100.85727325592968
+    ],
+    "portal_fraction": 0.39166666666666666,
+    "visible_fraction": 0.675
+  }
+}

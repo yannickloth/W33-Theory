@@ -1,0 +1,32 @@
+{
+  "W33_E8_bijection": {
+    "w33_vertices": 40,
+    "w33_edges": 240,
+    "e8_roots": 240,
+    "weyl_e6_order": 51840,
+    "edge_stabilizer": 216,
+    "bijection_type": "group-theoretic (NOT geometric)",
+    "gram_eigenvalue_mismatch": true,
+    "plucker_classes": 80
+  },
+  "sl27_closure": {
+    "e6_dimension": 78,
+    "extension_generators": 1,
+    "closure_dimension": 728,
+    "sl27_dimension": 728,
+    "expansion_factor": 9.454545454545455,
+    "iterations_to_close": 2
+  },
+  "unification": {
+    "exceptional_chain": "sl(27) \u2283 e6 \u2282 e7 \u2282 e8",
+    "dimensions": [
+      728,
+      78,
+      133,
+      248
+    ],
+    "w33_40_decomposition": "27 + 13",
+    "w33_240_correspondence": "E8 roots"
+  },
+  "timestamp": "2026-02-04T15:09:50.866213"
+}
