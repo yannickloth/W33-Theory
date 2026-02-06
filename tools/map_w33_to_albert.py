@@ -357,7 +357,7 @@ results = {
 }
 
 with open(ROOT / "artifacts" / "w33_to_j3o_mapping.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print(f"\nWrote artifacts/w33_to_j3o_mapping.json")
 

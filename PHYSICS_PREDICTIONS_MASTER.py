@@ -326,7 +326,7 @@ with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/PHYSICS_PREDICTIONS_MASTER.json",
     "w",
 ) as f:
-    json.dump(all_results, f, indent=2)
+    json.dump(all_results, f, indent=2, default=str)
 
 print("\n" + "=" * 80)
 print("Results saved to PHYSICS_PREDICTIONS_MASTER.json")

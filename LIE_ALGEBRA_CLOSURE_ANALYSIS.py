@@ -604,7 +604,7 @@ output_path = Path(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/lie_closure_results.json"
 )
 with open(output_path, "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print(f"Results saved to: {output_path}")
 print("=" * 72)

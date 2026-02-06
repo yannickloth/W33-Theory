@@ -576,7 +576,7 @@ results = {
 
 try:
     with open("COMPLETE_VERIFICATION.json", "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(results, f, indent=2, default=str)
     print("Saved to COMPLETE_VERIFICATION.json")
 except Exception as e:
     print(f"Could not save JSON: {e}")

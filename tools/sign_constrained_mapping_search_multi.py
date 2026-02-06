@@ -279,6 +279,6 @@ for restart in range(200):
             "solvable": best_solved,
         }
         with open("artifacts/best_sign_constrained_mapping_multi.json", "w") as f:
-            json.dump(best_global, f, indent=2)
+            json.dump(best_global, f, indent=2, default=str)
 
 print("done, best_global:", best_global)

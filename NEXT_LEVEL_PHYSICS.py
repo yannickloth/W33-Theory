@@ -505,7 +505,7 @@ output_path = (
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/PHYSICS_PREDICTIONS.json"
 )
 with open(output_path, "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print(f"\nResults saved to: PHYSICS_PREDICTIONS.json")
 print("=" * 76)

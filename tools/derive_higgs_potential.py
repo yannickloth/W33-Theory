@@ -334,5 +334,5 @@ results = {
 }
 
 with open("artifacts/higgs_potential_analysis.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("\nWrote artifacts/higgs_potential_analysis.json")

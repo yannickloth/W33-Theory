@@ -379,7 +379,7 @@ results = {
 with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/DARK_MATTER_13.json", "w"
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to DARK_MATTER_13.json")
 print("=" * 76)

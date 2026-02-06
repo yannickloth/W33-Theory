@@ -386,7 +386,7 @@ results = {
 with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/MASS_PREDICTIONS.json", "w"
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to MASS_PREDICTIONS.json")
 print("=" * 76)

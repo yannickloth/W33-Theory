@@ -326,5 +326,5 @@ out = {
     "solvable_sign_system": best_solved,
 }
 with open("artifacts/best_sign_constrained_mapping.json", "w") as f:
-    json.dump(out, f, indent=2)
+    json.dump(out, f, indent=2, default=str)
 print("wrote artifacts/best_sign_constrained_mapping.json")

@@ -360,7 +360,7 @@ for restart in range(args.restarts):
             "col_perm": cur_col,
         }
         with open(ROOT / "artifacts" / "relaxed_best_mapping.json", "w") as f:
-            json.dump(best_global, f, indent=2)
+            json.dump(best_global, f, indent=2, default=str)
 
 print("Done. Best so far:")
 print(best_global)

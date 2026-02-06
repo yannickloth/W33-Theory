@@ -365,5 +365,5 @@ results = {
 }
 
 with open("artifacts/sl3_gravity_analysis.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("\nWrote artifacts/sl3_gravity_analysis.json")

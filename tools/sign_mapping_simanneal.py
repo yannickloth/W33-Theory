@@ -233,5 +233,5 @@ for it in range(iters):
 
 print("done SA, best", best_overall)
 with open("artifacts/best_sign_constrained_mapping_sa.json", "w") as f:
-    json.dump(best_overall, f, indent=2)
+    json.dump(best_overall, f, indent=2, default=str)
 print("wrote artifacts/best_sign_constrained_mapping_sa.json")

@@ -471,7 +471,7 @@ with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/INFORMATION_FOUNDATION.json",
     "w",
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to INFORMATION_FOUNDATION.json")
 print("=" * 80)

@@ -415,6 +415,6 @@ output = {
 }
 
 with open(ROOT / "artifacts" / "e6_cubic_analysis_complete.json", "w") as f:
-    json.dump(output, f, indent=2)
+    json.dump(output, f, indent=2, default=str)
 
 print("\nWrote artifacts/e6_cubic_analysis_complete.json")

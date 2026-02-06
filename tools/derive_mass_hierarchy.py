@@ -442,5 +442,5 @@ results = {
 }
 
 with open("artifacts/mass_hierarchy_predictions.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("\nWrote artifacts/mass_hierarchy_predictions.json")

@@ -290,5 +290,5 @@ for widx, W in enumerate(subspace_list):
 # write summary
 (ROOT / "artifacts").mkdir(exist_ok=True)
 with open(ROOT / "artifacts" / "cpsat_opt_results.json", "w", encoding="utf-8") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("Done. W results saved to artifacts/cpsat_opt_results.json")

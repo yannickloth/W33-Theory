@@ -1120,7 +1120,7 @@ def main():
                 "predictions": results["predictions"],
                 "synthesis": results["synthesis"],
             }
-            json.dump(json_results, f, indent=2)
+            json.dump(json_results, f, indent=2, default=str)
         print(f"\n    Results saved to: {output_file}")
     except Exception as e:
         print(f"\n    Note: Could not save to file ({e})")

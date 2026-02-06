@@ -318,7 +318,7 @@ output_path = Path(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/SL27_CLOSURE_THEOREM_RESULTS.json"
 )
 with open(output_path, "w") as f:
-    json.dump(summary, f, indent=2)
+    json.dump(summary, f, indent=2, default=str)
 
 print("\n" + "=" * 76)
 print(f"{'THEOREM VERIFIED':^76}")

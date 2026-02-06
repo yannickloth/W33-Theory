@@ -256,7 +256,7 @@ for i, W in enumerate(subspace_list):
 print("done, found?", found is not None)
 if found:
     with open("artifacts/found_W_mapping.json", "w") as f:
-        json.dump({"idx": found[0], "res": found[1]}, f, indent=2)
+        json.dump({"idx": found[0], "res": found[1]}, f, indent=2, default=str)
     print("wrote artifacts/found_W_mapping.json")
 else:
     print("no affine mapping found for any W")
