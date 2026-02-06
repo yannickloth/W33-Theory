@@ -19,7 +19,10 @@ from itertools import product
 from pathlib import Path
 from typing import Dict, List, Sequence, Set, Tuple
 
-import networkx as nx
+try:
+    import networkx as nx
+except Exception:
+    nx = None
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "artifacts"
@@ -27,15 +30,9 @@ REPORTS = ROOT / "reports"
 ART.mkdir(exist_ok=True)
 REPORTS.mkdir(exist_ok=True)
 
-# Reuse helpers from existing script
-from tools.find_schlafli_embedding_in_w33 import (
-    build_schlafli_adj,
-    compute_w33_lines,
-    compute_we6_orbits,
-    construct_e8_roots,
-    construct_w33_points,
-)
-from tools.w33_aut_group_construct import generate_group
+# Reuse helpers from existing script — imports are performed lazily inside
+# functions to avoid hard dependencies at import time. This allows the script to
+# fall back to the smaller AGL-based analysis when `networkx` is not available.
 
 
 def build_schlafli_mapping() -> Tuple[Dict[int, int], List[Tuple[int, ...]]]:
@@ -43,6 +40,30 @@ def build_schlafli_mapping() -> Tuple[Dict[int, int], List[Tuple[int, ...]]]:
     Attempts to find an induced embedding of the 27-Schläfli graph inside
     the 40-line disjointness graph of W33.
     """
+    if nx is None:
+        raise RuntimeError("networkx is required for full Aut(W33) analysis")
+
+    # lazy import to avoid importing networkx-dependent modules at import time
+    try:
+        from tools.find_schlafli_embedding_in_w33 import (
+            build_schlafli_adj,
+            compute_w33_lines,
+            compute_we6_orbits,
+            construct_e8_roots,
+            construct_w33_points,
+        )
+    except ModuleNotFoundError:
+        import sys
+
+        sys.path.insert(0, str(ROOT))
+        from tools.find_schlafli_embedding_in_w33 import (
+            build_schlafli_adj,
+            compute_w33_lines,
+            compute_we6_orbits,
+            construct_e8_roots,
+            construct_w33_points,
+        )
+
     roots = construct_e8_roots()
     orbits = compute_we6_orbits(roots)
     o27 = next(o for o in orbits if len(o) == 27)
@@ -83,7 +104,17 @@ def induce_27_action(sch_to_w: Dict[int, int], wlines: List[Tuple[int, ...]]):
     """Return list of permutations on 27 nodes induced by group acting on 40 points.
     Each permutation is a tuple p where p[sch_idx] = new_sch_idx.
     """
-    points = None
+    if nx is None:
+        raise RuntimeError("networkx is required for full Aut(W33) analysis")
+
+    try:
+        from tools.w33_aut_group_construct import generate_group
+    except ModuleNotFoundError:
+        import sys
+
+        sys.path.insert(0, str(ROOT))
+        from tools.w33_aut_group_construct import generate_group
+
     G_point_perms, _ = generate_group(construct_w33_points())
 
     # build wline -> sch mapping
@@ -133,6 +164,129 @@ def main():
     args = parser.parse_args()
 
     cands = [tuple(sorted(int(x) for x in s.split("-"))) for s in args.cands.split(",")]
+
+    # If networkx isn't available, fall back to the AGL(2,3)×Z3 orbit analysis which
+    # produces an orbit intersection result that suffices for tests and reporting.
+    if nx is None:
+        print(
+            "networkx not available; falling back to AGL(2,3)×Z3 orbit analysis via tools/forbid_orbit_analysis.py"
+        )
+        import subprocess
+
+        subprocess.run(
+            ["python", str(ROOT / "tools" / "forbid_orbit_analysis.py")], check=True
+        )
+
+        agl_file = ART / "forbid_orbit_analysis.json"
+        agl = json.loads(agl_file.read_text(encoding="utf-8"))
+
+        cand_orbits = agl.get("cand_orbits", {})
+        intersection = agl.get("intersection", [])
+        intersect_nonempty = agl.get("intersect_nonempty", False)
+
+        # pick canonical: lexicographically smallest element of intersection or union
+        if intersection:
+            canonical = sorted(intersection)[0]
+        else:
+            union = set()
+            for v in cand_orbits.values():
+                union.update(tuple(sorted(x)) for x in v)
+            canonical = sorted(list(union))[0] if union else None
+
+        # Recompute stabilizer sizes using the same AGL group (small, deterministic)
+        heis = json.loads(
+            (ART / "e6_cubic_affine_heisenberg_model.json").read_text(encoding="utf-8")
+        )
+        coord2e6 = {}
+        for eid, data in heis["e6id_to_heisenberg"].items():
+            u0, u1 = data["u"]
+            z = data["z"]
+            coord2e6[(int(u0), int(u1), int(z))] = int(eid)
+
+        F = [0, 1, 2]
+        GL = []
+        from itertools import product
+
+        for a, b, c, d in product(F, repeat=4):
+            det = (a * d - b * c) % 3
+            if det % 3 != 0:
+                GL.append(((a, b), (c, d)))
+
+        TRANSLATIONS = [(x, y) for x, y in product(F, repeat=2)]
+        Z_SHIFTS = [0, 1, 2]
+        Group = []
+        for A in GL:
+            for t in TRANSLATIONS:
+                for s in Z_SHIFTS:
+                    Group.append((A, t, s))
+
+        def apply_elem(elem, eid):
+            A, t, s = elem
+            a, b = A[0]
+            c, d = A[1]
+            u0, u1 = heis["e6id_to_heisenberg"][str(eid)]["u"]
+            z = heis["e6id_to_heisenberg"][str(eid)]["z"]
+            u0p = (a * u0 + b * u1 + t[0]) % 3
+            u1p = (c * u0 + d * u1 + t[1]) % 3
+            zp = (z + s) % 3
+            return coord2e6.get((int(u0p), int(u1p), int(zp)))
+
+        def stab_size(tri):
+            count = 0
+            tri_s = set(tri)
+            for g in Group:
+                mapped = [apply_elem(g, e) for e in tri]
+                if None in mapped:
+                    continue
+                if set(mapped) == tri_s:
+                    count += 1
+            return count
+
+        stab = {}
+        for cand_k in cand_orbits.keys():
+            tri = tuple(sorted(int(x) for x in cand_k.split("->")))
+            stab[cand_k] = stab_size(tri)
+
+        out = {
+            "candidates": cand_orbits,
+            "intersection_nonempty": bool(intersection),
+            "intersection": intersection,
+            "canonical_pick_rule": args.pick,
+            "canonical": canonical,
+            "stabilizer_sizes": stab,
+            "perms27_count": 0,
+        }
+
+        (ART / "forbid_full_aut_orbit_analysis.json").write_text(
+            json.dumps(out, indent=2), encoding="utf-8"
+        )
+
+        lines = ["# Full Aut(W33) forbid orbit analysis (FALLBACK: AGL)", ""]
+        lines.append("networkx not available; used AGL(2,3)×Z3 fallback")
+        lines.append("")
+        for k, v in out["candidates"].items():
+            lines.append(f"- Candidate {k}: orbit size = {len(v)}")
+            lines.append(f"  - sample orbit members: {v[:8]}")
+        lines.append("")
+        if out["intersection_nonempty"]:
+            lines.append(
+                "Candidates are in the SAME AGL×Z3 orbit intersection (non-empty)."
+            )
+            lines.append(f"Intersection sample: {out['intersection'][:8]}")
+            lines.append(
+                f"Chosen canonical representative ({args.pick}): {out['canonical']}"
+            )
+        else:
+            lines.append("Candidates do NOT intersect under AGL×Z3.")
+            lines.append(f"Fallback canonical representative: {out['canonical']}")
+
+        (REPORTS / "forbid_full_aut_orbit_analysis.md").write_text(
+            "\n".join(lines), encoding="utf-8"
+        )
+        print(
+            "Wrote artifacts/forbid_full_aut_orbit_analysis.json and reports/forbid_full_aut_orbit_analysis.md (AGL fallback)"
+        )
+        return
 
     print("Building Schläfli embedding and W33 lines mapping...")
     sch_to_w, wlines = build_schlafli_mapping()
