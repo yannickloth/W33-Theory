@@ -21,13 +21,39 @@ ART = ROOT / "artifacts"
 REPORTS = ROOT / "reports"
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--forbid", type=str, required=True)
+parser.add_argument(
+    "--forbid",
+    type=str,
+    required=False,
+    default=None,
+    help="Comma-separated E6 triads like '0-18-25' to forbid; if omitted, uses config/canonical_forbid.json",
+)
 parser.add_argument("--time", type=int, default=300)
 parser.add_argument("--w-list", type=str, default="0,4,5,6,7,8,9,10,11,12,13,14,15")
 parser.add_argument("--workers", type=int, default=4)
 args = parser.parse_args()
 
+# Resolve forbid: prefer explicit argument, otherwise fall back to config file
 forbid = args.forbid
+if forbid is None:
+    cfg = ROOT / "config" / "canonical_forbid.json"
+    if cfg.exists():
+        try:
+            cfgj = json.loads(cfg.read_text(encoding="utf-8"))
+            cf = cfgj.get("canonical_forbid")
+            if cf and isinstance(cf, (list, tuple)) and len(cf) == 3:
+                forbid = "-".join(map(str, cf))
+                print(f"No --forbid given; using canonical forbid from {cfg}: {forbid}")
+            else:
+                raise RuntimeError(
+                    "config/canonical_forbid.json missing 'canonical_forbid' entry or invalid"
+                )
+        except Exception as e:
+            raise RuntimeError(f"Failed to read canonical forbid config: {e}")
+    else:
+        raise RuntimeError(
+            "No --forbid provided and config/canonical_forbid.json not found"
+        )
 # run anchored script
 cmd = [
     "python",
