@@ -46,9 +46,16 @@ def test_minimal_hitting_sets_contains_020_23():
 
 def test_all_odd_null_vectors_include_020_23():
     # Repeat the nullspace search up to weight 10 and ensure every odd-parity null vector includes triad (0,20,23)
-    heis = json.load(
-        open(ART / "e6_cubic_affine_heisenberg_model.json", "r", encoding="utf-8")
-    )
+    heis_path = ART / "e6_cubic_affine_heisenberg_model.json"
+    sdata_path = ART / "e6_cubic_sign_gauge_solution.json"
+    if not heis_path.exists() or not sdata_path.exists():
+        import pytest
+
+        pytest.skip(
+            "Missing artifacts for null-space GF(2) check; skipping in this environment."
+        )
+
+    heis = json.load(open(heis_path, "r", encoding="utf-8"))
     triads = [
         tuple(sorted(tri)) for item in heis["affine_u_lines"] for tri in item["triads"]
     ]
