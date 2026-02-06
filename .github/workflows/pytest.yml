@@ -33,6 +33,8 @@ jobs:
         echo "Generate TOE three-generation atlas and tensors"
         python tools/toe_three_generation_coupling_atlas.py || true
         python tools/toe_generation_coupling_tensors.py || true
+        echo "Build E6 cubic Heisenberg model and other E6 artifacts"
+        python tools/verify_e6_cubic_affine_heisenberg_model.py || true
         echo "GF(2) helpers: minimal hitting sets and certificate generation (best-effort)"
         python tools/minimal_hitting_sets.py || true
         python tools/generate_gf2_certificate.py || true
