@@ -46,8 +46,34 @@ d_map_sign = {
 }
 D_BITS = {t: (0 if s == 1 else 1) for t, s in d_map_sign.items()}
 
-# choose W index
-W_idx = 4
+import argparse
+
+from gf2_utils import (
+    is_solvable_and_conflict,
+    minimal_unsat_core,
+    solve_parity_pycryptosat,
+)
+
+# parse arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--w-index", type=int, default=4, help="Target W index to solve")
+parser.add_argument(
+    "--anchor-w",
+    type=int,
+    default=4,
+    help="Anchor W index to take the 19-triad set from",
+)
+parser.add_argument(
+    "--no-xor",
+    action="store_true",
+    help="Do not attach XOR parity clauses to the solver; perform CNF-only mapping and run parity check separately",
+)
+args = parser.parse_args()
+
+W_idx = int(args.w_index)
+anchor_w = int(args.anchor_w)
+include_xor = not args.no_xor
+
 # reconstruct coset triads for W
 G_matrix = np.array(
     [
@@ -97,14 +123,16 @@ for u1, u2, u3 in combinations(range(27), 3):
         coset_triads.append((u1, u2, u3))
 coset_triads_set = {tuple(sorted(t)) for t in coset_triads}
 
-# load anchor matched triads for W4
-anchor_file = ART / f"anchor_specific_cpsat_W{W_idx}_status_OPTIMAL.json"
+# load anchor matched triads from anchor W
+anchor_file = ART / f"anchor_specific_cpsat_W{anchor_w}_status_OPTIMAL.json"
 if not anchor_file.exists():
-    print("Anchor mapping missing for W4; aborting")
+    print(f"Anchor mapping missing for W{anchor_w}; aborting")
     raise SystemExit(1)
 anchor = json.load(open(anchor_file, "r", encoding="utf-8"))
 matched_tris = [tuple(sorted(tri)) for tri in anchor.get("matched_tris", [])]
-print("Using anchor matched triads count:", len(matched_tris))
+print(
+    "Using anchor matched triads count:", len(matched_tris), "(anchor W=", anchor_w, ")"
+)
 
 # build candidate assignments for each triad
 matched_candidates = {ti: [] for ti in range(len(E6_TRIADS))}
@@ -167,15 +195,16 @@ for tri in matched_tris:
     solver.add_clause(zlist)
     cnf_count += 1
 
-# XOR parity clauses for required triads with known D_BITS
+# XOR parity clauses for required triads with known D_BITS (only if requested)
 xor_count = 0
-for tri in matched_tris:
-    dbit = D_BITS.get(tuple(sorted(tri)))
-    if dbit is None:
-        continue
-    a, b, c = s_var[tri[0]], s_var[tri[1]], s_var[tri[2]]
-    solver.add_xor_clause([a, b, c], bool(dbit))
-    xor_count += 1
+if include_xor:
+    for tri in matched_tris:
+        dbit = D_BITS.get(tuple(sorted(tri)))
+        if dbit is None:
+            continue
+        a, b, c = s_var[tri[0]], s_var[tri[1]], s_var[tri[2]]
+        solver.add_xor_clause([a, b, c], bool(dbit))
+        xor_count += 1
 
 print("CNF clauses added (approx):", cnf_count)
 print("Z variables introduced:", z_count)
@@ -193,16 +222,17 @@ assignment = res[1]
 mapping = [-1] * 27
 signs = [False] * 27
 valid = False
+parity_ok = False
+
 if sat and assignment is not None:
-    # assignment is sequence-like: index = var-1 -> bool
+    # assignment is sequence-like indexed by var id
     def val(v):
-        # pycryptosat assignment sequence uses index == var id (assignment[0] is placeholder None)
         idx = v
         if idx < 0 or idx >= len(assignment):
             return False
         return bool(assignment[idx])
 
-    # reconstruct mapping with detailed debug for failures
+    # reconstruct mapping with debug prints
     print("assignment length:", len(assignment), "vpool.top:", vpool.top)
     for i in range(27):
         trues = [u for u in range(27) if val(x_var[(i, u)])]
@@ -217,41 +247,105 @@ if sat and assignment is not None:
                 "has ZERO true x; var ids =",
                 [x_var[(i, u)] for u in range(27)],
             )
-            # print corresponding assignment values if available
             vals = []
             for u in range(27):
                 v = x_var[(i, u)]
-                if v - 1 < len(assignment):
-                    vals.append((v, assignment[v - 1]))
+                if v < len(assignment):
+                    vals.append((v, bool(assignment[v])))
                 else:
                     vals.append((v, "OOB"))
             print("  var assignment snapshot (var, val):", vals)
-    for i in range(27):
-        signs[i] = val(s_var[i])
-    # validity checks
-    valid_bijection = len(set(mapping)) == 27 and all(m != -1 for m in mapping)
-    triad_ok = True
-    parity_ok = True
-    for tri in matched_tris:
-        i, j, k = tri
-        mapped = tuple(sorted((mapping[i], mapping[j], mapping[k])))
-        if mapped not in coset_triads_set:
-            triad_ok = False
-            break
-        dbit = D_BITS.get(tuple(sorted(tri)))
-        if dbit is not None:
-            if (signs[i] ^ signs[j] ^ signs[k]) != bool(dbit):
-                parity_ok = False
+
+    # if we included XOR, we can read s vars directly
+    if include_xor:
+        for i in range(27):
+            signs[i] = val(s_var[i])
+        # validate mapping and parity using signs
+        valid_bijection = len(set(mapping)) == 27 and all(m != -1 for m in mapping)
+        triad_ok = True
+        parity_ok = True
+        for tri in matched_tris:
+            i, j, k = tri
+            mapped = tuple(sorted((mapping[i], mapping[j], mapping[k])))
+            if mapped not in coset_triads_set:
+                triad_ok = False
                 break
-    valid = valid_bijection and triad_ok and parity_ok
-    print(
-        "Validity: bijection?",
-        valid_bijection,
-        "triads_ok?",
-        triad_ok,
-        "parity_ok?",
-        parity_ok,
-    )
+            dbit = D_BITS.get(tuple(sorted(tri)))
+            if dbit is not None:
+                if (signs[i] ^ signs[j] ^ signs[k]) != bool(dbit):
+                    parity_ok = False
+                    break
+        valid = valid_bijection and triad_ok and parity_ok
+        print(
+            "Validity: bijection?",
+            valid_bijection,
+            "triads_ok?",
+            triad_ok,
+            "parity_ok?",
+            parity_ok,
+        )
+    else:
+        # CNF-only: find signs separately via pycryptosat over s variables
+        # build matched tri list (those triads that are actually matched by mapping)
+        matched = []
+        for tri in E6_TRIADS:
+            i, j, k = tri
+            u = tuple(sorted((mapping[i], mapping[j], mapping[k])))
+            if u in coset_triads_set:
+                matched.append(tuple(sorted(tri)))
+        print("CNF-only mapping matched count:", len(matched))
+        if matched:
+            sat_signs, sign_map = solve_parity_pycryptosat(matched, D_BITS)
+            parity_ok = bool(sat_signs)
+            if parity_ok:
+                for i in range(27):
+                    signs[i] = bool(sign_map.get(i, False))
+                valid_bijection = len(set(mapping)) == 27 and all(
+                    m != -1 for m in mapping
+                )
+                triad_ok = True
+                # triad_ok is true by construction above
+                valid = valid_bijection and triad_ok and parity_ok
+                print(
+                    "CNF-only parity solver found signs: parity_ok=True; valid?", valid
+                )
+            else:
+                print("CNF-only parity solver UNSAT: parity_ok=False")
+                # compute a minimal unsat core to report
+                core = minimal_unsat_core(matched, D_BITS)
+                solv2, conf2 = is_solvable_and_conflict(core, D_BITS)
+                assert solv2 == False and conf2 is not None
+                cert_rows = [list(core[i]) for i in conf2]
+                entry = {
+                    "file": f"pysat_mapping_W{W_idx}_cnfonly.json",
+                    "W_idx": W_idx,
+                    "matched": len(matched),
+                    "solvable": False,
+                    "unsat_core": [list(t) for t in core],
+                    "core_size": len(core),
+                    "certificate_core_indices": conf2,
+                    "certificate_rows": cert_rows,
+                }
+                # append to sign_unsat_cores.json if not already present
+                import os
+
+                snc_path = ART / "sign_unsat_cores.json"
+                if snc_path.exists():
+                    existing = json.load(open(snc_path, "r", encoding="utf-8"))
+                else:
+                    existing = []
+                # simple duplicate check by file name
+                if not any(e.get("file") == entry["file"] for e in existing):
+                    existing.append(entry)
+                    (ART / "sign_unsat_cores.json").write_text(
+                        json.dumps(existing, indent=2), encoding="utf-8"
+                    )
+                    print(
+                        "Appended CNF-only unsat core to artifacts/sign_unsat_cores.json"
+                    )
+
+else:
+    print("No SAT assignment (sat is False or no assignment)")
 
 # write artifact
 out = {
@@ -273,8 +367,8 @@ if assignment is not None:
         var_ids = [x_var[(i, u)] for u in range(27)]
         var_vals = []
         for v in var_ids:
-            if v - 1 < len(assignment):
-                var_vals.append(bool(assignment[v - 1]))
+            if v < len(assignment):
+                var_vals.append(bool(assignment[v]))
             else:
                 var_vals.append("OOB")
         rows_debug.append(

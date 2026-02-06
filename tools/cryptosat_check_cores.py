@@ -20,7 +20,13 @@ D_BITS = {
 }  # parity True=1
 
 for entry in suns:
-    rows = entry["certificate_rows"]
+    if entry.get("solvable", False):
+        print("Skipping solvable entry", entry.get("file"))
+        continue
+    rows = entry.get("certificate_rows")
+    if not rows:
+        print("Skipping entry with no certificate_rows:", entry.get("file"))
+        continue
     print(
         "\nEntry file", entry["file"], "W_idx", entry["W_idx"], "core_size", len(rows)
     )
