@@ -66,6 +66,10 @@ else:
     results = []
     for entry in cores:
         cert = entry.get("certificate_rows", [])
+        # skip non-contradiction entries immediately
+        if not cert:
+            # no certificate rows collected for this file; skip
+            continue
         # compute triad indices (in 0..35)
         supp_idxs = [triads.index(tuple(sorted(t))) for t in cert]
         # compute node parity vector (length 27)
@@ -76,6 +80,12 @@ else:
         is_null = all(x == 0 for x in node_parity)
         rhs_parity = sum(dmap.get(tuple(sorted(t)), 0) for t in cert) % 2
         rhs_is_one = rhs_parity == 1
+        # only include true contradictions (null left side and RHS parity 1)
+        if not is_null or not rhs_is_one:
+            print(
+                f"Skipping non-contradiction for {entry.get('file')}, is_null={is_null}, rhs_parity={rhs_parity}"
+            )
+            continue
         results.append(
             {
                 "file": entry["file"],
