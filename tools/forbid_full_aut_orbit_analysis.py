@@ -173,12 +173,35 @@ def main():
         )
         import subprocess
 
-        subprocess.run(
-            ["python", str(ROOT / "tools" / "forbid_orbit_analysis.py")], check=True
+        # Run the AGL fallback; don't let it kill the whole script if it returns non-zero
+        ret = subprocess.run(
+            [
+                "python",
+                str(ROOT / "tools" / "forbid_orbit_analysis.py"),
+                "--cands",
+                args.cands,
+                "--pick",
+                args.pick,
+            ],
+            check=False,
         )
+        if ret.returncode != 0:
+            print(f"AGL fallback script returned non-zero exit code {ret.returncode}")
 
         agl_file = ART / "forbid_orbit_analysis.json"
-        agl = json.loads(agl_file.read_text(encoding="utf-8"))
+        if agl_file.exists():
+            try:
+                agl = json.loads(agl_file.read_text(encoding="utf-8"))
+            except Exception as e:
+                print(f"Could not parse {agl_file}: {e}")
+                agl = {
+                    "cand_orbits": {},
+                    "intersection": [],
+                    "intersect_nonempty": False,
+                }
+        else:
+            print(f"No {agl_file} produced by AGL fallback; using empty placeholder")
+            agl = {"cand_orbits": {}, "intersection": [], "intersect_nonempty": False}
 
         cand_orbits = agl.get("cand_orbits", {})
         intersection = agl.get("intersection", [])
@@ -194,58 +217,63 @@ def main():
             canonical = sorted(list(union))[0] if union else None
 
         # Recompute stabilizer sizes using the same AGL group (small, deterministic)
-        heis = json.loads(
-            (ART / "e6_cubic_affine_heisenberg_model.json").read_text(encoding="utf-8")
-        )
-        coord2e6 = {}
-        for eid, data in heis["e6id_to_heisenberg"].items():
-            u0, u1 = data["u"]
-            z = data["z"]
-            coord2e6[(int(u0), int(u1), int(z))] = int(eid)
+        heis_file = ART / "e6_cubic_affine_heisenberg_model.json"
+        if not heis_file.exists():
+            print(
+                "Heisenberg model missing; cannot compute stabilizer sizes. Setting empty stabilizer sizes."
+            )
+            stab = {}
+        else:
+            heis = json.loads(heis_file.read_text(encoding="utf-8"))
+            coord2e6 = {}
+            for eid, data in heis["e6id_to_heisenberg"].items():
+                u0, u1 = data["u"]
+                z = data["z"]
+                coord2e6[(int(u0), int(u1), int(z))] = int(eid)
 
-        F = [0, 1, 2]
-        GL = []
-        from itertools import product
+            F = [0, 1, 2]
+            GL = []
+            from itertools import product
 
-        for a, b, c, d in product(F, repeat=4):
-            det = (a * d - b * c) % 3
-            if det % 3 != 0:
-                GL.append(((a, b), (c, d)))
+            for a, b, c, d in product(F, repeat=4):
+                det = (a * d - b * c) % 3
+                if det % 3 != 0:
+                    GL.append(((a, b), (c, d)))
 
-        TRANSLATIONS = [(x, y) for x, y in product(F, repeat=2)]
-        Z_SHIFTS = [0, 1, 2]
-        Group = []
-        for A in GL:
-            for t in TRANSLATIONS:
-                for s in Z_SHIFTS:
-                    Group.append((A, t, s))
+            TRANSLATIONS = [(x, y) for x, y in product(F, repeat=2)]
+            Z_SHIFTS = [0, 1, 2]
+            Group = []
+            for A in GL:
+                for t in TRANSLATIONS:
+                    for s in Z_SHIFTS:
+                        Group.append((A, t, s))
 
-        def apply_elem(elem, eid):
-            A, t, s = elem
-            a, b = A[0]
-            c, d = A[1]
-            u0, u1 = heis["e6id_to_heisenberg"][str(eid)]["u"]
-            z = heis["e6id_to_heisenberg"][str(eid)]["z"]
-            u0p = (a * u0 + b * u1 + t[0]) % 3
-            u1p = (c * u0 + d * u1 + t[1]) % 3
-            zp = (z + s) % 3
-            return coord2e6.get((int(u0p), int(u1p), int(zp)))
+            def apply_elem(elem, eid):
+                A, t, s = elem
+                a, b = A[0]
+                c, d = A[1]
+                u0, u1 = heis["e6id_to_heisenberg"][str(eid)]["u"]
+                z = heis["e6id_to_heisenberg"][str(eid)]["z"]
+                u0p = (a * u0 + b * u1 + t[0]) % 3
+                u1p = (c * u0 + d * u1 + t[1]) % 3
+                zp = (z + s) % 3
+                return coord2e6.get((int(u0p), int(u1p), int(zp)))
 
-        def stab_size(tri):
-            count = 0
-            tri_s = set(tri)
-            for g in Group:
-                mapped = [apply_elem(g, e) for e in tri]
-                if None in mapped:
-                    continue
-                if set(mapped) == tri_s:
-                    count += 1
-            return count
+            def stab_size(tri):
+                count = 0
+                tri_s = set(tri)
+                for g in Group:
+                    mapped = [apply_elem(g, e) for e in tri]
+                    if None in mapped:
+                        continue
+                    if set(mapped) == tri_s:
+                        count += 1
+                return count
 
-        stab = {}
-        for cand_k in cand_orbits.keys():
-            tri = tuple(sorted(int(x) for x in cand_k.split("->")))
-            stab[cand_k] = stab_size(tri)
+            stab = {}
+            for cand_k in cand_orbits.keys():
+                tri = tuple(sorted(int(x) for x in cand_k.split("->")))
+                stab[cand_k] = stab_size(tri)
 
         out = {
             "candidates": cand_orbits,
@@ -258,7 +286,7 @@ def main():
         }
 
         (ART / "forbid_full_aut_orbit_analysis.json").write_text(
-            json.dumps(out, indent=2), encoding="utf-8"
+            json.dumps(out, indent=2, default=str), encoding="utf-8"
         )
 
         lines = ["# Full Aut(W33) forbid orbit analysis (FALLBACK: AGL)", ""]

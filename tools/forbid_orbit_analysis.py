@@ -17,6 +17,43 @@ ART = ROOT / "artifacts"
 REPORTS = ROOT / "reports"
 REPORTS.mkdir(exist_ok=True)
 
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--cands", type=str, default="0-18-25,0-20-23")
+parser.add_argument("--pick", type=str, default="lex_min")
+args = parser.parse_args()
+# parse candidates like "0-18-25,0-20-23" into list of triads
+cands = [tuple(sorted(int(x) for x in s.split("-"))) for s in args.cands.split(",")]
+
+# If the heisenberg model artifact is missing, write a placeholder JSON + report
+if not (ART / "e6_cubic_affine_heisenberg_model.json").exists():
+    print(
+        "Missing artifacts/e6_cubic_affine_heisenberg_model.json; writing placeholder forbid_orbit_analysis.json and report"
+    )
+    out = {
+        "cand_orbits": {"->".join(map(str, k)): [] for k in cands},
+        "intersect_nonempty": False,
+        "intersection": [],
+    }
+    (ART / "forbid_orbit_analysis.json").write_text(
+        json.dumps(out, indent=2, default=str), encoding="utf-8"
+    )
+    lines = [
+        "# Forbid orbit analysis (AGL(2,3) × Z3 action) - PLACEHOLDER",
+        "",
+        "Missing required artifact: artifacts/e6_cubic_affine_heisenberg_model.json",
+        "Wrote placeholder output; real analysis could not be performed in this environment.",
+    ]
+    (REPORTS / "forbid_orbit_analysis.md").write_text(
+        "\n".join(lines), encoding="utf-8"
+    )
+    print(
+        "Wrote placeholder artifacts/forbid_orbit_analysis.json and reports/forbid_orbit_analysis.md"
+    )
+    sys.exit(0)
+
 with open(ART / "e6_cubic_affine_heisenberg_model.json", "r", encoding="utf-8") as f:
     heis = json.load(f)
 
