@@ -1,0 +1,20 @@
+*** Begin Patch
+*** Update File: src/vs/workbench/contrib/terminal/common/scripts/shellIntegration.ps1
+@@
+-function Global:__VSCode-Escape-Value([string]$value) {
++function Global:ConvertTo-VSCodeEscapedValue([string]$value) {
+@@
+-    $Result += if ($pwd.Provider.Name -eq 'FileSystem') { "$([char]0x1b)]633;P;Cwd=$(__VSCode-Escape-Value $pwd.ProviderPath)`a" }
++    $Result += if ($pwd.Provider.Name -eq 'FileSystem') { "$([char]0x1b)]633;P;Cwd=$(ConvertTo-VSCodeEscapedValue $pwd.ProviderPath)`a" }
+@@
+-        $Result += "$([char]0x1b)]633;EnvJson;$(__VSCode-Escape-Value $envJson);$($Global:__VSCodeState.Nonce)`a"
++        $Result += "$([char]0x1b)]633;EnvJson;$(ConvertTo-VSCodeEscapedValue $envJson);$($Global:__VSCodeState.Nonce)`a"
+@@
+-        $Result += "$([char]0x1b)]633;P;Prompt=$(__VSCode-Escape-Value $OriginalPrompt)`a"
++        $Result += "$([char]0x1b)]633;P;Prompt=$(ConvertTo-VSCodeEscapedValue $OriginalPrompt)`a"
+@@
+-        $Result += $(__VSCode-Escape-Value $CommandLine)
++        $Result += $(ConvertTo-VSCodeEscapedValue $CommandLine)
+@@
+-        [Console]::Write("$([char]0x1b)]633;P;ContinuationPrompt=$(__VSCode-Escape-Value $Global:__VSCodeState.ContinuationPrompt)`a")
++        [Console]::Write("$([char]0x1b)]633;P;ContinuationPrompt=$(ConvertTo-VSCodeEscapedValue $Global:__VSCodeState.ContinuationPrompt)`a")

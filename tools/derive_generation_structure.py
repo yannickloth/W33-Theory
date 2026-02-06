@@ -354,5 +354,5 @@ results = {
 }
 
 with open("artifacts/generation_structure_analysis.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print(f"\nWrote artifacts/generation_structure_analysis.json")

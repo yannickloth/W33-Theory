@@ -342,5 +342,5 @@ results = {
 }
 
 with open("artifacts/ckm_pmns_predictions.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("\nWrote artifacts/ckm_pmns_predictions.json")

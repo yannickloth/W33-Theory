@@ -1,0 +1,20 @@
+name: Compute W33 automorphism orbits
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  compute-aut-orbits:
+    runs-on: ubuntu-latest
+    container:
+      image: sagemath/sagemath:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute automorphism orbits with Sage
+        run: |
+          sage -python sage/compute_w33_aut_orbits.sage
+      - name: Upload automorphism orbits artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CXI_aut_orbits_sage
+          path: checks/PART_CXI_aut_orbits_sage.json

@@ -486,6 +486,6 @@ summary = {
 }
 
 with open(ROOT / "artifacts" / "quantum_encryption_synthesis.json", "w") as f:
-    json.dump(summary, f, indent=2)
+    json.dump(summary, f, indent=2, default=str)
 
 print(f"\nSummary saved to artifacts/quantum_encryption_synthesis.json")

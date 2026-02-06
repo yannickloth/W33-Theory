@@ -456,7 +456,7 @@ results = {
 with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/CKM_27_LINES.json", "w"
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to CKM_27_LINES.json")
 print("=" * 76)

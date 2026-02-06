@@ -313,7 +313,7 @@ with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/lie_closure_fast_results.json",
     "w",
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\n" + "=" * 72)
 print("Results saved to lie_closure_fast_results.json")

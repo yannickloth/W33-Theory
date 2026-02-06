@@ -357,7 +357,7 @@ results = {
 with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/RG_MASSES.json", "w"
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to RG_MASSES.json")
 print("=" * 76)

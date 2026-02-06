@@ -544,5 +544,5 @@ results = {
 }
 
 with open("artifacts/exact_mass_factors.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 print("\nWrote artifacts/exact_mass_factors.json")

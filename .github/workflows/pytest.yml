@@ -20,6 +20,25 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
+
+    - name: Generate required artifacts
+      run: |
+        set -e
+        echo "Generating canonical SU(3) gauge and cubic (may be heavy)"
+        python tools/solve_canonical_su3_gauge_and_cubic.py || true
+        echo "Exporting W(E6) signed action"
+        python tools/export_we6_signed_action_on_27.py || true
+        echo "Build E6 27-rep basis (optional)"
+        python tools/build_e6_27rep_minuscule.py --export-basis78 || true
+        echo "Generate TOE three-generation atlas and tensors"
+        python tools/toe_three_generation_coupling_atlas.py || true
+        python tools/toe_generation_coupling_tensors.py || true
+        echo "Build E6 cubic Heisenberg model and other E6 artifacts"
+        python tools/verify_e6_cubic_affine_heisenberg_model.py || true
+        echo "GF(2) helpers: minimal hitting sets and certificate generation (best-effort)"
+        python tools/minimal_hitting_sets.py || true
+        python tools/generate_gf2_certificate.py || true
+
     - name: Generate SUMMARY_RESULTS.json (local)
       run: |
         python scripts/collect_results.py || true

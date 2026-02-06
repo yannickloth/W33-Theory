@@ -246,7 +246,7 @@ output_path = (
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/GRAND_SYNTHESIS_RESULTS.json"
 )
 with open(output_path, "w") as f:
-    json.dump(summary, f, indent=2)
+    json.dump(summary, f, indent=2, default=str)
 
 print(f"\nResults saved to: {output_path}")
 print("═" * 76)

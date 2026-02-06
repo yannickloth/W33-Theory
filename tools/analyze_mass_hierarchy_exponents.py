@@ -294,5 +294,5 @@ results_dict = {
     "factors": {name: masses[name] / (v * lam ** n_doubled[name]) for name in masses},
 }
 with open("artifacts/mass_hierarchy_analysis.json", "w") as f:
-    json.dump(results_dict, f, indent=2)
+    json.dump(results_dict, f, indent=2, default=str)
 print("\nWrote artifacts/mass_hierarchy_analysis.json")

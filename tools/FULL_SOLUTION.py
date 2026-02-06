@@ -634,6 +634,6 @@ summary = {
 }
 
 with open("SOLUTION_SUMMARY.json", "w") as f:
-    json.dump(summary, f, indent=2)
+    json.dump(summary, f, indent=2, default=str)
 
 print("\nSummary saved to SOLUTION_SUMMARY.json")

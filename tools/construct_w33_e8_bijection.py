@@ -557,7 +557,7 @@ def main():
     }
 
     with open("w33_e8_bijection_data.json", "w") as f:
-        json.dump(output_data, f, indent=2)
+        json.dump(output_data, f, indent=2, default=str)
 
     print("\nData saved to w33_e8_bijection_data.json")
 

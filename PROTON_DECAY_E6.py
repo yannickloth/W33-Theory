@@ -341,7 +341,7 @@ results = {
 with open(
     "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/PROTON_DECAY_E6.json", "w"
 ) as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to PROTON_DECAY_E6.json")
 print("=" * 76)
