@@ -15,6 +15,10 @@ on:
         description: 'Minimum fraction (0..1) of neighbor-neighbor adjacency constraints required for an initial seed to be accepted'
         required: false
         default: '0.4'
+      seed:
+        description: 'Random seed to use for the search'
+        required: false
+        default: '42'
 
 jobs:
   find-e8-embedding:
@@ -24,7 +28,7 @@ jobs:
       - name: Run Sage embedding search in container
         run: |
           docker pull sagemath/sagemath:latest
-          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ github.event.inputs.min_neigh_fraction }} --seed 42
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ github.event.inputs.min_neigh_fraction }} --seed ${{ github.event.inputs.seed }}
       - name: Upload E8 embedding artifact
         uses: actions/upload-artifact@v4
         with:
