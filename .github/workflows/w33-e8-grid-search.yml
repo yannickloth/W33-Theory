@@ -1,0 +1,59 @@
+name: W33→E8 grid search
+
+on:
+  workflow_dispatch:
+    inputs:
+      time_limit:
+        description: 'Time limit in seconds for the Sage script'
+        required: false
+        default: '600'
+      initial_attempts:
+        description: 'Number of random initial neighbor attempts for Sage backtracker'
+        required: false
+        default: '2000'
+      k_candidates:
+        description: 'K candidates per edge for CP-SAT'
+        required: false
+        default: '30'
+
+jobs:
+  grid:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        seed: [42, 43, 44, 45, 46, 47, 48, 49]
+        min_neigh_fraction: [0.4, 0.5]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Python spectral+ICP search (generate seed)
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python scripts/search_e8_embedding.py --iters 80 --restarts 8 --threshold 0.45 --inlier-frac 0.6 --seed ${{ matrix.seed }}
+      - name: Upload seed artifact (per job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_attempt_seed_${{ matrix.seed }}_${{ matrix.min_neigh_fraction }}
+          path: checks/PART_CVII_e8_embedding_attempt_seed.json
+
+      - name: Setup Python dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy ortools
+
+      - name: Run CP-SAT embedding solver
+        run: |
+          python scripts/solve_e8_embedding_cpsat.py --seed-json checks/PART_CVII_e8_embedding_attempt_seed.json --k ${{ github.event.inputs.k_candidates || github.job.inputs.k_candidates || 30 }} --time-limit ${{ github.event.inputs.time_limit }} --seed ${{ matrix.seed }}
+      - name: Upload CP-SAT artifact (per job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_cpsat_${{ matrix.seed }}_${{ matrix.min_neigh_fraction }}
+          path: checks/PART_CVII_e8_embedding_cpsat.json
+
+      - name: Run Sage embedding search in container (use neighbor seed JSON)
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ matrix.min_neigh_fraction }} --seed ${{ matrix.seed }} --neighbor-seed-json checks/PART_CVII_e8_embedding_attempt_seed.json
+
+      - name: Upload E8 embedding artifact (per job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_sage_${{ matrix.seed }}_${{ matrix.min_neigh_fraction }}
+          path: checks/PART_CVII_e8_embedding_sage.json

@@ -1,0 +1,53 @@
+name: Bootstrap W33→E8 from partial
+
+on:
+  workflow_dispatch:
+    inputs:
+      backtrack_time_limit:
+        description: 'Time limit (s) to run the backtracking seed generator'
+        required: false
+        default: '1800'
+      initial_attempts:
+        description: 'Number of initial neighbor attempts for the generator'
+        required: false
+        default: '20000'
+      min_neigh_fraction:
+        description: 'Minimum neighbor-neighbor constraint fraction for seeds'
+        required: false
+        default: '0.4'
+      seed:
+        description: 'Random seed'
+        required: false
+        default: '42'
+      bootstrap_time_limit:
+        description: 'Time limit (s) for the bootstrap DFS completion'
+        required: false
+        default: '3600'
+      repair:
+        description: 'Whether to prune conflicting vertices before bootstrap (true/false)'
+        required: false
+        default: 'true'
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run heuristic Python search (spectral + ICP) to produce neighbor seeds
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python scripts/search_e8_embedding.py --iters 80 --restarts 8 --threshold 0.45 --inlier-frac 0.6 --seed ${{ github.event.inputs.seed }}
+      - name: Run Sage backtracking seed generator (use neighbor seed JSON)
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.backtrack_time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ github.event.inputs.min_neigh_fraction }} --seed ${{ github.event.inputs.seed }} --neighbor-seed-json checks/PART_CVII_e8_embedding_attempt_seed.json
+      - name: Run bootstrap from partial
+        run: |
+          docker pull sagemath/sagemath:latest
+          if [ "${{ github.event.inputs.repair }}" = "true" ]; then REPAIR="--repair"; else REPAIR=""; fi
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/bootstrap_from_partial.sage --partial-file checks/PART_CVII_e8_embedding_sage.json --time-limit ${{ github.event.inputs.bootstrap_time_limit }} --seed ${{ github.event.inputs.seed }} $REPAIR
+      - name: Upload bootstrap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_bootstrap
+          path: checks/PART_CVII_e8_embedding_bootstrap.json

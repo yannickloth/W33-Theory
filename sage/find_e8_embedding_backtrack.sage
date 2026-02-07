@@ -125,6 +125,7 @@ def try_embedding(
     time_limit: float,
     max_initial_attempts: int,
     rng: random.Random,
+    min_neigh_fraction: float = 1.0,
 ):
     start = time.time()
 
@@ -155,12 +156,30 @@ def try_embedding(
     # candidate enumeration for initial neighbor roots: random sampling with pruning
     attempts = 0
 
+    # diagnostics counters
+    seed_rejected = 0
+    propagate_tried = 0
+    dfs_call_count = 0
+    local_best_sum = 0
+    local_best_count = 0
+    sample_accepted_picks = []
+
     # Precompute small subset heuristic: often 2-sparse roots are useful
     two_sparse = [r for r in root_list if sum(1 for x in r if x != 0) == 2]
     candidate_pool = root_list
 
     # fix first root to canonical to break symmetries
     fixed_root = canonical_root(root_list)
+
+    # diagnostics: track best partial assignment found across all attempts
+    best: Dict[str, object] = {
+        "max_assigned": 0,
+        "edges_satisfied": 0,
+        "attempt": None,
+        "picked_indices": None,
+        "pos": None,
+        "time_at_best": None,
+    }
 
     while attempts < max_initial_attempts and (time.time() - start) < time_limit:
         attempts += 1
@@ -182,19 +201,20 @@ def try_embedding(
         mapping = {neigh0[i]: picked[i] for i in range(12)}
 
         # check neighbor internal adjacency difference constraints quickly
-        ok = True
+        constraints_total = 0
+        constraints_satisfied = 0
         for i in range(12):
             for j in range(i + 1, 12):
                 vi = neigh0[i]
                 vj = neigh0[j]
                 if neigh_adj[i][j]:
+                    constraints_total += 1
                     diff = sub_vec(mapping[vj], mapping[vi])
-                    if diff not in roots_set and neg_vec(diff) not in roots_set:
-                        ok = False
-                        break
-            if not ok:
-                break
-        if not ok:
+                    if diff in roots_set or neg_vec(diff) in roots_set:
+                        constraints_satisfied += 1
+        # require a minimum fraction of constraints satisfied (allows "soft" seeds)
+        if constraints_total > 0 and (constraints_satisfied / constraints_total) < min_neigh_fraction:
+            seed_rejected += 1
             continue
 
         # We have a promising seed; try to propagate
@@ -204,6 +224,17 @@ def try_embedding(
             pos[v] = neg_vec(r)  # set v = -r so v0 - v = r
 
         assigned = set(pos.keys())
+
+        # per-attempt local best tracker
+        local_best_assigned = len(assigned)
+        # diagnostics
+        propagate_tried += 1
+        if len(sample_accepted_picks) < 5:
+            try:
+                picked_indices = [root_list.index(r) for r in picked]
+            except Exception:
+                picked_indices = None
+            sample_accepted_picks.append({"attempt": attempts, "picked_indices": picked_indices})
 
         # helper: get candidate positions for vertex v consistent with assigned neighbors
         def candidates_for(v: int) -> List[Vector]:
@@ -250,15 +281,13 @@ def try_embedding(
             final.sort(key=lambda x: sum(abs(t) for t in x))
             return final
 
-        # choose order of remaining vertices by number of assigned neighbors (descending)
-        unassigned = [v for v in order if v not in assigned]
-
         # DFS backtracking with time limit
-        stack: List[Tuple[int, List[Vector]]] = []
-
         def dfs_assign():
+            nonlocal local_best_assigned
             if (time.time() - start) >= time_limit:
                 return None
+            if len(assigned) > local_best_assigned:
+                local_best_assigned = len(assigned)
             if len(assigned) == n:
                 return dict(pos)
             # pick next unassigned vertex with max assigned neighbors
@@ -293,7 +322,22 @@ def try_embedding(
                     return None
             return None
 
+        dfs_call_count += 1
         sol = dfs_assign()
+
+        # update local best summary stats
+        local_best_sum += local_best_assigned
+        local_best_count += 1
+
+        # compute edges satisfied in partial pos
+        edges_satisfied = 0
+        for i in pos:
+            for j in adj[i]:
+                if j in pos and i < j:
+                    diff = sub_vec(pos[i], pos[j])
+                    if diff in roots_set or neg_vec(diff) in roots_set:
+                        edges_satisfied += 1
+
         if sol is not None:
             # verify solution
             ok_all = True
@@ -314,11 +358,39 @@ def try_embedding(
                     "attempts": attempts,
                     "positions": {str(k): list(v) for k, v in sol.items()},
                 }
+
+        # Update global best partial attempt if improved.
+        if (
+            local_best_assigned > best["max_assigned"]
+            or (
+                local_best_assigned == best["max_assigned"]
+                and edges_satisfied > best["edges_satisfied"]
+            )
+        ):
+            try:
+                picked_indices = [root_list.index(r) for r in picked]
+            except Exception:
+                picked_indices = None
+            best["max_assigned"] = local_best_assigned
+            best["edges_satisfied"] = edges_satisfied
+            best["attempt"] = attempts
+            best["picked_indices"] = picked_indices
+            best["pos"] = {str(k): list(v) for k, v in pos.items()}
+            best["time_at_best"] = time.time() - start
+
     # no solution found
     return {
         "found": False,
         "time_seconds": time.time() - start,
         "attempts": attempts,
+        "best": best,
+        "diagnostics": {
+            "seed_rejected": seed_rejected,
+            "propagate_tried": propagate_tried,
+            "dfs_call_count": dfs_call_count,
+            "avg_local_best_assigned": (local_best_sum / local_best_count) if local_best_count else 0,
+            "sample_accepted_picks": sample_accepted_picks,
+        },
     }
 
 
@@ -327,6 +399,7 @@ def main():
     parser.add_argument("--time-limit", type=float, default=300.0, help="total time limit in seconds")
     parser.add_argument("--initial-attempts", type=int, default=2000, help="random initial neighbor sampling attempts")
     parser.add_argument("--seed", type=int, default=123456, help="random seed")
+    parser.add_argument("--min-neigh-constraint-fraction", type=float, default=1.0, help="minimum fraction of neighbor-neighbor adjacency constraints to require in an initial seed (0..1)")
     args = parser.parse_args()
 
     rng = random.Random(args.seed)
@@ -341,7 +414,20 @@ def main():
     print("W33 n=", n, "edges=", sum(len(adj[i]) for i in range(n)) // 2)
 
     print("Starting heuristic backtracking attempt")
-    res = try_embedding(root_list, roots_set, n, adj, args.time_limit, args.initial_attempts, rng)
+    res = try_embedding(
+        root_list,
+        roots_set,
+        n,
+        adj,
+        args.time_limit,
+        args.initial_attempts,
+        rng,
+        args.min_neigh_constraint_fraction,
+    )
+
+    # attach run provenance
+    res["seed"] = args.seed
+    res["min_neigh_fraction"] = args.min_neigh_constraint_fraction
 
     # write out artifact with summary
     with open(OUT, "w", encoding="utf-8") as f:
