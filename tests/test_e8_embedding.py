@@ -14,30 +14,42 @@ Tests cover:
 8. Partial embedding verification
 """
 
-import sys
-import os
-import pytest
 import math
+import os
+import sys
 from collections import Counter, defaultdict
-from itertools import combinations, product as iproduct
+from itertools import combinations
+from itertools import product as iproduct
+
+import pytest
 
 # Add scripts directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
 from e8_embedding_group_theoretic import (
-    generate_e8_roots, build_w33, vec_add, vec_sub, vec_neg,
-    vec_norm2, vec_dot, build_root_structures, verify_embedding,
-    build_sp43_generators, W33E8Solver,
-    ZERO8
+    ZERO8,
+    W33E8Solver,
+    build_root_structures,
+    build_sp43_generators,
+    build_w33,
+    generate_e8_roots,
+    vec_add,
+    vec_dot,
+    vec_neg,
+    vec_norm2,
+    vec_sub,
+    verify_embedding,
 )
 
 # =========================================================================
 # FIXTURES
 # =========================================================================
 
+
 @pytest.fixture(scope="module")
 def e8_roots():
     return generate_e8_roots()
+
 
 @pytest.fixture(scope="module")
 def e8_sets(e8_roots):
@@ -45,9 +57,11 @@ def e8_sets(e8_roots):
     roots_with_neg = roots_set | {vec_neg(r) for r in e8_roots}
     return roots_set, roots_with_neg
 
+
 @pytest.fixture(scope="module")
 def w33():
     return build_w33()
+
 
 @pytest.fixture(scope="module")
 def w33_adj_sets(w33):
@@ -58,6 +72,7 @@ def w33_adj_sets(w33):
 # =========================================================================
 # TEST CLASS 1: E8 Root System Properties
 # =========================================================================
+
 
 class TestE8RootSystem:
     """Verify all fundamental properties of the E8 root system."""
@@ -92,10 +107,14 @@ class TestE8RootSystem:
                 vals = [abs(x) for x in r]
                 assert all(v == 1 for v in vals), f"Type 2 root {r} has wrong values"
                 neg_count = sum(1 for x in r if x < 0)
-                assert neg_count % 2 == 0, f"Type 2 root {r} has odd number of negatives"
+                assert (
+                    neg_count % 2 == 0
+                ), f"Type 2 root {r} has odd number of negatives"
                 type2 += 1
             else:
-                pytest.fail(f"Root {r} has unexpected number of nonzero entries: {nonzero}")
+                pytest.fail(
+                    f"Root {r} has unexpected number of nonzero entries: {nonzero}"
+                )
 
         assert type1 == 112, f"Expected 112 type-1 roots, got {type1}"
         assert type2 == 128, f"Expected 128 type-2 roots, got {type2}"
@@ -152,6 +171,7 @@ class TestE8RootSystem:
 # TEST CLASS 2: W33 Graph Properties
 # =========================================================================
 
+
 class TestW33Graph:
     """Verify W33 = SRG(40, 12, 2, 4)."""
 
@@ -175,7 +195,9 @@ class TestW33Graph:
         adj_sets = w33_adj_sets
         for i, j in edges[:50]:  # Sample
             common = adj_sets[i] & adj_sets[j]
-            assert len(common) == 2, f"Edge ({i},{j}) has {len(common)} common neighbors"
+            assert (
+                len(common) == 2
+            ), f"Edge ({i},{j}) has {len(common)} common neighbors"
 
     def test_mu_parameter(self, w33, w33_adj_sets):
         """Mu = 4: non-adjacent pairs share exactly 4 common neighbors."""
@@ -186,7 +208,9 @@ class TestW33Graph:
             for j in range(i + 1, n):
                 if j not in adj_sets[i]:
                     common = adj_sets[i] & adj_sets[j]
-                    assert len(common) == 4, f"Non-edge ({i},{j}) has {len(common)} common neighbors"
+                    assert (
+                        len(common) == 4
+                    ), f"Non-edge ({i},{j}) has {len(common)} common neighbors"
                     count += 1
                     if count >= 50:
                         return
@@ -194,6 +218,7 @@ class TestW33Graph:
     def test_srg_eigenvalues(self, w33):
         """SRG(40,12,2,4) has eigenvalues {12, 2, -4} with multiplicities {1, 24, 15}."""
         import numpy as np
+
         n, _, adj, _ = w33
         A = np.zeros((n, n))
         for i in range(n):
@@ -215,9 +240,15 @@ class TestW33Graph:
             else:
                 pytest.fail(f"Unexpected eigenvalue: {ev}")
 
-        assert ev_counts[12] == 1, f"Expected multiplicity 1 for eigenvalue 12, got {ev_counts[12]}"
-        assert ev_counts[2] == 24, f"Expected multiplicity 24 for eigenvalue 2, got {ev_counts[2]}"
-        assert ev_counts[-4] == 15, f"Expected multiplicity 15 for eigenvalue -4, got {ev_counts[-4]}"
+        assert (
+            ev_counts[12] == 1
+        ), f"Expected multiplicity 1 for eigenvalue 12, got {ev_counts[12]}"
+        assert (
+            ev_counts[2] == 24
+        ), f"Expected multiplicity 24 for eigenvalue 2, got {ev_counts[2]}"
+        assert (
+            ev_counts[-4] == 15
+        ), f"Expected multiplicity 15 for eigenvalue -4, got {ev_counts[-4]}"
 
     def test_symplectic_form(self, w33):
         """Verify adjacency comes from symplectic form ω(x,y)=0."""
@@ -253,8 +284,12 @@ class TestW33Graph:
 
         neigh0 = list(adj_sets[0])
         # Count edges within H12
-        h12_edges = sum(1 for i in range(len(neigh0)) for j in range(i + 1, len(neigh0))
-                        if neigh0[j] in adj_sets[neigh0[i]])
+        h12_edges = sum(
+            1
+            for i in range(len(neigh0))
+            for j in range(i + 1, len(neigh0))
+            if neigh0[j] in adj_sets[neigh0[i]]
+        )
 
         # 4 triangles have 4*3 = 12 edges, but each edge counted once: 4*3/1 = 12
         # Actually 4 triangles * 3 edges each = 12 edges
@@ -291,6 +326,7 @@ class TestW33Graph:
 # TEST CLASS 3: W33 Lines (4-cliques)
 # =========================================================================
 
+
 class TestW33Lines:
     """W33 has exactly 40 lines (maximal 4-cliques)."""
 
@@ -315,7 +351,9 @@ class TestW33Lines:
                             continue
                         four_cliques.add((a, b, c, d))
 
-        assert len(four_cliques) == 40, f"Found {len(four_cliques)} 4-cliques, expected 40"
+        assert (
+            len(four_cliques) == 40
+        ), f"Found {len(four_cliques)} 4-cliques, expected 40"
 
     def test_each_vertex_in_four_lines(self, w33, w33_adj_sets):
         """Each vertex appears in exactly 4 lines (GQ property)."""
@@ -343,13 +381,15 @@ class TestW33Lines:
                 vertex_line_count[v] += 1
 
         for v in range(n):
-            assert vertex_line_count[v] == 4, \
-                f"Vertex {v} in {vertex_line_count[v]} lines, expected 4"
+            assert (
+                vertex_line_count[v] == 4
+            ), f"Vertex {v} in {vertex_line_count[v]} lines, expected 4"
 
 
 # =========================================================================
 # TEST CLASS 4: Embedding Constraints
 # =========================================================================
+
 
 class TestEmbeddingConstraints:
     """Test the mathematical constraints that any valid embedding must satisfy."""
@@ -378,7 +418,9 @@ class TestEmbeddingConstraints:
                 else:
                     sum_to_non_root += 1
 
-        print(f"Root sums: {sum_to_root} roots, {sum_to_zero} zero, {sum_to_non_root} non-roots (of {total})")
+        print(
+            f"Root sums: {sum_to_root} roots, {sum_to_zero} zero, {sum_to_non_root} non-roots (of {total})"
+        )
         # Not all pairs sum to roots - this constrains triangles!
         assert sum_to_root > 0
 
@@ -407,7 +449,9 @@ class TestEmbeddingConstraints:
 
         total = compatible_count + incompatible_count
         frac = compatible_count / total if total > 0 else 0
-        print(f"Root pairs with root-difference: {compatible_count}/{total} ({frac:.4f})")
+        print(
+            f"Root pairs with root-difference: {compatible_count}/{total} ({frac:.4f})"
+        )
 
         # This fraction constrains how many neighbor configs are possible
         assert compatible_count > 0
@@ -435,14 +479,17 @@ class TestEmbeddingConstraints:
         import numpy as np
 
         # E6 simple roots (standard embedding in E8)
-        e6_simple = np.array([
-            [0, 0, 1, -1, 0, 0, 0, 0],
-            [0, 0, 0, 1, -1, 0, 0, 0],
-            [0, 0, 0, 0, 1, -1, 0, 0],
-            [0, 0, 0, 0, 0, 1, -1, 0],
-            [0, 0, 0, 0, 0, 1, 1, 0],
-            [-0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5],
-        ], dtype=np.float64)
+        e6_simple = np.array(
+            [
+                [0, 0, 1, -1, 0, 0, 0, 0],
+                [0, 0, 0, 1, -1, 0, 0, 0],
+                [0, 0, 0, 0, 1, -1, 0, 0],
+                [0, 0, 0, 0, 0, 1, -1, 0],
+                [0, 0, 0, 0, 0, 1, 1, 0],
+                [-0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5],
+            ],
+            dtype=np.float64,
+        )
 
         roots_np = np.array(e8_roots, dtype=np.float64) / 2.0  # unscale
 
@@ -492,13 +539,15 @@ class TestEmbeddingConstraints:
         assert 72 in orbits, f"Missing the 72-orbit (E6 roots)"
         # The non-E6 roots split into 27-dimensional orbits under E6 simple reflections
         non_e6 = [o for o in orbits if o != 72]
-        assert all(o in [1, 27] for o in non_e6), \
-            f"Non-E6 orbits should be 1s and 27s, got {non_e6}"
+        assert all(
+            o in [1, 27] for o in non_e6
+        ), f"Non-E6 orbits should be 1s and 27s, got {non_e6}"
 
 
 # =========================================================================
 # TEST CLASS 5: Group-Theoretic Properties
 # =========================================================================
+
 
 class TestGroupTheory:
     """Test Sp(4,3) generators and group properties."""
@@ -514,8 +563,9 @@ class TestGroupTheory:
         for g_idx, g in enumerate(generators[:10]):  # Test first 10
             for i, j in edges:
                 gi, gj = g[i], g[j]
-                assert gj in adj_set[gi], \
-                    f"Generator {g_idx} breaks edge ({i},{j}) -> ({gi},{gj})"
+                assert (
+                    gj in adj_set[gi]
+                ), f"Generator {g_idx} breaks edge ({i},{j}) -> ({gi},{gj})"
 
     def test_generators_are_involutions_or_order3(self, w33):
         """Transvections in Sp(4,3) over F3 have order 3."""
@@ -527,8 +577,9 @@ class TestGroupTheory:
             current = list(range(n))
             for _ in range(3):
                 current = [g[current[i]] for i in range(n)]
-            assert current == list(range(n)), \
-                f"Generator {g_idx} does not have order dividing 3"
+            assert current == list(
+                range(n)
+            ), f"Generator {g_idx} does not have order dividing 3"
 
     def test_single_orbit_on_edges(self, w33):
         """Sp(4,3) acts transitively on the 240 edges (single orbit)."""
@@ -558,8 +609,9 @@ class TestGroupTheory:
                     reached.add(ne)
                     queue.append(ne)
 
-        assert len(reached) == 240, \
-            f"Reached {len(reached)} edges, expected 240 (single orbit)"
+        assert (
+            len(reached) == 240
+        ), f"Reached {len(reached)} edges, expected 240 (single orbit)"
 
     def test_automorphism_group_order(self, w33):
         """Test that the generated group has order 51840 = |Sp(4,3)|."""
@@ -603,6 +655,7 @@ class TestGroupTheory:
 # =========================================================================
 # TEST CLASS 6: Embedding Verification
 # =========================================================================
+
 
 class TestEmbeddingVerification:
     """Test the verification function and known partial embeddings."""
@@ -658,6 +711,7 @@ class TestEmbeddingVerification:
 # TEST CLASS 7: Structural Analysis
 # =========================================================================
 
+
 class TestStructuralAnalysis:
     """Test structural properties relevant to the embedding problem."""
 
@@ -692,6 +746,7 @@ class TestStructuralAnalysis:
     def test_diameter(self, w33, w33_adj_sets):
         """W33 has diameter 2 (any two vertices are at most 2 apart)."""
         from collections import deque
+
         n, _, adj, _ = w33
 
         for start in [0, 10, 30]:  # Test a few vertices
@@ -775,6 +830,7 @@ class TestStructuralAnalysis:
 # TEST CLASS 8: Embedding Feasibility
 # =========================================================================
 
+
 class TestEmbeddingFeasibility:
     """Test necessary conditions for the embedding to exist."""
 
@@ -799,6 +855,7 @@ class TestEmbeddingFeasibility:
 
         # Try random root assignments and count constraint satisfaction
         import random
+
         rng = random.Random(42)
 
         best_satisfied = 0
@@ -825,7 +882,9 @@ class TestEmbeddingFeasibility:
 
         print(f"Best constraint satisfaction for H12: {best_satisfied}/{12*11//2}")
         # We just need to show some compatibility exists (be conservative to avoid flaky failures)
-        assert best_satisfied > 35, f"Very few constraints satisfiable: {best_satisfied}/{12*11//2}"
+        assert (
+            best_satisfied > 35
+        ), f"Very few constraints satisfiable: {best_satisfied}/{12*11//2}"
 
     def test_e8_lattice_vectors_at_various_norms(self, e8_roots, e8_sets):
         """Check that E8 lattice vectors exist beyond just roots.
@@ -845,7 +904,7 @@ class TestEmbeddingFeasibility:
         for i in range(-3, 4):
             for j in range(-3, 4):
                 for k in range(-3, 4):
-                    v = (2*i, 2*j, 2*k, 0, 0, 0, 0, 0)
+                    v = (2 * i, 2 * j, 2 * k, 0, 0, 0, 0, 0)
                     if vec_norm2(v) == 12 and v not in roots_set:
                         count_12 += 1
         print(f"Type-1 lattice vectors at norm^2=12 (not roots): {count_12}")
@@ -855,6 +914,7 @@ class TestEmbeddingFeasibility:
 # =========================================================================
 # TEST CLASS 9: Impossibility Theorem
 # =========================================================================
+
 
 class TestImpossibilityTheorem:
     """Formally verify that direct metric embedding of W33 into E8 lattice is impossible."""
@@ -877,6 +937,7 @@ class TestImpossibilityTheorem:
         # Use structured root picks: pick roots that mutually have ip=4
         # (like within an E6 root subsystem), which is the realistic scenario
         import random
+
         rng = random.Random(42)
 
         # Track how intersection sizes shrink
@@ -905,7 +966,9 @@ class TestImpossibilityTheorem:
 
             shrinkage_data.append(sizes)
 
-        assert shrinkage_data, "No compatible root configurations found for shrinkage test; consider increasing trials or adjusting seed"
+        assert (
+            shrinkage_data
+        ), "No compatible root configurations found for shrinkage test; consider increasing trials or adjusting seed"
         print("Root-star intersection shrinkage (1/2/3/4 stars):")
         for s in shrinkage_data[:5]:
             print(f"  {s}")
@@ -913,8 +976,12 @@ class TestImpossibilityTheorem:
         # Verify monotonic shrinkage and that the 4-star intersection shrinks
         for sizes in shrinkage_data:
             assert sizes[0] == 240
-            assert sizes[1] <= sizes[0] and sizes[2] <= sizes[1] and sizes[3] <= sizes[2], f"Root-star intersections not monotonic: {sizes}"
-            assert sizes[3] < sizes[0], f"4-star intersection failed to shrink: {sizes[3]}"
+            assert (
+                sizes[1] <= sizes[0] and sizes[2] <= sizes[1] and sizes[3] <= sizes[2]
+            ), f"Root-star intersections not monotonic: {sizes}"
+            assert (
+                sizes[3] < sizes[0]
+            ), f"4-star intersection failed to shrink: {sizes[3]}"
 
     def test_cross_triangle_constraint_cascade(self, e8_roots, e8_sets):
         """With 4 roots from DIFFERENT triangles, the constraint cascade blocks H27.
@@ -929,6 +996,7 @@ class TestImpossibilityTheorem:
         """
         roots_set, roots_with_neg = e8_sets
         import random
+
         rng = random.Random(42)
 
         tests_done = 0
@@ -939,8 +1007,9 @@ class TestImpossibilityTheorem:
             # (this simulates the cross-triangle constraint)
             r1 = rng.choice(e8_roots)
             # Find roots whose difference with r1 is NOT a root
-            non_adj_to_r1 = [r for r in e8_roots
-                             if vec_sub(r, r1) not in roots_with_neg and r != r1]
+            non_adj_to_r1 = [
+                r for r in e8_roots if vec_sub(r, r1) not in roots_with_neg and r != r1
+            ]
             if len(non_adj_to_r1) < 3:
                 continue
             picks = [r1]
@@ -992,8 +1061,9 @@ class TestImpossibilityTheorem:
         print(f"Configs with <=3 non-root candidates: {few_or_zero}/{tests_done}")
         # Be conservative: expect at least ~30% of constructed configs to have few non-root candidates
         threshold = max(1, int(tests_done * 0.3))
-        assert few_or_zero >= threshold, \
-            f"Expected at least {threshold} configs to have <=3 non-root candidates (got {few_or_zero}/{tests_done})"
+        assert (
+            few_or_zero >= threshold
+        ), f"Expected at least {threshold} configs to have <=3 non-root candidates (got {few_or_zero}/{tests_done})"
 
     def test_gram_matrix_rank_obstruction(self, e8_roots, e8_sets):
         """The Gram matrix of 12 equi-inner-product roots in E8 has rank > 8.
@@ -1012,11 +1082,9 @@ class TestImpossibilityTheorem:
         #   -> x = 4
         # Non-adjacent in H12 (ip=y): diff is not root -> norm^2(diff) != 8
         #   norm^2(r1 - r2) = 16 - 2y != 8 -> y != 4
-
         # Build Gram matrix G[i,j] = <r_i, r_j>
         # Diagonal = 8. Adjacent = 4. Non-adjacent = y.
         # For embedding in R^8, need rank(G) <= 8.
-
         # H12 adj: 4 disjoint triangles of size 3
         # Block structure: 4 blocks of 3
         for y in [0, 2, -2, -4, 6, -6]:
@@ -1040,7 +1108,9 @@ class TestImpossibilityTheorem:
             if is_psd and y != 4:
                 # Check if rank <= 8
                 if rank > 8:
-                    print(f"y={y}: rank={rank} > 8, PSD={is_psd} -> CANNOT embed in R^8")
+                    print(
+                        f"y={y}: rank={rank} > 8, PSD={is_psd} -> CANNOT embed in R^8"
+                    )
                 else:
                     print(f"y={y}: rank={rank}, PSD={is_psd}")
 
@@ -1070,24 +1140,35 @@ class TestImpossibilityTheorem:
 
     def test_obstruction_artifact_exists(self):
         """The obstruction analysis script should have produced a JSON artifact claiming OBSTRUCTION_FOUND."""
-        from pathlib import Path
         import json
+        from pathlib import Path
 
-        p = Path('checks') / 'PART_CVII_e8_obstruction_analysis.json'
+        p = Path("checks") / "PART_CVII_e8_obstruction_analysis.json"
         if not p.exists():
-            pytest.skip("Obstruction artifact not present; run scripts/e8_obstruction_analysis.py to generate it")
-        data = json.loads(p.read_text(encoding='utf-8'))
+            pytest.skip(
+                "Obstruction artifact not present; run scripts/e8_obstruction_analysis.py to generate it"
+            )
+        data = json.loads(p.read_text(encoding="utf-8"))
 
-        assert data.get('result') == 'OBSTRUCTION_FOUND', 'Obstruction result not present'
-        assert int(data.get('max_embeddable', 0)) == 13, 'Unexpected max_embeddable value'
-        assert 'H27' in data.get('explanation', ''), 'Expected explanation to mention H27'
-        ips = data.get('gram_analysis', {}).get('h12_nonadj_valid_ips', [])
-        assert any(v in ips for v in (0, -4, -8)), 'Expected h12_nonadj_valid_ips to include 0 or -4 or -8'
+        assert (
+            data.get("result") == "OBSTRUCTION_FOUND"
+        ), "Obstruction result not present"
+        assert (
+            int(data.get("max_embeddable", 0)) == 13
+        ), "Unexpected max_embeddable value"
+        assert "H27" in data.get(
+            "explanation", ""
+        ), "Expected explanation to mention H27"
+        ips = data.get("gram_analysis", {}).get("h12_nonadj_valid_ips", [])
+        assert any(
+            v in ips for v in (0, -4, -8)
+        ), "Expected h12_nonadj_valid_ips to include 0 or -4 or -8"
 
 
 # =========================================================================
 # TEST CLASS 10: Structural Bridge Properties
 # =========================================================================
+
 
 class TestStructuralBridge:
     """Test the structural correspondence between W33 and E8."""
@@ -1154,21 +1235,31 @@ class TestStructuralBridge:
         # The (0,0) sector contains E6 roots + SU3 roots
         center = sectors.get((0, 0), [])
         # SU3 roots: only last 2 coords nonzero in (0,0) sector
-        su3_count = sum(1 for idx in center
-                        if all(e8_roots[idx][k] == 0 for k in range(6)))
+        su3_count = sum(
+            1 for idx in center if all(e8_roots[idx][k] == 0 for k in range(6))
+        )
         e6_count = len(center) - su3_count
 
         # Non-zero sectors
         nonzero_total = sum(len(v) for k, v in sectors.items() if k != (0, 0))
 
-        print(f"E6 x SU3 decomposition: E6={e6_count}, SU3={su3_count}, "
-              f"nonzero sectors={nonzero_total}")
+        print(
+            f"E6 x SU3 decomposition: E6={e6_count}, SU3={su3_count}, "
+            f"nonzero sectors={nonzero_total}"
+        )
         print(f"Total: {e6_count + su3_count + nonzero_total}")
         assert e6_count + su3_count + nonzero_total == 240
 
-        # The decomposition 72 + 6 + 81 + 81 should hold approximately
-        # (exact classification depends on orientation choice)
-        # At minimum: center sector should be 72+6=78 or close
+        # Confirm canonical Z3 grading counts using the dedicated classifier
+        from w33_e8_bijection import classify_roots_z3_grading
+
+        z3 = classify_roots_z3_grading(e8_roots)
+
+        assert len(z3["g0"]) == 78, f"Expected g0=78, got {len(z3['g0'])}"
+        assert len(z3["g1"]) == 81, f"Expected g1=81, got {len(z3['g1'])}"
+        assert len(z3["g2"]) == 81, f"Expected g2=81, got {len(z3['g2'])}"
+
+        # At minimum: center sector should contain SU3 candidates (>=6)
         assert len(center) >= 6, f"Center sector too small: {len(center)}"
 
     def test_h27_vertex_degree_matches_e6_weight(self, w33, w33_adj_sets):
@@ -1251,6 +1342,101 @@ class TestStructuralBridge:
                 point_counts[v] += 1
         for v in range(n):
             assert point_counts[v] == 4, f"Vertex {v} on {point_counts[v]} lines"
+
+
+class TestW33E8Bijection:
+    """Verify the explicit decomposition-based bijection artifact and properties."""
+
+    def test_bijection_artifact_exists_and_bijective(self):
+        import json
+        from pathlib import Path
+
+        p = Path("checks") / "PART_CVII_e8_bijection.json"
+        assert p.exists(), f"Missing bijection artifact {p}"
+        data = json.loads(p.read_text(encoding="utf-8"))
+
+        bij = data.get("bijection")
+        assert isinstance(bij, dict)
+        assert len(bij) == 240, f"Bijection should contain 240 mappings, got {len(bij)}"
+
+        vals = set(bij.values())
+        assert len(vals) == 240, "Bijection not injective on roots"
+        assert min(vals) >= 0 and max(vals) < 240, "Root indices out of range"
+
+        assert (
+            data.get("sp43_transitive") is True
+        ), "Sp(4,3) transitivity flag should be True"
+
+    def test_bijection_sector_alignment(self):
+        import json
+        from pathlib import Path
+
+        p = Path("checks") / "PART_CVII_e8_bijection.json"
+        data = json.loads(p.read_text(encoding="utf-8"))
+        sa = data["verification"]["sector_alignment"]
+
+        core = sa["core_24"]
+        assert core["g0"] == 24, f"Core edges should map to g0 roots: {core}"
+
+        h27 = sa["h27_108"]
+        cross = sa["cross_108"]
+
+        assert sum(h27.values()) == 108
+        assert sum(cross.values()) == 108
+
+        # Expect most H27 internal edges to map to the g1 sector and most cross edges to g2
+        assert h27["g1"] >= 60, f"Expected majority of H27 edges in g1, got {h27}"
+        assert cross["g2"] >= 60, f"Expected majority of cross edges in g2, got {cross}"
+
+    def test_triangle_cocycle_has_some_exact_matches(self):
+        import json
+        from pathlib import Path
+
+        p = Path("checks") / "PART_CVII_e8_bijection.json"
+        data = json.loads(p.read_text(encoding="utf-8"))
+        tc = data["verification"]["triangle_cocycle"]
+
+        assert tc["total_checked"] > 0
+        # Expect at least one exact cocycle (some triangles should satisfy r_ab + r_bc = ± r_ac)
+        assert (
+            tc["exact_match"] >= 1 or tc["root_sum_exists"] >= 10
+        ), f"Triangle cocycle failure: {tc}"
+
+    def test_optimize_bijection_smoke(self):
+        """Quick smoke test: run optimizer with small budget and check output."""
+        import json
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        out = Path("checks") / "PART_CVII_e8_bijection_repaired_test.json"
+        if out.exists():
+            out.unlink()
+
+        cmd = [
+            sys.executable,
+            "-X",
+            "utf8",
+            "scripts/optimize_bijection_cocycle.py",
+            "--in",
+            "checks/PART_CVII_e8_bijection.json",
+            "--out",
+            str(out),
+            "--iters",
+            "200",
+            "--time",
+            "2",
+            "--seed",
+            "42",
+            "--no-sector",
+        ]
+
+        subprocess.run(cmd, check=False)
+        assert out.exists(), "Optimizer did not produce output"
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert "best_score" in data
+        assert "verification" in data
+        assert "triangle_cocycle" in data["verification"]
 
 
 # =========================================================================
