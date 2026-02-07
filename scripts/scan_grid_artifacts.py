@@ -142,11 +142,13 @@ def scan_run_for_found(repo: str, run_id: int, run_url: str, token: str, artifac
                                     body = f"An embedding was reported by the grid run [view run]({run_url}) in artifact **{name}**.\n\n"
                                     if mention:
                                         body += f"cc {mention}\n\n"
-                                    body += "Summary of result:\n\n```
-" + json.dumps({"found": data.get("found"), "time_seconds": data.get("time_seconds"), "best": data.get("best")}, indent=2) + "\n```
-\nFull artifact JSON:\n\n```
-" + json.dumps(data, indent=2) + "\n```
-"
+                                    body += (
+                                        "Summary of result:\n\n```\n"
+                                        + json.dumps({"found": data.get("found"), "time_seconds": data.get("time_seconds"), "best": data.get("best")}, indent=2)
+                                        + "\n```\n\nFull artifact JSON:\n\n```\n"
+                                        + json.dumps(data, indent=2)
+                                        + "\n```\n"
+                                    )
                                     try:
                                         url = create_issue(repo, title, body, [issue_label], token)
                                         print("Created issue:", url)
