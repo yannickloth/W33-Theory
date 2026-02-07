@@ -39,7 +39,8 @@ G = Graph()
 G.add_vertices(range(40))
 for i in range(40):
     for j in range(i+1, 40):
-        if (proj[i].transpose() * J * proj[j])[0] == 0:
+        # use dot_product which works for Sage's vector type
+        if proj[i].dot_product(J * proj[j]) == 0:
             G.add_edge(i, j)
 
 print('n_vertices', G.num_verts(), 'n_edges', G.num_edges())
