@@ -6,13 +6,14 @@ on:
 jobs:
   compute-aut-orbits:
     runs-on: ubuntu-latest
-    container:
-      image: sagemath/sagemath:latest
     steps:
       - uses: actions/checkout@v4
-      - name: Compute automorphism orbits with Sage
+      - name: Compute automorphism orbits with Sage (docker run)
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         run: |
-          sage -python sage/compute_w33_aut_orbits.sage
+          docker pull sagemath/sagemath:latest
+          docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/compute_w33_aut_orbits.sage
       - name: Upload automorphism orbits artifact
         uses: actions/upload-artifact@v4
         with:
