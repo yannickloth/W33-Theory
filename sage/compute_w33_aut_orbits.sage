@@ -65,6 +65,9 @@ for i, orbit in enumerate(orbits):
 
 # Save orbits to a file
 import json
+# convert Sage Integers and other Sage-specific objects to native Python types
+py_orbits = [[int(x) for x in o] for o in orbits]
+py_aut_order = int(Aut.order())
 with open('checks/PART_CXI_aut_orbits_sage.json', 'w') as f:
-    json.dump({'aut_order': Aut.order(), 'orbits': [sorted(list(o)) for o in orbits]}, f, indent=2)
+    json.dump({'aut_order': py_aut_order, 'orbits': py_orbits}, f, indent=2)
 print('Wrote checks/PART_CXI_aut_orbits_sage.json')
