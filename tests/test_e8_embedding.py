@@ -1438,6 +1438,46 @@ class TestW33E8Bijection:
         assert "verification" in data
         assert "triangle_cocycle" in data["verification"]
 
+    def test_optimize_bijection_hybrid_smoke(self):
+        """Run hybrid sector-aware optimizer and ensure score doesn't degrade."""
+        import json
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        out = Path("checks") / "PART_CVII_e8_bijection_repaired_hybrid_test.json"
+        if out.exists():
+            out.unlink()
+
+        cmd = [
+            sys.executable,
+            "-X",
+            "utf8",
+            "scripts/optimize_bijection_cocycle.py",
+            "--in",
+            "checks/PART_CVII_e8_bijection.json",
+            "--out",
+            str(out),
+            "--iters",
+            "200",
+            "--time",
+            "2",
+            "--seed",
+            "42",
+        ]
+
+        subprocess.run(cmd, check=False)
+        assert out.exists(), "Hybrid optimizer did not produce output"
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert "initial_score" in data and "best_score" in data
+        assert (
+            data["best_score"] >= data["initial_score"] - 1e-12
+        ), f"Best score {data['best_score']} worse than initial {data['initial_score']}"
+        assert data.get("best_exact", 0) >= data.get(
+            "initial_exact", 0
+        ), f"Exact triangles decreased: {data.get('initial_exact')} -> {data.get('best_exact')}"
+        assert "best_pref_counts" in data, "Missing preference counts in output"
+
 
 # =========================================================================
 # MAIN

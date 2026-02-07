@@ -84,17 +84,33 @@ def optimize(
     time_limit=10.0,
     seed=42,
     restrict_sector=True,
+    alpha=0.7,
+    beta=0.3,
+    temp0=0.01,
 ):
+    """Optimize bijection by maximizing triangle exactness and sector alignment.
+
+    Objective: score = alpha * exact_frac + beta * sector_pref_fraction
+    Where:
+      - exact_frac = # triangles satisfying cocycle / total_triangles
+      - sector_pref_fraction = average fraction of edges per sector mapping to preferred root sector
+
+    Uses simulated annealing-style acceptance to escape local maxima.
+    """
+    import math
+
     rng = random.Random(seed)
     n = len(adj)
     tri_list = build_triangles(n, adj)
+    total_triangles = len(tri_list)
 
     # mapping edge->triangles
     edge_triangles = defaultdict(list)
+    edge_to_idx = {(u, v): i for i, (u, v) in enumerate(edges)}
+    edge_to_idx.update({(v, u): i for i, (u, v) in enumerate(edges)})
+
     for t_idx, tri in enumerate(tri_list):
         a, b, c = tri
-        edge_to_idx = {(u, v): i for i, (u, v) in enumerate(edges)}
-        edge_to_idx.update({(v, u): i for i, (u, v) in enumerate(edges)})
         e_ab = edge_to_idx.get((a, b))
         e_bc = edge_to_idx.get((b, c))
         e_ac = edge_to_idx.get((a, c))
@@ -103,28 +119,61 @@ def optimize(
 
     # initial exact flags
     exact_flags = [triangle_exact(roots, bij_init, edges, tri) for tri in tri_list]
-    current_score = sum(exact_flags)
+    exact_count = sum(exact_flags)
+
+    # sector partitioning (core = incident + h12)
+    n_vertices = n
+    edge_decomp = decompose_w33_edges(n_vertices, adj, edges)
+    edge_idx_map = {e: i for i, e in enumerate(edges)}
+    incident_set = {
+        edge_idx_map[e] for e in edge_decomp["incident"] if e in edge_idx_map
+    }
+    h12_set = {
+        edge_idx_map[e] for e in edge_decomp["h12_internal"] if e in edge_idx_map
+    }
+    h27_set = {
+        edge_idx_map[e] for e in edge_decomp["h27_internal"] if e in edge_idx_map
+    }
+    cross_set = {edge_idx_map[e] for e in edge_decomp["cross"] if e in edge_idx_map}
+
+    core_set = incident_set | h12_set
+    core_size = len(core_set)
+    h27_size = len(h27_set)
+    cross_size = len(cross_set)
+
+    # Z3 grading -> root sector membership
+    z3 = classify_roots_z3_grading(roots)
+    g0_set = set(z3["g0"])
+    g1_set = set(z3["g1"])
+    g2_set = set(z3["g2"])
+
+    # preferred mapping: core->g0, h27->g1, cross->g2
+    def preferred_flag(edge_idx, root_idx):
+        if edge_idx in core_set:
+            return root_idx in g0_set
+        if edge_idx in h27_set:
+            return root_idx in g1_set
+        if edge_idx in cross_set:
+            return root_idx in g2_set
+        return False
+
+    pref_core = sum(1 for e in core_set if preferred_flag(e, bij_init[e]))
+    pref_h27 = sum(1 for e in h27_set if preferred_flag(e, bij_init[e]))
+    pref_cross = sum(1 for e in cross_set if preferred_flag(e, bij_init[e]))
+
+    sector_pref_fraction = (
+        pref_core / core_size + pref_h27 / h27_size + pref_cross / cross_size
+    ) / 3.0
+
+    exact_frac = exact_count / total_triangles if total_triangles > 0 else 0.0
+    current_score = alpha * exact_frac + beta * sector_pref_fraction
+
     best_score = current_score
     bij = dict(bij_init)
     best_bij = dict(bij)
+    best_exact = exact_count
+    best_pref = (pref_core, pref_h27, pref_cross)
 
-    # sector partitioning
-    n_vertices, vertices, _adj, _edges = build_w33()
-    edge_decomp = decompose_w33_edges(n_vertices, vertices, edges)
-    # Build edge index sets for sectors
-    edge_idx_map = {e: i for i, e in enumerate(edges)}
-    sector_sets = {
-        "incident": {
-            edge_idx_map[e] for e in edge_decomp["incident"] if e in edge_idx_map
-        },
-        "h12": {
-            edge_idx_map[e] for e in edge_decomp["h12_internal"] if e in edge_idx_map
-        },
-        "h27": {
-            edge_idx_map[e] for e in edge_decomp["h27_internal"] if e in edge_idx_map
-        },
-        "cross": {edge_idx_map[e] for e in edge_decomp["cross"] if e in edge_idx_map},
-    }
     all_edge_idxs = list(range(len(edges)))
 
     start = time.time()
@@ -133,9 +182,15 @@ def optimize(
         it += 1
         # pick swap candidates
         if restrict_sector:
-            # pick a random sector weighted by size
             sec = rng.choice(["h27", "cross", "h12", "incident"])
-            pool = list(sector_sets[sec])
+            pool = list(
+                {
+                    "h27": h27_set,
+                    "cross": cross_set,
+                    "h12": h12_set,
+                    "incident": incident_set,
+                }[sec]
+            )
             if len(pool) < 2:
                 continue
             e1, e2 = rng.sample(pool, 2)
@@ -145,6 +200,10 @@ def optimize(
         affected_tris = set(edge_triangles[e1]) | set(edge_triangles[e2])
         prev_matches = sum(exact_flags[t] for t in affected_tris)
 
+        # prev pref flags for the two edges
+        prev_pref_e1 = preferred_flag(e1, bij[e1])
+        prev_pref_e2 = preferred_flag(e2, bij[e2])
+
         # swap
         bij[e1], bij[e2] = bij[e2], bij[e1]
 
@@ -153,18 +212,91 @@ def optimize(
             if triangle_exact(roots, bij, edges, tri_list[t]):
                 new_matches += 1
 
-        delta = new_matches - prev_matches
-        if delta >= 0:
-            # accept and update flags
+        delta_exact = new_matches - prev_matches
+
+        # pref flags after swap
+        new_pref_e1 = preferred_flag(e1, bij[e1])
+        new_pref_e2 = preferred_flag(e2, bij[e2])
+
+        delta_pref_core = 0
+        delta_pref_h27 = 0
+        delta_pref_cross = 0
+
+        # update deltas based on which sector the edge belongs to
+        def apply_pref_delta(e_idx, prev_flag, new_flag):
+            d_core = d_h27 = d_cross = 0
+            if e_idx in core_set:
+                d_core = int(new_flag) - int(prev_flag)
+            elif e_idx in h27_set:
+                d_h27 = int(new_flag) - int(prev_flag)
+            elif e_idx in cross_set:
+                d_cross = int(new_flag) - int(prev_flag)
+            return d_core, d_h27, d_cross
+
+        d1 = apply_pref_delta(e1, prev_pref_e1, new_pref_e1)
+        d2 = apply_pref_delta(e2, prev_pref_e2, new_pref_e2)
+        delta_pref_core = d1[0] + d2[0]
+        delta_pref_h27 = d1[1] + d2[1]
+        delta_pref_cross = d1[2] + d2[2]
+
+        # compute new fractions
+        new_pref_core = pref_core + delta_pref_core
+        new_pref_h27 = pref_h27 + delta_pref_h27
+        new_pref_cross = pref_cross + delta_pref_cross
+
+        new_sector_pref_fraction = (
+            new_pref_core / core_size
+            + new_pref_h27 / h27_size
+            + new_pref_cross / cross_size
+        ) / 3.0
+        new_exact_frac = (
+            (exact_count + delta_exact) / total_triangles
+            if total_triangles > 0
+            else 0.0
+        )
+
+        new_score = alpha * new_exact_frac + beta * new_sector_pref_fraction
+        delta_score = new_score - current_score
+
+        # temperature schedule (linear decay)
+        elapsed = time.time() - start
+        frac = min(1.0, elapsed / max(1e-9, time_limit))
+        temp = max(1e-6, temp0 * (1.0 - frac))
+
+        accept = False
+        if delta_score >= 0:
+            accept = True
+        else:
+            try:
+                prob = math.exp(delta_score / temp)
+            except OverflowError:
+                prob = 0.0
+            if rng.random() < prob:
+                accept = True
+
+        if accept:
+            # apply updates
             for t in affected_tris:
                 exact_flags[t] = triangle_exact(roots, bij, edges, tri_list[t])
-            current_score += delta
+            exact_count += delta_exact
+            pref_core = new_pref_core
+            pref_h27 = new_pref_h27
+            pref_cross = new_pref_cross
+            current_score = new_score
+
             if current_score > best_score:
                 best_score = current_score
                 best_bij = dict(bij)
+                best_exact = exact_count
+                best_pref = (pref_core, pref_h27, pref_cross)
         else:
-            # reject swap: revert
+            # revert
             bij[e1], bij[e2] = bij[e2], bij[e1]
+
+    # Final verification on best_bij
+    verification = verify_bijection_properties(
+        best_bij, edges, roots, z3, edge_decomp, adj, n
+    )
 
     return {
         "best_bij": best_bij,
@@ -172,9 +304,28 @@ def optimize(
         "initial_score": (
             current_score
             if best_score == current_score
-            else sum(triangle_exact(roots, bij_init, edges, t) for t in tri_list)
+            else (
+                alpha
+                * (
+                    sum([triangle_exact(roots, bij_init, edges, t) for t in tri_list])
+                    / total_triangles
+                    if total_triangles > 0
+                    else 0.0
+                )
+                + beta * sector_pref_fraction
+            )
         ),
+        "initial_exact": sum(
+            [triangle_exact(roots, bij_init, edges, t) for t in tri_list]
+        ),
+        "best_exact": best_exact,
+        "best_pref_counts": {
+            "core": best_pref[0],
+            "h27": best_pref[1],
+            "cross": best_pref[2],
+        },
         "iterations": it,
+        "verification": verification,
     }
 
 
@@ -190,6 +341,15 @@ def main():
     parser.add_argument("--time", type=float, default=10.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--no-sector", dest="restrict_sector", action="store_false")
+    parser.add_argument(
+        "--alpha", type=float, default=0.7, help="Weight for triangle exactness (0..1)"
+    )
+    parser.add_argument(
+        "--beta", type=float, default=0.3, help="Weight for sector alignment (0..1)"
+    )
+    parser.add_argument(
+        "--temp", type=float, default=0.01, help="Initial SA temperature"
+    )
     args = parser.parse_args()
 
     inpath = Path(args.inpath)
@@ -211,6 +371,9 @@ def main():
         time_limit=args.time,
         seed=args.seed,
         restrict_sector=args.restrict_sector,
+        alpha=args.alpha,
+        beta=args.beta,
+        temp0=args.temp,
     )
 
     # Build verification for best bijection
@@ -222,8 +385,11 @@ def main():
 
     output = {
         "bijection": {str(k): int(v) for k, v in res["best_bij"].items()},
-        "initial_score": int(res["initial_score"]),
-        "best_score": int(res["best_score"]),
+        "initial_score": float(res["initial_score"]),
+        "best_score": float(res["best_score"]),
+        "initial_exact": int(res.get("initial_exact", 0)),
+        "best_exact": int(res.get("best_exact", 0)),
+        "best_pref_counts": res.get("best_pref_counts", {}),
         "iterations": res["iterations"],
         "verification": verification,
     }
