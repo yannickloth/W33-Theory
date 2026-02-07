@@ -13,7 +13,8 @@ jobs:
           GITHUB_WORKSPACE: ${{ github.workspace }}
         run: |
           docker pull sagemath/sagemath:latest
-          docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/compute_w33_aut_orbits.sage
+          # run container as root so it can write back into the mounted workspace
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/compute_w33_aut_orbits.sage
       - name: Upload automorphism orbits artifact
         uses: actions/upload-artifact@v4
         with:
