@@ -25,10 +25,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Sage embedding search in container
+      - name: Run Python spectral+ICP search (generate seeds)
         run: |
           docker pull sagemath/sagemath:latest
-          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ github.event.inputs.min_neigh_fraction }} --seed ${{ github.event.inputs.seed }}
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python scripts/search_e8_embedding.py --iters 80 --restarts 8 --threshold 0.45 --inlier-frac 0.6 --seed ${{ github.event.inputs.seed }}
+      - name: Run Sage embedding search in container (use neighbor seed JSON)
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --min-neigh-constraint-fraction ${{ github.event.inputs.min_neigh_fraction }} --seed ${{ github.event.inputs.seed }} --neighbor-seed-json checks/PART_CVII_e8_embedding_attempt_seed.json
       - name: Upload E8 embedding artifact
         uses: actions/upload-artifact@v4
         with:
