@@ -25,10 +25,26 @@ jobs:
           pip install requests
 
       - name: Scan grid artifacts and open issue on found
+        id: scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.event.workflow_run.id }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.event.workflow_run.html_url }}
         run: |
-          python scripts/scan_grid_artifacts.py --run-id "$RUN_ID" --repo "$REPO" --run-url "$RUN_URL" --open-issue
+          # Save partial JSON (if any) to checks/PART_CVII_e8_candidate_partial.json
+          python scripts/scan_grid_artifacts.py --run-id "$RUN_ID" --repo "$REPO" --run-url "$RUN_URL" --open-issue --partial-threshold 100 --save-partial checks/PART_CVII_e8_candidate_partial.json
+          if [ -f checks/PART_CVII_e8_candidate_partial.json ]; then echo "partial=true" >> $GITHUB_OUTPUT; else echo "partial=false" >> $GITHUB_OUTPUT; fi
+
+      - name: Auto-bootstrap from saved partial
+        if: steps.scan.outputs.partial == 'true'
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/bootstrap_from_partial.sage --partial-file checks/PART_CVII_e8_candidate_partial.json --time-limit 3600 --repair
+
+      - name: Upload bootstrap artifact
+        if: steps.scan.outputs.partial == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_bootstrap_auto
+          path: checks/PART_CVII_e8_embedding_bootstrap.json

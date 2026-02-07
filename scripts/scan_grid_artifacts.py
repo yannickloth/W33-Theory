@@ -129,19 +129,38 @@ def scan_run_for_found(repo: str, run_id: int, run_url: str, token: str, artifac
                         except Exception as ex:
                             print(f"Failed to parse JSON {jf}: {ex}")
                             continue
+
+                        # Helper: compute best_assigned value from various artifact schemas
+                        def extract_best_assigned(d):
+                            vals = []
+                            try:
+                                if isinstance(d.get('best'), dict):
+                                    m = d.get('best', {}).get('max_assigned')
+                                    if isinstance(m, int):
+                                        vals.append(m)
+                            except Exception:
+                                pass
+                            for k in ('assigned_vertices', 'best_assigned', 'assigned'):
+                                v = d.get(k)
+                                if isinstance(v, int):
+                                    vals.append(v)
+                            return max(vals) if vals else None
+
+                        best_assigned = extract_best_assigned(data)
+
                         if data.get("found"):
                             print(f"FOUND embedding in artifact {name} (run {run_id})")
-                            if open_issue:
+                            if not args.no_issue and args.open_issue:
                                 # make sure label exists
-                                ensured = ensure_label(repo, issue_label, token)
+                                ensured = ensure_label(repo, args.issue_label, token)
                                 if not ensured:
-                                    print(f"Warning: could not create or verify label {issue_label}")
+                                    print(f"Warning: could not create or verify label {args.issue_label}")
                                 # avoid duplicate issues
-                                if not issue_exists(repo, issue_label, run_id, name, token):
+                                if not issue_exists(repo, args.issue_label, run_id, name, token):
                                     title = f"W33→E8 embedding FOUND (run {run_id}, artifact {name})"
                                     body = f"An embedding was reported by the grid run [view run]({run_url}) in artifact **{name}**.\n\n"
-                                    if mention:
-                                        body += f"cc {mention}\n\n"
+                                    if args.mention:
+                                        body += f"cc {args.mention}\n\n"
                                     body += (
                                         "Summary of result:\n\n```\n"
                                         + json.dumps({"found": data.get("found"), "time_seconds": data.get("time_seconds"), "best": data.get("best")}, indent=2)
@@ -150,13 +169,49 @@ def scan_run_for_found(repo: str, run_id: int, run_url: str, token: str, artifac
                                         + "\n```\n"
                                     )
                                     try:
-                                        url = create_issue(repo, title, body, [issue_label], token)
+                                        url = create_issue(repo, title, body, [args.issue_label], token)
                                         print("Created issue:", url)
                                     except Exception as ex:
                                         print("Failed to create issue:", ex)
                                 else:
                                     print("Issue already exists for this artifact; skipping creation.")
+                            # save partial if requested (for found embedding we also save full artifact)
+                            if args.save_partial:
+                                os.makedirs(os.path.dirname(args.save_partial), exist_ok=True)
+                                with open(args.save_partial, 'w', encoding='utf-8') as f:
+                                    json.dump(data, f, indent=2)
+                                print(f"Saved artifact JSON to {args.save_partial}")
                             # return success
+                            return True
+
+                        # check for large partials
+                        if best_assigned is not None and best_assigned >= args.partial_threshold:
+                            print(f"Large partial detected in {name}: best_assigned={best_assigned} (run {run_id})")
+                            if args.save_partial:
+                                os.makedirs(os.path.dirname(args.save_partial), exist_ok=True)
+                                with open(args.save_partial, 'w', encoding='utf-8') as f:
+                                    json.dump(data, f, indent=2)
+                                print(f"Saved partial JSON to {args.save_partial}")
+                            # open issue for partials
+                            if not args.no_issue and args.open_issue:
+                                ensured = ensure_label(repo, args.partial_label, token)
+                                if not ensured:
+                                    print(f"Warning: could not create or verify label {args.partial_label}")
+                                if not issue_exists(repo, args.partial_label, run_id, name, token):
+                                    title = f"W33→E8 large partial found: max_assigned={best_assigned} (run {run_id}, artifact {name})"
+                                    body = f"A large partial (max_assigned={best_assigned}) was reported by the grid run [view run]({run_url}) in artifact **{name}**.\n\n"
+                                    if args.mention:
+                                        body += f"cc {args.mention}\n\n"
+                                    body += "Partial JSON:\n\n```
+" + json.dumps(data, indent=2) + "\n```
+"
+                                    try:
+                                        url = create_issue(repo, title, body, [args.partial_label], token)
+                                        print("Created issue:", url)
+                                    except Exception as ex:
+                                        print("Failed to create issue:", ex)
+                                else:
+                                    print("Issue already exists for this partial artifact; skipping creation.")
                             return True
                 # end for json files
         finally:
@@ -169,13 +224,17 @@ def scan_run_for_found(repo: str, run_id: int, run_url: str, token: str, artifac
 
 
 def main(argv: List[str] | None = None):
-    parser = argparse.ArgumentParser(description="Scan grid run artifacts for embedding 'found: true'.")
+    parser = argparse.ArgumentParser(description="Scan grid run artifacts for embedding 'found: true' or large partials.")
     parser.add_argument("--run-id", type=int, required=True, help="Workflow run id to inspect")
     parser.add_argument("--repo", type=str, default=os.environ.get("GITHUB_REPOSITORY"), help="Repository in 'owner/repo' format")
     parser.add_argument("--run-url", type=str, default=None, help="URL to the run (for inclusion in issue body)")
     parser.add_argument("--artifact-prefix", type=str, default="PART_CVII_e8_embedding_sage", help="Prefix of artifact names to inspect")
-    parser.add_argument("--issue-label", type=str, default="e8-embedding-found", help="Label to apply to created issues")
+    parser.add_argument("--issue-label", type=str, default="e8-embedding-found", help="Label to apply to created issues when found")
+    parser.add_argument("--partial-label", type=str, default="e8-embedding-partial", help="Label to apply to created issues when a large partial is found")
     parser.add_argument("--open-issue", action="store_true", help="Open a GitHub issue when a 'found: true' is observed")
+    parser.add_argument("--partial-threshold", type=int, default=100, help="Trigger a partial alert when best.max_assigned >= threshold")
+    parser.add_argument("--save-partial", type=str, default=None, help="Path to save the partial JSON when threshold is exceeded")
+    parser.add_argument("--no-issue", action="store_true", help="Do not open an issue even if a match is detected")
     parser.add_argument("--mention", type=str, default=os.environ.get("MENTION"), help="Optional mention (e.g., @username) to add to issue body")
     args = parser.parse_args(argv)
 
