@@ -425,6 +425,10 @@ def main():
         args.min_neigh_constraint_fraction,
     )
 
+    # attach run provenance
+    res["seed"] = args.seed
+    res["min_neigh_fraction"] = args.min_neigh_constraint_fraction
+
     # write out artifact with summary
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(res, f, indent=2)
