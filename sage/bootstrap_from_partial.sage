@@ -310,6 +310,7 @@ def main():
     parser.add_argument("--time-limit", type=float, default=3600.0, help="time limit in seconds")
     parser.add_argument("--seed", type=int, default=42, help="random seed")
     parser.add_argument("--repair", action="store_true", help="prune inconsistent vertices from partial before attempting completion")
+    parser.add_argument("--use-picked", action="store_true", help="use best.picked_indices from artifact to seed neighbor positions instead of best.pos")
     args = parser.parse_args()
 
     rng = random.Random(args.seed)
@@ -342,6 +343,23 @@ def main():
     root_list = generate_scaled_e8_roots()
     roots_set = set(root_list)
     n, vertices, adj = build_w33_graph()
+
+    # Optionally seed from picked_indices recorded in the artifact (preferred seed)
+    if args.use_picked:
+        picked = None
+        if data.get("best") and data["best"].get("picked_indices"):
+            picked = data["best"]["picked_indices"]
+        if picked:
+            neigh0 = adj[0]
+            if len(picked) >= len(neigh0):
+                new_pos = {0: (0,) * 8}
+                for i, idx in enumerate(picked[: len(neigh0) ]):
+                    r = root_list[idx]
+                    new_pos[neigh0[i]] = neg_vec(r)
+                pos = new_pos
+                print(f"Seeded pos from picked_indices (seeded {len(pos)} vertices)")
+            else:
+                print("Picked indices present but fewer than neighbor count; ignoring")
 
     # inspect initial partial for pairwise conflicts
     initial_conflicts = []
