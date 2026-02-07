@@ -162,6 +162,16 @@ def try_embedding(
     # fix first root to canonical to break symmetries
     fixed_root = canonical_root(root_list)
 
+    # diagnostics: track best partial assignment found across all attempts
+    best: Dict[str, object] = {
+        "max_assigned": 0,
+        "edges_satisfied": 0,
+        "attempt": None,
+        "picked_indices": None,
+        "pos": None,
+        "time_at_best": None,
+    }
+
     while attempts < max_initial_attempts and (time.time() - start) < time_limit:
         attempts += 1
         # sample a set of 12 distinct roots (first fixed)
@@ -204,6 +214,9 @@ def try_embedding(
             pos[v] = neg_vec(r)  # set v = -r so v0 - v = r
 
         assigned = set(pos.keys())
+
+        # per-attempt local best tracker
+        local_best_assigned = len(assigned)
 
         # helper: get candidate positions for vertex v consistent with assigned neighbors
         def candidates_for(v: int) -> List[Vector]:
@@ -250,15 +263,13 @@ def try_embedding(
             final.sort(key=lambda x: sum(abs(t) for t in x))
             return final
 
-        # choose order of remaining vertices by number of assigned neighbors (descending)
-        unassigned = [v for v in order if v not in assigned]
-
         # DFS backtracking with time limit
-        stack: List[Tuple[int, List[Vector]]] = []
-
         def dfs_assign():
+            nonlocal local_best_assigned
             if (time.time() - start) >= time_limit:
                 return None
+            if len(assigned) > local_best_assigned:
+                local_best_assigned = len(assigned)
             if len(assigned) == n:
                 return dict(pos)
             # pick next unassigned vertex with max assigned neighbors
@@ -294,6 +305,16 @@ def try_embedding(
             return None
 
         sol = dfs_assign()
+
+        # compute edges satisfied in partial pos
+        edges_satisfied = 0
+        for i in pos:
+            for j in adj[i]:
+                if j in pos and i < j:
+                    diff = sub_vec(pos[i], pos[j])
+                    if diff in roots_set or neg_vec(diff) in roots_set:
+                        edges_satisfied += 1
+
         if sol is not None:
             # verify solution
             ok_all = True
@@ -314,11 +335,32 @@ def try_embedding(
                     "attempts": attempts,
                     "positions": {str(k): list(v) for k, v in sol.items()},
                 }
+
+        # Update global best partial attempt if improved.
+        if (
+            local_best_assigned > best["max_assigned"]
+            or (
+                local_best_assigned == best["max_assigned"]
+                and edges_satisfied > best["edges_satisfied"]
+            )
+        ):
+            try:
+                picked_indices = [root_list.index(r) for r in picked]
+            except Exception:
+                picked_indices = None
+            best["max_assigned"] = local_best_assigned
+            best["edges_satisfied"] = edges_satisfied
+            best["attempt"] = attempts
+            best["picked_indices"] = picked_indices
+            best["pos"] = {str(k): list(v) for k, v in pos.items()}
+            best["time_at_best"] = time.time() - start
+
     # no solution found
     return {
         "found": False,
         "time_seconds": time.time() - start,
         "attempts": attempts,
+        "best": best,
     }
 
 
