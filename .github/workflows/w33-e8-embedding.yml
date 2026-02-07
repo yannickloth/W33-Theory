@@ -21,7 +21,7 @@ on:
         default: '42'
 
 jobs:
-  find-e8-embedding:
+  gen-seed:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +29,42 @@ jobs:
         run: |
           docker pull sagemath/sagemath:latest
           docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python scripts/search_e8_embedding.py --iters 80 --restarts 8 --threshold 0.45 --inlier-frac 0.6 --seed ${{ github.event.inputs.seed }}
+      - name: Upload seed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_attempt_seed
+          path: checks/PART_CVII_e8_embedding_attempt_seed.json
+
+  cpsat:
+    needs: gen-seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download seed artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_attempt_seed
+          path: checks
+      - name: Setup Python dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy ortools
+      - name: Run CP-SAT embedding solver
+        run: python scripts/solve_e8_embedding_cpsat.py --seed-json checks/PART_CVII_e8_embedding_attempt_seed.json --k 30 --time-limit ${{ github.event.inputs.time_limit }} --seed ${{ github.event.inputs.seed }}
+      - name: Upload CP-SAT artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_cpsat
+          path: checks/PART_CVII_e8_embedding_cpsat.json
+
+  sage-backtracking:
+    needs: gen-seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download seed artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_attempt_seed
+          path: checks
       - name: Run Sage embedding search in container (use neighbor seed JSON)
         run: |
           docker pull sagemath/sagemath:latest
@@ -38,3 +74,17 @@ jobs:
         with:
           name: PART_CVII_e8_embedding_sage
           path: checks/PART_CVII_e8_embedding_sage.json
+
+  bijection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python dependencies
+        run: python -m pip install --upgrade pip && pip install numpy
+      - name: Run decomposition bijection
+        run: python -X utf8 scripts/w33_e8_bijection.py
+      - name: Upload bijection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_bijection
+          path: checks/PART_CVII_e8_bijection.json
