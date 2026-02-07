@@ -1,0 +1,28 @@
+name: Compute W33→E8 embedding search
+
+on:
+  workflow_dispatch:
+    inputs:
+      time_limit:
+        description: 'Time limit in seconds for the Sage script'
+        required: false
+        default: '600'
+      initial_attempts:
+        description: 'Number of random initial neighbor attempts'
+        required: false
+        default: '2000'
+
+jobs:
+  find-e8-embedding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Sage embedding search in container
+        run: |
+          docker pull sagemath/sagemath:latest
+          docker run --rm --user root -v "${{ github.workspace }}:/workspace" -w /workspace sagemath/sagemath:latest sage -python sage/find_e8_embedding_backtrack.sage --time-limit ${{ github.event.inputs.time_limit }} --initial-attempts ${{ github.event.inputs.initial_attempts }} --seed 42
+      - name: Upload E8 embedding artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PART_CVII_e8_embedding_sage
+          path: checks/PART_CVII_e8_embedding_sage.json
