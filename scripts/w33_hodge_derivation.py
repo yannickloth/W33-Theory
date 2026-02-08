@@ -399,14 +399,22 @@ def main():
         "elapsed_seconds": elapsed,
     }
 
-    # Convert numpy types for JSON
-    clean = json.loads(json.dumps(result, default=lambda o: int(o) if isinstance(o, np.integer) else float(o) if isinstance(o, np.floating) else bool(o) if isinstance(o, np.bool_) else o))
+    def numpy_convert(obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, (np.bool_, bool)):
+            return bool(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        raise TypeError(f"Not serializable: {type(obj)}")
 
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_hodge_derivation_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(clean, f, indent=2)
+        json.dump(result, f, indent=2, default=numpy_convert)
     print(f"\n  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 

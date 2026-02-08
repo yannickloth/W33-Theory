@@ -1,0 +1,74 @@
+{
+  "srg_parameters": {
+    "n": 40,
+    "k": 12,
+    "lambda": 2,
+    "mu": 4
+  },
+  "adjacency_eigenvalues": {
+    "k": {
+      "value": 12,
+      "multiplicity": 1
+    },
+    "r": {
+      "value": 2,
+      "multiplicity": 24
+    },
+    "s": {
+      "value": -4,
+      "multiplicity": 15
+    }
+  },
+  "hodge_spectrum": {
+    "-0.0": 81,
+    "4.0": 120,
+    "10.0": 24,
+    "16.0": 15
+  },
+  "derivation": {
+    "harmonic": {
+      "eigenvalue": 0,
+      "multiplicity": 81,
+      "formula": "|E| - rank(D) - rank(B2) = 240 - 39 - 120"
+    },
+    "co_exact": {
+      "eigenvalue": 4.0,
+      "multiplicity": 120,
+      "formula": "3 * n_tri / rank(B2) = 480 / 120"
+    },
+    "exact_10": {
+      "eigenvalue": 10,
+      "multiplicity": 24,
+      "formula": "k - r = 12 - 2"
+    },
+    "exact_16": {
+      "eigenvalue": 16,
+      "multiplicity": 15,
+      "formula": "k - s = 12 - (-4)"
+    }
+  },
+  "e8_reconstruction": {
+    "dim_E8": 248,
+    "rank_E8": 8,
+    "roots_E8": 240,
+    "decomposition": "248 = 8 + 81 + 120 + 39",
+    "components": {
+      "cartan": 8,
+      "harmonic_H1": 81,
+      "co_exact": 120,
+      "exact": 39
+    }
+  },
+  "verifications": {
+    "exact_eigenvalues_match": true,
+    "single_coexact_eigenvalue": true,
+    "diag_B2tB2_all_3": true,
+    "diag_B2B2t_all_lambda": true,
+    "boundary_squared_zero": true,
+    "orthogonality_harm_coex": 6.598419612911405e-15,
+    "orthogonality_harm_ex": 2.7905542481244922e-15,
+    "orthogonality_coex_ex": 3.617528518183929e-15
+  },
+  "spectral_gap": 4.0,
+  "elapsed_seconds": 0.5096850395202637
+}
