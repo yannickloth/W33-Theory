@@ -41,3 +41,5 @@
 2026-02-08T05:17:36.483722Z: Wrote auto-post report: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_auto_post_report_1770526627.json
 2026-02-08T06:17:48.089651Z: Idle for 3611.5469777584076s >= quiet(600s) and last_run 3611.548686027527s ago; triggering pipeline
 2026-02-08T06:17:48.162084Z: Running: py -3 scripts/minimize_forbids_greedy.py --forbid-file C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --k 40 --prove-time 300 --seed 212 --commit
+2026-02-08T06:23:04.453969Z: Exit 0 stdout(len)=438 stderr(len)=0
+2026-02-08T06:23:04.665312Z: Running: py -3 scripts/check_forbid_pairs_bruteforce.py --k 40 --time-limit 60 --seed 212 --stop-on-find
