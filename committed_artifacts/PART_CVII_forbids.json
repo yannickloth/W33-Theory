@@ -623,6 +623,959 @@
       ],
       "timestamp": 1770584677,
       "source_local": "checks/_tmp_verify_next20_132_133.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770589754,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770589768,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770589802,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770589832,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770589861,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770589880,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770589892,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770589920,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770589931,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770589960,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770589972,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770589996,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770590014,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770590040,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770590055,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770590066,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770590089,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770590130,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770590166,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770590181,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770590220,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770590258,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770590296,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770590407,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770590455,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770590473,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770590485,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770590500,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770590522,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770590560,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770590598,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770590638,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770590689,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770590721,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770590762,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770590810,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770590853,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770590899,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770590946,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770590991,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770591025,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770591086,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770591112,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770591131,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770591160,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770591197,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770591240,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770591276,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770591323,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770591334,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770594292,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770594312,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770594329,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770594345,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        97
+      ],
+      "roots": [
+        208
+      ],
+      "timestamp": 1770594365,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503192.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503202.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        144
+      ],
+      "roots": [
+        94
+      ],
+      "timestamp": 1770594385,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770594400,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770594416,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ],
+      "seed_source_used": "bijection_map"
+    },
+    {
+      "set": [
+        50,
+        51
+      ],
+      "roots": [
+        8,
+        117
+      ],
+      "timestamp": 1770594433,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+      ],
+      "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770594557,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ],
+      "seed_source_used": "bijection_map"
     }
   ]
 }

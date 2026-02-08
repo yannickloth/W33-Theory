@@ -1,0 +1,61 @@
+{
+  "dd_shrink_results": [
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+  ],
+  "set": [
+    39,
+    40
+  ],
+  "edges": [
+    39,
+    40
+  ],
+  "vertices": [
+    [
+      3,
+      24
+    ],
+    [
+      3,
+      25
+    ]
+  ],
+  "roots": [
+    162,
+    87
+  ],
+  "root_vectors": {
+    "162": [
+      1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      1
+    ],
+    "87": [
+      0,
+      -2,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "dot_products": 0,
+  "sum_is_root": false,
+  "diff_is_root": false,
+  "solver_check": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_e8_embedding_cpsat.json",
+  "solver_status": "INFEASIBLE",
+  "seed_source_used": "bijection_map",
+  "used_seed_json": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\_tmp_seed_dd_verify_1770591131.json",
+  "verified_roots": [
+    162,
+    87
+  ],
+  "notes": "Auto-verified by register_dd_obstructions.py"
+}

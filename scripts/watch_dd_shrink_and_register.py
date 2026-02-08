@@ -21,8 +21,15 @@ CHECKS = BASE / 'checks'
 LOG = CHECKS / 'PART_CVII_dd_watch_log.txt'
 STATE = CHECKS / '_watch_state.json'
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--no-push', action='store_true', help='Disable pushing to origin after register commits')
+args = parser.parse_args()
+
 POLL_INTERVAL = int(os.environ.get('DD_WATCH_INTERVAL', '20'))
 REGISTER_CMD = ['py', '-3', 'scripts/register_dd_obstructions.py', '--k', '40', '--time-limit', '30', '--seed', '212', '--commit']
+if not args.no_push:
+    REGISTER_CMD.append('--push')
 CLEAN_CMD = ['py', '-3', 'scripts/clean_forbids.py']
 SOLVE_CMD = ['py', '-3', 'scripts/solve_e8_embedding_cpsat.py', '--k', '40', '--time-limit', '30', '--forbid-json', str(CHECKS / 'PART_CVII_forbids.json'), '--seed', '212']
 
@@ -75,9 +82,20 @@ def run_cmd(cmd, timeout=120):
         return -1, '', ''
 
 
+def check_claude_files():
+    try:
+        st = subprocess.run(['git', 'status', '--porcelain'], stdout=subprocess.PIPE, text=True).stdout
+        for f in ('README.md', 'memory.md'):
+            if any(line.endswith(f) or f in line for line in st.splitlines()):
+                log(f"WARNING: Detected changes to {f} in working tree; avoid pushing without review.")
+    except Exception as e:
+        log(f"Failed to check CLAUDE files: {e}")
+
+
 def main():
     log("Watcher starting")
     processed = load_state()
+    check_claude_files()
 
     # Initialize processed with existing verified sets (to avoid reprocessing old entries)
     try:

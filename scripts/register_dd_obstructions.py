@@ -18,9 +18,21 @@ BASE = Path.cwd()
 CHECKS = BASE / 'checks'
 ART = BASE / 'committed_artifacts'
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--commit', action='store_true', help='Commit artifact changes to git')
+parser.add_argument('--push', action='store_true', help='Push commits to origin after commit (only staged artifacts will be pushed)')
+parser.add_argument('--git-remote', type=str, default='origin', help='Git remote to push to')
+parser.add_argument('--git-branch', type=str, default=None, help='Optional git branch to push to (default: current branch)')
+args = parser.parse_args()
+
 # helpers
 def load_json(p):
     return json.loads(open(p, encoding='utf-8').read())
+
+# bookkeeping for optional commit/push
+commit_files = []
+commit_sets = []
 
 # collect dd_shrink outputs
 outs = glob.glob(str(CHECKS / 'PART_CVII_dd_shrink_result_*.json'))
@@ -74,7 +86,11 @@ def edge_endpoints(edge_idx):
         return None
     return edges[edge_idx]
 
-# load e8 roots
+# load e8 roots (make import robust when run via runpy)
+import sys
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 from e8_embedding_group_theoretic import generate_e8_roots, vec_dot, vec_add, vec_sub, vec_neg
 roots = generate_e8_roots()
 
@@ -192,6 +208,12 @@ for res, entries in by_result.items():
     art_out = ART / outp.name
     art_out.write_text(open(outp, encoding='utf-8').read(), encoding='utf-8')
     print('Mirrored to', art_out)
+    # record artifact for eventual commit/push
+    try:
+        commit_files.append(str(art_out))
+        commit_sets.append(list(res))
+    except Exception:
+        pass
 
     # append to forbids list if solver returned INFEASIBLE
     if sol_json and sol_json.get('status') == 'INFEASIBLE':
@@ -205,6 +227,40 @@ for res, entries in by_result.items():
         print('Appended to forbids:', forb_path)
         # mirror forbids too
         (ART / forb_path.name).write_text(open(forb_path, encoding='utf-8').read(), encoding='utf-8')
-        print('Mirrored forbids to committed_artifacts')
+        print('Mirrored forbids to committed_artifacts')        # record forbids file for commit/push
+        try:
+            commit_files.append(str(ART / forb_path.name))
+        except Exception:
+            pass
+# optionally commit and push the artifacts we created
+if args.commit:
+    commit_files = sorted(set(commit_files))
+    if commit_files:
+        print('Staging files for commit:', commit_files)
+        add_proc = subprocess.run(['git', 'add'] + commit_files, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if add_proc.returncode != 0:
+            print('git add failed:', add_proc.stderr)
+        else:
+            commit_msg = f"Auto-registered {len(commit_sets)} dd_pair_obstruction(s): " + ', '.join(['[' + ','.join(map(str,s)) + ']' for s in commit_sets])
+            cp = subprocess.run(['git', 'commit', '-m', commit_msg], check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            if cp.returncode != 0:
+                print('git commit failed:', cp.stderr)
+            else:
+                print('Committed:', cp.stdout)
+                if args.push:
+                    # don't push if README.md or memory.md show up in worktree
+                    st = subprocess.run(['git', 'status', '--porcelain'], stdout=subprocess.PIPE, text=True).stdout
+                    if 'README.md' in st or 'memory.md' in st:
+                        print('Detected modifications to README.md or memory.md in working tree; skipping push for safety.')
+                    else:
+                        branch = args.git_branch
+                        if not branch:
+                            brp = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], stdout=subprocess.PIPE, text=True)
+                            branch = brp.stdout.strip()
+                        p = subprocess.run(['git', args.git_remote, 'push', branch] if False else ['git', 'push', args.git_remote, branch], check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                        if p.returncode != 0:
+                            print('git push failed:', p.stderr)
+                        else:
+                            print('Pushed to remote:', p.stdout)
 
 print('\nDone')

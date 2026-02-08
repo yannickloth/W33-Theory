@@ -6,7 +6,7 @@
 
 **Author:** Wil Dahn
 **Date:** January-February 2026
-**Status:** 69 theorems verified, 96 computational tests passing, 50+ quantitative predictions
+**Status:** 73 theorems verified, 104 computational tests passing, 50+ quantitative predictions
 
 **Canonical definitions:** See `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
@@ -14,9 +14,9 @@
 
 ## The W33-E8 Correspondence Theorem
 
-**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 96 tests and verified by Smith Normal Form.
+**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 104 tests and verified by Smith Normal Form.
 
-### The Fourteen Pillars
+### The Sixteen Pillars
 
 | # | Pillar | Statement | Status |
 |---|--------|-----------|--------|
@@ -34,6 +34,8 @@
 | 12 | E8 reconstruction | 248 = 8 + 81 + 120 + 39 (Hodge → E8 adjoint decomposition) | **Proved** |
 | 13 | Topological protection | 3 generations are topologically protected: b\_0(link(v)) - 1 = 3 for every vertex | **Proved** |
 | 14 | H27 inclusion | H\_1(H27) embeds into H\_1(W33) with rank 46 | **Proved** |
+| 15 | **Three generations** | **81 = 27+27+27: all 800 order-3 elements of PSp(4,3) decompose H1** | **Proved** |
+| 16 | **Universal mixing** | **Mixing matrix M = (1/81)[[25,28,28],[28,25,28],[28,28,25]], eigenvalues 1 and -1/27** | **Proved** |
 
 ### The Homology Breakthrough
 
@@ -128,6 +130,29 @@ Frobenius-Schur indicators:
 
 **Key discovery:** The 90-dim co-exact component carries a **complex structure** J (J^2 = -I, verified to machine precision 5.6e-14) that commutes with all of PSp(4,3). This makes it a 45-dimensional complex irreducible representation — the **mathematical origin of chirality** in the Standard Model. The complex structure J distinguishes left-handed from right-handed particles.
 
+### Three-Generation Decomposition: 81 = 27 + 27 + 27
+
+**All 800 order-3 elements** of PSp(4,3) have character chi = 0 on the 81-dim harmonic space. Each decomposes it as **27 + 27 + 27** — three generations of 27-dimensional E6 matter representations.
+
+This is verified from both sides:
+- **E8 side:** The 81 roots in g\_1 split as 27 x 3 under E6 x SU(3), with the three 27s distinguished by the SU(3) quantum number n\_8 mod 3.
+- **W33 side:** Using exact projectors P\_k = (I + omega^{-k} R + omega^{-2k} R^2)/3, the 81-dim harmonic space splits into three orthogonal 27-dim subspaces.
+- **Topological protection:** b\_0(link(v)) = 4 for all 40 vertices, so the three-generation structure is a topological invariant.
+
+### Universal Mixing Matrix
+
+The generation mixing between any two non-commuting Z3 bases is a **universal circulant matrix**:
+
+```
+M = (1/81) [[25, 28, 28],
+             [28, 25, 28],
+             [28, 28, 25]]
+
+Eigenvalues: 1 (trivial) and -1/27 (double, where 27 = dim of one generation)
+```
+
+This is **exactly doubly stochastic** (rows and columns sum to 1) and the **same for ALL non-commuting pairs**. Physical interpretation: at the PSp(4,3)-symmetric (GUT) scale, the three generations mix near-democratically. The deviation from perfect democracy is controlled by 1/dim(generation) = 1/27. The CKM and PMNS matrices arise from symmetry breaking below the GUT scale.
+
 ### Structural Correspondence
 
 ```
@@ -154,6 +179,9 @@ Every triangle belongs to exactly 1 tetrahedron. The 40 tetrahedra ARE the 40 li
 | Torsion-free at all p | H\_1(W33; F\_p) = F\_p^81 | **no anomalies** | -- |
 | Chirality origin | 45\_C complex rep (FS=0, J^2=-I) | **chiral structure** | SM |
 | Irrep count | 240 = 90+81+30+24+15 under PSp(4,3) | **6 components** | -- |
+| Three generations | 81 = 27+27+27 via Z3 eigenspaces | **3 x 27** | 3 families |
+| GUT-scale mixing | Universal M with eigenvalues 1, -1/27 | **near-democratic** | CKM/PMNS |
+| Generation dimension | Controls mixing: deviation = 1/27 | **27** | 27 of E6 |
 
 ### Key Scripts and Tests
 
@@ -170,7 +198,7 @@ python scripts/w33_representation_theory.py
 # Run deep structure analysis (60s)
 python scripts/w33_deep_structure.py
 
-# Run all 96 tests (~9 min)
+# Run all 104 tests (~22 min)
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
@@ -189,12 +217,15 @@ python -m pytest tests/test_e8_embedding.py -v
 | `scripts/w33_z3_analyze_candidates.py` | Analyze Z3 candidates and export eigen-bases to `checks/z3_analysis_*` |
 | `committed_artifacts/PART_CVII_z3_candidate_1770578289_02.json` | Canonical Z3 candidate (metadata) with basis `PART_CVII_z3_candidate_1770578289_02.npz` |
 | `scripts/w33_z3_analyze_candidates.py` | Analyze Z3 candidates and export eigen-bases to `checks/z3_analysis_*` |
+| `scripts/w33_three_generations.py` | Three-generation decomposition 81 = 27+27+27 (E8 + W33) |
+| `scripts/w33_ckm_mixing.py` | CKM-like mixing from Z3 conjugacy classes |
+| `scripts/w33_democratic_mixing.py` | Universal mixing proof with exact Z3 projectors |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
-| `tests/test_e8_embedding.py` | 96 tests across 19 classes |
+| `tests/test_e8_embedding.py` | 104 tests across 21 classes |
 
-### Test Suite (96 tests, 19 classes)
+### Test Suite (104 tests, 21 classes)
 
-**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestZ3Split.
+**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestThreeGenerations, TestUniversalMixing.
 
 | Class | Tests | What it verifies |
 |-------|-------|-----------------|
@@ -217,6 +248,8 @@ python -m pytest tests/test_e8_embedding.py -v
 | **TestH27Inclusion** | **2** | **b1(H27)=46, inclusion rank=46** |
 | **TestFullDecomposition** | **5** | **Harmonic/co-exact/exact irreducibility, 6 total components** |
 | **TestFrobeniusSchur** | **5** | **FS indicators (real/complex type), J^2=-I complex structure** |
+| **TestThreeGenerations** | **5** | **800 order-3 elements, chi=0, 27+27+27, projectors, topological protection** |
+| **TestUniversalMixing** | **3** | **Doubly stochastic, circulant structure, eigenvalue -1/27** |
 
 ### Systematic Dimension Coincidences
 

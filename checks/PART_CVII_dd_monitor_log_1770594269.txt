@@ -1,0 +1,103 @@
+START 1770594269.945714
+1770594269.9707248: found 44 new result(s) -> ['checks\\PART_CVII_dd_shrink_result_1770500483.json', 'checks\\PART_CVII_dd_shrink_result_1770501431.json', 'checks\\PART_CVII_dd_shrink_result_1770501744.json', 'checks\\PART_CVII_dd_shrink_result_1770501888.json', 'checks\\PART_CVII_dd_shrink_result_1770502026.json', 'checks\\PART_CVII_dd_shrink_result_1770502103.json', 'checks\\PART_CVII_dd_shrink_result_1770502247.json', 'checks\\PART_CVII_dd_shrink_result_1770502521.json', 'checks\\PART_CVII_dd_shrink_result_1770502842.json', 'checks\\PART_CVII_dd_shrink_result_1770503192.json', 'checks\\PART_CVII_dd_shrink_result_1770503200.json', 'checks\\PART_CVII_dd_shrink_result_1770503202.json', 'checks\\PART_CVII_dd_shrink_result_1770503234.json', 'checks\\PART_CVII_dd_shrink_result_1770503266.json', 'checks\\PART_CVII_dd_shrink_result_1770503298.json', 'checks\\PART_CVII_dd_shrink_result_1770503362.json', 'checks\\PART_CVII_dd_shrink_result_1770503393.json', 'checks\\PART_CVII_dd_shrink_result_1770503425.json', 'checks\\PART_CVII_dd_shrink_result_1770503456.json', 'checks\\PART_CVII_dd_shrink_result_1770503488.json', 'checks\\PART_CVII_dd_shrink_result_1770503520.json', 'checks\\PART_CVII_dd_shrink_result_1770503551.json', 'checks\\PART_CVII_dd_shrink_result_1770503553.json', 'checks\\PART_CVII_dd_shrink_result_1770503621.json', 'checks\\PART_CVII_dd_shrink_result_1770503758.json', 'checks\\PART_CVII_dd_shrink_result_1770504850.json', 'checks\\PART_CVII_dd_shrink_result_1770504901.json', 'checks\\PART_CVII_dd_shrink_result_1770504956.json', 'checks\\PART_CVII_dd_shrink_result_1770579758.json', 'checks\\PART_CVII_dd_shrink_result_1770580907.json', 'checks\\PART_CVII_dd_shrink_result_1770581052.json', 'checks\\PART_CVII_dd_shrink_result_1770581177.json', 'checks\\PART_CVII_dd_shrink_result_1770581303.json', 'checks\\PART_CVII_dd_shrink_result_1770581428.json', 'checks\\PART_CVII_dd_shrink_result_1770581552.json', 'checks\\PART_CVII_dd_shrink_result_1770582091.json', 'checks\\PART_CVII_dd_shrink_result_1770585297.json', 'checks\\PART_CVII_dd_shrink_result_1770586203.json', 'checks\\PART_CVII_dd_shrink_result_1770586708.json', 'checks\\PART_CVII_dd_shrink_result_1770586911.json', 'checks\\PART_CVII_dd_shrink_result_1770586970.json', 'checks\\PART_CVII_dd_shrink_result_1770588180.json', 'checks\\PART_CVII_dd_shrink_result_1770589216.json', 'checks\\PART_CVII_dd_shrink_result_1770589424.json']
+1770594270.0141027: running register_dd_obstructions.py --commit
+register stdout:
+Found 10 unique dd_shrink results
+
+Processing result (37, 38) from 10 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594271.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594292.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594292.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (36, 37) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594292.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594312.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594312.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (4, 5) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594312.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594329.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594329.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (39, 40) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594329.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594345.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594345.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (97,) from 2 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594345.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594365.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594365.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (144,) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594365.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594385.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594385.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (74,) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594385.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594400.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594400.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (53,) from 1 dd outputs
+Running solver with seed source bijection_map : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\_tmp_seed_dd_verify_1770594400.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594416.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594416.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+
+Processing result (50, 51) from 5 dd outputs
+Running solver with seed source dd_shrink_result_seed_artifact:C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_seed_initial_1770586555.json : py -3 scripts/solve_e8_embedding_cpsat.py --seed-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_seed_initial_1770586555.json --k 40 --time-limit 30 --seed 212 --force-seed
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_pair_obstruction_1770594433.json
+Mirrored to C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_pair_obstruction_1770594433.json
+Appended to forbids: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json
+Mirrored forbids to committed_artifacts
+Staging files for commit: ['C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594292.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594312.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594329.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594345.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594365.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594385.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594400.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594416.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_pair_obstruction_1770594433.json', 'C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_forbids.json']
+git commit failed: [WARNING] Unstaged files detected.
+[INFO] Stashing unstaged files to C:\Users\wiljd\.cache\pre-commit\patch1770594442-14692.
+fix end of files.........................................................Failed
+- hook id: end-of-file-fixer
+- exit code: 1
+- files were modified by this hook
+
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594365.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594292.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594385.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594312.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594433.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594400.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594329.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594345.json
+Fixing committed_artifacts/PART_CVII_dd_pair_obstruction_1770594416.json
+Fixing committed_artifacts/PART_CVII_forbids.json
+
+trim trailing whitespace.................................................Passed
+check yaml...........................................(no files to check)Skipped
+check for added large files..............................................Passed
+black................................................(no files to check)Skipped
+isort................................................(no files to check)Skipped
+Detect secrets...........................................................Passed
+[WARNING] Stashed changes conflicted with hook auto-fixes... Rolling back fixes...
+[INFO] Restored changes from C:\Users\wiljd\.cache\pre-commit\patch1770594442-14692.
+
+
+Done
+
+register stderr:
+
+1770594451.2897098: found summary checks\dd_repro_targeted_50_51_summary_1770587982.json and copied to checks\dd_repro_targeted_50_51_summary_latest.json
+END 1770594451.2897098 (elapsed 181.34399580955505 s)
