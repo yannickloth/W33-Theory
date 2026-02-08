@@ -91,7 +91,7 @@ Multiplicity:   81     120    24     15
 
 All statements above are implemented and verified in `scripts/w33_hodge.py` (numerical eigenanalysis + exact homology) and covered by tests in `tests/test_w33_hodge.py`.
 
-- **Irreducibility:** the action of the Sp(4,3) automorphism group on H_1(W33) (81-dimensional) is numerically irreducible: the commutant of a small symplectic generating set has dimension 1 (scalars), see `scripts/analyze_h1_irreducibility.py` and `tests/test_h1_irreducibility.py` for code and tests.
+- **Irreducibility / decomposition:** numeric analysis of the transvection-generated group gives a commutant dimension of **2** (group size observed: 25,920), so the permutation action on H_1(W33) is not numerically irreducible in this sense. See `scripts/analyze_h1_irreducibility.py` and `tests/test_h1_irreducibility.py` for code and the test that records this result.
 
 - **H27 inclusion:** the induced map H_1(H27) -> H_1(W33) has rank 46 (H_1(H27) = Z^{46}), so the H27 homology injects into the global matter sector (computed and verified numerically in the Hodge analysis script).
 
