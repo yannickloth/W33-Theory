@@ -233,6 +233,19 @@ def main():
         logging.info("Wrote pair artifact: %s", outp)
         (ART / outp.name).write_text(outp.read_text(encoding="utf-8"), encoding="utf-8")
         logging.info("Mirrored artifact to %s", ART / outp.name)
+        # Persist the seed JSON into committed_artifacts so reproducing is possible later
+        try:
+            seed_art = ART / f"PART_CVII_pair_seed_{ts}_{i}.json"
+            seed_art.write_text(seed_path.read_text(encoding="utf-8"), encoding="utf-8")
+            logging.info("Mirrored seed to %s", seed_art)
+            art["seed_path"] = str(seed_art)
+            # Update artifact to reference the committed seed path
+            outp.write_text(json.dumps(art, indent=2), encoding="utf-8")
+            (ART / outp.name).write_text(
+                outp.read_text(encoding="utf-8"), encoding="utf-8"
+            )
+        except Exception:
+            logging.exception("Failed to persist seed to committed_artifacts")
 
         # append to forbids if solver returned INFEASIBLE
         if sol_json and sol_json.get("status") == "INFEASIBLE":
