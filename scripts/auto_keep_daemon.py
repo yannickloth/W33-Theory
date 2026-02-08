@@ -37,7 +37,9 @@ except Exception:  # pragma: no cover - permissive import
     git_auto_keep = None
 
 DEFAULT_WATCH = ["committed_artifacts", "checks"]
-DEFAULT_EXCLUDE = [".git", "*.bak", "*.localbak", "*.tmp", "*~"]
+# Add common temporary/check artifacts to exclude to avoid noisy commits and
+# pre-commit conflicts on Windows (e.g., checks/_tmp_seed_shrink_*.json).
+DEFAULT_EXCLUDE = [".git", "*.bak", "*.localbak", "*.tmp", "*~", "checks/_tmp_*", "checks/*_tmp_*"]
 LOG_PATH = Path("committed_artifacts") / "auto_keep.log"
 
 
