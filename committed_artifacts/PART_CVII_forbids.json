@@ -299,6 +299,18 @@
       "source_dd": [
         "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
       ]
+    },
+    {
+      "set": [
+        52,
+        53
+      ],
+      "roots": [
+        7,
+        7
+      ],
+      "timestamp": 1770582295,
+      "source_local": "checks/_tmp_verify_next20_52_53.json"
     }
   ]
 }
