@@ -54,6 +54,15 @@ Thumbs.db
 # Local generated plots/artifacts
 sp4_spectrum_test.png
 
+# Local checks and temporary output (do NOT commit transient files)
+checks/_tmp_*
+checks/*_tmp_*.json
+checks/*_verify_*.json
+checks/*_seed_*.json
+checks/z3_analysis_*/
+checks/*.npz
+checks/*.log
+
 # Ignore editor settings and temporary workspace files
 .vscode/
 
