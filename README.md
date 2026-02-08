@@ -14,9 +14,9 @@
 
 ## The W33-E8 Correspondence Theorem
 
-**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 65 tests and verified by Smith Normal Form.
+**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 77 tests and verified by Smith Normal Form.
 
-### The Five Pillars
+### The Ten Pillars
 
 | # | Pillar | Statement | Status |
 |---|--------|-----------|--------|
@@ -25,6 +25,11 @@
 | 3 | Z3-grading | E8 = g\_0(78) + g\_1(81) + g\_2(81) = 240 roots; algebra = **86+81+81 = 248** | Verified |
 | 4 | **Homology theorem** | **H\_1(W33; Z) = Z^81 = dim(g\_1) = 27 x 3** | **Proved (SNF)** |
 | 5 | Impossibility | Direct metric embedding impossible (max 13/40) | Proved |
+| 6 | **Hodge Laplacian** | **Spectrum: 0^81 + 4^120 + 10^24 + 16^15**, spectral gap = 4 | **Computed** |
+| 7 | **Mayer-Vietoris** | **81 = 78 + 3 = dim(E6) + 3 generations** | **Proved** |
+| 8 | Mod-p homology | H\_1(W33; F\_p) = F\_p^81 for all primes p (UCT) | Verified |
+| 9 | Cup product | H^1 x H^1 -> H^2 = 0: matter fields don't self-interact | Proved |
+| 10 | Ramanujan + Self-dual | W33 is Ramanujan; line graph = point graph (self-duality) | Verified |
 
 ### The Homology Breakthrough
 
