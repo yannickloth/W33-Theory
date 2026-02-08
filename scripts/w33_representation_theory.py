@@ -9,7 +9,7 @@ mod-p homology, and the 81 = 78 + 3 = dim(E6) + 3 theorem.
 NEW DISCOVERIES (computed here):
   6. HODGE LAPLACIAN: Spectrum of Delta_1, mass gap, multiplicity structure
   7. MAYER-VIETORIS: 81 = 78 + 3 where 78 = dim(E6)
-     For every vertex v: b_1(W33 \ {v}) = 78 = dim(E6)
+     For every vertex v: b_1(W33 \\ {v}) = 78 = dim(E6)
   8. MOD-P HOMOLOGY: H_1(W33; F_p) for p = 2, 3, 5
   9. CUP PRODUCT VANISHING: H^1 x H^1 -> H^2 = 0
  10. SHORT CYCLE CENSUS: Counting cycles of various lengths
@@ -151,7 +151,7 @@ def compute_hodge_laplacian(n: int, adj: List[List[int]]) -> Dict:
 
 def compute_vertex_deletion_homology(v: int, n: int, adj: List[List[int]],
                                       adj_sets: List[Set[int]]) -> Dict:
-    """Compute b_1(W33 \ {v}).
+    r"""Compute b_1(W33 \ {v}).
 
     THEOREM (Mayer-Vietoris):
       0 -> H_1(W33 \\ {v}) -> H_1(W33) -> Z^3 -> 0
