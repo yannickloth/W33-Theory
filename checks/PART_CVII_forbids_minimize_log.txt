@@ -8,3 +8,5 @@
 1770507309.9318569: Running solver: py -3 scripts/solve_e8_embedding_cpsat.py --k 40 --time-limit 300 --forbid-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --seed 212
 1770507624.1494665: Solver exit 0 stdout(len)=370 stderr(len)=0
 1770507624.150496: Full forbids did not prove INFEASIBLE (status=UNKNOWN). Aborting minimization.
+1770512147.5159907: Starting minimization; verifying full forbids
+1770512147.5159907: Running solver: py -3 scripts/solve_e8_embedding_cpsat.py --k 40 --time-limit 300 --forbid-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --seed 212
