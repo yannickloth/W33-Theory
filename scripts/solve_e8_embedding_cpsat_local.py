@@ -18,18 +18,20 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
+from ortools.sat.python import cp_model
 
 # Import core CP-SAT implementation pieces from the global solver
 from solve_e8_embedding_cpsat import (
-    generate_scaled_e8_roots,
-    compute_embedding_matrix,
     build_w33_graph,
+    compute_embedding_matrix,
     enumerate_triangles,
+    generate_scaled_e8_roots,
 )
-from ortools.sat.python import cp_model
 
 
-def build_edge_set_from_vertex(start_v: int, adj: List[List[int]], edges: List[Tuple[int, int]], edge_limit: int):
+def build_edge_set_from_vertex(
+    start_v: int, adj: List[List[int]], edges: List[Tuple[int, int]], edge_limit: int
+):
     """BFS outwards from start vertex to collect up to edge_limit edges (by index)."""
     visited_vertices = set([start_v])
     q = deque([start_v])
@@ -60,8 +62,17 @@ def main():
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--seed-reward", type=float, default=10000.0)
     parser.add_argument("--force-seed", action="store_true")
-    parser.add_argument("--lock-seed-edges", action="store_true", help='If set, restrict candidate roots for edges inside block to their seed assignment (conservative repair)')
-    parser.add_argument("--protect-top-n", type=int, default=0, help='Lock top-N edges in the block by triangle participation to their seed assignment')
+    parser.add_argument(
+        "--lock-seed-edges",
+        action="store_true",
+        help="If set, restrict candidate roots for edges inside block to their seed assignment (conservative repair)",
+    )
+    parser.add_argument(
+        "--protect-top-n",
+        type=int,
+        default=0,
+        help="Lock top-N edges in the block by triangle participation to their seed assignment",
+    )
     args = parser.parse_args()
 
     t0 = time.time()
@@ -72,9 +83,11 @@ def main():
     # compute cost distances between edge vectors and roots
     A_mat = X  # edge vectors computed in compute_embedding_matrix
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
     E = []
-    for (i, j) in edges:
+    for i, j in edges:
         v = X[i] - X[j]
         nv = np.linalg.norm(v)
         if nv > 0:
@@ -88,18 +101,22 @@ def main():
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
 
     # Determine the block of edges to optimize
-    block_edges = build_edge_set_from_vertex(args.start_vertex, adj, edges, args.edge_limit)
-    print(f"Selected {len(block_edges)} edges for local CP-SAT starting at vertex {args.start_vertex}")
+    block_edges = build_edge_set_from_vertex(
+        args.start_vertex, adj, edges, args.edge_limit
+    )
+    print(
+        f"Selected {len(block_edges)} edges for local CP-SAT starting at vertex {args.start_vertex}"
+    )
 
     # read seed and block out already-used roots outside the block
     seed_obj = None
     used_roots_outside = set()
     seed_map = {}
     if args.seed_json and os.path.exists(args.seed_json):
-        seed_obj = json.load(open(args.seed_json, encoding='utf-8'))
-        for sd in seed_obj.get('seed_edges', []):
-            eidx = int(sd.get('edge_index'))
-            ridx = int(sd.get('root_index'))
+        seed_obj = json.load(open(args.seed_json, encoding="utf-8"))
+        for sd in seed_obj.get("seed_edges", []):
+            eidx = int(sd.get("edge_index"))
+            ridx = int(sd.get("root_index"))
             if eidx not in block_edges:
                 used_roots_outside.add(ridx)
             else:
@@ -108,7 +125,7 @@ def main():
     # restrict candidate roots per edge to top-K excluding used_roots_outside
     K = int(args.k)
     candidates: Dict[int, List[int]] = {}
-    lock_seed_edges = getattr(args, 'lock_seed_edges', False)
+    lock_seed_edges = getattr(args, "lock_seed_edges", False)
     for e in block_edges:
         # If edge is protected and we have a seed assignment, only allow that root
         if e in protected_edges and (e in seed_map):
@@ -131,7 +148,7 @@ def main():
     edge_index = {edges[i]: i for i in range(len(edges))}
     edge_index.update({(v, u): i for (u, v), i in edge_index.items()})
     local_triangles = []
-    for (a, b, c) in triangles_all:
+    for a, b, c in triangles_all:
         e_ab = edge_index.get((a, b))
         e_bc = edge_index.get((b, c))
         e_ac = edge_index.get((a, c))
@@ -140,12 +157,12 @@ def main():
     print(f"Found {len(local_triangles)} triangles fully inside the block")
 
     # determine protected edges (if requested) by triangle participation counts
-    protect_top_n = int(getattr(args, 'protect_top_n', 0))
+    protect_top_n = int(getattr(args, "protect_top_n", 0))
     protected_edges = set()
     if protect_top_n > 0:
         # count number of triangles each edge participates in (global)
         edge_tri_count = {eidx: 0 for eidx in block_edges}
-        for (a, b, c) in triangles_all:
+        for a, b, c in triangles_all:
             e_ab = edge_index.get((a, b))
             e_bc = edge_index.get((b, c))
             e_ac = edge_index.get((a, c))
@@ -161,7 +178,7 @@ def main():
     # restrict candidate roots per edge to top-K excluding used_roots_outside
     K = int(args.k)
     candidates: Dict[int, List[int]] = {}
-    lock_seed_edges = getattr(args, 'lock_seed_edges', False)
+    lock_seed_edges = getattr(args, "lock_seed_edges", False)
     for e in block_edges:
         # If edge is protected and we have a seed assignment, only allow that root
         if e in protected_edges and (e in seed_map):
@@ -192,13 +209,13 @@ def main():
 
     # root uniqueness within block (prevent reuse inside block)
     root_to_pairs = defaultdict(list)
-    for (e, r) in list(bvars.keys()):
+    for e, r in list(bvars.keys()):
         root_to_pairs[r].append((e, r))
     for r, pairs in root_to_pairs.items():
         model.Add(sum(bvars[p] for p in pairs) <= 1)
 
     # triangle constraints (exact equality coordinate-wise)
-    for (a, b, c) in local_triangles:
+    for a, b, c in local_triangles:
         e_ab = edge_index.get((a, b))
         e_bc = edge_index.get((b, c))
         e_ac = edge_index.get((a, c))
@@ -223,9 +240,9 @@ def main():
     # map seed edges for block
     seed_map = {}
     if seed_obj:
-        for sd in seed_obj.get('seed_edges', []):
-            eidx = int(sd.get('edge_index'))
-            ridx = int(sd.get('root_index'))
+        for sd in seed_obj.get("seed_edges", []):
+            eidx = int(sd.get("edge_index"))
+            ridx = int(sd.get("root_index"))
             if eidx in block_edges:
                 seed_map[eidx] = ridx
 
@@ -243,23 +260,27 @@ def main():
     solver.parameters.num_search_workers = 8
     solver.parameters.random_seed = int(args.seed)
 
-    print(f"Starting local CP-SAT on block edges={len(block_edges)} vars={len(bvars)} triangles={len(local_triangles)} k={K} time_limit={args.time_limit}s")
+    print(
+        f"Starting local CP-SAT on block edges={len(block_edges)} vars={len(bvars)} triangles={len(local_triangles)} k={K} time_limit={args.time_limit}s"
+    )
     status = solver.Solve(model)
     status_name = solver.StatusName(status)
-    print('Solver status:', status_name)
+    print("Solver status:", status_name)
 
     res = {
-        'status': status_name,
-        'objective': None,
-        'time_seconds': time.time() - t0,
-        'k': K,
-        'vars': len(bvars),
-        'triangles': len(local_triangles),
-        'assignments': None,
-        'found': False,
-        'start_vertex': int(args.start_vertex),
-        'block_edges': block_edges,
-        'excluded_roots_outside': sorted(list(used_roots_outside)) if used_roots_outside else [],
+        "status": status_name,
+        "objective": None,
+        "time_seconds": time.time() - t0,
+        "k": K,
+        "vars": len(bvars),
+        "triangles": len(local_triangles),
+        "assignments": None,
+        "found": False,
+        "start_vertex": int(args.start_vertex),
+        "block_edges": block_edges,
+        "excluded_roots_outside": (
+            sorted(list(used_roots_outside)) if used_roots_outside else []
+        ),
     }
 
     if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
@@ -272,30 +293,35 @@ def main():
                     assignment[str(e)] = int(r)
                     found = True
                     break
-        res['assignments'] = assignment
+        res["assignments"] = assignment
         # check triangle logic
         # compute exact matches in block
         exact = 0
-        for (a, b, c) in local_triangles:
+        for a, b, c in local_triangles:
             e_ab = edge_index.get((a, b))
             e_bc = edge_index.get((b, c))
             e_ac = edge_index.get((a, c))
             r_ab = tuple(roots[assignment[str(e_ab)]])
             r_bc = tuple(roots[assignment[str(e_bc)]])
             r_ac = tuple(roots[assignment[str(e_ac)]])
-            sums = [tuple(np.add(r_ab, r_bc)), tuple(np.subtract(r_ab, r_bc)), tuple(np.add(r_ab, tuple([-x for x in r_bc]))), tuple(np.subtract(tuple([-x for x in r_ab]), r_bc))]
+            sums = [
+                tuple(np.add(r_ab, r_bc)),
+                tuple(np.subtract(r_ab, r_bc)),
+                tuple(np.add(r_ab, tuple([-x for x in r_bc]))),
+                tuple(np.subtract(tuple([-x for x in r_ab]), r_bc)),
+            ]
             targets = {r_ac, tuple([-x for x in r_ac])}
             if any(s in targets for s in sums):
                 exact += 1
-        res['block_exact'] = exact
-        res['found'] = True
+        res["block_exact"] = exact
+        res["found"] = True
 
-    stamp = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
-    out_path = Path.cwd() / 'checks' / f'PART_CVII_e8_bijection_local_seed_{stamp}.json'
-    out_path.write_text(json.dumps(res, indent=2), encoding='utf-8')
-    print('Wrote local CP-SAT result to', out_path)
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    out_path = Path.cwd() / "checks" / f"PART_CVII_e8_bijection_local_seed_{stamp}.json"
+    out_path.write_text(json.dumps(res, indent=2), encoding="utf-8")
+    print("Wrote local CP-SAT result to", out_path)
     print(json.dumps(res, indent=2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
