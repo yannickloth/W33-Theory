@@ -126,6 +126,7 @@ def main():
     K = int(args.k)
     candidates: Dict[int, List[int]] = {}
     lock_seed_edges = getattr(args, "lock_seed_edges", False)
+    protected_edges = set()
     for e in block_edges:
         # If edge is protected and we have a seed assignment, only allow that root
         if e in protected_edges and (e in seed_map):
