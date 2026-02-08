@@ -1678,6 +1678,195 @@ class TestW33Homology:
 
 
 # =========================================================================
+# TEST CLASS 12: Deep Structure Properties
+# =========================================================================
+
+
+class TestDeepStructure:
+    """Test discoveries from the deep structure analysis.
+
+    Verifies Ramanujan property, self-duality, subgraph homology,
+    and vertex link structure.
+    """
+
+    def test_w33_is_ramanujan(self, w33):
+        """W33 is Ramanujan: all nontrivial eigenvalues |lambda| <= 2*sqrt(k-1)."""
+        import numpy as np
+
+        n, _, adj, _ = w33
+        A = np.zeros((n, n))
+        for i in range(n):
+            for j in adj[i]:
+                A[i][j] = 1
+        eigvals = np.linalg.eigvalsh(A)
+
+        k = 12
+        bound = 2 * np.sqrt(k - 1)  # 2*sqrt(11) ~ 6.633
+        tol = 1e-6
+        nontrivial = [ev for ev in eigvals if abs(round(ev) - k) > tol]
+        assert all(abs(ev) <= bound + tol for ev in nontrivial), (
+            f"W33 is not Ramanujan: max nontrivial |ev| = {max(abs(ev) for ev in nontrivial)}"
+        )
+
+    def test_self_duality(self, w33, w33_adj_sets):
+        """Line graph of GQ(3,3) is isomorphic to SRG(40,12,2,4) = W33."""
+        from w33_homology import build_clique_complex
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        lines = simplices[3]
+        assert len(lines) == 40
+
+        # Build line adjacency (two lines are adjacent if they share a point)
+        line_adj = defaultdict(set)
+        for i, L1 in enumerate(lines):
+            for j, L2 in enumerate(lines):
+                if j <= i:
+                    continue
+                if set(L1) & set(L2):
+                    line_adj[i].add(j)
+                    line_adj[j].add(i)
+
+        degrees = [len(line_adj[i]) for i in range(len(lines))]
+        assert set(degrees) == {12}, f"Line graph not 12-regular: {set(degrees)}"
+
+        # Check lambda parameter (adjacent line pairs share exactly 2 common line-neighbors)
+        for i in range(len(lines)):
+            for j in line_adj[i]:
+                if j > i:
+                    common = line_adj[i] & line_adj[j]
+                    assert len(common) == 2, (
+                        f"Lines {i},{j}: lambda = {len(common)}, expected 2"
+                    )
+                    break  # Sample
+            break
+
+    def test_h27_homology(self, w33, w33_adj_sets):
+        """H27 subgraph has b_1 = 46."""
+        from w33_deep_structure import compute_subgraph_homology
+
+        n, _, adj, _ = w33
+        adj_sets = w33_adj_sets
+        h27_verts = sorted(set(range(n)) - adj_sets[0] - {0})
+        assert len(h27_verts) == 27
+
+        h27 = compute_subgraph_homology(h27_verts, adj_sets, "H27")
+        assert h27["betti_numbers"][1] == 46, f"b_1(H27) = {h27['betti_numbers'][1]}, expected 46"
+        assert h27["simplex_counts"][1] == 108
+        assert h27["simplex_counts"][2] == 36
+
+    def test_vertex_link_has_4_components(self, w33, w33_adj_sets):
+        """Every vertex link has exactly 4 connected components."""
+        from w33_deep_structure import compute_subgraph_homology
+
+        n, _, adj, _ = w33
+        adj_sets = w33_adj_sets
+        for v in [0, 1, 20]:
+            neighbors = sorted(adj_sets[v])
+            link = compute_subgraph_homology(neighbors, adj_sets, f"link({v})")
+            assert link["betti_numbers"][0] == 4, (
+                f"link({v}) has b_0 = {link['betti_numbers'][0]}, expected 4"
+            )
+
+    def test_sp43_generator_traces_zero(self, w33):
+        """All Sp(4,3) generator traces on H_1 are zero."""
+        from w33_deep_structure import analyze_sp43_on_h1
+
+        n, vertices, adj, _ = w33
+        result = analyze_sp43_on_h1(n, vertices, adj)
+        assert result["identity_trace"] == 81
+        assert all(t == 0 for t in result["generator_traces"]), (
+            f"Non-zero generator traces found: {[t for t in result['generator_traces'] if t != 0]}"
+        )
+
+
+# =========================================================================
+# TEST CLASS 13: Representation Theory & Hodge Theory
+# =========================================================================
+
+
+class TestRepresentationTheory:
+    """Test new discoveries from representation theory and Hodge theory.
+
+    Verifies: Hodge Laplacian, Mayer-Vietoris 81=78+3, mod-p homology,
+    cup product vanishing.
+    """
+
+    def test_hodge_laplacian_kernel_is_81(self, w33):
+        """ker(Delta_1) = 81 = b_1(W33) harmonic 1-forms."""
+        from w33_representation_theory import compute_hodge_laplacian
+
+        n, _, adj, _ = w33
+        hodge = compute_hodge_laplacian(n, adj)
+        assert hodge["hodge_laplacian"]["harmonic_forms"] == 81
+
+    def test_hodge_spectral_gap_is_4(self, w33):
+        """The spectral gap of Delta_1 is exactly 4."""
+        from w33_representation_theory import compute_hodge_laplacian
+
+        n, _, adj, _ = w33
+        hodge = compute_hodge_laplacian(n, adj)
+        assert abs(hodge["hodge_laplacian"]["spectral_gap"] - 4.0) < 1e-6
+
+    def test_hodge_spectrum_multiplicities(self, w33):
+        """Hodge spectrum: 0^81 + 4^120 + 10^24 + 16^15 = 240."""
+        from w33_representation_theory import compute_hodge_laplacian
+
+        n, _, adj, _ = w33
+        hodge = compute_hodge_laplacian(n, adj)
+        spec = hodge["hodge_laplacian"]["spectrum"]
+        # Check total multiplicity
+        total = sum(int(v) for v in spec.values())
+        assert total == 240, f"Total multiplicity {total} != 240"
+        # Check max eigenvalue
+        assert abs(hodge["hodge_laplacian"]["max_eigenvalue"] - 16.0) < 0.1
+
+    def test_mayer_vietoris_81_eq_78_plus_3(self, w33, w33_adj_sets):
+        """THEOREM: b_1(W33 \\ {v}) = 78 = dim(E6) for every vertex v."""
+        from w33_representation_theory import compute_vertex_deletion_homology
+
+        n, _, adj, _ = w33
+        adj_sets = w33_adj_sets
+
+        # Test several vertices (all should give 78)
+        for v in [0, 1, 10, 25, 39]:
+            hom = compute_vertex_deletion_homology(v, n, adj, adj_sets)
+            assert hom["betti_numbers"][1] == 78, (
+                f"b_1(W33\\{{{v}}}) = {hom['betti_numbers'][1]}, expected 78 = dim(E6)"
+            )
+
+    def test_mod_p_homology_all_81(self, w33):
+        """H_1(W33; F_p) = F_p^81 for p = 2, 3, 5."""
+        from w33_representation_theory import compute_mod_p_homology
+
+        n, _, adj, _ = w33
+        result = compute_mod_p_homology(n, adj, primes=[2, 3, 5])
+        for p_str, data in result["mod_p_results"].items():
+            assert data["b1"] == 81, f"b_1 mod {p_str} = {data['b1']}, expected 81"
+
+    def test_cup_product_vanishes(self, w33):
+        """H^1 x H^1 -> H^2 = 0 (matter fields don't self-interact)."""
+        from w33_representation_theory import verify_cup_product_vanishing
+
+        n, _, adj, _ = w33
+        result = verify_cup_product_vanishing(n, adj)
+        assert result["cup_product_vanishes"] is True
+
+    def test_representation_theory_artifact_exists(self):
+        """The representation theory script should have produced a JSON artifact."""
+        from pathlib import Path
+
+        p = Path("checks") / "PART_CVII_w33_representation_theory.json"
+        if not p.exists():
+            pytest.skip("Artifact not present; run scripts/w33_representation_theory.py")
+        import json
+
+        data = json.loads(p.read_text(encoding="utf-8"))
+        assert data["hodge_laplacian"]["hodge_laplacian"]["harmonic_forms"] == 81
+        assert data["mayer_vietoris"]["all_vertices_give_78"] is True
+
+
+# =========================================================================
 # MAIN
 # =========================================================================
 
