@@ -62,6 +62,8 @@ checks/*_seed_*.json
 checks/z3_analysis_*/
 checks/*.npz
 checks/*.log
+# Archive for cleaned temporary outputs (keep for reproducibility but don't scan in CI)
+checks/archive/
 
 # Ignore editor settings and temporary workspace files
 .vscode/

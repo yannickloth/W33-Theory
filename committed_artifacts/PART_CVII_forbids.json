@@ -169,6 +169,71 @@
       ],
       "timestamp": 1770577585,
       "source_local": "checks/_tmp_verify_next20_50_51.json"
+    },
+    {
+      "set": [
+        37,
+        38
+      ],
+      "roots": [
+        22,
+        188
+      ],
+      "timestamp": 1770579791,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770500483.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501431.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501744.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502026.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502521.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502842.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503758.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504850.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504901.json",
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770504956.json"
+      ]
+    },
+    {
+      "set": [
+        36,
+        37
+      ],
+      "roots": [
+        190,
+        22
+      ],
+      "timestamp": 1770579795,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
+      ]
+    },
+    {
+      "set": [
+        4,
+        5
+      ],
+      "roots": [
+        97,
+        221
+      ],
+      "timestamp": 1770579799,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502103.json"
+      ]
+    },
+    {
+      "set": [
+        39,
+        40
+      ],
+      "roots": [
+        162,
+        87
+      ],
+      "timestamp": 1770579803,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770502247.json"
+      ]
     }
   ]
 }
