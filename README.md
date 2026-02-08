@@ -104,6 +104,10 @@ Every triangle belongs to exactly 1 tetrahedron. The 40 tetrahedra ARE the 40 li
 | Weinberg angle | 3/8 at GUT scale (E6) | **0.375** | 0.231 (after RG) |
 | Gauge group | g\_0 sector | **E6 x SU(3)** | E6 GUT |
 | Total dimension | 86 + 81 + 81 | **248 = dim(E8)** | -- |
+| Mass gap | Hodge spectral gap | **4** | -- |
+| E6 from deletion | b\_1(W33\\{v}) = dim(E6) | **78** | -- |
+| No self-interaction | H^1 x H^1 -> H^2 = 0 | **gauge-mediated** | SM |
+| Torsion-free at all p | H\_1(W33; F\_p) = F\_p^81 | **no anomalies** | -- |
 
 ### Key Scripts and Tests
 
