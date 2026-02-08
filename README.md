@@ -187,6 +187,8 @@ python -m pytest tests/test_e8_embedding.py -v
 | `scripts/w33_complex_type_check.py` | Frobenius-Schur indicators + complex structure J |
 | `scripts/w33_find_z3_split.py` | Search PSp(4,3) for Z3 elements splitting H1 (81) into 3x27; writes `checks/PART_CVII_z3_candidates_*.json` |
 | `scripts/w33_z3_analyze_candidates.py` | Analyze Z3 candidates and export eigen-bases to `checks/z3_analysis_*` |
+| `committed_artifacts/PART_CVII_z3_candidate_1770578289_02.json` | Canonical Z3 candidate (metadata) with basis `PART_CVII_z3_candidate_1770578289_02.npz` |
+| `scripts/w33_z3_analyze_candidates.py` | Analyze Z3 candidates and export eigen-bases to `checks/z3_analysis_*` |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
 | `tests/test_e8_embedding.py` | 96 tests across 19 classes |
 
