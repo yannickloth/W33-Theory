@@ -21,14 +21,16 @@
     },
     {
       "set": [
-        144
+        36,
+        37
       ],
       "roots": [
-        94
+        190,
+        22
       ],
-      "timestamp": 1770504410,
+      "timestamp": 1770502846,
       "source_dd": [
-        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503200.json"
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770501888.json"
       ]
     }
   ]
