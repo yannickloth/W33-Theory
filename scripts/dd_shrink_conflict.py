@@ -134,18 +134,46 @@ def main():
     S = entry['minimal_conflict']
     print(f'Starting ddmin on conflict of size {len(S)}')
 
+    # Run an initial check to see if S is currently infeasible under the given bijection/seed
+    tmp_init = Path.cwd() / 'checks' / f'_tmp_seed_dd_initial_{int(time.time()*1000)}.json'
+    write_seed_for_edges(bij, S, tmp_init)
+    init_res = run_forced_seed(tmp_init, k=args.k, time_limit=args.time_limit, seed=args.seed)
+    try:
+        tmp_init.unlink()
+    except Exception:
+        pass
+    init_json = init_res.get('json')
+    initial_reproducible = bool(init_json and init_json.get('status') == 'INFEASIBLE')
+
     start = time.time()
     result = ddmin(bij, S, k=args.k, time_limit=args.time_limit, seed=args.seed, max_checks=args.max_checks)
     elapsed = time.time() - start
 
+    if not initial_reproducible:
+        shrink_status = 'not_reproducible'
+        notes = 'Initial check indicates the conflict is not currently infeasible under the provided bijection/seed.'
+    else:
+        if len(result) == 0:
+            shrink_status = 'reproducible_but_no_shrink_found'
+            notes = 'Initial check passed but ddmin did not find a smaller failing subset.'
+        elif len(result) == len(S):
+            shrink_status = 'already_minimal'
+            notes = 'Conflict appears minimal (no strict subset found infeasible).'
+        else:
+            shrink_status = 'shrunk'
+            notes = 'ddmin found a smaller failing subset.'
+
     out = {
         'source_conf_entry': entry,
         'initial_size': len(S),
+        'initial_reproducible': initial_reproducible,
+        'shrink_status': shrink_status,
         'result': result,
         'result_size': len(result),
         'checks_limit': int(args.max_checks),
         'time_seconds': elapsed,
-        'timestamp': int(time.time())
+        'timestamp': int(time.time()),
+        'notes': notes
     }
 
     stamp = int(time.time())
