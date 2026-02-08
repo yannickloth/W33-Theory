@@ -25,6 +25,9 @@ NUMERIC_COMPARISONS.json
 
 # Generated output files from CI/CD and Sage verification
 PART_*.json
+# Allow PART_*.json files inside `committed_artifacts/` to be tracked so
+# verification artifacts (e.g., PART_CVII_*.json) are visible to collaborators
+!committed_artifacts/PART_*.json
 
 # Extracted bundles (redundant with bundles/ directory)
 extracted/
