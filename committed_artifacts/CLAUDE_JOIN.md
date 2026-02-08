@@ -2,8 +2,8 @@
 
 Short snapshot (automated):
 
-- **Best bijection (local):** `checks/PART_CVII_e8_bijection_campaign_best_20260207T191032Z.json` — **71 exact triangles**.
-- **Running now:** local CP‑SAT patch campaign (trying to push beyond 71 exact). Auto‑keep daemon watching `committed_artifacts` and `checks` is running and will auto‑commit new artifacts (no pushes by default).
+- **Best bijection (trial):** `committed_artifacts/committed_PART_CVII_e8_bijection_trial_20260207T201739Z_s804.json` — **76 exact triangles** (seed **804**).
+- **Running now:** seeded SA campaign (triangle-first, `alpha=1.0`) started from seed **804** to try to improve beyond **76 exact**. Auto‑keep daemon is enabled and **pushing** artifacts to the `auto-keep` branch on origin for collaborator visibility.
 
 Suggested first checks for you:
 
