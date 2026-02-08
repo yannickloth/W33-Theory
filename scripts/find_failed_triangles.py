@@ -10,7 +10,16 @@ from collections import Counter
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from e8_embedding_group_theoretic import build_w33, generate_e8_roots
-from scripts.w33_e8_bijection import vec_add, vec_neg, vec_sub
+
+# Local vector helpers to avoid importing other scripts as modules
+def vec_add(a, b):
+    return tuple(int(x) + int(y) for x, y in zip(a, b))
+
+def vec_neg(a):
+    return tuple(int(-x) for x in a)
+
+def vec_sub(a, b):
+    return tuple(int(x) - int(y) for x, y in zip(a, b))
 
 inpath = Path('committed_artifacts') / 'PART_CVII_e8_bijection_campaign_result_1770513416.json'
 if not inpath.exists():
