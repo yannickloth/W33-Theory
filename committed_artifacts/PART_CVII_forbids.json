@@ -109,6 +109,54 @@
       "source_dd": [
         "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
       ]
+    },
+    {
+      "set": [
+        53,
+        48
+      ],
+      "roots": [
+        48,
+        86
+      ],
+      "timestamp": 1770539176,
+      "source_local": "checks/PART_CVII_local_hotspot_feasibility_53_48_offset0_limit200_1770539135.json"
+    },
+    {
+      "set": [
+        48,
+        49
+      ],
+      "roots": [
+        20,
+        130
+      ],
+      "timestamp": 1770539780,
+      "source_local": "checks/_tmp_subset_48_49_first20_1770539435.json"
+    },
+    {
+      "set": [
+        49,
+        50
+      ],
+      "roots": [
+        131,
+        2
+      ],
+      "timestamp": 1770541452,
+      "source_local": "checks/_tmp_verify_next20_49_50.json"
+    },
+    {
+      "set": [
+        48,
+        50
+      ],
+      "roots": [
+        20,
+        2
+      ],
+      "timestamp": 1770542109,
+      "source_local": "checks/_tmp_verify_next20_48_50.json"
     }
   ]
 }

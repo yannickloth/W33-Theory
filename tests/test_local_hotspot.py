@@ -94,3 +94,5 @@ def test_slice_pairs_helper():
     assert len(out) == 5
     out2 = mod.slice_pairs(pairs, offset=200, limit=10)
     assert out2 == []
+    out3 = mod.slice_pairs(pairs, offset=0, limit=5)
+    assert len(out3) == 5

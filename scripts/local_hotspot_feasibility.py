@@ -462,26 +462,20 @@ def main():
             for r1, r2 in product(candidates[first_edge], candidates[second_edge])
         ]
     # deterministic slicing (offset, limit) for resumable batches
-    if args.offset:
-        if args.offset >= len(pairs):
-            print(
-                f"Offset {args.offset} >= number of pairs {len(pairs)}; nothing to test",
-                flush=True,
-            )
-            pairs = []
-        else:
-            if args.limit and args.limit > 0:
-                pairs = pairs[args.offset : args.offset + args.limit]
-                print(
-                    f"Using deterministic slice offset={args.offset} limit={args.limit} -> {len(pairs)} pairs",
-                    flush=True,
-                )
-            else:
-                pairs = pairs[args.offset :]
-                print(
-                    f"Using deterministic slice offset={args.offset} -> {len(pairs)} pairs",
-                    flush=True,
-                )
+    start = int(args.offset)
+    if start >= len(pairs):
+        print(
+            f"Offset {start} >= number of pairs {len(pairs)}; nothing to test",
+            flush=True,
+        )
+        pairs = []
+    else:
+        end = None if int(args.limit) == 0 else start + int(args.limit)
+        pairs = pairs[start:end]
+        print(
+            f"Using deterministic slice offset={start} limit={args.limit} -> {len(pairs)} pairs",
+            flush=True,
+        )
 
     # apply max-tests limit if requested (random sampling)
     if args.max_tests and len(pairs) > args.max_tests:
