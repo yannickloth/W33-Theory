@@ -22,3 +22,8 @@ Guidelines
 - Use `json.dump(..., indent=2, default=str)` for robust serialization of non-native JSON types.
 
 If you'd like, I can open a branch and a draft PR with these changes, add CI badges to the README, and run the top-level scanner and fix remaining modules automatically. Let me know which you'd like next.
+
+Local hotspot diagnostics & verification
+---------------------------------------
+- `scripts/local_hotspot_feasibility.py` now supports `--offset` and `--limit` for deterministic, resumable batch runs and detects OR-Tools import/linker problems (e.g., missing helper DLLs such as `utf8_validity.dll`) and emits explicit `ERROR_MISSING_DLL` entries in its JSON output to make automation resilient.
+- `scripts/verify_and_register_pairs.py` verifies locally INFEASIBLE pairs with the global CP-SAT solver (`scripts/solve_e8_embedding_cpsat.py --force-seed`) and automatically appends verified pair forbids into `checks/PART_CVII_forbids.json` (use `--commit` to mirror to `committed_artifacts` and attempt a git commit).
