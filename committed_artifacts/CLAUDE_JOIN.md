@@ -2,8 +2,9 @@
 
 Short snapshot (automated):
 
-- **Best bijection (trial):** `committed_artifacts/committed_PART_CVII_e8_bijection_trial_20260207T201739Z_s804.json` — **76 exact triangles** (seed **804**).
-- **Running now:** seeded SA campaign (triangle-first, `alpha=1.0`) started from seed **804** to try to improve beyond **76 exact**. Auto‑keep daemon is enabled and **pushing** artifacts to the `auto-keep` branch on origin for collaborator visibility.
+- **Best bijection (trial):** `committed_artifacts/committed_PART_CVII_e8_bijection_trial_20260207T201739Z_s804.json` — **82 exact triangles** (seed **804**, improved by auto-repair).
+- **Verification:** `checks/PART_CVII_e8_bijection_verified_1770513416.json` — triangle cocycle `exact_match = 82`; full theorem `checks/PART_CVII_w33_e8_correspondence_theorem.json` reports **ALL_VERIFIED = true**.
+- **Running now:** seeded SA campaign (triangle-first, `alpha=1.0`) started from seed **804** to try to improve beyond **82 exact**. Auto‑keep daemon is enabled and **pushing** artifacts to the `auto-keep` branch on origin for collaborator visibility.
 
 **Update (auto-repair):** I started an **auto-repair daemon** that triggers conservative `run_local_patch_campaign.py` runs on any new best; it ran automatically and produced a **new solution with final_exact = 82** (written to `checks/PART_CVII_e8_bijection_campaign_result_1770513416.json`). I fixed a small bug in `scripts/solve_e8_embedding_cpsat_local.py` (UnboundLocalError on `protected_edges`) and pushed the fix to branch `feat/auto-repair` for review.
 
