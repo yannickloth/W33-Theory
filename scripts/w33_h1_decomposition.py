@@ -12,16 +12,16 @@ physical interpretation.
 Method:
   1. Build harmonic basis W (240 x 81) from Hodge Laplacian
   2. Generate PSp(4,3) via symplectic transvections on GF(3)^4
-  3. Compute restricted representation R_g = W^T P_g W (81 x 81)
+  3. Compute SIGNED restricted representation R_g = W^T S_g W (81 x 81)
+     where S_g accounts for edge orientation reversal under permutation
   4. Find a non-trivial commutant element via group averaging
   5. Diagonalize to find the irreducible decomposition
   6. Verify by checking all generators preserve the decomposition
 
-Physical significance:
-  If 81 = d1 + d2, this reveals the internal structure of the matter sector.
-  The E8 Z3-grading gives g1 = 81 = 27 x 3 (three 27-plets of E6).
-  The irreducible decomposition under the geometric symmetry group tells
-  us HOW the 81 matter cycles organize internally.
+CRITICAL: Edge orientation signs must be tracked. When a vertex
+permutation maps edge (i,j) to (sigma(j), sigma(i)) with sigma(j) < sigma(i),
+the 1-chain picks up a -1 sign. This is essential for correct representation
+matrices on H1.
 
 Usage:
   python scripts/w33_h1_decomposition.py
@@ -31,9 +31,8 @@ from __future__ import annotations
 import json
 import sys
 import time
-from collections import Counter
+from collections import deque
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 import numpy as np
 
@@ -91,7 +90,9 @@ def apply_matrix_projective(M: np.ndarray, v: tuple) -> tuple:
 # =========================================================================
 
 def build_incidence_matrix(n: int, edges: list) -> np.ndarray:
-    """Oriented vertex-edge incidence matrix D (n x m)."""
+    """Oriented vertex-edge incidence matrix D (n x m).
+    For edge (i,j) with i<j: D[i,col] = +1, D[j,col] = -1.
+    """
     m = len(edges)
     D = np.zeros((n, m), dtype=float)
     for col, (i, j) in enumerate(edges):
@@ -104,16 +105,10 @@ def compute_harmonic_basis(n, adj, edges, simplices):
     """Compute the 81-dim harmonic basis of H1(W33)."""
     B2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
     D = build_incidence_matrix(n, edges)
-
-    # Hodge Laplacian L1 = D^T D + B2 B2^T
     L1 = D.T @ D + B2 @ B2.T
-
-    # Eigendecomposition
     w, v = np.linalg.eigh(L1)
     idx = np.argsort(w)
     w, v = w[idx], v[:, idx]
-
-    # Kernel (harmonic 1-forms)
     tol = 1e-8
     null_idx = np.where(np.abs(w) < tol)[0]
     W = v[:, null_idx]
@@ -121,7 +116,7 @@ def compute_harmonic_basis(n, adj, edges, simplices):
 
 
 # =========================================================================
-# Vertex and edge permutations
+# SIGNED edge permutation (critical for correct H1 action)
 # =========================================================================
 
 def make_vertex_permutation(M: np.ndarray, vertices: list) -> list:
@@ -134,27 +129,42 @@ def make_vertex_permutation(M: np.ndarray, vertices: list) -> list:
     return perm
 
 
-def vertex_perm_to_edge_perm(vperm: list, edges: list) -> list:
-    """Convert vertex permutation to edge permutation."""
+def signed_edge_permutation(vperm: list, edges: list):
+    """Compute signed edge permutation from vertex permutation.
+
+    Returns (perm, signs) where:
+      perm[i] = index of image edge
+      signs[i] = +1 if orientation preserved, -1 if reversed
+
+    Edge (a, b) with a < b maps to (vperm[a], vperm[b]).
+    If vperm[a] < vperm[b]: orientation preserved, sign = +1
+    If vperm[a] > vperm[b]: edge stored as (vperm[b], vperm[a]), sign = -1
+    """
     edge_index = {}
     for i, (a, b) in enumerate(edges):
         edge_index[(a, b)] = i
-        edge_index[(b, a)] = i
 
-    eperm = []
+    perm = []
+    signs = []
     for i, (a, b) in enumerate(edges):
         a2, b2 = vperm[a], vperm[b]
-        key = (min(a2, b2), max(a2, b2))
-        eperm.append(edge_index[key])
-    return eperm
+        if a2 < b2:
+            perm.append(edge_index[(a2, b2)])
+            signs.append(1)
+        else:
+            perm.append(edge_index[(b2, a2)])
+            signs.append(-1)
+    return perm, signs
 
 
-def edge_perm_to_matrix(eperm: list, m: int) -> np.ndarray:
-    """Convert edge permutation to permutation matrix."""
-    P = np.zeros((m, m), dtype=float)
-    for i, j in enumerate(eperm):
-        P[j, i] = 1.0
-    return P
+def signed_permutation_matrix(perm: list, signs: list, m: int) -> np.ndarray:
+    """Build signed permutation matrix S_g from edge perm and signs.
+    S_g[perm[i], i] = signs[i]
+    """
+    S = np.zeros((m, m), dtype=float)
+    for i in range(m):
+        S[perm[i], i] = signs[i]
+    return S
 
 
 # =========================================================================
@@ -162,13 +172,11 @@ def edge_perm_to_matrix(eperm: list, m: int) -> np.ndarray:
 # =========================================================================
 
 def find_irreducible_decomposition():
-    """Find the 2 irreducible components of the 81-dim rep on H1."""
     t0 = time.time()
     print("=" * 70)
     print("  H1 IRREDUCIBLE DECOMPOSITION UNDER PSp(4,3)")
     print("=" * 70)
 
-    # Build W33
     n, vertices, adj, edges = build_w33()
     simplices = build_clique_complex(n, adj)
     m = len(edges)
@@ -181,282 +189,186 @@ def find_irreducible_decomposition():
     print(f"Harmonic basis dimension: {b1}")
     assert b1 == 81, f"Expected b1=81, got {b1}"
 
-    # Build generators: all transvection matrices
+    # Build generators: ALL 40 projective point transvections
     J = J_matrix()
-    print("Building PSp(4,3) generators (transvections)...")
+    print("Building PSp(4,3) generators (all 40 transvections)...")
 
-    # Use a small generating set (3 transvections suffice for the group)
-    gen_vectors = [
-        np.array([1, 0, 0, 0], dtype=int),
-        np.array([0, 1, 0, 0], dtype=int),
-        np.array([0, 0, 1, 0], dtype=int),
-        np.array([0, 0, 0, 1], dtype=int),
-        np.array([1, 1, 0, 0], dtype=int),
-    ]
-
+    gen_vectors = [np.array(v, dtype=int) for v in vertices]
     gen_matrices = [transvection_matrix(u, J) for u in gen_vectors]
     gen_vperms = [make_vertex_permutation(M, vertices) for M in gen_matrices]
-    gen_eperms = [vertex_perm_to_edge_perm(vp, edges) for vp in gen_vperms]
+    gen_signed = [signed_edge_permutation(vp, edges) for vp in gen_vperms]
 
-    # Compute restricted representation R_g = W^T P_g W for each generator
-    print("Computing restricted representation matrices on H1...")
+    # Verify unitarity with signed permutation matrices
+    print("Verifying unitarity of signed representation on H1...")
     R_gens = []
-    for i, eperm in enumerate(gen_eperms):
-        P_g = edge_perm_to_matrix(eperm, m)
-        R_g = W.T @ P_g @ W  # 81 x 81
+    for i, (eperm, esigns) in enumerate(gen_signed):
+        S_g = signed_permutation_matrix(eperm, esigns, m)
+        R_g = W.T @ S_g @ W  # 81 x 81
         R_gens.append(R_g)
-        # Verify unitarity
         err = np.max(np.abs(R_g @ R_g.T - np.eye(b1)))
-        print(f"  Generator {i}: unitarity error = {err:.2e}")
+        if i < 5 or err > 1e-6:
+            print(f"  Generator {i}: unitarity error = {err:.2e}")
 
-    # Strategy 1: Find a non-trivial commutant element
-    # Use a random linear combination of generators and their products
-    print("\nFinding irreducible decomposition...")
+    # Check a few more
+    max_err = max(np.max(np.abs(R @ R.T - np.eye(b1))) for R in R_gens)
+    print(f"  Max unitarity error across all 40 generators: {max_err:.2e}")
 
-    # Take a product of generators as a non-trivial group element
-    R_prod = R_gens[0] @ R_gens[1] @ R_gens[2]
+    # BFS to enumerate the full group PSp(4,3) using SIGNED edge permutations
+    print("\nEnumerating PSp(4,3) via BFS on vertex permutations...")
+    gen_v_tuples = [tuple(vp) for vp in gen_vperms]
 
-    # Compute eigenvalues of R_prod
-    eigvals_prod, eigvecs_prod = np.linalg.eig(R_prod)
+    # For edge perms, we store (perm_tuple, signs_tuple) keyed by vertex perm
+    gen_e_data = [(tuple(ep), tuple(es)) for ep, es in gen_signed]
 
-    # The eigenvalues are complex (since R_prod is orthogonal, they lie on unit circle)
-    print(f"  R_prod eigenvalue count: {len(eigvals_prod)}")
-
-    # Strategy 2: Use a Hermitian combination for cleaner decomposition
-    # The sum S = sum_g R_g is a Hermitian commutant element
-    S = sum(R_gens)
-    S = (S + S.T) / 2  # Ensure Hermitian
-
-    # Eigendecomposition of S
-    w_S, v_S = np.linalg.eigh(S)
-    idx = np.argsort(w_S)
-    w_S, v_S = w_S[idx], v_S[:, idx]
-
-    # Cluster eigenvalues
-    tol = 1e-6
-    clusters = []
-    current_cluster = [0]
-    for i in range(1, len(w_S)):
-        if abs(w_S[i] - w_S[current_cluster[0]]) < tol:
-            current_cluster.append(i)
-        else:
-            clusters.append((float(w_S[current_cluster[0]]), current_cluster[:]))
-            current_cluster = [i]
-    clusters.append((float(w_S[current_cluster[0]]), current_cluster[:]))
-
-    print(f"\n  Eigenvalue clusters of S = sum(generators) on H1:")
-    for val, indices in clusters:
-        print(f"    eigenvalue {val:.6f}, multiplicity {len(indices)}")
-
-    # Strategy 3: Use the Casimir-like element
-    # C = sum_g R_g R_g^T (always commutes with the representation)
-    # But R_g R_g^T = I for orthogonal matrices, so C = |gens| * I. Trivial.
-
-    # Strategy 4: Use R_g^2 for a single generator
-    # The key insight: we need the GROUP AVERAGE, not just generators.
-    # Since enumerating the full group (25920 elements) is feasible,
-    # let's compute the "quadratic Casimir" via group averaging.
-    print("\nBuilding group by BFS and computing quadratic average...")
-
-    from collections import deque
-
-    # BFS to enumerate group, storing edge permutations as tuples
     id_v = tuple(range(n))
     id_e = tuple(range(m))
-    visited = {id_v: id_e}
-    queue = deque([id_v])
+    id_s = tuple([1] * m)
 
-    gen_v_tuples = [tuple(vp) for vp in gen_vperms]
-    gen_e_tuples = [tuple(ep) for ep in gen_eperms]
+    # Store vertex_perm -> (edge_perm, edge_signs)
+    visited = {id_v: (id_e, id_s)}
+    queue = deque([id_v])
 
     while queue:
         cur_v = queue.popleft()
-        cur_e = visited[cur_v]
-        for gv, ge in zip(gen_v_tuples, gen_e_tuples):
+        cur_ep, cur_es = visited[cur_v]
+        for gv, (gep, ges) in zip(gen_v_tuples, gen_e_data):
+            # Composition: new = gen o cur (on vertices)
             new_v = tuple(gv[i] for i in cur_v)
-            new_e = tuple(ge[i] for i in cur_e)
             if new_v not in visited:
-                visited[new_v] = new_e
+                # Compose edge permutations: new_ep[i] = gep[cur_ep[i]]
+                # Compose signs: new_es[i] = ges[cur_ep[i]] * cur_es[i]
+                new_ep = tuple(gep[cur_ep[i]] for i in range(m))
+                new_es = tuple(ges[cur_ep[i]] * cur_es[i] for i in range(m))
+                visited[new_v] = (new_ep, new_es)
                 queue.append(new_v)
 
     group_size = len(visited)
     print(f"  Group size: {group_size}")
 
-    # Compute C = (1/|G|) sum_g R_g for character trace,
-    # and Q = (1/|G|) sum_g chi(g)^2 for commutant dimension verification
-    # Also compute a Hermitian matrix that commutes with all R_g
-    # Use: A = (1/|G|) sum_g R_g (not useful if trivial component absent)
-    # Better: use the square of the permutation character restricted to H1
-
-    # Compute projection matrix S = W W^T (m x m)
-    S_proj = W @ W.T  # Projects onto harmonic subspace
-
-    # For each g, chi(g) = trace(R_g) = trace(P_g S_proj)
+    # Compute commutant dimension and Casimir element C2
+    print("Computing Casimir element C2 = (1/|G|) sum chi(g) R_g ...")
+    S_proj = W @ W.T  # Projection onto harmonic subspace (m x m)
     ar = np.arange(m, dtype=int)
 
     total_chi_sq = 0.0
-    # Also accumulate: C2 = (1/|G|) sum_g chi(g) * R_g (class operator projection)
     C2 = np.zeros((b1, b1), dtype=float)
-    # And: R_avg = (1/|G|) sum_g R_g (trivial projection)
-    R_avg = np.zeros((b1, b1), dtype=float)
 
     count = 0
-    for cur_v, cur_e in visited.items():
-        cur_e_np = np.asarray(cur_e, dtype=int)
-        # chi(g) = trace of restriction of P_g to harmonic subspace
-        chi = float(S_proj[ar, cur_e_np].sum())
+    for cur_v, (cur_ep, cur_es) in visited.items():
+        cur_ep_np = np.asarray(cur_ep, dtype=int)
+        cur_es_np = np.asarray(cur_es, dtype=float)
+
+        # chi(g) = trace(S_g restricted to H1) = sum_e S_proj[e, sigma(e)] * sign(e)
+        chi = float((S_proj[ar, cur_ep_np] * cur_es_np).sum())
         total_chi_sq += chi * chi
 
-        # R_g via fast computation: R_g = W^T P_g W
-        # P_g W = W[cur_e, :] (permute rows of W)
-        P_g_W = W[cur_e_np, :]
-        R_g = W.T @ P_g_W
+        # R_g = W^T S_g W where S_g permutes rows of W with signs
+        S_g_W = W[cur_ep_np, :] * cur_es_np[:, None]
+        R_g = W.T @ S_g_W
 
         C2 += chi * R_g
-        R_avg += R_g
         count += 1
 
     C2 /= group_size
-    R_avg /= group_size
     avg_chi_sq = total_chi_sq / group_size
-    print(f"  avg |chi|^2 = {avg_chi_sq:.6f} (should be 2.0 for commutant_dim=2)")
-    print(f"  commutant_dim = {int(round(avg_chi_sq))}")
+    commutant_dim = int(round(avg_chi_sq))
+    print(f"  avg |chi|^2 = {avg_chi_sq:.6f}")
+    print(f"  commutant_dim = {commutant_dim}")
 
-    # C2 = (1/|G|) sum_g chi(g) R_g is a commutant element
-    # Its eigenvalues should split into 2 groups (for the 2 irreps)
-    # Symmetrize for numerical stability
+    # Symmetrize C2 for numerical stability
     C2_sym = (C2 + C2.T) / 2
 
+    # Eigendecomposition of C2
     w_C2, v_C2 = np.linalg.eigh(C2_sym)
     idx = np.argsort(w_C2)
     w_C2, v_C2 = w_C2[idx], v_C2[:, idx]
 
-    # Cluster eigenvalues of C2
-    clusters_C2 = []
+    # Cluster eigenvalues
+    tol_cluster = max(0.01, (w_C2[-1] - w_C2[0]) * 0.001)
+    clusters = []
     current = [0]
     for i in range(1, len(w_C2)):
-        if abs(w_C2[i] - w_C2[current[0]]) < 0.01:
+        if abs(w_C2[i] - w_C2[current[0]]) < tol_cluster:
             current.append(i)
         else:
-            clusters_C2.append((float(w_C2[current[0]]), len(current), current[:]))
+            clusters.append((float(np.mean(w_C2[current])), len(current), current[:]))
             current = [i]
-    clusters_C2.append((float(w_C2[current[0]]), len(current), current[:]))
+    clusters.append((float(np.mean(w_C2[current])), len(current), current[:]))
 
-    print(f"\n  Eigenvalue clusters of C2 = (1/|G|) sum chi(g) R_g:")
+    print(f"\n  Eigenvalue clusters of C2 ({len(clusters)} clusters):")
     dims = []
-    for val, mult, indices in clusters_C2:
+    for val, mult, indices in clusters:
         print(f"    eigenvalue {val:.8f}, multiplicity {mult}")
         dims.append(mult)
 
-    # The two irreducible components
-    if len(clusters_C2) == 2:
-        d1, d2 = dims[0], dims[1]
-        print(f"\n  IRREDUCIBLE DECOMPOSITION: 81 = {d1} + {d2}")
+    # Analyze the decomposition
+    print(f"\n  Number of irreducible components: {len(clusters)}")
+    print(f"  Component dimensions: {dims}")
+    print(f"  Sum: {sum(dims)} (should be 81)")
+    print(f"  Decomposition: 81 = {' + '.join(map(str, dims))}")
 
-        # Extract the basis vectors for each component
-        V1 = v_C2[:, clusters_C2[0][2]]
-        V2 = v_C2[:, clusters_C2[1][2]]
+    # For each component, verify irreducibility via <|chi_i|^2> = 1
+    print("\n  Irreducibility check for each component:")
+    component_bases = []
+    for ci, (val, mult, indices) in enumerate(clusters):
+        Vi = v_C2[:, indices]
+        component_bases.append(Vi)
 
-        # Verify: check that each generator preserves V1 and V2
-        print("\n  Verification: generators preserve decomposition?")
-        all_preserved = True
-        for i, eperm in enumerate(gen_eperms):
-            cur_e_np = np.asarray(eperm, dtype=int)
-            P_g_W = W[cur_e_np, :]
-            R_g = W.T @ P_g_W
+        chi_sq_sum = 0.0
+        for cur_v, (cur_ep, cur_es) in visited.items():
+            cur_ep_np = np.asarray(cur_ep, dtype=int)
+            cur_es_np = np.asarray(cur_es, dtype=float)
+            S_g_W = W[cur_ep_np, :] * cur_es_np[:, None]
+            R_g = W.T @ S_g_W
+            # Restrict to component Vi
+            R_g_Vi = Vi.T @ R_g @ Vi
+            chi_i = np.trace(R_g_Vi)
+            chi_sq_sum += chi_i * chi_i
 
-            # Check V1 is invariant: R_g V1 should be in span(V1)
-            R_V1 = R_g @ V1
-            # Project onto V1 complement (V2): should be zero
-            proj_err_1 = np.linalg.norm(V2.T @ R_V1)
-            # Same for V2
-            R_V2 = R_g @ V2
-            proj_err_2 = np.linalg.norm(V1.T @ R_V2)
+        chi_sq_avg = chi_sq_sum / group_size
+        is_irr = abs(chi_sq_avg - 1.0) < 0.1
+        print(f"    Component {ci} (dim {mult}): <|chi|^2> = {chi_sq_avg:.6f} {'IRREDUCIBLE' if is_irr else f'REDUCIBLE (decomposes into ~{int(round(chi_sq_avg))} pieces)'}")
 
-            ok = proj_err_1 < 1e-8 and proj_err_2 < 1e-8
-            if not ok:
-                all_preserved = False
-            print(f"    Generator {i}: V1 leakage = {proj_err_1:.2e}, V2 leakage = {proj_err_2:.2e} {'OK' if ok else 'FAIL'}")
+    # Verify generators preserve each component
+    print("\n  Verification: generators preserve components?")
+    all_preserved = True
+    for gi, (eperm, esigns) in enumerate(gen_signed[:5]):
+        S_g = signed_permutation_matrix(eperm, esigns, m)
+        R_g = W.T @ S_g @ W
 
-        # Compute the character of each irrep for verification
-        print("\n  Character analysis of each component:")
-        chi1_sq_sum = 0.0
-        chi2_sq_sum = 0.0
-        for cur_v, cur_e in visited.items():
-            cur_e_np = np.asarray(cur_e, dtype=int)
-            P_g_W = W[cur_e_np, :]
-            R_g = W.T @ P_g_W
+        max_leak = 0.0
+        for ci, Vi in enumerate(component_bases):
+            for cj, Vj in enumerate(component_bases):
+                if ci == cj:
+                    continue
+                leak = np.linalg.norm(Vj.T @ R_g @ Vi)
+                max_leak = max(max_leak, leak)
 
-            # Restrict to V1: R_g|V1 = V1^T R_g V1
-            R_g_V1 = V1.T @ R_g @ V1
-            R_g_V2 = V2.T @ R_g @ V2
-            chi1 = np.trace(R_g_V1)
-            chi2 = np.trace(R_g_V2)
-            chi1_sq_sum += chi1 * chi1
-            chi2_sq_sum += chi2 * chi2
+        ok = max_leak < 1e-6
+        if not ok:
+            all_preserved = False
+        print(f"    Generator {gi}: max cross-component leakage = {max_leak:.2e} {'OK' if ok else 'FAIL'}")
 
-        chi1_sq_avg = chi1_sq_sum / group_size
-        chi2_sq_avg = chi2_sq_sum / group_size
-        print(f"    V1 ({d1}-dim): <|chi_1|^2> = {chi1_sq_avg:.6f} (should be 1.0 if irreducible)")
-        print(f"    V2 ({d2}-dim): <|chi_2|^2> = {chi2_sq_avg:.6f} (should be 1.0 if irreducible)")
+    # Physical interpretation
+    print("\n" + "=" * 70)
+    print("  RESULTS & PHYSICAL INTERPRETATION")
+    print("=" * 70)
+    print(f"""
+  PSp(4,3) (order {group_size}) acts on H1(W33; R) = R^81
 
-        # Physical interpretation
-        print("\n" + "=" * 70)
-        print("  PHYSICAL INTERPRETATION")
-        print("=" * 70)
-        print(f"""
-  The 81 harmonic 1-forms (matter cycles) decompose as:
-    H1(W33; R) = V_{d1} + V_{d2}   (as PSp(4,3)-modules)
+  Commutant dimension: {commutant_dim}
+  Number of irreducible components: {len(clusters)}
+  Decomposition: 81 = {' + '.join(map(str, dims))}
 
   Under E8's Z3-grading: g1 = 81 = 27 x 3 (three 27-plets of E6)
-  Under PSp(4,3) = W(E6): 81 = {d1} + {d2}
+  Under PSp(4,3): 81 = {' + '.join(map(str, dims))}
 
-  This decomposition reveals the internal symmetry-breaking pattern:
-  - The {d1}-dim component may correspond to one sector of matter fields
-  - The {d2}-dim component to another sector
-  - Their interaction structure is constrained by PSp(4,3) invariance
+  Trivial representation is {'present' if 1 in dims else 'absent'} in H1.
+  This means {'there is a PSp(4,3)-invariant harmonic 1-form' if 1 in dims else 'NO harmonic 1-form is PSp(4,3)-invariant'}.
 
-  KEY: Both V1 and V2 carry representations where the cup product
-  H^1 x H^1 -> H^2 = 0 vanishes. So neither sector self-interacts
-  topologically; interactions are mediated by the gauge sector (E6).
+  Cup product H^1 x H^1 -> H^2 = 0 still holds: no component self-interacts.
+  All interactions are mediated by the gauge sector (E6 = 78-dim).
 """)
-    else:
-        print(f"\n  WARNING: Expected 2 clusters but found {len(clusters_C2)}")
-        print("  This may indicate finer decomposition or numerical issues.")
-        print("  Trying alternative approach: random commutant element...")
-
-        # Try random Hermitian combination of R_g^(k) for various k
-        np.random.seed(42)
-        rand_coeffs = np.random.randn(min(20, group_size))
-        C_rand = np.zeros((b1, b1), dtype=float)
-        for i, (cur_v, cur_e) in enumerate(list(visited.items())[:20]):
-            cur_e_np = np.asarray(cur_e, dtype=int)
-            P_g_W = W[cur_e_np, :]
-            R_g = W.T @ P_g_W
-            C_rand += rand_coeffs[i] * R_g
-        C_rand = (C_rand + C_rand.T) / 2
-
-        w_rand, v_rand = np.linalg.eigh(C_rand)
-        # Cluster
-        clusters_rand = []
-        current = [0]
-        for i in range(1, len(w_rand)):
-            if abs(w_rand[i] - w_rand[current[0]]) < 0.1:
-                current.append(i)
-            else:
-                clusters_rand.append((float(w_rand[current[0]]), len(current)))
-                current = [i]
-        clusters_rand.append((float(w_rand[current[0]]), len(current)))
-        print("  Random commutant element clusters:")
-        for val, mult in clusters_rand:
-            print(f"    eigenvalue {val:.4f}, multiplicity {mult}")
-
-    # Also analyze: what is the R_avg matrix?
-    print("\n  Trivial component check (R_avg = projection onto trivial rep):")
-    print(f"    rank(R_avg) = {np.linalg.matrix_rank(R_avg, tol=1e-8)}")
-    print(f"    trace(R_avg) = {np.trace(R_avg):.6f}")
-    trivial_dim = int(round(np.trace(R_avg)))
-    print(f"    Multiplicity of trivial rep in H1: {trivial_dim}")
 
     elapsed = time.time() - t0
 
@@ -464,24 +376,36 @@ def find_irreducible_decomposition():
     result = {
         "group_size": group_size,
         "b1": b1,
-        "commutant_dim": int(round(avg_chi_sq)),
+        "commutant_dim": commutant_dim,
         "avg_chi_squared": float(avg_chi_sq),
-        "n_irreducible_components": len(clusters_C2),
+        "n_irreducible_components": len(clusters),
         "component_dimensions": dims,
         "decomposition": f"{b1} = {' + '.join(map(str, dims))}",
-        "all_generators_preserve": all_preserved if len(clusters_C2) == 2 else None,
-        "trivial_multiplicity": trivial_dim,
-        "C2_eigenvalues": [(float(v), int(m)) for v, m, _ in clusters_C2],
+        "all_generators_preserve": all_preserved,
+        "C2_eigenvalues": [(float(v), int(mult)) for v, mult, _ in clusters],
         "elapsed_seconds": elapsed,
     }
 
-    if len(clusters_C2) == 2:
-        result["irreducibility_check"] = {
-            "V1_chi_sq_avg": float(chi1_sq_avg),
-            "V2_chi_sq_avg": float(chi2_sq_avg),
-            "V1_irreducible": abs(chi1_sq_avg - 1.0) < 0.1,
-            "V2_irreducible": abs(chi2_sq_avg - 1.0) < 0.1,
+    # Add irreducibility checks
+    irr_checks = {}
+    for ci, (val, mult, indices) in enumerate(clusters):
+        Vi = v_C2[:, indices]
+        chi_sq_sum = 0.0
+        for cur_v, (cur_ep, cur_es) in visited.items():
+            cur_ep_np = np.asarray(cur_ep, dtype=int)
+            cur_es_np = np.asarray(cur_es, dtype=float)
+            S_g_W = W[cur_ep_np, :] * cur_es_np[:, None]
+            R_g = W.T @ S_g_W
+            R_g_Vi = Vi.T @ R_g @ Vi
+            chi_i = np.trace(R_g_Vi)
+            chi_sq_sum += chi_i * chi_i
+        chi_sq_avg = chi_sq_sum / group_size
+        irr_checks[f"component_{ci}"] = {
+            "dimension": mult,
+            "chi_sq_avg": float(chi_sq_avg),
+            "irreducible": abs(chi_sq_avg - 1.0) < 0.1,
         }
+    result["irreducibility_checks"] = irr_checks
 
     # Write output
     ts = int(time.time())
