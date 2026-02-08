@@ -1,0 +1,39 @@
+{
+  "ts": 1770531468,
+  "k": 40,
+  "prove_time": 300,
+  "pair_time": 60,
+  "global_time": 600,
+  "seed": 212,
+  "pre_forbids": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\_tmp_forbids_pre_1770531468.json",
+  "minimizer": {
+    "rc": 0,
+    "stdout_len": 438,
+    "stderr_len": 0
+  },
+  "pairs": {
+    "rc": -1,
+    "stdout_len": 0,
+    "stderr_len": 0
+  },
+  "pairs_results": {
+    "tested": 28,
+    "found": [],
+    "time": 1770509749.615883
+  },
+  "global_prove": {
+    "rc": 0,
+    "stdout_len": 39364,
+    "stderr_len": 0
+  },
+  "global_status": {
+    "status": "UNKNOWN",
+    "objective": null,
+    "time_seconds": 608.720193862915,
+    "k": 40,
+    "vars": 9600,
+    "triangles": 160,
+    "assignments": null,
+    "found": false
+  }
+}
