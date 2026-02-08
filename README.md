@@ -118,7 +118,13 @@ python scripts/w33_e8_correspondence_theorem.py
 # Run the homology computation with SNF torsion check (0.8s)
 python scripts/w33_homology.py
 
-# Run all 65 tests (3s)
+# Run representation theory & Hodge analysis (10s)
+python scripts/w33_representation_theory.py
+
+# Run deep structure analysis (60s)
+python scripts/w33_deep_structure.py
+
+# Run all 77 tests (~2 min)
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
@@ -127,10 +133,12 @@ python -m pytest tests/test_e8_embedding.py -v
 | `scripts/w33_homology.py` | Simplicial homology with Smith Normal Form |
 | `scripts/w33_e8_bijection.py` | Z3-grading classifier and sector-aligned bijection |
 | `scripts/w33_e8_correspondence_theorem.py` | Complete theorem verification |
+| `scripts/w33_representation_theory.py` | Hodge Laplacian, Mayer-Vietoris, mod-p homology |
+| `scripts/w33_deep_structure.py` | Deep structure: Ramanujan, self-duality, Sp(4,3) on H\_1 |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
-| `tests/test_e8_embedding.py` | 65 tests across 12 classes |
+| `tests/test_e8_embedding.py` | 77 tests across 14 classes |
 
-### Test Suite (65 tests, 12 classes)
+### Test Suite (77 tests, 14 classes)
 
 | Class | Tests | What it verifies |
 |-------|-------|-----------------|
@@ -144,8 +152,10 @@ python -m pytest tests/test_e8_embedding.py -v
 | TestEmbeddingFeasibility | 2 | Compatible root sets, lattice vectors |
 | TestImpossibilityTheorem | 4 | Star shrinkage, cascade, Gram rank, artifact |
 | TestStructuralBridge | 8 | Group orders, decomposition, Z3-grading, GQ lines |
-| TestW33E8Bijection | 5 | Artifact, sector alignment, cocycle, optimizer |
-| **TestW33Homology** | **8** | **Simplices, Betti, Euler, ranks, H1=g1, tetrahedra** |
+| TestW33E8Bijection | 6 | Artifact, sector alignment, cocycle, optimizer, campaign |
+| TestW33Homology | 8 | Simplices, Betti, Euler, ranks, H1=g1, tetrahedra |
+| **TestDeepStructure** | **5** | **Ramanujan, self-duality, H27 homology, link components, Sp(4,3) traces** |
+| **TestRepresentationTheory** | **7** | **Hodge spectrum, MV 81=78+3, mod-p, cup product** |
 
 ---
 
