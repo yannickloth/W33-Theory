@@ -153,6 +153,7 @@ def main():
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--force-seed", action="store_true", help="Force seed assignments as hard constraints (default: False)")
     parser.add_argument("--seed-reward", type=float, default=10000.0, help="Reward subtracted from the assignment cost when choosing the seed root (larger = prefer seeds)")
+    parser.add_argument('--workers', type=int, default=8, help='Number of CP-SAT search workers (num_search_workers)')
     parser.add_argument('--log', action='store_true', help='Enable CP‑SAT search progress logs')
     parser.add_argument('--forbid-json', type=str, default=None, help='Optional JSON file with obstruction sets to forbid (checks/PART_CVII_forbids.json)')
     args = parser.parse_args()
@@ -312,7 +313,7 @@ def main():
     # solver
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = float(args.time_limit)
-    solver.parameters.num_search_workers = 8
+    solver.parameters.num_search_workers = int(args.workers)
     solver.parameters.random_seed = int(args.seed)
     solver.parameters.log_search_progress = args.log
 

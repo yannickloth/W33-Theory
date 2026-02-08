@@ -26,7 +26,7 @@ Path("checks/PART_CVII_dd_shrink_run_log.txt").write_text(
 )
 
 
-def run_forced_seed(seed_json: Path, k: int, time_limit: float, seed: int):
+def run_forced_seed(seed_json: Path, k: int, time_limit: float, seed: int, workers: int = None):
     cmd = [
         "py",
         "-3",
@@ -43,6 +43,8 @@ def run_forced_seed(seed_json: Path, k: int, time_limit: float, seed: int):
         str(seed),
         "--force-seed",
     ]
+    if workers is not None:
+        cmd += ["--workers", str(int(workers))]
     try:
         timeout = max(10, int(time_limit) + 5)
         proc = subprocess.run(
@@ -118,39 +120,59 @@ def ddmin(
     seed: int,
     max_checks: int,
     seed_map: dict = None,
+    workers: int = 8,
+    reps: int = 1,
+    threshold: float = 1.0,
 ):
     """Delta debugging to minimize failing set S.
     Returns a minimal failing subset (not guaranteed minimal w.r.t. checks bound).
+
+    This ddmin runs each subset test `reps` times (using the same numeric seed and
+    optionally `workers`) and considers a subset infeasible only if at least
+    `threshold * reps` runs return INFEASIBLE. This makes ddmin robust to
+    solver nondeterminism.
     """
     n = 2
     checks = 0
+    test_log = {}
 
     def test(subset: List[int]):
         nonlocal checks
         checks += 1
-        tmp = Path.cwd() / "checks" / f"_tmp_seed_dd_{int(time.time()*1000)}.json"
-        if seed_map:
-            # Use explicit seed assignments when available (preferred)
-            write_seed_for_map(seed_map, subset, tmp)
-        else:
-            write_seed_for_edges(bij, subset, tmp)
-        res = run_forced_seed(tmp, k=k, time_limit=time_limit, seed=seed)
-        try:
-            tmp.unlink()
-        except Exception:
-            pass
-        j = res.get("json")
-        return j and j.get("status") == "INFEASIBLE"
+        runs = []
+        infeasible_count = 0
+        for runc in range(max(1, int(reps))):
+            tmp = Path.cwd() / "checks" / f"_tmp_seed_dd_{int(time.time()*1000)}.json"
+            if seed_map:
+                write_seed_for_map(seed_map, subset, tmp)
+            else:
+                write_seed_for_edges(bij, subset, tmp)
+            # run solver with explicit workers param
+            res = run_forced_seed(tmp, k=k, time_limit=time_limit, seed=seed, workers=workers)
+            try:
+                tmp.unlink()
+            except Exception:
+                pass
+            runs.append({'returncode': res.get('returncode'), 'status': res.get('json', {}).get('status') if res.get('json') else None, 'timeout': bool(res.get('timeout', False))})
+            if res.get('json') and res.get('json').get('status') == 'INFEASIBLE':
+                infeasible_count += 1
+            # small delay between attempts to reduce accidental file contention
+            time.sleep(0.1)
+        frac = infeasible_count / max(1, int(reps))
+        accepted = frac >= float(threshold)
+        # store a compact test log for debugging
+        test_log[tuple(sorted(subset))] = {'reps': int(reps), 'infeasible_count': infeasible_count, 'runs': runs, 'accepted': accepted}
+        return accepted
 
     S = list(S)
     if not test(S):
-        return []
+        return [], test_log
 
     while True:
         if max_checks is not None and checks >= max_checks:
-            return S
+            return S, test_log
         if len(S) == 1:
-            return S
+            return S, test_log
         subset_size = math.ceil(len(S) / n)
         some_progress = False
         for i in range(0, len(S), subset_size):
@@ -169,7 +191,7 @@ def ddmin(
                 some_progress = True
                 break
             if max_checks is not None and checks >= max_checks:
-                return S
+                return S, test_log
         if not some_progress:
             if n >= len(S):
                 return S
@@ -195,6 +217,9 @@ def main():
         default=None,
         help="Optional seed JSON to use for initial and subset checks",
     )
+    parser.add_argument("--workers", type=int, default=8, help="Number of CP-SAT search workers to pass through to solver")
+    parser.add_argument("--reps", type=int, default=1, help="Number of repeated runs to perform for each subset test to improve reproducibility")
+    parser.add_argument("--repro-threshold", type=float, default=1.0, help="Fraction of repeated runs that must be INFEASIBLE to accept a subset (0.0-1.0)")
     args = parser.parse_args()
 
     bij = json.loads(open(args.bij, encoding="utf-8").read())["bijection"]
@@ -268,7 +293,7 @@ def main():
         seed_map = {int(e): int(bij[int(e)]) for e in S if int(e) in bij}
         seed_source = "bijection_map"
 
-    # write an initial seed JSON (and persist it to committed_artifacts) and test reproducibilty
+    # write an initial seed JSON (and persist it to committed_artifacts)
     tmp_init = (
         Path.cwd() / "checks" / f"_tmp_seed_dd_initial_{int(time.time()*1000)}.json"
     )
@@ -278,18 +303,25 @@ def main():
     init_seed_art = ART / f"PART_CVII_dd_seed_initial_{int(time.time())}.json"
     init_seed_art.write_text(tmp_init.read_text(encoding="utf-8"), encoding="utf-8")
 
-    init_res = run_forced_seed(
-        tmp_init, k=args.k, time_limit=args.time_limit, seed=args.seed
-    )
+    # perform repeated initial checks according to reps/threshold to reduce false negatives
+    infeasible_count = 0
+    init_runs = []
+    for runc in range(max(1, int(args.reps))):
+        res = run_forced_seed(tmp_init, k=args.k, time_limit=args.time_limit, seed=args.seed, workers=args.workers)
+        init_runs.append({'returncode': res.get('returncode'), 'status': res.get('json', {}).get('status') if res.get('json') else None, 'timeout': bool(res.get('timeout', False))})
+        if res.get('json') and res.get('json').get('status') == 'INFEASIBLE':
+            infeasible_count += 1
+        time.sleep(0.1)
     try:
         tmp_init.unlink()
     except Exception:
         pass
-    init_json = init_res.get("json")
-    initial_reproducible = bool(init_json and init_json.get("status") == "INFEASIBLE")
+    frac = infeasible_count / max(1, int(args.reps))
+    initial_reproducible = frac >= float(args.repro_threshold)
+    initial_runs_summary = {'reps': int(args.reps), 'infeasible_count': infeasible_count, 'runs': init_runs, 'fraction': frac}
 
     start = time.time()
-    result = ddmin(
+    result, test_log = ddmin(
         bij,
         S,
         k=args.k,
@@ -297,6 +329,9 @@ def main():
         seed=args.seed,
         max_checks=args.max_checks,
         seed_map=seed_map,
+        workers=args.workers,
+        reps=args.reps,
+        threshold=args.repro_threshold,
     )
     elapsed = time.time() - start
 
@@ -330,6 +365,11 @@ def main():
         "seed_source": seed_source,
         "seed_artifact": str(init_seed_art) if "init_seed_art" in locals() else None,
         "seed_map": seed_map,
+        "workers": int(args.workers),
+        "reps": int(args.reps),
+        "repro_threshold": float(args.repro_threshold),
+        "initial_runs_summary": initial_runs_summary,
+        "dd_test_log": test_log,
     }
 
     stamp = int(time.time())

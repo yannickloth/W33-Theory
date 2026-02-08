@@ -46,6 +46,17 @@ def write_seed_for_edges(edges, outpath):
     open(outpath, 'w', encoding='utf-8').write(json.dumps(out, indent=2))
     return outpath
 
+
+# helper to write seed from an explicit seed_map (edge->root)
+def write_seed_for_map(seed_map, edges, outpath):
+    seed_edges = []
+    for e in edges:
+        if e in seed_map:
+            seed_edges.append({'edge_index': int(e), 'root_index': int(seed_map[e])})
+    out = {'seed_edges': seed_edges, 'rotation': None}
+    open(outpath, 'w', encoding='utf-8').write(json.dumps(out, indent=2))
+    return outpath
+
 # helper to get edge endpoints from adjacency
 def edge_endpoints(edge_idx):
     adj = []
@@ -73,11 +84,54 @@ for res, entries in by_result.items():
         continue
     ts = int(time.time())
     print('\nProcessing result', res, 'from', len(entries), 'dd outputs')
-    seed_path = CHECKS / f'_tmp_seed_dd_verify_{ts}.json'
-    write_seed_for_edges(res, seed_path)
-    # run global CP-SAT check
-    cmd = ['py', '-3', 'scripts/solve_e8_embedding_cpsat.py', '--seed-json', str(seed_path), '--k', '40', '--time-limit', '30', '--seed', '212', '--force-seed']
-    print('Running solver:', ' '.join(cmd))
+
+    # Prefer seed artifact or seed_map from dd_shrink results when available
+    seed_json_path = None
+    seed_source_used = None
+    for e in entries:
+        j = e.get('json')
+        if j is None:
+            try:
+                j = load_json(e['path'])
+            except Exception:
+                j = None
+        if not j:
+            continue
+        # prefer explicit seed_artifact
+        sa = j.get('seed_artifact')
+        if sa:
+            sp = Path(sa)
+            if not sp.exists():
+                sp = Path.cwd() / sp if not sp.is_absolute() else sp
+                if not sp.exists():
+                    sp = Path.cwd() / 'committed_artifacts' / Path(sa).name
+            if sp.exists():
+                seed_json_path = sp
+                seed_source_used = f"dd_shrink_result_seed_artifact:{sp}"
+                break
+        # else try seed_map
+        smap = j.get('seed_map')
+        if smap:
+            try:
+                smap_int = {int(k): int(v) for k, v in smap.items()}
+                tmp_seed = CHECKS / f'_tmp_seed_dd_verify_{ts}_from_map.json'
+                write_seed_for_map(smap_int, res, tmp_seed)
+                seed_json_path = tmp_seed
+                seed_source_used = 'dd_shrink_result_seed_map'
+                break
+            except Exception:
+                pass
+
+    # fallback to bijection mapping
+    if seed_json_path is None:
+        seed_path = CHECKS / f'_tmp_seed_dd_verify_{ts}.json'
+        write_seed_for_edges(res, seed_path)
+        seed_json_path = seed_path
+        seed_source_used = 'bijection_map'
+
+    # run global CP-SAT check with the chosen seed JSON
+    cmd = ['py', '-3', 'scripts/solve_e8_embedding_cpsat.py', '--seed-json', str(seed_json_path), '--k', '40', '--time-limit', '30', '--seed', '212', '--force-seed']
+    print('Running solver with seed source', seed_source_used, ':', ' '.join(cmd))
     proc = subprocess.run(cmd, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     # read solver JSON output
     sol_json_path = CHECKS / 'PART_CVII_e8_embedding_cpsat.json'
@@ -85,29 +139,51 @@ for res, entries in by_result.items():
     if sol_json_path.exists():
         sol_json = load_json(sol_json_path)
 
+    # try to extract verified roots from the seed JSON used for verification
+    verified_roots = None
+    try:
+        if seed_json_path and Path(seed_json_path).exists():
+            sj = load_json(str(seed_json_path))
+            seed_edges = sj.get('seed_edges', [])
+            seed_map = {int(s['edge_index']): int(s['root_index']) for s in seed_edges if 'edge_index' in s and 'root_index' in s}
+            verified_roots = [seed_map.get(int(e), None) for e in res]
+    except Exception:
+        verified_roots = None
+
+    # decide which roots to record: prefer verified roots from the seed used to verify, otherwise fall back to bijection mapping
+    roots_for_artifact = None
+    if verified_roots and all(r is not None for r in verified_roots):
+        roots_for_artifact = verified_roots
+    else:
+        roots_for_artifact = [bij[e] for e in res]
+
     # build artifact
     art = {
         'dd_shrink_results': [e['path'] for e in entries],
         'set': list(res),
         'edges': list(res),
         'vertices': [list(edge_endpoints(e)) for e in res],
-        'roots': [bij[e] for e in res],
-        'root_vectors': {str(bij[e]): roots[bij[e]] for e in res},
+        'roots': roots_for_artifact,
+        'root_vectors': {str(r): roots[r] for r in roots_for_artifact if r is not None},
         'dot_products': None,
         'sum_is_root': None,
         'diff_is_root': None,
         'solver_check': str(sol_json_path) if sol_json_path.exists() else None,
         'solver_status': sol_json.get('status') if sol_json else None,
+        'seed_source_used': seed_source_used,
+        'used_seed_json': str(seed_json_path),
+        'verified_roots': verified_roots,
         'notes': 'Auto-verified by register_dd_obstructions.py'
     }
     if len(res) == 2:
         a,b = res
-        ra = roots[bij[a]]
-        rb = roots[bij[b]]
-        art['dot_products'] = vec_dot(ra, rb)
-        # Use vec_neg to check negations properly
-        art['sum_is_root'] = (vec_add(ra, rb) in roots) or (vec_neg(vec_add(ra, rb)) in roots)
-        art['diff_is_root'] = (vec_sub(ra, rb) in roots) or (vec_neg(vec_sub(ra, rb)) in roots)
+        if roots_for_artifact and roots_for_artifact[0] is not None and roots_for_artifact[1] is not None:
+            ra = roots[roots_for_artifact[0]]
+            rb = roots[roots_for_artifact[1]]
+            art['dot_products'] = vec_dot(ra, rb)
+            # Use vec_neg to check negations properly
+            art['sum_is_root'] = (vec_add(ra, rb) in roots) or (vec_neg(vec_add(ra, rb)) in roots)
+            art['diff_is_root'] = (vec_sub(ra, rb) in roots) or (vec_neg(vec_sub(ra, rb)) in roots)
     stamp = int(time.time())
     outp = CHECKS / f'PART_CVII_dd_pair_obstruction_{stamp}.json'
     open(outp, 'w', encoding='utf-8').write(json.dumps(art, indent=2))
@@ -123,7 +199,7 @@ for res, entries in by_result.items():
         forb = {'obstruction_sets': []}
         if forb_path.exists():
             forb = load_json(forb_path)
-        entry = {'set': list(res), 'roots': [bij[e] for e in res], 'timestamp': int(time.time()), 'source_dd': [e['path'] for e in entries]}
+        entry = {'set': list(res), 'roots': [bij[e] for e in res], 'timestamp': int(time.time()), 'source_dd': [e['path'] for e in entries], 'seed_source_used': seed_source_used}
         forb.setdefault('obstruction_sets', []).append(entry)
         open(forb_path, 'w', encoding='utf-8').write(json.dumps(forb, indent=2))
         print('Appended to forbids:', forb_path)
