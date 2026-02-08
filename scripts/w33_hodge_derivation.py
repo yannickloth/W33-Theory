@@ -58,6 +58,19 @@ sys.path.insert(0, str(Path(__file__).parent))
 from w33_homology import build_clique_complex, boundary_matrix, build_w33
 
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.bool_):
+            return bool(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super().default(obj)
+
+
 def build_incidence_matrix(n: int, edges: list) -> np.ndarray:
     m = len(edges)
     D = np.zeros((n, m), dtype=float)
