@@ -3,6 +3,14 @@
 
 Usage: py -3 scripts/local_hotspot_feasibility.py --edges 37 38 --k 80 --radius 1 --time-limit 10
 Writes checks/PART_CVII_local_hotspot_feasibility_<edges>_<ts>.json
+
+New flags:
+  --offset N    Start index into the pair list (deterministic, resumable batching)
+  --limit N     Deterministic limit of tests to run starting at --offset (0 means no limit)
+
+Notes:
+  - The script will detect OR-Tools import/linker problems (e.g., missing helper DLLs such as utf8_validity.dll) and will write an explicit 'ERROR_MISSING_DLL' error into the output JSON when detected.
+  - Use --dump-candidates to only write candidates and exit without running CP-SAT.
 """
 from __future__ import annotations
 
@@ -228,7 +236,9 @@ def main():
     parser.add_argument('--radius', type=int, default=1)
     parser.add_argument('--time-limit', type=int, default=10)
     parser.add_argument('--workers', type=int, default=8, help='Number of OR-Tools search workers to use')
-    parser.add_argument('--max-tests', type=int, default=0, help='Limit number of pair tests; 0 means no limit')
+    parser.add_argument('--max-tests', type=int, default=0, help='Limit number of pair tests; 0 means no limit (random sampling)')
+    parser.add_argument('--offset', type=int, default=0, help='Start index into pairs list for deterministic, resumable batches')
+    parser.add_argument('--limit', type=int, default=0, help='Deterministic limit of tests to run starting at offset; 0 means no limit')
     parser.add_argument('--dump-candidates', action='store_true', help='Write candidates to checks file for inspection')
     parser.add_argument('--log-dir', default='checks', help='Directory to write logs/results')
     parser.add_argument('--seed', type=int, default=212)
@@ -294,13 +304,52 @@ def main():
     else:
         second_edge = args.edges[1]
         pairs = [(first_edge, r1, second_edge, r2) for r1, r2 in product(candidates[first_edge], candidates[second_edge])]
-    # apply max-tests limit if requested
+    # deterministic slicing (offset, limit) for resumable batches
+    if args.offset:
+        if args.offset >= len(pairs):
+            print(f'Offset {args.offset} >= number of pairs {len(pairs)}; nothing to test', flush=True)
+            pairs = []
+        else:
+            if args.limit and args.limit > 0:
+                pairs = pairs[args.offset: args.offset + args.limit]
+                print(f'Using deterministic slice offset={args.offset} limit={args.limit} -> {len(pairs)} pairs', flush=True)
+            else:
+                pairs = pairs[args.offset:]
+                print(f'Using deterministic slice offset={args.offset} -> {len(pairs)} pairs', flush=True)
+
+    # apply max-tests limit if requested (random sampling)
     if args.max_tests and len(pairs) > args.max_tests:
+        import random
         pairs = random.sample(pairs, args.max_tests)
         print(f'Truncated pairs to {len(pairs)} using --max-tests={args.max_tests}', flush=True)
 
-    outp = out_dir / f'PART_CVII_local_hotspot_feasibility_{"_".join(map(str,args.edges))}_{ts}.json'
-    results = {'edges': args.edges, 'k':args.k, 'radius':args.radius, 'time_limit':args.time_limit, 'tests': []}
+    outp_stem = f'PART_CVII_local_hotspot_feasibility_{"_".join(map(str,args.edges))}'
+    if args.offset or args.limit:
+        outp = out_dir / f'{outp_stem}_offset{args.offset}_limit{args.limit}_{ts}.json'
+    else:
+        outp = out_dir / f'{outp_stem}_{ts}.json'
+    results = {'edges': args.edges, 'k':args.k, 'radius':args.radius, 'time_limit':args.time_limit,
+               'batch_offset': int(args.offset), 'batch_limit': int(args.limit), 'tests': []}
+
+    # quick ortools import check to fail fast on missing helper DLLs (avoid long runs)
+    if pairs:
+        try:
+            from ortools.sat.python import cp_model  # type: ignore
+        except Exception as exc:
+            msg = str(exc)
+            err_type = 'ERROR_MISSING_DLL' if ('utf8_validity.dll' in msg or '.libs' in msg) else 'ERROR_IMPORT'
+            err = f"{err_type}: {msg}\n{traceback.format_exc()}"
+            print('Ortools import failed:', err, flush=True)
+            logging.exception('Ortools import failed before testing pairs')
+            results['error'] = err
+            try:
+                outp.write_text(json.dumps(_make_json_serializable(results), indent=2), encoding='utf-8')
+                print('Wrote error results to', outp, flush=True)
+            except Exception:
+                logging.exception('Failed to write error outp for ortools import failure')
+            sys.exit(2)
+    else:
+        print('No pairs to test after slicing; skipping OR-Tools import check', flush=True)
 
     if len(args.edges) == 1:
         try:
@@ -329,11 +378,20 @@ def main():
                 try:
                     from ortools.sat.python import cp_model
                 except Exception as exc:
-                    err = f"Error importing ortools.cp_model in pair loop: {exc}\n" + traceback.format_exc()
-                    print(err, flush=True)
-                    logging.exception('ortools import failed in pair loop')
-                    results['tests'].append({'pair':[e1,r1,e2,r2], 'status':'ERROR_IMPORT', 'error': err})
-                    continue
+                    msg = str(exc)
+                    if 'utf8_validity.dll' in msg or '.libs' in msg:
+                        err = f"ERROR_MISSING_DLL: {msg}\n" + traceback.format_exc()
+                        print('Ortools missing DLL detected:', err, flush=True)
+                        logging.exception('Ortools missing DLL in pair loop')
+                        results['tests'].append({'pair':[e1,r1,e2,r2], 'status':'ERROR_MISSING_DLL', 'error': err})
+                        # Stop further testing to avoid repeating errors
+                        break
+                    else:
+                        err = f"Error importing ortools.cp_model in pair loop: {exc}\n" + traceback.format_exc()
+                        print(err, flush=True)
+                        logging.exception('ortools import failed in pair loop')
+                        results['tests'].append({'pair':[e1,r1,e2,r2], 'status':'ERROR_IMPORT', 'error': err})
+                        continue
                 solver = cp_model.CpSolver()
                 solver.parameters.max_time_in_seconds = float(args.time_limit)
                 solver.parameters.num_search_workers = int(args.workers)
@@ -366,6 +424,8 @@ def main():
                 return int(o)
             if isinstance(o, _np.floating):
                 return float(o)
+            if isinstance(o, _np.bool_):
+                return bool(o)
             if isinstance(o, _np.ndarray):
                 return _make_json_serializable(o.tolist())
         except Exception:

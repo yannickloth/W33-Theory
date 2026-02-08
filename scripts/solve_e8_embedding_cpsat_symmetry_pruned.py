@@ -147,6 +147,7 @@ def main():
     parser.add_argument("--seed-reward", type=float, default=10000.0, help="seed reward (soft preference)")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--log", action='store_true')
+    parser.add_argument("--force-seed", action='store_true', help="Force seed assignments as hard constraints (default: False)")
     args = parser.parse_args()
 
     t0 = time.time()
@@ -234,6 +235,17 @@ def main():
     for e in range(N_edges):
         for r in pruned_candidates[e]:
             bvars[(e, r)] = model.NewBoolVar(f"b_e{e}_r{r}")
+
+    # enforce forced assignments (if requested)
+    if getattr(args, 'force_seed', False):
+        for eidx, ridx in forced_assignments.items():
+            if (eidx, ridx) in bvars:
+                model.Add(bvars[(eidx, ridx)] == 1)
+            else:
+                # If the forced variable is missing (shouldn't happen as we include seeds in candidates), create and force it
+                v = model.NewBoolVar(f"b_e{eidx}_r{ridx}_forced")
+                bvars[(eidx, ridx)] = v
+                model.Add(v == 1)
 
     # edge assignment constraints
     for e in range(N_edges):
