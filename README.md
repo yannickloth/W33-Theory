@@ -185,12 +185,14 @@ python -m pytest tests/test_e8_embedding.py -v
 | `scripts/w33_hodge_derivation.py` | Hodge eigenvalue derivation from SRG parameters |
 | `scripts/w33_full_decomposition.py` | Full PSp(4,3) decomposition of C\_1(W33) |
 | `scripts/w33_complex_type_check.py` | Frobenius-Schur indicators + complex structure J |
+| `scripts/w33_find_z3_split.py` | Search PSp(4,3) for Z3 elements splitting H1 (81) into 3x27; writes `checks/PART_CVII_z3_candidates_*.json` |
+| `scripts/w33_z3_analyze_candidates.py` | Analyze Z3 candidates and export eigen-bases to `checks/z3_analysis_*` |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
 | `tests/test_e8_embedding.py` | 96 tests across 19 classes |
 
 ### Test Suite (96 tests, 19 classes)
 
-**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur.
+**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestZ3Split.
 
 | Class | Tests | What it verifies |
 |-------|-------|-----------------|
