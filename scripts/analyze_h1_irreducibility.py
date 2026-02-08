@@ -156,7 +156,11 @@ def compute_commutant_dim_by_group(gen_vertex_perms: List[dict], harmonic_basis:
                 queue.append((new_v, new_e))
 
     avg = total / max(1, count)
-    return int(round(avg))
+    return {
+        "commutant_dim": int(round(avg)),
+        "group_size": int(count),
+        "avg_chi_squared": float(avg),
+    }
 
 
 def main():
@@ -178,11 +182,10 @@ def main():
 
     # Induce vertex permutation generators and compute commutant dimension via group traces
     gen_vertex_perms = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats]
-    comm_dim = compute_commutant_dim_by_group(gen_vertex_perms, harmonic_basis, edges)
-    print("Commutant dimension (approx):", comm_dim)
+    result = compute_commutant_dim_by_group(gen_vertex_perms, harmonic_basis, edges)
+    print("Commutant result:", result)
 
-    # Heuristically, comm_dim==1 => irreducible over C (Schur)
-    out = {"commutant_dim": int(comm_dim)}
+    out = result
     print(out)
 
     # write results to checks/
