@@ -1,0 +1,9 @@
+2026-02-07T23:25:08.626776Z: Auto-post-sweep started; quiet=10m poll=60s commit=True
+2026-02-07T23:35:09.039481Z: Idle for 600.392237663269s >= quiet(600s) and last_run 1770507309.0190136s ago; triggering pipeline
+2026-02-07T23:35:09.059145Z: Running: py -3 scripts/minimize_forbids_greedy.py --forbid-file C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --k 40 --prove-time 300 --seed 212 --commit
+2026-02-07T23:40:24.178583Z: Exit 0 stdout(len)=438 stderr(len)=0
+2026-02-07T23:40:24.180603Z: Running: py -3 scripts/check_forbid_pairs_bruteforce.py --k 40 --time-limit 60 --seed 212 --stop-on-find
+2026-02-07T23:45:24.397390Z: Timeout after 300s: py -3 scripts/check_forbid_pairs_bruteforce.py --k 40 --time-limit 60 --seed 212 --stop-on-find
+2026-02-07T23:45:24.521720Z: Running: py -3 scripts/solve_e8_embedding_cpsat.py --k 40 --time-limit 600 --forbid-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --seed 212 --log
+2026-02-07T23:55:45.595033Z: Exit 0 stdout(len)=43107 stderr(len)=0
+2026-02-07T23:55:45.674137Z: Wrote auto-post report: C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_auto_post_report_1770507309.json

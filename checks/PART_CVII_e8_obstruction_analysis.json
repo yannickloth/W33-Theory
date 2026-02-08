@@ -1,0 +1,15 @@
+{
+  "result": "OBSTRUCTION_FOUND",
+  "max_embeddable": 13,
+  "explanation": "The 13-vertex core (vertex 0 + 12 neighbors) can be validly embedded, but no H27 vertex can be added. The non-adjacency constraints from 8 H12 roots eliminate all candidate positions for every H27 vertex.",
+  "correct_framework": "The W33-E8 correspondence is structural (E6 x SU(3) decomposition), not a metric embedding of vertices into the E8 lattice.",
+  "gram_analysis": {
+    "h12_diagonal": 8,
+    "h12_adjacent_ip": 4,
+    "h12_nonadj_valid_ips": [
+      0,
+      -4,
+      -8
+    ]
+  }
+}

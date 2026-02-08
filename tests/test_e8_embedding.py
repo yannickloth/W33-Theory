@@ -1478,6 +1478,204 @@ class TestW33E8Bijection:
         ), f"Exact triangles decreased: {data.get('initial_exact')} -> {data.get('best_exact')}"
         assert "best_pref_counts" in data, "Missing preference counts in output"
 
+    def test_bijection_campaign_smoke(self):
+        """Smoke test: run a tiny campaign and ensure summary + best artifacts are created."""
+        import json
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        outdir = Path("checks")
+
+        cmd = [
+            sys.executable,
+            "-X",
+            "utf8",
+            "scripts/run_bijection_campaign.py",
+            "--in",
+            "checks/PART_CVII_e8_bijection.json",
+            "--outdir",
+            "checks",
+            "--trials",
+            "2",
+            "--time",
+            "1",
+            "--iters",
+            "50",
+            "--alpha",
+            "0.7",
+            "--beta",
+            "0.3",
+            "--seed-start",
+            "100",
+        ]
+
+        subprocess.run(cmd, check=False)
+
+        # find the most recent summary file
+        summaries = list(outdir.glob("PART_CVII_e8_bijection_campaign_summary_*.json"))
+        assert summaries, "No campaign summary found"
+        latest = max(summaries, key=lambda p: p.stat().st_mtime)
+        data = json.loads(latest.read_text(encoding="utf-8"))
+        assert "best_overall" in data
+        assert data["trials"] >= 1
+        # check the best bijection artifact exists
+        best_path = (
+            outdir / f"PART_CVII_e8_bijection_campaign_best_{data['timestamp']}.json"
+        )
+        assert best_path.exists(), f"Best bijection file {best_path} missing"
+
+
+# =========================================================================
+# TEST CLASS 11: W33 Simplicial Homology
+# =========================================================================
+
+
+class TestW33Homology:
+    """Test the simplicial homology of the W33 clique complex.
+
+    THEOREM: H_*(W33) has Betti numbers (1, 81, 0, 0) with chi = -80.
+    H_1(W33; Z) = Z^81 = dim(g_1) of E8's Z3-grading.
+    """
+
+    def test_clique_complex_simplex_counts(self, w33, w33_adj_sets):
+        """W33 clique complex: 40 vertices, 240 edges, 160 triangles, 40 tetrahedra, 0 pentatopes."""
+        from w33_homology import build_clique_complex
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+
+        assert len(simplices[0]) == 40, f"Expected 40 vertices, got {len(simplices[0])}"
+        assert len(simplices[1]) == 240, f"Expected 240 edges, got {len(simplices[1])}"
+        assert (
+            len(simplices[2]) == 160
+        ), f"Expected 160 triangles, got {len(simplices[2])}"
+        assert (
+            len(simplices[3]) == 40
+        ), f"Expected 40 tetrahedra, got {len(simplices[3])}"
+        assert (
+            len(simplices.get(4, [])) == 0
+        ), f"Expected 0 pentatopes, got {len(simplices.get(4, []))}"
+
+    def test_betti_numbers(self, w33):
+        """THEOREM: b_0=1, b_1=81, b_2=0, b_3=0."""
+        from w33_homology import build_clique_complex, compute_homology
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        homology = compute_homology(simplices)
+
+        assert (
+            homology["betti_numbers"][0] == 1
+        ), f"b_0 = {homology['betti_numbers'][0]}, expected 1"
+        assert (
+            homology["betti_numbers"][1] == 81
+        ), f"b_1 = {homology['betti_numbers'][1]}, expected 81"
+        assert (
+            homology["betti_numbers"][2] == 0
+        ), f"b_2 = {homology['betti_numbers'][2]}, expected 0"
+        assert (
+            homology["betti_numbers"][3] == 0
+        ), f"b_3 = {homology['betti_numbers'][3]}, expected 0"
+
+    def test_euler_characteristic(self, w33):
+        """chi(W33) = 40 - 240 + 160 - 40 = -80."""
+        from w33_homology import build_clique_complex
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        chi = sum((-1) ** k * len(simplices[k]) for k in simplices)
+        assert chi == -80, f"chi = {chi}, expected -80"
+
+    def test_boundary_matrix_ranks(self, w33):
+        """rank(d1)=39, rank(d2)=120, rank(d3)=40."""
+        from w33_homology import build_clique_complex, compute_homology
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        homology = compute_homology(simplices)
+
+        assert (
+            homology["boundary_ranks"][1] == 39
+        ), f"rank(d1) = {homology['boundary_ranks'][1]}, expected 39"
+        assert (
+            homology["boundary_ranks"][2] == 120
+        ), f"rank(d2) = {homology['boundary_ranks'][2]}, expected 120"
+        assert (
+            homology["boundary_ranks"][3] == 40
+        ), f"rank(d3) = {homology['boundary_ranks'][3]}, expected 40"
+
+    def test_h1_equals_g1_dimension(self, w33, e8_roots):
+        """THE KEY THEOREM: b_1(W33) = dim(g_1) = 81 = 27 x 3."""
+        from w33_e8_bijection import classify_roots_z3_grading
+        from w33_homology import build_clique_complex, compute_homology
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        homology = compute_homology(simplices)
+        z3 = classify_roots_z3_grading(e8_roots)
+
+        b1 = homology["betti_numbers"][1]
+        g1_dim = len(z3["g1"])
+
+        assert b1 == g1_dim, f"b_1(W33) = {b1} != dim(g_1) = {g1_dim}"
+        assert b1 == 81
+        assert b1 == 27 * 3, "81 = 27 x 3: three generations of 27-dimensional matter"
+
+    def test_every_triangle_in_exactly_one_tetrahedron(self, w33):
+        """Every triangle in W33 is a face of exactly 1 tetrahedron."""
+        from w33_homology import analyze_tetrahedron_structure, build_clique_complex
+
+        n, _, adj, _ = w33
+        simplices = build_clique_complex(n, adj)
+        tet_info = analyze_tetrahedron_structure(simplices)
+
+        assert tet_info[
+            "all_triangles_in_exactly_one_tet"
+        ], f"Not all triangles in exactly 1 tetrahedron: {tet_info['membership_distribution']}"
+        assert tet_info["free_triangles"] == 0
+        assert tet_info["total_face_incidences"] == 160
+
+    def test_tetrahedra_are_gq_lines(self, w33, w33_adj_sets):
+        """The 40 tetrahedra in the clique complex ARE the 40 lines of GQ(3,3)."""
+        from w33_homology import build_clique_complex
+
+        n, _, adj, _ = w33
+        adj_sets = w33_adj_sets
+        simplices = build_clique_complex(n, adj)
+
+        # Find GQ lines independently
+        lines = set()
+        for a in range(n):
+            for b in adj[a]:
+                if b <= a:
+                    continue
+                common_ab = adj_sets[a] & adj_sets[b]
+                for c in common_ab:
+                    if c <= b:
+                        continue
+                    common_abc = common_ab & adj_sets[c]
+                    for d in common_abc:
+                        if d <= c:
+                            continue
+                        lines.add((a, b, c, d))
+
+        tet_set = set(simplices[3])
+        assert lines == tet_set, "Tetrahedra don't match GQ lines"
+
+    def test_homology_artifact_exists(self):
+        """The homology computation should have produced a JSON artifact."""
+        from pathlib import Path
+
+        p = Path("checks") / "PART_CVII_w33_homology.json"
+        if not p.exists():
+            pytest.skip("Homology artifact not present; run scripts/w33_homology.py")
+        import json
+
+        data = json.loads(p.read_text(encoding="utf-8"))
+        assert data["betti_numbers"]["1"] == 81
+        assert data["euler_characteristic"] == -80
+
 
 # =========================================================================
 # MAIN

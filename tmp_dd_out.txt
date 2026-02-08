@@ -1,0 +1,4 @@
+dd_shrink_conflict module loaded
+Starting ddmin on conflict of size 29
+Wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_dd_shrink_result_1770504956.json
+Also wrote C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\committed_artifacts\PART_CVII_dd_shrink_result_1770504956.json

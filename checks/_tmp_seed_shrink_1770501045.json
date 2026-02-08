@@ -1,0 +1,97 @@
+{
+  "seed_edges": [
+    {
+      "edge_index": 22,
+      "root_index": 145
+    },
+    {
+      "edge_index": 23,
+      "root_index": 222
+    },
+    {
+      "edge_index": 48,
+      "root_index": 131
+    },
+    {
+      "edge_index": 56,
+      "root_index": 219
+    },
+    {
+      "edge_index": 57,
+      "root_index": 171
+    },
+    {
+      "edge_index": 58,
+      "root_index": 233
+    },
+    {
+      "edge_index": 59,
+      "root_index": 33
+    },
+    {
+      "edge_index": 60,
+      "root_index": 80
+    },
+    {
+      "edge_index": 61,
+      "root_index": 64
+    },
+    {
+      "edge_index": 62,
+      "root_index": 156
+    },
+    {
+      "edge_index": 63,
+      "root_index": 196
+    },
+    {
+      "edge_index": 64,
+      "root_index": 109
+    },
+    {
+      "edge_index": 65,
+      "root_index": 47
+    },
+    {
+      "edge_index": 94,
+      "root_index": 128
+    },
+    {
+      "edge_index": 122,
+      "root_index": 200
+    },
+    {
+      "edge_index": 144,
+      "root_index": 94
+    },
+    {
+      "edge_index": 166,
+      "root_index": 220
+    },
+    {
+      "edge_index": 185,
+      "root_index": 48
+    },
+    {
+      "edge_index": 204,
+      "root_index": 212
+    },
+    {
+      "edge_index": 218,
+      "root_index": 141
+    },
+    {
+      "edge_index": 227,
+      "root_index": 164
+    },
+    {
+      "edge_index": 233,
+      "root_index": 76
+    },
+    {
+      "edge_index": 237,
+      "root_index": 206
+    }
+  ],
+  "rotation": null
+}

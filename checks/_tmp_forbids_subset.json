@@ -1,0 +1,28 @@
+{
+  "obstruction_sets": [
+    {
+      "set": [
+        74
+      ],
+      "roots": [
+        114
+      ],
+      "timestamp": 1770504551,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503553.json"
+      ]
+    },
+    {
+      "set": [
+        53
+      ],
+      "roots": [
+        127
+      ],
+      "timestamp": 1770504553,
+      "source_dd": [
+        "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770503621.json"
+      ]
+    }
+  ]
+}
