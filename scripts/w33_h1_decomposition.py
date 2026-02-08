@@ -403,7 +403,7 @@ def find_irreducible_decomposition():
         irr_checks[f"component_{ci}"] = {
             "dimension": mult,
             "chi_sq_avg": float(chi_sq_avg),
-            "irreducible": abs(chi_sq_avg - 1.0) < 0.1,
+            "irreducible": bool(abs(chi_sq_avg - 1.0) < 0.1),
         }
     result["irreducibility_checks"] = irr_checks
 
