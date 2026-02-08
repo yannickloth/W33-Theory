@@ -1,0 +1,19 @@
+{
+  "source_conf_entry": {
+    "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185948Z.json",
+    "start_vertex": 3,
+    "block_size": 33,
+    "forced_status": "INFEASIBLE",
+    "minimal_conflict": [
+      102,
+      103
+    ],
+    "minimal_conflict_size": 2
+  },
+  "initial_size": 2,
+  "result": [],
+  "result_size": 0,
+  "checks_limit": 2000,
+  "time_seconds": 31.141602993011475,
+  "timestamp": 1770503393
+}
