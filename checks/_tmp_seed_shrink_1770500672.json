@@ -1,0 +1,121 @@
+{
+  "seed_edges": [
+    {
+      "edge_index": 15,
+      "root_index": 24
+    },
+    {
+      "edge_index": 16,
+      "root_index": 60
+    },
+    {
+      "edge_index": 17,
+      "root_index": 25
+    },
+    {
+      "edge_index": 18,
+      "root_index": 27
+    },
+    {
+      "edge_index": 19,
+      "root_index": 191
+    },
+    {
+      "edge_index": 20,
+      "root_index": 175
+    },
+    {
+      "edge_index": 21,
+      "root_index": 230
+    },
+    {
+      "edge_index": 22,
+      "root_index": 145
+    },
+    {
+      "edge_index": 23,
+      "root_index": 222
+    },
+    {
+      "edge_index": 24,
+      "root_index": 147
+    },
+    {
+      "edge_index": 36,
+      "root_index": 190
+    },
+    {
+      "edge_index": 48,
+      "root_index": 131
+    },
+    {
+      "edge_index": 49,
+      "root_index": 29
+    },
+    {
+      "edge_index": 50,
+      "root_index": 8
+    },
+    {
+      "edge_index": 51,
+      "root_index": 117
+    },
+    {
+      "edge_index": 52,
+      "root_index": 46
+    },
+    {
+      "edge_index": 53,
+      "root_index": 127
+    },
+    {
+      "edge_index": 54,
+      "root_index": 9
+    },
+    {
+      "edge_index": 55,
+      "root_index": 116
+    },
+    {
+      "edge_index": 75,
+      "root_index": 122
+    },
+    {
+      "edge_index": 105,
+      "root_index": 99
+    },
+    {
+      "edge_index": 106,
+      "root_index": 228
+    },
+    {
+      "edge_index": 107,
+      "root_index": 167
+    },
+    {
+      "edge_index": 108,
+      "root_index": 74
+    },
+    {
+      "edge_index": 109,
+      "root_index": 199
+    },
+    {
+      "edge_index": 110,
+      "root_index": 207
+    },
+    {
+      "edge_index": 111,
+      "root_index": 18
+    },
+    {
+      "edge_index": 112,
+      "root_index": 234
+    },
+    {
+      "edge_index": 113,
+      "root_index": 201
+    }
+  ],
+  "rotation": null
+}

@@ -1,0 +1,137 @@
+{
+  "seed_edges": [
+    {
+      "edge_index": 52,
+      "root_index": 46
+    },
+    {
+      "edge_index": 53,
+      "root_index": 127
+    },
+    {
+      "edge_index": 54,
+      "root_index": 9
+    },
+    {
+      "edge_index": 55,
+      "root_index": 116
+    },
+    {
+      "edge_index": 76,
+      "root_index": 50
+    },
+    {
+      "edge_index": 86,
+      "root_index": 61
+    },
+    {
+      "edge_index": 95,
+      "root_index": 135
+    },
+    {
+      "edge_index": 96,
+      "root_index": 53
+    },
+    {
+      "edge_index": 97,
+      "root_index": 208
+    },
+    {
+      "edge_index": 98,
+      "root_index": 20
+    },
+    {
+      "edge_index": 99,
+      "root_index": 2
+    },
+    {
+      "edge_index": 100,
+      "root_index": 21
+    },
+    {
+      "edge_index": 101,
+      "root_index": 118
+    },
+    {
+      "edge_index": 102,
+      "root_index": 144
+    },
+    {
+      "edge_index": 103,
+      "root_index": 68
+    },
+    {
+      "edge_index": 104,
+      "root_index": 19
+    },
+    {
+      "edge_index": 114,
+      "root_index": 202
+    },
+    {
+      "edge_index": 115,
+      "root_index": 130
+    },
+    {
+      "edge_index": 116,
+      "root_index": 17
+    },
+    {
+      "edge_index": 117,
+      "root_index": 215
+    },
+    {
+      "edge_index": 118,
+      "root_index": 126
+    },
+    {
+      "edge_index": 119,
+      "root_index": 172
+    },
+    {
+      "edge_index": 120,
+      "root_index": 107
+    },
+    {
+      "edge_index": 121,
+      "root_index": 186
+    },
+    {
+      "edge_index": 122,
+      "root_index": 200
+    },
+    {
+      "edge_index": 132,
+      "root_index": 153
+    },
+    {
+      "edge_index": 140,
+      "root_index": 58
+    },
+    {
+      "edge_index": 141,
+      "root_index": 235
+    },
+    {
+      "edge_index": 142,
+      "root_index": 83
+    },
+    {
+      "edge_index": 143,
+      "root_index": 235
+    },
+    {
+      "edge_index": 144,
+      "root_index": 94
+    },
+    {
+      "edge_index": 145,
+      "root_index": 77
+    },
+    {
+      "edge_index": 146,
+      "root_index": 229
+    }
+  ],
+  "rotation": null
+}

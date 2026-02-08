@@ -1,0 +1,25 @@
+{
+  "seed_edges": [
+    {
+      "edge_index": 199,
+      "root_index": 176
+    },
+    {
+      "edge_index": 211,
+      "root_index": 93
+    },
+    {
+      "edge_index": 225,
+      "root_index": 140
+    },
+    {
+      "edge_index": 226,
+      "root_index": 181
+    },
+    {
+      "edge_index": 227,
+      "root_index": 164
+    }
+  ],
+  "rotation": null
+}

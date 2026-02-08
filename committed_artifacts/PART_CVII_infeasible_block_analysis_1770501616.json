@@ -1,0 +1,216 @@
+{
+  "checked": [
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T184222Z.json",
+      "status": "no_block_edges"
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T184322Z.json",
+      "status": "no_block_edges"
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T184330Z.json",
+      "status": "no_block_edges"
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T184340Z.json",
+      "status": "no_block_edges"
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T184403Z.json",
+      "status": "no_block_edges"
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+      "start_vertex": 9,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        97
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+      "start_vertex": 9,
+      "block_size": 53,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        144
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+      "start_vertex": 3,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        97
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185201Z.json",
+      "start_vertex": 24,
+      "block_size": 34,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        193,
+        200
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+      "start_vertex": 11,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        117,
+        122
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+      "start_vertex": 6,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        74
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185946Z.json",
+      "start_vertex": 9,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        97
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185947Z.json",
+      "start_vertex": 9,
+      "block_size": 53,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        144
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185948Z.json",
+      "start_vertex": 3,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        97
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185955Z.json",
+      "start_vertex": 10,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        109,
+        111
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190013Z.json",
+      "start_vertex": 30,
+      "block_size": 34,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        199,
+        211
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190048Z.json",
+      "start_vertex": 12,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        127,
+        129
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190121Z.json",
+      "start_vertex": 37,
+      "block_size": 34,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        233,
+        237
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190135Z.json",
+      "start_vertex": 0,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        61,
+        65
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190141Z.json",
+      "start_vertex": 5,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        61,
+        65
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T190142Z.json",
+      "start_vertex": 6,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        74
+      ],
+      "minimal_conflict_size": 1
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T191154Z.json",
+      "start_vertex": 12,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        127,
+        129
+      ],
+      "minimal_conflict_size": 2
+    },
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T191609Z.json",
+      "start_vertex": 34,
+      "block_size": 34,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        230,
+        237
+      ],
+      "minimal_conflict_size": 2
+    }
+  ],
+  "timestamp": 1770499552,
+  "bij_source": "committed_artifacts\\PART_CVII_e8_bijection_intermediate_1770491863.json"
+}

@@ -1,0 +1,24 @@
+{
+  "dd_shrink_result": "checks/PART_CVII_dd_shrink_result_1770500483.json",
+  "pair": {
+    "edges": [37, 38],
+    "vertices": [[3, 22], [3, 23]],
+    "roots": [22, 188],
+    "root_vectors": {
+      "22": [-1, -1, -1, 1, -1, -1, -1, 1],
+      "188": [1, -1, 1, 1, -1, 1, -1, -1]
+    },
+    "dot_product": 0,
+    "sum_is_root": false,
+    "diff_is_root": false
+  },
+  "solver_check": "checks/PART_CVII_e8_embedding_cpsat.json",
+  "solver_status": {
+    "status": "INFEASIBLE",
+    "time_seconds": 0.703667163848877,
+    "k": 40,
+    "vars": 9600,
+    "triangles": 160
+  },
+  "notes": "Delta-shrink produced minimal infeasible pair (edges 37,38) for bijection 'committed_artifacts/PART_CVII_e8_bijection_intermediate_1770491863.json'. This is a small certificate that the two root assignments (22,188) cannot co-exist in any full bijection. Consider adding this pair to forbidden constraints or using it to prune repair/search." 
+}
