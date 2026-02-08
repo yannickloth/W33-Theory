@@ -1,0 +1,44 @@
+{
+  "group_size": 25920,
+  "hodge_sectors": {
+    "harmonic": {
+      "dimension": 81,
+      "commutant_dim": 1,
+      "avg_chi_squared": 1.0000000000000002,
+      "irreducible": true
+    },
+    "coexact": {
+      "dimension": 120,
+      "commutant_dim": 3,
+      "avg_chi_squared": 3.0,
+      "irreducible": false
+    },
+    "exact": {
+      "dimension": 39,
+      "commutant_dim": 2,
+      "avg_chi_squared": 2.0,
+      "irreducible": false
+    },
+    "exact_10": {
+      "dimension": 24,
+      "commutant_dim": 1,
+      "avg_chi_squared": 1.0,
+      "irreducible": true
+    },
+    "exact_16": {
+      "dimension": 15,
+      "commutant_dim": 1,
+      "avg_chi_squared": 1.0,
+      "irreducible": true
+    }
+  },
+  "full_240": {
+    "dimension": 240,
+    "commutant_dim": 6,
+    "avg_chi_squared": 6.0,
+    "irreducible": false
+  },
+  "link_components_all_4": true,
+  "pillars_count": 14,
+  "elapsed_seconds": 17.150607585906982
+}
