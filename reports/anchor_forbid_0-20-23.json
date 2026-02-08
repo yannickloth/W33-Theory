@@ -1,15 +1,88 @@
 [
-  {"W_idx": 0, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 4, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 5, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 6, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 7, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 8, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 9, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 10, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 11, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 12, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 13, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 14, "status": "FEASIBLE", "matched": 19},
-  {"W_idx": 15, "status": "FEASIBLE", "matched": 19}
+  {
+    "W_idx": 0,
+    "status": "FEASIBLE",
+    "matched": 10,
+    "matched_tris": [
+      [
+        2,
+        15,
+        22
+      ],
+      [
+        4,
+        13,
+        21
+      ],
+      [
+        2,
+        11,
+        25
+      ],
+      [
+        4,
+        14,
+        20
+      ],
+      [
+        7,
+        14,
+        18
+      ],
+      [
+        12,
+        13,
+        17
+      ],
+      [
+        5,
+        11,
+        23
+      ],
+      [
+        1,
+        8,
+        26
+      ],
+      [
+        6,
+        9,
+        24
+      ],
+      [
+        5,
+        16,
+        18
+      ]
+    ],
+    "mapping": [
+      25,
+      22,
+      6,
+      23,
+      4,
+      0,
+      1,
+      17,
+      2,
+      3,
+      16,
+      20,
+      26,
+      21,
+      24,
+      18,
+      5,
+      19,
+      7,
+      9,
+      11,
+      14,
+      12,
+      10,
+      8,
+      13,
+      15
+    ]
+  }
 ]
