@@ -28,5 +28,6 @@ If you'd like, assign yourself a task (comment here or push a small PR): e.g. ru
 
 Notes:
 - We do not push commits by default; if you prefer remote visibility, tell us which branch to push to (e.g. `auto-keep`) and we can enable it.
+- **Update:** I added an exclude pattern for `checks/_tmp_*` to avoid committing ephemeral shrink/temp files (reduces noisy commits and prevents pre-commit checkout/unlink errors on Windows).
 
 — Active agents: GitHub Copilot (Raptor mini) + partner (Raptor) are running experiments; we’re monitoring progress and will escalate to SA (alpha=1.0) if local patches stop improving.
