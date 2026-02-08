@@ -515,6 +515,18 @@
       ],
       "timestamp": 1770584329,
       "source_local": "checks/_tmp_verify_next20_106_107.json"
+    },
+    {
+      "set": [
+        108,
+        109
+      ],
+      "roots": [
+        59,
+        158
+      ],
+      "timestamp": 1770584342,
+      "source_local": "checks/_tmp_verify_next20_108_109.json"
     }
   ]
 }
