@@ -19,3 +19,5 @@
 2026-02-08T02:15:58.059629Z: Running: py -3 scripts/minimize_forbids_greedy.py --forbid-file C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --k 40 --prove-time 300 --seed 212 --commit
 2026-02-08T02:20:59.753404Z: Exit 0 stdout(len)=438 stderr(len)=0
 2026-02-08T02:20:59.755472Z: Running: py -3 scripts/check_forbid_pairs_bruteforce.py --k 40 --time-limit 60 --seed 212 --stop-on-find
+2026-02-08T02:25:59.824570Z: Timeout after 300s: py -3 scripts/check_forbid_pairs_bruteforce.py --k 40 --time-limit 60 --seed 212 --stop-on-find
+2026-02-08T02:25:59.885438Z: Running: py -3 scripts/solve_e8_embedding_cpsat.py --k 40 --time-limit 600 --forbid-json C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\checks\PART_CVII_forbids.json --seed 212 --log
