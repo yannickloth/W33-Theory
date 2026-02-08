@@ -174,16 +174,30 @@ def main():
     L1 = Ls["L1"]
     harmonic_basis, _ = compute_h1_kernel(L1)
 
-    # Choose several transvections
+    # Choose transvections: small sample and full set (projective points)
     J = J_matrix()
-    # pick some u vectors (nonzero) in F3^4; choose basis + some combos
-    vs = [np.array([1, 0, 0, 0], dtype=int), np.array([0, 1, 0, 0], dtype=int), np.array([0, 0, 1, 0], dtype=int), np.array([0, 0, 0, 1], dtype=int), np.array([1, 1, 0, 0], dtype=int), np.array([0, 1, 1, 0], dtype=int)]
-    symp_mats = [transvection_matrix(u, J) for u in vs]
+    # small sample for quick check
+    vs_small = [np.array([1, 0, 0, 0], dtype=int), np.array([0, 1, 0, 0], dtype=int), np.array([0, 0, 1, 0], dtype=int)]
+    symp_mats_small = [transvection_matrix(u, J) for u in vs_small]
 
-    # Induce vertex permutation generators and compute commutant dimension via group traces
-    gen_vertex_perms = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats]
-    result = compute_commutant_dim_by_group(gen_vertex_perms, harmonic_basis, edges)
-    print("Commutant result:", result)
+    # full set from vertex reps (40 projective points)
+    vs_all = [np.array(v, dtype=int) for v in verts]
+    symp_mats_all = [transvection_matrix(u, J) for u in vs_all]
+
+    # compute for small sample
+    gen_vertex_perms_small = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats_small]
+    result_small = compute_commutant_dim_by_group(gen_vertex_perms_small, harmonic_basis, edges)
+    print("Commutant result (small sample):", result_small)
+
+    # compute for full transvection set
+    gen_vertex_perms_all = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats_all]
+    result_all = compute_commutant_dim_by_group(gen_vertex_perms_all, harmonic_basis, edges)
+    print("Commutant result (all transvections):", result_all)
+
+    result = {
+        "small": result_small,
+        "all_transvections": result_all,
+    }
 
     out = result
     print(out)
