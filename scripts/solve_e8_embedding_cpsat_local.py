@@ -158,6 +158,26 @@ def main():
             protected_edges.add(e)
         print(f"Protected edges (top {protect_top_n}):", protected_edges)
 
+    # restrict candidate roots per edge to top-K excluding used_roots_outside
+    K = int(args.k)
+    candidates: Dict[int, List[int]] = {}
+    lock_seed_edges = getattr(args, 'lock_seed_edges', False)
+    for e in block_edges:
+        # If edge is protected and we have a seed assignment, only allow that root
+        if e in protected_edges and (e in seed_map):
+            candidates[e] = [seed_map[e]]
+            continue
+        # If locking seed edges globally is requested, lock those as well
+        if lock_seed_edges and (e in seed_map):
+            candidates[e] = [seed_map[e]]
+            continue
+        idxs = np.argsort(cost[e])
+        cand = [int(i) for i in idxs if int(i) not in used_roots_outside][:K]
+        if not cand:
+            # fallback: allow all roots (rare)
+            cand = [i for i in range(len(roots)) if i not in used_roots_outside][:K]
+        candidates[e] = cand
+
     # Build model
     model = cp_model.CpModel()
 
