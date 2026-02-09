@@ -11,15 +11,17 @@ from __future__ import annotations
 
 import itertools
 import json
+import sys
+from pathlib import Path as _Path
 from typing import List
 
 import numpy as np
 
-import sys
-from pathlib import Path as _Path
+from utils.json_safe import dump_json
+
 sys.path.insert(0, str(_Path(__file__).parent))
 
-from w33_hodge import compute_hodge_laplacians, compute_h1_kernel
+from w33_hodge import compute_h1_kernel, compute_hodge_laplacians
 from w33_homology import build_w33
 
 
@@ -99,7 +101,9 @@ def permutation_matrix_from_perm(perm: List[int]) -> np.ndarray:
     return P
 
 
-def compute_commutant_dim_by_group(gen_vertex_perms: List[dict], harmonic_basis: np.ndarray, edges: List[tuple]) -> int:
+def compute_commutant_dim_by_group(
+    gen_vertex_perms: List[dict], harmonic_basis: np.ndarray, edges: List[tuple]
+) -> int:
     """Compute commutant dimension using group closure and character averaging.
 
     Uses the identity for finite groups:
@@ -177,7 +181,11 @@ def main():
     # Choose transvections: small sample and full set (projective points)
     J = J_matrix()
     # small sample for quick check
-    vs_small = [np.array([1, 0, 0, 0], dtype=int), np.array([0, 1, 0, 0], dtype=int), np.array([0, 0, 1, 0], dtype=int)]
+    vs_small = [
+        np.array([1, 0, 0, 0], dtype=int),
+        np.array([0, 1, 0, 0], dtype=int),
+        np.array([0, 0, 1, 0], dtype=int),
+    ]
     symp_mats_small = [transvection_matrix(u, J) for u in vs_small]
 
     # full set from vertex reps (40 projective points)
@@ -185,13 +193,21 @@ def main():
     symp_mats_all = [transvection_matrix(u, J) for u in vs_all]
 
     # compute for small sample
-    gen_vertex_perms_small = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats_small]
-    result_small = compute_commutant_dim_by_group(gen_vertex_perms_small, harmonic_basis, edges)
+    gen_vertex_perms_small = [
+        make_vertex_permutation(M.tolist(), verts) for M in symp_mats_small
+    ]
+    result_small = compute_commutant_dim_by_group(
+        gen_vertex_perms_small, harmonic_basis, edges
+    )
     print("Commutant result (small sample):", result_small)
 
     # compute for full transvection set
-    gen_vertex_perms_all = [make_vertex_permutation(M.tolist(), verts) for M in symp_mats_all]
-    result_all = compute_commutant_dim_by_group(gen_vertex_perms_all, harmonic_basis, edges)
+    gen_vertex_perms_all = [
+        make_vertex_permutation(M.tolist(), verts) for M in symp_mats_all
+    ]
+    result_all = compute_commutant_dim_by_group(
+        gen_vertex_perms_all, harmonic_basis, edges
+    )
     print("Commutant result (all transvections):", result_all)
 
     result = {
@@ -205,10 +221,10 @@ def main():
     # write results to checks/
     import time
     from pathlib import Path
+
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_h1_irreducibility_{ts}.json"
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    dump_json(out, out_path, indent=2)
     print(f"Wrote irreducibility result to {out_path}")
     return out
 

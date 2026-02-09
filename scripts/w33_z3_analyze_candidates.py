@@ -21,6 +21,8 @@ import numpy as np
 from w33_full_decomposition import build_psp43_group, compute_full_hodge_eigenbasis
 from w33_homology import build_clique_complex, build_w33
 
+from utils.json_safe import dump_json
+
 
 def restricted_action_on_subspace(V_sub: np.ndarray, ep, es):
     m, d = V_sub.shape
@@ -126,8 +128,7 @@ def main():
         print(f"Wrote candidate {i:02d}: counts={meta['counts']} -> {out_npz}")
 
     summary_path = outdir / "summary.json"
-    with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump({"file": path, "results": results}, f, indent=2)
+    dump_json({"file": path, "results": results}, summary_path, indent=2)
 
     print(f"Analysis written to: {outdir}")
 

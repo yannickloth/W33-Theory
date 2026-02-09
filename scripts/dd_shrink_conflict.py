@@ -17,6 +17,16 @@ import time
 from pathlib import Path
 from typing import Iterable, List
 
+try:
+    from utils.json_safe import dump_json
+except Exception:
+    # ensure repo root is on sys.path when script is run from various working dirs
+    import sys
+    from pathlib import Path as _Path
+
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from utils.json_safe import dump_json
+
 print("dd_shrink_conflict module loaded")
 
 
@@ -84,7 +94,7 @@ def write_seed_for_edges(bij: dict, edges: Iterable[int], outpath: Path):
         if e in bij:
             seed_edges.append({"edge_index": int(e), "root_index": int(bij[e])})
     out = {"seed_edges": seed_edges, "rotation": None}
-    outpath.write_text(json.dumps(out, indent=2), encoding="utf-8")
+    dump_json(out, outpath, indent=2)
     return outpath
 
 
@@ -97,7 +107,7 @@ def write_seed_for_map(seed_map: dict, edges: Iterable[int], outpath: Path):
         if e in seed_map:
             seed_edges.append({"edge_index": int(e), "root_index": int(seed_map[e])})
     out = {"seed_edges": seed_edges, "rotation": None}
-    outpath.write_text(json.dumps(out, indent=2), encoding="utf-8")
+    dump_json(out, outpath, indent=2)
     return outpath
 
 
@@ -386,6 +396,19 @@ def main():
     )
     elapsed = time.time() - start
 
+    # Defensive sanity-check: ensure ddmin returned a list-like result. Coerce if necessary
+    coercion_note = None
+    if not isinstance(result, (list, tuple)):
+        try:
+            result = list(result)
+        except Exception:
+            if isinstance(result, (int, float)):
+                result = [int(result)]
+                coercion_note = "ddmin returned scalar coerced to list"
+            else:
+                result = []
+                coercion_note = "ddmin returned non-iterable coerced to empty list"
+
     if not initial_reproducible:
         shrink_status = "not_reproducible"
         notes = "Initial check indicates the conflict is not currently infeasible under the provided bijection/seed."
@@ -425,12 +448,14 @@ def main():
 
     stamp = int(time.time())
     outpath = Path.cwd() / "checks" / f"PART_CVII_dd_shrink_result_{stamp}.json"
-    outpath.write_text(json.dumps(out, indent=2), encoding="utf-8")
+    if coercion_note:
+        out["coercion_note"] = coercion_note
+    dump_json(out, outpath, indent=2)
     print("Wrote", outpath)
 
     # mirror to committed_artifacts
     art = Path.cwd() / "committed_artifacts" / outpath.name
-    art.write_text(outpath.read_text(encoding="utf-8"), encoding="utf-8")
+    dump_json(out, art, indent=2)
     print("Also wrote", art)
 
 
@@ -445,6 +470,6 @@ if __name__ == "__main__":
         outpath = (
             Path.cwd() / "checks" / f"PART_CVII_dd_shrink_result_error_{stamp}.json"
         )
-        outpath.write_text(json.dumps(err, indent=2), encoding="utf-8")
+        dump_json(err, outpath, indent=2)
         print("Error encountered; wrote", outpath)
         raise

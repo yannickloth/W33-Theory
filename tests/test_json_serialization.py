@@ -18,6 +18,9 @@ def test_no_plain_json_dump_with_indent():
             for part in Path(dirpath).parts
         ):
             continue
+        # skip artifacts (generated files)
+        if "artifacts" in Path(dirpath).parts:
+            continue
         for fn in filenames:
             if not fn.endswith(".py"):
                 continue

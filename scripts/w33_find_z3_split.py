@@ -25,6 +25,8 @@ import numpy as np
 from w33_full_decomposition import build_psp43_group, compute_full_hodge_eigenbasis
 from w33_homology import build_clique_complex, build_w33
 
+from utils.json_safe import dump_json
+
 
 def restricted_action_on_subspace(V_sub: np.ndarray, ep, es):
     """Compute restricted matrix R = V_sub.T @ P @ V_sub where P is signed perm.
@@ -130,8 +132,7 @@ def main():
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_z3_candidates_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump({"checked": checked, "candidates": candidates}, f, indent=2)
+    dump_json({"checked": checked, "candidates": candidates}, out_path, indent=2)
 
     print(f"Checked {checked} group elements; found {len(candidates)} candidates")
     print(f"Wrote: {out_path}")

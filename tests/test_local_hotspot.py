@@ -10,6 +10,7 @@ def load_module():
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
+    sys.modules[spec.name] = mod
     return mod
 
 
