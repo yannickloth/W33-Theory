@@ -2,7 +2,7 @@
 """Collect unique dd_shrink results, verify via global CP-SAT, and record obstruction artifacts.
 
 Usage:
-  python scripts/register_dd_obstructions.py --k 40 --time-limit 30 --seed 212 --commit
+  python scripts/register_dd_obstructions.py --k 40 --time-limit 30 --verify-seed 212 --commit
 
 """
 from __future__ import annotations
@@ -42,6 +42,16 @@ args = parser.parse_args()
 
 
 # helpers
+try:
+    from utils.json_safe import dump_json
+except Exception:
+    import sys
+    from pathlib import Path as _Path
+
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from utils.json_safe import dump_json
+
+
 def load_json(p):
     return json.loads(open(p, encoding="utf-8").read())
 
@@ -190,7 +200,7 @@ for res, entries in by_result.items():
         "--time-limit",
         "30",
         "--seed",
-        "212",
+        str(args.verify_seed),
         "--force-seed",
     ]
     print("Running solver with seed source", seed_source_used, ":", " ".join(cmd))
@@ -241,6 +251,7 @@ for res, entries in by_result.items():
         "seed_source_used": seed_source_used,
         "used_seed_json": str(seed_json_path),
         "verified_roots": verified_roots,
+        "verified_seed": int(args.verify_seed),
         "notes": "Auto-verified by register_dd_obstructions.py",
     }
     if len(res) == 2:
@@ -262,11 +273,12 @@ for res, entries in by_result.items():
             )
     stamp = int(time.time())
     outp = CHECKS / f"PART_CVII_dd_pair_obstruction_{stamp}.json"
-    open(outp, "w", encoding="utf-8").write(json.dumps(art, indent=2))
+    # write artifact via safe serializer
+    dump_json(art, outp, indent=2)
     print("Wrote", outp)
     # mirror to committed_artifacts
     art_out = ART / outp.name
-    art_out.write_text(open(outp, encoding="utf-8").read(), encoding="utf-8")
+    dump_json(art, art_out, indent=2)
     print("Mirrored to", art_out)
     # record artifact for eventual commit/push
     try:
@@ -289,12 +301,10 @@ for res, entries in by_result.items():
             "seed_source_used": seed_source_used,
         }
         forb.setdefault("obstruction_sets", []).append(entry)
-        open(forb_path, "w", encoding="utf-8").write(json.dumps(forb, indent=2))
+        dump_json(forb, forb_path, indent=2)
         print("Appended to forbids:", forb_path)
         # mirror forbids too
-        (ART / forb_path.name).write_text(
-            open(forb_path, encoding="utf-8").read(), encoding="utf-8"
-        )
+        dump_json(forb, ART / forb_path.name, indent=2)
         print(
             "Mirrored forbids to committed_artifacts"
         )  # record forbids file for commit/push
