@@ -15,6 +15,10 @@ Bundle: `W33_Heisenberg_action_bundle_20260209_v1` (source: `ChatGPT 5.2`)
 
 ## Actions taken
 - Applied a canonical orientation selection when computing Bargmann products and re-ran the comparison. The analysis artifacts have been updated accordingly.
+- Built a qutrit Clifford/metaplectic lift and applied phase corrections to the MUB state vectors (group-based transport using the S/T unitaries):
+  - **Adjusted phases:** 4 N12 vectors were re-phased to match transported reference states; 8 were skipped due to not finding a single group element mapping the chosen reference to those targets.
+  - **Validation:** Re-ran the parallelogram holonomy vs Bargmann check on the corrected vectors → **54/54 matches** (match_fraction = 1.00).
+  - **Artifacts:** `analysis/qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv` was written into the bundle analysis directory.
 
 ## Next steps (suggested) ▶️
 1. Apply a canonical orientation rule for parallelograms when computing Bargmann products (e.g., enforce CCW order of points) and re-run the comparison — this often resolves the conjugation sign flips.
@@ -31,7 +35,8 @@ Bundle: `W33_Heisenberg_action_bundle_20260209_v1` (source: `ChatGPT 5.2`)
 ---
 
 If you'd like, I can now (pick one):
-- (A) Try the **canonical orientation** fix and re-run; or
-- (B) Implement the **Clifford/metaplectic lift** and re-run (more canonical; takes longer).
+- (A) Attempt to propagate phases to the remaining skipped N12 vertices (try different reference choices or orbit-based propagation) — recommended next to get a fully-canonical MUB set.
+- (B) Merge the draft PR (#38) now (it includes the fix, the tracked analysis summary, and a regression test).
+- (C) Run a sweep of other bundles to apply the same phase-correction workflow and validate portability.
 
-Say which option you prefer, or I can run (A) first as a fast test.
+Pick one or tell me another action and I'll proceed.
