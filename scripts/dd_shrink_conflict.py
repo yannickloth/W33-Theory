@@ -26,7 +26,9 @@ Path("checks/PART_CVII_dd_shrink_run_log.txt").write_text(
 )
 
 
-def run_forced_seed(seed_json: Path, k: int, time_limit: float, seed: int, workers: int = None):
+def run_forced_seed(
+    seed_json: Path, k: int, time_limit: float, seed: int, workers: int = None
+):
     cmd = [
         "py",
         "-3",
@@ -148,20 +150,35 @@ def ddmin(
             else:
                 write_seed_for_edges(bij, subset, tmp)
             # run solver with explicit workers param
-            res = run_forced_seed(tmp, k=k, time_limit=time_limit, seed=seed, workers=workers)
+            res = run_forced_seed(
+                tmp, k=k, time_limit=time_limit, seed=seed, workers=workers
+            )
             try:
                 tmp.unlink()
             except Exception:
                 pass
-            runs.append({'returncode': res.get('returncode'), 'status': res.get('json', {}).get('status') if res.get('json') else None, 'timeout': bool(res.get('timeout', False))})
-            if res.get('json') and res.get('json').get('status') == 'INFEASIBLE':
+            runs.append(
+                {
+                    "returncode": res.get("returncode"),
+                    "status": (
+                        res.get("json", {}).get("status") if res.get("json") else None
+                    ),
+                    "timeout": bool(res.get("timeout", False)),
+                }
+            )
+            if res.get("json") and res.get("json").get("status") == "INFEASIBLE":
                 infeasible_count += 1
             # small delay between attempts to reduce accidental file contention
             time.sleep(0.1)
         frac = infeasible_count / max(1, int(reps))
         accepted = frac >= float(threshold)
         # store a compact test log for debugging
-        test_log[tuple(sorted(subset))] = {'reps': int(reps), 'infeasible_count': infeasible_count, 'runs': runs, 'accepted': accepted}
+        test_log[tuple(sorted(subset))] = {
+            "reps": int(reps),
+            "infeasible_count": infeasible_count,
+            "runs": runs,
+            "accepted": accepted,
+        }
         return accepted
 
     S = list(S)
@@ -194,7 +211,7 @@ def ddmin(
                 return S, test_log
         if not some_progress:
             if n >= len(S):
-                return S
+                return S, test_log
             n = min(len(S), n * 2)
 
 
@@ -217,9 +234,24 @@ def main():
         default=None,
         help="Optional seed JSON to use for initial and subset checks",
     )
-    parser.add_argument("--workers", type=int, default=8, help="Number of CP-SAT search workers to pass through to solver")
-    parser.add_argument("--reps", type=int, default=1, help="Number of repeated runs to perform for each subset test to improve reproducibility")
-    parser.add_argument("--repro-threshold", type=float, default=1.0, help="Fraction of repeated runs that must be INFEASIBLE to accept a subset (0.0-1.0)")
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=8,
+        help="Number of CP-SAT search workers to pass through to solver",
+    )
+    parser.add_argument(
+        "--reps",
+        type=int,
+        default=1,
+        help="Number of repeated runs to perform for each subset test to improve reproducibility",
+    )
+    parser.add_argument(
+        "--repro-threshold",
+        type=float,
+        default=1.0,
+        help="Fraction of repeated runs that must be INFEASIBLE to accept a subset (0.0-1.0)",
+    )
     args = parser.parse_args()
 
     bij = json.loads(open(args.bij, encoding="utf-8").read())["bijection"]
@@ -307,9 +339,23 @@ def main():
     infeasible_count = 0
     init_runs = []
     for runc in range(max(1, int(args.reps))):
-        res = run_forced_seed(tmp_init, k=args.k, time_limit=args.time_limit, seed=args.seed, workers=args.workers)
-        init_runs.append({'returncode': res.get('returncode'), 'status': res.get('json', {}).get('status') if res.get('json') else None, 'timeout': bool(res.get('timeout', False))})
-        if res.get('json') and res.get('json').get('status') == 'INFEASIBLE':
+        res = run_forced_seed(
+            tmp_init,
+            k=args.k,
+            time_limit=args.time_limit,
+            seed=args.seed,
+            workers=args.workers,
+        )
+        init_runs.append(
+            {
+                "returncode": res.get("returncode"),
+                "status": (
+                    res.get("json", {}).get("status") if res.get("json") else None
+                ),
+                "timeout": bool(res.get("timeout", False)),
+            }
+        )
+        if res.get("json") and res.get("json").get("status") == "INFEASIBLE":
             infeasible_count += 1
         time.sleep(0.1)
     try:
@@ -318,7 +364,12 @@ def main():
         pass
     frac = infeasible_count / max(1, int(args.reps))
     initial_reproducible = frac >= float(args.repro_threshold)
-    initial_runs_summary = {'reps': int(args.reps), 'infeasible_count': infeasible_count, 'runs': init_runs, 'fraction': frac}
+    initial_runs_summary = {
+        "reps": int(args.reps),
+        "infeasible_count": infeasible_count,
+        "runs": init_runs,
+        "fraction": frac,
+    }
 
     start = time.time()
     result, test_log = ddmin(
@@ -384,4 +435,16 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+
+        stamp = int(time.time())
+        err = {"error": str(e), "traceback": traceback.format_exc(), "timestamp": stamp}
+        outpath = (
+            Path.cwd() / "checks" / f"PART_CVII_dd_shrink_result_error_{stamp}.json"
+        )
+        outpath.write_text(json.dumps(err, indent=2), encoding="utf-8")
+        print("Error encountered; wrote", outpath)
+        raise

@@ -62,6 +62,7 @@ checks/*_seed_*.json
 checks/z3_analysis_*/
 checks/*.npz
 checks/*.log
+checks/pytest_run_latest.txt
 # Archive for cleaned temporary outputs (keep for reproducibility but don't scan in CI)
 checks/archive/
 
