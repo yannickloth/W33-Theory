@@ -436,6 +436,7 @@ def main():
         "time_seconds": elapsed,
         "timestamp": int(time.time()),
         "notes": notes,
+        "seed": int(args.seed),
         "seed_source": seed_source,
         "seed_artifact": str(init_seed_art) if "init_seed_art" in locals() else None,
         "seed_map": seed_map,
@@ -450,12 +451,17 @@ def main():
     outpath = Path.cwd() / "checks" / f"PART_CVII_dd_shrink_result_{stamp}.json"
     if coercion_note:
         out["coercion_note"] = coercion_note
-    dump_json(out, outpath, indent=2)
+    # write atomically to avoid truncated files
+    tmp_out = outpath.with_suffix(".json.tmp")
+    dump_json(out, tmp_out, indent=2)
+    tmp_out.replace(outpath)
     print("Wrote", outpath)
 
-    # mirror to committed_artifacts
+    # mirror to committed_artifacts (atomically)
     art = Path.cwd() / "committed_artifacts" / outpath.name
-    dump_json(out, art, indent=2)
+    tmp_art = art.with_suffix(".json.tmp")
+    dump_json(out, tmp_art, indent=2)
+    tmp_art.replace(art)
     print("Also wrote", art)
 
 
@@ -470,6 +476,8 @@ if __name__ == "__main__":
         outpath = (
             Path.cwd() / "checks" / f"PART_CVII_dd_shrink_result_error_{stamp}.json"
         )
-        dump_json(err, outpath, indent=2)
+        tmp_err = outpath.with_suffix(".json.tmp")
+        dump_json(err, tmp_err, indent=2)
+        tmp_err.replace(outpath)
         print("Error encountered; wrote", outpath)
         raise
