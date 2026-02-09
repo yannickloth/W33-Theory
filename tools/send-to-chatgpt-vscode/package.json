@@ -1,0 +1,29 @@
+{
+  "name": "send-to-chatgpt",
+  "displayName": "Send to ChatGPT (Web)",
+  "description": "Copy selection to clipboard and open ChatGPT web so you can paste and save to your ChatGPT account (GPT-5.2).",
+  "version": "0.1.0",
+  "scripts": {
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File ./package_extension.ps1"
+  },
+  "publisher": "w33",
+  "engines": { "vscode": "^1.60.0" }
+  "activationEvents": ["onCommand:sendToChatGPT.sendSelection"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sendToChatGPT.sendSelection",
+        "title": "Send Selection to ChatGPT (Web)",
+        "category": "ChatGPT"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "sendToChatGPT.sendSelection",
+        "key": "ctrl+alt+g",
+        "when": "editorTextFocus"
+      }
+    ]
+  }
+}
