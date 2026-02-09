@@ -111,13 +111,15 @@ with open(logp, "w", encoding="utf-8") as logf:
         ]
         print("CMD:", " ".join(cmd))
         try:
+            # allow generous timeout to accommodate solver calls inside ddmin
+            timeout = max(600, args.time_limit * 10 + 60)
             proc = subprocess.run(
                 cmd,
                 check=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                timeout=max(30, args.time_limit + 30),
+                timeout=timeout,
             )
             print(proc.stdout)
             if proc.stderr:
@@ -125,8 +127,10 @@ with open(logp, "w", encoding="utf-8") as logf:
             logf.write("STDOUT:\n" + proc.stdout + "\n")
             logf.write("STDERR:\n" + proc.stderr + "\n")
         except subprocess.TimeoutExpired as e:
-            print(f"Seed {seed}: dd_shrink execution timed out")
-            logf.write(f"Seed {seed}: dd_shrink execution timed out\n")
+            print(f"Seed {seed}: dd_shrink execution timed out (timeout={timeout}s)")
+            logf.write(
+                f"Seed {seed}: dd_shrink execution timed out (timeout={timeout}s)\n"
+            )
         except Exception as e:
             print(f"Seed {seed}: dd_shrink execution failed: {e}")
             logf.write(f"Seed {seed}: dd_shrink execution failed: {e}\n")
