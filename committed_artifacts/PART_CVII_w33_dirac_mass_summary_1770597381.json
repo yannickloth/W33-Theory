@@ -1,0 +1,25 @@
+{
+  "timestamp": 1770597381,
+  "dirac_artifact": "committed_artifacts\\PART_CVII_w33_dirac_1770597283.json",
+  "smallest_positive_eig": 3.16227766,
+  "positive_eigen_summary": [
+    {
+      "eig": 3.16227766,
+      "mult": 24
+    },
+    {
+      "eig": 4.0,
+      "mult": 15
+    }
+  ],
+  "ratios_to_smallest": [
+    {
+      "eig": 3.16227766,
+      "ratio_to_smallest": 1.0
+    },
+    {
+      "eig": 4.0,
+      "ratio_to_smallest": 1.2649110641347034
+    }
+  ]
+}
