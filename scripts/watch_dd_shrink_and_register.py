@@ -163,27 +163,52 @@ def main():
             new = [r for r in sorted(all_results) if r not in processed]
             if new:
                 log(f"Found {len(new)} new unique result(s): {new}")
-                # Run register (it groups by result) - faster than per-result invocations
-                rc, out, err = run_cmd(REGISTER_CMD, timeout=600)
-                if rc == 0:
-                    # Clean forbids & re-run global solver
-                    run_cmd(CLEAN_CMD, timeout=30)
-                    rc2, out2, err2 = run_cmd(SOLVE_CMD, timeout=120)
-                    # inspect solve output JSON
+                # validate dd_shrink JSONs and quarantine malformed files before running register
+                import shutil
+
+                bad = []
+                for p in glob.glob(str(CHECKS / "PART_CVII_dd_shrink_result_*.json")):
                     try:
-                        sol = json.loads(
-                            open(
-                                CHECKS / "PART_CVII_e8_embedding_cpsat.json",
-                                encoding="utf-8",
-                            ).read()
-                        )
-                        log(
-                            f"Global solver status after register: {sol.get('status')} time={sol.get('time_seconds')}"
-                        )
+                        json.load(open(p, "r", encoding="utf-8"))
                     except Exception as e:
-                        log(f"Could not read solver JSON: {e}")
+                        bad.append((p, str(e)))
+                if bad:
+                    for p, e in bad:
+                        target_dir = CHECKS / "archive"
+                        target_dir.mkdir(parents=True, exist_ok=True)
+                        target = target_dir / Path(p).name
+                        log(
+                            f"Quarantining malformed dd_shrink_result: {p} -> {target}: {e}"
+                        )
+                        try:
+                            shutil.move(p, target)
+                        except Exception as ee:
+                            log(f"Failed to move {p} to archive: {ee}")
+                    log(
+                        "Found malformed dd_shrink_result files; they were quarantined. Will retry register on next poll."
+                    )
                 else:
-                    log(f"Register script returned {rc}. Will retry on next poll.")
+                    # Run register (it groups by result) - faster than per-result invocations
+                    rc, out, err = run_cmd(REGISTER_CMD, timeout=600)
+                    if rc == 0:
+                        # Clean forbids & re-run global solver
+                        run_cmd(CLEAN_CMD, timeout=30)
+                        rc2, out2, err2 = run_cmd(SOLVE_CMD, timeout=120)
+                        # inspect solve output JSON
+                        try:
+                            sol = json.loads(
+                                open(
+                                    CHECKS / "PART_CVII_e8_embedding_cpsat.json",
+                                    encoding="utf-8",
+                                ).read()
+                            )
+                            log(
+                                f"Global solver status after register: {sol.get('status')} time={sol.get('time_seconds')}"
+                            )
+                        except Exception as e:
+                            log(f"Could not read solver JSON: {e}")
+                    else:
+                        log(f"Register script returned {rc}. Will retry on next poll.")
                 # Update processed sets to include any we've just now processed (collect again)
                 processed = load_state()  # reload
                 all_results = collect_results()
