@@ -71,5 +71,7 @@
     2.833094919493545e-15,
     2.984582245665967e-15
   ],
-  "verified_by": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_z3_verify_1770606826.json"
+  "verified_by": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_z3_verify_1770606826.json",
+  "centralizer_size": 648,
+  "conj_class_size": 40
 }

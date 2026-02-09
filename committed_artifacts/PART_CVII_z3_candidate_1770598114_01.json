@@ -51,5 +51,7 @@
   "R3_norm": 1.7920177515754077e-14,
   "artifact": "PART_CVII_z3_candidate_1770598114_01.npz",
   "notes": "Auto-registered z3 candidate (via _tmp_register_z3_candidate.py)",
-  "timestamp": 1770598114
+  "timestamp": 1770598114,
+  "centralizer_size": 648,
+  "conj_class_size": 40
 }
