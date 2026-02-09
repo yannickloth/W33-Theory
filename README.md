@@ -202,6 +202,16 @@ python scripts/w33_deep_structure.py
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
+## Using ChatGPT 5.2 from VS Code on Windows
+
+There is currently no official Work‑with‑Apps integration on Windows that automatically saves IDE chats into your ChatGPT account memory (this feature is macOS‑only). For a safe, reliable workflow we provide a manual helper that copies your VS Code selection to the clipboard and opens ChatGPT web so you can paste and send (this ensures the message is saved to your ChatGPT history when you send it with GPT‑5.2).
+
+- Helper extension (dev): `tools/send-to-chatgpt-vscode` — press `F5` in this folder to run an Extension Development Host and use the **Send Selection to ChatGPT (Web)** command (default keybinding `Ctrl+Alt+G`).
+- PowerShell fallback: `scripts/send_to_chatgpt.ps1` — e.g. `Get-Content file.py | .\scripts\send_to_chatgpt.ps1 -Open`.
+- Full instructions and notes: `docs/USING_CHATGPT_5_2_WINDOWS.md`.
+
+(If you want a higher‑automation Playwright script that posts automatically to chat.openai.com, tell me and I can prepare an opt‑in script with explicit security/2FA guidance.)
+
 | Script | Purpose |
 |--------|---------|
 | `scripts/w33_homology.py` | Simplicial homology with Smith Normal Form |
