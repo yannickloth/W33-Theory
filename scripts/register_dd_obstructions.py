@@ -38,6 +38,12 @@ parser.add_argument(
     default=None,
     help="Optional git branch to push to (default: current branch)",
 )
+parser.add_argument(
+    "--verify-seed",
+    type=int,
+    default=212,
+    help="Numeric seed to use for verification CP-SAT runs",
+)
 args = parser.parse_args()
 
 
