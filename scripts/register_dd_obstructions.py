@@ -346,6 +346,64 @@ if args.commit:
             )
             if cp.returncode != 0:
                 print("git commit failed:", cp.stderr)
+                # attempt to stage any auto-fixed files (pre-commit hooks often modify files) and re-commit once
+                print("Attempting to stage changes and re-run git commit once...")
+                add2 = subprocess.run(
+                    ["git", "add", "-A"],
+                    check=False,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                if add2.returncode == 0:
+                    cp2 = subprocess.run(
+                        ["git", "commit", "-m", commit_msg],
+                        check=False,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    if cp2.returncode != 0:
+                        print("git commit failed on second attempt:", cp2.stderr)
+                    else:
+                        print("Committed on second attempt:", cp2.stdout)
+                        if args.push:
+                            # don't push if README.md or memory.md show up in worktree
+                            st = subprocess.run(
+                                ["git", "status", "--porcelain"],
+                                stdout=subprocess.PIPE,
+                                text=True,
+                            ).stdout
+                            if "README.md" in st or "memory.md" in st:
+                                print(
+                                    "Detected modifications to README.md or memory.md in working tree; skipping push for safety."
+                                )
+                            else:
+                                branch = args.git_branch
+                                if not branch:
+                                    brp = subprocess.run(
+                                        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                                        stdout=subprocess.PIPE,
+                                        text=True,
+                                    )
+                                    branch = brp.stdout.strip()
+                                p = subprocess.run(
+                                    (
+                                        ["git", args.git_remote, "push", branch]
+                                        if False
+                                        else ["git", "push", args.git_remote, branch]
+                                    ),
+                                    check=False,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    text=True,
+                                )
+                                if p.returncode != 0:
+                                    print("git push failed:", p.stderr)
+                                else:
+                                    print("Pushed to remote:", p.stdout)
+                else:
+                    print("git add failed during retry:", add2.stderr)
             else:
                 print("Committed:", cp.stdout)
                 if args.push:
