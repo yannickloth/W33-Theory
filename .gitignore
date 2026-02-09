@@ -87,6 +87,9 @@ tools/gap/*.exe
 tools/gap/*.tar.gz
 tools/gap/*.zip
 
+# Ignore locally created VSIX packages for extension development
+tools/send-to-chatgpt-*.vsix
+
 # Jupyter and transient process artifacts
 .ipynb_checkpoints/
 *.pid
