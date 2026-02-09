@@ -1,0 +1,227 @@
+{
+  "source_conf_entry": {
+    "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+    "start_vertex": 9,
+    "block_size": 33,
+    "forced_status": "INFEASIBLE",
+    "minimal_conflict": [
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104
+    ],
+    "minimal_conflict_size": 29
+  },
+  "initial_size": 29,
+  "initial_reproducible": true,
+  "shrink_status": "shrunk",
+  "result": [
+    37,
+    38
+  ],
+  "result_size": 2,
+  "checks_limit": 1000,
+  "time_seconds": 511.4812090396881,
+  "timestamp": 1770604349,
+  "notes": "ddmin found a smaller failing subset.",
+  "seed": 212,
+  "seed_source": "bijection_map",
+  "seed_artifact": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770603834.json",
+  "seed_map": {
+    "37": 22,
+    "38": 188,
+    "39": 162,
+    "40": 87,
+    "41": 34,
+    "42": 174,
+    "43": 26,
+    "44": 136,
+    "45": 78,
+    "46": 85,
+    "47": 0,
+    "48": 131,
+    "49": 29,
+    "50": 8,
+    "51": 117,
+    "52": 46,
+    "53": 127,
+    "54": 9,
+    "55": 116,
+    "95": 135,
+    "96": 53,
+    "97": 208,
+    "98": 20,
+    "99": 2,
+    "100": 21,
+    "101": 118,
+    "102": 144,
+    "103": 68,
+    "104": 19
+  },
+  "workers": 2,
+  "reps": 2,
+  "repro_threshold": 1.0,
+  "initial_runs_summary": {
+    "reps": 2,
+    "infeasible_count": 2,
+    "runs": [
+      {
+        "returncode": 0,
+        "status": "INFEASIBLE",
+        "timeout": false
+      },
+      {
+        "returncode": 0,
+        "status": "INFEASIBLE",
+        "timeout": false
+      }
+    ],
+    "fraction": 1.0
+  },
+  "dd_test_log": {
+    "[37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104]": {
+      "reps": 2,
+      "infeasible_count": 2,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        }
+      ],
+      "accepted": true
+    },
+    "[37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51]": {
+      "reps": 2,
+      "infeasible_count": 2,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        }
+      ],
+      "accepted": true
+    },
+    "[37, 38, 39, 40, 41, 42, 43, 44]": {
+      "reps": 2,
+      "infeasible_count": 2,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        }
+      ],
+      "accepted": true
+    },
+    "[37, 38, 39, 40]": {
+      "reps": 2,
+      "infeasible_count": 2,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        }
+      ],
+      "accepted": true
+    },
+    "[37, 38]": {
+      "reps": 2,
+      "infeasible_count": 2,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "INFEASIBLE",
+          "timeout": false
+        }
+      ],
+      "accepted": true
+    },
+    "[37]": {
+      "reps": 2,
+      "infeasible_count": 0,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "UNKNOWN",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "UNKNOWN",
+          "timeout": false
+        }
+      ],
+      "accepted": false
+    },
+    "[38]": {
+      "reps": 2,
+      "infeasible_count": 0,
+      "runs": [
+        {
+          "returncode": 0,
+          "status": "UNKNOWN",
+          "timeout": false
+        },
+        {
+          "returncode": 0,
+          "status": "UNKNOWN",
+          "timeout": false
+        }
+      ],
+      "accepted": false
+    }
+  }
+}
