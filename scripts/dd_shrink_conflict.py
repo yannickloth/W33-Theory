@@ -425,6 +425,9 @@ def main():
             shrink_status = "shrunk"
             notes = "ddmin found a smaller failing subset."
 
+    # ensure dd_test_log keys are JSON-serializable (tuples -> JSON-lists encoded as strings)
+    serializable_dd_test_log = {json.dumps(list(k)): v for k, v in test_log.items()}
+
     out = {
         "source_conf_entry": entry,
         "initial_size": len(S),
@@ -444,7 +447,7 @@ def main():
         "reps": int(args.reps),
         "repro_threshold": float(args.repro_threshold),
         "initial_runs_summary": initial_runs_summary,
-        "dd_test_log": test_log,
+        "dd_test_log": serializable_dd_test_log,
     }
 
     stamp = int(time.time())
