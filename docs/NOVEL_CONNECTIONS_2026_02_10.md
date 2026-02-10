@@ -74,6 +74,11 @@ changes affine/Hessian symmetries:
   if obstruction witnesses are required to cover all 4 affine striations
   (`x`, `y`, `y=x`, `y=2x`, i.e. qutrit/MUB contexts), the exact minimum stays `7`
   in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
+- exact minimal-certificate multiplicity split (bounded exact pass):
+  using `tools/enumerate_minimal_certificates.py --mode exact` on the canonical
+  12-line fixture with cap `max_exact_solutions=200`, Hessian216 reaches the cap
+  with `190` distinct canonical representatives, while full `AGL(2,3)` terminates
+  with `7` total minimal certificates and `7` representatives.
 
 Outputs:
 
@@ -115,6 +120,8 @@ computational hypotheses in-repo:
 8. line-distinct full-sign obstruction should separate Hessian216 from full `AGL(2,3)`.
 9. striation-complete full-sign obstruction should separate Hessian216 from full
    `AGL(2,3)` when every qutrit/MUB context must be represented.
+10. exact minimal-certificate multiplicity should differ sharply across candidate
+    spaces, not only the minimum certificate size constraints.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.

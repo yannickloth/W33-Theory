@@ -105,6 +105,8 @@ Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (artifact: `artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (artifact: `artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
+- Exact enumeration mode (branch-and-bound) is now available in `tools/enumerate_minimal_certificates.py` via `--mode exact` with runtime controls `--max-exact-solutions` and `--time-limit-sec`.
+- Bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`, `time_limit_sec=60`): Hessian216 hit the cap at `200` solutions with `190` distinct canonical representatives, while AGL(2,3) completed with `7` total solutions and `7` representatives.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -150,6 +152,7 @@ Additional witness-space note:
 ```bash
 python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
+python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py -q
 ```
 

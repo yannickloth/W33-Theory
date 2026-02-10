@@ -43,8 +43,12 @@ This repository is meant to be read like a single, continuously updated paper.
   Hessian216 keeps minimum `7`, while full `AGL(2,3)` needs `8` if each witness must use a different affine line.
 - Striation-complete full-sign obstruction now also separates candidate spaces:
   Hessian216 keeps minimum `7`, while full `AGL(2,3)` needs `8` when witnesses must cover all 4 affine striations (qutrit/MUB contexts).
+- Minimal-certificate enumerator now supports exact mode (`--mode exact`) with bounded search controls
+  (`--max-exact-solutions`, `--time-limit-sec`) and orbit-canonicalized output.
+- In a bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`):
+  Hessian216 hit the cap with `190` distinct canonical representatives, while full `AGL(2,3)` finished with `7` total solutions and `7` representatives.
 - Repro path:
-  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q`.
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py -q`.
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
@@ -110,7 +114,8 @@ Run the E6/F3 trilinear extraction and symmetry analysis:
 ```bash
 python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
+python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py -q
 ```
 
 Run full regression tests (long):
