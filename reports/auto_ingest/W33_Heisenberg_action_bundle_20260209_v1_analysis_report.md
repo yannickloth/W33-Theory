@@ -15,10 +15,10 @@ Bundle: `W33_Heisenberg_action_bundle_20260209_v1` (source: `ChatGPT 5.2`)
 
 ## Actions taken
 - Applied a canonical orientation selection when computing Bargmann products and re-ran the comparison. The analysis artifacts have been updated accordingly.
-- Built a qutrit Clifford/metaplectic lift and applied phase corrections to the MUB state vectors (group-based transport using the S/T unitaries):
-  - **Adjusted phases:** 4 N12 vectors were re-phased to match transported reference states; 8 were skipped due to not finding a single group element mapping the chosen reference to those targets.
+- Built a qutrit Clifford/metaplectic lift and applied phase corrections to the MUB state vectors (group-based transport using S/T unitaries and Weyl translations):
+  - **Adjusted phases:** 12 N12 vectors were re-phased to match transported reference states (affine translations + SL(2,3) closure used so all targets were covered).
   - **Validation:** Re-ran the parallelogram holonomy vs Bargmann check on the corrected vectors → **54/54 matches** (match_fraction = 1.00).
-  - **Artifacts:** `analysis/qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv` was written into the bundle analysis directory.
+  - **Artifacts:** `analysis/qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv` was written into the bundle analysis directory (updated with full propagation).
 
 ## Next steps (suggested) ▶️
 1. Apply a canonical orientation rule for parallelograms when computing Bargmann products (e.g., enforce CCW order of points) and re-run the comparison — this often resolves the conjugation sign flips.
@@ -26,10 +26,13 @@ Bundle: `W33_Heisenberg_action_bundle_20260209_v1` (source: `ChatGPT 5.2`)
 
 ## Artifacts
 - Analysis zip: `artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1/analysis.zip`
+- *Holonomy push bundle* (canonical lifts + corrected vectors): `artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1/analysis/W33_holonomy_push_bundle_20260209.zip`
 - Key outputs (inside zip):
-  - `sp23_action_on_H27_and_N12.json`
+  - `W33_Heisenberg_generators_Tx_Ty_Z.json`
+  - `W33_translation_lifts_canonical.csv`
+  - `H27_vertices_as_F3_cube_xy_t_holonomy_gauge.csv`
+  - `qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv`
   - `parallelogram_holonomy_vs_bargmann.json`
-  - `parallelogram_holonomy_vs_bargmann.md`
   - original bundle CSVs: `H27_vertices_as_F3_cube_xy_t.csv`, `missing_planes_as_phase_space_points.csv`, `N12_vertices_as_affine_lines.csv`, `qutrit_MUB_state_vectors_for_N12_vertices.csv`
 
 ---
