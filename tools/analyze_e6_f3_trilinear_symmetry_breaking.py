@@ -479,6 +479,128 @@ def _line_product_orbit_fingerprint(
     }
 
 
+def _line_product_striation_action_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    elements: list[AffineMap],
+    direction: str | None,
+) -> dict[str, Any]:
+    """
+    Analyze residual action on AG(2,3) striations (parallel classes).
+    In qutrit language these are the 4 affine-line MUB contexts.
+    """
+    striation_temp: dict[
+        str, set[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]
+    ] = {}
+    for line in lines:
+        key = _line_equation_type(line)[0]
+        striation_temp.setdefault(key, set()).add(line)
+    striation_families = {
+        key: frozenset(family) for key, family in striation_temp.items()
+    }
+    striation_keys = sorted(striation_families.keys())
+
+    family_to_key = {family: key for key, family in striation_families.items()}
+
+    def image_key(elem: AffineMap, key: str) -> str | None:
+        mapped_family = frozenset(
+            _map_line(elem[0], elem[1], line) for line in striation_families[key]
+        )
+        return family_to_key.get(mapped_family)
+
+    maps_lines_to_single_striation = True
+    for elem in elements:
+        for key in striation_keys:
+            if image_key(elem, key) is None:
+                maps_lines_to_single_striation = False
+                break
+        if not maps_lines_to_single_striation:
+            break
+
+    striation_orbits = _orbit_partition(
+        striation_keys,
+        elements,
+        lambda elem, key: image_key(elem, key) if image_key(elem, key) is not None else key,
+    )
+    striation_orbit_sizes = sorted(len(block) for block in striation_orbits)
+
+    distinguished_striation_fixed_setwise = False
+    if direction is not None and direction in striation_families:
+        distinguished_striation_fixed_setwise = all(
+            image_key(elem, direction) == direction for elem in elements
+        )
+
+    non_distinguished_keys = (
+        [key for key in striation_keys if key != direction]
+        if direction in striation_families
+        else list(striation_keys)
+    )
+    non_distinguished_transitive = False
+    permutation_image_size = 0
+    permutation_is_s3 = False
+    permutation_kernel_size = 0
+    kernel_order_hist: Counter[str] = Counter()
+    permutation_image: list[list[int]] = []
+
+    if len(non_distinguished_keys) == 3 and maps_lines_to_single_striation:
+        index = {key: idx for idx, key in enumerate(non_distinguished_keys)}
+        perm_set: set[tuple[int, int, int]] = set()
+        for elem in elements:
+            image = []
+            ok = True
+            for key in non_distinguished_keys:
+                im = image_key(elem, key)
+                if im is None or im not in index:
+                    ok = False
+                    break
+                image.append(index[im])
+            if ok:
+                perm = tuple(image)
+                perm_set.add(perm)
+                if perm == (0, 1, 2):
+                    permutation_kernel_size += 1
+                    kernel_order_hist[str(_affine_order(elem))] += 1
+
+        permutation_image_size = len(perm_set)
+        permutation_image = [list(p) for p in sorted(perm_set)]
+        non_distinguished_transitive = permutation_image_size > 0 and all(
+            any(perm[i] == j for perm in perm_set)
+            for i in range(3)
+            for j in range(3)
+        )
+        from itertools import permutations
+
+        permutation_is_s3 = perm_set == set(permutations((0, 1, 2)))
+
+    return {
+        "rule": (
+            "Residual subgroup acts on 4 AG(2,3) striations (qutrit MUB contexts) "
+            "with orbit sizes [1,3], fixing the distinguished striation and inducing "
+            "full S3 on the remaining three"
+        ),
+        "maps_lines_to_single_striation": maps_lines_to_single_striation,
+        "striation_keys": striation_keys,
+        "striation_orbits": striation_orbits,
+        "striation_orbit_sizes": striation_orbit_sizes,
+        "distinguished_striation": direction,
+        "distinguished_striation_fixed_setwise": distinguished_striation_fixed_setwise,
+        "non_distinguished_striations": non_distinguished_keys,
+        "non_distinguished_transitive": non_distinguished_transitive,
+        "non_distinguished_permutation_image": permutation_image,
+        "non_distinguished_permutation_image_size": permutation_image_size,
+        "non_distinguished_permutation_is_s3": permutation_is_s3,
+        "non_distinguished_permutation_kernel_size": permutation_kernel_size,
+        "non_distinguished_permutation_kernel_order_hist": dict(kernel_order_hist),
+        "qutrit_mub_striation_signature_holds": (
+            maps_lines_to_single_striation
+            and striation_orbit_sizes == [1, 3]
+            and distinguished_striation_fixed_setwise
+            and non_distinguished_transitive
+            and permutation_is_s3
+            and permutation_kernel_size == 2
+        ),
+    }
+
+
 def _line_type_family(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     line_type: str,
@@ -1151,6 +1273,29 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
+        "- Striation action rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_striation_action"]["rule"],
+            out["cross_checks"]["line_product_striation_action"][
+                "qutrit_mub_striation_signature_holds"
+            ],
+        )
+    )
+    lines.append(
+        "- Striation orbit sizes under residual subgroup: `{}`".format(
+            out["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
+        )
+    )
+    lines.append(
+        "- Induced action on non-distinguished striations is S3: `{}` (kernel size `{}`)".format(
+            out["cross_checks"]["line_product_striation_action"][
+                "non_distinguished_permutation_is_s3"
+            ],
+            out["cross_checks"]["line_product_striation_action"][
+                "non_distinguished_permutation_kernel_size"
+            ],
+        )
+    )
+    lines.append(
         "- Flag geometry rule `{}` holds: `{}`".format(
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_rule"],
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"],
@@ -1227,6 +1372,9 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Recent E6 gauge/integrable context: Argyres-Chalykh-Lu (2025), arXiv:2510.16417."
+    )
+    lines.append(
+        "- Finite phase-space striation context: Gibbons-Hoffman-Wootters (2004), arXiv:quant-ph/0401155."
     )
     lines.append("")
     return "\n".join(lines) + "\n"
@@ -1305,6 +1453,9 @@ def main() -> None:
     prod_orbit_fingerprint = _line_product_orbit_fingerprint(
         lines, prod_agl_elements, missing_point, direction
     )
+    prod_striation_action = _line_product_striation_action_check(
+        lines, prod_agl_elements, direction
+    )
     full_sign_obstruction_hessian = _full_sign_obstruction_certificate(
         lines,
         sign_field,
@@ -1377,6 +1528,7 @@ def main() -> None:
             "line_product_group_structure": prod_structure,
             "line_product_flag_geometry": prod_flag_geometry,
             "line_product_orbit_fingerprint": prod_orbit_fingerprint,
+            "line_product_striation_action": prod_striation_action,
             "full_sign_obstruction_certificate": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,

@@ -98,6 +98,46 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         is True
     )
     assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "maps_lines_to_single_striation"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
+        == [1, 3]
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "distinguished_striation_fixed_setwise"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_transitive"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_is_s3"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_image_size"
+        ]
+        == 6
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_kernel_size"
+        ]
+        == 2
+    )
+    assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]
         is True
     )
@@ -300,6 +340,46 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
             "qutrit_phase_space_orbit_signature_holds"
         ]
         is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "maps_lines_to_single_striation"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
+        == [1, 3]
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "distinguished_striation_fixed_setwise"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_transitive"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_is_s3"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_image_size"
+        ]
+        == 6
+    )
+    assert (
+        data["cross_checks"]["line_product_striation_action"][
+            "non_distinguished_permutation_kernel_size"
+        ]
+        == 2
     )
     assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]

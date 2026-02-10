@@ -59,6 +59,10 @@ changes affine/Hessian symmetries:
   under the residual `D12` action on `AG(2,3)`, point orbits are `[1,2,6]` and line
   orbits are `[1,2,3,6]`; the missing point is fixed and the distinguished direction
   class splits into line-orbits `[1,2]`.
+- qutrit-striation/MUB action check:
+  on the 4 affine striations (MUB contexts), residual action has orbit sizes `[1,3]`,
+  fixes the distinguished striation, and induces full `S3` on the other three
+  (permutation kernel size `2` inside the 12-element residual subgroup).
 
 Outputs:
 
@@ -93,6 +97,8 @@ computational hypotheses in-repo:
    compatible with the project-wide ternary (`F3`) framing.
 5. the residual action should realize a nontrivial but rigid orbit signature on
    `AG(2,3)` points/lines consistent with qutrit finite-phase-space structure.
+6. the residual action on qutrit striations should single out one context and realize
+   full `S3` mixing on the remaining three contexts.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
@@ -111,5 +117,7 @@ and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
   Link: `https://arxiv.org/abs/2509.06785`
 - Wootters, *Quantum measurements and finite geometry*, arXiv:quant-ph/0406032
   Link: `https://arxiv.org/abs/quant-ph/0406032`
-- Bandyopadhyay et al., *A New Proof for the Existence of Mutually Unbiased Bases*, arXiv:0909.1671
-  Link: `https://arxiv.org/abs/0909.1671`
+- Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*, arXiv:quant-ph/0401155
+  Link: `https://arxiv.org/abs/quant-ph/0401155`
+- Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*, arXiv:quant-ph/0103162
+  Link: `https://arxiv.org/abs/quant-ph/0103162`

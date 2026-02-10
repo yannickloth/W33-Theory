@@ -44,10 +44,15 @@ from the layperson narrative.
    Raw note: finite-phase-space and striation viewpoint motivated residual-orbit
    fingerprint checks on `AG(2,3)` points and lines.
 
-7. Bandyopadhyay et al., *A New Proof for the Existence of Mutually Unbiased Bases*  
-   URL: `https://arxiv.org/abs/0909.1671`  
+7. Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*  
+   URL: `https://arxiv.org/abs/quant-ph/0103162`  
    Raw note: finite-field MUB construction supports treating affine-line classes as
    meaningful qutrit-structure carriers.
+
+8. Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*  
+   URL: `https://arxiv.org/abs/quant-ph/0401155`  
+   Raw note: makes the striation picture explicit (lines grouped into parallel classes),
+   suggesting direct tests of induced subgroup action on striation classes.
 
 ## Hypothesis chain -> repo checks
 
@@ -66,6 +71,23 @@ Status: verified (`order3_element_count = 2`, unique `C3` subgroup present).
 H5. Residual action should carry a rigid phase-space orbit signature on `AG(2,3)`.  
 Status: verified (`point_orbit_sizes = [1,2,6]`, `line_orbit_sizes = [1,2,3,6]`,
 missing point fixed, distinguished direction split `[1,2]`).
+
+H6. Residual action on the 4 striations should fix one and induce full `S3` on the
+other three (qutrit-MUB context splitting).  
+Status: verified (`striation_orbit_sizes = [1,3]`,
+`non_distinguished_permutation_is_s3 = true`,
+`non_distinguished_permutation_kernel_size = 2`).
+
+## Second-pass raw notes (same date, new loop)
+
+- If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
+  Wootters), then the best symmetry-breaking check is not only point/line orbits but
+  how the residual subgroup permutes striation classes.
+- Computed result fits a clean split: one distinguished context is fixed, the other
+  three are maximally mixed under full `S3`.
+- This gives a stronger interpretation of symmetry breaking:
+  not just local orbit asymmetry, but a concrete context hierarchy with one pinned
+  basis and a 3-context permutation sector.
 
 ## Where each hypothesis is encoded
 
