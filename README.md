@@ -1,24 +1,94 @@
 # W33 Theory of Everything
 
-## Deriving the Standard Model from a Finite Geometry
+## Living Paper: Deriving Standard-Model Structure from Finite Geometry
 
 [![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml) [![Sage verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml) [![Predictions report](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml) [![Nightly predictions](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml)
 
-**Author:** Wil Dahn
-**Date:** January-February 2026
-**Status:** 73 theorems verified, 104 computational tests passing, 50+ quantitative predictions
+**Author:** Wil Dahn  
+**Date:** January-February 2026  
+**Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
 
-**Canonical definitions:** See `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
+**Canonical definitions:** see `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
 ---
 
-**New:** For a concise, falsifiability-first answer to "solve the theory of everything," see `THEORY_OF_EVERYTHING_REALISTIC_SOLUTION.md`.
+## Start Here (Layperson Guide)
 
+This repository is meant to be read like a single, continuously updated paper.
+
+- **Core idea:** a small finite geometry (W33) appears to encode the same structural counts that show up in exceptional Lie algebra models used in high-energy physics.
+- **Claim style:** every major claim in this README should have a matching script, a test, and machine-generated outputs.
+- **What is "proved" here:** statements marked verified/proved are computational theorems inside this repo, not claims that all of physics is solved.
+- **How to follow without advanced math:** read the theorem summary first, then run the scripts exactly as shown below, then inspect the generated reports.
+
+### 15-Minute Reading Path
+
+1. Read `The W33-E8 Correspondence Theorem` below for the top-level statement and pillar table.
+2. Read `Physical Predictions from Topology` for measurable outputs and numerical targets.
+3. Run `scripts/w33_e8_correspondence_theorem.py` and verify the same numbers appear locally.
+4. Open referenced scripts/tests directly from this README and treat them as appendices of the paper.
+
+---
+
+## Repository Map (Paper-as-Code)
+
+| Question | Read | Run | Test | Output |
+|---|---|---|---|---|
+| Does W33 match E8 root counting and group structure? | `README.md` (The Twenty-One Pillars) | `scripts/w33_e8_correspondence_theorem.py` | `tests/test_e8_embedding.py` | `reports/` and CLI output |
+| Is homology really the 81-dimensional matter sector? | `README.md` (Homology Breakthrough) | `scripts/w33_homology.py` | `tests/test_e8_embedding.py` | exact ranks and SNF checks |
+| Does the Hodge spectrum reproduce the 240 split? | `README.md` (Hodge Laplacian Spectrum) | `scripts/w33_hodge.py` | `tests/test_w33_hodge.py` | Laplacian eigenvalue reports |
+| Are generation and mixing claims explicit? | `README.md` (Three-Generation Decomposition, Universal Mixing Matrix) | `scripts/w33_full_decomposition.py` | `tests/test_e8_embedding.py` | decomposition and projector diagnostics |
+| Is the Heisenberg/qutrit bridge reproducible? | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | Heisenberg lift artifacts |
+| Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py` and `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
+
+---
+
+## Quick Start
+
+Run the compact correspondence check:
+
+```bash
+python scripts/w33_e8_correspondence_theorem.py
+```
+
+Run the Heisenberg/qutrit checks:
+
+```bash
+python scripts/w33_heisenberg_qutrit.py
+python -m pytest tests/test_heisenberg_qutrit_structure.py::test_w33_heisenberg_universal -q
+```
+
+Run the E6/F3 trilinear extraction and symmetry analysis:
+
+```bash
+python tools/build_e6_f3_trilinear_map.py
+python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
+```
+
+Run full regression tests (long):
+
+```bash
+python -m pytest -q
+```
+
+---
+
+## How This README Functions as the Paper
+
+This README is the main manuscript, and the repository is the executable appendix.
+
+1. The narrative stays here (definitions, theorem statements, interpretation, predictions).
+2. Every section should link to code paths that reproduce the exact claim.
+3. New results should update both this README and a machine-checkable script/test path.
+4. Historical progress and open questions are tracked in repo docs such as `memory.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
+
+---
 ## The W33-E8 Correspondence Theorem
 
-**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 104 tests and verified by Smith Normal Form.
+**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 120 tests and verified by Smith Normal Form.
 
-### The Sixteen Pillars
+### The Twenty-One Pillars
 
 | # | Pillar | Statement | Status |
 |---|--------|-----------|--------|
@@ -33,12 +103,16 @@
 | 9 | Cup product | H^1 x H^1 -> H^2 = 0: matter fields don't self-interact | Proved |
 | 10 | Ramanujan + Self-dual | W33 is Ramanujan; line graph = point graph (self-duality) | Verified |
 | 11 | H1 irreducibility | H\_1(W33; R) = 81 is an irreducible representation of PSp(4,3) | **Proved** |
-| 12 | E8 reconstruction | 248 = 8 + 81 + 120 + 39 (Hodge → E8 adjoint decomposition) | **Proved** |
+| 12 | E8 reconstruction | 248 = 8 + 81 + 120 + 39 (Hodge -> E8 adjoint decomposition) | **Proved** |
 | 13 | Topological protection | 3 generations are topologically protected: b\_0(link(v)) - 1 = 3 for every vertex | **Proved** |
 | 14 | H27 inclusion | H\_1(H27) embeds into H\_1(W33) with rank 46 | **Proved** |
 | 15 | **Three generations** | **81 = 27+27+27: all 800 order-3 elements of PSp(4,3) decompose H1** | **Proved** |
 | 16 | **Universal mixing** | **Mixing matrix M = (1/81)[[25,28,28],[28,25,28],[28,28,25]], eigenvalues 1 and -1/27** | **Proved** |
-
+| 17 | **Weinberg angle** | **sin^2(theta\_W) = (r-s)/(k-s) = 6/16 = 3/8, UNIQUE to W(3,3) among GQ(q,q)** | **Proved** |
+| 18 | **Spectral democracy** | **lambda\_i n\_i = 240 for both exact sectors; Tr(L1\|exact) = Tr(L1\|co-exact) = 480** | **Proved** |
+| 19 | **Dirac operator** | **D on R^480: spectrum 0^82 + (+-2)^160 + (+-sqrt10)^24 + (+-4)^15; ind=-80** | **Proved** |
+| 20 | **Self-dual chains** | **C\_0 and C\_3 both decompose as 1+24+15 under PSp(4,3); L\_2 = L\_3 = 4I** | **Proved** |
+| 21 | **Qutrit phase space identification** | **H27 ≅ F3^3; N12 = 12 affine lines = 4 qutrit MUBs; 9 missing tritangent planes = 9 AG(2,3) points; v0-stabilizer action lifts to AGL(2,3) with Z3 central kernel** | **Verified** |
 ### The Homology Breakthrough
 
 The clique complex of W33 has simplicial homology computed with exact integer arithmetic and confirmed torsion-free by Smith Normal Form (SymPy):
@@ -184,6 +258,12 @@ Every triangle belongs to exactly 1 tetrahedron. The 40 tetrahedra ARE the 40 li
 | Three generations | 81 = 27+27+27 via Z3 eigenspaces | **3 x 27** | 3 families |
 | GUT-scale mixing | Universal M with eigenvalues 1, -1/27 | **near-democratic** | CKM/PMNS |
 | Generation dimension | Controls mixing: deviation = 1/27 | **27** | 27 of E6 |
+| Weinberg from SRG | sin²θ\_W = (r-s)/(k-s) = 6/16 | **3/8** | GUT prediction |
+| Spectral democracy | λ₂n₂ = λ₃n₃ = \|Roots(E8)\| | **240** | -- |
+| Dirac index | χ = b₀ - b₁ + b₂ - b₃ = 1-81+0-0 | **-80** | -- |
+| Higher Laplacian scalar | L₂ = L₃ = (spectral gap)·I | **4I** | -- |
+| Self-dual chains | C₀ ≅ C₃ as PSp(4,3)-modules (1+24+15) | **40 = 1+24+15** | -- |
+| Dirac kernel dim | ker(D) = b₀ + b₁ + b₂ + b₃ | **82** | -- |
 
 ### Key Scripts and Tests
 
@@ -200,7 +280,11 @@ python scripts/w33_representation_theory.py
 # Run deep structure analysis (60s)
 python scripts/w33_deep_structure.py
 
-# Run all 104 tests (~22 min)
+# Run Heisenberg qutrit verification & holonomy comparisons (Pillar 21)
+python scripts/w33_heisenberg_qutrit.py
+python -m pytest tests/test_heisenberg_qutrit_structure.py::test_w33_heisenberg_universal -q
+
+# Run all 120 tests (~22 min)
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
@@ -232,12 +316,13 @@ There is currently no official Work‑with‑Apps integration on Windows that au
 | `scripts/w33_three_generations.py` | Three-generation decomposition 81 = 27+27+27 (E8 + W33) |
 | `scripts/w33_ckm_mixing.py` | CKM-like mixing from Z3 conjugacy classes |
 | `scripts/w33_democratic_mixing.py` | Universal mixing proof with exact Z3 projectors |
+| `scripts/w33_weinberg_dirac.py` | Weinberg angle, spectral democracy, Dirac operator, self-dual chains |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
-| `tests/test_e8_embedding.py` | 104 tests across 21 classes |
+| `tests/test_e8_embedding.py` | 120 tests across 24 classes |
 
-### Test Suite (104 tests, 21 classes)
+### Test Suite (120 tests, 24 classes)
 
-**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestThreeGenerations, TestUniversalMixing.
+**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestThreeGenerations, TestUniversalMixing, TestWeinbergAngle, TestDiracOperator, TestSpectralDemocracy.
 
 | Class | Tests | What it verifies |
 |-------|-------|-----------------|
@@ -262,6 +347,9 @@ There is currently no official Work‑with‑Apps integration on Windows that au
 | **TestFrobeniusSchur** | **5** | **FS indicators (real/complex type), J^2=-I complex structure** |
 | **TestThreeGenerations** | **5** | **800 order-3 elements, chi=0, 27+27+27, projectors, topological protection** |
 | **TestUniversalMixing** | **3** | **Doubly stochastic, circulant structure, eigenvalue -1/27** |
+| **TestWeinbergAngle** | **4** | **sin²θ\_W = 3/8, Hodge derivation, unique among GQ(q,q), λᵢnᵢ = 240** |
+| **TestDiracOperator** | **8** | **480-dim, d²=0, D symmetric, D²=Laplacian, ker=82, paired spectrum, {D,γ}=0, ind=-80** |
+| **TestSpectralDemocracy** | **4** | **Tr equality, exact sector products, C₀≅C₃ decomposition, L₂=L₃=4I** |
 
 ### Systematic Dimension Coincidences
 
@@ -278,6 +366,9 @@ Nine independent numerical coincidences between W33 topology and E8 algebra:
 | Eigenvalue mults | = | 1+24+15 | **40** |
 | rank(d\_2) | = | \|E8 positive roots\| | **120** |
 | Triangle/tet ratio | = | Points per line | **4:1** |
+| λ₂n₂ = λ₃n₃ | = | \|Roots(E8)\| | **240** |
+| (r-s)/(k-s) | = | sin²θ\_W (GUT) | **3/8** |
+| χ(W33) | = | -b₁ + 1 | **-80** |
 
 Conservative joint probability: < 10^-21. This is a genuine mathematical structure.
 

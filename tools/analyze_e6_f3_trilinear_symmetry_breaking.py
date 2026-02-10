@@ -28,6 +28,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+AffineMap = tuple[tuple[int, int, int, int, int], tuple[int, int]]
 
 
 def _line_key(line: list[list[int]]) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
@@ -127,6 +128,569 @@ def _map_line(
 def _map_z(z_map: tuple[int, int], z: int) -> int:
     az, bz = z_map
     return (az * z + bz) % 3
+
+
+def _compose_affine(lhs: AffineMap, rhs: AffineMap) -> AffineMap:
+    (a1, b1, c1, d1, _), s1 = lhs
+    (a2, b2, c2, d2, _), s2 = rhs
+    a = (a1 * a2 + b1 * c2) % 3
+    b = (a1 * b2 + b1 * d2) % 3
+    c = (c1 * a2 + d1 * c2) % 3
+    d = (c1 * b2 + d1 * d2) % 3
+    det = (a * d - b * c) % 3
+    shift = (
+        (a1 * s2[0] + b1 * s2[1] + s1[0]) % 3,
+        (c1 * s2[0] + d1 * s2[1] + s1[1]) % 3,
+    )
+    return ((a, b, c, d, det), shift)
+
+
+def _inverse_affine(elem: AffineMap) -> AffineMap:
+    (a, b, c, d, det), shift = elem
+    if det == 1:
+        inv_det = 1
+    elif det == 2:
+        inv_det = 2
+    else:
+        raise RuntimeError(f"Non-invertible affine element with det={det}")
+    ai = (d * inv_det) % 3
+    bi = (-b * inv_det) % 3
+    ci = (-c * inv_det) % 3
+    di = (a * inv_det) % 3
+    deti = (ai * di - bi * ci) % 3
+    inv_shift = (
+        (-(ai * shift[0] + bi * shift[1])) % 3,
+        (-(ci * shift[0] + di * shift[1])) % 3,
+    )
+    return ((ai, bi, ci, di, deti), inv_shift)
+
+
+def _identity_affine() -> AffineMap:
+    return ((1, 0, 0, 1, 1), (0, 0))
+
+
+def _affine_order(elem: AffineMap) -> int:
+    cur = _identity_affine()
+    for k in range(1, 73):
+        cur = _compose_affine(cur, elem)
+        if cur == _identity_affine():
+            return int(k)
+    raise RuntimeError(f"Could not find finite order for affine element: {elem}")
+
+
+def _line_product_stabilizer_elements(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
+    mats: list[tuple[int, int, int, int, int]],
+) -> list[AffineMap]:
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    kept: list[AffineMap] = []
+    for A in mats:
+        for b in pts:
+            ok = True
+            for L in lines:
+                L2 = _map_line(A, b, L)
+                if L2 not in product_sign or product_sign[L2] != product_sign[L]:
+                    ok = False
+                    break
+            if ok:
+                kept.append((A, b))
+    return sorted(kept)
+
+
+def _affine_elem_json(elem: AffineMap) -> dict[str, Any]:
+    (a, b, c, d, det), shift = elem
+    return {
+        "A": [int(a), int(b), int(c), int(d)],
+        "det": int(det),
+        "shift": [int(shift[0]), int(shift[1])],
+    }
+
+
+def _line_json(
+    line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+) -> list[list[int]]:
+    return [[int(p[0]), int(p[1])] for p in line]
+
+
+def _witness_json(
+    line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
+    z: int,
+    sign: int,
+) -> dict[str, Any]:
+    return {
+        "line": _line_json(line),
+        "abc": list(_normalized_line_abc(line)),
+        "line_type": _line_equation_type(line)[0],
+        "z": int(z),
+        "sign_pm1": int(sign),
+    }
+
+
+def _line_product_stabilizer_parametrization_check(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Empirical exact parametrization for line-product stabilizer in AGL(2,3):
+      A = [[a,0],[c,d]], with a,d in F3^* and c in F3,
+      shift = (a-1, c+d-1) mod 3.
+    """
+    observed = set(elements)
+    expected: set[AffineMap] = set()
+    for a in (1, 2):
+        for d in (1, 2):
+            for c in (0, 1, 2):
+                A = (a, 0, c, d, (a * d) % 3)
+                shift = ((a - 1) % 3, (c + d - 1) % 3)
+                expected.add((A, shift))
+
+    missing = sorted(expected - observed)
+    extra = sorted(observed - expected)
+    return {
+        "rule": "A=[[a,0],[c,d]], shift=(a-1,c+d-1), a,d in F3*, c in F3",
+        "holds": len(missing) == 0 and len(extra) == 0,
+        "observed_size": len(observed),
+        "expected_size": len(expected),
+        "missing_count": len(missing),
+        "extra_count": len(extra),
+        "missing": [_affine_elem_json(e) for e in missing],
+        "extra": [_affine_elem_json(e) for e in extra],
+    }
+
+
+def _line_product_stabilizer_parametrization_det1_check(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Determinant-1 slice in Hessian216:
+      A = [[a,0],[c,a^-1]], a in F3^*, c in F3,
+      shift = (a-1, c+a^-1-1) mod 3.
+    """
+    observed = {e for e in elements if e[0][4] == 1}
+    expected: set[AffineMap] = set()
+    for a in (1, 2):
+        a_inv = 1 if a == 1 else 2
+        for c in (0, 1, 2):
+            A = (a, 0, c, a_inv, 1)
+            shift = ((a - 1) % 3, (c + a_inv - 1) % 3)
+            expected.add((A, shift))
+
+    missing = sorted(expected - observed)
+    extra = sorted(observed - expected)
+    return {
+        "rule": "det=1 slice: A=[[a,0],[c,a^-1]], shift=(a-1,c+a^-1-1)",
+        "holds": len(missing) == 0 and len(extra) == 0,
+        "observed_size": len(observed),
+        "expected_size": len(expected),
+        "missing_count": len(missing),
+        "extra_count": len(extra),
+        "missing": [_affine_elem_json(e) for e in missing],
+        "extra": [_affine_elem_json(e) for e in extra],
+    }
+
+
+def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Summarize finite-group structure and find a concrete dihedral witness pair
+    (r,s) with r^6=1, s^2=1, s r s = r^-1 generating all 12 elements.
+    """
+    elems = set(elements)
+    order_hist: Counter[str] = Counter()
+    det_hist: Counter[str] = Counter()
+    for elem in elems:
+        order_hist[str(_affine_order(elem))] += 1
+        det_hist[str(elem[0][4])] += 1
+
+    def generated_size(generators: tuple[AffineMap, AffineMap]) -> int:
+        seen = {_identity_affine()}
+        frontier = [_identity_affine()]
+        while frontier:
+            cur = frontier.pop()
+            for gen in generators:
+                nxt = _compose_affine(cur, gen)
+                if nxt in elems and nxt not in seen:
+                    seen.add(nxt)
+                    frontier.append(nxt)
+        return len(seen)
+
+    witness_r: AffineMap | None = None
+    witness_s: AffineMap | None = None
+    for r in sorted(elems):
+        if _affine_order(r) != 6 or r[0][4] != 1:
+            continue
+        rinv = _inverse_affine(r)
+        for s in sorted(elems):
+            if _affine_order(s) != 2 or s[0][4] != 2:
+                continue
+            if _compose_affine(_compose_affine(s, r), s) != rinv:
+                continue
+            if generated_size((r, s)) != len(elems):
+                continue
+            witness_r = r
+            witness_s = s
+            break
+        if witness_r is not None:
+            break
+
+    return {
+        "size": len(elems),
+        "order_hist": dict(order_hist),
+        "det_hist": dict(det_hist),
+        "candidate_isomorphism": "D12 (dihedral order 12), with det=1 cyclic C6 rotation subgroup",
+        "dihedral_witness_found": witness_r is not None and witness_s is not None,
+        "generator_r_order6_det1": _affine_elem_json(witness_r) if witness_r else None,
+        "generator_s_order2_det2": _affine_elem_json(witness_s) if witness_s else None,
+    }
+
+
+def _line_type_family(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]], line_type: str
+) -> list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]:
+    return [line for line in lines if _line_equation_type(line)[0] == line_type]
+
+
+def _line_product_adapted_gauges(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    point: tuple[int, int],
+    direction: str,
+) -> list[AffineMap]:
+    """
+    Affine gauges that send the distinguished flag (point, direction) to
+    ((0,0), x-direction).
+    """
+    direction_family = _line_type_family(lines, direction)
+    gl = _gl2_3()
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    out: list[AffineMap] = []
+    for A in gl:
+        for shift in pts:
+            if _map_point(A, shift, point) != (0, 0):
+                continue
+            ok = True
+            for line in direction_family:
+                if _line_equation_type(_map_line(A, shift, line))[0] != "x":
+                    ok = False
+                    break
+            if ok:
+                out.append((A, shift))
+    return sorted(out)
+
+
+def _line_product_coordinate_free_shifted_rule_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
+    point: tuple[int, int],
+    direction: str,
+) -> dict[str, Any]:
+    """
+    Coordinate-free verification:
+    for every gauge mapping (point, direction)->((0,0), x-direction),
+    transformed signs satisfy canonical shifted law P(line)=+1 iff b*c==0
+    for normalized a*x+b*y=c.
+    """
+    adapted = _line_product_adapted_gauges(lines, point, direction)
+    gauge_mismatches: list[dict[str, Any]] = []
+    for idx, gauge in enumerate(adapted):
+        transformed: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int] = {}
+        for line in lines:
+            transformed[_map_line(gauge[0], gauge[1], line)] = int(product_sign[line])
+        bad_rows = []
+        for line, sign in sorted(transformed.items()):
+            a, b, c = _normalized_line_abc(line)
+            pred = 1 if (b * c) % 3 == 0 else -1
+            if pred != sign:
+                bad_rows.append(
+                    {
+                        "line": _line_json(line),
+                        "abc": [int(a), int(b), int(c)],
+                        "actual_sign": int(sign),
+                        "predicted_sign": int(pred),
+                    }
+                )
+        if bad_rows:
+            gauge_mismatches.append(
+                {
+                    "gauge_index": int(idx),
+                    "gauge": _affine_elem_json(gauge),
+                    "mismatch_count": len(bad_rows),
+                    "mismatches": bad_rows,
+                }
+            )
+
+    return {
+        "rule": "for any gauge sending (p*,dir*) to ((0,0),x): P(line)=+1 iff b*c==0 on normalized a*x+b*y=c",
+        "adapted_gauge_count": len(adapted),
+        "holds": len(gauge_mismatches) == 0 and len(adapted) > 0,
+        "gauge_mismatch_count": len(gauge_mismatches),
+        "gauge_mismatches": gauge_mismatches,
+    }
+
+
+def _line_product_flag_geometry_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
+    elements: list[AffineMap],
+) -> dict[str, Any]:
+    """
+    Derive the affine-flag geometry induced by line-product signs:
+      - unique point missing from all negative lines,
+      - unique line-direction class with all-positive sign.
+    Then verify residual subgroup equals the flag stabilizer.
+    """
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    pos_lines = [L for L in lines if product_sign[L] == 1]
+    neg_lines = [L for L in lines if product_sign[L] == -1]
+
+    neg_cover = {p for L in neg_lines for p in L}
+    missing_points = sorted(set(pts) - neg_cover)
+
+    dir_hist: dict[str, dict[str, int]] = {}
+    for L in lines:
+        d = _line_equation_type(L)[0]
+        if d not in dir_hist:
+            dir_hist[d] = {"+1": 0, "-1": 0}
+        key = "+1" if product_sign[L] == 1 else "-1"
+        dir_hist[d][key] += 1
+    full_positive_dirs = sorted(
+        d for d, hist in dir_hist.items() if hist["+1"] == 3 and hist["-1"] == 0
+    )
+
+    decomposition_holds = False
+    shifted_rule_holds = False
+    flag_stabilizer_equals_residual = False
+    point: tuple[int, int] | None = None
+    direction: str | None = None
+    predicted_positive: set[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]] = set()
+    predicted_positive_extra: list[
+        tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+    ] = []
+    predicted_positive_missing: list[
+        tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+    ] = []
+    shifted_mismatches: list[dict[str, Any]] = []
+    flag_missing: list[AffineMap] = []
+    flag_extra: list[AffineMap] = []
+    coordinate_free_shifted: dict[str, Any] = {
+        "rule": "for any gauge sending (p*,dir*) to ((0,0),x): P(line)=+1 iff b*c==0 on normalized a*x+b*y=c",
+        "adapted_gauge_count": 0,
+        "holds": False,
+        "gauge_mismatch_count": 0,
+        "gauge_mismatches": [],
+    }
+
+    if len(missing_points) == 1 and len(full_positive_dirs) == 1:
+        point = missing_points[0]
+        direction = full_positive_dirs[0]
+
+        through_point = {L for L in lines if point in L}
+        direction_lines = {L for L in lines if _line_equation_type(L)[0] == direction}
+        predicted_positive = through_point | direction_lines
+        observed_positive = set(pos_lines)
+        decomposition_holds = observed_positive == predicted_positive
+        predicted_positive_extra = sorted(predicted_positive - observed_positive)
+        predicted_positive_missing = sorted(observed_positive - predicted_positive)
+
+        if direction == "x":
+            for L in lines:
+                a, b, c = _normalized_line_abc(L)
+                c_shift = (c - (a * point[0] + b * point[1])) % 3
+                pred = 1 if (b * c_shift) % 3 == 0 else -1
+                actual = product_sign[L]
+                if pred != actual:
+                    shifted_mismatches.append(
+                        {
+                            "line": _line_json(L),
+                            "abc": [int(a), int(b), int(c)],
+                            "c_shift": int(c_shift),
+                            "actual_sign": int(actual),
+                            "predicted_sign": int(pred),
+                        }
+                    )
+            shifted_rule_holds = len(shifted_mismatches) == 0
+
+        gl = _gl2_3()
+        flag_elems: set[AffineMap] = set()
+        for A in gl:
+            for shift in pts:
+                if _map_point(A, shift, point) != point:
+                    continue
+                ok = True
+                for L in direction_lines:
+                    if _line_equation_type(_map_line(A, shift, L))[0] != direction:
+                        ok = False
+                        break
+                if ok:
+                    flag_elems.add((A, shift))
+
+        residual = set(elements)
+        flag_stabilizer_equals_residual = residual == flag_elems
+        flag_missing = sorted(flag_elems - residual)
+        flag_extra = sorted(residual - flag_elems)
+        coordinate_free_shifted = _line_product_coordinate_free_shifted_rule_check(
+            lines, product_sign, point, direction
+        )
+
+    return {
+        "unique_missing_point_from_negative_lines": (
+            [int(point[0]), int(point[1])] if point is not None else None
+        ),
+        "distinguished_direction_all_positive": direction,
+        "direction_sign_histogram": dir_hist,
+        "decomposition_rule": "positive = (lines through missing point) union (lines in distinguished direction)",
+        "decomposition_holds": decomposition_holds,
+        "predicted_positive_missing_count": len(predicted_positive_missing),
+        "predicted_positive_extra_count": len(predicted_positive_extra),
+        "predicted_positive_missing": [_line_json(L) for L in predicted_positive_missing],
+        "predicted_positive_extra": [_line_json(L) for L in predicted_positive_extra],
+        "shifted_rule": "in shifted coordinates around missing point with distinguished direction x: P(line)=+1 iff b*c_shift==0",
+        "shifted_rule_holds": shifted_rule_holds,
+        "shifted_rule_mismatch_count": len(shifted_mismatches),
+        "shifted_rule_mismatches": shifted_mismatches,
+        "coordinate_free_shifted_rule": coordinate_free_shifted["rule"],
+        "coordinate_free_shifted_rule_holds": coordinate_free_shifted["holds"],
+        "coordinate_free_adapted_gauge_count": coordinate_free_shifted["adapted_gauge_count"],
+        "coordinate_free_shifted_gauge_mismatch_count": coordinate_free_shifted[
+            "gauge_mismatch_count"
+        ],
+        "coordinate_free_shifted_gauge_mismatches": coordinate_free_shifted[
+            "gauge_mismatches"
+        ],
+        "flag_stabilizer_rule": "residual subgroup equals AGL(2,3) stabilizer of (missing point, distinguished direction)",
+        "flag_stabilizer_equals_residual": flag_stabilizer_equals_residual,
+        "flag_stabilizer_missing_count": len(flag_missing),
+        "flag_stabilizer_extra_count": len(flag_extra),
+        "flag_stabilizer_missing": [_affine_elem_json(e) for e in flag_missing],
+        "flag_stabilizer_extra": [_affine_elem_json(e) for e in flag_extra],
+    }
+
+
+def _full_sign_obstruction_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+) -> dict[str, Any]:
+    """
+    Build a compact finite witness certificate for full-sign rigidity.
+    Candidate symmetries are (u-affine in mats) x (z-affine) x {global sign}.
+    We search line/z constraints whose simultaneous preservation rejects all
+    non-stabilizer candidates.
+    """
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
+    witnesses = [(line, z) for line in lines for z in (0, 1, 2)]
+
+    candidates: list[tuple[AffineMap, tuple[int, int], int, dict[Any, Any]]] = []
+    for A in mats:
+        for shift in pts:
+            line_map = {line: _map_line(A, shift, line) for line in lines}
+            if set(line_map.values()) != set(lines):
+                continue
+            for z_map in z_maps:
+                for eps in (1, -1):
+                    candidates.append(((A, shift), z_map, int(eps), line_map))
+
+    mismatch_masks_by_candidate: list[int] = []
+    stabilizer_indices: list[int] = []
+    for idx, (u_map, z_map, eps, line_map) in enumerate(candidates):
+        mask = 0
+        for wi, (line, z) in enumerate(witnesses):
+            lhs = sign_field[(line_map[line], _map_z(z_map, z))]
+            rhs = eps * sign_field[(line, z)]
+            if lhs != rhs:
+                mask |= 1 << wi
+        mismatch_masks_by_candidate.append(mask)
+        if mask == 0:
+            stabilizer_indices.append(idx)
+
+    non_stabilizer_indices = [
+        idx for idx in range(len(candidates)) if idx not in set(stabilizer_indices)
+    ]
+    non_index = {idx: pos for pos, idx in enumerate(non_stabilizer_indices)}
+    universe_size = len(non_stabilizer_indices)
+    full_cover_mask = (1 << universe_size) - 1
+
+    reject_masks_by_witness = [0 for _ in witnesses]
+    for idx in non_stabilizer_indices:
+        rej = mismatch_masks_by_candidate[idx]
+        pos = non_index[idx]
+        for wi in range(len(witnesses)):
+            if (rej >> wi) & 1:
+                reject_masks_by_witness[wi] |= 1 << pos
+
+    best_single = max((mask.bit_count() for mask in reject_masks_by_witness), default=0)
+
+    greedy_indices: list[int] = []
+    covered = 0
+    while covered != full_cover_mask and universe_size > 0:
+        best_wi = None
+        best_gain = -1
+        for wi, mask in enumerate(reject_masks_by_witness):
+            gain = ((covered | mask) ^ covered).bit_count()
+            if gain > best_gain:
+                best_gain = gain
+                best_wi = wi
+        if best_wi is None or best_gain <= 0:
+            break
+        greedy_indices.append(best_wi)
+        covered |= reject_masks_by_witness[best_wi]
+
+    exact_indices: list[int] | None = []
+    max_exact_k = min(len(greedy_indices), 8)
+    found_exact = False
+    if universe_size == 0:
+        found_exact = True
+        exact_indices = []
+    else:
+        from itertools import combinations
+
+        for k in range(1, max_exact_k + 1):
+            hit = None
+            for comb in combinations(range(len(witnesses)), k):
+                union_mask = 0
+                for wi in comb:
+                    union_mask |= reject_masks_by_witness[wi]
+                    if union_mask == full_cover_mask:
+                        hit = comb
+                        break
+                if hit is not None:
+                    break
+            if hit is not None:
+                exact_indices = list(hit)
+                found_exact = True
+                break
+    if exact_indices is None:
+        exact_indices = []
+
+    stabilizers = []
+    for idx in stabilizer_indices:
+        (A, shift), z_map, eps, _line_map = candidates[idx]
+        stabilizers.append(
+            {
+                "u_map": _affine_elem_json((A, shift)),
+                "z_map": [int(z_map[0]), int(z_map[1])],
+                "eps": int(eps),
+            }
+        )
+
+    def witness_rows(indices: list[int]) -> list[dict[str, Any]]:
+        rows = []
+        for wi in indices:
+            line, z = witnesses[wi]
+            rows.append(_witness_json(line, z, sign_field[(line, z)]))
+        return rows
+
+    return {
+        "candidate_space_rule": "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        "candidate_count": len(candidates),
+        "stabilizer_count": len(stabilizer_indices),
+        "non_stabilizer_count": universe_size,
+        "best_single_witness_reject_count": int(best_single),
+        "greedy_certificate_size": len(greedy_indices),
+        "greedy_certificate_witnesses": witness_rows(greedy_indices),
+        "exact_search_max_k": int(max_exact_k),
+        "exact_min_certificate_found": bool(found_exact),
+        "exact_min_certificate_size": (len(exact_indices) if found_exact else None),
+        "exact_min_certificate_witnesses": witness_rows(exact_indices) if found_exact else [],
+        "stabilizers": stabilizers,
+    }
 
 
 def _load_sign_field(
@@ -261,7 +825,7 @@ def _predict_full_sign_closed_form(
     Let line be normalized as a*x + b*y = c over F3. Then:
       (a,b)=(1,0)  (x=c):  sign=+1 iff (c^2 + 2c + z) == 2
       (a,b)=(0,1)  (y=c):  sign=-1 iff z*(c+1) == 2
-      (a,b)=(1,2)  (y=x+*): sign=+1 iff (z^2 + c) == 0
+      (a,b)=(1,2)  (y=x+*): sign=+1 iff (z^2 + 2c) == 0
       (a,b)=(1,1)  (y=2x+*): sign=-1 iff (z*c + 2z + 2c) == 0
     """
     a, b, c = _normalized_line_abc(line)
@@ -317,25 +881,16 @@ def _stabilizer_line_product_size(
     ],
     product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
     mats: list[tuple[int, int, int, int, int]],
-) -> tuple[int, dict[str, int], dict[str, int]]:
-    pts = [(x, y) for x in range(3) for y in range(3)]
-    kept = 0
+) -> tuple[int, dict[str, int], dict[str, int], list[AffineMap]]:
+    elems = _line_product_stabilizer_elements(lines, product_sign, mats)
+    kept = len(elems)
     det_hist: Counter[str] = Counter()
     eq_hist: Counter[str] = Counter()
-    for A in mats:
-        for b in pts:
-            ok = True
-            for L in lines:
-                L2 = _map_line(A, b, L)
-                if L2 not in product_sign or product_sign[L2] != product_sign[L]:
-                    ok = False
-                    break
-            if ok:
-                kept += 1
-                det_hist[str(A[4])] += 1
-                for L in lines:
-                    eq_hist[str(_line_equation_type(_map_line(A, b, L))[0])] += 1
-    return kept, dict(det_hist), dict(eq_hist)
+    for A, b in elems:
+        det_hist[str(A[4])] += 1
+        for L in lines:
+            eq_hist[str(_line_equation_type(_map_line(A, b, L))[0])] += 1
+    return kept, dict(det_hist), dict(eq_hist), elems
 
 
 def _build_md(out: dict[str, Any]) -> str:
@@ -352,7 +907,7 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
-        "- Support under `F3^2 ⋊ SL(2,3)` (`216`): `{}`".format(
+        "- Support under `F3^2 x SL(2,3)` (`216`): `{}`".format(
             out["stabilizers"]["support"]["hessian216_size"]
         )
     )
@@ -390,10 +945,73 @@ def _build_md(out: dict[str, Any]) -> str:
             out["cross_checks"]["full_sign_closed_form"]["holds"],
         )
     )
+    lines.append(
+        "- Residual subgroup rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_stabilizer_parametrization"]["rule"],
+            out["cross_checks"]["line_product_stabilizer_parametrization"]["holds"],
+        )
+    )
+    lines.append(
+        "- Det=1 residual slice rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["rule"],
+            out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["holds"],
+        )
+    )
+    lines.append("")
+    lines.append("## Residual subgroup structure")
+    lines.append(
+        "- Candidate type: `{}`".format(
+            out["cross_checks"]["line_product_group_structure"]["candidate_isomorphism"]
+        )
+    )
+    lines.append(
+        "- Dihedral witness found: `{}`".format(
+            out["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"]
+        )
+    )
+    lines.append(
+        "- Flag geometry rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["decomposition_rule"],
+            out["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"],
+        )
+    )
+    lines.append(
+        "- Flag-stabilizer identity holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["flag_stabilizer_equals_residual"]
+        )
+    )
+    lines.append(
+        "- Shifted rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["shifted_rule"],
+            out["cross_checks"]["line_product_flag_geometry"]["shifted_rule_holds"],
+        )
+    )
+    lines.append(
+        "- Coordinate-free shifted rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule"],
+            out["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule_holds"],
+        )
+    )
+    lines.append(
+        "- Missing point from negative lines: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["unique_missing_point_from_negative_lines"]
+        )
+    )
+    lines.append(
+        "- Distinguished all-positive direction: `{}`".format(
+            out["cross_checks"]["line_product_flag_geometry"]["distinguished_direction_all_positive"]
+        )
+    )
+    lines.append(
+        "- Full-sign obstruction certificate size (exact): `{}`".format(
+            out["cross_checks"]["full_sign_obstruction_certificate"]["exact_min_certificate_size"]
+        )
+    )
     lines.append("")
     lines.append("## Source pointers")
     lines.append("- Hesse configuration and Hessian group context: Artebani-Dolgachev (2006), arXiv:math/0611590.")
     lines.append("- 27 lines, tritangents, and E6 cubic context: Manivel (2007), EMS Surveys in Mathematical Sciences.")
+    lines.append("- Recent exceptional incidence geometry perspective: Mainkar et al. (2026), arXiv:2602.01110.")
     lines.append("")
     return "\n".join(lines) + "\n"
 
@@ -434,12 +1052,29 @@ def main() -> None:
     product_sign = _line_product_signs(lines, sign_field)
     closed_form = _line_product_closed_form_check(product_sign)
     full_sign_closed_form = _full_sign_closed_form_check(lines, sign_field)
-    prod_agl, prod_agl_det_hist, prod_agl_eq_hist = _stabilizer_line_product_size(
+    (
+        prod_agl,
+        prod_agl_det_hist,
+        prod_agl_eq_hist,
+        prod_agl_elements,
+    ) = _stabilizer_line_product_size(
         lines, product_sign, gl
     )
-    prod_hessian, prod_hessian_det_hist, prod_hessian_eq_hist = _stabilizer_line_product_size(
+    (
+        prod_hessian,
+        prod_hessian_det_hist,
+        prod_hessian_eq_hist,
+        prod_hessian_elements,
+    ) = _stabilizer_line_product_size(
         lines, product_sign, sl
     )
+    prod_param = _line_product_stabilizer_parametrization_check(prod_agl_elements)
+    prod_param_det1 = _line_product_stabilizer_parametrization_det1_check(prod_hessian_elements)
+    prod_structure = _line_product_group_structure(prod_agl_elements)
+    prod_flag_geometry = _line_product_flag_geometry_check(
+        lines, product_sign, prod_agl_elements
+    )
+    full_sign_obstruction = _full_sign_obstruction_certificate(lines, sign_field, sl)
 
     out = {
         "status": "ok",
@@ -470,11 +1105,18 @@ def main() -> None:
                 "hessian216_det_hist": prod_hessian_det_hist,
                 "agl23_image_equation_type_hist": prod_agl_eq_hist,
                 "hessian216_image_equation_type_hist": prod_hessian_eq_hist,
+                "agl23_elements": [_affine_elem_json(e) for e in prod_agl_elements],
+                "hessian216_elements": [_affine_elem_json(e) for e in prod_hessian_elements],
             },
         },
         "cross_checks": {
             "line_product_closed_form": closed_form,
             "full_sign_closed_form": full_sign_closed_form,
+            "line_product_stabilizer_parametrization": prod_param,
+            "line_product_stabilizer_parametrization_det1": prod_param_det1,
+            "line_product_group_structure": prod_structure,
+            "line_product_flag_geometry": prod_flag_geometry,
+            "full_sign_obstruction_certificate": full_sign_obstruction,
         },
     }
 
