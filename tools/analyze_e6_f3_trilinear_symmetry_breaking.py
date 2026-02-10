@@ -1421,6 +1421,71 @@ def _classify_certificate_witnesses(witnesses: list[dict]) -> dict:
     }
 
 
+def _witness_orbit_stats(witnesses: list[dict]) -> dict:
+    """
+    Orbit stats for witness sets under AGL(2,3) on line points and affine maps on z.
+    """
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
+    mats = _gl2_3()
+    affine_elements = []
+    for mat in mats:
+        for shift in pts:
+            affine_elements.append((mat, shift))
+
+    def transform_witnesses(mshift, zmap, wlist):
+        mat, shift = mshift
+        out = []
+        for witness in wlist:
+            mapped_pts = tuple(
+                sorted(_map_point(mat, shift, tuple(p)) for p in witness.get("line", []))
+            )
+            new_z = int(_map_z(zmap, int(witness.get("z", 0))))
+            new_sign = int(witness.get("sign_pm1", 1))
+            line_type = _line_equation_type(mapped_pts)[0]
+            out.append(
+                {
+                    "line": [[int(p[0]), int(p[1])] for p in mapped_pts],
+                    "z": int(new_z),
+                    "sign_pm1": int(new_sign),
+                    "line_type": line_type,
+                }
+            )
+        out_sorted = sorted(
+            out,
+            key=lambda row: (
+                tuple(tuple(p) for p in row["line"]),
+                int(row["z"]),
+                int(row["sign_pm1"]),
+                row["line_type"],
+            ),
+        )
+        return tuple(
+            tuple((tuple(p) for p in row["line"]))
+            + (row["z"], row["sign_pm1"], row["line_type"])
+            for row in out_sorted
+        )
+
+    seen = set()
+    for mshift in affine_elements:
+        for zmap in z_maps:
+            rep = transform_witnesses(mshift, zmap, witnesses)
+            seen.add(rep)
+
+    canonical = []
+    if seen:
+        canon = min(seen)
+        for item in canon:
+            line = [list(p) for p in item[0:3]]
+            z = int(item[3])
+            sign = int(item[4])
+            line_type = str(item[5])
+            canonical.append(
+                {"line": line, "z": z, "sign_pm1": sign, "line_type": line_type}
+            )
+    return {"orbit_size": int(len(seen)), "canonical_rep": canonical}
+
+
 def _load_sign_field(
     path: Path,
 ) -> tuple[
