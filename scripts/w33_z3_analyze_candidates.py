@@ -21,7 +21,14 @@ import numpy as np
 from w33_full_decomposition import build_psp43_group, compute_full_hodge_eigenbasis
 from w33_homology import build_clique_complex, build_w33
 
-from utils.json_safe import dump_json
+try:
+    from utils.json_safe import dump_json
+except Exception:
+    import sys
+    from pathlib import Path as _Path
+
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from utils.json_safe import dump_json
 
 
 def restricted_action_on_subspace(V_sub: np.ndarray, ep, es):

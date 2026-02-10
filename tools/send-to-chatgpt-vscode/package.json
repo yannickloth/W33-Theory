@@ -7,7 +7,7 @@
     "package": "powershell -NoProfile -ExecutionPolicy Bypass -File ./package_extension.ps1"
   },
   "publisher": "w33",
-  "engines": { "vscode": "^1.60.0" }
+  "engines": { "vscode": "^1.60.0" },
   "activationEvents": ["onCommand:sendToChatGPT.sendSelection"],
   "main": "./extension.js",
   "contributes": {

@@ -45,6 +45,13 @@ changes affine/Hessian symmetries:
   in the full candidate space `(Hessian216 on u) x (affine z maps) x {global sign}`,
   there is exactly one stabilizer element, and an exact minimum of `7` line/z witness
   constraints already forces that uniqueness.
+- dual-space robustness check:
+  repeating the same obstruction search in the larger candidate space
+  `(AGL(2,3) on u) x (affine z maps) x {global sign}` still gives exact minimum
+  witness size `7` (with one stabilizer element).
+- residual-group `Z3` core check:
+  the computed line-product residual subgroup (`D12`) contains exactly two order-`3`
+  elements and a unique order-`3` subgroup (`C3`), now exported and tested.
 
 Outputs:
 
@@ -73,17 +80,27 @@ computational hypotheses in-repo:
 
 1. the residual `D12` should act as a concrete affine flag stabilizer,
 2. full-sign rigidity should admit a finite obstruction certificate.
+3. the full-sign obstruction minimum should be stable when moving from Hessian216
+   to the larger full `AGL(2,3)` candidate space.
+4. the residual group should expose a concrete `Z3` nucleus (unique `C3` subgroup),
+   compatible with the project-wide ternary (`F3`) framing.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
 
 ## External references used
 
-- Artebani, Dolgachev, *The Hesse pencil of plane cubic curves*, arXiv:math/0611590  
+- Artebani, Dolgachev, *The Hesse pencil of plane cubic curves*, arXiv:math/0611590
   Link: `https://arxiv.org/abs/math/0611590`
-- Manivel, *Configurations of lines and models of Lie algebras*, EMS Surveys in Mathematical Sciences, 2007  
+- Manivel, *Configurations of lines and models of Lie algebras*, EMS Surveys in Mathematical Sciences, 2007
   Link: `https://ems.press/journals/emss/articles/15549`
-- Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*, arXiv:2602.01110 (2026)  
+- Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*, arXiv:2602.01110 (2026)
   Link: `https://arxiv.org/abs/2602.01110`
-- Alisauskas et al., *Spherical reduction and generalized Dirac-Dunkl operators in dimensions >2*, arXiv:2512.02559 (2025)  
+- Argyres, Chalykh, Lu, *E6 and F4 in Calogero-Moser Elliptic Integrable Systems*, arXiv:2510.16417 (2025)
+  Link: `https://arxiv.org/abs/2510.16417`
+- Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*, arXiv:2509.06785 (2025)
+  Link: `https://arxiv.org/abs/2509.06785`
+- Wootters, *Quantum measurements and finite geometry*, arXiv:quant-ph/0403095
+  Link: `https://arxiv.org/abs/quant-ph/0403095`
+- Alisauskas et al., *Spherical reduction and generalized Dirac-Dunkl operators in dimensions >2*, arXiv:2512.02559 (2025)
   Link: `https://arxiv.org/abs/2512.02559`

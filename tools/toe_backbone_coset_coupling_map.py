@@ -74,12 +74,53 @@ def _ensure_root_dict() -> Path:
     return out
 
 
-def _find_latest_export_full_dir() -> Path:
+def _find_latest_export_full_dir(preferred_basis_file: Path | None = None) -> Path:
+    """
+    Locate an extracted 'e6_basis_export_full' folder by searching for E6_basis_78.npy.
+    If `preferred_basis_file` is provided (path to an E6_basis_78.npy used to build the
+    current root-operator dictionary), attempt to find a matching export whose
+    E6_basis_78.npy is numerically equal (within tolerance). Otherwise fall back to
+    the lexicographically/most-recently-modified candidate.
+    """
     search_root = ROOT / "artifacts" / "more_new_work_extracted"
     if not search_root.exists():
         raise RuntimeError(
             "Missing artifacts/more_new_work_extracted; run tools/ingest_more_new_work.py"
         )
+
+    # Try matching a preferred basis file if supplied.
+    if preferred_basis_file is not None and preferred_basis_file.exists():
+        try:
+            pref = np.load(preferred_basis_file)
+            # Search for exported E6_basis_78.npy files and compare numerically.
+            candidates = sorted(
+                search_root.rglob("E6_basis_78.npy"), key=lambda p: str(p).lower()
+            )
+            for cand in candidates:
+                try:
+                    cand_mat = np.load(cand)
+                except Exception:
+                    continue
+                if cand_mat.shape != pref.shape:
+                    continue
+                if np.allclose(pref, cand_mat, rtol=1e-10, atol=1e-12):
+                    full_dir = cand.parent
+                    if (full_dir / "D6_basis_66.npy").exists() and (
+                        full_dir / "coset_basis_12.npy"
+                    ).exists():
+                        print(
+                            f"Using e6_basis_export_full matching root-dict basis: {full_dir}"
+                        )
+                        return full_dir
+            print(
+                "No matching e6_basis_export_full found for root-dict basis; falling back to latest export_full dir"
+            )
+        except Exception:
+            print(
+                "Warning: failed to load preferred basis file for matching; falling back to latest export_full dir"
+            )
+
+    # Fallback: prefer the most recently modified "e6_basis_export_full" dir.
     candidates = list(search_root.rglob("e6_basis_export_full"))
     if not candidates:
         raise RuntimeError(
@@ -150,13 +191,94 @@ def main(argv: Sequence[str] | None = None) -> None:
     if not isinstance(couplings, list):
         raise RuntimeError("Invalid coupling strengths JSON: missing couplings list")
 
-    root = np.load(_ensure_root_dict(), allow_pickle=True).item()
-    mats = np.array(root["mats"], dtype=np.complex128)
+    # Prefer using an e6_basis_export_full that matches the root-operator dictionary
+    # if one is available. This avoids basis-mismatch that causes large reconstruction
+    # residuals when decomposing root operators into D6 vs coset spans.
+    preferred_basis = None
+    root_json = ROOT / "artifacts" / "toe_root_operator_dictionary.json"
+    if root_json.exists():
+        try:
+            rd = _load_json(root_json)
+            preferred_basis = rd.get("source", {}).get("basis_file", None)
+            if preferred_basis is not None:
+                preferred_basis = Path(preferred_basis)
+        except Exception:
+            preferred_basis = None
 
-    export_full = _find_latest_export_full_dir()
+    export_full = _find_latest_export_full_dir(preferred_basis)
+
+    # If the chosen export_full provides an `e6_basis_export/E6_basis_78.npy`, prefer
+    # regenerating the root-operator dictionary from that export to ensure the
+    # root `mats` are computed in the same basis as the D6/coset files.
+    bundle_export_dir = export_full.parent / "e6_basis_export"
+    if bundle_export_dir.exists() and (bundle_export_dir / "E6_basis_78.npy").exists():
+        root_json_path = ROOT / "artifacts" / "toe_root_operator_dictionary.json"
+        rebuild = True
+        if root_json_path.exists():
+            try:
+                rd = _load_json(root_json_path)
+                basis_file = rd.get("source", {}).get("basis_file")
+                if (
+                    basis_file is not None
+                    and Path(basis_file).expanduser().resolve()
+                    == (bundle_export_dir / "E6_basis_78.npy").resolve()
+                ):
+                    rebuild = False
+            except Exception:
+                rebuild = True
+        if rebuild:
+            # Backup existing root dict files before rebuilding.
+            npy_path = ROOT / "artifacts" / "toe_root_operator_dictionary.npy"
+            json_path = ROOT / "artifacts" / "toe_root_operator_dictionary.json"
+            try:
+                if npy_path.exists():
+                    npy_path.rename(npy_path.with_suffix(npy_path.suffix + ".bak"))
+                if json_path.exists():
+                    json_path.rename(json_path.with_suffix(json_path.suffix + ".bak"))
+            except Exception as e:
+                print(f"Warning: failed to backup root dict files: {e}")
+            print(f"Regenerating root-operator dictionary from {bundle_export_dir}")
+            tool = _load_module(
+                ROOT / "tools" / "toe_root_operator_dictionary.py",
+                "toe_root_operator_dictionary",
+            )
+            tool.main(["--export-dir", str(bundle_export_dir)])
+
+    # Load (or reloaded) root dictionary and mats.
+    try:
+        root_dict_path = _ensure_root_dict()
+        root_dict = np.load(root_dict_path, allow_pickle=True).item()
+        weights = root_dict.get("weights", None)
+        mats = np.array(root_dict["mats"], dtype=np.complex128)
+    except Exception:
+        weights = None
+        mats = np.zeros((0, 27, 27), dtype=np.complex128)
+
     d6 = np.load(export_full / "D6_basis_66.npy")
     coset = np.load(export_full / "coset_basis_12.npy")
     Q, R, basis = _prepare_solver(d6, coset)
+
+    # Ensure root operator dictionary exists and attempt to match couplings with explicit output vectors
+    try:
+        root_dict_path = _ensure_root_dict()
+        root_dict = np.load(root_dict_path, allow_pickle=True).item()
+        weights = root_dict.get("weights", None)
+    except Exception:
+        weights = None
+
+    # If couplings contain output_root vectors but not indices, match by nearest weight
+    matched = 0
+    if weights is not None:
+        for c in couplings:
+            if c.get("output_root_index") is None and c.get("output_root") is not None:
+                out_vec = np.array(c.get("output_root"), dtype=float)
+                dists = np.linalg.norm(weights - out_vec.reshape(1, -1), axis=1)
+                best = int(np.argmin(dists))
+                c["output_root_index"] = best
+                c["output_root_match_dist"] = float(dists[best])
+                matched += 1
+    if matched:
+        print(f"Matched {matched} couplings to nearest root weights by vector distance")
 
     # Unique output roots.
     idxs = sorted(
@@ -190,7 +312,13 @@ def main(argv: Sequence[str] | None = None) -> None:
         if idx is None:
             row["backbone_coset"] = None
         else:
-            row["backbone_coset"] = per_root[int(idx)]
+            bc = per_root[int(idx)]
+            row["backbone_coset"] = bc
+            # Backwards-compatible `decomp` summary used by `toe_coupling_atlas_sweep.py`.
+            row["decomp"] = {
+                "backbone_frac": float(bc.get("backbone_frac", 0.0)),
+                "coset_frac": float(bc.get("coset_frac", 0.0)),
+            }
         enriched.append(row)
 
     counts = {"backbone_major": 0, "coset_major": 0, "mixed": 0}

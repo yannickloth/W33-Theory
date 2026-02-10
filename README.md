@@ -4,8 +4,8 @@
 
 [![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml) [![Sage verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml) [![Predictions report](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml) [![Nightly predictions](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml)
 
-**Author:** Wil Dahn  
-**Date:** January-February 2026  
+**Author:** Wil Dahn
+**Date:** January-February 2026
 **Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
 
 **Canonical definitions:** see `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
@@ -28,6 +28,15 @@ This repository is meant to be read like a single, continuously updated paper.
 3. Run `scripts/w33_e8_correspondence_theorem.py` and verify the same numbers appear locally.
 4. Open referenced scripts/tests directly from this README and treat them as appendices of the paper.
 
+## Current Delta (2026-02-10)
+
+- `E6/F3` trilinear full-sign rigidity now has a dual-space obstruction certificate:
+  exact minimum witness size is `7` both in Hessian216 candidate space and in full `AGL(2,3)` candidate space.
+- The residual line-product subgroup remains size `12` and now exposes an explicit unique order-`3` subgroup (`C3`) inside the detected `D12` structure.
+- Repro path:
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q`.
+- Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
+
 ---
 
 ## Repository Map (Paper-as-Code)
@@ -40,6 +49,31 @@ This repository is meant to be read like a single, continuously updated paper.
 | Are generation and mixing claims explicit? | `README.md` (Three-Generation Decomposition, Universal Mixing Matrix) | `scripts/w33_full_decomposition.py` | `tests/test_e8_embedding.py` | decomposition and projector diagnostics |
 | Is the Heisenberg/qutrit bridge reproducible? | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | Heisenberg lift artifacts |
 | Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py` and `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
+
+---
+
+## Claim -> Script -> Test -> Artifact Index
+
+This is the strict execution index for major theorem-bearing sections in this README.
+
+| Section | Claim (short) | Script(s) | Test(s) | Artifact(s) |
+|---|---|---|---|---|
+| `The Twenty-One Pillars` | Core W33->E8 correspondence chain | `scripts/w33_e8_correspondence_theorem.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_w33_e8_correspondence_theorem.json` |
+| `The Homology Breakthrough` | `H_1(W33; Z) = Z^81` and torsion-free SNF | `scripts/w33_homology.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_w33_homology.json` |
+| `Mayer-Vietoris Decomposition` | `81 = 78 + 3` via vertex deletion sequence | `scripts/w33_representation_theory.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_w33_representation_theory.json` |
+| `Hodge Laplacian Spectrum` | `0^81 + 4^120 + 10^24 + 16^15` | `scripts/w33_hodge.py` | `tests/test_w33_hodge.py` | `checks/PART_CVII_w33_hodge_*.json` |
+| `Complete PSp(4,3) Representation Decomposition` | `240 = 90+81+30+24+15` and FS types | `scripts/w33_full_decomposition.py`, `scripts/w33_complex_type_check.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_full_decomposition_*.json` |
+| `Three-Generation Decomposition` | `81 = 27+27+27` under order-3 actions | `scripts/w33_three_generations.py`, `scripts/w33_find_z3_split.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_three_gen_*.json`, `committed_artifacts/PART_CVII_z3_candidate_1770578289_02.json` |
+| `Universal Mixing Matrix` | universal doubly-stochastic `3x3` mixing law | `scripts/w33_democratic_mixing.py`, `scripts/w33_ckm_mixing.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_three_gen_*.json` |
+| `Physical Predictions from Topology` | Weinberg/Dirac/spectral-democracy quantitative package | `scripts/w33_weinberg_dirac.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_weinberg_dirac_*.json` |
+| `Qutrit phase space identification (Pillar 21)` | `H27 ~= F3^3`, affine-line/MUB structure | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | `checks/PART_CVII_heisenberg_qutrit_*.json`, `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` |
+| `E6/F3 trilinear sign layer` | finite-field cubic sign laws + residual symmetry certificates + dual-space full-sign obstruction (`7` witnesses) | `tools/build_e6_f3_trilinear_map.py`, `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_map.json`, `artifacts/e6_f3_trilinear_symmetry_breaking.json`, `docs/NOVEL_CONNECTIONS_2026_02_10.md` |
+| `69 Verified Theorems` | unified end-to-end ToE derivation | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_unified_derivation.json` |
+| `Coupling Atlas (Part XII)` | generation couplings, Yukawa textures, phase/coset maps | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_three_generation_coupling_atlas.json`, `artifacts/toe_yukawa_textures.json`, `artifacts/toe_coupling_strengths_v5_weightbasis.json`, `artifacts/toe_phase_diagram_charge_alignment.json`, `artifacts/toe_backbone_coset_coupling_map_v3_exact.json` |
+| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks | `S12_ALGEBRA_CORE_DEEP_DIVE.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py` | `GOLAY_JORDAN_LIE_COMPLETE.md` |
+| `Monster/Leech connection` | `196560 = 728 x 270`, moonshine-linked formulas | `LEECH_GOLAY_BRIDGE.py`, `MONSTER_744_CONNECTION.py`, `MONSTER_FACTORIZATION.py` | `ALGEBRA_TEST_SUITE.py` | `LEECH_DECOMPOSITION_BREAKTHROUGH.md` |
+| `W(3,3) -> s12 logical chain` | ternary geometry-to-algebra derivation chain | `W33_TO_S12_LOGICAL_CHAIN.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
+| `Witting polytope connection` | alternate route from Witting geometry to W33/s12 chain | `WITTING_W33_S12_SYNTHESIS.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
 
 ---
 
