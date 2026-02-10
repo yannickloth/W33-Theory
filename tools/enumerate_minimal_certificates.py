@@ -388,6 +388,165 @@ def _write_checkpoint(out_json_path, found_canonical_reps, samples_done, k):
     out_json_path.write_text(json.dumps(out, indent=2), encoding="utf-8")
 
 
+def exhaustive_enumeration(
+    lines,
+    sign_field,
+    mats,
+    target_k,
+    workers=1,
+    checkpoint_interval=10000,
+    out_json_path=None,
+    progress=False,
+):
+    """Exhaustively enumerate all witness subsets of size `target_k` and canonicalize those that cover the full non-stabilizer candidate universe.
+
+    Returns:
+        (found_dict, combinations_checked)
+    """
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+    from itertools import combinations
+
+    witnesses, reject_masks_by_witness, full_cover_mask = build_reject_masks(
+        lines, sign_field, mats
+    )
+    n = len(witnesses)
+
+    print(f"exhaustive_enumeration: n={n}, k={target_k}")
+
+    # Precompute suffix ORs for pruning
+    suffix_or = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        suffix_or[i] = suffix_or[i + 1] | reject_masks_by_witness[i]
+
+
+def _exhaustive_worker_first_index(
+    i, witnesses, reject_masks_by_witness, full_cover_mask, sign_field, target_k
+):
+    from itertools import combinations
+
+    found = {}
+    iter_count = 0
+    n = len(witnesses)
+    for tail in combinations(range(i + 1, n), target_k - 1):
+        iter_count += 1
+        sel = (i,) + tail
+        cov = 0
+        for idx in sel:
+            cov |= reject_masks_by_witness[idx]
+            if cov == full_cover_mask:
+                break
+        if cov != full_cover_mask:
+            continue
+        rows = []
+        for idx in sel:
+            line, z = witnesses[idx]
+            sign = int(sign_field[(line, z)])
+            rows.append(
+                {
+                    "line": [[int(p[0]), int(p[1])] for p in line],
+                    "z": int(z),
+                    "sign_pm1": sign,
+                    "line_type": analyze._line_equation_type(line)[0],
+                }
+            )
+        canon, _rep_info = canonicalize_via_orbit(rows)
+        found[canon] = found.get(canon, 0) + 1
+    return found, iter_count
+
+    def worker_first_index(i):
+        found = {}
+        iter_count = 0
+        for tail in combinations(range(i + 1, n), target_k - 1):
+            iter_count += 1
+            sel = (i,) + tail
+            cov = 0
+            for idx in sel:
+                cov |= reject_masks_by_witness[idx]
+                if cov == full_cover_mask:
+                    break
+            if cov != full_cover_mask:
+                continue
+            rows = []
+            for idx in sel:
+                line, z = witnesses[idx]
+                sign = int(sign_field[(line, z)])
+                rows.append(
+                    {
+                        "line": [[int(p[0]), int(p[1])] for p in line],
+                        "z": int(z),
+                        "sign_pm1": sign,
+                        "line_type": analyze._line_equation_type(line)[0],
+                    }
+                )
+            canon, _rep_info = canonicalize_via_orbit(rows)
+            found[canon] = found.get(canon, 0) + 1
+        return found, iter_count
+
+    total_iters = 0
+    found_total = {}
+    # Single worker path: iterate over starting indices
+    if workers <= 1:
+        counts_tried = 0
+        counts_skipped = 0
+        for i in range(0, n - target_k + 1):
+            if suffix_or[i] != full_cover_mask:
+                counts_skipped += 1
+                if progress:
+                    print(f"i={i}: skipped (suffix_or cannot cover)")
+                continue
+            counts_tried += 1
+            found_i, ran = _exhaustive_worker_first_index(
+                i,
+                witnesses,
+                reject_masks_by_witness,
+                full_cover_mask,
+                sign_field,
+                target_k,
+            )
+            total_iters += ran
+            for c, cnt in found_i.items():
+                found_total[c] = found_total.get(c, 0) + cnt
+            if out_json_path and total_iters % checkpoint_interval == 0:
+                _write_checkpoint(out_json_path, found_total, total_iters, target_k)
+            if progress:
+                print(f"i={i}: ran={ran}, distinct_found={len(found_total)}")
+        if progress:
+            print(
+                f"exhaustive done: tried={counts_tried}, skipped={counts_skipped}, total_iters={total_iters}, distinct_found={len(found_total)}"
+            )
+        return found_total, total_iters
+
+    # Parallel path: submit each i as a separate task
+    futures = {}
+    with ProcessPoolExecutor(max_workers=workers) as ex:
+        for i in range(0, n - target_k + 1):
+            if suffix_or[i] != full_cover_mask:
+                continue
+            futures[
+                ex.submit(
+                    _exhaustive_worker_first_index,
+                    i,
+                    witnesses,
+                    reject_masks_by_witness,
+                    full_cover_mask,
+                    sign_field,
+                    target_k,
+                )
+            ] = i
+        for fut in as_completed(futures):
+            found_i, ran = fut.result()
+            total_iters += ran
+            for c, cnt in found_i.items():
+                found_total[c] = found_total.get(c, 0) + cnt
+            if out_json_path and total_iters % checkpoint_interval < 1000:
+                _write_checkpoint(out_json_path, found_total, total_iters, target_k)
+            if progress:
+                print(
+                    f"finished i={futures[fut]}: ran={ran}, distinct_total={len(found_total)}"
+                )
+    return found_total, total_iters
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--in-json", type=Path, required=True)
@@ -401,6 +560,11 @@ def main():
     p.add_argument("--patience", type=int, default=10)
     p.add_argument("--checkpoint-interval", type=int, default=1000)
     p.add_argument("--stop-if-found", type=int, default=0)
+    p.add_argument(
+        "--exhaustive",
+        action="store_true",
+        help="Run exhaustive enumeration of size k (exact)",
+    )
     p.add_argument(
         "--out-json",
         type=Path,
@@ -426,27 +590,40 @@ def main():
     ], "No exact minimal certificate found"
     k = int(full_cert["exact_min_certificate_size"])
 
-    samples = randomized_greedy_enumeration(
-        lines,
-        sign_field,
-        mats,
-        k,
-        args.max_samples,
-        seed=args.seed,
-        workers=args.workers,
-        batch_size=args.batch_size,
-        patience=args.patience,
-        checkpoint_interval=args.checkpoint_interval,
-        stop_if_found=args.stop_if_found,
-        out_json_path=args.out_json,
-        progress=args.progress,
-    )
+    if args.exhaustive:
+        samples, tried = exhaustive_enumeration(
+            lines,
+            sign_field,
+            mats,
+            k,
+            workers=args.workers,
+            checkpoint_interval=args.checkpoint_interval,
+            out_json_path=args.out_json,
+            progress=args.progress,
+        )
+    else:
+        samples = randomized_greedy_enumeration(
+            lines,
+            sign_field,
+            mats,
+            k,
+            args.max_samples,
+            seed=args.seed,
+            workers=args.workers,
+            batch_size=args.batch_size,
+            patience=args.patience,
+            checkpoint_interval=args.checkpoint_interval,
+            stop_if_found=args.stop_if_found,
+            out_json_path=args.out_json,
+            progress=args.progress,
+        )
+        tried = args.max_samples
 
     out = {
         "status": "ok",
         "candidate_space": args.candidate_space,
         "k_min": k,
-        "samples_tried": args.max_samples,
+        "samples_tried": tried,
         "distinct_canonical_representatives_found": len(samples),
         "representatives": [
             {
