@@ -26,12 +26,13 @@ from itertools import product
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 AffineMap = tuple[tuple[int, int, int, int, int], tuple[int, int]]
 
 
-def _line_key(line: list[list[int]]) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
+def _line_key(
+    line: list[list[int]],
+) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
     pts = sorted((int(p[0]), int(p[1])) for p in line)
     if len(pts) != 3:
         raise ValueError("line must have 3 points")
@@ -82,7 +83,9 @@ def _normalized_line_abc(
     return ((a * inv) % 3, (b * inv) % 3, (c * inv) % 3)
 
 
-def _all_affine_lines() -> list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]:
+def _all_affine_lines() -> (
+    list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]
+):
     pts = [(x, y) for x in range(3) for y in range(3)]
     lines = set()
     normals = [(1, 0), (0, 1), (1, 1), (1, 2)]
@@ -227,7 +230,9 @@ def _witness_json(
     }
 
 
-def _line_product_stabilizer_parametrization_check(elements: list[AffineMap]) -> dict[str, Any]:
+def _line_product_stabilizer_parametrization_check(
+    elements: list[AffineMap],
+) -> dict[str, Any]:
     """
     Empirical exact parametrization for line-product stabilizer in AGL(2,3):
       A = [[a,0],[c,d]], with a,d in F3^* and c in F3,
@@ -256,7 +261,9 @@ def _line_product_stabilizer_parametrization_check(elements: list[AffineMap]) ->
     }
 
 
-def _line_product_stabilizer_parametrization_det1_check(elements: list[AffineMap]) -> dict[str, Any]:
+def _line_product_stabilizer_parametrization_det1_check(
+    elements: list[AffineMap],
+) -> dict[str, Any]:
     """
     Determinant-1 slice in Hessian216:
       A = [[a,0],[c,a^-1]], a in F3^*, c in F3,
@@ -309,6 +316,16 @@ def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
                     frontier.append(nxt)
         return len(seen)
 
+    def cyclic_subgroup(generator: AffineMap) -> set[AffineMap]:
+        subgroup = {_identity_affine()}
+        cur = _identity_affine()
+        while True:
+            cur = _compose_affine(cur, generator)
+            if cur in subgroup:
+                break
+            subgroup.add(cur)
+        return subgroup
+
     witness_r: AffineMap | None = None
     witness_s: AffineMap | None = None
     for r in sorted(elems):
@@ -328,6 +345,17 @@ def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
         if witness_r is not None:
             break
 
+    order3_elements = [elem for elem in sorted(elems) if _affine_order(elem) == 3]
+    c3_subgroups: set[frozenset[AffineMap]] = set()
+    for elem in order3_elements:
+        subgroup = cyclic_subgroup(elem)
+        if len(subgroup) == 3:
+            c3_subgroups.add(frozenset(subgroup))
+    c3_representative = []
+    if c3_subgroups:
+        rep = sorted(next(iter(c3_subgroups)))
+        c3_representative = [_affine_elem_json(elem) for elem in rep]
+
     return {
         "size": len(elems),
         "order_hist": dict(order_hist),
@@ -336,11 +364,15 @@ def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
         "dihedral_witness_found": witness_r is not None and witness_s is not None,
         "generator_r_order6_det1": _affine_elem_json(witness_r) if witness_r else None,
         "generator_s_order2_det2": _affine_elem_json(witness_s) if witness_s else None,
+        "order3_element_count": len(order3_elements),
+        "unique_c3_subgroup": len(c3_subgroups) == 1,
+        "c3_subgroup_representative": c3_representative,
     }
 
 
 def _line_type_family(
-    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]], line_type: str
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    line_type: str,
 ) -> list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]:
     return [line for line in lines if _line_equation_type(line)[0] == line_type]
 
@@ -387,7 +419,9 @@ def _line_product_coordinate_free_shifted_rule_check(
     adapted = _line_product_adapted_gauges(lines, point, direction)
     gauge_mismatches: list[dict[str, Any]] = []
     for idx, gauge in enumerate(adapted):
-        transformed: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int] = {}
+        transformed: dict[
+            tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int
+        ] = {}
         for line in lines:
             transformed[_map_line(gauge[0], gauge[1], line)] = int(product_sign[line])
         bad_rows = []
@@ -456,7 +490,9 @@ def _line_product_flag_geometry_check(
     flag_stabilizer_equals_residual = False
     point: tuple[int, int] | None = None
     direction: str | None = None
-    predicted_positive: set[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]] = set()
+    predicted_positive: set[
+        tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+    ] = set()
     predicted_positive_extra: list[
         tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
     ] = []
@@ -536,7 +572,9 @@ def _line_product_flag_geometry_check(
         "decomposition_holds": decomposition_holds,
         "predicted_positive_missing_count": len(predicted_positive_missing),
         "predicted_positive_extra_count": len(predicted_positive_extra),
-        "predicted_positive_missing": [_line_json(L) for L in predicted_positive_missing],
+        "predicted_positive_missing": [
+            _line_json(L) for L in predicted_positive_missing
+        ],
         "predicted_positive_extra": [_line_json(L) for L in predicted_positive_extra],
         "shifted_rule": "in shifted coordinates around missing point with distinguished direction x: P(line)=+1 iff b*c_shift==0",
         "shifted_rule_holds": shifted_rule_holds,
@@ -544,7 +582,9 @@ def _line_product_flag_geometry_check(
         "shifted_rule_mismatches": shifted_mismatches,
         "coordinate_free_shifted_rule": coordinate_free_shifted["rule"],
         "coordinate_free_shifted_rule_holds": coordinate_free_shifted["holds"],
-        "coordinate_free_adapted_gauge_count": coordinate_free_shifted["adapted_gauge_count"],
+        "coordinate_free_adapted_gauge_count": coordinate_free_shifted[
+            "adapted_gauge_count"
+        ],
         "coordinate_free_shifted_gauge_mismatch_count": coordinate_free_shifted[
             "gauge_mismatch_count"
         ],
@@ -566,6 +606,7 @@ def _full_sign_obstruction_certificate(
         tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
     ],
     mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
 ) -> dict[str, Any]:
     """
     Build a compact finite witness certificate for full-sign rigidity.
@@ -678,7 +719,7 @@ def _full_sign_obstruction_certificate(
         return rows
 
     return {
-        "candidate_space_rule": "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        "candidate_space_rule": candidate_space_rule,
         "candidate_count": len(candidates),
         "stabilizer_count": len(stabilizer_indices),
         "non_stabilizer_count": universe_size,
@@ -688,7 +729,9 @@ def _full_sign_obstruction_certificate(
         "exact_search_max_k": int(max_exact_k),
         "exact_min_certificate_found": bool(found_exact),
         "exact_min_certificate_size": (len(exact_indices) if found_exact else None),
-        "exact_min_certificate_witnesses": witness_rows(exact_indices) if found_exact else [],
+        "exact_min_certificate_witnesses": (
+            witness_rows(exact_indices) if found_exact else []
+        ),
         "stabilizers": stabilizers,
     }
 
@@ -734,8 +777,7 @@ def _stabilizer_support_size(
 
 
 def _stabilizer_full_sign_size(
-    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
-    ],
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],],
     sign_field: dict[
         tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
     ],
@@ -757,9 +799,10 @@ def _stabilizer_full_sign_size(
                     for L in lines:
                         L2 = line_map[L]
                         for z in (0, 1, 2):
-                            if sign_field[(L2, _map_z(z_map, z))] != eps * sign_field[
-                                (L, z)
-                            ]:
+                            if (
+                                sign_field[(L2, _map_z(z_map, z))]
+                                != eps * sign_field[(L, z)]
+                            ):
                                 ok = False
                                 break
                         if not ok:
@@ -771,8 +814,7 @@ def _stabilizer_full_sign_size(
 
 
 def _line_product_signs(
-    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
-    ],
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],],
     sign_field: dict[
         tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
     ],
@@ -877,8 +919,7 @@ def _full_sign_closed_form_check(
 
 
 def _stabilizer_line_product_size(
-    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
-    ],
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],],
     product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
     mats: list[tuple[int, int, int, int, int]],
 ) -> tuple[int, dict[str, int], dict[str, int], list[AffineMap]]:
@@ -929,7 +970,9 @@ def _build_md(out: dict[str, Any]) -> str:
     lines.append("")
     lines.append("## Interpretation")
     lines.append("- The affine-line support retains full affine symmetry.")
-    lines.append("- The full sign layer has trivial stabilizer in this gauge (identity only).")
+    lines.append(
+        "- The full sign layer has trivial stabilizer in this gauge (identity only)."
+    )
     lines.append("- The line-product layer keeps a small residual subgroup.")
     lines.append("")
     lines.append("## Closed-form product law")
@@ -954,7 +997,9 @@ def _build_md(out: dict[str, Any]) -> str:
     lines.append(
         "- Det=1 residual slice rule `{}` holds: `{}`".format(
             out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["rule"],
-            out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["holds"],
+            out["cross_checks"]["line_product_stabilizer_parametrization_det1"][
+                "holds"
+            ],
         )
     )
     lines.append("")
@@ -966,7 +1011,14 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Dihedral witness found: `{}`".format(
-            out["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"]
+            out["cross_checks"]["line_product_group_structure"][
+                "dihedral_witness_found"
+            ]
+        )
+    )
+    lines.append(
+        "- Unique order-3 subgroup (C3) detected inside residual group: `{}`".format(
+            out["cross_checks"]["line_product_group_structure"]["unique_c3_subgroup"]
         )
     )
     lines.append(
@@ -977,7 +1029,9 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Flag-stabilizer identity holds: `{}`".format(
-            out["cross_checks"]["line_product_flag_geometry"]["flag_stabilizer_equals_residual"]
+            out["cross_checks"]["line_product_flag_geometry"][
+                "flag_stabilizer_equals_residual"
+            ]
         )
     )
     lines.append(
@@ -988,30 +1042,63 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Coordinate-free shifted rule `{}` holds: `{}`".format(
-            out["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule"],
-            out["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule_holds"],
+            out["cross_checks"]["line_product_flag_geometry"][
+                "coordinate_free_shifted_rule"
+            ],
+            out["cross_checks"]["line_product_flag_geometry"][
+                "coordinate_free_shifted_rule_holds"
+            ],
         )
     )
     lines.append(
         "- Missing point from negative lines: `{}`".format(
-            out["cross_checks"]["line_product_flag_geometry"]["unique_missing_point_from_negative_lines"]
+            out["cross_checks"]["line_product_flag_geometry"][
+                "unique_missing_point_from_negative_lines"
+            ]
         )
     )
     lines.append(
         "- Distinguished all-positive direction: `{}`".format(
-            out["cross_checks"]["line_product_flag_geometry"]["distinguished_direction_all_positive"]
+            out["cross_checks"]["line_product_flag_geometry"][
+                "distinguished_direction_all_positive"
+            ]
         )
     )
     lines.append(
-        "- Full-sign obstruction certificate size (exact): `{}`".format(
-            out["cross_checks"]["full_sign_obstruction_certificate"]["exact_min_certificate_size"]
+        "- Full-sign obstruction certificate size (exact, Hessian216 candidate space): `{}`".format(
+            out["cross_checks"]["full_sign_obstruction_certificate_hessian216"][
+                "exact_min_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Full-sign obstruction certificate size (exact, AGL(2,3) candidate space): `{}`".format(
+            out["cross_checks"]["full_sign_obstruction_certificate_agl23"][
+                "exact_min_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Exact certificate sizes match across candidate spaces: `{}`".format(
+            out["cross_checks"]["full_sign_obstruction_certificate_comparison"][
+                "exact_min_sizes_match"
+            ]
         )
     )
     lines.append("")
     lines.append("## Source pointers")
-    lines.append("- Hesse configuration and Hessian group context: Artebani-Dolgachev (2006), arXiv:math/0611590.")
-    lines.append("- 27 lines, tritangents, and E6 cubic context: Manivel (2007), EMS Surveys in Mathematical Sciences.")
-    lines.append("- Recent exceptional incidence geometry perspective: Mainkar et al. (2026), arXiv:2602.01110.")
+    lines.append(
+        "- Hesse configuration and Hessian group context: Artebani-Dolgachev (2006), arXiv:math/0611590."
+    )
+    lines.append(
+        "- 27 lines, tritangents, and E6 cubic context: Manivel (2007), EMS Surveys in Mathematical Sciences."
+    )
+    lines.append(
+        "- Recent exceptional incidence geometry perspective: Mainkar et al. (2026), arXiv:2602.01110."
+    )
+    lines.append(
+        "- Recent E6 gauge/integrable context: Argyres-Chalykh-Lu (2025), arXiv:2510.16417."
+    )
     lines.append("")
     return "\n".join(lines) + "\n"
 
@@ -1046,7 +1133,9 @@ def main() -> None:
     support_agl = _stabilizer_support_size(set(lines), gl)
     support_hessian = _stabilizer_support_size(set(lines), sl)
 
-    full_hessian, full_hessian_breakdown = _stabilizer_full_sign_size(lines, sign_field, sl)
+    full_hessian, full_hessian_breakdown = _stabilizer_full_sign_size(
+        lines, sign_field, sl
+    )
     full_agl, full_agl_breakdown = _stabilizer_full_sign_size(lines, sign_field, gl)
 
     product_sign = _line_product_signs(lines, sign_field)
@@ -1057,24 +1146,49 @@ def main() -> None:
         prod_agl_det_hist,
         prod_agl_eq_hist,
         prod_agl_elements,
-    ) = _stabilizer_line_product_size(
-        lines, product_sign, gl
-    )
+    ) = _stabilizer_line_product_size(lines, product_sign, gl)
     (
         prod_hessian,
         prod_hessian_det_hist,
         prod_hessian_eq_hist,
         prod_hessian_elements,
-    ) = _stabilizer_line_product_size(
-        lines, product_sign, sl
-    )
+    ) = _stabilizer_line_product_size(lines, product_sign, sl)
     prod_param = _line_product_stabilizer_parametrization_check(prod_agl_elements)
-    prod_param_det1 = _line_product_stabilizer_parametrization_det1_check(prod_hessian_elements)
+    prod_param_det1 = _line_product_stabilizer_parametrization_det1_check(
+        prod_hessian_elements
+    )
     prod_structure = _line_product_group_structure(prod_agl_elements)
     prod_flag_geometry = _line_product_flag_geometry_check(
         lines, product_sign, prod_agl_elements
     )
-    full_sign_obstruction = _full_sign_obstruction_certificate(lines, sign_field, sl)
+    full_sign_obstruction_hessian = _full_sign_obstruction_certificate(
+        lines,
+        sign_field,
+        sl,
+        "(u-affine in Hessian216) x (z-affine) x {global sign}",
+    )
+    full_sign_obstruction_agl = _full_sign_obstruction_certificate(
+        lines,
+        sign_field,
+        gl,
+        "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
+    )
+    full_sign_obstruction_comparison = {
+        "exact_min_sizes_match": (
+            full_sign_obstruction_hessian["exact_min_certificate_found"]
+            and full_sign_obstruction_agl["exact_min_certificate_found"]
+            and (
+                full_sign_obstruction_hessian["exact_min_certificate_size"]
+                == full_sign_obstruction_agl["exact_min_certificate_size"]
+            )
+        ),
+        "hessian216_exact_min_certificate_size": full_sign_obstruction_hessian[
+            "exact_min_certificate_size"
+        ],
+        "agl23_exact_min_certificate_size": full_sign_obstruction_agl[
+            "exact_min_certificate_size"
+        ],
+    }
 
     out = {
         "status": "ok",
@@ -1106,7 +1220,9 @@ def main() -> None:
                 "agl23_image_equation_type_hist": prod_agl_eq_hist,
                 "hessian216_image_equation_type_hist": prod_hessian_eq_hist,
                 "agl23_elements": [_affine_elem_json(e) for e in prod_agl_elements],
-                "hessian216_elements": [_affine_elem_json(e) for e in prod_hessian_elements],
+                "hessian216_elements": [
+                    _affine_elem_json(e) for e in prod_hessian_elements
+                ],
             },
         },
         "cross_checks": {
@@ -1116,13 +1232,18 @@ def main() -> None:
             "line_product_stabilizer_parametrization_det1": prod_param_det1,
             "line_product_group_structure": prod_structure,
             "line_product_flag_geometry": prod_flag_geometry,
-            "full_sign_obstruction_certificate": full_sign_obstruction,
+            "full_sign_obstruction_certificate": full_sign_obstruction_hessian,
+            "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
+            "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,
+            "full_sign_obstruction_certificate_comparison": full_sign_obstruction_comparison,
         },
     }
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_json.write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
+    args.out_json.write_text(
+        json.dumps(out, indent=2, sort_keys=True), encoding="utf-8"
+    )
     args.out_md.write_text(_build_md(out), encoding="utf-8")
 
     print(f"Wrote {args.out_json}")

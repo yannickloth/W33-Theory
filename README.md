@@ -4,8 +4,8 @@
 
 [![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml) [![Sage verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml) [![Predictions report](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml) [![Nightly predictions](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml)
 
-**Author:** Wil Dahn  
-**Date:** January-February 2026  
+**Author:** Wil Dahn
+**Date:** January-February 2026
 **Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
 
 **Canonical definitions:** see `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
@@ -27,6 +27,15 @@ This repository is meant to be read like a single, continuously updated paper.
 2. Read `Physical Predictions from Topology` for measurable outputs and numerical targets.
 3. Run `scripts/w33_e8_correspondence_theorem.py` and verify the same numbers appear locally.
 4. Open referenced scripts/tests directly from this README and treat them as appendices of the paper.
+
+## Current Delta (2026-02-10)
+
+- `E6/F3` trilinear full-sign rigidity now has a dual-space obstruction certificate:
+  exact minimum witness size is `7` both in Hessian216 candidate space and in full `AGL(2,3)` candidate space.
+- The residual line-product subgroup remains size `12` and now exposes an explicit unique order-`3` subgroup (`C3`) inside the detected `D12` structure.
+- Repro path:
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q`.
+- Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 
 ---
 
@@ -58,7 +67,7 @@ This is the strict execution index for major theorem-bearing sections in this RE
 | `Universal Mixing Matrix` | universal doubly-stochastic `3x3` mixing law | `scripts/w33_democratic_mixing.py`, `scripts/w33_ckm_mixing.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_three_gen_*.json` |
 | `Physical Predictions from Topology` | Weinberg/Dirac/spectral-democracy quantitative package | `scripts/w33_weinberg_dirac.py` | `tests/test_e8_embedding.py` | `checks/PART_CVII_weinberg_dirac_*.json` |
 | `Qutrit phase space identification (Pillar 21)` | `H27 ~= F3^3`, affine-line/MUB structure | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | `checks/PART_CVII_heisenberg_qutrit_*.json`, `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` |
-| `E6/F3 trilinear sign layer` | finite-field cubic sign laws + residual symmetry certificates | `tools/build_e6_f3_trilinear_map.py`, `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_map.json`, `artifacts/e6_f3_trilinear_symmetry_breaking.json`, `docs/NOVEL_CONNECTIONS_2026_02_10.md` |
+| `E6/F3 trilinear sign layer` | finite-field cubic sign laws + residual symmetry certificates + dual-space full-sign obstruction (`7` witnesses) | `tools/build_e6_f3_trilinear_map.py`, `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_map.json`, `artifacts/e6_f3_trilinear_symmetry_breaking.json`, `docs/NOVEL_CONNECTIONS_2026_02_10.md` |
 | `69 Verified Theorems` | unified end-to-end ToE derivation | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_unified_derivation.json` |
 | `Coupling Atlas (Part XII)` | generation couplings, Yukawa textures, phase/coset maps | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_three_generation_coupling_atlas.json`, `artifacts/toe_yukawa_textures.json`, `artifacts/toe_coupling_strengths_v5_weightbasis.json`, `artifacts/toe_phase_diagram_charge_alignment.json`, `artifacts/toe_backbone_coset_coupling_map_v3_exact.json` |
 | `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks | `S12_ALGEBRA_CORE_DEEP_DIVE.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py` | `GOLAY_JORDAN_LIE_COMPLETE.md` |
