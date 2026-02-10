@@ -14,99 +14,101 @@ from the layperson narrative.
 
 ## Source log (primary sources)
 
-1. Artebani-Dolgachev, *The Hesse pencil of plane cubic curves*  
-   URL: `https://arxiv.org/abs/math/0611590`  
+1. Artebani-Dolgachev, *The Hesse pencil of plane cubic curves*
+   URL: `https://arxiv.org/abs/math/0611590`
    Raw note: finite-plane cubic/Hesse structure remains the core geometric template
    for the affine-line decomposition used in current scripts.
 
-2. Hunt, *The 27 lines on the cubic surface and finite geometry*  
-   URL: `https://arxiv.org/abs/math/0507118`  
+2. Hunt, *The 27 lines on the cubic surface and finite geometry*
+   URL: `https://arxiv.org/abs/math/0507118`
    Raw note: classic 27-line finite-geometry viewpoint supports using explicit
    incidence/stabilizer computations rather than only representation-theoretic prose.
 
-3. Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*  
-   URL: `https://arxiv.org/abs/2602.01110`  
+3. Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*
+   URL: `https://arxiv.org/abs/2602.01110`
    Raw note: recent exceptional-incidence framing motivated adding stronger subgroup
    and orbit diagnostics beyond just cardinalities.
 
-4. Argyres-Chalykh-Lu, *E6 and F4 in Calogero-Moser Elliptic Integrable Systems*  
-   URL: `https://arxiv.org/abs/2510.16417`  
+4. Argyres-Chalykh-Lu, *E6 and F4 in Calogero-Moser Elliptic Integrable Systems*
+   URL: `https://arxiv.org/abs/2510.16417`
    Raw note: modern `E6` context justified keeping the sign-layer analysis anchored
    to explicit finite invariants and exact witness certificates.
 
-5. Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*  
-   URL: `https://arxiv.org/abs/2509.06785`  
+5. Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*
+   URL: `https://arxiv.org/abs/2509.06785`
    Raw note: reinforced emphasis on constructive, machine-checkable gauge data and
    reproducible computations.
 
-6. Wootters, *Quantum measurements and finite geometry*  
-   URL: `https://arxiv.org/abs/quant-ph/0406032`  
+6. Wootters, *Quantum measurements and finite geometry*
+   URL: `https://arxiv.org/abs/quant-ph/0406032`
    Raw note: finite-phase-space and striation viewpoint motivated residual-orbit
    fingerprint checks on `AG(2,3)` points and lines.
 
-7. Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*  
-   URL: `https://arxiv.org/abs/quant-ph/0103162`  
+7. Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*
+   URL: `https://arxiv.org/abs/quant-ph/0103162`
    Raw note: finite-field MUB construction supports treating affine-line classes as
    meaningful qutrit-structure carriers.
 
-8. Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*  
-   URL: `https://arxiv.org/abs/quant-ph/0401155`  
+8. Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*
+   URL: `https://arxiv.org/abs/quant-ph/0401155`
    Raw note: makes the striation picture explicit (lines grouped into parallel classes),
    suggesting direct tests of induced subgroup action on striation classes.
 
-9. Zhu, *Quasiprobability representations of quantum mechanics with minimal negativity*  
-   URL: `https://arxiv.org/abs/1505.01123`  
+9. Zhu, *Quasiprobability representations of quantum mechanics with minimal negativity*
+   URL: `https://arxiv.org/abs/1505.01123`
    Raw note: dimension-3 specialness in quasiprobability framing supports trying
    context-coverage constraints (not only unconstrained witness minima).
 
-10. Gonano et al., *Discrete Wigner function for Quantum Information: an illustrative guide*  
-    URL: `https://arxiv.org/abs/2503.18431`  
+10. Gonano et al., *Discrete Wigner function for Quantum Information: an illustrative guide*
+    URL: `https://arxiv.org/abs/2503.18431`
     Raw note: recent synthesis of Wigner/MUB constructions reinforces treating
     striation-complete witness sets as a first-class robustness diagnostic.
 
 ## Hypothesis chain -> repo checks
 
-H1. Residual subgroup should be an explicit affine-flag stabilizer.  
+H1. Residual subgroup should be an explicit affine-flag stabilizer.
 Status: verified in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`.
 
-H2. Full-sign rigidity should admit a finite obstruction witness.  
+H2. Full-sign rigidity should admit a finite obstruction witness.
 Status: verified with exact minimum witness size `7` in Hessian216 candidate space.
 
-H3. The minimum obstruction size should persist in full `AGL(2,3)` candidate space.  
+H3. The minimum obstruction size should persist in full `AGL(2,3)` candidate space.
 Status: verified with exact minimum witness size `7` in both spaces.
 
-H4. Residual `D12` should expose a ternary nucleus (unique order-`3` subgroup).  
+H4. Residual `D12` should expose a ternary nucleus (unique order-`3` subgroup).
 Status: verified (`order3_element_count = 2`, unique `C3` subgroup present).
 
-H5. Residual action should carry a rigid phase-space orbit signature on `AG(2,3)`.  
+H5. Residual action should carry a rigid phase-space orbit signature on `AG(2,3)`.
 Status: verified (`point_orbit_sizes = [1,2,6]`, `line_orbit_sizes = [1,2,3,6]`,
 missing point fixed, distinguished direction split `[1,2]`).
 
 H6. Residual action on the 4 striations should fix one and induce full `S3` on the
-other three (qutrit-MUB context splitting).  
+other three (qutrit-MUB context splitting).
 Status: verified (`striation_orbit_sizes = [1,3]`,
 `non_distinguished_permutation_is_s3 = true`,
 `non_distinguished_permutation_kernel_size = 2`).
 
 H7. Line orbits should coincide exactly with affine-flag incidence classes relative
-to `(missing point, distinguished direction)`.  
+to `(missing point, distinguished direction)`.
 Status: verified (class sizes
 `1,2,3,6`, with one residual orbit per class).
 
 H8. Under a distinct-line witness constraint (at most one witness per affine line),
-minimum full-sign obstruction size should separate Hessian216 and full `AGL(2,3)`.  
+minimum full-sign obstruction size should separate Hessian216 and full `AGL(2,3)`.
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
 H9. Under a striation-complete witness constraint (cover all 4 affine striations /
 qutrit-MUB contexts), minimum full-sign obstruction size should separate Hessian216
-and full `AGL(2,3)`.  
+and full `AGL(2,3)`.
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
-- Randomized enumeration (greedy sampler) results: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (artifact: `artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (artifact: `artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
-- Exact enumeration mode (branch-and-bound) is now available in `tools/enumerate_minimal_certificates.py` via `--mode exact` with runtime controls `--max-exact-solutions` and `--time-limit-sec`.
+- Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
+- Randomized enumeration (extended pass): in a 20k sweep, Hessian216 found `134` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json`), while AGL(2,3) found `7` (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl_20k.json`).
+- Exact enumeration mode (branch-and-bound) is available in `tools/enumerate_minimal_certificates.py` via `--mode exact` with runtime controls `--max-exact-solutions` and `--time-limit-sec`.
 - Bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`, `time_limit_sec=60`): Hessian216 hit the cap at `200` solutions with `190` distinct canonical representatives, while AGL(2,3) completed with `7` total solutions and `7` representatives.
+- Exhaustive Hessian census artifact (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`) reports `256` distinct canonical representatives over `273` covering combinations, indicating a substantially larger minimal-witness orbit diversity in Hessian space than in full AGL space.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -152,7 +154,8 @@ Additional witness-space note:
 ```bash
 python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
+python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --max-samples 20000 --seed 42 --out-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py -q
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py -q
 ```
-
