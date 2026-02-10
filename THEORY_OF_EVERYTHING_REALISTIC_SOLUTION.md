@@ -38,3 +38,16 @@ A framework is "the ToE" only after it survives repeated failed attempts at fals
 Until then, the scientifically honest status is:
 
 > **Not solved yet — but solvable in principle through mathematically rigid, experimentally driven iteration.**
+
+## Concrete next step in this repo
+
+To make "keep solving" operational, this repo now includes a lightweight evaluator: `src/toe_protocol.py`.
+It converts the five core ToE criteria above into a weighted readiness score and identifies the weakest
+criterion so work can focus on the current bottleneck.
+
+A minimal loop:
+
+1. Score the current model state.
+2. Improve the weakest criterion (usually predictions or full SM recovery).
+3. Re-score after each theorem/test milestone.
+4. Only claim progress when score increases with new falsifiable outputs.
