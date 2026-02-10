@@ -266,6 +266,42 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         is True
     )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "line_distinctness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_comparison"][
+            "distinct_line_sizes_match"
+        ]
+        is False
+    )
 
 
 def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
@@ -501,4 +537,28 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
             "exact_min_sizes_match"
         ]
         is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "line_distinctness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_comparison"][
+            "distinct_line_sizes_match"
+        ]
+        is False
     )

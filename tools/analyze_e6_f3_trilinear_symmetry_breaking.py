@@ -938,19 +938,16 @@ def _line_product_flag_geometry_check(
     }
 
 
-def _full_sign_obstruction_certificate(
+def _full_sign_obstruction_data(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     sign_field: dict[
         tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
     ],
     mats: list[tuple[int, int, int, int, int]],
-    candidate_space_rule: str,
 ) -> dict[str, Any]:
     """
-    Build a compact finite witness certificate for full-sign rigidity.
-    Candidate symmetries are (u-affine in mats) x (z-affine) x {global sign}.
-    We search line/z constraints whose simultaneous preservation rejects all
-    non-stabilizer candidates.
+    Shared full-sign obstruction data:
+    candidate space, stabilizers, and reject masks over witness rows.
     """
     pts = [(x, y) for x in range(3) for y in range(3)]
     z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
@@ -968,7 +965,7 @@ def _full_sign_obstruction_certificate(
 
     mismatch_masks_by_candidate: list[int] = []
     stabilizer_indices: list[int] = []
-    for idx, (u_map, z_map, eps, line_map) in enumerate(candidates):
+    for idx, (_u_map, z_map, eps, line_map) in enumerate(candidates):
         mask = 0
         for wi, (line, z) in enumerate(witnesses):
             lhs = sign_field[(line_map[line], _map_z(z_map, z))]
@@ -979,8 +976,9 @@ def _full_sign_obstruction_certificate(
         if mask == 0:
             stabilizer_indices.append(idx)
 
+    stabilizer_index_set = set(stabilizer_indices)
     non_stabilizer_indices = [
-        idx for idx in range(len(candidates)) if idx not in set(stabilizer_indices)
+        idx for idx in range(len(candidates)) if idx not in stabilizer_index_set
     ]
     non_index = {idx: pos for pos, idx in enumerate(non_stabilizer_indices)}
     universe_size = len(non_stabilizer_indices)
@@ -993,6 +991,51 @@ def _full_sign_obstruction_certificate(
         for wi in range(len(witnesses)):
             if (rej >> wi) & 1:
                 reject_masks_by_witness[wi] |= 1 << pos
+
+    stabilizers = []
+    for idx in stabilizer_indices:
+        (A, shift), z_map, eps, _line_map = candidates[idx]
+        stabilizers.append(
+            {
+                "u_map": _affine_elem_json((A, shift)),
+                "z_map": [int(z_map[0]), int(z_map[1])],
+                "eps": int(eps),
+            }
+        )
+
+    return {
+        "witnesses": witnesses,
+        "candidates": candidates,
+        "reject_masks_by_witness": reject_masks_by_witness,
+        "full_cover_mask": full_cover_mask,
+        "universe_size": universe_size,
+        "stabilizer_indices": stabilizer_indices,
+        "stabilizers": stabilizers,
+    }
+
+
+def _full_sign_obstruction_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+) -> dict[str, Any]:
+    """
+    Build a compact finite witness certificate for full-sign rigidity.
+    Candidate symmetries are (u-affine in mats) x (z-affine) x {global sign}.
+    We search line/z constraints whose simultaneous preservation rejects all
+    non-stabilizer candidates.
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    candidates = data["candidates"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+    stabilizer_indices = data["stabilizer_indices"]
+    stabilizers = data["stabilizers"]
 
     best_single = max((mask.bit_count() for mask in reject_masks_by_witness), default=0)
 
@@ -1038,17 +1081,6 @@ def _full_sign_obstruction_certificate(
     if exact_indices is None:
         exact_indices = []
 
-    stabilizers = []
-    for idx in stabilizer_indices:
-        (A, shift), z_map, eps, _line_map = candidates[idx]
-        stabilizers.append(
-            {
-                "u_map": _affine_elem_json((A, shift)),
-                "z_map": [int(z_map[0]), int(z_map[1])],
-                "eps": int(eps),
-            }
-        )
-
     def witness_rows(indices: list[int]) -> list[dict[str, Any]]:
         rows = []
         for wi in indices:
@@ -1071,6 +1103,131 @@ def _full_sign_obstruction_certificate(
             witness_rows(exact_indices) if found_exact else []
         ),
         "stabilizers": stabilizers,
+    }
+
+
+def _full_sign_obstruction_distinct_line_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+    unconstrained_min_size: int | None,
+) -> dict[str, Any]:
+    """
+    Distinct-line variant of full-sign obstruction:
+    at most one witness per affine line (choose z-slice on selected lines).
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+
+    witness_index = {
+        (line, z): wi for wi, (line, z) in enumerate(witnesses)
+    }
+    line_masks = []
+    for line in lines:
+        line_masks.append(
+            [reject_masks_by_witness[witness_index[(line, z)]] for z in (0, 1, 2)]
+        )
+
+    line_union = [masks[0] | masks[1] | masks[2] for masks in line_masks]
+    order = sorted(
+        range(len(lines)),
+        key=lambda idx: line_union[idx].bit_count(),
+        reverse=True,
+    )
+    ordered_lines = [lines[idx] for idx in order]
+    ordered_masks = [line_masks[idx] for idx in order]
+    suffix_union = [0 for _ in range(len(ordered_lines) + 1)]
+    for idx in range(len(ordered_lines) - 1, -1, -1):
+        suffix_union[idx] = suffix_union[idx + 1] | line_union[order[idx]]
+
+    if universe_size == 0:
+        found = True
+        best_k = 0
+        best_choice: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]] = []
+        nodes = 0
+    else:
+        found = False
+        best_k = None
+        best_choice = []
+        nodes = 0
+
+        def find_choice_for_k(
+            target_k: int,
+        ) -> tuple[
+            bool,
+            list[tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]],
+            int,
+        ]:
+            local_nodes = 0
+            choice: list[
+                tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]
+            ] = []
+
+            def dfs(i: int, chosen: int, covered: int) -> bool:
+                nonlocal local_nodes
+                local_nodes += 1
+                if covered == full_cover_mask and chosen == target_k:
+                    return True
+                if i == len(ordered_lines):
+                    return False
+                if chosen > target_k:
+                    return False
+                if chosen + (len(ordered_lines) - i) < target_k:
+                    return False
+                if (covered | suffix_union[i]) != full_cover_mask:
+                    return False
+
+                z_order = sorted(
+                    (0, 1, 2),
+                    key=lambda z: ordered_masks[i][z].bit_count(),
+                    reverse=True,
+                )
+                for z in z_order:
+                    choice.append((ordered_lines[i][0], ordered_lines[i][1], ordered_lines[i][2], z))
+                    if dfs(i + 1, chosen + 1, covered | ordered_masks[i][z]):
+                        return True
+                    choice.pop()
+
+                if dfs(i + 1, chosen, covered):
+                    return True
+                return False
+
+            ok = dfs(0, 0, 0)
+            return ok, choice.copy(), local_nodes
+
+        for k in range(1, len(lines) + 1):
+            ok, choice, explored = find_choice_for_k(k)
+            nodes += explored
+            if ok:
+                found = True
+                best_k = k
+                best_choice = choice
+                break
+
+    witness_rows = []
+    for p0, p1, p2, z in best_choice:
+        line = (p0, p1, p2)
+        witness_rows.append(_witness_json(line, z, sign_field[(line, z)]))
+
+    gap = None
+    if unconstrained_min_size is not None and best_k is not None:
+        gap = int(best_k - unconstrained_min_size)
+
+    return {
+        "candidate_space_rule": candidate_space_rule,
+        "distinct_line_rule": "at most one witness per affine line (choose z-slice)",
+        "min_distinct_line_certificate_found": bool(found),
+        "min_distinct_line_certificate_size": (int(best_k) if best_k is not None else None),
+        "min_distinct_line_certificate_witnesses": witness_rows,
+        "line_distinctness_gap_vs_unconstrained": gap,
+        "search_line_count": len(lines),
+        "search_nodes_explored": int(nodes),
     }
 
 
@@ -1480,6 +1637,27 @@ def _build_md(out: dict[str, Any]) -> str:
             ]
         )
     )
+    lines.append(
+        "- Distinct-line minimum certificate size (Hessian216): `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+                "min_distinct_line_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Distinct-line minimum certificate size (AGL(2,3)): `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+                "min_distinct_line_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Distinct-line penalty in AGL(2,3) vs unconstrained exact minimum: `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+                "line_distinctness_gap_vs_unconstrained"
+            ]
+        )
+    )
     lines.append("")
     lines.append("## Source pointers")
     lines.append(
@@ -1608,6 +1786,35 @@ def main() -> None:
             "exact_min_certificate_size"
         ],
     }
+    full_sign_distinct_line_hessian = _full_sign_obstruction_distinct_line_certificate(
+        lines,
+        sign_field,
+        sl,
+        "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        full_sign_obstruction_hessian["exact_min_certificate_size"],
+    )
+    full_sign_distinct_line_agl = _full_sign_obstruction_distinct_line_certificate(
+        lines,
+        sign_field,
+        gl,
+        "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
+        full_sign_obstruction_agl["exact_min_certificate_size"],
+    )
+    full_sign_distinct_line_comparison = {
+        "hessian216_min_distinct_line_certificate_size": full_sign_distinct_line_hessian[
+            "min_distinct_line_certificate_size"
+        ],
+        "agl23_min_distinct_line_certificate_size": full_sign_distinct_line_agl[
+            "min_distinct_line_certificate_size"
+        ],
+        "distinct_line_sizes_match": (
+            full_sign_distinct_line_hessian["min_distinct_line_certificate_size"]
+            == full_sign_distinct_line_agl["min_distinct_line_certificate_size"]
+        ),
+        "agl23_distinct_line_penalty_vs_unconstrained": full_sign_distinct_line_agl[
+            "line_distinctness_gap_vs_unconstrained"
+        ],
+    }
 
     out = {
         "status": "ok",
@@ -1658,6 +1865,9 @@ def main() -> None:
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,
             "full_sign_obstruction_certificate_comparison": full_sign_obstruction_comparison,
+            "full_sign_distinct_line_certificate_hessian216": full_sign_distinct_line_hessian,
+            "full_sign_distinct_line_certificate_agl23": full_sign_distinct_line_agl,
+            "full_sign_distinct_line_certificate_comparison": full_sign_distinct_line_comparison,
         },
     }
 

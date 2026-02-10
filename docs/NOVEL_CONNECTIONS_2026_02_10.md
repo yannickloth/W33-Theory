@@ -67,6 +67,9 @@ changes affine/Hessian symmetries:
   line orbits are not only size-patterned (`[1,2,3,6]`) but exactly coincide with the
   four incidence classes relative to the distinguished flag
   `(missing point, distinguished direction)`, with class sizes `1,2,3,6`.
+- distinct-line obstruction split:
+  if obstruction witnesses are constrained to use distinct affine lines, the exact
+  minimum stays `7` in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
 
 Outputs:
 
@@ -105,6 +108,7 @@ computational hypotheses in-repo:
    full `S3` mixing on the remaining three contexts.
 7. line orbits should coincide exactly with affine-flag incidence classes relative to
    `(missing point, distinguished direction)`.
+8. line-distinct full-sign obstruction should separate Hessian216 from full `AGL(2,3)`.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.

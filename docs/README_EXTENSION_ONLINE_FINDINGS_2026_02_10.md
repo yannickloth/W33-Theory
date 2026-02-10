@@ -83,6 +83,10 @@ to `(missing point, distinguished direction)`.
 Status: verified (class sizes
 `1,2,3,6`, with one residual orbit per class).
 
+H8. Under a distinct-line witness constraint (at most one witness per affine line),
+minimum full-sign obstruction size should separate Hessian216 and full `AGL(2,3)`.  
+Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
+
 ## Second-pass raw notes (same date, new loop)
 
 - If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
@@ -103,6 +107,15 @@ Status: verified (class sizes
   flag partition and each class is exactly one orbit.
 - This sharpens the interpretation from "orbit counts look plausible" to
   "orbit decomposition equals a canonical flag-incidence decomposition."
+
+## Fourth-pass raw notes (same date, new loop)
+
+- Unconstrained witness minima can hide repetition effects (same line at multiple z).
+- Adding a distinct-line constraint is a natural robustness stress test for the
+  obstruction certificates.
+- Result: Hessian216 still admits `7`, but full `AGL(2,3)` needs `8`, so the larger
+  candidate space has a measurable extra geometric burden once line repetition is
+  disallowed.
 
 ## Where each hypothesis is encoded
 
