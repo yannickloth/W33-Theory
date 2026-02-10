@@ -252,6 +252,66 @@ def _line_product_closed_form_check(
     }
 
 
+def _predict_full_sign_closed_form(
+    line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]], z: int
+) -> int:
+    """
+    Closed-form sign law for the full sign field s(line,z), in the current gauge.
+
+    Let line be normalized as a*x + b*y = c over F3. Then:
+      (a,b)=(1,0)  (x=c):  sign=+1 iff (c^2 + 2c + z) == 2
+      (a,b)=(0,1)  (y=c):  sign=-1 iff z*(c+1) == 2
+      (a,b)=(1,2)  (y=x+*): sign=+1 iff (z^2 + c) == 0
+      (a,b)=(1,1)  (y=2x+*): sign=-1 iff (z*c + 2z + 2c) == 0
+    """
+    a, b, c = _normalized_line_abc(line)
+    z = int(z) % 3
+    if (a, b) == (1, 0):
+        val = (c * c + 2 * c + z) % 3
+        return 1 if val == 2 else -1
+    if (a, b) == (0, 1):
+        val = (z * (c + 1)) % 3
+        return -1 if val == 2 else 1
+    if (a, b) == (1, 2):
+        # For (a,b)=(1,2) we have line equation x+2y=c => y = x + 2c,
+        # so the y=x+intercept parameter uses intercept = 2c.
+        val = (z * z + 2 * c) % 3
+        return 1 if val == 0 else -1
+    if (a, b) == (1, 1):
+        val = (z * c + 2 * z + 2 * c) % 3
+        return -1 if val == 0 else 1
+    raise RuntimeError(f"Unexpected (a,b) for line: {(a, b)}")
+
+
+def _full_sign_closed_form_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+) -> dict[str, Any]:
+    mismatches = []
+    for line in lines:
+        for z in (0, 1, 2):
+            actual = int(sign_field[(line, z)])
+            pred = int(_predict_full_sign_closed_form(line, z))
+            if pred != actual:
+                mismatches.append(
+                    {
+                        "line": [[int(p[0]), int(p[1])] for p in line],
+                        "abc": list(_normalized_line_abc(line)),
+                        "z": int(z),
+                        "actual_sign": int(actual),
+                        "predicted_sign": int(pred),
+                    }
+                )
+    return {
+        "rule": "Piecewise formula by (a,b) on normalized a*x+b*y=c (see tool source)",
+        "holds": len(mismatches) == 0,
+        "mismatch_count": len(mismatches),
+        "mismatches": mismatches,
+    }
+
+
 def _stabilizer_line_product_size(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
     ],
@@ -324,6 +384,12 @@ def _build_md(out: dict[str, Any]) -> str:
             out["cross_checks"]["line_product_closed_form"]["holds"],
         )
     )
+    lines.append(
+        "- Full sign rule `{}` holds: `{}`".format(
+            out["cross_checks"]["full_sign_closed_form"]["rule"],
+            out["cross_checks"]["full_sign_closed_form"]["holds"],
+        )
+    )
     lines.append("")
     lines.append("## Source pointers")
     lines.append("- Hesse configuration and Hessian group context: Artebani-Dolgachev (2006), arXiv:math/0611590.")
@@ -367,6 +433,7 @@ def main() -> None:
 
     product_sign = _line_product_signs(lines, sign_field)
     closed_form = _line_product_closed_form_check(product_sign)
+    full_sign_closed_form = _full_sign_closed_form_check(lines, sign_field)
     prod_agl, prod_agl_det_hist, prod_agl_eq_hist = _stabilizer_line_product_size(
         lines, product_sign, gl
     )
@@ -407,6 +474,7 @@ def main() -> None:
         },
         "cross_checks": {
             "line_product_closed_form": closed_form,
+            "full_sign_closed_form": full_sign_closed_form,
         },
     }
 
