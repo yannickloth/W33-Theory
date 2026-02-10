@@ -80,7 +80,7 @@ Status: verified (`striation_orbit_sizes = [1,3]`,
 Cross-check: the trilinear analysis' distinguished direction and unique missing AG(2,3) point were confirmed to match the Heisenberg H27 fiber mapping (per `scripts/w33_heisenberg_qutrit.py`) in `tests/test_cross_script_striation_consistency.py`.
 
 Additional witness-space note:
-- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` for summaries and the exact witness rows.
+- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
