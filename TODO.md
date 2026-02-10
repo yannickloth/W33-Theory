@@ -17,6 +17,7 @@ Medium priority:
 Research / Theory tasks:
 - [ ] Formalize the link: Heisenberg(F3) â†” E6 cubic invariant on the 27. Read/annotate Manivel, Landsberg & Mukai references; attempt to express the cubic form in terms of the Heisenberg structure on the 27 points.
 - [x] Compute explicit structure constants / trilinear map 27x27x27 -> Z3 (or F3 dual) and compare with cubic trilinear invariant (over C) - look for a finite-field analogue over F3. (`tools/build_e6_f3_trilinear_map.py`, `artifacts/e6_f3_trilinear_map.json`)
+- [x] Analyze symmetry breaking of the E6 F3 trilinear sign layer under AG(2,3)/Hessian affine actions. (`tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, `artifacts/e6_f3_trilinear_symmetry_breaking.json`)
 - [ ] Publish a short note (W33 Pillar 21: Heisenberg phase-space identification) with examples and computational proofs (link to the `analysis` artifacts and tests).
 
 Low priority / polishing:
