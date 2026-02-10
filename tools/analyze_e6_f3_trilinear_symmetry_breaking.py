@@ -53,6 +53,34 @@ def _line_equation_type(
     raise RuntimeError(f"Could not classify line {line}")
 
 
+def _normalized_line_abc(
+    line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+) -> tuple[int, int, int]:
+    """
+    Return normalized (a,b,c) for a*x + b*y = c over F3,
+    scaling so the first nonzero coefficient in (a,b) is 1.
+    """
+    eq_type, intercept = _line_equation_type(line)
+    if eq_type == "x":
+        return (1, 0, intercept)
+    if eq_type == "y":
+        return (0, 1, intercept)
+    if eq_type == "y=1x":
+        # y = x + c  ->  -x + y = c
+        a, b, c = (2, 1, intercept)
+    elif eq_type == "y=2x":
+        # y = 2x + c  ->  -2x + y = c
+        a, b, c = (1, 1, intercept)
+    else:
+        raise RuntimeError(f"Unexpected line equation type: {eq_type}")
+
+    if a != 0:
+        inv = 1 if a == 1 else 2
+    else:
+        inv = 1 if b == 1 else 2
+    return ((a * inv) % 3, (b * inv) % 3, (c * inv) % 3)
+
+
 def _all_affine_lines() -> list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]:
     pts = [(x, y) for x in range(3) for y in range(3)]
     lines = set()
@@ -191,6 +219,39 @@ def _line_product_signs(
     return out
 
 
+def _line_product_closed_form_check(
+    line_product: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int]
+) -> dict[str, Any]:
+    """
+    Empirical closed form in the current gauge:
+      P(line) = +1  iff  b*(a+b+c) == 0 (mod 3),
+    with normalized line equation a*x + b*y = c.
+    """
+    rows = []
+    mismatches = []
+    for line, sign in sorted(line_product.items()):
+        a, b, c = _normalized_line_abc(line)
+        expr = (b * (a + b + c)) % 3
+        pred = 1 if expr == 0 else -1
+        row = {
+            "line": [[int(p[0]), int(p[1])] for p in line],
+            "abc": [int(a), int(b), int(c)],
+            "expr_mod3": int(expr),
+            "sign_product": int(sign),
+            "predicted_sign_product": int(pred),
+        }
+        rows.append(row)
+        if pred != sign:
+            mismatches.append(row)
+    return {
+        "rule": "P(line)=+1 iff b*(a+b+c)==0 mod 3 (normalized a*x+b*y=c)",
+        "holds": len(mismatches) == 0,
+        "mismatch_count": len(mismatches),
+        "mismatches": mismatches,
+        "rows": rows,
+    }
+
+
 def _stabilizer_line_product_size(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
     ],
@@ -256,6 +317,14 @@ def _build_md(out: dict[str, Any]) -> str:
     lines.append("- The full sign layer has trivial stabilizer in this gauge (identity only).")
     lines.append("- The line-product layer keeps a small residual subgroup.")
     lines.append("")
+    lines.append("## Closed-form product law")
+    lines.append(
+        "- Rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_closed_form"]["rule"],
+            out["cross_checks"]["line_product_closed_form"]["holds"],
+        )
+    )
+    lines.append("")
     lines.append("## Source pointers")
     lines.append("- Hesse configuration and Hessian group context: Artebani-Dolgachev (2006), arXiv:math/0611590.")
     lines.append("- 27 lines, tritangents, and E6 cubic context: Manivel (2007), EMS Surveys in Mathematical Sciences.")
@@ -297,6 +366,7 @@ def main() -> None:
     full_agl, full_agl_breakdown = _stabilizer_full_sign_size(lines, sign_field, gl)
 
     product_sign = _line_product_signs(lines, sign_field)
+    closed_form = _line_product_closed_form_check(product_sign)
     prod_agl, prod_agl_det_hist, prod_agl_eq_hist = _stabilizer_line_product_size(
         lines, product_sign, gl
     )
@@ -334,6 +404,9 @@ def main() -> None:
                 "agl23_image_equation_type_hist": prod_agl_eq_hist,
                 "hessian216_image_equation_type_hist": prod_hessian_eq_hist,
             },
+        },
+        "cross_checks": {
+            "line_product_closed_form": closed_form,
         },
     }
 
