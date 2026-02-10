@@ -102,11 +102,8 @@ qutrit-MUB contexts), minimum full-sign obstruction size should separate Hessian
 and full `AGL(2,3)`.  
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
-## Second-pass raw notes (same date, new loop)
-
-- If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
-  Wootters), then the best symmetry-breaking check is not only point/line orbits but
-  how the residual subgroup permutes striation classes.
+Additional witness-space note:
+- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` for summaries and the exact witness rows.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
