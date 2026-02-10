@@ -54,6 +54,16 @@ from the layperson narrative.
    Raw note: makes the striation picture explicit (lines grouped into parallel classes),
    suggesting direct tests of induced subgroup action on striation classes.
 
+9. Zhu, *Quasiprobability representations of quantum mechanics with minimal negativity*  
+   URL: `https://arxiv.org/abs/1505.01123`  
+   Raw note: dimension-3 specialness in quasiprobability framing supports trying
+   context-coverage constraints (not only unconstrained witness minima).
+
+10. Gonano et al., *Discrete Wigner function for Quantum Information: an illustrative guide*  
+    URL: `https://arxiv.org/abs/2503.18431`  
+    Raw note: recent synthesis of Wigner/MUB constructions reinforces treating
+    striation-complete witness sets as a first-class robustness diagnostic.
+
 ## Hypothesis chain -> repo checks
 
 H1. Residual subgroup should be an explicit affine-flag stabilizer.  
@@ -87,6 +97,11 @@ H8. Under a distinct-line witness constraint (at most one witness per affine lin
 minimum full-sign obstruction size should separate Hessian216 and full `AGL(2,3)`.  
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
+H9. Under a striation-complete witness constraint (cover all 4 affine striations /
+qutrit-MUB contexts), minimum full-sign obstruction size should separate Hessian216
+and full `AGL(2,3)`.  
+Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
+
 ## Second-pass raw notes (same date, new loop)
 
 - If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
@@ -116,6 +131,15 @@ Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 - Result: Hessian216 still admits `7`, but full `AGL(2,3)` needs `8`, so the larger
   candidate space has a measurable extra geometric burden once line repetition is
   disallowed.
+
+## Fifth-pass raw notes (same date, new loop)
+
+- Distinct-line constraints probe geometric dispersion, but not context completeness.
+- A direct MUB-context stress test is to force witness coverage across all 4
+  affine striations and then recompute exact minima.
+- Result: Hessian216 still admits `7`, while full `AGL(2,3)` rises to `8`.
+- This confirms a second independent geometric penalty axis for the larger candidate
+  space: context completeness, not only line distinctness.
 
 ## Where each hypothesis is encoded
 

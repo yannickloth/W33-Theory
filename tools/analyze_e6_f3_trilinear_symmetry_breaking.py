@@ -1231,6 +1231,145 @@ def _full_sign_obstruction_distinct_line_certificate(
     }
 
 
+def _full_sign_obstruction_striation_complete_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+    unconstrained_min_size: int | None,
+) -> dict[str, Any]:
+    """
+    Striation-complete variant of full-sign obstruction:
+    witnesses must jointly cover all affine striations (x, y, y=x, y=2x).
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+
+    line_type_by_line = {line: _line_equation_type(line)[0] for line in lines}
+    required_striations = sorted(set(line_type_by_line.values()))
+    striation_index = {label: idx for idx, label in enumerate(required_striations)}
+    full_striation_mask = (1 << len(required_striations)) - 1
+
+    order = sorted(
+        range(len(witnesses)),
+        key=lambda wi: reject_masks_by_witness[wi].bit_count(),
+        reverse=True,
+    )
+    suffix_cover = [0 for _ in range(len(order) + 1)]
+    suffix_striation = [0 for _ in range(len(order) + 1)]
+    for idx in range(len(order) - 1, -1, -1):
+        wi = order[idx]
+        line, _z = witnesses[wi]
+        label = line_type_by_line[line]
+        suffix_cover[idx] = suffix_cover[idx + 1] | reject_masks_by_witness[wi]
+        suffix_striation[idx] = suffix_striation[idx + 1] | (
+            1 << striation_index[label]
+        )
+
+    if universe_size == 0:
+        found = True
+        best_k = 0
+        best_choice: list[int] = []
+        nodes = 0
+    else:
+        found = False
+        best_k = None
+        best_choice = []
+        nodes = 0
+
+        start_k = len(required_striations)
+        if unconstrained_min_size is not None:
+            start_k = max(start_k, unconstrained_min_size)
+
+        def find_choice_for_k(target_k: int) -> tuple[bool, list[int], int]:
+            local_nodes = 0
+            choice: list[int] = []
+
+            def dfs(i: int, chosen: int, covered: int, striation_mask: int) -> bool:
+                nonlocal local_nodes
+                local_nodes += 1
+                if (
+                    covered == full_cover_mask
+                    and striation_mask == full_striation_mask
+                    and chosen == target_k
+                ):
+                    return True
+                if i == len(order):
+                    return False
+                if chosen > target_k:
+                    return False
+                if chosen + (len(order) - i) < target_k:
+                    return False
+                if (covered | suffix_cover[i]) != full_cover_mask:
+                    return False
+                if (striation_mask | suffix_striation[i]) != full_striation_mask:
+                    return False
+
+                wi = order[i]
+                line, _z = witnesses[wi]
+                label = line_type_by_line[line]
+                next_striation_mask = striation_mask | (1 << striation_index[label])
+                choice.append(wi)
+                if dfs(
+                    i + 1,
+                    chosen + 1,
+                    covered | reject_masks_by_witness[wi],
+                    next_striation_mask,
+                ):
+                    return True
+                choice.pop()
+
+                if dfs(i + 1, chosen, covered, striation_mask):
+                    return True
+                return False
+
+            ok = dfs(0, 0, 0, 0)
+            return ok, choice.copy(), local_nodes
+
+        for k in range(start_k, len(witnesses) + 1):
+            ok, choice, explored = find_choice_for_k(k)
+            nodes += explored
+            if ok:
+                found = True
+                best_k = k
+                best_choice = choice
+                break
+
+    striation_hist: Counter[str] = Counter()
+    witness_rows: list[dict[str, Any]] = []
+    for wi in best_choice:
+        line, z = witnesses[wi]
+        label = line_type_by_line[line]
+        striation_hist[label] += 1
+        witness_rows.append(_witness_json(line, z, sign_field[(line, z)]))
+
+    gap = None
+    if unconstrained_min_size is not None and best_k is not None:
+        gap = int(best_k - unconstrained_min_size)
+
+    return {
+        "candidate_space_rule": candidate_space_rule,
+        "striation_complete_rule": "witnesses cover all 4 affine striations (line equation families)",
+        "required_striations": required_striations,
+        "min_striation_complete_certificate_found": bool(found),
+        "min_striation_complete_certificate_size": (
+            int(best_k) if best_k is not None else None
+        ),
+        "min_striation_complete_certificate_witnesses": witness_rows,
+        "certificate_striation_hist": {
+            label: int(striation_hist[label]) for label in required_striations
+        },
+        "striation_completeness_gap_vs_unconstrained": gap,
+        "search_witness_count": len(witnesses),
+        "search_nodes_explored": int(nodes),
+    }
+
+
 def _load_sign_field(
     path: Path,
 ) -> tuple[
@@ -1658,6 +1797,27 @@ def _build_md(out: dict[str, Any]) -> str:
             ]
         )
     )
+    lines.append(
+        "- Striation-complete minimum certificate size (Hessian216): `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_hessian216"][
+                "min_striation_complete_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Striation-complete minimum certificate size (AGL(2,3)): `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_agl23"][
+                "min_striation_complete_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Striation-complete penalty in AGL(2,3) vs unconstrained exact minimum: `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_agl23"][
+                "striation_completeness_gap_vs_unconstrained"
+            ]
+        )
+    )
     lines.append("")
     lines.append("## Source pointers")
     lines.append(
@@ -1674,6 +1834,12 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Finite phase-space striation context: Gibbons-Hoffman-Wootters (2004), arXiv:quant-ph/0401155."
+    )
+    lines.append(
+        "- Finite-geometry measurement context: Wootters (2004), arXiv:quant-ph/0406032."
+    )
+    lines.append(
+        "- Dimension-3 quasiprobability context: Zhu (2015), arXiv:1505.01123."
     )
     lines.append("")
     return "\n".join(lines) + "\n"
@@ -1815,6 +1981,35 @@ def main() -> None:
             "line_distinctness_gap_vs_unconstrained"
         ],
     }
+    full_sign_striation_hessian = _full_sign_obstruction_striation_complete_certificate(
+        lines,
+        sign_field,
+        sl,
+        "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        full_sign_obstruction_hessian["exact_min_certificate_size"],
+    )
+    full_sign_striation_agl = _full_sign_obstruction_striation_complete_certificate(
+        lines,
+        sign_field,
+        gl,
+        "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
+        full_sign_obstruction_agl["exact_min_certificate_size"],
+    )
+    full_sign_striation_comparison = {
+        "hessian216_min_striation_complete_certificate_size": full_sign_striation_hessian[
+            "min_striation_complete_certificate_size"
+        ],
+        "agl23_min_striation_complete_certificate_size": full_sign_striation_agl[
+            "min_striation_complete_certificate_size"
+        ],
+        "striation_complete_sizes_match": (
+            full_sign_striation_hessian["min_striation_complete_certificate_size"]
+            == full_sign_striation_agl["min_striation_complete_certificate_size"]
+        ),
+        "agl23_striation_penalty_vs_unconstrained": full_sign_striation_agl[
+            "striation_completeness_gap_vs_unconstrained"
+        ],
+    }
 
     out = {
         "status": "ok",
@@ -1868,6 +2063,9 @@ def main() -> None:
             "full_sign_distinct_line_certificate_hessian216": full_sign_distinct_line_hessian,
             "full_sign_distinct_line_certificate_agl23": full_sign_distinct_line_agl,
             "full_sign_distinct_line_certificate_comparison": full_sign_distinct_line_comparison,
+            "full_sign_striation_certificate_hessian216": full_sign_striation_hessian,
+            "full_sign_striation_certificate_agl23": full_sign_striation_agl,
+            "full_sign_striation_certificate_comparison": full_sign_striation_comparison,
         },
     }
 

@@ -70,6 +70,10 @@ changes affine/Hessian symmetries:
 - distinct-line obstruction split:
   if obstruction witnesses are constrained to use distinct affine lines, the exact
   minimum stays `7` in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
+- striation-complete obstruction split:
+  if obstruction witnesses are required to cover all 4 affine striations
+  (`x`, `y`, `y=x`, `y=2x`, i.e. qutrit/MUB contexts), the exact minimum stays `7`
+  in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
 
 Outputs:
 
@@ -109,6 +113,8 @@ computational hypotheses in-repo:
 7. line orbits should coincide exactly with affine-flag incidence classes relative to
    `(missing point, distinguished direction)`.
 8. line-distinct full-sign obstruction should separate Hessian216 from full `AGL(2,3)`.
+9. striation-complete full-sign obstruction should separate Hessian216 from full
+   `AGL(2,3)` when every qutrit/MUB context must be represented.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
@@ -131,3 +137,7 @@ and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
   Link: `https://arxiv.org/abs/quant-ph/0401155`
 - Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*, arXiv:quant-ph/0103162
   Link: `https://arxiv.org/abs/quant-ph/0103162`
+- Zhu, *Quasiprobability representations of quantum mechanics with minimal negativity*, arXiv:1505.01123
+  Link: `https://arxiv.org/abs/1505.01123`
+- Gonano et al., *Discrete Wigner function for Quantum Information: an illustrative guide*, arXiv:2503.18431 (2025)
+  Link: `https://arxiv.org/abs/2503.18431`

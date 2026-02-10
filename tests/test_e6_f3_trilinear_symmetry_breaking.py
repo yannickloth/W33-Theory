@@ -302,6 +302,48 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         is False
     )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "required_striations"
+        ]
+        == ["x", "y", "y=1x", "y=2x"]
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "striation_completeness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_comparison"][
+            "striation_complete_sizes_match"
+        ]
+        is False
+    )
 
 
 def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
@@ -559,6 +601,36 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
     assert (
         data["cross_checks"]["full_sign_distinct_line_certificate_comparison"][
             "distinct_line_sizes_match"
+        ]
+        is False
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "required_striations"
+        ]
+        == ["x", "y", "y=1x", "y=2x"]
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "striation_completeness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_comparison"][
+            "striation_complete_sizes_match"
         ]
         is False
     )
