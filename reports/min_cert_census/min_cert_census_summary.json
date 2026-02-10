@@ -1,0 +1,115 @@
+{
+  "hessian_20k_with_geotypes": {
+    "n": 134,
+    "orbit_stats": {
+      "min": 1296,
+      "max": 2592,
+      "mean": 2301.8507462686566,
+      "median": 2592.0,
+      "stdev": 540.2285103499865
+    },
+    "unique_lines_hist": {
+      "5": 30,
+      "7": 41,
+      "6": 60,
+      "4": 3
+    },
+    "lines_with_multiple_z_hist": {
+      "2": 27,
+      "0": 41,
+      "1": 64,
+      "3": 2
+    },
+    "has_full_z_line_count": 5,
+    "unique_points_stats": {
+      "min": 7,
+      "max": 9,
+      "mean": 8.880597014925373,
+      "median": 9.0,
+      "stdev": 0.367418914181826
+    },
+    "z_aggregated": {
+      "0": 367,
+      "1": 391,
+      "2": 180
+    },
+    "sign_aggregated": {
+      "-1": 343,
+      "1": 595
+    }
+  },
+  "hessian_exhaustive2_with_geotypes": {
+    "n": 256,
+    "orbit_stats": {
+      "min": 1296,
+      "max": 2592,
+      "mean": 2313.5625,
+      "median": 2592.0,
+      "stdev": 532.2852229714348
+    },
+    "unique_lines_hist": {
+      "5": 58,
+      "4": 11,
+      "6": 128,
+      "7": 59
+    },
+    "lines_with_multiple_z_hist": {
+      "1": 136,
+      "3": 5,
+      "2": 56,
+      "0": 59
+    },
+    "has_full_z_line_count": 14,
+    "unique_points_stats": {
+      "min": 7,
+      "max": 9,
+      "mean": 8.83203125,
+      "median": 9.0,
+      "stdev": 0.42286847721654247
+    },
+    "z_aggregated": {
+      "0": 692,
+      "1": 747,
+      "2": 353
+    },
+    "sign_aggregated": {
+      "-1": 691,
+      "1": 1101
+    }
+  },
+  "agl_20k_with_geotypes": {
+    "n": 7,
+    "orbit_stats": {
+      "min": 2592,
+      "max": 2592,
+      "mean": 2592,
+      "median": 2592,
+      "stdev": 0.0
+    },
+    "unique_lines_hist": {
+      "6": 3,
+      "5": 4
+    },
+    "lines_with_multiple_z_hist": {
+      "1": 4,
+      "2": 3
+    },
+    "has_full_z_line_count": 1,
+    "unique_points_stats": {
+      "min": 8,
+      "max": 9,
+      "mean": 8.857142857142858,
+      "median": 9,
+      "stdev": 0.3499271061118826
+    },
+    "z_aggregated": {
+      "0": 22,
+      "1": 17,
+      "2": 10
+    },
+    "sign_aggregated": {
+      "-1": 26,
+      "1": 23
+    }
+  }
+}

@@ -19,7 +19,6 @@ import argparse
 import json
 import random
 import sys
-from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -360,11 +359,21 @@ def randomized_greedy_enumeration(
     return found_canonical_reps
 
 
-def _write_checkpoint(out_json_path, found_canonical_reps, samples_done, k):
+def _write_checkpoint(
+    out_json_path,
+    found_canonical_reps,
+    samples_done,
+    k,
+    combinations_that_cover=None,
+    exhaustive=False,
+    truncated_by_max_solutions=False,
+    truncated_by_time_limit=False,
+):
     out = {
         "status": "ok",
         "k_min": k,
         "samples_tried": samples_done,
+        "exhaustive": bool(exhaustive),
         "distinct_canonical_representatives_found": len(found_canonical_reps),
         "representatives": [
             {
@@ -384,6 +393,11 @@ def _write_checkpoint(out_json_path, found_canonical_reps, samples_done, k):
             "repr_count": {str(c): int(v) for c, v in found_canonical_reps.items()}
         },
     }
+    if combinations_that_cover is not None:
+        out["combinations_that_cover"] = int(combinations_that_cover)
+    if exhaustive:
+        out["truncated_by_max_solutions"] = bool(truncated_by_max_solutions)
+        out["truncated_by_time_limit"] = bool(truncated_by_time_limit)
     out_json_path.parent.mkdir(parents=True, exist_ok=True)
     out_json_path.write_text(json.dumps(out, indent=2), encoding="utf-8")
 
@@ -397,49 +411,49 @@ def exhaustive_enumeration(
     checkpoint_interval=10000,
     out_json_path=None,
     progress=False,
+    max_solutions=0,
+    time_limit_sec=0.0,
 ):
-    """Exhaustively enumerate all witness subsets of size `target_k` and canonicalize those that cover the full non-stabilizer candidate universe.
+    """Exact size-k covering-set enumeration with branch-and-bound pruning.
 
     Returns:
-        (found_dict, combinations_checked)
+        tuple(found_dict, combinations_checked, combinations_that_cover,
+              truncated_by_max_solutions, truncated_by_time_limit)
     """
-    from concurrent.futures import ProcessPoolExecutor, as_completed
-    from itertools import combinations
+    import time
+
+    if workers > 1 and progress:
+        print(
+            "exhaustive_enumeration: workers>1 requested; using single-process DFS for deterministic pruning."
+        )
 
     witnesses, reject_masks_by_witness, full_cover_mask = build_reject_masks(
         lines, sign_field, mats
     )
     n = len(witnesses)
 
-    print(f"exhaustive_enumeration: n={n}, k={target_k}")
-
-    # Precompute suffix ORs for pruning
+    order = sorted(
+        range(n),
+        key=lambda wi: reject_masks_by_witness[wi].bit_count(),
+        reverse=True,
+    )
     suffix_or = [0] * (n + 1)
-    for i in range(n - 1, -1, -1):
-        suffix_or[i] = suffix_or[i + 1] | reject_masks_by_witness[i]
+    for pos in range(n - 1, -1, -1):
+        suffix_or[pos] = suffix_or[pos + 1] | reject_masks_by_witness[order[pos]]
 
+    found_total = {}
+    selected: list[int] = []
+    combinations_checked = 0
+    combinations_that_cover = 0
+    truncated_by_max_solutions = False
+    truncated_by_time_limit = False
+    next_checkpoint_at = checkpoint_interval
+    start = time.monotonic()
 
-def _exhaustive_worker_first_index(
-    i, witnesses, reject_masks_by_witness, full_cover_mask, sign_field, target_k
-):
-    from itertools import combinations
-
-    found = {}
-    iter_count = 0
-    n = len(witnesses)
-    for tail in combinations(range(i + 1, n), target_k - 1):
-        iter_count += 1
-        sel = (i,) + tail
-        cov = 0
-        for idx in sel:
-            cov |= reject_masks_by_witness[idx]
-            if cov == full_cover_mask:
-                break
-        if cov != full_cover_mask:
-            continue
+    def _rows_from_selected() -> list[dict[str, Any]]:
         rows = []
-        for idx in sel:
-            line, z = witnesses[idx]
+        for wi in selected:
+            line, z = witnesses[wi]
             sign = int(sign_field[(line, z)])
             rows.append(
                 {
@@ -449,102 +463,90 @@ def _exhaustive_worker_first_index(
                     "line_type": analyze._line_equation_type(line)[0],
                 }
             )
-        canon, _rep_info = canonicalize_via_orbit(rows)
-        found[canon] = found.get(canon, 0) + 1
-    return found, iter_count
+        return rows
 
-    def worker_first_index(i):
-        found = {}
-        iter_count = 0
-        for tail in combinations(range(i + 1, n), target_k - 1):
-            iter_count += 1
-            sel = (i,) + tail
-            cov = 0
-            for idx in sel:
-                cov |= reject_masks_by_witness[idx]
-                if cov == full_cover_mask:
-                    break
-            if cov != full_cover_mask:
-                continue
-            rows = []
-            for idx in sel:
-                line, z = witnesses[idx]
-                sign = int(sign_field[(line, z)])
-                rows.append(
-                    {
-                        "line": [[int(p[0]), int(p[1])] for p in line],
-                        "z": int(z),
-                        "sign_pm1": sign,
-                        "line_type": analyze._line_equation_type(line)[0],
-                    }
-                )
-            canon, _rep_info = canonicalize_via_orbit(rows)
-            found[canon] = found.get(canon, 0) + 1
-        return found, iter_count
+    def _maybe_checkpoint() -> None:
+        nonlocal next_checkpoint_at
+        if not out_json_path or checkpoint_interval <= 0:
+            return
+        if combinations_checked < next_checkpoint_at:
+            return
+        _write_checkpoint(
+            out_json_path,
+            found_total,
+            combinations_checked,
+            target_k,
+            combinations_that_cover=combinations_that_cover,
+            exhaustive=True,
+            truncated_by_max_solutions=truncated_by_max_solutions,
+            truncated_by_time_limit=truncated_by_time_limit,
+        )
+        next_checkpoint_at += checkpoint_interval
 
-    total_iters = 0
-    found_total = {}
-    # Single worker path: iterate over starting indices
-    if workers <= 1:
-        counts_tried = 0
-        counts_skipped = 0
-        for i in range(0, n - target_k + 1):
-            if suffix_or[i] != full_cover_mask:
-                counts_skipped += 1
-                if progress:
-                    print(f"i={i}: skipped (suffix_or cannot cover)")
-                continue
-            counts_tried += 1
-            found_i, ran = _exhaustive_worker_first_index(
-                i,
-                witnesses,
-                reject_masks_by_witness,
-                full_cover_mask,
-                sign_field,
-                target_k,
-            )
-            total_iters += ran
-            for c, cnt in found_i.items():
-                found_total[c] = found_total.get(c, 0) + cnt
-            if out_json_path and total_iters % checkpoint_interval == 0:
-                _write_checkpoint(out_json_path, found_total, total_iters, target_k)
-            if progress:
-                print(f"i={i}: ran={ran}, distinct_found={len(found_total)}")
-        if progress:
-            print(
-                f"exhaustive done: tried={counts_tried}, skipped={counts_skipped}, total_iters={total_iters}, distinct_found={len(found_total)}"
-            )
-        return found_total, total_iters
+    def _time_exceeded() -> bool:
+        nonlocal truncated_by_time_limit
+        if time_limit_sec <= 0:
+            return False
+        if (time.monotonic() - start) < time_limit_sec:
+            return False
+        truncated_by_time_limit = True
+        return True
 
-    # Parallel path: submit each i as a separate task
-    futures = {}
-    with ProcessPoolExecutor(max_workers=workers) as ex:
-        for i in range(0, n - target_k + 1):
-            if suffix_or[i] != full_cover_mask:
-                continue
-            futures[
-                ex.submit(
-                    _exhaustive_worker_first_index,
-                    i,
-                    witnesses,
-                    reject_masks_by_witness,
-                    full_cover_mask,
-                    sign_field,
-                    target_k,
-                )
-            ] = i
-        for fut in as_completed(futures):
-            found_i, ran = fut.result()
-            total_iters += ran
-            for c, cnt in found_i.items():
-                found_total[c] = found_total.get(c, 0) + cnt
-            if out_json_path and total_iters % checkpoint_interval < 1000:
-                _write_checkpoint(out_json_path, found_total, total_iters, target_k)
-            if progress:
-                print(
-                    f"finished i={futures[fut]}: ran={ran}, distinct_total={len(found_total)}"
-                )
-    return found_total, total_iters
+    def dfs(pos: int, chosen: int, covered: int) -> None:
+        nonlocal combinations_checked
+        nonlocal combinations_that_cover
+        nonlocal truncated_by_max_solutions
+        nonlocal truncated_by_time_limit
+
+        if truncated_by_max_solutions or truncated_by_time_limit:
+            return
+        if _time_exceeded():
+            return
+
+        if chosen == target_k:
+            combinations_checked += 1
+            if covered == full_cover_mask:
+                combinations_that_cover += 1
+                rows = _rows_from_selected()
+                canon, _rep_info = canonicalize_via_orbit(rows)
+                found_total[canon] = found_total.get(canon, 0) + 1
+                if max_solutions > 0 and combinations_that_cover >= max_solutions:
+                    truncated_by_max_solutions = True
+            if progress and checkpoint_interval > 0:
+                if combinations_checked % checkpoint_interval == 0:
+                    print(
+                        "checked={}, covers={}, distinct_reps={}".format(
+                            combinations_checked,
+                            combinations_that_cover,
+                            len(found_total),
+                        )
+                    )
+            _maybe_checkpoint()
+            return
+
+        if pos == n:
+            return
+        if chosen + (n - pos) < target_k:
+            return
+        if (covered | suffix_or[pos]) != full_cover_mask:
+            return
+
+        wi = order[pos]
+        selected.append(wi)
+        dfs(pos + 1, chosen + 1, covered | reject_masks_by_witness[wi])
+        selected.pop()
+        dfs(pos + 1, chosen, covered)
+
+    dfs(0, 0, 0)
+    _maybe_checkpoint()
+
+    return (
+        found_total,
+        combinations_checked,
+        combinations_that_cover,
+        truncated_by_max_solutions,
+        truncated_by_time_limit,
+    )
 
 
 def main():
@@ -564,6 +566,18 @@ def main():
         "--exhaustive",
         action="store_true",
         help="Run exhaustive enumeration of size k (exact)",
+    )
+    p.add_argument(
+        "--max-exhaustive-solutions",
+        type=int,
+        default=0,
+        help="In exhaustive mode, stop after this many covering combinations (0 = no cap).",
+    )
+    p.add_argument(
+        "--time-limit-sec",
+        type=float,
+        default=0.0,
+        help="In exhaustive mode, stop after this wall-clock limit in seconds (0 = no limit).",
     )
     p.add_argument(
         "--out-json",
@@ -591,7 +605,13 @@ def main():
     k = int(full_cert["exact_min_certificate_size"])
 
     if args.exhaustive:
-        samples, tried = exhaustive_enumeration(
+        (
+            samples,
+            tried,
+            covers,
+            truncated_by_max_solutions,
+            truncated_by_time_limit,
+        ) = exhaustive_enumeration(
             lines,
             sign_field,
             mats,
@@ -600,6 +620,8 @@ def main():
             checkpoint_interval=args.checkpoint_interval,
             out_json_path=args.out_json,
             progress=args.progress,
+            max_solutions=args.max_exhaustive_solutions,
+            time_limit_sec=args.time_limit_sec,
         )
     else:
         samples = randomized_greedy_enumeration(
@@ -618,12 +640,16 @@ def main():
             progress=args.progress,
         )
         tried = args.max_samples
+        covers = None
+        truncated_by_max_solutions = False
+        truncated_by_time_limit = False
 
     out = {
         "status": "ok",
         "candidate_space": args.candidate_space,
         "k_min": k,
         "samples_tried": tried,
+        "exhaustive": bool(args.exhaustive),
         "distinct_canonical_representatives_found": len(samples),
         "representatives": [
             {
@@ -641,6 +667,12 @@ def main():
         ],
         "counts": {"repr_count": {str(c): int(v) for c, v in samples.items()}},
     }
+    if args.exhaustive:
+        out["combinations_that_cover"] = int(covers if covers is not None else 0)
+        out["truncated_by_max_solutions"] = bool(truncated_by_max_solutions)
+        out["truncated_by_time_limit"] = bool(truncated_by_time_limit)
+        out["max_exhaustive_solutions"] = int(args.max_exhaustive_solutions)
+        out["time_limit_sec"] = float(args.time_limit_sec)
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(f"Wrote {args.out_json} (found {len(samples)} distinct canonical reps)")

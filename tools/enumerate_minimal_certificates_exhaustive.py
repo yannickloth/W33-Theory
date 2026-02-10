@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
-"""Exhaustively enumerate all size-k minimal full-sign obstruction certificates.
+"""Exact size-k minimal-certificate enumeration wrapper.
 
-This is a standalone script to avoid worker/pickling complexities. It is intended
-for single-machine runs and prints progress periodically.
+This script uses the shared branch-and-bound exhaustive engine in
+`tools/enumerate_minimal_certificates.py` and writes a standalone JSON artifact.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-from itertools import combinations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import tools.analyze_e6_f3_trilinear_symmetry_breaking as analyze
-from tools.enumerate_minimal_certificates import (
-    build_reject_masks,
-    canonicalize_via_orbit,
-)
+from tools.enumerate_minimal_certificates import exhaustive_enumeration
+
+
+def _canon_to_json(canon):
+    rows = []
+    for item in canon:
+        rows.append(
+            {
+                "line": [list(p) for p in item[0]],
+                "z": int(item[1]),
+                "sign": int(item[2]),
+                "line_type": item[3],
+            }
+        )
+    return rows
 
 
 def main():
@@ -32,9 +42,28 @@ def main():
         type=Path,
         default=ROOT
         / "artifacts"
-        / "e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive.json",
+        / "e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json",
     )
-    p.add_argument("--progress-interval", type=int, default=100000)
+    p.add_argument(
+        "--progress-interval",
+        type=int,
+        default=100000,
+        help="Progress/checkpoint interval in checked combinations.",
+    )
+    p.add_argument(
+        "--max-solutions",
+        type=int,
+        default=0,
+        help="Stop after this many covering combinations (0 = no cap).",
+    )
+    p.add_argument(
+        "--time-limit-sec",
+        type=float,
+        default=0.0,
+        help="Stop after this wall-clock limit in seconds (0 = no limit).",
+    )
+    p.add_argument("--workers", type=int, default=1)
+    p.add_argument("--progress", action="store_true")
     args = p.parse_args()
 
     lines, sign_field = analyze._load_sign_field(args.in_json)
@@ -50,86 +79,47 @@ def main():
     ], "No exact minimal certificate found"
     k = int(full_cert["exact_min_certificate_size"])
 
-    witnesses, reject_masks_by_witness, full_cover_mask = build_reject_masks(
-        lines, sign_field, mats
+    found, checked, covers, trunc_max, trunc_time = exhaustive_enumeration(
+        lines,
+        sign_field,
+        mats,
+        k,
+        workers=args.workers,
+        checkpoint_interval=args.progress_interval,
+        out_json_path=None,
+        progress=args.progress,
+        max_solutions=args.max_solutions,
+        time_limit_sec=args.time_limit_sec,
     )
-    n = len(witnesses)
 
-    found = {}
-    tried = 0
-    covers = 0
-    print(
-        f"Enumerating C({n},{k}) combos; will check for cover of universe mask of size {full_cover_mask.bit_length()} bits"
-    )
-
-    suffix_or = [0] * (n + 1)
-    for i in range(n - 1, -1, -1):
-        suffix_or[i] = suffix_or[i + 1] | reject_masks_by_witness[i]
-
-    total_combos = 0
-    for comb in combinations(range(n), k):
-        total_combos += 1
-        # quick prune using suffix_or: OR of comb+suffix must be full_cover_mask
-        # but simple check: if suffix_or[comb[0]] != full_cover_mask, skip
-        if suffix_or[comb[0]] != full_cover_mask:
-            continue
-        cov = 0
-        for idx in comb:
-            cov |= reject_masks_by_witness[idx]
-            if cov == full_cover_mask:
-                break
-        tried += 1
-        if cov != full_cover_mask:
-            continue
-        covers += 1
-        rows = []
-        for idx in comb:
-            line, z = witnesses[idx]
-            sign = int(sign_field[(line, z)])
-            rows.append(
-                {
-                    "line": [[int(p[0]), int(p[1])] for p in line],
-                    "z": int(z),
-                    "sign_pm1": sign,
-                    "line_type": analyze._line_equation_type(line)[0],
-                }
-            )
-        canon, _ = canonicalize_via_orbit(rows)
-        found[canon] = found.get(canon, 0) + 1
-        if total_combos % args.progress_interval == 0:
-            print(
-                f"checked {total_combos} combos, tried {tried}, covers {covers}, distinct_reps={len(found)}"
-            )
+    rep_rows = []
+    for canon, count in sorted(found.items(), key=lambda kv: (-kv[1], kv[0])):
+        rep_rows.append(
+            {"hit_count": int(count), "canonical_repr": _canon_to_json(canon)}
+        )
 
     out = {
         "status": "ok",
         "candidate_space": args.candidate_space,
         "k_min": k,
-        "total_combinations_checked": total_combos,
-        "combinations_tried_after_pruning": tried,
-        "combinations_that_cover": covers,
+        "total_combinations_checked": int(checked),
+        "combinations_tried_after_pruning": int(checked),
+        "combinations_that_cover": int(covers),
         "distinct_canonical_representatives_found": len(found),
-        "representatives": [
-            {
-                "canonical_repr": [
-                    {
-                        "line": [list(p) for p in item[0]],
-                        "z": int(item[1]),
-                        "sign": int(item[2]),
-                        "line_type": item[3],
-                    }
-                    for item in canon
-                ]
-            }
-            for canon in found.keys()
-        ],
+        "truncated_by_max_solutions": bool(trunc_max),
+        "truncated_by_time_limit": bool(trunc_time),
+        "max_solutions": int(args.max_solutions),
+        "time_limit_sec": float(args.time_limit_sec),
+        "representatives": rep_rows,
         "counts": {"repr_count": {str(c): int(v) for c, v in found.items()}},
     }
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(
-        f"Wrote {args.out_json} (found {len(found)} distinct canonical reps, covers={covers} of tried={tried})"
+        "Wrote {} (reps={}, covers={}, checked={})".format(
+            args.out_json, len(found), covers, checked
+        )
     )
 
 
