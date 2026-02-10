@@ -53,11 +53,43 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
     )
     assert data["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"] is True
     assert data["cross_checks"]["line_product_group_structure"]["size"] == 12
+    assert data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"] is True
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"]["flag_stabilizer_equals_residual"]
+        is True
+    )
+    assert data["cross_checks"]["line_product_flag_geometry"]["shifted_rule_holds"] is True
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule_holds"]
+        is True
+    )
+    assert data["cross_checks"]["line_product_flag_geometry"]["coordinate_free_adapted_gauge_count"] > 0
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"][
+            "unique_missing_point_from_negative_lines"
+        ]
+        == [2, 2]
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"][
+            "distinguished_direction_all_positive"
+        ]
+        == "x"
+    )
     assert (
         data["cross_checks"]["line_product_group_structure"]["candidate_isomorphism"].startswith(
             "D12"
         )
     )
+    assert data["cross_checks"]["full_sign_obstruction_certificate"]["stabilizer_count"] == 1
+    assert data["cross_checks"]["full_sign_obstruction_certificate"]["non_stabilizer_count"] == 2591
+    assert (
+        data["cross_checks"]["full_sign_obstruction_certificate"][
+            "exact_min_certificate_found"
+        ]
+        is True
+    )
+    assert data["cross_checks"]["full_sign_obstruction_certificate"]["exact_min_certificate_size"] == 7
 
 
 def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
@@ -123,3 +155,21 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
     )
     assert data["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"] is True
     assert data["cross_checks"]["line_product_group_structure"]["size"] == 12
+    assert data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"] is True
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"]["flag_stabilizer_equals_residual"]
+        is True
+    )
+    assert data["cross_checks"]["line_product_flag_geometry"]["shifted_rule_holds"] is True
+    assert (
+        data["cross_checks"]["line_product_flag_geometry"]["coordinate_free_shifted_rule_holds"]
+        is True
+    )
+    assert data["cross_checks"]["full_sign_obstruction_certificate"]["stabilizer_count"] == 1
+    assert (
+        data["cross_checks"]["full_sign_obstruction_certificate"][
+            "exact_min_certificate_found"
+        ]
+        is True
+    )
+    assert data["cross_checks"]["full_sign_obstruction_certificate"]["exact_min_certificate_size"] == 7

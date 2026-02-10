@@ -1,51 +1,89 @@
 # W33 Theory of Everything
 
-## Deriving the Standard Model from a Finite Geometry
+## Living Paper: Deriving Standard-Model Structure from Finite Geometry
 
 [![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml) [![Sage verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml) [![Predictions report](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/predictions_report.yml) [![Nightly predictions](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/nightly_predictions.yml)
 
-**Author:** Wil Dahn
-**Date:** January-February 2026
+**Author:** Wil Dahn  
+**Date:** January-February 2026  
 **Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
 
-**Canonical definitions:** See `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
+**Canonical definitions:** see `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
 ---
 
-## Layperson's guide — a 2‑minute explanation 👋💡
+## Start Here (Layperson Guide)
 
-- **What this is.** A compact, fully discrete geometry called **W33** (40 points and their connections) encodes a rich algebraic structure that matches important features of the exceptional Lie algebra **E8**. The claim is not metaphorical: we prove exact correspondences by computation and exact integer arithmetic.
-- **Why you might care.** From a tiny combinatorial object we recover the same counting and structural features that appear in particle‑physics models (three generations, universal mixing patterns, a GUT‑scale Weinberg angle). These are mathematically precise, testable numerical statements — not guesses.
-- **How to read this README:**
-  - If you know *nothing* about physics: read the next section **The W33–E8 Correspondence Theorem** for an executive summary and then **Physical Predictions** (search for that heading) for the main takeaways.
-  - If you are a mathematician: consult **The Homology Breakthrough** and **Hodge Laplacian Spectrum** for exact statements and proofs (computational verification + SNF).
-  - If you are a developer or want to reproduce results: use the **Quick start** snippet below and see the `scripts/` and `tools/` directories for reproducible workflows.
+This repository is meant to be read like a single, continuously updated paper.
 
-### Quick start (reproduce the core computations) 🔧
+- **Core idea:** a small finite geometry (W33) appears to encode the same structural counts that show up in exceptional Lie algebra models used in high-energy physics.
+- **Claim style:** every major claim in this README should have a matching script, a test, and machine-generated outputs.
+- **What is "proved" here:** statements marked verified/proved are computational theorems inside this repo, not claims that all of physics is solved.
+- **How to follow without advanced math:** read the theorem summary first, then run the scripts exactly as shown below, then inspect the generated reports.
 
-- Run the compact correspondence check:
+### 15-Minute Reading Path
 
-```
-# reproducible verification (fast)
+1. Read `The W33-E8 Correspondence Theorem` below for the top-level statement and pillar table.
+2. Read `Physical Predictions from Topology` for measurable outputs and numerical targets.
+3. Run `scripts/w33_e8_correspondence_theorem.py` and verify the same numbers appear locally.
+4. Open referenced scripts/tests directly from this README and treat them as appendices of the paper.
+
+---
+
+## Repository Map (Paper-as-Code)
+
+| Question | Read | Run | Test | Output |
+|---|---|---|---|---|
+| Does W33 match E8 root counting and group structure? | `README.md` (The Twenty-One Pillars) | `scripts/w33_e8_correspondence_theorem.py` | `tests/test_e8_embedding.py` | `reports/` and CLI output |
+| Is homology really the 81-dimensional matter sector? | `README.md` (Homology Breakthrough) | `scripts/w33_homology.py` | `tests/test_e8_embedding.py` | exact ranks and SNF checks |
+| Does the Hodge spectrum reproduce the 240 split? | `README.md` (Hodge Laplacian Spectrum) | `scripts/w33_hodge.py` | `tests/test_w33_hodge.py` | Laplacian eigenvalue reports |
+| Are generation and mixing claims explicit? | `README.md` (Three-Generation Decomposition, Universal Mixing Matrix) | `scripts/w33_full_decomposition.py` | `tests/test_e8_embedding.py` | decomposition and projector diagnostics |
+| Is the Heisenberg/qutrit bridge reproducible? | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | Heisenberg lift artifacts |
+| Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `tests/test_e6_f3_trilinear.py` and `tests/test_e6_f3_trilinear_symmetry_breaking.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
+
+---
+
+## Quick Start
+
+Run the compact correspondence check:
+
+```bash
 python scripts/w33_e8_correspondence_theorem.py
 ```
 
-- Run the Heisenberg / qutrit MUB checks (Pillar 21):
+Run the Heisenberg/qutrit checks:
 
-```
+```bash
 python scripts/w33_heisenberg_qutrit.py
 python -m pytest tests/test_heisenberg_qutrit_structure.py::test_w33_heisenberg_universal -q
 ```
 
-- Run the full test suite (long):
+Run the E6/F3 trilinear extraction and symmetry analysis:
 
+```bash
+python tools/build_e6_f3_trilinear_map.py
+python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
 ```
-# full test suite (~20-30 min depending on machine)
+
+Run full regression tests (long):
+
+```bash
 python -m pytest -q
 ```
 
 ---
 
+## How This README Functions as the Paper
+
+This README is the main manuscript, and the repository is the executable appendix.
+
+1. The narrative stays here (definitions, theorem statements, interpretation, predictions).
+2. Every section should link to code paths that reproduce the exact claim.
+3. New results should update both this README and a machine-checkable script/test path.
+4. Historical progress and open questions are tracked in repo docs such as `memory.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
+
+---
 ## The W33-E8 Correspondence Theorem
 
 **The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 120 tests and verified by Smith Normal Form.
