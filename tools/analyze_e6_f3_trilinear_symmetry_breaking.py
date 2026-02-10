@@ -370,6 +370,115 @@ def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
     }
 
 
+def _orbit_partition(
+    items: list[Any], elements: list[AffineMap], action
+) -> list[list[Any]]:
+    remaining = set(items)
+    out: list[list[Any]] = []
+    while remaining:
+        seed = sorted(remaining)[0]
+        orbit = {seed}
+        stack = [seed]
+        while stack:
+            cur = stack.pop()
+            for elem in elements:
+                nxt = action(elem, cur)
+                if nxt not in orbit:
+                    orbit.add(nxt)
+                    stack.append(nxt)
+        remaining -= orbit
+        out.append(sorted(orbit))
+    out.sort(key=lambda block: (len(block), block))
+    return out
+
+
+def _line_product_orbit_fingerprint(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    elements: list[AffineMap],
+    point: tuple[int, int] | None,
+    direction: str | None,
+) -> dict[str, Any]:
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    point_orbits = _orbit_partition(
+        pts, elements, lambda elem, p: _map_point(elem[0], elem[1], p)
+    )
+    line_orbits = _orbit_partition(
+        lines, elements, lambda elem, line: _map_line(elem[0], elem[1], line)
+    )
+
+    point_orbit_sizes = sorted(len(block) for block in point_orbits)
+    line_orbit_sizes = sorted(len(block) for block in line_orbits)
+
+    missing_orbit_size = 0
+    missing_fixed = False
+    anchor_line_orbit_size = 0
+    direction_orbit_sizes: list[int] = []
+    direction_orbit_line_count = 0
+    if point is not None:
+        for block in point_orbits:
+            if point in block:
+                missing_orbit_size = len(block)
+                missing_fixed = len(block) == 1
+                break
+    if point is not None and direction is not None:
+        direction_family = _line_type_family(lines, direction)
+        direction_orbit_sizes = sorted(
+            len(set(direction_family) & set(block)) for block in line_orbits
+        )
+        direction_orbit_sizes = [size for size in direction_orbit_sizes if size > 0]
+        direction_orbit_line_count = sum(direction_orbit_sizes)
+        anchor = None
+        for line in direction_family:
+            if point in line:
+                anchor = line
+                break
+        if anchor is not None:
+            for block in line_orbits:
+                if anchor in block:
+                    anchor_line_orbit_size = len(block)
+                    break
+
+    point_orbit_rows = [
+        [[int(p[0]), int(p[1])] for p in block] for block in point_orbits
+    ]
+    line_orbit_rows: list[dict[str, Any]] = []
+    for block in line_orbits:
+        type_hist: Counter[str] = Counter(_line_equation_type(line)[0] for line in block)
+        line_orbit_rows.append(
+            {
+                "size": len(block),
+                "line_type_hist": dict(type_hist),
+                "lines": [_line_json(line) for line in block],
+            }
+        )
+
+    return {
+        "point_orbit_sizes": point_orbit_sizes,
+        "line_orbit_sizes": line_orbit_sizes,
+        "point_orbits": point_orbit_rows,
+        "line_orbits": line_orbit_rows,
+        "missing_point_orbit_size": int(missing_orbit_size),
+        "missing_point_fixed": bool(missing_fixed),
+        "anchor_line_through_missing_orbit_size": int(anchor_line_orbit_size),
+        "distinguished_direction": direction,
+        "distinguished_direction_orbit_sizes_inside_family": direction_orbit_sizes,
+        "distinguished_direction_family_line_count": int(direction_orbit_line_count),
+        "qutrit_phase_space_orbit_signature_holds": (
+            point_orbit_sizes == [1, 2, 6]
+            and line_orbit_sizes == [1, 2, 3, 6]
+            and missing_fixed
+            and anchor_line_orbit_size == 1
+            and direction_orbit_sizes == [1, 2]
+            and direction_orbit_line_count == 3
+        ),
+        "qutrit_phase_space_orbit_signature_rule": (
+            "Residual D12 orbit signature on AG(2,3): point orbits [1,2,6], "
+            "line orbits [1,2,3,6], missing point fixed, and distinguished direction "
+            "splits as [1,2]"
+        ),
+    }
+
+
 def _line_type_family(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     line_type: str,
@@ -1022,6 +1131,26 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
+        "- Residual orbit signature rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_orbit_fingerprint"][
+                "qutrit_phase_space_orbit_signature_rule"
+            ],
+            out["cross_checks"]["line_product_orbit_fingerprint"][
+                "qutrit_phase_space_orbit_signature_holds"
+            ],
+        )
+    )
+    lines.append(
+        "- Point orbit sizes under residual subgroup: `{}`".format(
+            out["cross_checks"]["line_product_orbit_fingerprint"]["point_orbit_sizes"]
+        )
+    )
+    lines.append(
+        "- Line orbit sizes under residual subgroup: `{}`".format(
+            out["cross_checks"]["line_product_orbit_fingerprint"]["line_orbit_sizes"]
+        )
+    )
+    lines.append(
         "- Flag geometry rule `{}` holds: `{}`".format(
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_rule"],
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"],
@@ -1161,6 +1290,21 @@ def main() -> None:
     prod_flag_geometry = _line_product_flag_geometry_check(
         lines, product_sign, prod_agl_elements
     )
+    missing_point = None
+    if (
+        len(prod_flag_geometry["unique_missing_point_from_negative_lines"]) == 2
+        and all(
+            isinstance(v, int)
+            for v in prod_flag_geometry["unique_missing_point_from_negative_lines"]
+        )
+    ):
+        missing_point = tuple(prod_flag_geometry["unique_missing_point_from_negative_lines"])
+    direction = prod_flag_geometry["distinguished_direction_all_positive"]
+    if not isinstance(direction, str):
+        direction = None
+    prod_orbit_fingerprint = _line_product_orbit_fingerprint(
+        lines, prod_agl_elements, missing_point, direction
+    )
     full_sign_obstruction_hessian = _full_sign_obstruction_certificate(
         lines,
         sign_field,
@@ -1232,6 +1376,7 @@ def main() -> None:
             "line_product_stabilizer_parametrization_det1": prod_param_det1,
             "line_product_group_structure": prod_structure,
             "line_product_flag_geometry": prod_flag_geometry,
+            "line_product_orbit_fingerprint": prod_orbit_fingerprint,
             "full_sign_obstruction_certificate": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,

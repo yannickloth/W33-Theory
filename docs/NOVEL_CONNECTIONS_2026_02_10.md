@@ -1,5 +1,8 @@
 # Novel Connections (2026-02-10)
 
+For raw source-mining notes and search-to-hypothesis chaining, see
+`docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
+
 ## New computational result
 
 Using the new `F3` trilinear extraction (`tools/build_e6_f3_trilinear_map.py`) and
@@ -52,6 +55,10 @@ changes affine/Hessian symmetries:
 - residual-group `Z3` core check:
   the computed line-product residual subgroup (`D12`) contains exactly two order-`3`
   elements and a unique order-`3` subgroup (`C3`), now exported and tested.
+- qutrit-phase-space orbit fingerprint:
+  under the residual `D12` action on `AG(2,3)`, point orbits are `[1,2,6]` and line
+  orbits are `[1,2,3,6]`; the missing point is fixed and the distinguished direction
+  class splits into line-orbits `[1,2]`.
 
 Outputs:
 
@@ -84,6 +91,8 @@ computational hypotheses in-repo:
    to the larger full `AGL(2,3)` candidate space.
 4. the residual group should expose a concrete `Z3` nucleus (unique `C3` subgroup),
    compatible with the project-wide ternary (`F3`) framing.
+5. the residual action should realize a nontrivial but rigid orbit signature on
+   `AG(2,3)` points/lines consistent with qutrit finite-phase-space structure.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
@@ -100,7 +109,7 @@ and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
   Link: `https://arxiv.org/abs/2510.16417`
 - Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*, arXiv:2509.06785 (2025)
   Link: `https://arxiv.org/abs/2509.06785`
-- Wootters, *Quantum measurements and finite geometry*, arXiv:quant-ph/0403095
-  Link: `https://arxiv.org/abs/quant-ph/0403095`
-- Alisauskas et al., *Spherical reduction and generalized Dirac-Dunkl operators in dimensions >2*, arXiv:2512.02559 (2025)
-  Link: `https://arxiv.org/abs/2512.02559`
+- Wootters, *Quantum measurements and finite geometry*, arXiv:quant-ph/0406032
+  Link: `https://arxiv.org/abs/quant-ph/0406032`
+- Bandyopadhyay et al., *A New Proof for the Existence of Mutually Unbiased Bases*, arXiv:0909.1671
+  Link: `https://arxiv.org/abs/0909.1671`

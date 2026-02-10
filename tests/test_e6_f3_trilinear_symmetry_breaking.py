@@ -68,6 +68,36 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         is True
     )
     assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["point_orbit_sizes"]
+        == [1, 2, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["line_orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["missing_point_fixed"]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "anchor_line_through_missing_orbit_size"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "distinguished_direction_orbit_sizes_inside_family"
+        ]
+        == [1, 2]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "qutrit_phase_space_orbit_signature_holds"
+        ]
+        is True
+    )
+    assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]
         is True
     )
@@ -239,6 +269,36 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
     )
     assert (
         data["cross_checks"]["line_product_group_structure"]["unique_c3_subgroup"]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["point_orbit_sizes"]
+        == [1, 2, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["line_orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"]["missing_point_fixed"]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "anchor_line_through_missing_orbit_size"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "distinguished_direction_orbit_sizes_inside_family"
+        ]
+        == [1, 2]
+    )
+    assert (
+        data["cross_checks"]["line_product_orbit_fingerprint"][
+            "qutrit_phase_space_orbit_signature_holds"
+        ]
         is True
     )
     assert (
