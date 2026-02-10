@@ -138,6 +138,40 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         == 2
     )
     assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 2,
+            "through_missing_and_not_in_distinguished_direction": 3,
+            "not_through_missing_and_not_in_distinguished_direction": 6,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 1,
+            "through_missing_and_not_in_distinguished_direction": 1,
+            "not_through_missing_and_not_in_distinguished_direction": 1,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "orbit_homogeneous_by_flag_class"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "qutrit_flag_line_orbit_signature_holds"
+        ]
+        is True
+    )
+    assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]
         is True
     )
@@ -380,6 +414,40 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
             "non_distinguished_permutation_kernel_size"
         ]
         == 2
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 2,
+            "through_missing_and_not_in_distinguished_direction": 3,
+            "not_through_missing_and_not_in_distinguished_direction": 6,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 1,
+            "through_missing_and_not_in_distinguished_direction": 1,
+            "not_through_missing_and_not_in_distinguished_direction": 1,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "orbit_homogeneous_by_flag_class"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "qutrit_flag_line_orbit_signature_holds"
+        ]
+        is True
     )
     assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]

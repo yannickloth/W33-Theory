@@ -63,6 +63,10 @@ changes affine/Hessian symmetries:
   on the 4 affine striations (MUB contexts), residual action has orbit sizes `[1,3]`,
   fixes the distinguished striation, and induces full `S3` on the other three
   (permutation kernel size `2` inside the 12-element residual subgroup).
+- affine-flag line-class decomposition:
+  line orbits are not only size-patterned (`[1,2,3,6]`) but exactly coincide with the
+  four incidence classes relative to the distinguished flag
+  `(missing point, distinguished direction)`, with class sizes `1,2,3,6`.
 
 Outputs:
 
@@ -99,6 +103,8 @@ computational hypotheses in-repo:
    `AG(2,3)` points/lines consistent with qutrit finite-phase-space structure.
 6. the residual action on qutrit striations should single out one context and realize
    full `S3` mixing on the remaining three contexts.
+7. line orbits should coincide exactly with affine-flag incidence classes relative to
+   `(missing point, distinguished direction)`.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.

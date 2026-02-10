@@ -601,6 +601,113 @@ def _line_product_striation_action_check(
     }
 
 
+def _line_product_flag_line_orbit_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    elements: list[AffineMap],
+    point: tuple[int, int] | None,
+    direction: str | None,
+) -> dict[str, Any]:
+    """
+    Classify line orbits by incidence with the distinguished affine flag
+    (missing point, distinguished direction).
+    """
+    line_orbits = _orbit_partition(
+        lines, elements, lambda elem, line: _map_line(elem[0], elem[1], line)
+    )
+    orbit_sizes = sorted(len(block) for block in line_orbits)
+
+    labels = [
+        "through_missing_and_in_distinguished_direction",
+        "not_through_missing_and_in_distinguished_direction",
+        "through_missing_and_not_in_distinguished_direction",
+        "not_through_missing_and_not_in_distinguished_direction",
+    ]
+
+    if point is None or direction is None:
+        return {
+            "rule": (
+                "Line orbits split by incidence with distinguished affine flag "
+                "(point, direction) into classes of sizes 1,2,3,6"
+            ),
+            "point": None,
+            "direction": direction,
+            "orbit_sizes": orbit_sizes,
+            "class_sizes": {label: 0 for label in labels},
+            "class_to_orbit_count": {label: 0 for label in labels},
+            "orbit_homogeneous_by_flag_class": False,
+            "qutrit_flag_line_orbit_signature_holds": False,
+            "orbit_rows": [],
+        }
+
+    def line_label(
+        line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+    ) -> str:
+        through_missing = point in line
+        in_direction = _line_equation_type(line)[0] == direction
+        if through_missing and in_direction:
+            return labels[0]
+        if (not through_missing) and in_direction:
+            return labels[1]
+        if through_missing and (not in_direction):
+            return labels[2]
+        return labels[3]
+
+    class_sets: dict[
+        str, set[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]
+    ] = {label: set() for label in labels}
+    for line in lines:
+        class_sets[line_label(line)].add(line)
+    class_sizes = {label: len(class_sets[label]) for label in labels}
+
+    class_to_orbit_count: Counter[str] = Counter()
+    orbit_rows: list[dict[str, Any]] = []
+    orbit_homogeneous = True
+    for block in line_orbits:
+        block_labels = sorted({line_label(line) for line in block})
+        if len(block_labels) != 1:
+            orbit_homogeneous = False
+        for label in block_labels:
+            class_to_orbit_count[label] += 1
+        orbit_rows.append(
+            {
+                "size": len(block),
+                "flag_class_labels": block_labels,
+                "lines": [_line_json(line) for line in block],
+            }
+        )
+
+    expected_class_sizes = {
+        labels[0]: 1,
+        labels[1]: 2,
+        labels[2]: 3,
+        labels[3]: 6,
+    }
+    expected_orbit_count = {label: 1 for label in labels}
+
+    holds = (
+        orbit_sizes == [1, 2, 3, 6]
+        and orbit_homogeneous
+        and class_sizes == expected_class_sizes
+        and {label: class_to_orbit_count[label] for label in labels}
+        == expected_orbit_count
+    )
+
+    return {
+        "rule": (
+            "Line orbits split by incidence with distinguished affine flag "
+            "(point, direction) into classes of sizes 1,2,3,6"
+        ),
+        "point": [int(point[0]), int(point[1])],
+        "direction": direction,
+        "orbit_sizes": orbit_sizes,
+        "class_sizes": class_sizes,
+        "class_to_orbit_count": {label: class_to_orbit_count[label] for label in labels},
+        "orbit_homogeneous_by_flag_class": orbit_homogeneous,
+        "qutrit_flag_line_orbit_signature_holds": holds,
+        "orbit_rows": orbit_rows,
+    }
+
+
 def _line_type_family(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     line_type: str,
@@ -1296,6 +1403,20 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
+        "- Flag-line orbit rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_line_orbits"]["rule"],
+            out["cross_checks"]["line_product_flag_line_orbits"][
+                "qutrit_flag_line_orbit_signature_holds"
+            ],
+        )
+    )
+    lines.append(
+        "- Flag-line orbit sizes: `{}` with class sizes `{}`".format(
+            out["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"],
+            out["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"],
+        )
+    )
+    lines.append(
         "- Flag geometry rule `{}` holds: `{}`".format(
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_rule"],
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"],
@@ -1456,6 +1577,9 @@ def main() -> None:
     prod_striation_action = _line_product_striation_action_check(
         lines, prod_agl_elements, direction
     )
+    prod_flag_line_orbits = _line_product_flag_line_orbit_check(
+        lines, prod_agl_elements, missing_point, direction
+    )
     full_sign_obstruction_hessian = _full_sign_obstruction_certificate(
         lines,
         sign_field,
@@ -1529,6 +1653,7 @@ def main() -> None:
             "line_product_flag_geometry": prod_flag_geometry,
             "line_product_orbit_fingerprint": prod_orbit_fingerprint,
             "line_product_striation_action": prod_striation_action,
+            "line_product_flag_line_orbits": prod_flag_line_orbits,
             "full_sign_obstruction_certificate": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,

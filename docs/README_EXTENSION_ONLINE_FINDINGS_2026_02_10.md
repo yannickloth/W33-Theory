@@ -78,6 +78,11 @@ Status: verified (`striation_orbit_sizes = [1,3]`,
 `non_distinguished_permutation_is_s3 = true`,
 `non_distinguished_permutation_kernel_size = 2`).
 
+H7. Line orbits should coincide exactly with affine-flag incidence classes relative
+to `(missing point, distinguished direction)`.  
+Status: verified (class sizes
+`1,2,3,6`, with one residual orbit per class).
+
 ## Second-pass raw notes (same date, new loop)
 
 - If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
@@ -88,6 +93,16 @@ Status: verified (`striation_orbit_sizes = [1,3]`,
 - This gives a stronger interpretation of symmetry breaking:
   not just local orbit asymmetry, but a concrete context hierarchy with one pinned
   basis and a 3-context permutation sector.
+
+## Third-pass raw notes (same date, new loop)
+
+- The `[1,2,3,6]` line-orbit pattern can still hide ambiguity unless it matches a
+  canonical geometric partition. The natural candidate is the incidence partition by
+  the distinguished affine flag.
+- Computation confirms exact alignment: every residual orbit is homogeneous for this
+  flag partition and each class is exactly one orbit.
+- This sharpens the interpretation from "orbit counts look plausible" to
+  "orbit decomposition equals a canonical flag-incidence decomposition."
 
 ## Where each hypothesis is encoded
 
