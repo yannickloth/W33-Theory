@@ -82,6 +82,7 @@ Cross-check: the trilinear analysis' distinguished direction and unique missing 
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results: the sampler was extended with parallel sampling, early-stopping, and checkpointing support (`--workers`, `--batch-size`, `--patience`, `--checkpoint-interval`, `--stop-if-found`). Running a medium sweep (20k samples, `--workers 4 --batch-size 1000 --checkpoint-interval 2000`) produced: Hessian216: **134** distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json`); AGL(2,3): **7** distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl_20k.json`). A subsequent exhaustive enumeration of all size-7 witness combinations for the Hessian candidate space produced **256** distinct canonical representatives and **273** covering combinations (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`), confirming the sampling-based findings and revealing a larger hidden diversity. These results indicate a much larger variety of minimal witness orbit types in the Hessian candidate space compared to AGL space.
+- Exhaustive engine note: the shared exhaustive path now uses deterministic branch-and-bound (instead of raw combination scanning), with optional `--max-exhaustive-solutions` and `--time-limit-sec` caps in `tools/enumerate_minimal_certificates.py`, and the standalone wrapper `tools/enumerate_minimal_certificates_exhaustive.py` calls that shared core.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -99,5 +100,7 @@ Additional witness-space note:
 ```bash
 python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
+python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --max-samples 20000 --seed 42 --workers 4 --batch-size 1000 --checkpoint-interval 2000 --out-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json --progress
+python tools/enumerate_minimal_certificates_exhaustive.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --progress --out-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_parallel_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py -q
 ```
