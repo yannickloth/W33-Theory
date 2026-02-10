@@ -63,6 +63,22 @@ changes affine/Hessian symmetries:
   on the 4 affine striations (MUB contexts), residual action has orbit sizes `[1,3]`,
   fixes the distinguished striation, and induces full `S3` on the other three
   (permutation kernel size `2` inside the 12-element residual subgroup).
+- affine-flag line-class decomposition:
+  line orbits are not only size-patterned (`[1,2,3,6]`) but exactly coincide with the
+  four incidence classes relative to the distinguished flag
+  `(missing point, distinguished direction)`, with class sizes `1,2,3,6`.
+- distinct-line obstruction split:
+  if obstruction witnesses are constrained to use distinct affine lines, the exact
+  minimum stays `7` in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
+- striation-complete obstruction split:
+  if obstruction witnesses are required to cover all 4 affine striations
+  (`x`, `y`, `y=x`, `y=2x`, i.e. qutrit/MUB contexts), the exact minimum stays `7`
+  in Hessian216 but rises to `8` in full `AGL(2,3)` candidate space.
+- exact minimal-certificate multiplicity split (bounded exact pass):
+  using `tools/enumerate_minimal_certificates.py --mode exact` on the canonical
+  12-line fixture with cap `max_exact_solutions=200`, Hessian216 reaches the cap
+  with `190` distinct canonical representatives, while full `AGL(2,3)` terminates
+  with `7` total minimal certificates and `7` representatives.
 
 Outputs:
 
@@ -99,6 +115,13 @@ computational hypotheses in-repo:
    `AG(2,3)` points/lines consistent with qutrit finite-phase-space structure.
 6. the residual action on qutrit striations should single out one context and realize
    full `S3` mixing on the remaining three contexts.
+7. line orbits should coincide exactly with affine-flag incidence classes relative to
+   `(missing point, distinguished direction)`.
+8. line-distinct full-sign obstruction should separate Hessian216 from full `AGL(2,3)`.
+9. striation-complete full-sign obstruction should separate Hessian216 from full
+   `AGL(2,3)` when every qutrit/MUB context must be represented.
+10. exact minimal-certificate multiplicity should differ sharply across candidate
+    spaces, not only the minimum certificate size constraints.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
@@ -121,3 +144,7 @@ and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
   Link: `https://arxiv.org/abs/quant-ph/0401155`
 - Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*, arXiv:quant-ph/0103162
   Link: `https://arxiv.org/abs/quant-ph/0103162`
+- Zhu, *Quasiprobability representations of quantum mechanics with minimal negativity*, arXiv:1505.01123
+  Link: `https://arxiv.org/abs/1505.01123`
+- Gonano et al., *Discrete Wigner function for Quantum Information: an illustrative guide*, arXiv:2503.18431 (2025)
+  Link: `https://arxiv.org/abs/2503.18431`

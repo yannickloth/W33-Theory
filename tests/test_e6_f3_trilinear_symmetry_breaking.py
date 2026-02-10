@@ -138,6 +138,40 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         == 2
     )
     assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 2,
+            "through_missing_and_not_in_distinguished_direction": 3,
+            "not_through_missing_and_not_in_distinguished_direction": 6,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 1,
+            "through_missing_and_not_in_distinguished_direction": 1,
+            "not_through_missing_and_not_in_distinguished_direction": 1,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "orbit_homogeneous_by_flag_class"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "qutrit_flag_line_orbit_signature_holds"
+        ]
+        is True
+    )
+    assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]
         is True
     )
@@ -231,6 +265,84 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
             "exact_min_sizes_match"
         ]
         is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "line_distinctness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_comparison"][
+            "distinct_line_sizes_match"
+        ]
+        is False
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "required_striations"
+        ]
+        == ["x", "y", "y=1x", "y=2x"]
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_found"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "striation_completeness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_comparison"][
+            "striation_complete_sizes_match"
+        ]
+        is False
     )
 
 
@@ -382,6 +494,40 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         == 2
     )
     assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
+        == [1, 2, 3, 6]
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 2,
+            "through_missing_and_not_in_distinguished_direction": 3,
+            "not_through_missing_and_not_in_distinguished_direction": 6,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
+        == {
+            "through_missing_and_in_distinguished_direction": 1,
+            "not_through_missing_and_in_distinguished_direction": 1,
+            "through_missing_and_not_in_distinguished_direction": 1,
+            "not_through_missing_and_not_in_distinguished_direction": 1,
+        }
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "orbit_homogeneous_by_flag_class"
+        ]
+        is True
+    )
+    assert (
+        data["cross_checks"]["line_product_flag_line_orbits"][
+            "qutrit_flag_line_orbit_signature_holds"
+        ]
+        is True
+    )
+    assert (
         data["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"]
         is True
     )
@@ -433,4 +579,58 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
             "exact_min_sizes_match"
         ]
         is True
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "min_distinct_line_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+            "line_distinctness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_distinct_line_certificate_comparison"][
+            "distinct_line_sizes_match"
+        ]
+        is False
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 7
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+            "required_striations"
+        ]
+        == ["x", "y", "y=1x", "y=2x"]
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "min_striation_complete_certificate_size"
+        ]
+        == 8
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_agl23"][
+            "striation_completeness_gap_vs_unconstrained"
+        ]
+        == 1
+    )
+    assert (
+        data["cross_checks"]["full_sign_striation_certificate_comparison"][
+            "striation_complete_sizes_match"
+        ]
+        is False
     )
