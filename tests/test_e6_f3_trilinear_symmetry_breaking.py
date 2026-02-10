@@ -47,6 +47,17 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
     assert data["stabilizers"]["full_sign"]["hessian216_with_z_affine_global_sign"] >= 1
     assert data["cross_checks"]["line_product_closed_form"]["holds"] is True
     assert data["cross_checks"]["full_sign_closed_form"]["holds"] is True
+    assert data["cross_checks"]["line_product_stabilizer_parametrization"]["holds"] is True
+    assert (
+        data["cross_checks"]["line_product_stabilizer_parametrization_det1"]["holds"] is True
+    )
+    assert data["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"] is True
+    assert data["cross_checks"]["line_product_group_structure"]["size"] == 12
+    assert (
+        data["cross_checks"]["line_product_group_structure"]["candidate_isomorphism"].startswith(
+            "D12"
+        )
+    )
 
 
 def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
@@ -106,3 +117,9 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
     assert data["status"] == "ok"
     assert data["cross_checks"]["line_product_closed_form"]["holds"] is True
     assert data["cross_checks"]["full_sign_closed_form"]["holds"] is True
+    assert data["cross_checks"]["line_product_stabilizer_parametrization"]["holds"] is True
+    assert (
+        data["cross_checks"]["line_product_stabilizer_parametrization_det1"]["holds"] is True
+    )
+    assert data["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"] is True
+    assert data["cross_checks"]["line_product_group_structure"]["size"] == 12

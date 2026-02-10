@@ -6,17 +6,51 @@
 
 **Author:** Wil Dahn
 **Date:** January-February 2026
-**Status:** 73 theorems verified, 104 computational tests passing, 50+ quantitative predictions
+**Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
 
 **Canonical definitions:** See `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
 ---
 
+## Layperson's guide — a 2‑minute explanation 👋💡
+
+- **What this is.** A compact, fully discrete geometry called **W33** (40 points and their connections) encodes a rich algebraic structure that matches important features of the exceptional Lie algebra **E8**. The claim is not metaphorical: we prove exact correspondences by computation and exact integer arithmetic.
+- **Why you might care.** From a tiny combinatorial object we recover the same counting and structural features that appear in particle‑physics models (three generations, universal mixing patterns, a GUT‑scale Weinberg angle). These are mathematically precise, testable numerical statements — not guesses.
+- **How to read this README:**
+  - If you know *nothing* about physics: read the next section **The W33–E8 Correspondence Theorem** for an executive summary and then **Physical Predictions** (search for that heading) for the main takeaways.
+  - If you are a mathematician: consult **The Homology Breakthrough** and **Hodge Laplacian Spectrum** for exact statements and proofs (computational verification + SNF).
+  - If you are a developer or want to reproduce results: use the **Quick start** snippet below and see the `scripts/` and `tools/` directories for reproducible workflows.
+
+### Quick start (reproduce the core computations) 🔧
+
+- Run the compact correspondence check:
+
+```
+# reproducible verification (fast)
+python scripts/w33_e8_correspondence_theorem.py
+```
+
+- Run the Heisenberg / qutrit MUB checks (Pillar 21):
+
+```
+python scripts/w33_heisenberg_qutrit.py
+python -m pytest tests/test_heisenberg_qutrit_structure.py::test_w33_heisenberg_universal -q
+```
+
+- Run the full test suite (long):
+
+```
+# full test suite (~20-30 min depending on machine)
+python -m pytest -q
+```
+
+---
+
 ## The W33-E8 Correspondence Theorem
 
-**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 104 tests and verified by Smith Normal Form.
+**The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 120 tests and verified by Smith Normal Form.
 
-### The Sixteen Pillars
+### The Twenty-One Pillars
 
 | # | Pillar | Statement | Status |
 |---|--------|-----------|--------|
@@ -31,12 +65,16 @@
 | 9 | Cup product | H^1 x H^1 -> H^2 = 0: matter fields don't self-interact | Proved |
 | 10 | Ramanujan + Self-dual | W33 is Ramanujan; line graph = point graph (self-duality) | Verified |
 | 11 | H1 irreducibility | H\_1(W33; R) = 81 is an irreducible representation of PSp(4,3) | **Proved** |
-| 12 | E8 reconstruction | 248 = 8 + 81 + 120 + 39 (Hodge → E8 adjoint decomposition) | **Proved** |
+| 12 | E8 reconstruction | 248 = 8 + 81 + 120 + 39 (Hodge -> E8 adjoint decomposition) | **Proved** |
 | 13 | Topological protection | 3 generations are topologically protected: b\_0(link(v)) - 1 = 3 for every vertex | **Proved** |
 | 14 | H27 inclusion | H\_1(H27) embeds into H\_1(W33) with rank 46 | **Proved** |
 | 15 | **Three generations** | **81 = 27+27+27: all 800 order-3 elements of PSp(4,3) decompose H1** | **Proved** |
 | 16 | **Universal mixing** | **Mixing matrix M = (1/81)[[25,28,28],[28,25,28],[28,28,25]], eigenvalues 1 and -1/27** | **Proved** |
-
+| 17 | **Weinberg angle** | **sin^2(theta\_W) = (r-s)/(k-s) = 6/16 = 3/8, UNIQUE to W(3,3) among GQ(q,q)** | **Proved** |
+| 18 | **Spectral democracy** | **lambda\_i n\_i = 240 for both exact sectors; Tr(L1\|exact) = Tr(L1\|co-exact) = 480** | **Proved** |
+| 19 | **Dirac operator** | **D on R^480: spectrum 0^82 + (+-2)^160 + (+-sqrt10)^24 + (+-4)^15; ind=-80** | **Proved** |
+| 20 | **Self-dual chains** | **C\_0 and C\_3 both decompose as 1+24+15 under PSp(4,3); L\_2 = L\_3 = 4I** | **Proved** |
+| 21 | **Qutrit phase space identification** | **H27 ≅ F3^3; N12 = 12 affine lines = 4 qutrit MUBs; 9 missing tritangent planes = 9 AG(2,3) points; v0-stabilizer action lifts to AGL(2,3) with Z3 central kernel** | **Verified** |
 ### The Homology Breakthrough
 
 The clique complex of W33 has simplicial homology computed with exact integer arithmetic and confirmed torsion-free by Smith Normal Form (SymPy):
@@ -182,6 +220,12 @@ Every triangle belongs to exactly 1 tetrahedron. The 40 tetrahedra ARE the 40 li
 | Three generations | 81 = 27+27+27 via Z3 eigenspaces | **3 x 27** | 3 families |
 | GUT-scale mixing | Universal M with eigenvalues 1, -1/27 | **near-democratic** | CKM/PMNS |
 | Generation dimension | Controls mixing: deviation = 1/27 | **27** | 27 of E6 |
+| Weinberg from SRG | sin²θ\_W = (r-s)/(k-s) = 6/16 | **3/8** | GUT prediction |
+| Spectral democracy | λ₂n₂ = λ₃n₃ = \|Roots(E8)\| | **240** | -- |
+| Dirac index | χ = b₀ - b₁ + b₂ - b₃ = 1-81+0-0 | **-80** | -- |
+| Higher Laplacian scalar | L₂ = L₃ = (spectral gap)·I | **4I** | -- |
+| Self-dual chains | C₀ ≅ C₃ as PSp(4,3)-modules (1+24+15) | **40 = 1+24+15** | -- |
+| Dirac kernel dim | ker(D) = b₀ + b₁ + b₂ + b₃ | **82** | -- |
 
 ### Key Scripts and Tests
 
@@ -198,7 +242,11 @@ python scripts/w33_representation_theory.py
 # Run deep structure analysis (60s)
 python scripts/w33_deep_structure.py
 
-# Run all 104 tests (~22 min)
+# Run Heisenberg qutrit verification & holonomy comparisons (Pillar 21)
+python scripts/w33_heisenberg_qutrit.py
+python -m pytest tests/test_heisenberg_qutrit_structure.py::test_w33_heisenberg_universal -q
+
+# Run all 120 tests (~22 min)
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
@@ -230,12 +278,13 @@ There is currently no official Work‑with‑Apps integration on Windows that au
 | `scripts/w33_three_generations.py` | Three-generation decomposition 81 = 27+27+27 (E8 + W33) |
 | `scripts/w33_ckm_mixing.py` | CKM-like mixing from Z3 conjugacy classes |
 | `scripts/w33_democratic_mixing.py` | Universal mixing proof with exact Z3 projectors |
+| `scripts/w33_weinberg_dirac.py` | Weinberg angle, spectral democracy, Dirac operator, self-dual chains |
 | `scripts/e8_embedding_group_theoretic.py` | Core W33/E8 utilities |
-| `tests/test_e8_embedding.py` | 104 tests across 21 classes |
+| `tests/test_e8_embedding.py` | 120 tests across 24 classes |
 
-### Test Suite (104 tests, 21 classes)
+### Test Suite (120 tests, 24 classes)
 
-**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestThreeGenerations, TestUniversalMixing.
+**New test classes (added 2026-02-08):** TestH1Irreducibility, TestHodgeDerivation, TestH27Inclusion, TestFullDecomposition, TestFrobeniusSchur, TestThreeGenerations, TestUniversalMixing, TestWeinbergAngle, TestDiracOperator, TestSpectralDemocracy.
 
 | Class | Tests | What it verifies |
 |-------|-------|-----------------|
@@ -260,6 +309,9 @@ There is currently no official Work‑with‑Apps integration on Windows that au
 | **TestFrobeniusSchur** | **5** | **FS indicators (real/complex type), J^2=-I complex structure** |
 | **TestThreeGenerations** | **5** | **800 order-3 elements, chi=0, 27+27+27, projectors, topological protection** |
 | **TestUniversalMixing** | **3** | **Doubly stochastic, circulant structure, eigenvalue -1/27** |
+| **TestWeinbergAngle** | **4** | **sin²θ\_W = 3/8, Hodge derivation, unique among GQ(q,q), λᵢnᵢ = 240** |
+| **TestDiracOperator** | **8** | **480-dim, d²=0, D symmetric, D²=Laplacian, ker=82, paired spectrum, {D,γ}=0, ind=-80** |
+| **TestSpectralDemocracy** | **4** | **Tr equality, exact sector products, C₀≅C₃ decomposition, L₂=L₃=4I** |
 
 ### Systematic Dimension Coincidences
 
@@ -276,6 +328,9 @@ Nine independent numerical coincidences between W33 topology and E8 algebra:
 | Eigenvalue mults | = | 1+24+15 | **40** |
 | rank(d\_2) | = | \|E8 positive roots\| | **120** |
 | Triangle/tet ratio | = | Points per line | **4:1** |
+| λ₂n₂ = λ₃n₃ | = | \|Roots(E8)\| | **240** |
+| (r-s)/(k-s) | = | sin²θ\_W (GUT) | **3/8** |
+| χ(W33) | = | -b₁ + 1 | **-80** |
 
 Conservative joint probability: < 10^-21. This is a genuine mathematical structure.
 

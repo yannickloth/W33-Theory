@@ -26,6 +26,9 @@ changes affine/Hessian symmetries:
   `P(line)=+1 iff b*(a+b+c)=0 mod 3` for normalized line equation `a*x+b*y=c`.
 - empirical closed-form for full sign field `s(line,z)`:
   piecewise by line direction (the `(a,b)` of normalized `a*x+b*y=c`), now checked in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`.
+- exact affine parametrization of the residual line-product subgroup in `AGL(2,3)`:
+  `A=[[a,0],[c,d]], shift=(a-1,c+d-1)`, with `a,d in F3*`, `c in F3`, giving 12 elements.
+- resulting residual group structure matches `D12` (dihedral order 12), with determinant-1 slice a cyclic `C6`.
 
 Outputs:
 
@@ -40,7 +43,8 @@ a concrete computational bridge between:
 
 1. finite geometry (`AG(2,3)` lines, Heisenberg coordinates on H27),
 2. E6 cubic support/sign data,
-3. reduced residual symmetry after adding sign information.
+3. reduced residual symmetry after adding sign information,
+4. a concrete finite subgroup fingerprint (`D12`) on the line-product layer.
 
 This can be used as a next-stage target for deriving sign laws (or cocycles) rather
 than only support laws.

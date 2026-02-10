@@ -312,7 +312,13 @@ def main(argv: Sequence[str] | None = None) -> None:
         if idx is None:
             row["backbone_coset"] = None
         else:
-            row["backbone_coset"] = per_root[int(idx)]
+            bc = per_root[int(idx)]
+            row["backbone_coset"] = bc
+            # Backwards-compatible `decomp` summary used by `toe_coupling_atlas_sweep.py`.
+            row["decomp"] = {
+                "backbone_frac": float(bc.get("backbone_frac", 0.0)),
+                "coset_frac": float(bc.get("coset_frac", 0.0)),
+            }
         enriched.append(row)
 
     counts = {"backbone_major": 0, "coset_major": 0, "mixed": 0}

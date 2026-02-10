@@ -28,6 +28,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+AffineMap = tuple[tuple[int, int, int, int, int], tuple[int, int]]
 
 
 def _line_key(line: list[list[int]]) -> tuple[tuple[int, int], tuple[int, int], tuple[int, int]]:
@@ -127,6 +128,195 @@ def _map_line(
 def _map_z(z_map: tuple[int, int], z: int) -> int:
     az, bz = z_map
     return (az * z + bz) % 3
+
+
+def _compose_affine(lhs: AffineMap, rhs: AffineMap) -> AffineMap:
+    (a1, b1, c1, d1, _), s1 = lhs
+    (a2, b2, c2, d2, _), s2 = rhs
+    a = (a1 * a2 + b1 * c2) % 3
+    b = (a1 * b2 + b1 * d2) % 3
+    c = (c1 * a2 + d1 * c2) % 3
+    d = (c1 * b2 + d1 * d2) % 3
+    det = (a * d - b * c) % 3
+    shift = (
+        (a1 * s2[0] + b1 * s2[1] + s1[0]) % 3,
+        (c1 * s2[0] + d1 * s2[1] + s1[1]) % 3,
+    )
+    return ((a, b, c, d, det), shift)
+
+
+def _inverse_affine(elem: AffineMap) -> AffineMap:
+    (a, b, c, d, det), shift = elem
+    if det == 1:
+        inv_det = 1
+    elif det == 2:
+        inv_det = 2
+    else:
+        raise RuntimeError(f"Non-invertible affine element with det={det}")
+    ai = (d * inv_det) % 3
+    bi = (-b * inv_det) % 3
+    ci = (-c * inv_det) % 3
+    di = (a * inv_det) % 3
+    deti = (ai * di - bi * ci) % 3
+    inv_shift = (
+        (-(ai * shift[0] + bi * shift[1])) % 3,
+        (-(ci * shift[0] + di * shift[1])) % 3,
+    )
+    return ((ai, bi, ci, di, deti), inv_shift)
+
+
+def _identity_affine() -> AffineMap:
+    return ((1, 0, 0, 1, 1), (0, 0))
+
+
+def _affine_order(elem: AffineMap) -> int:
+    cur = _identity_affine()
+    for k in range(1, 73):
+        cur = _compose_affine(cur, elem)
+        if cur == _identity_affine():
+            return int(k)
+    raise RuntimeError(f"Could not find finite order for affine element: {elem}")
+
+
+def _line_product_stabilizer_elements(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
+    mats: list[tuple[int, int, int, int, int]],
+) -> list[AffineMap]:
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    kept: list[AffineMap] = []
+    for A in mats:
+        for b in pts:
+            ok = True
+            for L in lines:
+                L2 = _map_line(A, b, L)
+                if L2 not in product_sign or product_sign[L2] != product_sign[L]:
+                    ok = False
+                    break
+            if ok:
+                kept.append((A, b))
+    return sorted(kept)
+
+
+def _affine_elem_json(elem: AffineMap) -> dict[str, Any]:
+    (a, b, c, d, det), shift = elem
+    return {
+        "A": [int(a), int(b), int(c), int(d)],
+        "det": int(det),
+        "shift": [int(shift[0]), int(shift[1])],
+    }
+
+
+def _line_product_stabilizer_parametrization_check(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Empirical exact parametrization for line-product stabilizer in AGL(2,3):
+      A = [[a,0],[c,d]], with a,d in F3^* and c in F3,
+      shift = (a-1, c+d-1) mod 3.
+    """
+    observed = set(elements)
+    expected: set[AffineMap] = set()
+    for a in (1, 2):
+        for d in (1, 2):
+            for c in (0, 1, 2):
+                A = (a, 0, c, d, (a * d) % 3)
+                shift = ((a - 1) % 3, (c + d - 1) % 3)
+                expected.add((A, shift))
+
+    missing = sorted(expected - observed)
+    extra = sorted(observed - expected)
+    return {
+        "rule": "A=[[a,0],[c,d]], shift=(a-1,c+d-1), a,d in F3*, c in F3",
+        "holds": len(missing) == 0 and len(extra) == 0,
+        "observed_size": len(observed),
+        "expected_size": len(expected),
+        "missing_count": len(missing),
+        "extra_count": len(extra),
+        "missing": [_affine_elem_json(e) for e in missing],
+        "extra": [_affine_elem_json(e) for e in extra],
+    }
+
+
+def _line_product_stabilizer_parametrization_det1_check(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Determinant-1 slice in Hessian216:
+      A = [[a,0],[c,a^-1]], a in F3^*, c in F3,
+      shift = (a-1, c+a^-1-1) mod 3.
+    """
+    observed = {e for e in elements if e[0][4] == 1}
+    expected: set[AffineMap] = set()
+    for a in (1, 2):
+        a_inv = 1 if a == 1 else 2
+        for c in (0, 1, 2):
+            A = (a, 0, c, a_inv, 1)
+            shift = ((a - 1) % 3, (c + a_inv - 1) % 3)
+            expected.add((A, shift))
+
+    missing = sorted(expected - observed)
+    extra = sorted(observed - expected)
+    return {
+        "rule": "det=1 slice: A=[[a,0],[c,a^-1]], shift=(a-1,c+a^-1-1)",
+        "holds": len(missing) == 0 and len(extra) == 0,
+        "observed_size": len(observed),
+        "expected_size": len(expected),
+        "missing_count": len(missing),
+        "extra_count": len(extra),
+        "missing": [_affine_elem_json(e) for e in missing],
+        "extra": [_affine_elem_json(e) for e in extra],
+    }
+
+
+def _line_product_group_structure(elements: list[AffineMap]) -> dict[str, Any]:
+    """
+    Summarize finite-group structure and find a concrete dihedral witness pair
+    (r,s) with r^6=1, s^2=1, s r s = r^-1 generating all 12 elements.
+    """
+    elems = set(elements)
+    order_hist: Counter[str] = Counter()
+    det_hist: Counter[str] = Counter()
+    for elem in elems:
+        order_hist[str(_affine_order(elem))] += 1
+        det_hist[str(elem[0][4])] += 1
+
+    def generated_size(generators: tuple[AffineMap, AffineMap]) -> int:
+        seen = {_identity_affine()}
+        frontier = [_identity_affine()]
+        while frontier:
+            cur = frontier.pop()
+            for gen in generators:
+                nxt = _compose_affine(cur, gen)
+                if nxt in elems and nxt not in seen:
+                    seen.add(nxt)
+                    frontier.append(nxt)
+        return len(seen)
+
+    witness_r: AffineMap | None = None
+    witness_s: AffineMap | None = None
+    for r in sorted(elems):
+        if _affine_order(r) != 6 or r[0][4] != 1:
+            continue
+        rinv = _inverse_affine(r)
+        for s in sorted(elems):
+            if _affine_order(s) != 2 or s[0][4] != 2:
+                continue
+            if _compose_affine(_compose_affine(s, r), s) != rinv:
+                continue
+            if generated_size((r, s)) != len(elems):
+                continue
+            witness_r = r
+            witness_s = s
+            break
+        if witness_r is not None:
+            break
+
+    return {
+        "size": len(elems),
+        "order_hist": dict(order_hist),
+        "det_hist": dict(det_hist),
+        "candidate_isomorphism": "D12 (dihedral order 12), with det=1 cyclic C6 rotation subgroup",
+        "dihedral_witness_found": witness_r is not None and witness_s is not None,
+        "generator_r_order6_det1": _affine_elem_json(witness_r) if witness_r else None,
+        "generator_s_order2_det2": _affine_elem_json(witness_s) if witness_s else None,
+    }
 
 
 def _load_sign_field(
@@ -261,7 +451,7 @@ def _predict_full_sign_closed_form(
     Let line be normalized as a*x + b*y = c over F3. Then:
       (a,b)=(1,0)  (x=c):  sign=+1 iff (c^2 + 2c + z) == 2
       (a,b)=(0,1)  (y=c):  sign=-1 iff z*(c+1) == 2
-      (a,b)=(1,2)  (y=x+*): sign=+1 iff (z^2 + c) == 0
+      (a,b)=(1,2)  (y=x+*): sign=+1 iff (z^2 + 2c) == 0
       (a,b)=(1,1)  (y=2x+*): sign=-1 iff (z*c + 2z + 2c) == 0
     """
     a, b, c = _normalized_line_abc(line)
@@ -317,25 +507,16 @@ def _stabilizer_line_product_size(
     ],
     product_sign: dict[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int],
     mats: list[tuple[int, int, int, int, int]],
-) -> tuple[int, dict[str, int], dict[str, int]]:
-    pts = [(x, y) for x in range(3) for y in range(3)]
-    kept = 0
+) -> tuple[int, dict[str, int], dict[str, int], list[AffineMap]]:
+    elems = _line_product_stabilizer_elements(lines, product_sign, mats)
+    kept = len(elems)
     det_hist: Counter[str] = Counter()
     eq_hist: Counter[str] = Counter()
-    for A in mats:
-        for b in pts:
-            ok = True
-            for L in lines:
-                L2 = _map_line(A, b, L)
-                if L2 not in product_sign or product_sign[L2] != product_sign[L]:
-                    ok = False
-                    break
-            if ok:
-                kept += 1
-                det_hist[str(A[4])] += 1
-                for L in lines:
-                    eq_hist[str(_line_equation_type(_map_line(A, b, L))[0])] += 1
-    return kept, dict(det_hist), dict(eq_hist)
+    for A, b in elems:
+        det_hist[str(A[4])] += 1
+        for L in lines:
+            eq_hist[str(_line_equation_type(_map_line(A, b, L))[0])] += 1
+    return kept, dict(det_hist), dict(eq_hist), elems
 
 
 def _build_md(out: dict[str, Any]) -> str:
@@ -352,7 +533,7 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
-        "- Support under `F3^2 ⋊ SL(2,3)` (`216`): `{}`".format(
+        "- Support under `F3^2 x SL(2,3)` (`216`): `{}`".format(
             out["stabilizers"]["support"]["hessian216_size"]
         )
     )
@@ -388,6 +569,30 @@ def _build_md(out: dict[str, Any]) -> str:
         "- Full sign rule `{}` holds: `{}`".format(
             out["cross_checks"]["full_sign_closed_form"]["rule"],
             out["cross_checks"]["full_sign_closed_form"]["holds"],
+        )
+    )
+    lines.append(
+        "- Residual subgroup rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_stabilizer_parametrization"]["rule"],
+            out["cross_checks"]["line_product_stabilizer_parametrization"]["holds"],
+        )
+    )
+    lines.append(
+        "- Det=1 residual slice rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["rule"],
+            out["cross_checks"]["line_product_stabilizer_parametrization_det1"]["holds"],
+        )
+    )
+    lines.append("")
+    lines.append("## Residual subgroup structure")
+    lines.append(
+        "- Candidate type: `{}`".format(
+            out["cross_checks"]["line_product_group_structure"]["candidate_isomorphism"]
+        )
+    )
+    lines.append(
+        "- Dihedral witness found: `{}`".format(
+            out["cross_checks"]["line_product_group_structure"]["dihedral_witness_found"]
         )
     )
     lines.append("")
@@ -434,12 +639,25 @@ def main() -> None:
     product_sign = _line_product_signs(lines, sign_field)
     closed_form = _line_product_closed_form_check(product_sign)
     full_sign_closed_form = _full_sign_closed_form_check(lines, sign_field)
-    prod_agl, prod_agl_det_hist, prod_agl_eq_hist = _stabilizer_line_product_size(
+    (
+        prod_agl,
+        prod_agl_det_hist,
+        prod_agl_eq_hist,
+        prod_agl_elements,
+    ) = _stabilizer_line_product_size(
         lines, product_sign, gl
     )
-    prod_hessian, prod_hessian_det_hist, prod_hessian_eq_hist = _stabilizer_line_product_size(
+    (
+        prod_hessian,
+        prod_hessian_det_hist,
+        prod_hessian_eq_hist,
+        prod_hessian_elements,
+    ) = _stabilizer_line_product_size(
         lines, product_sign, sl
     )
+    prod_param = _line_product_stabilizer_parametrization_check(prod_agl_elements)
+    prod_param_det1 = _line_product_stabilizer_parametrization_det1_check(prod_hessian_elements)
+    prod_structure = _line_product_group_structure(prod_agl_elements)
 
     out = {
         "status": "ok",
@@ -470,11 +688,16 @@ def main() -> None:
                 "hessian216_det_hist": prod_hessian_det_hist,
                 "agl23_image_equation_type_hist": prod_agl_eq_hist,
                 "hessian216_image_equation_type_hist": prod_hessian_eq_hist,
+                "agl23_elements": [_affine_elem_json(e) for e in prod_agl_elements],
+                "hessian216_elements": [_affine_elem_json(e) for e in prod_hessian_elements],
             },
         },
         "cross_checks": {
             "line_product_closed_form": closed_form,
             "full_sign_closed_form": full_sign_closed_form,
+            "line_product_stabilizer_parametrization": prod_param,
+            "line_product_stabilizer_parametrization_det1": prod_param_det1,
+            "line_product_group_structure": prod_structure,
         },
     }
 
