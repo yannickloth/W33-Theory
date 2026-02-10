@@ -44,15 +44,42 @@ def main():
     payload = json.loads(args.in_json.read_text(encoding="utf-8"))
     reps = payload.get("representatives", [])
 
+    total_weight = sum(entry.get("hit_count", 1) for entry in reps)
+    unique_lines_hist = {}
+    striation_family_hist = {}
+
     out = {
         "status": "ok",
         "source": str(args.in_json),
         "k_min": payload.get("k_min"),
         "distinct_representatives": len(reps),
+        "total_representatives": len(reps),
+        "total_weight": total_weight,
         "representatives": [],
+        "aggregate": {
+            "unique_lines_count_hist": unique_lines_hist,
+            "striation_family_count_hist": striation_family_hist,
+        },
     }
     for idx, entry in enumerate(reps):
         canon = entry.get("canonical_repr") or []
+        # update histograms
+        unique_lines = set()
+        striation_families = set()
+        for r in canon:
+            line_coords = tuple(tuple(p) for p in r.get("line", []))
+            unique_lines.add(line_coords)
+            if r.get("line_type") is not None:
+                striation_families.add(r.get("line_type"))
+        unique_count = len(unique_lines)
+        striation_count = len(striation_families)
+        unique_lines_hist[str(unique_count)] = (
+            unique_lines_hist.get(str(unique_count), 0) + 1
+        )
+        striation_family_hist[str(striation_count)] = (
+            striation_family_hist.get(str(striation_count), 0) + 1
+        )
+
         # ensure canonical list uses expected keys
         # convert to analyzer's expected input
         witness_rows = canonical_to_witness_rows(canon)
@@ -63,6 +90,7 @@ def main():
             "geotype": geotype,
             "orbit_size": orbit.get("orbit_size"),
             "canonical_orbit_rep": orbit.get("canonical_rep"),
+            "hit_count": entry.get("hit_count", 1),
         }
         out["representatives"].append(out_entry)
 

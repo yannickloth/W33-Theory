@@ -603,6 +603,115 @@ def _line_product_striation_action_check(
     }
 
 
+def _line_product_flag_line_orbit_check(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    elements: list[AffineMap],
+    point: tuple[int, int] | None,
+    direction: str | None,
+) -> dict[str, Any]:
+    """
+    Classify line orbits by incidence with the distinguished affine flag
+    (missing point, distinguished direction).
+    """
+    line_orbits = _orbit_partition(
+        lines, elements, lambda elem, line: _map_line(elem[0], elem[1], line)
+    )
+    orbit_sizes = sorted(len(block) for block in line_orbits)
+
+    labels = [
+        "through_missing_and_in_distinguished_direction",
+        "not_through_missing_and_in_distinguished_direction",
+        "through_missing_and_not_in_distinguished_direction",
+        "not_through_missing_and_not_in_distinguished_direction",
+    ]
+
+    if point is None or direction is None:
+        return {
+            "rule": (
+                "Line orbits split by incidence with distinguished affine flag "
+                "(point, direction) into classes of sizes 1,2,3,6"
+            ),
+            "point": None,
+            "direction": direction,
+            "orbit_sizes": orbit_sizes,
+            "class_sizes": {label: 0 for label in labels},
+            "class_to_orbit_count": {label: 0 for label in labels},
+            "orbit_homogeneous_by_flag_class": False,
+            "qutrit_flag_line_orbit_signature_holds": False,
+            "orbit_rows": [],
+        }
+
+    def line_label(
+        line: tuple[tuple[int, int], tuple[int, int], tuple[int, int]]
+    ) -> str:
+        through_missing = point in line
+        in_direction = _line_equation_type(line)[0] == direction
+        if through_missing and in_direction:
+            return labels[0]
+        if (not through_missing) and in_direction:
+            return labels[1]
+        if through_missing and (not in_direction):
+            return labels[2]
+        return labels[3]
+
+    class_sets: dict[
+        str, set[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]]
+    ] = {label: set() for label in labels}
+    for line in lines:
+        class_sets[line_label(line)].add(line)
+    class_sizes = {label: len(class_sets[label]) for label in labels}
+
+    class_to_orbit_count: Counter[str] = Counter()
+    orbit_rows: list[dict[str, Any]] = []
+    orbit_homogeneous = True
+    for block in line_orbits:
+        block_labels = sorted({line_label(line) for line in block})
+        if len(block_labels) != 1:
+            orbit_homogeneous = False
+        for label in block_labels:
+            class_to_orbit_count[label] += 1
+        orbit_rows.append(
+            {
+                "size": len(block),
+                "flag_class_labels": block_labels,
+                "lines": [_line_json(line) for line in block],
+            }
+        )
+
+    expected_class_sizes = {
+        labels[0]: 1,
+        labels[1]: 2,
+        labels[2]: 3,
+        labels[3]: 6,
+    }
+    expected_orbit_count = {label: 1 for label in labels}
+
+    holds = (
+        orbit_sizes == [1, 2, 3, 6]
+        and orbit_homogeneous
+        and class_sizes == expected_class_sizes
+        and {label: class_to_orbit_count[label] for label in labels}
+        == expected_orbit_count
+    )
+
+    return {
+        "rule": (
+            "Line orbits split by incidence with distinguished affine flag "
+            "(point, direction) into classes of sizes 1,2,3,6"
+        ),
+        "point": [int(point[0]), int(point[1])],
+        "direction": direction,
+        "orbit_sizes": orbit_sizes,
+        "class_sizes": class_sizes,
+        "class_to_orbit_count": {
+            label: class_to_orbit_count[label] for label in labels
+        },
+        "orbit_homogeneous_by_flag_class": orbit_homogeneous,
+        "qutrit_flag_line_orbit_signature_holds": holds,
+        "orbit_rows": orbit_rows,
+    }
+
+
 def _line_type_family(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     line_type: str,
@@ -833,19 +942,16 @@ def _line_product_flag_geometry_check(
     }
 
 
-def _full_sign_obstruction_certificate(
+def _full_sign_obstruction_data(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     sign_field: dict[
         tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
     ],
     mats: list[tuple[int, int, int, int, int]],
-    candidate_space_rule: str,
 ) -> dict[str, Any]:
     """
-    Build a compact finite witness certificate for full-sign rigidity.
-    Candidate symmetries are (u-affine in mats) x (z-affine) x {global sign}.
-    We search line/z constraints whose simultaneous preservation rejects all
-    non-stabilizer candidates.
+    Shared full-sign obstruction data:
+    candidate space, stabilizers, and reject masks over witness rows.
     """
     pts = [(x, y) for x in range(3) for y in range(3)]
     z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
@@ -863,7 +969,7 @@ def _full_sign_obstruction_certificate(
 
     mismatch_masks_by_candidate: list[int] = []
     stabilizer_indices: list[int] = []
-    for idx, (u_map, z_map, eps, line_map) in enumerate(candidates):
+    for idx, (_u_map, z_map, eps, line_map) in enumerate(candidates):
         mask = 0
         for wi, (line, z) in enumerate(witnesses):
             lhs = sign_field[(line_map[line], _map_z(z_map, z))]
@@ -874,8 +980,9 @@ def _full_sign_obstruction_certificate(
         if mask == 0:
             stabilizer_indices.append(idx)
 
+    stabilizer_index_set = set(stabilizer_indices)
     non_stabilizer_indices = [
-        idx for idx in range(len(candidates)) if idx not in set(stabilizer_indices)
+        idx for idx in range(len(candidates)) if idx not in stabilizer_index_set
     ]
     non_index = {idx: pos for pos, idx in enumerate(non_stabilizer_indices)}
     universe_size = len(non_stabilizer_indices)
@@ -888,6 +995,51 @@ def _full_sign_obstruction_certificate(
         for wi in range(len(witnesses)):
             if (rej >> wi) & 1:
                 reject_masks_by_witness[wi] |= 1 << pos
+
+    stabilizers = []
+    for idx in stabilizer_indices:
+        (A, shift), z_map, eps, _line_map = candidates[idx]
+        stabilizers.append(
+            {
+                "u_map": _affine_elem_json((A, shift)),
+                "z_map": [int(z_map[0]), int(z_map[1])],
+                "eps": int(eps),
+            }
+        )
+
+    return {
+        "witnesses": witnesses,
+        "candidates": candidates,
+        "reject_masks_by_witness": reject_masks_by_witness,
+        "full_cover_mask": full_cover_mask,
+        "universe_size": universe_size,
+        "stabilizer_indices": stabilizer_indices,
+        "stabilizers": stabilizers,
+    }
+
+
+def _full_sign_obstruction_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+) -> dict[str, Any]:
+    """
+    Build a compact finite witness certificate for full-sign rigidity.
+    Candidate symmetries are (u-affine in mats) x (z-affine) x {global sign}.
+    We search line/z constraints whose simultaneous preservation rejects all
+    non-stabilizer candidates.
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    candidates = data["candidates"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+    stabilizer_indices = data["stabilizer_indices"]
+    stabilizers = data["stabilizers"]
 
     best_single = max((mask.bit_count() for mask in reject_masks_by_witness), default=0)
 
@@ -933,17 +1085,6 @@ def _full_sign_obstruction_certificate(
     if exact_indices is None:
         exact_indices = []
 
-    stabilizers = []
-    for idx in stabilizer_indices:
-        (A, shift), z_map, eps, _line_map = candidates[idx]
-        stabilizers.append(
-            {
-                "u_map": _affine_elem_json((A, shift)),
-                "z_map": [int(z_map[0]), int(z_map[1])],
-                "eps": int(eps),
-            }
-        )
-
     def witness_rows(indices: list[int]) -> list[dict[str, Any]]:
         rows = []
         for wi in indices:
@@ -966,6 +1107,279 @@ def _full_sign_obstruction_certificate(
             witness_rows(exact_indices) if found_exact else []
         ),
         "stabilizers": stabilizers,
+    }
+
+
+def _full_sign_obstruction_distinct_line_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+    unconstrained_min_size: int | None,
+) -> dict[str, Any]:
+    """
+    Distinct-line variant of full-sign obstruction:
+    at most one witness per affine line (choose z-slice on selected lines).
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+
+    witness_index = {(line, z): wi for wi, (line, z) in enumerate(witnesses)}
+    line_masks = []
+    for line in lines:
+        line_masks.append(
+            [reject_masks_by_witness[witness_index[(line, z)]] for z in (0, 1, 2)]
+        )
+
+    line_union = [masks[0] | masks[1] | masks[2] for masks in line_masks]
+    order = sorted(
+        range(len(lines)),
+        key=lambda idx: line_union[idx].bit_count(),
+        reverse=True,
+    )
+    ordered_lines = [lines[idx] for idx in order]
+    ordered_masks = [line_masks[idx] for idx in order]
+    suffix_union = [0 for _ in range(len(ordered_lines) + 1)]
+    for idx in range(len(ordered_lines) - 1, -1, -1):
+        suffix_union[idx] = suffix_union[idx + 1] | line_union[order[idx]]
+
+    if universe_size == 0:
+        found = True
+        best_k = 0
+        best_choice: list[
+            tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]
+        ] = []
+        nodes = 0
+    else:
+        found = False
+        best_k = None
+        best_choice = []
+        nodes = 0
+
+        def find_choice_for_k(
+            target_k: int,
+        ) -> tuple[
+            bool,
+            list[tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]],
+            int,
+        ]:
+            local_nodes = 0
+            choice: list[
+                tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]
+            ] = []
+
+            def dfs(i: int, chosen: int, covered: int) -> bool:
+                nonlocal local_nodes
+                local_nodes += 1
+                if covered == full_cover_mask and chosen == target_k:
+                    return True
+                if i == len(ordered_lines):
+                    return False
+                if chosen > target_k:
+                    return False
+                if chosen + (len(ordered_lines) - i) < target_k:
+                    return False
+                if (covered | suffix_union[i]) != full_cover_mask:
+                    return False
+
+                z_order = sorted(
+                    (0, 1, 2),
+                    key=lambda z: ordered_masks[i][z].bit_count(),
+                    reverse=True,
+                )
+                for z in z_order:
+                    choice.append(
+                        (
+                            ordered_lines[i][0],
+                            ordered_lines[i][1],
+                            ordered_lines[i][2],
+                            z,
+                        )
+                    )
+                    if dfs(i + 1, chosen + 1, covered | ordered_masks[i][z]):
+                        return True
+                    choice.pop()
+
+                if dfs(i + 1, chosen, covered):
+                    return True
+                return False
+
+            ok = dfs(0, 0, 0)
+            return ok, choice.copy(), local_nodes
+
+        for k in range(1, len(lines) + 1):
+            ok, choice, explored = find_choice_for_k(k)
+            nodes += explored
+            if ok:
+                found = True
+                best_k = k
+                best_choice = choice
+                break
+
+    witness_rows = []
+    for p0, p1, p2, z in best_choice:
+        line = (p0, p1, p2)
+        witness_rows.append(_witness_json(line, z, sign_field[(line, z)]))
+
+    gap = None
+    if unconstrained_min_size is not None and best_k is not None:
+        gap = int(best_k - unconstrained_min_size)
+
+    return {
+        "candidate_space_rule": candidate_space_rule,
+        "distinct_line_rule": "at most one witness per affine line (choose z-slice)",
+        "min_distinct_line_certificate_found": bool(found),
+        "min_distinct_line_certificate_size": (
+            int(best_k) if best_k is not None else None
+        ),
+        "min_distinct_line_certificate_witnesses": witness_rows,
+        "line_distinctness_gap_vs_unconstrained": gap,
+        "search_line_count": len(lines),
+        "search_nodes_explored": int(nodes),
+    }
+
+
+def _full_sign_obstruction_striation_complete_certificate(
+    lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+    sign_field: dict[
+        tuple[tuple[tuple[int, int], tuple[int, int], tuple[int, int]], int], int
+    ],
+    mats: list[tuple[int, int, int, int, int]],
+    candidate_space_rule: str,
+    unconstrained_min_size: int | None,
+) -> dict[str, Any]:
+    """
+    Striation-complete variant of full-sign obstruction:
+    witnesses must jointly cover all affine striations (x, y, y=x, y=2x).
+    """
+    data = _full_sign_obstruction_data(lines, sign_field, mats)
+    witnesses = data["witnesses"]
+    reject_masks_by_witness = data["reject_masks_by_witness"]
+    full_cover_mask = data["full_cover_mask"]
+    universe_size = data["universe_size"]
+
+    line_type_by_line = {line: _line_equation_type(line)[0] for line in lines}
+    required_striations = sorted(set(line_type_by_line.values()))
+    striation_index = {label: idx for idx, label in enumerate(required_striations)}
+    full_striation_mask = (1 << len(required_striations)) - 1
+
+    order = sorted(
+        range(len(witnesses)),
+        key=lambda wi: reject_masks_by_witness[wi].bit_count(),
+        reverse=True,
+    )
+    suffix_cover = [0 for _ in range(len(order) + 1)]
+    suffix_striation = [0 for _ in range(len(order) + 1)]
+    for idx in range(len(order) - 1, -1, -1):
+        wi = order[idx]
+        line, _z = witnesses[wi]
+        label = line_type_by_line[line]
+        suffix_cover[idx] = suffix_cover[idx + 1] | reject_masks_by_witness[wi]
+        suffix_striation[idx] = suffix_striation[idx + 1] | (
+            1 << striation_index[label]
+        )
+
+    if universe_size == 0:
+        found = True
+        best_k = 0
+        best_choice: list[int] = []
+        nodes = 0
+    else:
+        found = False
+        best_k = None
+        best_choice = []
+        nodes = 0
+
+        start_k = len(required_striations)
+        if unconstrained_min_size is not None:
+            start_k = max(start_k, unconstrained_min_size)
+
+        def find_choice_for_k(target_k: int) -> tuple[bool, list[int], int]:
+            local_nodes = 0
+            choice: list[int] = []
+
+            def dfs(i: int, chosen: int, covered: int, striation_mask: int) -> bool:
+                nonlocal local_nodes
+                local_nodes += 1
+                if (
+                    covered == full_cover_mask
+                    and striation_mask == full_striation_mask
+                    and chosen == target_k
+                ):
+                    return True
+                if i == len(order):
+                    return False
+                if chosen > target_k:
+                    return False
+                if chosen + (len(order) - i) < target_k:
+                    return False
+                if (covered | suffix_cover[i]) != full_cover_mask:
+                    return False
+                if (striation_mask | suffix_striation[i]) != full_striation_mask:
+                    return False
+
+                wi = order[i]
+                line, _z = witnesses[wi]
+                label = line_type_by_line[line]
+                next_striation_mask = striation_mask | (1 << striation_index[label])
+                choice.append(wi)
+                if dfs(
+                    i + 1,
+                    chosen + 1,
+                    covered | reject_masks_by_witness[wi],
+                    next_striation_mask,
+                ):
+                    return True
+                choice.pop()
+
+                if dfs(i + 1, chosen, covered, striation_mask):
+                    return True
+                return False
+
+            ok = dfs(0, 0, 0, 0)
+            return ok, choice.copy(), local_nodes
+
+        for k in range(start_k, len(witnesses) + 1):
+            ok, choice, explored = find_choice_for_k(k)
+            nodes += explored
+            if ok:
+                found = True
+                best_k = k
+                best_choice = choice
+                break
+
+    striation_hist: Counter[str] = Counter()
+    witness_rows: list[dict[str, Any]] = []
+    for wi in best_choice:
+        line, z = witnesses[wi]
+        label = line_type_by_line[line]
+        striation_hist[label] += 1
+        witness_rows.append(_witness_json(line, z, sign_field[(line, z)]))
+
+    gap = None
+    if unconstrained_min_size is not None and best_k is not None:
+        gap = int(best_k - unconstrained_min_size)
+
+    return {
+        "candidate_space_rule": candidate_space_rule,
+        "striation_complete_rule": "witnesses cover all 4 affine striations (line equation families)",
+        "required_striations": required_striations,
+        "min_striation_complete_certificate_found": bool(found),
+        "min_striation_complete_certificate_size": (
+            int(best_k) if best_k is not None else None
+        ),
+        "min_striation_complete_certificate_witnesses": witness_rows,
+        "certificate_striation_hist": {
+            label: int(striation_hist[label]) for label in required_striations
+        },
+        "striation_completeness_gap_vs_unconstrained": gap,
+        "search_witness_count": len(witnesses),
+        "search_nodes_explored": int(nodes),
     }
 
 
@@ -1020,50 +1434,50 @@ def _classify_certificate_witnesses(witnesses: list[dict]) -> dict:
 
 
 def _witness_orbit_stats(witnesses: list[dict]) -> dict:
-    """Compute canonical orbit representative and orbit size for a witness set
-
-    The orbit action is AGL(2,3) on (x,y) augmented by z-affine maps.
-    Returns a dict with keys: `orbit_size` (int) and `canonical_rep` (list of witness dicts).
+    """
+    Orbit stats for witness sets under AGL(2,3) on line points and affine maps on z.
     """
     pts = [(x, y) for x in range(3) for y in range(3)]
     z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
     mats = _gl2_3()
     affine_elements = []
-    for m in mats:
+    for mat in mats:
         for shift in pts:
-            affine_elements.append((m, shift))
+            affine_elements.append((mat, shift))
 
     def transform_witnesses(mshift, zmap, wlist):
-        m, shift = mshift
+        mat, shift = mshift
         out = []
-        for w in wlist:
+        for witness in wlist:
             mapped_pts = tuple(
-                sorted(_map_point(m, shift, tuple(p)) for p in w.get("line", []))
+                sorted(
+                    _map_point(mat, shift, tuple(p)) for p in witness.get("line", [])
+                )
             )
-            new_z = int(_map_z(zmap, int(w.get("z", 0))))
-            new_sign = int(w.get("sign_pm1", 1))
-            ltype = _line_equation_type(mapped_pts)[0]
+            new_z = int(_map_z(zmap, int(witness.get("z", 0))))
+            new_sign = int(witness.get("sign_pm1", 1))
+            line_type = _line_equation_type(mapped_pts)[0]
             out.append(
                 {
                     "line": [[int(p[0]), int(p[1])] for p in mapped_pts],
                     "z": int(new_z),
                     "sign_pm1": int(new_sign),
-                    "line_type": ltype,
+                    "line_type": line_type,
                 }
             )
         out_sorted = sorted(
             out,
-            key=lambda r: (
-                tuple(tuple(p) for p in r["line"]),
-                int(r["z"]),
-                int(r["sign_pm1"]),
-                r["line_type"],
+            key=lambda row: (
+                tuple(tuple(p) for p in row["line"]),
+                int(row["z"]),
+                int(row["sign_pm1"]),
+                row["line_type"],
             ),
         )
         return tuple(
-            tuple((tuple(p) for p in r["line"]))
-            + (r["z"], r["sign_pm1"], r["line_type"])
-            for r in out_sorted
+            tuple((tuple(p) for p in row["line"]))
+            + (row["z"], row["sign_pm1"], row["line_type"])
+            for row in out_sorted
         )
 
     seen = set()
@@ -1071,16 +1485,17 @@ def _witness_orbit_stats(witnesses: list[dict]) -> dict:
         for zmap in z_maps:
             rep = transform_witnesses(mshift, zmap, witnesses)
             seen.add(rep)
+
     canonical = []
     if seen:
         canon = min(seen)
         for item in canon:
-            pts = [list(p) for p in item[0:3]]
+            line = [list(p) for p in item[0:3]]
             z = int(item[3])
             sign = int(item[4])
-            ltype = str(item[5])
+            line_type = str(item[5])
             canonical.append(
-                {"line": pts, "z": z, "sign_pm1": sign, "line_type": ltype}
+                {"line": line, "z": z, "sign_pm1": sign, "line_type": line_type}
             )
     return {"orbit_size": int(len(seen)), "canonical_rep": canonical}
 
@@ -1416,6 +1831,20 @@ def _build_md(out: dict[str, Any]) -> str:
         )
     )
     lines.append(
+        "- Flag-line orbit rule `{}` holds: `{}`".format(
+            out["cross_checks"]["line_product_flag_line_orbits"]["rule"],
+            out["cross_checks"]["line_product_flag_line_orbits"][
+                "qutrit_flag_line_orbit_signature_holds"
+            ],
+        )
+    )
+    lines.append(
+        "- Flag-line orbit sizes: `{}` with class sizes `{}`".format(
+            out["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"],
+            out["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"],
+        )
+    )
+    lines.append(
         "- Flag geometry rule `{}` holds: `{}`".format(
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_rule"],
             out["cross_checks"]["line_product_flag_geometry"]["decomposition_holds"],
@@ -1479,6 +1908,48 @@ def _build_md(out: dict[str, Any]) -> str:
             ]
         )
     )
+    lines.append(
+        "- Distinct-line minimum certificate size (Hessian216): `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_hessian216"][
+                "min_distinct_line_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Distinct-line minimum certificate size (AGL(2,3)): `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+                "min_distinct_line_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Distinct-line penalty in AGL(2,3) vs unconstrained exact minimum: `{}`".format(
+            out["cross_checks"]["full_sign_distinct_line_certificate_agl23"][
+                "line_distinctness_gap_vs_unconstrained"
+            ]
+        )
+    )
+    lines.append(
+        "- Striation-complete minimum certificate size (Hessian216): `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_hessian216"][
+                "min_striation_complete_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Striation-complete minimum certificate size (AGL(2,3)): `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_agl23"][
+                "min_striation_complete_certificate_size"
+            ]
+        )
+    )
+    lines.append(
+        "- Striation-complete penalty in AGL(2,3) vs unconstrained exact minimum: `{}`".format(
+            out["cross_checks"]["full_sign_striation_certificate_agl23"][
+                "striation_completeness_gap_vs_unconstrained"
+            ]
+        )
+    )
     lines.append("")
     lines.append("## Source pointers")
     lines.append(
@@ -1495,6 +1966,12 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Finite phase-space striation context: Gibbons-Hoffman-Wootters (2004), arXiv:quant-ph/0401155."
+    )
+    lines.append(
+        "- Finite-geometry measurement context: Wootters (2004), arXiv:quant-ph/0406032."
+    )
+    lines.append(
+        "- Dimension-3 quasiprobability context: Zhu (2015), arXiv:1505.01123."
     )
     lines.append("")
     return "\n".join(lines) + "\n"
@@ -1575,6 +2052,9 @@ def main() -> None:
     prod_striation_action = _line_product_striation_action_check(
         lines, prod_agl_elements, direction
     )
+    prod_flag_line_orbits = _line_product_flag_line_orbit_check(
+        lines, prod_agl_elements, missing_point, direction
+    )
     full_sign_obstruction_hessian = _full_sign_obstruction_certificate(
         lines,
         sign_field,
@@ -1603,69 +2083,7 @@ def main() -> None:
     else:
         agl_geotype = None
 
-    # Compute orbit stats of exact minimal certificates under AGL(2,3) x z-affine
-    def _witness_orbit_stats(witnesses: list[dict]) -> dict:
-        pts = [(x, y) for x in range(3) for y in range(3)]
-        z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
-        mats = _gl2_3()
-        affine_elements = []
-        for m in mats:
-            for shift in pts:
-                affine_elements.append((m, shift))
-
-        def transform_witnesses(mshift, zmap, wlist):
-            m, shift = mshift
-            out = []
-            for w in wlist:
-                mapped_pts = tuple(
-                    sorted(_map_point(m, shift, tuple(p)) for p in w.get("line", []))
-                )
-                new_z = int(_map_z(zmap, int(w.get("z", 0))))
-                new_sign = int(w.get("sign_pm1", 1))
-                ltype = _line_equation_type(mapped_pts)[0]
-                out.append(
-                    {
-                        "line": [[int(p[0]), int(p[1])] for p in mapped_pts],
-                        "z": int(new_z),
-                        "sign_pm1": int(new_sign),
-                        "line_type": ltype,
-                    }
-                )
-            # sort by tuple form for canonical ordering
-            out_sorted = sorted(
-                out,
-                key=lambda r: (
-                    tuple(tuple(p) for p in r["line"]),
-                    int(r["z"]),
-                    int(r["sign_pm1"]),
-                    r["line_type"],
-                ),
-            )
-            return tuple(
-                tuple((tuple(p) for p in r["line"]))
-                + (r["z"], r["sign_pm1"], r["line_type"])
-                for r in out_sorted
-            )
-
-        seen = set()
-        for mshift in affine_elements:
-            for zmap in z_maps:
-                rep = transform_witnesses(mshift, zmap, witnesses)
-                seen.add(rep)
-        # canonical rep -> build JSON-friendly list-of-dicts
-        canonical = []
-        if seen:
-            canon = min(seen)
-            for item in canon:
-                pts = [list(p) for p in item[0:3]]
-                z = int(item[3])
-                sign = int(item[4])
-                ltype = str(item[5])
-                canonical.append(
-                    {"line": pts, "z": z, "sign_pm1": sign, "line_type": ltype}
-                )
-        return {"orbit_size": int(len(seen)), "canonical_rep": canonical}
-
+    # Compute orbit stats of exact minimal certificates under AGL(2,3) x z-affine.
     hessian_orbit = (
         _witness_orbit_stats(
             full_sign_obstruction_hessian.get("exact_min_certificate_witnesses", [])
@@ -1698,6 +2116,64 @@ def main() -> None:
         ],
         "hessian216_geotype": hessian_geotype,
         "agl23_geotype": agl_geotype,
+    }
+    full_sign_distinct_line_hessian = _full_sign_obstruction_distinct_line_certificate(
+        lines,
+        sign_field,
+        sl,
+        "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        full_sign_obstruction_hessian["exact_min_certificate_size"],
+    )
+    full_sign_distinct_line_agl = _full_sign_obstruction_distinct_line_certificate(
+        lines,
+        sign_field,
+        gl,
+        "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
+        full_sign_obstruction_agl["exact_min_certificate_size"],
+    )
+    full_sign_distinct_line_comparison = {
+        "hessian216_min_distinct_line_certificate_size": full_sign_distinct_line_hessian[
+            "min_distinct_line_certificate_size"
+        ],
+        "agl23_min_distinct_line_certificate_size": full_sign_distinct_line_agl[
+            "min_distinct_line_certificate_size"
+        ],
+        "distinct_line_sizes_match": (
+            full_sign_distinct_line_hessian["min_distinct_line_certificate_size"]
+            == full_sign_distinct_line_agl["min_distinct_line_certificate_size"]
+        ),
+        "agl23_distinct_line_penalty_vs_unconstrained": full_sign_distinct_line_agl[
+            "line_distinctness_gap_vs_unconstrained"
+        ],
+    }
+    full_sign_striation_hessian = _full_sign_obstruction_striation_complete_certificate(
+        lines,
+        sign_field,
+        sl,
+        "(u-affine in Hessian216) x (z-affine) x {global sign}",
+        full_sign_obstruction_hessian["exact_min_certificate_size"],
+    )
+    full_sign_striation_agl = _full_sign_obstruction_striation_complete_certificate(
+        lines,
+        sign_field,
+        gl,
+        "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
+        full_sign_obstruction_agl["exact_min_certificate_size"],
+    )
+    full_sign_striation_comparison = {
+        "hessian216_min_striation_complete_certificate_size": full_sign_striation_hessian[
+            "min_striation_complete_certificate_size"
+        ],
+        "agl23_min_striation_complete_certificate_size": full_sign_striation_agl[
+            "min_striation_complete_certificate_size"
+        ],
+        "striation_complete_sizes_match": (
+            full_sign_striation_hessian["min_striation_complete_certificate_size"]
+            == full_sign_striation_agl["min_striation_complete_certificate_size"]
+        ),
+        "agl23_striation_penalty_vs_unconstrained": full_sign_striation_agl[
+            "striation_completeness_gap_vs_unconstrained"
+        ],
     }
 
     out = {
@@ -1744,10 +2220,17 @@ def main() -> None:
             "line_product_flag_geometry": prod_flag_geometry,
             "line_product_orbit_fingerprint": prod_orbit_fingerprint,
             "line_product_striation_action": prod_striation_action,
+            "line_product_flag_line_orbits": prod_flag_line_orbits,
             "full_sign_obstruction_certificate": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,
             "full_sign_obstruction_certificate_comparison": full_sign_obstruction_comparison,
+            "full_sign_distinct_line_certificate_hessian216": full_sign_distinct_line_hessian,
+            "full_sign_distinct_line_certificate_agl23": full_sign_distinct_line_agl,
+            "full_sign_distinct_line_certificate_comparison": full_sign_distinct_line_comparison,
+            "full_sign_striation_certificate_hessian216": full_sign_striation_hessian,
+            "full_sign_striation_certificate_agl23": full_sign_striation_agl,
+            "full_sign_striation_certificate_comparison": full_sign_striation_comparison,
             "full_sign_obstruction_certificate_geotypes": {
                 "hessian216": full_sign_obstruction_comparison.get(
                     "hessian216_geotype"
@@ -1757,12 +2240,6 @@ def main() -> None:
             "full_sign_obstruction_certificate_orbits": {
                 "hessian216": hessian_orbit,
                 "agl23": agl_orbit,
-            },
-            "full_sign_obstruction_certificate_geotypes": {
-                "hessian216": full_sign_obstruction_comparison.get(
-                    "hessian216_geotype"
-                ),
-                "agl23": full_sign_obstruction_comparison.get("agl23_geotype"),
             },
         },
     }
