@@ -12,6 +12,8 @@
 
 ---
 
+**New:** For a concise, falsifiability-first answer to "solve the theory of everything," see `THEORY_OF_EVERYTHING_REALISTIC_SOLUTION.md`.
+
 ## The W33-E8 Correspondence Theorem
 
 **The central result of this theory.** A chain of exact correspondences between the W33 generalized quadrangle and the E8 Lie algebra, proved computationally with 104 tests and verified by Smith Normal Form.
