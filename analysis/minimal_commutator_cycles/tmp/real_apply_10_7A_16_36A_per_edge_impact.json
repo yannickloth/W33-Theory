@@ -1,0 +1,864 @@
+{
+  "edges": [
+    {
+      "edge": "10,7",
+      "score": 4,
+      "affected_cycles": [
+        {
+          "idx": 7,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 37,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 47,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 195,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 278,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 353,
+          "change": "improved",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 370,
+          "change": "improved",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 424,
+          "change": "improved",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 429,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 526,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 582,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 640,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge": "16,36",
+      "score": 3,
+      "affected_cycles": [
+        {
+          "idx": 213,
+          "change": "improved",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 312,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 1,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ]
+        },
+        {
+          "idx": 512,
+          "change": "unchanged",
+          "pre": [
+            {
+              "a2": 0,
+              "divisible": true,
+              "s_mod3": 0,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            }
+          ],
+          "post": [
+            {
+              "a2": 0,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 1,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            },
+            {
+              "a2": 2,
+              "divisible": false,
+              "s_mod3": null,
+              "k": 1
+            },
+            {
+              "a2": 3,
+              "divisible": true,
+              "s_mod3": 2,
+              "k": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "improved_cycles": [
+    353,
+    370,
+    424,
+    213
+  ],
+  "regressed_cycles": [],
+  "net_improved": 4
+}

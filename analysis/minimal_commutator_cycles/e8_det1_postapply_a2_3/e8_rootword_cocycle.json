@@ -391,7 +391,7 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,17,27,18,27,25,10",
-      "S": -1,
+      "S": 1,
       "divisible": false,
       "s_mod3": null
     },
@@ -1375,9 +1375,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,10,12,20,30,21,30,28",
-      "S": 5,
-      "divisible": false,
-      "s_mod3": null
+      "S": 3,
+      "divisible": true,
+      "s_mod3": 1
     },
     {
       "id": null,
@@ -1903,9 +1903,9 @@
       "id": null,
       "k": 2,
       "cycle_vertices": "7,10,12,34,12,36,26,27",
-      "S": 3,
-      "divisible": true,
-      "s_mod3": 1
+      "S": 1,
+      "divisible": false,
+      "s_mod3": null
     },
     {
       "id": null,
@@ -2839,9 +2839,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,27,34,25,34,35,10",
-      "S": 1,
-      "divisible": false,
-      "s_mod3": null
+      "S": 3,
+      "divisible": true,
+      "s_mod3": 1
     },
     {
       "id": null,
@@ -2975,7 +2975,7 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,20,9,19,39,37,10",
-      "S": -1,
+      "S": 1,
       "divisible": false,
       "s_mod3": null
     },
@@ -3159,9 +3159,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,10,12,30,37,28,37,38",
-      "S": 2,
-      "divisible": false,
-      "s_mod3": null
+      "S": 0,
+      "divisible": true,
+      "s_mod3": 0
     },
     {
       "id": null,
@@ -3407,7 +3407,7 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,30,9,29,19,20,10",
-      "S": -1,
+      "S": 1,
       "divisible": false,
       "s_mod3": null
     },
@@ -3879,9 +3879,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,10,12,37,20,38,20,21",
-      "S": 2,
-      "divisible": false,
-      "s_mod3": null
+      "S": 0,
+      "divisible": true,
+      "s_mod3": 0
     },
     {
       "id": null,
@@ -4111,9 +4111,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,10,12,17,12,16,36,34",
-      "S": -1,
-      "divisible": false,
-      "s_mod3": null
+      "S": -3,
+      "divisible": true,
+      "s_mod3": 2
     },
     {
       "id": null,
@@ -4223,9 +4223,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,37,9,39,29,30,10",
-      "S": -2,
-      "divisible": false,
-      "s_mod3": null
+      "S": 0,
+      "divisible": true,
+      "s_mod3": 0
     },
     {
       "id": null,
@@ -4327,7 +4327,7 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,10,12,27,12,26,16,17",
-      "S": 1,
+      "S": -1,
       "divisible": false,
       "s_mod3": null
     },
@@ -4671,9 +4671,9 @@
       "id": null,
       "k": 1,
       "cycle_vertices": "7,9,34,17,35,17,18,10",
-      "S": 0,
-      "divisible": true,
-      "s_mod3": 0
+      "S": 2,
+      "divisible": false,
+      "s_mod3": null
     },
     {
       "id": null,
@@ -5198,12 +5198,12 @@
   ],
   "stats": {
     "total": 648,
-    "mod_0": 69,
-    "mod_2": 52,
-    "mod_1": 105,
+    "mod_0": 71,
+    "mod_2": 53,
+    "mod_1": 106,
     "k_total": 648,
-    "divisible_with_k": 226,
-    "k_match_divisible": 110,
-    "match_rate_divisible": 0.48672566371681414
+    "divisible_with_k": 230,
+    "k_match_divisible": 112,
+    "match_rate_divisible": 0.48695652173913045
   }
 }
