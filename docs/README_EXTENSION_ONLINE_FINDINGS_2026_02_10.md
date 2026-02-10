@@ -79,11 +79,8 @@ Status: verified (`striation_orbit_sizes = [1,3]`,
 `non_distinguished_permutation_kernel_size = 2`).
 Cross-check: the trilinear analysis' distinguished direction and unique missing AG(2,3) point were confirmed to match the Heisenberg H27 fiber mapping (per `scripts/w33_heisenberg_qutrit.py`) in `tests/test_cross_script_striation_consistency.py`.
 
-## Second-pass raw notes (same date, new loop)
-
-- If striations are the qutrit-context objects (per Gibbons-Hoffman-Wootters and
-  Wootters), then the best symmetry-breaking check is not only point/line orbits but
-  how the residual subgroup permutes striation classes.
+Additional witness-space note:
+- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` for summaries and the exact witness rows.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:

@@ -443,7 +443,9 @@ def _line_product_orbit_fingerprint(
     ]
     line_orbit_rows: list[dict[str, Any]] = []
     for block in line_orbits:
-        type_hist: Counter[str] = Counter(_line_equation_type(line)[0] for line in block)
+        type_hist: Counter[str] = Counter(
+            _line_equation_type(line)[0] for line in block
+        )
         line_orbit_rows.append(
             {
                 "size": len(block),
@@ -519,7 +521,9 @@ def _line_product_striation_action_check(
     striation_orbits = _orbit_partition(
         striation_keys,
         elements,
-        lambda elem, key: image_key(elem, key) if image_key(elem, key) is not None else key,
+        lambda elem, key: (
+            image_key(elem, key) if image_key(elem, key) is not None else key
+        ),
     )
     striation_orbit_sizes = sorted(len(block) for block in striation_orbits)
 
@@ -563,9 +567,7 @@ def _line_product_striation_action_check(
         permutation_image_size = len(perm_set)
         permutation_image = [list(p) for p in sorted(perm_set)]
         non_distinguished_transitive = permutation_image_size > 0 and all(
-            any(perm[i] == j for perm in perm_set)
-            for i in range(3)
-            for j in range(3)
+            any(perm[i] == j for perm in perm_set) for i in range(3) for j in range(3)
         )
         from itertools import permutations
 
@@ -967,6 +969,56 @@ def _full_sign_obstruction_certificate(
     }
 
 
+def _classify_certificate_witnesses(witnesses: list[dict]) -> dict:
+    """Classify a minimal witness certificate geometrically.
+
+    Returns a JSON-serializable summary with:
+      - unique_lines_count
+      - lines_with_multiple_z_count
+      - z_histogram (string keys)
+      - sign_histogram (string keys)
+      - line_type_hist
+      - unique_points_covered
+      - has_full_z_line (bool)
+      - per_line_z_multisets (keys are line reprs)
+    """
+    from collections import Counter, defaultdict
+
+    lines_map = defaultdict(list)
+    z_hist = Counter()
+    sign_hist = Counter()
+    type_hist = Counter()
+    points = set()
+    for w in witnesses:
+        pts = tuple((int(p[0]), int(p[1])) for p in w.get("line", []))
+        # canonicalize by sorting points
+        line_key = tuple(sorted(pts))
+        lines_map[line_key].append(int(w.get("z", 0)))
+        z_hist[int(w.get("z", 0))] += 1
+        sign_hist[int(w.get("sign_pm1", 1))] += 1
+        type_hist[str(w.get("line_type", "unknown"))] += 1
+        for p in line_key:
+            points.add(p)
+
+    unique_lines_count = len(lines_map)
+    lines_with_multiple_z_count = sum(
+        1 for zs in lines_map.values() if len(set(zs)) > 1
+    )
+    per_line_z_multisets = {str(list(k)): sorted(set(v)) for k, v in lines_map.items()}
+    has_full_z_line = any(set(v) == {0, 1, 2} for v in lines_map.values())
+
+    return {
+        "unique_lines_count": int(unique_lines_count),
+        "lines_with_multiple_z_count": int(lines_with_multiple_z_count),
+        "z_histogram": {str(k): int(v) for k, v in sorted(z_hist.items())},
+        "sign_histogram": {str(k): int(v) for k, v in sorted(sign_hist.items())},
+        "line_type_hist": dict(type_hist),
+        "unique_points_covered": int(len(points)),
+        "has_full_z_line": bool(has_full_z_line),
+        "per_line_z_multisets": per_line_z_multisets,
+    }
+
+
 def _load_sign_field(
     path: Path,
 ) -> tuple[
@@ -1282,7 +1334,9 @@ def _build_md(out: dict[str, Any]) -> str:
     )
     lines.append(
         "- Striation orbit sizes under residual subgroup: `{}`".format(
-            out["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
+            out["cross_checks"]["line_product_striation_action"][
+                "striation_orbit_sizes"
+            ]
         )
     )
     lines.append(
@@ -1439,14 +1493,13 @@ def main() -> None:
         lines, product_sign, prod_agl_elements
     )
     missing_point = None
-    if (
-        len(prod_flag_geometry["unique_missing_point_from_negative_lines"]) == 2
-        and all(
-            isinstance(v, int)
-            for v in prod_flag_geometry["unique_missing_point_from_negative_lines"]
-        )
+    if len(prod_flag_geometry["unique_missing_point_from_negative_lines"]) == 2 and all(
+        isinstance(v, int)
+        for v in prod_flag_geometry["unique_missing_point_from_negative_lines"]
     ):
-        missing_point = tuple(prod_flag_geometry["unique_missing_point_from_negative_lines"])
+        missing_point = tuple(
+            prod_flag_geometry["unique_missing_point_from_negative_lines"]
+        )
     direction = prod_flag_geometry["distinguished_direction_all_positive"]
     if not isinstance(direction, str):
         direction = None
@@ -1468,6 +1521,22 @@ def main() -> None:
         gl,
         "(u-affine in AGL(2,3)) x (z-affine) x {global sign}",
     )
+
+    # Classify exact minimal certificates geometrically for reporting and cross-checks
+    if full_sign_obstruction_hessian.get("exact_min_certificate_found"):
+        hessian_geotype = _classify_certificate_witnesses(
+            full_sign_obstruction_hessian.get("exact_min_certificate_witnesses", [])
+        )
+    else:
+        hessian_geotype = None
+
+    if full_sign_obstruction_agl.get("exact_min_certificate_found"):
+        agl_geotype = _classify_certificate_witnesses(
+            full_sign_obstruction_agl.get("exact_min_certificate_witnesses", [])
+        )
+    else:
+        agl_geotype = None
+
     full_sign_obstruction_comparison = {
         "exact_min_sizes_match": (
             full_sign_obstruction_hessian["exact_min_certificate_found"]
@@ -1483,6 +1552,8 @@ def main() -> None:
         "agl23_exact_min_certificate_size": full_sign_obstruction_agl[
             "exact_min_certificate_size"
         ],
+        "hessian216_geotype": hessian_geotype,
+        "agl23_geotype": agl_geotype,
     }
 
     out = {
@@ -1533,6 +1604,12 @@ def main() -> None:
             "full_sign_obstruction_certificate_hessian216": full_sign_obstruction_hessian,
             "full_sign_obstruction_certificate_agl23": full_sign_obstruction_agl,
             "full_sign_obstruction_certificate_comparison": full_sign_obstruction_comparison,
+            "full_sign_obstruction_certificate_geotypes": {
+                "hessian216": full_sign_obstruction_comparison.get(
+                    "hessian216_geotype"
+                ),
+                "agl23": full_sign_obstruction_comparison.get("agl23_geotype"),
+            },
         },
     }
 
