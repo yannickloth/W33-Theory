@@ -22,6 +22,8 @@ changes affine/Hessian symmetries:
 - support-only affine lines retain full affine symmetry,
 - full sign field stabilizer collapses strongly (identity in current gauge),
 - line-product sign keeps a small residual subgroup.
+- empirical closed-form for line-product sign:
+  `P(line)=+1 iff b*(a+b+c)=0 mod 3` for normalized line equation `a*x+b*y=c`.
 
 Outputs:
 

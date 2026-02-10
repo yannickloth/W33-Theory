@@ -45,3 +45,4 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
     assert data["stabilizers"]["support"]["agl23_size"] == 432
     assert data["stabilizers"]["support"]["hessian216_size"] == 216
     assert data["stabilizers"]["full_sign"]["hessian216_with_z_affine_global_sign"] >= 1
+    assert data["cross_checks"]["line_product_closed_form"]["holds"] is True
