@@ -1,0 +1,28 @@
+name: Pillar 21 smoke
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  pillar21-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest numpy
+
+      - name: Run Pillar 21 / Clifford-lift tests
+        run: |
+          pytest -q tests/test_heisenberg_qutrit_structure.py tests/test_heisenberg_translations.py tests/test_clifford_lift.py
