@@ -46,3 +46,63 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
     assert data["stabilizers"]["support"]["hessian216_size"] == 216
     assert data["stabilizers"]["full_sign"]["hessian216_with_z_affine_global_sign"] >= 1
     assert data["cross_checks"]["line_product_closed_form"]["holds"] is True
+    assert data["cross_checks"]["full_sign_closed_form"]["holds"] is True
+
+
+def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
+    # Minimal fixture reproducing the observed sign field on the 12 affine lines.
+    lines = [
+        ([[0, 0], [0, 1], [0, 2]], (-1, -1, 1)),
+        ([[1, 0], [1, 1], [1, 2]], (-1, -1, 1)),
+        ([[2, 0], [2, 1], [2, 2]], (1, -1, -1)),
+        ([[0, 0], [1, 0], [2, 0]], (1, 1, -1)),
+        ([[0, 1], [1, 1], [2, 1]], (1, -1, 1)),
+        ([[0, 2], [1, 2], [2, 2]], (1, 1, 1)),
+        ([[0, 0], [1, 1], [2, 2]], (1, -1, -1)),
+        ([[0, 1], [1, 2], [2, 0]], (-1, -1, -1)),
+        ([[0, 2], [1, 0], [2, 1]], (-1, 1, 1)),
+        ([[0, 0], [1, 2], [2, 1]], (-1, 1, 1)),
+        ([[0, 1], [1, 0], [2, 2]], (1, 1, 1)),
+        ([[0, 2], [1, 1], [2, 0]], (1, 1, -1)),
+    ]
+    payload = {
+        "affine_u_line_slices": [
+            {
+                "u_line": u_line,
+                "entries": [
+                    {"z_profile_over_u_line": [z, z, z], "sign_pm1": int(signs[z])}
+                    for z in (0, 1, 2)
+                ],
+            }
+            for u_line, signs in lines
+        ]
+    }
+
+    in_json = tmp_path / "e6_f3_trilinear_map.json"
+    out_json = tmp_path / "out.json"
+    out_md = tmp_path / "out.md"
+    in_json.write_text(json.dumps(payload), encoding="utf-8")
+
+    cmd = [
+        sys.executable,
+        "tools/analyze_e6_f3_trilinear_symmetry_breaking.py",
+        "--in-json",
+        str(in_json),
+        "--out-json",
+        str(out_json),
+        "--out-md",
+        str(out_md),
+    ]
+    r = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        cwd=Path.cwd(),
+        check=False,
+    )
+    assert r.returncode == 0, r.stderr
+    data = json.loads(out_json.read_text(encoding="utf-8"))
+    assert data["status"] == "ok"
+    assert data["cross_checks"]["line_product_closed_form"]["holds"] is True
+    assert data["cross_checks"]["full_sign_closed_form"]["holds"] is True

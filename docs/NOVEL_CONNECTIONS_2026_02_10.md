@@ -24,6 +24,8 @@ changes affine/Hessian symmetries:
 - line-product sign keeps a small residual subgroup.
 - empirical closed-form for line-product sign:
   `P(line)=+1 iff b*(a+b+c)=0 mod 3` for normalized line equation `a*x+b*y=c`.
+- empirical closed-form for full sign field `s(line,z)`:
+  piecewise by line direction (the `(a,b)` of normalized `a*x+b*y=c`), now checked in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`.
 
 Outputs:
 
