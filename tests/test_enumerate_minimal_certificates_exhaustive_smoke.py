@@ -35,21 +35,19 @@ def _fixture_payload() -> dict:
     }
 
 
-def test_exact_truncation_smoke(tmp_path: Path):
+def test_exhaustive_wrapper_smoke(tmp_path: Path):
     in_json = tmp_path / "in.json"
     in_json.write_text(json.dumps(_fixture_payload()), encoding="utf-8")
     out_json = tmp_path / "out.json"
 
     cmd = [
         sys.executable,
-        "tools/enumerate_minimal_certificates.py",
+        "tools/enumerate_minimal_certificates_exhaustive.py",
         "--in-json",
         str(in_json),
         "--candidate-space",
         "hessian",
-        "--mode",
-        "exact",
-        "--max-exact-solutions",
+        "--max-solutions",
         "1",
         "--time-limit-sec",
         "10",
@@ -61,9 +59,8 @@ def test_exact_truncation_smoke(tmp_path: Path):
     assert out_json.exists()
     data = json.loads(out_json.read_text(encoding="utf-8"))
     assert data.get("status") == "ok"
-    assert data.get("mode") == "exact"
     assert data.get("k_min") == 7
-    assert data.get("exact_solutions_count") == 1
+    assert data.get("combinations_that_cover") == 1
     assert data.get("distinct_canonical_representatives_found", 0) >= 1
     assert data.get("truncated_by_max_solutions") is True
     assert data.get("search_nodes_explored", 0) > 0
