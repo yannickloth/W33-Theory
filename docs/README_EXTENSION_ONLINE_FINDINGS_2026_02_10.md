@@ -14,69 +14,70 @@ from the layperson narrative.
 
 ## Source log (primary sources)
 
-1. Artebani-Dolgachev, *The Hesse pencil of plane cubic curves*  
-   URL: `https://arxiv.org/abs/math/0611590`  
+1. Artebani-Dolgachev, *The Hesse pencil of plane cubic curves*
+   URL: `https://arxiv.org/abs/math/0611590`
    Raw note: finite-plane cubic/Hesse structure remains the core geometric template
    for the affine-line decomposition used in current scripts.
 
-2. Hunt, *The 27 lines on the cubic surface and finite geometry*  
-   URL: `https://arxiv.org/abs/math/0507118`  
+2. Hunt, *The 27 lines on the cubic surface and finite geometry*
+   URL: `https://arxiv.org/abs/math/0507118`
    Raw note: classic 27-line finite-geometry viewpoint supports using explicit
    incidence/stabilizer computations rather than only representation-theoretic prose.
 
-3. Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*  
-   URL: `https://arxiv.org/abs/2602.01110`  
+3. Mainkar et al., *Lines and Opposition in Exceptional Incidence Geometry*
+   URL: `https://arxiv.org/abs/2602.01110`
    Raw note: recent exceptional-incidence framing motivated adding stronger subgroup
    and orbit diagnostics beyond just cardinalities.
 
-4. Argyres-Chalykh-Lu, *E6 and F4 in Calogero-Moser Elliptic Integrable Systems*  
-   URL: `https://arxiv.org/abs/2510.16417`  
+4. Argyres-Chalykh-Lu, *E6 and F4 in Calogero-Moser Elliptic Integrable Systems*
+   URL: `https://arxiv.org/abs/2510.16417`
    Raw note: modern `E6` context justified keeping the sign-layer analysis anchored
    to explicit finite invariants and exact witness certificates.
 
-5. Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*  
-   URL: `https://arxiv.org/abs/2509.06785`  
+5. Frezzotti et al., *A simple lattice setup for E6 and E8 gauge theories*
+   URL: `https://arxiv.org/abs/2509.06785`
    Raw note: reinforced emphasis on constructive, machine-checkable gauge data and
    reproducible computations.
 
-6. Wootters, *Quantum measurements and finite geometry*  
-   URL: `https://arxiv.org/abs/quant-ph/0406032`  
+6. Wootters, *Quantum measurements and finite geometry*
+   URL: `https://arxiv.org/abs/quant-ph/0406032`
    Raw note: finite-phase-space and striation viewpoint motivated residual-orbit
    fingerprint checks on `AG(2,3)` points and lines.
 
-7. Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*  
-   URL: `https://arxiv.org/abs/quant-ph/0103162`  
+7. Bandyopadhyay et al., *A new proof for the existence of mutually unbiased bases*
+   URL: `https://arxiv.org/abs/quant-ph/0103162`
    Raw note: finite-field MUB construction supports treating affine-line classes as
    meaningful qutrit-structure carriers.
 
-8. Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*  
-   URL: `https://arxiv.org/abs/quant-ph/0401155`  
+8. Gibbons, Hoffman, Wootters, *Discrete phase space based on finite fields*
+   URL: `https://arxiv.org/abs/quant-ph/0401155`
    Raw note: makes the striation picture explicit (lines grouped into parallel classes),
    suggesting direct tests of induced subgroup action on striation classes.
 
 ## Hypothesis chain -> repo checks
 
-H1. Residual subgroup should be an explicit affine-flag stabilizer.  
+H1. Residual subgroup should be an explicit affine-flag stabilizer.
 Status: verified in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`.
 
-H2. Full-sign rigidity should admit a finite obstruction witness.  
+H2. Full-sign rigidity should admit a finite obstruction witness.
 Status: verified with exact minimum witness size `7` in Hessian216 candidate space.
 
-H3. The minimum obstruction size should persist in full `AGL(2,3)` candidate space.  
+H3. The minimum obstruction size should persist in full `AGL(2,3)` candidate space.
 Status: verified with exact minimum witness size `7` in both spaces.
 
-H4. Residual `D12` should expose a ternary nucleus (unique order-`3` subgroup).  
+H4. Residual `D12` should expose a ternary nucleus (unique order-`3` subgroup).
 Status: verified (`order3_element_count = 2`, unique `C3` subgroup present).
 
-H5. Residual action should carry a rigid phase-space orbit signature on `AG(2,3)`.  
+H5. Residual action should carry a rigid phase-space orbit signature on `AG(2,3)`.
 Status: verified (`point_orbit_sizes = [1,2,6]`, `line_orbit_sizes = [1,2,3,6]`,
 missing point fixed, distinguished direction split `[1,2]`).
 
 H6. Residual action on the 4 striations should fix one and induce full `S3` on the
-other three (qutrit-MUB context splitting).  
+other three (qutrit-MUB context splitting).
 Status: verified (`striation_orbit_sizes = [1,3]`,
 `non_distinguished_permutation_is_s3 = true`,
 `non_distinguished_permutation_kernel_size = 2`).
+Cross-check: the trilinear analysis' distinguished direction and unique missing AG(2,3) point were confirmed to match the Heisenberg H27 fiber mapping (per `scripts/w33_heisenberg_qutrit.py`) in `tests/test_cross_script_striation_consistency.py`.
 
 ## Second-pass raw notes (same date, new loop)
 
@@ -102,4 +103,3 @@ python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q
 ```
-

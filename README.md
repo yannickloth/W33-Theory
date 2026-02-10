@@ -37,8 +37,9 @@ This repository is meant to be read like a single, continuously updated paper.
   points split as `[1,2,6]`, lines split as `[1,2,3,6]`, with a fixed missing point and distinguished-direction split `[1,2]`.
 - On the 4 qutrit/MUB striations, residual action now verifies:
   one distinguished striation is fixed and the remaining 3 carry full `S3` permutation action (kernel size `2`).
+- Cross-script consistency: the trilinear analysis' distinguished striation and unique missing AG(2,3) point are consistent with the Heisenberg H27 fiber mapping produced by `scripts/w33_heisenberg_qutrit.py` (see `tests/test_cross_script_striation_consistency.py`).
 - Repro path:
-  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q`.
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py -q`."
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
