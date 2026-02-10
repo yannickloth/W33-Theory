@@ -73,3 +73,14 @@ def test_witness_certificate_geotypes():
     assert z_a == {0: 3, 1: 3, 2: 1}
     s_a = {int(k): v for k, v in a["sign_histogram"].items()}
     assert s_a == {-1: 3, 1: 4}
+
+    # Orbit stats (AGL x z-affine)
+    orbits = data["cross_checks"].get("full_sign_obstruction_certificate_orbits")
+    assert orbits is not None
+    h_orb = orbits.get("hessian216")
+    a_orb = orbits.get("agl23")
+    assert h_orb and a_orb
+    assert h_orb["orbit_size"] > 0
+    assert a_orb["orbit_size"] > 0
+    # canonical representatives should differ between the two minimal certificates
+    assert h_orb["canonical_rep"] != a_orb["canonical_rep"]
