@@ -1019,6 +1019,72 @@ def _classify_certificate_witnesses(witnesses: list[dict]) -> dict:
     }
 
 
+def _witness_orbit_stats(witnesses: list[dict]) -> dict:
+    """Compute canonical orbit representative and orbit size for a witness set
+
+    The orbit action is AGL(2,3) on (x,y) augmented by z-affine maps.
+    Returns a dict with keys: `orbit_size` (int) and `canonical_rep` (list of witness dicts).
+    """
+    pts = [(x, y) for x in range(3) for y in range(3)]
+    z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
+    mats = _gl2_3()
+    affine_elements = []
+    for m in mats:
+        for shift in pts:
+            affine_elements.append((m, shift))
+
+    def transform_witnesses(mshift, zmap, wlist):
+        m, shift = mshift
+        out = []
+        for w in wlist:
+            mapped_pts = tuple(
+                sorted(_map_point(m, shift, tuple(p)) for p in w.get("line", []))
+            )
+            new_z = int(_map_z(zmap, int(w.get("z", 0))))
+            new_sign = int(w.get("sign_pm1", 1))
+            ltype = _line_equation_type(mapped_pts)[0]
+            out.append(
+                {
+                    "line": [[int(p[0]), int(p[1])] for p in mapped_pts],
+                    "z": int(new_z),
+                    "sign_pm1": int(new_sign),
+                    "line_type": ltype,
+                }
+            )
+        out_sorted = sorted(
+            out,
+            key=lambda r: (
+                tuple(tuple(p) for p in r["line"]),
+                int(r["z"]),
+                int(r["sign_pm1"]),
+                r["line_type"],
+            ),
+        )
+        return tuple(
+            tuple((tuple(p) for p in r["line"]))
+            + (r["z"], r["sign_pm1"], r["line_type"])
+            for r in out_sorted
+        )
+
+    seen = set()
+    for mshift in affine_elements:
+        for zmap in z_maps:
+            rep = transform_witnesses(mshift, zmap, witnesses)
+            seen.add(rep)
+    canonical = []
+    if seen:
+        canon = min(seen)
+        for item in canon:
+            pts = [list(p) for p in item[0:3]]
+            z = int(item[3])
+            sign = int(item[4])
+            ltype = str(item[5])
+            canonical.append(
+                {"line": pts, "z": z, "sign_pm1": sign, "line_type": ltype}
+            )
+    return {"orbit_size": int(len(seen)), "canonical_rep": canonical}
+
+
 def _load_sign_field(
     path: Path,
 ) -> tuple[
