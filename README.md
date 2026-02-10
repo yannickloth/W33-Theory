@@ -52,6 +52,8 @@ This repository is meant to be read like a single, continuously updated paper.
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
+- For concurrent Codex/Raptor execution without branch collisions, use:
+  `docs/MULTI_ASSISTANT_WORKFLOW.md`.
 
 ---
 
