@@ -9,7 +9,7 @@ Runs, in order:
  - tools/phase_correct_mubs.py
 
 Usage:
-  py -3 tools/prepare_w33_analysis_bundle.py --bundle-dir artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 --out-dir analysis/w33_bundle_temp --v0 0
+  python tools/prepare_w33_analysis_bundle.py --bundle-dir artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 --out-dir analysis/w33_bundle_temp --v0 0
 
 Options:
   --dry-run    : Print steps without executing them

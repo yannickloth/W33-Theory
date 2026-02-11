@@ -12,6 +12,9 @@
 - dim `728` exceptional-line rational hits (den<= 200): `0`
 - dim `486` exceptional-line rational hits (den<= 200): `0`
 - dim `242` exceptional-line rational hits (den<= 200): `0`
+- arithmetic closure and family split:
+  `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`,
+  `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
 
 ## s12 Bridge
 
