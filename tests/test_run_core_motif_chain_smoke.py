@@ -40,13 +40,20 @@ def test_run_core_motif_chain_smoke(tmp_path: Path) -> None:
             encoding="utf-8"
         )
     )
+    search = json.loads(
+        (out_dir / "core_motif_anchor_search_2026_02_11.json").read_text(
+            encoding="utf-8"
+        )
+    )
 
     assert link["status"] == "ok"
     assert pol["status"] == "ok"
     assert enr["status"] == "ok"
     assert anc["status"] == "ok"
+    assert search["status"] == "ok"
 
     assert (docs_dir / "CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md").exists()
     assert (docs_dir / "CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md").exists()
     assert (docs_dir / "CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md").exists()
     assert (docs_dir / "CORE_MOTIF_ANCHOR_CHANNELS_2026_02_11.md").exists()
+    assert (docs_dir / "CORE_MOTIF_ANCHOR_SEARCH_2026_02_11.md").exists()

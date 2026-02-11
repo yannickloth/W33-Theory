@@ -198,6 +198,11 @@ pure orbit `1296` on support `2` (`p_enrich_1296=0.03834`).
 abstaining classifier achieves `36/38 = 0.947` precision when it fires on the
 combined Hessian representative set, with zero anchor conflicts.
 
+`tools/search_core_motif_anchor_sets.py` then searches small anchor sets
+under a precision floor (`>=0.90`), finding a best 3/3 anchor configuration
+with improved coverage `48/335 = 0.143` at precision `44/48 = 0.917`
+and still zero conflicts.
+
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 

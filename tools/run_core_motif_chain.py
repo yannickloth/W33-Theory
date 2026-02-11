@@ -5,7 +5,8 @@ This orchestration pass builds, in order:
 1) rulebook-to-census motif link,
 2) motif orbit polarization,
 3) motif enrichment statistics,
-4) motif anchor channels.
+4) motif anchor channels,
+5) motif anchor-set search.
 """
 
 from __future__ import annotations
@@ -32,6 +33,8 @@ from tools.core_motif_enrichment_stats import build_report as build_enrichment
 from tools.core_motif_enrichment_stats import render_md as render_enrichment_md
 from tools.link_core_rulebook_to_min_cert_census import build_report as build_link
 from tools.link_core_rulebook_to_min_cert_census import render_md as render_link_md
+from tools.search_core_motif_anchor_sets import build_report as build_anchor_search
+from tools.search_core_motif_anchor_sets import render_md as render_anchor_search_md
 
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
@@ -69,20 +72,13 @@ def main() -> None:
     pol = build_polarization(rulebook_json=args.rulebook_json)
     enr = build_enrichment(rulebook_json=args.rulebook_json)
     anc = build_anchors(rulebook_json=args.rulebook_json)
+    search = build_anchor_search(rulebook_json=args.rulebook_json)
 
     _write_json(args.out_dir / "core_rulebook_min_cert_link_2026_02_11.json", link)
-    _write_json(
-        args.out_dir / "core_motif_orbit_polarization_2026_02_11.json",
-        pol,
-    )
-    _write_json(
-        args.out_dir / "core_motif_enrichment_stats_2026_02_11.json",
-        enr,
-    )
-    _write_json(
-        args.out_dir / "core_motif_anchor_channels_2026_02_11.json",
-        anc,
-    )
+    _write_json(args.out_dir / "core_motif_orbit_polarization_2026_02_11.json", pol)
+    _write_json(args.out_dir / "core_motif_enrichment_stats_2026_02_11.json", enr)
+    _write_json(args.out_dir / "core_motif_anchor_channels_2026_02_11.json", anc)
+    _write_json(args.out_dir / "core_motif_anchor_search_2026_02_11.json", search)
 
     _write_md(
         args.docs_dir / "CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md",
@@ -99,6 +95,10 @@ def main() -> None:
     _write_md(
         args.docs_dir / "CORE_MOTIF_ANCHOR_CHANNELS_2026_02_11.md",
         render_anchors_md(anc),
+    )
+    _write_md(
+        args.docs_dir / "CORE_MOTIF_ANCHOR_SEARCH_2026_02_11.md",
+        render_anchor_search_md(search),
     )
 
     print("Wrote core-motif chain artifacts and docs.")

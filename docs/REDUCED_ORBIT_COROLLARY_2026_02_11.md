@@ -64,3 +64,6 @@ Global strengthening:
   high-precision abstaining classifier:
   anchors `x:(1,1,0)` (full) and `x:(2,2,1)` (reduced), precision `36/38=0.947`
   on combined Hessian reps when the anchor rule fires.
+- anchor-set search refinement (`tools/search_core_motif_anchor_sets.py`)
+  expands anchors (up to 3/3) to raise coverage to `48/335=0.143` while
+  preserving a precision floor (`44/48=0.917`, conflicts `0`).

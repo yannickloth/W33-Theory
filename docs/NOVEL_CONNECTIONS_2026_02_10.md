@@ -194,9 +194,14 @@ changes affine/Hessian symmetries:
   On combined Hessian reps it fires on `38/335` with precision `36/38 = 0.947`
   and zero full/reduced anchor conflicts.
 - core-motif chain orchestration (`2026-02-11`):
-  `tools/run_core_motif_chain.py` now runs all four motif layers in one pass
-  (link -> polarization -> enrichment -> anchors), regenerating both JSON
+  `tools/run_core_motif_chain.py` now runs all five motif layers in one pass
+  (link -> polarization -> enrichment -> anchors -> anchor-search), regenerating both JSON
   artifacts and markdown docs.
+- core-motif anchor-set search (`2026-02-11`):
+  `tools/search_core_motif_anchor_sets.py` performs exhaustive small-set search
+  over motif anchors under a precision floor. Best found (<=3 full, <=3 reduced):
+  coverage `48/335 = 0.143` with precision `44/48 = 0.917`, improving coverage
+  over fixed anchors (`38/335`) while keeping zero conflicts.
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:
