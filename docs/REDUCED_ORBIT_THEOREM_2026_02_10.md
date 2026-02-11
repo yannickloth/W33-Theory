@@ -23,6 +23,16 @@ Equivalently, after choosing an adapted affine gauge sending the distinguished a
 5. (z-map restriction is exact under full affine z scan)
    Extending the checker to all affine `z` maps (`(a,b)` with `a in {1,2}`, `b in F3`, total `6`) gives the same reduced/full split and finds matches only for `z` maps `{(1,0),(2,0),(2,1)}`. No additional `z` map contributes any match.
 
+### Corollary (symbolic exclusion of `z=(2,2)`)
+
+A short, purely symbolic contradiction rules out `z=(2,2)` in an adapted gauge. Work in the gauge sending the distinguished affine flag to `((0,0), x-direction)` so that the canonical involution is `A_GAUGE = diag(-1,1)` acting by `(x,y) -> (2x,y)`.
+
+- The vertical line `L: x=0` is fixed by `A_GAUGE` and, by the coordinate-free shifted product law, has product-sign `P(L)=+1` (since `b*c == 0` for its normalized equation).
+- The affine `z`-map `z -> 2*z + 2` fixes `z=1`, so invariance would force `s(L,1)` to equal the global pulled-back sign on that row. Because fixed-line swapping forces `s(L,0)=s(L,2)`, one has `P(L)=s(L,1)`.
+- The closed-form full-sign rule gives `s(L,1) = -1` for `(a,b,c)=(1,0,0)`, contradicting `P(L)=+1`.
+
+Hence `z=(2,2)` cannot preserve the full sign field for any involution conjugate to `diag(-1,1)`, so `z=(2,2)` is algebraically excluded. (See `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md` and `tests/test_formal_proof_z22.py` for the machine-checked reduction.)
+
 ## Scripts & tests
 
 - Computation and candidate derivation: `tools/derive_reduced_orbit_closed_form.py` (outputs `docs/MIN_CERT_REDUCED_ORBIT_RULE_2026_02_10.md`).
