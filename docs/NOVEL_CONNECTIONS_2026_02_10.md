@@ -84,6 +84,7 @@ changes affine/Hessian symmetries:
   (`orbit_size=1296`) are exactly those fixed by at least one symmetry whose
   affine part has `det=2`, affine order `2`, and whose `z` map is one of
   `(1,0)`, `(2,0)`, `(2,1)`.
+- Formal theorem and short proof sketch: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`. Equivalence verified by `tools/check_reduced_orbit_closed_form_equiv.py` and `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`.
 - exact checker profile:
   `201` reps have no matching involution witness and stay full orbit (`2592`);
   `55` reps have exactly one witness and are reduced (`1296`).
@@ -96,6 +97,11 @@ changes affine/Hessian symmetries:
   `80` solutions / `79` canonical reps with orbit split `1296:11`, `2592:68`,
   while `AGL(2,3)` completes at `7` solutions / `7` reps (all `2592`);
   involution-rule checker returns `0` mismatches in both spaces.
+- Vogel universality cross-check (`2026-02-11`):
+  `tools/vogel_universal_snapshot.py` verifies exceptional-line Vogel dimensions,
+  then scans s12 dimensions (`728`, `486`, `242`) across universal families;
+  `728` matches classical `A_26 = sl_27`, while `486` and `242` show no bounded
+  classical or exceptional-line rational hits (`denominator <= 24`).
 
 Outputs:
 
@@ -105,6 +111,8 @@ Outputs:
 - `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exhaustive.json`
 - `artifacts/min_cert_census_summary.json`
 - `artifacts/min_cert_census_summary.md`
+- `artifacts/vogel_universal_snapshot_2026_02_11.json`
+- `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`
 
 ## Why this is interesting
 
