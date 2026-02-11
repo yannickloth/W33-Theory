@@ -50,6 +50,8 @@ jobs:
               echo "elan installer not found at known URLs; continuing without elan"
             fi
             export PATH="$HOME/.elan/bin:$PATH"
+            # Make elan available to subsequent steps
+            echo "$HOME/.elan/bin" >> $GITHUB_PATH
           else
             echo "elan already present"
           fi
