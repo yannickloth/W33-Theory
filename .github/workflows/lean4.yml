@@ -124,6 +124,19 @@ jobs:
             echo "docker_available=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Login to GHCR (if GHCR_TOKEN provided)
+        if: ${{ secrets.GHCR_TOKEN != '' }}
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: No GHCR token (info)
+        if: ${{ secrets.GHCR_TOKEN == '' }}
+        run: |
+          echo "GHCR_TOKEN not set; skipping GHCR login. To allow pulling protected images from ghcr.io, add a repository secret named GHCR_TOKEN (PAT with 'read:packages' scope)."
+
       - name: Containerized Lake build (when Docker available)
         if: steps.docker_check.outputs.docker_available == 'true'
         continue-on-error: true
