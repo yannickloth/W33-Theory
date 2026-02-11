@@ -10,6 +10,7 @@ formalization.
 -/
 
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic
 
 namespace Z22Exclusion
 
@@ -40,6 +41,18 @@ def zMap (z : ZMod 3) : ZMod 3 :=
 /-- `z=1` is fixed by `zMap`. -/
 @[simp] theorem zMap_one : zMap 1 = 1 := by
   simp [zMap]
+
+/-- `z=0` is sent to `2`. -/
+@[simp] theorem zMap_zero : zMap 0 = 2 := by
+  simp [zMap]
+
+/-- `z=2` is sent to `0`. -/
+@[simp] theorem zMap_two : zMap 2 = 0 := by
+  simp [zMap]
+
+/-- The affine map `z -> 2*z+2` is an involution on `ZMod 3`. -/
+@[simp] theorem zMap_involution (z : ZMod 3) : zMap (zMap z) = z := by
+  fin_cases z <;> simp [zMap]
 
 /-- For `x=0`, product sign is `+1`. -/
 @[simp] theorem PLine_vertical : PLine (1 : ZMod 3) 0 0 = 1 := by

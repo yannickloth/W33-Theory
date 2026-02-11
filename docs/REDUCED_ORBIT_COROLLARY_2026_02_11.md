@@ -10,7 +10,8 @@ provides a short algebraic contradiction ruling out z=(2,2) for any
 representative invariant under such an involution. The argument is both
 symbolic and machine-checked (see `tools/formal_z22_proof.py` and
 `tests/test_formal_z22_module.py`), with a Lean skeleton now exposing both
-`zMap_one` and `z22_contradiction_via_zMap` in `proofs/lean/z22_exclusion.lean`.
+`zMap_one`, `zMap_involution`, and `z22_contradiction_via_zMap` in
+`proofs/lean/z22_exclusion.lean`.
 
 Global strengthening:
 - closed-form stabilizer scan for `z=(2,2)` gives zero matches in full
@@ -28,3 +29,6 @@ Global strengthening:
   `z=(1,0)` gives witness size `6` in full `AGL(2,3)` and `5` in `Hessian216`
   via `tools/minimal_global_identity_certificates.py`; this `6` vs `5` split
   persists under distinct-line and striation-complete witness constraints.
+- dual profile synthesis (`tools/global_sign_rigidity_dual_profile.py`) shows
+  the positive-minus-negative gap contracts by exactly one under
+  striation-complete constraints in both `AGL` and `Hessian216`.
