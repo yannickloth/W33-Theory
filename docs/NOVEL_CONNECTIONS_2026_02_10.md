@@ -152,6 +152,12 @@ changes affine/Hessian symmetries:
   under striation-complete witnesses (all four line directions), nontrivial
   global cells in `all_agl/hessian216` require core size `4` (instead of `3`),
   and involution mode at `z=(1,0)` requires size `5` (instead of `4`).
+- nontrivial core-geometry classification (`2026-02-11`):
+  exhaustive size-`3` UNSAT-core enumeration shows that in every nontrivial
+  global `z` cell of `all_agl/hessian216`, each minimal core is exactly one
+  full parallel-class triplet (same line direction, offsets `0/1/2`); core
+  signature sets and per-cell counts match exactly between `all_agl` and
+  `hessian216` (`6,2,4,2,2` across `z=(1,1),(1,2),(2,0),(2,1),(2,2)`).
 - dual rigidity profile (`2026-02-11`):
   `tools/global_sign_rigidity_dual_profile.py` combines negative-core and
   positive-certificate layers into one summary:
@@ -199,6 +205,8 @@ Outputs:
 - `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`
 - `artifacts/minimal_global_full_sign_cores_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`
+- `artifacts/nontrivial_unsat_core_geometry_2026_02_11.json`
+- `docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md`
 - `artifacts/minimal_global_identity_certificates_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json`

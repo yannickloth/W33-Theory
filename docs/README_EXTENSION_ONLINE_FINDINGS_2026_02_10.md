@@ -570,6 +570,26 @@ Additional witness-space note:
     increase identity witness size in either space; this is a stable dual
     asymmetry, now encoded as a theorem-flagged artifact.
 
+## Twenty-second-pass raw notes (2026-02-11, core-geometry census loop)
+
+- We tested whether nontrivial global size-`3` UNSAT cores are structurally
+  arbitrary, or forced into a canonical affine-plane geometry class.
+- Exhaustive enumeration result (`all_agl` and `hessian216`):
+  - every minimal size-`3` core is exactly one full parallel-class triplet
+    (single line direction with offsets `0,1,2`);
+  - per-cell core counts are identical across spaces:
+    `6,2,4,2,2` over `z=(1,1),(1,2),(2,0),(2,1),(2,2)`;
+  - core signature sets are exactly equal between `all_agl` and `hessian216`.
+- Interpretation:
+  - the nontrivial obstruction layer is fully controlled by affine-plane
+    parallel-class geometry, not by candidate-space enlargement.
+  - this explains why striation-complete constraints necessarily add one row
+    to nontrivial cores (`3 -> 4`).
+- external references checked in this pass:
+  - Hesse/AG(2,3) incidence context: https://arxiv.org/abs/math/0611590
+  - affine-plane parallel classes summary: https://en.wikipedia.org/wiki/Incidence_geometry
+  - Hessian216 context: https://en.wikipedia.org/wiki/Hessian_group
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -589,6 +609,8 @@ Additional witness-space note:
 - global z-map census tests: `tests/test_classify_global_full_sign_stabilizers_smoke.py`
 - global minimal-core extractor: `tools/minimal_global_full_sign_cores.py`
 - global minimal-core tests: `tests/test_minimal_global_full_sign_cores_smoke.py`
+- nontrivial UNSAT core-geometry census: `tools/classify_nontrivial_unsat_core_geometry.py`
+- nontrivial core-geometry tests: `tests/test_classify_nontrivial_unsat_core_geometry_smoke.py`
 - global positive-identity certificates: `tools/minimal_global_identity_certificates.py`
 - global positive-identity tests: `tests/test_minimal_global_identity_certificates_smoke.py`
 - global dual-profile synthesis: `tools/global_sign_rigidity_dual_profile.py`
@@ -617,11 +639,12 @@ python tools/vogel_integer_m_locus.py --m-min -300 --m-max 300 --target-dims 728
 python tools/prove_z22_no_global_stabilizer.py --out-json artifacts/z22_global_stabilizer_exclusion_2026_02_11.json --out-md docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md
 python tools/classify_global_full_sign_stabilizers.py --out-json artifacts/global_full_sign_stabilizer_census_2026_02_11.json --out-md docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md
 python tools/minimal_global_full_sign_cores.py --out-json artifacts/minimal_global_full_sign_cores_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md
+python tools/classify_nontrivial_unsat_core_geometry.py --out-json artifacts/nontrivial_unsat_core_geometry_2026_02_11.json --out-md docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md
 python tools/minimal_global_identity_certificates.py --out-json artifacts/minimal_global_identity_certificates_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md
 python tools/global_sign_rigidity_dual_profile.py --out-json artifacts/global_sign_rigidity_dual_profile_2026_02_11.json --out-md docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
 cd proofs/lean
 lake update
 lake build

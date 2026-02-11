@@ -146,6 +146,10 @@ line/z constraints are minimally needed to rule out each cell.
 With striation-complete witnesses (covering all four affine line directions),
 these UNSAT bounds shift to `4` for nontrivial `AGL/Hessian` cells and to `5`
 for involution mode at `z=(1,0)`, giving a context-complete rigidity profile.
+An additional exhaustive classifier now shows that each nontrivial size-`3`
+UNSAT core in `AGL/Hessian` is exactly one full affine parallel class triplet
+(three lines of one direction with offsets `0,1,2`), and this core-signature
+family is identical between `AGL` and `Hessian216` at each nontrivial `z` cell.
 
 Complementing those UNSAT witnesses, `tools/minimal_global_identity_certificates.py`
 computes exact positive certificates for the unique surviving global cell

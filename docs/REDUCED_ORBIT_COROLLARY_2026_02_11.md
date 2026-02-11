@@ -27,6 +27,9 @@ Global strengthening:
 - under striation-complete witnesses, those contradiction cores lift to size
   `4` in nontrivial `AGL/Hessian` cells and to `5` for involution mode at
   `z=(1,0)` (same tool).
+- exhaustive core-geometry census shows every nontrivial size-`3` UNSAT core
+  in `AGL/Hessian` is a full affine parallel class triplet (same direction,
+  three offsets) via `tools/classify_nontrivial_unsat_core_geometry.py`.
 - minimal positive-certificate extraction for the surviving identity cell
   `z=(1,0)` gives witness size `6` in full `AGL(2,3)` and `5` in `Hessian216`
   via `tools/minimal_global_identity_certificates.py`; this `6` vs `5` split
