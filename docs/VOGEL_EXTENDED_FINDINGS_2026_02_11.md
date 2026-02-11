@@ -24,3 +24,10 @@ Scripts / artifacts used:
 Next steps:
 - If desired, expand rational search denominator cap further (careful with runtime) or search for algebraic (irrational) solutions via algebraic number field factoring.
 - Cross-check with weight-system kernel constraints (Khudoteplov et al., 2024) and recent Vogel deformation papers (Mironov et al., 2025; Isaev, 2026) for other non-rational universality mechanisms.
+
+## Algebraic root analysis (numeric)
+
+- D = 486: cubic roots (approx) = [16.0673377849, -3.80067111827, -2.0 (degenerate)].
+- D = 242: cubic roots (approx) = [7.79418309566, -3.66084976233, -2.0 (degenerate)].
+
+None of the non-degenerate real roots above are rational with denominator <= 500 (see `artifacts/vogel_rational_cubic_search_2026_02_11.json`). These algebraic roots are natural candidates for algebraic-number-field analysis (minimal polynomials and Galois structure) and could be consistent with refined or deformed Vogel universality mechanisms (e.g., Macdonald/Vogel deformations)."}EOF
