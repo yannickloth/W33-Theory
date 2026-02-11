@@ -11,11 +11,14 @@ formalization.
 
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
+import affine_f3
 
 namespace Z22Exclusion
 
-/-- Vertical line `L : x = 0` in `F3^2`. -/
-def L : List (Prod (ZMod 3) (ZMod 3)) := [(0, 0), (0, 1), (0, 2)]
+open AffineF3
+
+/-- Vertical line `L : x = 0` in `F3^2` (delegated to `AffineF3.vertical_line`). -/
+def L : List (Prod (ZMod 3) (ZMod 3)) := vertical_line
 
 /-- Product-sign rule encoded as `+/- 1` in `Int`. -/
 def PLine (a b c : ZMod 3) : Int :=
