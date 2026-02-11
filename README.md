@@ -95,8 +95,10 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce the Vogel resonance bridge | `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md` | `python tools/analyze_vogel_resonance_bridge.py` | `python -m pytest tests/test_analyze_vogel_resonance_bridge_smoke.py -q` |
 | Reproduce the `GL(2,3)` involution conjugacy bridge | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md` | `python tools/analyze_gl2_f3_involution_conjugacy.py` | `python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q` |
 | Reproduce the `AGL(2,3)` det-`2` involution class | `docs/AGL23_DET2_INVOLUTION_CLASS_2026_02_11.md` | `python tools/analyze_agl23_det2_involution_class.py` | `python -m pytest tests/test_analyze_agl23_det2_involution_class_smoke.py -q` |
+| Reproduce the W33 neighbor action realizing `AGL(2,3)` | `docs/W33_NEIGHBOR_ACTION_AGL23_2026_02_11.md` | `python tools/analyze_w33_neighbor_action_agl23.py` | `python -m pytest tests/test_analyze_w33_neighbor_action_agl23_smoke.py -q` |
 | Reproduce the orbit-stabilizer bridge | `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md` | `python tools/analyze_orbit_stabilizer_bridge.py` | `python -m pytest tests/test_analyze_orbit_stabilizer_bridge_smoke.py -q` |
 | Reproduce reduced-orbit stabilizer census | `docs/REDUCED_REP_STABILIZER_CENSUS_2026_02_11.md` | `python tools/analyze_reduced_rep_stabilizer_census.py` | `python -m pytest tests/test_analyze_reduced_rep_stabilizer_census_smoke.py -q` |
+| Inspect reduced-orbit stabilizer outliers (non-identity `z`) | `docs/REDUCED_REP_STABILIZER_OUTLIERS_2026_02_11.md` | `python tools/analyze_reduced_rep_stabilizer_outliers.py` | `python -m pytest tests/test_analyze_reduced_rep_stabilizer_outliers_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
 ## Quick Setup
@@ -161,8 +163,10 @@ Additional high-signal documents:
 - `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md`
 - `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md`
 - `docs/AGL23_DET2_INVOLUTION_CLASS_2026_02_11.md`
+- `docs/W33_NEIGHBOR_ACTION_AGL23_2026_02_11.md`
 - `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md`
 - `docs/REDUCED_REP_STABILIZER_CENSUS_2026_02_11.md`
+- `docs/REDUCED_REP_STABILIZER_OUTLIERS_2026_02_11.md`
 
 ## Contribution Notes
 

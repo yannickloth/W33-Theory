@@ -20,6 +20,10 @@
 - size: `12`
 - order histogram: `{'1': 1, '2': 7, '3': 2, '6': 2}`
 - matches D12 fingerprint: `True`
+- D12 witness rotation: `[[2, 2, 0, 1, 2], [0, 2]]`
+- D12 witness reflection: `[[1, 1, 0, 2, 2], [0, 0]]`
+- D12 witness relation s*r*s = r^-1: `True`
+- D12 witness generators produce full centralizer: `True`
 
 ## Fixed-Line Fiber
 
@@ -33,3 +37,4 @@
 - axis type histogram: `{'x': 9, 'y': 9, 'y=1x': 9, 'y=2x': 9}`
 - fixed striation type histogram: `{'x': 9, 'y': 9, 'y=1x': 9, 'y=2x': 9}`
 - axis type vs fixed striation type: `{"['x', 'y']": 3, "['x', 'y=1x']": 3, "['x', 'y=2x']": 3, "['y', 'x']": 3, "['y', 'y=1x']": 3, "['y', 'y=2x']": 3, "['y=1x', 'x']": 3, "['y=1x', 'y']": 3, "['y=1x', 'y=2x']": 3, "['y=2x', 'x']": 3, "['y=2x', 'y']": 3, "['y=2x', 'y=1x']": 3}`
+- constructive reconstruction holds: `True`

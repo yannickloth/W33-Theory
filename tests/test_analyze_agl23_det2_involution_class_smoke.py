@@ -35,6 +35,12 @@ def test_analyze_agl23_det2_involution_class_cli_smoke(tmp_path: Path) -> None:
     assert cent["size"] == 12
     assert cent["order_histogram"] == {"1": 1, "2": 7, "3": 2, "6": 2}
     assert cent["matches_d12_fingerprint"] is True
+    d12w = cent["d12_witness"]
+    assert d12w["found"] is True
+    assert d12w["rotation_order"] == 6
+    assert d12w["reflection_order"] == 2
+    assert d12w["relation_srs_equals_r_inv"] is True
+    assert d12w["generated_equals_centralizer"] is True
 
     rep = inv["representative"]
     assert rep["point_cycle_signature"] == [1, 1, 1, 2, 2, 2]
@@ -58,6 +64,11 @@ def test_analyze_agl23_det2_involution_class_cli_smoke(tmp_path: Path) -> None:
     # 12 axis lines, each with the other 3 directions as fixed striations.
     assert len(refl["axis_line_to_fixed_striation_types"]) == 12
     assert all(len(v) == 3 for v in refl["axis_line_to_fixed_striation_types"].values())
+    construction = refl["construction"]
+    assert construction["rep_reconstructed_equals_rep"] is True
+    assert construction["constructed_unique_count"] == 36
+    assert construction["constructed_equals_candidate_set"] is True
+    assert construction["failure_count"] == 0
 
     text = out_md.read_text(encoding="utf-8")
     assert "AGL(2,3) det=2 Involution Class" in text

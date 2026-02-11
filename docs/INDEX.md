@@ -26,7 +26,9 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 | Orbit-stabilizer bridge on exact min-cert reps | `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md` | `tools/analyze_orbit_stabilizer_bridge.py` | `tests/test_analyze_orbit_stabilizer_bridge_smoke.py` |
 | GL(2,3) involution group/graph bridge | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md` | `tools/analyze_gl2_f3_involution_conjugacy.py` | `tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py` |
 | AGL(2,3) det=2 involution class and D12 centralizer | `docs/AGL23_DET2_INVOLUTION_CLASS_2026_02_11.md` | `tools/analyze_agl23_det2_involution_class.py` | `tests/test_analyze_agl23_det2_involution_class_smoke.py` |
+| W33 neighbor action realizes AGL(2,3) (51840 -> 432 with Z3 kernel) | `docs/W33_NEIGHBOR_ACTION_AGL23_2026_02_11.md` | `tools/analyze_w33_neighbor_action_agl23.py` | `tests/test_analyze_w33_neighbor_action_agl23_smoke.py` |
 | Reduced-orbit stabilizer census (55 reduced Hessian reps) | `docs/REDUCED_REP_STABILIZER_CENSUS_2026_02_11.md` | `tools/analyze_reduced_rep_stabilizer_census.py` | `tests/test_analyze_reduced_rep_stabilizer_census_smoke.py` |
+| Reduced-orbit stabilizer outliers (non-identity z-map cases) | `docs/REDUCED_REP_STABILIZER_OUTLIERS_2026_02_11.md` | `tools/analyze_reduced_rep_stabilizer_outliers.py` | `tests/test_analyze_reduced_rep_stabilizer_outliers_smoke.py` |
 | s12 universalization and pattern analysis | `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`, `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md` | `tools/universalize_s12_algebra.py`, `tools/analyze_s12_jacobi_failure_pattern.py`, `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_universalize_s12_algebra_smoke.py`, `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`, `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` |
 | Vogel scans, arithmetic checks, and resonance bridge | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`, `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`, `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`, `docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md`, `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md` | `tools/vogel_universal_snapshot.py`, `tools/vogel_rational_dimension_theorem.py`, `tools/vogel_rational_hit_crosswalk.py`, `tools/vogel_integer_m_locus.py`, `tools/analyze_vogel_resonance_bridge.py` | `tests/test_vogel_universal_snapshot_smoke.py`, `tests/test_vogel_rational_dimension_theorem_smoke.py`, `tests/test_vogel_rational_hit_crosswalk_smoke.py`, `tests/test_vogel_integer_m_locus_smoke.py`, `tests/test_analyze_vogel_resonance_bridge_smoke.py` |
 
@@ -47,8 +49,10 @@ python tools/vogel_universal_snapshot.py
 python tools/analyze_vogel_resonance_bridge.py
 python tools/analyze_gl2_f3_involution_conjugacy.py
 python tools/analyze_agl23_det2_involution_class.py
+python tools/analyze_w33_neighbor_action_agl23.py
 python tools/analyze_orbit_stabilizer_bridge.py
 python tools/analyze_reduced_rep_stabilizer_census.py
+python tools/analyze_reduced_rep_stabilizer_outliers.py
 python -m pytest -q
 ```
 

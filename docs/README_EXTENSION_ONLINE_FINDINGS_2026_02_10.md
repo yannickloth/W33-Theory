@@ -909,6 +909,12 @@ Additional witness-space note:
     - fixed lines split as `{axis line} ∪ {one full striation}` (1 + 3 = 4 fixed lines),
     - equivalently: det=2 involutions are parameterized by `(axis line, fixed striation direction)`,
       giving `12 * 3 = 36` total.
+    - this parameterization is constructive: from `(axis line, fixed striation direction)` we
+      reconstruct the affine involution and recover exactly the same 36-element set.
+- Centralizer refinement (repo computation):
+  - the centralizer admits an explicit dihedral presentation witness: we find `r` of order `6`
+    and `s` of order `2` with `s*r*s = r^{-1}` that generate the full 12-element centralizer
+    (and the representative involution equals `r^3`).
 - External cross-checks:
   - GroupNames lists a conjugacy class `2B` of size `36` in `AGL(2,3)` (character table):
     https://people.maths.bris.ac.uk/~matyd/GroupNames/432/AGL%282%2C3%29.html
@@ -928,6 +934,35 @@ Additional witness-space note:
 - Interpretation hint:
   - the vertical/`x=` striation appears to be the dominant "reflection-fixed" direction in the reduced sector,
     which is consistent with how the short `z22` contradiction singles out a vertical line in an adapted gauge.
+
+## Thirty-fourth-pass raw notes (2026-02-11, W33 neighbor action realizes AGL(2,3))
+
+- New tool: `tools/analyze_w33_neighbor_action_agl23.py`.
+- This pass builds the 40-vertex symplectic polar graph `W33` (a generalized quadrangle point graph),
+  enumerates its full automorphism group, and studies the induced action on the 12-neighborhood of a
+  fixed base vertex.
+- Result (repo computation):
+  - `|Aut(W33)| = 51840`,
+  - `|Stab(v)| = 1296`,
+  - neighborhood size is `12` and the induced neighbor subgraph splits into `4` disjoint triangles (four `K3` components),
+  - the induced action on the 12 neighbors has order `432` with kernel `3` (so `1296/432 = 3`), matching `|AGL(2,3)|`,
+  - the induced action on the 4 triangles has order `24` (full `S4`), matching `PGL(2,3) ≅ S4` acting on the 4 affine directions.
+- Involutions in the induced neighbor group (repo computation):
+  - total involutions: `45`,
+  - `36` "reflections" (fix one triangle pointwise) with centralizer size `12` (D12 fingerprint),
+  - `9` "half-turns" with centralizer size `48`.
+- Interpretation:
+  - This is a graph-theoretic realization of `AGL(2,3)` from the local geometry of `W33`, and it
+    ties the affine-plane reflection parameterization to a canonical 40-vertex group/graph object.
+- web prompts checked in this pass:
+  - generalized quadrangle parameter formulas (point count, degree, etc.):
+    https://en.wikipedia.org/wiki/Generalized_quadrangle
+  - small generalized polygons table (W(3), Sp(4,3), |Aut|=51840, 40 points):
+    https://jaanos.github.io/tables/moorhouse/pub/genpoly/
+  - Sp(4,3) vs PSp(4,3) order clarification:
+    https://math.stackexchange.com/questions/4557551/what-is-the-order-of-symplectic-group4-2-and-symplectic-group4-3-from-the-cl
+  - AGL(2,3) order and semidirect-product alias `C3^2 ⋊ GL(2,3)`:
+    https://people.maths.bris.ac.uk/~matyd/GroupNames/432/AGL%282%2C3%29.html
 
 ## Where each hypothesis is encoded
 
