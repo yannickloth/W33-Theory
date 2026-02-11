@@ -169,6 +169,10 @@ Status: verified via `tools/vogel_universal_snapshot.py`:
 bounded exceptional-line rational search (`denominator <= 24`) has zero hits for
 all three dimensions.
 
+- Extended rational search (rational cubic root analysis) up to denominator `500` found
+  **no** non-degenerate rational exceptional-line parameter `m` for target dims `486`
+  and `242` (degenerate root `m=-2` excluded). See `docs/VOGEL_EXTENDED_FINDINGS_2026_02_11.md` for details and search parameters.
+
 H12. If `728` is `A_26 = sl_27`, the s12 grade split `(242,243,243)` should be
 recoverable as a finite-order (`Z3`) block-cyclic grading of `sl_27`; if this
 bridge is structural, the partition should be unique (up to permutation).
