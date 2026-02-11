@@ -663,7 +663,7 @@ def local_search_refine_mapping(
                 best_map = edge_to_root.copy()
 
     print(
-        f"Local search best score: {best_score} (initial {compute_score(initial_mapping)})"
+        f"Local search best score: {best_score} (initial {compute_score(edge_to_root)})"
     )
     # Convert best_map back to edge->root tuples
     final_mapping = {e: tuple(roots[idx]) for e, idx in best_map.items()}
