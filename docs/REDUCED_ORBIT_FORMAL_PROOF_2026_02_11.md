@@ -142,6 +142,12 @@ admit compact contradiction cores of size `3`; the involution subset has core
 size `4` at `z=(1,0)` and size `3` elsewhere. This quantifies how many
 line/z constraints are minimally needed to rule out each cell.
 
+Complementing those UNSAT witnesses, `tools/minimal_global_identity_certificates.py`
+computes exact positive certificates for the unique surviving global cell
+(`z=(1,0)`). The identity is isolated by `6` constraints in full `AGL(2,3)`
+and by `5` constraints in `Hessian216`, with exact multiplicities
+`688` and `33` minimal certificates respectively.
+
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 

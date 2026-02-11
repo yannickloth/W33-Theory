@@ -20,6 +20,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - Latest z-map result: global full-sign census leaves only the identity cell at `z=(1,0)`.
 - New contradiction-core result: nontrivial global `z` cells have small minimal
   unsat cores (size `3` in `AGL/Hessian`, size `4` for involution mode at `z=(1,0)`).
+- New identity-certificate result: isolating the surviving global identity cell
+  needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - Docs landing page: `docs/INDEX.md`.
 
 ## Start Here
@@ -33,6 +35,7 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce the `z=(2,2)` global exclusion | `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md` | `python tools/prove_z22_no_global_stabilizer.py` | `python -m pytest tests/test_prove_z22_no_global_stabilizer_smoke.py -q` |
 | Reproduce the full global `z`-map census | `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` | `python tools/classify_global_full_sign_stabilizers.py` | `python -m pytest tests/test_classify_global_full_sign_stabilizers_smoke.py -q` |
 | Reproduce minimal contradiction cores for global cells | `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md` | `python tools/minimal_global_full_sign_cores.py` | `python -m pytest tests/test_minimal_global_full_sign_cores_smoke.py -q` |
+| Reproduce minimal identity certificates at `z=(1,0)` | `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md` | `python tools/minimal_global_identity_certificates.py` | `python -m pytest tests/test_minimal_global_identity_certificates_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
@@ -82,6 +85,7 @@ Additional high-signal documents:
 - `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 - `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`
 - `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md`
+- `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` (raw web-source log)
 - `docs/S12_UNIVERSALIZATION_2026_02_11.md`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`

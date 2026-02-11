@@ -474,6 +474,29 @@ Additional witness-space note:
 - Result: unsat cells are certificate-small (mostly core size `3`), which
   indicates rigid local contradictions rather than diffuse global mismatch.
 
+## Seventeenth-pass raw notes (2026-02-11, positive-certificate loop)
+
+- UNSAT cores quantify exclusion strength; we also needed the dual question:
+  how much evidence is required to isolate the one surviving global symmetry.
+- We added an exact positive-certificate extractor at `z=(1,0)`.
+- Result:
+  - full `AGL(2,3)`: minimal identity certificate size `6`, count `688`;
+  - `Hessian216`: minimal identity certificate size `5`, count `33`.
+- Interpretation:
+  - bad cells fail quickly (small UNSAT cores),
+  - but proving the exact survivor needs a larger witness,
+  - and the larger affine candidate universe costs one extra constraint.
+- Web-sourced connection for this pass:
+  - recent Vogel threads emphasize where universal formulas are informative and
+    where finer representation-level structure is needed.
+  - this finite result mirrors that pattern: coarse exclusion is easier than
+    unique survivor identification in the larger candidate class.
+  - references:
+    - https://arxiv.org/abs/2601.01612
+    - https://arxiv.org/abs/2411.14417
+    - https://arxiv.org/abs/2504.13831
+    - https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -493,6 +516,8 @@ Additional witness-space note:
 - global z-map census tests: `tests/test_classify_global_full_sign_stabilizers_smoke.py`
 - global minimal-core extractor: `tools/minimal_global_full_sign_cores.py`
 - global minimal-core tests: `tests/test_minimal_global_full_sign_cores_smoke.py`
+- global positive-identity certificates: `tools/minimal_global_identity_certificates.py`
+- global positive-identity tests: `tests/test_minimal_global_identity_certificates_smoke.py`
 - Lean symbolic skeleton: `proofs/lean/z22_exclusion.lean`
 - Lean package config: `proofs/lean/lakefile.lean`, `proofs/lean/lean-toolchain`
 - Jacobi failure pattern: `tools/analyze_s12_jacobi_failure_pattern.py`
@@ -517,9 +542,10 @@ python tools/vogel_integer_m_locus.py --m-min -300 --m-max 300 --target-dims 728
 python tools/prove_z22_no_global_stabilizer.py --out-json artifacts/z22_global_stabilizer_exclusion_2026_02_11.json --out-md docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md
 python tools/classify_global_full_sign_stabilizers.py --out-json artifacts/global_full_sign_stabilizer_census_2026_02_11.json --out-md docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md
 python tools/minimal_global_full_sign_cores.py --out-json artifacts/minimal_global_full_sign_cores_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md
+python tools/minimal_global_identity_certificates.py --out-json artifacts/minimal_global_identity_certificates_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_minimal_global_identity_certificates_smoke.py -q
 cd proofs/lean
 lake update
 lake build

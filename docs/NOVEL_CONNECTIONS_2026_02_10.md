@@ -148,6 +148,11 @@ changes affine/Hessian symmetries:
   `tools/minimal_global_full_sign_cores.py` computes exact minimal UNSAT cores
   per global cell; nontrivial `z` cells are ruled out by small cores
   (size `3` in `all_agl/hessian216`, size `4` for involution mode at `z=(1,0)`).
+- minimal positive-identity certificate census (`2026-02-11`):
+  `tools/minimal_global_identity_certificates.py` computes exact minimal
+  witness sets that isolate the unique global identity cell `z=(1,0)`:
+  size `6` with `688` certificates in full `AGL(2,3)`, and size `5` with
+  `33` certificates in `Hessian216`.
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
@@ -180,6 +185,8 @@ Outputs:
 - `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`
 - `artifacts/minimal_global_full_sign_cores_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`
+- `artifacts/minimal_global_identity_certificates_2026_02_11.json`
+- `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`
@@ -229,6 +236,9 @@ computational hypotheses in-repo:
     permutation.
 13. the six Jacobi-obstructed grade triples should satisfy a compact closed form
     (not only a count), ideally a permutation-stable mod-3 predicate.
+14. if only one global full-sign stabilizer survives, there should be small
+    exact positive witness sets that isolate it, and their size should separate
+    `Hessian216` from full `AGL(2,3)`.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
