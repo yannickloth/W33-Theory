@@ -127,6 +127,14 @@ Additional witness-space note:
 - Bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`, `time_limit_sec=60`): Hessian216 hit the cap at `200` solutions with `190` distinct canonical representatives, while AGL(2,3) completed with `7` total solutions and `7` representatives.
 - Exhaustive Hessian census artifact (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`) reports `256` distinct canonical representatives over `273` covering combinations, indicating a substantially larger minimal-witness orbit diversity in Hessian space than in full AGL space.
 - Involution checker artifact (`artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`) reports zero mismatches for the reduced-orbit predicate (`55/55` reduced reps detected and `201/201` full-orbit reps rejected).
+- Census orchestrator (`tools/run_min_cert_census.py`) now composes exact
+  enumeration, classification, involution-rule checking, gallery rendering, and
+  markdown/json summary output in a single bounded execution flow.
+- Bounded replay run (`2026-02-11`) with
+  `--candidate-spaces hessian agl --max-exact-solutions 80 --time-limit-sec 45`
+  produced: Hessian `80` solutions / `79` canonical reps (`1296:11`, `2592:68`),
+  AGL `7` solutions / `7` reps (all `2592`), and involution-rule mismatch count `0`
+  in both spaces.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -186,5 +194,6 @@ python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --max-samples 20000 --seed 42 --out-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
 python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
+python tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
 ```

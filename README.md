@@ -51,8 +51,22 @@ This repository is meant to be read like a single, continuously updated paper.
   orbits (`1296`) now satisfy a sharp involution criterion:
   they are exactly the reps fixed by at least one `det=2`, order-`2` affine map on
   `AG(2,3)` paired with `z`-map in `{(1,0),(2,0),(2,1)}`.
+- A one-command exact census orchestrator now runs:
+  exact enumeration -> representative classification -> involution-rule check ->
+  representative gallery -> machine-readable/markdown summary.
+- Bounded reproducibility check on `2026-02-11` via
+  `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 80 --time-limit-sec 45`:
+  Hessian reached cap with `80` exact solutions (`79` canonical reps; orbit split
+  `1296:11`, `2592:68`), while full `AGL(2,3)` completed with `7` solutions
+  (`7` reps; all `2592`); involution rule check reported `0` mismatches in both spaces.
+- s12 universalization pass (`2026-02-11`) is now reproducible with
+  `tools/universalize_s12_algebra.py`: grade laws split cleanly into a
+  Jordan-Lie profile (Lie Jacobi obstruction on `6/27` grade triples, but
+  `ad^3=0` and Jordan triple symmetry still hold), while exhaustive checks on
+  the Golay instance keep `728 = 242 + 243 + 243` with `ad^3=0` on all
+  `59,049` grade-1 pairs.
 - Repro path:
-  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q`.
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_min_cert_census_runner_smoke.py tests/test_make_min_cert_gallery_smoke.py -q`.
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
@@ -69,6 +83,7 @@ This repository is meant to be read like a single, continuously updated paper.
 | Are generation and mixing claims explicit? | `README.md` (Three-Generation Decomposition, Universal Mixing Matrix) | `scripts/w33_full_decomposition.py` | `tests/test_e8_embedding.py` | decomposition and projector diagnostics |
 | Is the Heisenberg/qutrit bridge reproducible? | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | Heisenberg lift artifacts |
 | Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` then `tools/check_min_cert_orbit_involution_rule.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
+| Is the s12 Jordan-Lie universalization reproducible? | `docs/S12_UNIVERSALIZATION_2026_02_11.md` | `tools/universalize_s12_algebra.py` | `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py` | `artifacts/s12_universalization_report.json` |
 | Where are raw web findings separated from the paper narrative? | `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` | (documentation-only) | (N/A) | source log + hypothesis chain |
 
 ---
@@ -91,7 +106,7 @@ This is the strict execution index for major theorem-bearing sections in this RE
 | `E6/F3 trilinear sign layer` | finite-field cubic sign laws + residual symmetry certificates + dual-space full-sign obstruction (`7` witnesses) + residual orbit fingerprint (`[1,2,6]`/`[1,2,3,6]`) + striation action (`[1,3]` with non-distinguished `S3`) + exact flag-line class decomposition (`1/2/3/6`) + distinct-line obstruction split (`7` vs `8`) + striation-complete obstruction split (`7` vs `8`) + minimal-certificate geometry/orbit diagnostics + exhaustive Hessian witness-orbit census (`256` canonical reps over `273` covering combinations) + involution-based reduced-orbit criterion (`1296` iff det-`2` affine involution symmetry exists) | `tools/build_e6_f3_trilinear_map.py`, `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, `tools/enumerate_minimal_certificates.py`, `tools/check_min_cert_orbit_involution_rule.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_witness_certificate_classification.py`, `tests/test_enumerate_minimal_certificates_smoke.py`, `tests/test_enumerate_minimal_certificates_exhaustive_smoke.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py` | `artifacts/e6_f3_trilinear_map.json`, `artifacts/e6_f3_trilinear_symmetry_breaking.json`, `artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`, `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`, `docs/NOVEL_CONNECTIONS_2026_02_10.md`, `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` |
 | `69 Verified Theorems` | unified end-to-end ToE derivation | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_unified_derivation.json` |
 | `Coupling Atlas (Part XII)` | generation couplings, Yukawa textures, phase/coset maps | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_three_generation_coupling_atlas.json`, `artifacts/toe_yukawa_textures.json`, `artifacts/toe_coupling_strengths_v5_weightbasis.json`, `artifacts/toe_phase_diagram_charge_alignment.json`, `artifacts/toe_backbone_coset_coupling_map_v3_exact.json` |
-| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks | `S12_ALGEBRA_CORE_DEEP_DIVE.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py` | `GOLAY_JORDAN_LIE_COMPLETE.md` |
+| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks + universalized grade-law decomposition (Jordan-Lie with finite Jacobi obstruction set, nilpotent `ad^3`) | `S12_ALGEBRA_CORE_DEEP_DIVE.py`, `tools/universalize_s12_algebra.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py`, `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py` | `GOLAY_JORDAN_LIE_COMPLETE.md`, `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `artifacts/s12_universalization_report.json` |
 | `Monster/Leech connection` | `196560 = 728 x 270`, moonshine-linked formulas | `LEECH_GOLAY_BRIDGE.py`, `MONSTER_744_CONNECTION.py`, `MONSTER_FACTORIZATION.py` | `ALGEBRA_TEST_SUITE.py` | `LEECH_DECOMPOSITION_BREAKTHROUGH.md` |
 | `W(3,3) -> s12 logical chain` | ternary geometry-to-algebra derivation chain | `W33_TO_S12_LOGICAL_CHAIN.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
 | `Witting polytope connection` | alternate route from Witting geometry to W33/s12 chain | `WITTING_W33_S12_SYNTHESIS.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
@@ -122,6 +137,13 @@ python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_triline
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
 python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
+```
+
+Run the s12 universalization check:
+
+```bash
+python tools/universalize_s12_algebra.py --jordan-sample-limit 2000 --out-json artifacts/s12_universalization_report.json --out-md docs/S12_UNIVERSALIZATION_2026_02_11.md
+python -m pytest tests/test_s12_universal_algebra_smoke.py tests/test_universalize_s12_algebra_smoke.py -q
 ```
 
 Run full regression tests (long):

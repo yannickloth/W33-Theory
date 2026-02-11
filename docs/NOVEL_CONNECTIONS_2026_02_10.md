@@ -87,6 +87,15 @@ changes affine/Hessian symmetries:
 - exact checker profile:
   `201` reps have no matching involution witness and stay full orbit (`2592`);
   `55` reps have exactly one witness and are reduced (`1296`).
+- end-to-end census automation:
+  `tools/run_min_cert_census.py` now executes exact enumeration, canonical
+  classification, involution-rule checking, and markdown gallery/summary generation
+  in a single bounded run.
+- bounded cross-space census replay (`2026-02-11`):
+  with `--max-exact-solutions 80 --time-limit-sec 45`, Hessian reaches cap at
+  `80` solutions / `79` canonical reps with orbit split `1296:11`, `2592:68`,
+  while `AGL(2,3)` completes at `7` solutions / `7` reps (all `2592`);
+  involution-rule checker returns `0` mismatches in both spaces.
 
 Outputs:
 
@@ -94,6 +103,8 @@ Outputs:
 - `artifacts/e6_f3_trilinear_symmetry_breaking.md`
 - `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`
 - `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exhaustive.json`
+- `artifacts/min_cert_census_summary.json`
+- `artifacts/min_cert_census_summary.md`
 
 ## Why this is interesting
 
