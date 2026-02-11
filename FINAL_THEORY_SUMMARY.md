@@ -114,6 +114,9 @@ errors reflect the internal consistency of the formulas with those values.
 
 # KEY INSIGHTS
 
+### Reduced orbit corollary (short)
+A concise algebraic corollary excludes the affine z-map `z -> 2*z + 2` from the reduced-orbit characterization: in any adapted gauge the vertical line `x=0` yields a direct contradiction between the coordinate-free product law (`P(line)=+1`) and the closed-form full-sign rule (`s(line,1)=-1`). This short proof is both symbolic and machine-checked (see `tools/formal_z22_proof.py`, `tests/test_formal_z22_module.py`, and `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md`).
+
 ## 1. The Factorization Principle
 ALL major W33 numbers factor as (Algebra) × 40:
 - 3240 = 81 × 40 (flux × spacetime)
