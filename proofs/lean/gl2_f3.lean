@@ -46,8 +46,16 @@ def act (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (p : AffineF3.Point) : AffineF3.Po
 /-- Composition property: `(A ⬝ B).act p = A.act (B.act p)`. -/
 theorem act_mul (A B : Matrix (Fin 2) (Fin 2) (ZMod 3)) (p : AffineF3.Point) :
     (A ⬝ B).act p = A.act (B.act p) := by
-  -- This is a small, fully-decidable component-wise calculation.
-  dec_trivial
+  rcases p with ⟨x, y⟩
+  -- Expand both sides to component form and use distributivity/commutativity.
+  simp [act, Matrix.mul_apply]
+  apply Prod.ext
+  · -- first component
+    simp [add_mul, mul_add, mul_assoc, mul_comm, add_assoc]
+    ring
+  · -- second component
+    simp [add_mul, mul_add, mul_assoc, mul_comm, add_assoc]
+    ring
 
 /-- `A_diag_mat` fixes each vertical point `(0,b)`. -/
 theorem A_diag_mat_fix_elem (b : ZMod 3) : act A_diag_mat (0, b) = (0, b) := by

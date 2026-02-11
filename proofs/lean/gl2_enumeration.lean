@@ -137,52 +137,112 @@ theorem candidates_conjugate :
   rcases cases with
   | Or.inl h =>
     let P := mk2x2 1 2 1 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
     -- check conjugacy by computation
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inl h) =>
     let P := mk2x2 1 1 1 2
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inl h)) =>
     let P := mk2x2 0 1 1 0
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inl h))) =>
     let P := mk2x2 1 1 1 0
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))) =>
     let P := mk2x2 1 2 1 0
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h)))))) =>
     let P := mk2x2 0 1 1 2
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))) =>
     let P := mk2x2 0 1 1 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))) =>
     let P := mk2x2 1 0 0 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h)))))))))) =>
     let P := mk2x2 1 0 1 2
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))))) =>
     let P := mk2x2 1 0 1 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h)))))))))))) =>
     let P := mk2x2 1 1 0 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
   | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))))))) =>
     let P := mk2x2 1 2 0 1
-    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
-    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+    have memP : P ∈ invertible_matrices := by
+      simp [invertible_matrices, all_matrices]
+      simp [P]
+      decide
+    refine Exists.intro P (And.intro memP ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]
+    ring
 
 end GL2F3Enumeration
