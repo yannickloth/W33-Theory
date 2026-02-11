@@ -84,6 +84,25 @@ theorem SLine_vertical_table :
       (And (SLine (1 : ZMod 3) 0 0 1 = -1) (SLine (1 : ZMod 3) 0 0 2 = 1)) := by
   simp [SLine]
 
+/-- Diagonal linear map `diag(-1,1)` acting on `F3^2`. -/
+def A_diag (p : Prod (ZMod 3) (ZMod 3)) : Prod (ZMod 3) (ZMod 3) :=
+  (-p.fst, p.snd)
+
+/-- `diag(-1,1)` fixes each vertical point `(0,b)`. -/
+@[simp] theorem A_diag_fix_elem (b : ZMod 3) : A_diag (0, b) = (0, b) := by
+  simp [A_diag]
+
+/-- `diag(-1,1)` preserves the vertical line `L`. -/
+theorem A_diag_on_L : L.map A_diag = L := by
+  simp [L, A_diag]
+
+/-- Corollary: if a `z` is fixed by `zMap`, `diag(-1,1)` cannot simultaneously
+    preserve the vertical line and make the product sign equal to the full sign.
+-/
+theorem diag_no_z_stabilizer (z : ZMod 3) (hz : zMap z = z) :
+    Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 z) := by
+  exact z22_contradiction_of_fixed_point z hz
+
 /-- Core contradiction used to exclude `z=(2,2)`: `+1 != -1`. -/
 theorem z22_contradiction :
     Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 1) := by
