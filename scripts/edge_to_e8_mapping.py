@@ -408,7 +408,9 @@ def run_geometry_mapping(tol=1e-8):
 
         row_ind, col_ind = linear_sum_assignment(cost)
         for r, c in zip(row_ind, col_ind):
-            mapping[r] = tuple(E8_roots[c])
+            rr = int(r)
+            cc = int(c)
+            mapping[rr] = tuple(float(x) for x in E8_roots[cc])
         method_used = "hungarian"
     except Exception:
         mapping = greedy_bipartite_match(candidate_triples, n_edges, n_roots)
@@ -428,8 +430,9 @@ def run_geometry_mapping(tol=1e-8):
     }
 
     outp = ARTIFACTS / "edge_root_mapping_geom.json"
+    sample = [[int(k), [float(x) for x in v]] for k, v in list(mapping.items())[:20]]
     with outp.open("w", encoding="utf-8") as f:
-        json.dump({"result": result, "sample": list(mapping.items())[:20]}, f, indent=2)
+        json.dump({"result": result, "sample": sample}, f, indent=2)
 
     print("Geometric mapping summary:", result)
     return mapping, candidate_triples, (s, R, t)
@@ -524,24 +527,50 @@ def run_iterative_refinement(max_iter=10, add_tol=1e-8, tol=1e-6):
             dists = [v[0] for v in best_info.values()]
             n_below_add = sum(1 for d in dists if d < add_tol)
             n_below_1e3 = sum(1 for d in dists if d < 1e-3)
-            print(
-                f"Iteration {it}: mapped={len(mapping)} best_dist_min={min(dists):.6g} med={np.median(dists):.6g} #<add_tol={n_below_add} #<1e-3={n_below_1e3}"
+            n_unanchored_below_add = sum(
+                1 for e, v in best_info.items() if (v[0] < add_tol and e not in anchors)
             )
-        for e, r in mapping.items():
-            dist = best_info.get(e, (math.inf, None, None, None))[0]
-            if dist < add_tol and e not in anchors:
-                # add the corresponding lift vector from best_info if available
-                lift_vec = best_info.get(e, (None, None, None, None))[3]
+            print(
+                f"Iteration {it}: mapped={len(mapping)} best_dist_min={min(dists):.6g} med={np.median(dists):.6g} #<add_tol={n_below_add} #unanchored<add_tol={n_unanchored_below_add} #<1e-3={n_below_1e3}"
+            )
+        # consider best_info entries (not just current mapping) to find high-confidence matches
+        anchored_roots = set(tuple(rr) for (_, rr) in anchors.values())
+        unanchored = [
+            (e, info[0], info[1], info[3] if len(info) > 3 else None)
+            for e, info in best_info.items()
+            if e not in anchors
+        ]
+        # try strict threshold first
+        for e, dist, root, lift_vec in sorted(unanchored, key=lambda x: x[1]):
+            if dist < add_tol and tuple(root) not in anchored_roots:
                 if lift_vec is not None:
-                    anchors[e] = (lift_vec, np.array(r, dtype=float))
+                    anchors[e] = (lift_vec, np.array(root, dtype=float))
+                    anchored_roots.add(tuple(root))
                     added += 1
-                else:
-                    # skip adding anchor if we don't have the lift vector
-                    pass
+        # if nothing added, try a lenient quantile-based addition (top-K if within max_add_dist)
+        if added == 0 and unanchored:
+            # parameters: add_k=5, max_add_dist=0.1
+            add_k = 5
+            max_add_dist = 0.1
+            for e, dist, root, lift_vec in sorted(unanchored, key=lambda x: x[1])[
+                :add_k
+            ]:
+                if dist < max_add_dist and tuple(root) not in anchored_roots:
+                    if lift_vec is not None:
+                        anchors[e] = (lift_vec, np.array(root, dtype=float))
+                        anchored_roots.add(tuple(root))
+                        added += 1
+                    else:
+                        pass
 
         print(
             f"Iteration {it}: method={method_used} mapped={len(mapping)} added_anchors={added}"
         )
+
+        # keep best mapping
+        if best_metrics is None or len(mapping) > best_metrics:
+            best_mapping = mapping
+            best_metrics = len(mapping)
 
         # stop if nothing new added
         if added == 0:
@@ -552,11 +581,6 @@ def run_iterative_refinement(max_iter=10, add_tol=1e-8, tol=1e-6):
                 continue
             print("No anchors could be added; stopping iterative refinement")
             break
-
-        # keep best mapping
-        if best_metrics is None or len(mapping) > best_metrics:
-            best_mapping = mapping
-            best_metrics = len(mapping)
 
     out = ARTIFACTS / "edge_root_mapping_iterative.json"
     with out.open("w", encoding="utf-8") as f:
@@ -687,6 +711,469 @@ def local_search_refine_mapping(
     # Convert best_map back to edge->root tuples
     final_mapping = {e: tuple(roots[idx]) for e, idx in best_map.items()}
     return final_mapping, best_score
+
+
+# ---- New: feature-driven mapping helpers & CP-SAT local-hotspot optimizer ----
+
+
+def compute_adjacency_score(mapping, relation="abs1"):
+    """Compute adjacency-preservation score (number of preserved adjacent pairs)."""
+    vertices, edges = build_W33()
+    n_edges = len(edges)
+    # Build line-graph adjacency
+    L_adj = [set() for _ in range(n_edges)]
+    for i in range(n_edges):
+        u, v = edges[i]
+        for j in range(i + 1, n_edges):
+            a, b = edges[j]
+            if u == a or u == b or v == a or v == b:
+                L_adj[i].add(j)
+                L_adj[j].add(i)
+
+    roots = [tuple(r) for r in build_E8_roots()]
+    root_index = {r: i for i, r in enumerate(roots)}
+    n_roots = len(roots)
+    R_adj = [set() for _ in range(n_roots)]
+    for i in range(n_roots):
+        ri = np.array(roots[i], dtype=float)
+        for j in range(i + 1, n_roots):
+            rj = np.array(roots[j], dtype=float)
+            ip = int(np.dot(ri, rj))
+            ok = False
+            if relation == "abs1":
+                ok = abs(ip) == 1
+            elif relation == "1":
+                ok = ip == 1
+            elif relation == "-1":
+                ok = ip == -1
+            if ok:
+                R_adj[i].add(j)
+                R_adj[j].add(i)
+
+    # convert mapping to root indices, filling missing edges with unused roots
+    map_idx = {}
+    assigned = set()
+    for e, r in mapping.items():
+        try:
+            map_idx[int(e)] = root_index[tuple(r)]
+            assigned.add(map_idx[int(e)])
+        except Exception:
+            # skip malformed entries
+            pass
+
+    unused_roots = set(range(n_roots)) - assigned
+    for e in range(n_edges):
+        if e not in map_idx:
+            if unused_roots:
+                map_idx[e] = unused_roots.pop()
+            else:
+                map_idx[e] = e % n_roots
+
+    score = 0
+    for i in range(n_edges):
+        ri = map_idx[i]
+        for j in L_adj[i]:
+            if j <= i:
+                continue
+            rj = map_idx[j]
+            if rj in R_adj[ri]:
+                score += 1
+    return score
+
+
+def compute_feature_vectors(k=16):
+    """Compute feature vectors for edges and roots.
+
+    Returns (edge_feats, root_feats, meta) where meta includes L_adj and other helpers.
+    """
+    vertices, edges = build_W33()
+    n_edges = len(edges)
+    roots = [np.array(r, dtype=float) for r in build_E8_roots()]
+    n_roots = len(roots)
+
+    # line/root embeddings
+    edge_emb = compute_line_graph_embedding(k=k)
+    root_emb = compute_root_graph_embedding(k=k, relation="abs1")
+
+    # adjacency structures
+    L_adj = [set() for _ in range(n_edges)]
+    for i in range(n_edges):
+        u, v = edges[i]
+        for j in range(i + 1, n_edges):
+            a, b = edges[j]
+            if u == a or u == b or v == a or v == b:
+                L_adj[i].add(j)
+                L_adj[j].add(i)
+
+    R_adj = [set() for _ in range(n_roots)]
+    for i in range(n_roots):
+        ri = roots[i]
+        for j in range(i + 1, n_roots):
+            rj = roots[j]
+            ip = int(np.dot(ri, rj))
+            if abs(ip) == 1:
+                R_adj[i].add(j)
+                R_adj[j].add(i)
+
+    # compute anchor-based geometric transform
+    anchors = anchors_from_strategies()
+    if len(anchors) >= 3:
+        A = np.vstack([v for (_, v, _) in anchors])
+        B = np.vstack([r for (_, _, r) in anchors])
+        s, R, t = compute_procrustes(A, B, allow_scale=True)
+    else:
+        s = 1.0
+        R = np.eye(8)
+        t = np.zeros(8)
+
+    # per-edge best geometric distance to any E8 root (under transform)
+    arr_roots = np.vstack(roots)
+    best_geo_dist = np.full(n_edges, np.inf, dtype=float)
+    lift_norm = np.zeros(n_edges, dtype=float)
+    for eidx in range(n_edges):
+        vec_candidates = all_lift_variants(eidx)
+        best = np.inf
+        best_norm = 0.0
+        for v in vec_candidates:
+            try:
+                v = np.array(v, dtype=float)
+                v_trans = s * (v.dot(R)) + t
+                dists = np.linalg.norm(arr_roots - v_trans.reshape(1, -1), axis=1)
+                md = float(np.min(dists))
+                if md < best:
+                    best = md
+                    best_norm = float(np.linalg.norm(v))
+            except Exception:
+                pass
+        if np.isfinite(best):
+            best_geo_dist[eidx] = best
+            lift_norm[eidx] = best_norm
+        else:
+            best_geo_dist[eidx] = 1e6
+            lift_norm[eidx] = 0.0
+
+    # compute triangle counts per edge (number of triangles in line graph involving edge)
+    tri_count = np.zeros(n_edges, dtype=int)
+    for i in range(n_edges):
+        cnt = 0
+        neigh = list(L_adj[i])
+        sset = set(neigh)
+        for a_i in range(len(neigh)):
+            for b_i in range(a_i + 1, len(neigh)):
+                if neigh[b_i] in L_adj[neigh[a_i]]:
+                    cnt += 1
+        tri_count[i] = cnt
+
+    # build feature arrays
+    edge_feats = np.hstack(
+        [
+            edge_emb,
+            tri_count.reshape(-1, 1).astype(float),
+            best_geo_dist.reshape(-1, 1),
+            lift_norm.reshape(-1, 1),
+            np.array([len(L_adj[i]) for i in range(n_edges)], dtype=float).reshape(
+                -1, 1
+            ),
+        ]
+    )
+
+    is_integer_root = np.array(
+        [all(c == int(c) for c in r) for r in arr_roots], dtype=float
+    )
+    # D4 membership (first 4 coords or last 4 coords nonzero only)
+    in_d4_first = np.array(
+        [all(r[4 + i] == 0 for i in range(4)) for r in arr_roots], dtype=float
+    )
+    in_d4_last = np.array(
+        [all(r[i] == 0 for i in range(4)) for r in arr_roots], dtype=float
+    )
+    root_feats = np.hstack(
+        [
+            root_emb,
+            np.array([len(R_adj[i]) for i in range(n_roots)], dtype=float).reshape(
+                -1, 1
+            ),
+            is_integer_root.reshape(-1, 1),
+            in_d4_first.reshape(-1, 1),
+            in_d4_last.reshape(-1, 1),
+        ]
+    )
+
+    meta = {
+        "L_adj": L_adj,
+        "R_adj": R_adj,
+        "best_geo_dist": best_geo_dist,
+        "lift_norm": lift_norm,
+        "edge_emb": edge_emb,
+        "root_emb": root_emb,
+        "anchors": anchors,
+    }
+    return edge_feats, root_feats, meta
+
+
+def build_score_matrix(edge_feats, root_feats, meta, weights=None):
+    """Build a composite score matrix (higher = better match) from features."""
+    if weights is None:
+        weights = {"emb": 0.6, "geom": 0.3, "meta": 0.1}
+
+    edge_emb = meta["edge_emb"]
+    root_emb = meta["root_emb"]
+    # normalize embeddings already unit-norm in embedding functions; use dot product -> [-1,1]
+    emb_sim = (edge_emb.dot(root_emb.T) + 1.0) / 2.0  # map to [0,1]
+
+    # geometry score from distances
+    best_geo = meta["best_geo_dist"].reshape(-1, 1)
+    geom_score = 1.0 / (1.0 + best_geo)  # in (0,1]
+
+    # broadcast root constants for deg matches
+    n_edges = edge_feats.shape[0]
+    n_roots = root_feats.shape[0]
+
+    edge_deg = edge_feats[:, -1].reshape(-1, 1)
+    root_deg = root_feats[:, -4].reshape(1, -1)  # degree stored at column -4
+    max_deg = max(edge_deg.max(), root_deg.max(), 1.0)
+    deg_sim = 1.0 - (np.abs(edge_deg - root_deg) / float(max_deg))
+
+    # integer/half-int match
+    root_is_int = root_feats[:, -3].reshape(1, -1)
+    # for edges, approximate integer-likeness by nearest integer check on lift_norm (small integer norms less likely?)
+    # but better to set to 0.5 neutral; keep it simple: no edge integer flag -> ignore
+    int_sim = np.where(root_is_int == 1.0, 1.0, 0.0)
+
+    meta_sim = deg_sim * 0.7 + int_sim * 0.3
+
+    # final composite score
+    score = (
+        weights["emb"] * emb_sim
+        + weights["geom"] * geom_score
+        + weights["meta"] * meta_sim
+    )
+    # clip and normalize to [0,1]
+    score = np.clip(score, 0.0, 1.0)
+    return score
+
+
+def run_feature_hungarian_mapping(weights=None, write_artifact=True):
+    """Compute feature-driven score matrix and run Hungarian assignment.
+
+    Returns mapping dict edge->root_tuple and stats.
+    """
+    edge_feats, root_feats, meta = compute_feature_vectors(k=16)
+    score = build_score_matrix(edge_feats, root_feats, meta, weights=weights)
+
+    try:
+        from scipy.optimize import linear_sum_assignment
+
+        # convert to cost (minimize)
+        max_s = float(np.max(score))
+        cost = max_s - score
+        row_ind, col_ind = linear_sum_assignment(cost)
+        mapping = {
+            int(r): tuple(np.array(build_E8_roots())[int(c)])
+            for r, c in zip(row_ind, col_ind)
+        }
+        method_used = "hungarian_feature"
+    except Exception:
+        # greedy fallback: include top-k candidate roots per edge so we can cover all edges
+        candidate_triples = []
+        n_edges = score.shape[0]
+        n_roots = score.shape[1]
+        top_k = min(50, n_roots)
+        roots_arr = np.array(build_E8_roots())
+        for i in range(n_edges):
+            idxs = np.argsort(-score[i])[:top_k]
+            for j in idxs:
+                candidate_triples.append(
+                    (i, tuple(roots_arr[int(j)]), float(-score[i, int(j)]))
+                )
+        candidate_triples.sort(key=lambda x: x[2])
+        mapping = greedy_bipartite_match(candidate_triples, n_edges, n_roots)
+        # fill any unassigned edges with unused roots to produce a complete bijection
+        if len(mapping) < n_edges:
+            all_roots = [tuple(r) for r in build_E8_roots()]
+            used = set(mapping.values())
+            unused = [r for r in all_roots if r not in used]
+            unassigned_edges = [e for e in range(n_edges) if e not in mapping]
+            for e, r in zip(unassigned_edges, unused):
+                mapping[e] = r
+        method_used = "greedy_feature"
+    # compute adjacency score
+    adj_score = compute_adjacency_score(mapping, relation="abs1")
+
+    result = {
+        "method": method_used,
+        "adj_score": int(adj_score),
+    }
+
+    if write_artifact:
+        out = ARTIFACTS / "edge_root_mapping_feature.json"
+        with out.open("w", encoding="utf-8") as f:
+            json.dump(
+                {"result": result, "sample": list(mapping.items())[:50]}, f, indent=2
+            )
+
+    print("Feature mapping adj_score:", adj_score, "method:", method_used)
+    return mapping, result, score, meta
+
+
+def detect_hotspots(mapping, meta, top_k=20, max_cluster=16):
+    """Detect clusters of edges that are hotspots for local refinement.
+
+    Heuristic: pick edges with lowest local adjacency-preservation and return the
+    connected component up to max_cluster in the line graph.
+    """
+    L_adj = meta["L_adj"]
+    # compute per-edge preserved adjacency count
+    roots = [tuple(r) for r in build_E8_roots()]
+    root_index = {r: i for i, r in enumerate(roots)}
+    R_adj = meta["R_adj"]
+
+    # convert mapping to root idx
+    map_idx = {e: root_index[tuple(r)] for e, r in mapping.items()}
+
+    preserved = np.zeros(len(L_adj), dtype=int)
+    for i in range(len(L_adj)):
+        ri = map_idx[i]
+        for j in L_adj[i]:
+            if j <= i:
+                continue
+            rj = map_idx[j]
+            if rj in R_adj[ri]:
+                preserved[i] += 1
+                preserved[j] += 1
+
+    # lower preserved -> candidate
+    worst = np.argsort(preserved)[: top_k * 2]
+    # build induced subgraph on worst and pick largest connected component under L_adj
+    worst_set = set(int(x) for x in worst)
+    comps = []
+    seen = set()
+    for v in worst:
+        if v in seen:
+            continue
+        stack = [int(v)]
+        comp = []
+        while stack and len(comp) < max_cluster:
+            u = stack.pop()
+            if u in seen or u not in worst_set:
+                continue
+            seen.add(u)
+            comp.append(u)
+            for w in L_adj[u]:
+                if w not in seen and w in worst_set:
+                    stack.append(w)
+        if comp:
+            comps.append(comp)
+    if not comps:
+        return []
+    # return largest comp limited to max_cluster
+    largest = max(comps, key=len)
+    return largest[:max_cluster]
+
+
+def cp_sat_local_refine(mapping_init, cluster_edges, top_k=8, time_limit=10):
+    """Refine mapping on a small cluster with OR-Tools CP-SAT maximizing local adjacency.
+
+    Returns updated mapping for cluster and local adj score.
+    """
+    try:
+        from ortools.sat.python import cp_model
+    except Exception:
+        print("OR-Tools not available; skipping CP-SAT local refine")
+        return mapping_init, 0
+
+    if not cluster_edges:
+        return mapping_init, 0
+
+    roots = [tuple(r) for r in build_E8_roots()]
+    root_index = {r: i for i, r in enumerate(roots)}
+    n_roots = len(roots)
+
+    # candidate roots per edge: top_k nearest by feature score
+    # reuse feature score by running run_feature_hungarian_mapping to get score & meta
+    _, _, score_matrix, meta = run_feature_hungarian_mapping(write_artifact=False)
+
+    # for each edge in cluster, pick top_k roots
+    candid_roots = []
+    for e in cluster_edges:
+        top_idxs = np.argsort(-score_matrix[e])[:top_k]
+        candid_roots.append(list(map(int, top_idxs)))
+
+    # build map from root index to local index
+    pool = sorted({r for sub in candid_roots for r in sub})
+    pool_index = {r: i for i, r in enumerate(pool)}
+
+    model = cp_model.CpModel()
+    x = {}
+    for i_e, e in enumerate(cluster_edges):
+        for r in candid_roots[i_e]:
+            x[(i_e, r)] = model.NewBoolVar(f"x_e{e}_r{r}")
+        # assign exactly one root per edge
+        model.Add(sum(x[(i_e, r)] for r in candid_roots[i_e]) == 1)
+
+    # each root used at most once across cluster
+    for r in pool:
+        model.Add(
+            sum(x[(i_e, r)] for i_e in range(len(cluster_edges)) if (i_e, r) in x) <= 1
+        )
+
+    # adjacency objective: for every adjacent pair in cluster, reward if assigned roots are adjacent in root graph
+    L_adj = meta["L_adj"]
+    R_adj = meta["R_adj"]
+    pairs = []
+    for i in range(len(cluster_edges)):
+        for j in L_adj[cluster_edges[i]]:
+            if j <= cluster_edges[i]:
+                continue
+            if j in cluster_edges:
+                j_idx = cluster_edges.index(j)
+                if j_idx <= i:
+                    continue
+                pairs.append((i, j_idx, cluster_edges[i], j))
+
+    # linearize pair products with auxiliary y vars
+    y_vars = []
+    for i, j_idx, ei, ej in pairs:
+        for ri in candid_roots[i]:
+            for rj in candid_roots[j_idx]:
+                v = model.NewBoolVar(f"y_e{ei}_r{ri}_e{ej}_r{rj}")
+                model.AddBoolAnd([x[(i, ri)], x[(j_idx, rj)]]).OnlyEnforceIf(v)
+                # enforce v -> both x true
+                model.Add(x[(i, ri)] + x[(j_idx, rj)] - 1 >= v)
+                y_vars.append((v, ri, rj))
+
+    # objective: maximize sum of y * adj_root_indicator
+    terms = []
+    for v, ri, rj in y_vars:
+        adj_val = 1 if (int(rj) in R_adj[int(ri)]) else 0
+        if adj_val:
+            terms.append(v)
+    if not terms:
+        # nothing to do
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    model.Maximize(sum(terms))
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = float(time_limit)
+    solver.parameters.num_search_workers = 8
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        print("CP-SAT found no feasible improvement")
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    # build updated mapping
+    updated = dict(mapping_init)
+    for i_e, e in enumerate(cluster_edges):
+        for r in candid_roots[i_e]:
+            if solver.Value(x[(i_e, r)]) == 1:
+                updated[e] = tuple(np.array(build_E8_roots())[int(r)])
+                break
+
+    local_score = compute_adjacency_score({e: updated[e] for e in cluster_edges})
+    return updated, local_score
+
+
+# ---- end new helpers ----
 
 
 def run_mapping(tol=1e-8):

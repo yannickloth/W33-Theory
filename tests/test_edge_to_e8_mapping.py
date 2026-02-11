@@ -32,6 +32,8 @@ def test_local_search_accepts_partial_mapping_and_returns_full_mapping():
     for e in range(240):
         assert e in refined
         assert isinstance(refined[e], tuple)
+    # mapping should be one-to-one across roots
+    assert len(set(refined.values())) == 240
 
 
 def test_local_search_is_idempotent_with_zero_iterations():
@@ -54,3 +56,39 @@ def test_iterative_refinement_adds_anchors_with_large_tol():
     assert isinstance(anchors, dict)
     # with a very lenient add_tol we should accumulate anchors
     assert len(anchors) >= 10
+
+
+def test_feature_mapping_runs_and_writes_artifact(tmp_path):
+    from scripts.edge_to_e8_mapping import run_feature_hungarian_mapping
+
+    mapping, result, score, meta = run_feature_hungarian_mapping(write_artifact=True)
+    # mapping should be complete and bijective
+    assert isinstance(mapping, dict)
+    assert len(mapping) == 240
+    assert len(set(mapping.values())) == 240
+    p = Path("artifacts/edge_root_mapping_feature.json")
+    assert p.exists()
+
+
+def test_cp_sat_local_refine_small_cluster():
+    import pytest
+
+    # skip if OR-Tools not available
+    pytest.importorskip("ortools")
+    from scripts.edge_to_e8_mapping import (
+        cp_sat_local_refine,
+        detect_hotspots,
+        run_feature_hungarian_mapping,
+    )
+
+    mapping, result, score, meta = run_feature_hungarian_mapping(write_artifact=False)
+    cluster = detect_hotspots(mapping, meta, top_k=10, max_cluster=8)
+    if not cluster:
+        pytest.skip("No hotspot cluster found; skipping CP-SAT local refine test")
+
+    updated, local_score = cp_sat_local_refine(mapping, cluster, top_k=6, time_limit=3)
+    assert isinstance(updated, dict)
+    # ensure we returned assignments for cluster edges
+    for e in cluster:
+        assert e in updated
+    assert isinstance(local_score, (int, float))

@@ -1,3 +1,10 @@
+import os
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
 from scripts.edge_to_e8_mapping import local_search_refine_mapping, run_geometry_mapping
 
 m_geom, c_triples, geom_t = run_geometry_mapping()
