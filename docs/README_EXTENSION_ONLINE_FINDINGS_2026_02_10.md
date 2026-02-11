@@ -115,10 +115,10 @@ from the layperson narrative.
     Raw note: confirms the deformation branch is not speculative; journal-level
     versions motivate preserving both arXiv and DOI links in the source chain.
 
-21. Cretu et al., *Classification Problem for Jacobi identities in Vogel's universality classes* (arXiv, 2025)
-    URL: `https://arxiv.org/abs/2507.07901`
-    Raw note: explicitly frames universality constraints as a classification/Diophantine
-    problem, matching our shift from bounded brute-force scans to exact arithmetic closure.
+21. Cretu et al., *The Vogel plane, the F4 line, and TQFT at level one* (arXiv, 2025)
+    URL: `https://arxiv.org/abs/2508.01834`
+    Raw note: reinforces that arithmetic/geometric structure on Vogel's plane
+    is actively studied and supports explicit line-focused computational scans.
 
 22. Cretu et al., *Classification Problem on Vogel's Plane* (EPJC, 2025)
     URL: `https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y`
@@ -207,6 +207,16 @@ classical hits are `{3,8,28,78,190,1081,1680}`, direct-table hits are
 `{1,47,96,119,287,336,484,603,782,3479}`.
 Targets `728`, `486`, `242` are not hits; nearest hit distances are
 `54`, `2`, and `6`, respectively.
+
+H11e. On the exceptional line, integer-parameter points should admit a divisor
+criterion, yielding a finite integer-`m` integer-`D` locus.
+Status: verified via `tools/vogel_integer_m_locus.py`:
+with `n=m+4`, dimension rewrites as
+`D = 30*n - 122 + 120/n`, so for integer `m != -4`,
+`D` is integer iff `n | 120`.
+This gives exact positive dimensions from integer `m`:
+`{8,28,52,78,133,190,248,336,484,603,782,1081,1680,3479}`,
+again excluding `728`, `486`, and `242`.
 
 - Extended rational search (rational cubic root analysis) up to denominator `500` found
   **no** non-degenerate rational exceptional-line parameter `m` for target dims `486`
@@ -354,6 +364,16 @@ Additional witness-space note:
   "s12 misses the entire integer-dimensional rational-hit locus and sits near, but
   outside, the closest hits (`484`, `248`, `782`)."
 
+## Twelfth-pass raw notes (2026-02-11, integer-parameter locus loop)
+
+- The finite rational-hit theorem still mixes integer and fractional `m`.
+- Reparameterizing with `n=m+4` gives
+  `D=30*n-122+120/n`, making integer-`m` integrality equivalent to `n|120`.
+- This yields a fully explicit finite integer-parameter locus and explains why
+  integer-root hit dimensions are sparse.
+- The s12 target dimensions remain outside this divisor-locus, so they are not
+  exceptional-line hits even under integer-parameter specializations.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -365,6 +385,8 @@ Additional witness-space note:
 - Vogel arithmetic theorem tests: `tests/test_vogel_rational_dimension_theorem_smoke.py`
 - Vogel hit crosswalk: `tools/vogel_rational_hit_crosswalk.py`
 - Vogel hit crosswalk tests: `tests/test_vogel_rational_hit_crosswalk_smoke.py`
+- Vogel integer-`m` locus: `tools/vogel_integer_m_locus.py`
+- Vogel integer-`m` locus tests: `tests/test_vogel_integer_m_locus_smoke.py`
 - Jacobi failure pattern: `tools/analyze_s12_jacobi_failure_pattern.py`
 - Jacobi failure tests: `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`
 - sl_27 Z3 bridge: `tools/analyze_s12_sl27_z3_bridge.py`
@@ -383,7 +405,8 @@ python tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --m
 python tools/vogel_universal_snapshot.py --exceptional-line-denominator-cap 24 --out-json artifacts/vogel_universal_snapshot_2026_02_11.json --out-md docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md
 python tools/vogel_rational_dimension_theorem.py --window-start 200 --window-end 1000 --target-dims 728 486 242 --out-json artifacts/vogel_rational_dimension_theorem_2026_02_11.json --out-md docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md
 python tools/vogel_rational_hit_crosswalk.py --target-dims 728 486 242 --out-json artifacts/vogel_rational_hit_crosswalk_2026_02_11.json --out-md docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md
+python tools/vogel_integer_m_locus.py --m-min -300 --m-max 300 --target-dims 728 486 242 --out-json artifacts/vogel_integer_m_locus_2026_02_11.json --out-md docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py -q
 ```
