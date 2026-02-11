@@ -43,6 +43,12 @@ open AffineF3
 def act (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (p : AffineF3.Point) : AffineF3.Point :=
   (M 0 0 * p.fst + M 0 1 * p.snd, M 1 0 * p.fst + M 1 1 * p.snd)
 
+/-- Composition property: `(A ⬝ B).act p = A.act (B.act p)`. -/
+theorem act_mul (A B : Matrix (Fin 2) (Fin 2) (ZMod 3)) (p : AffineF3.Point) :
+    (A ⬝ B).act p = A.act (B.act p) := by
+  -- This is a small, fully-decidable component-wise calculation.
+  dec_trivial
+
 /-- `A_diag_mat` fixes each vertical point `(0,b)`. -/
 theorem A_diag_mat_fix_elem (b : ZMod 3) : act A_diag_mat (0, b) = (0, b) := by
   simp [act, A_diag_mat]
