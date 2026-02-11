@@ -133,6 +133,17 @@ changes affine/Hessian symmetries:
   `D = 30*(m+4) - 122 + 120/(m+4)`, proving that for integer `m != -4`,
   `D` is integer iff `(m+4)` divides `120`. The positive integer-`m` dimension
   set is exactly `{8,28,52,78,133,190,248,336,484,603,782,1081,1680,3479}`.
+- global `z=(2,2)` exclusion at full-sign level (`2026-02-11`):
+  `tools/prove_z22_no_global_stabilizer.py` checks closed-form full-sign
+  invariance for `z_map=(2,2)` over all affine candidates and finds no
+  stabilizer: `0/864` matches in full `AGL(2,3)` (including global sign) and
+  `0/216` matches in the `det=2`, order-`2` involution subset.
+- global full-sign `z`-map census (`2026-02-11`):
+  `tools/classify_global_full_sign_stabilizers.py` scans all six affine
+  `z` maps across `{all_agl, hessian216, involution_det2}`.
+  Only two nonzero cells remain:
+  `(all_agl, z=(1,0), count=1)` and `(hessian216, z=(1,0), count=1)`;
+  all other cells are zero.
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
@@ -159,6 +170,10 @@ Outputs:
 - `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
 - `artifacts/vogel_integer_m_locus_2026_02_11.json`
 - `docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md`
+- `artifacts/z22_global_stabilizer_exclusion_2026_02_11.json`
+- `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md`
+- `artifacts/global_full_sign_stabilizer_census_2026_02_11.json`
+- `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`
 - `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`

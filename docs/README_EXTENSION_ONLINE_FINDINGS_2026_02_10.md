@@ -247,6 +247,24 @@ the failure set is exactly `{(a,b,c) in {0,1,2}^3 : a,b,c != 0 and (a+b+c) mod 3
 equivalently the `2+1` nonzero composition pattern, and splits into exactly two
 `S3` orbits of size `3`.
 
+H14. The `z=(2,2)` exclusion should hold globally at full-sign level, not only
+inside the reduced-certificate census.
+Status: verified via `tools/prove_z22_no_global_stabilizer.py`:
+for `z_map=(2,2)`, full-sign invariance has zero matches in
+`864` full `AGL(2,3)` affine/epsilon candidates and zero matches in
+`216` candidates from the `det=2`, order-`2` involution subset.
+This upgrades exclusion from representative-level evidence to a global
+closed-form stabilizer nonexistence check.
+
+H15. Global full-sign stabilizers should admit a complete `z`-map census with
+exactly one surviving trivial cell.
+Status: verified via `tools/classify_global_full_sign_stabilizers.py`:
+for modes `{all_agl, hessian216, involution_det2}` and all six affine `z` maps,
+the only nonzero cells are:
+`(mode=all_agl, z=(1,0), count=1)` and
+`(mode=hessian216, z=(1,0), count=1)`.
+The involution subset has zero matches for all `z` maps.
+
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
@@ -374,6 +392,27 @@ Additional witness-space note:
 - The s12 target dimensions remain outside this divisor-locus, so they are not
   exceptional-line hits even under integer-parameter specializations.
 
+## Thirteenth-pass raw notes (2026-02-11, z22 global exclusion loop)
+
+- The short symbolic `x=0` contradiction excludes `z=(2,2)` in adapted gauge,
+  but we wanted a global, direct stabilizer scan against the full sign law.
+- New checker runs the closed-form sign law on all lines/z values and tests
+  affine/epsilon candidates directly, without depending on the reduced-census
+  representative list.
+- Result: zero matches for `z=(2,2)` across full `AGL(2,3)` and across the
+  involution subset relevant to reduced-orbit symmetry.
+- This closes a gap between "not observed in reduced reps" and
+  "provably absent as a global full-sign stabilizer."
+
+## Fourteenth-pass raw notes (2026-02-11, full z-map census loop)
+
+- Excluding one bad map (`z=(2,2)`) still leaves the global landscape implicit.
+- We added a full `z`-map census over the three affine modes.
+- Outcome: only the trivial `z=(1,0)` cell survives (with one symmetry, the
+  identity) in full `AGL` and `Hessian216`; all other cells are zero.
+- This reframes the symmetry statement as a sparse matrix classification rather
+  than a list of exclusions.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -387,6 +426,10 @@ Additional witness-space note:
 - Vogel hit crosswalk tests: `tests/test_vogel_rational_hit_crosswalk_smoke.py`
 - Vogel integer-`m` locus: `tools/vogel_integer_m_locus.py`
 - Vogel integer-`m` locus tests: `tests/test_vogel_integer_m_locus_smoke.py`
+- global z22 stabilizer exclusion: `tools/prove_z22_no_global_stabilizer.py`
+- global z22 exclusion tests: `tests/test_prove_z22_no_global_stabilizer_smoke.py`
+- global z-map stabilizer census: `tools/classify_global_full_sign_stabilizers.py`
+- global z-map census tests: `tests/test_classify_global_full_sign_stabilizers_smoke.py`
 - Jacobi failure pattern: `tools/analyze_s12_jacobi_failure_pattern.py`
 - Jacobi failure tests: `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`
 - sl_27 Z3 bridge: `tools/analyze_s12_sl27_z3_bridge.py`
@@ -406,7 +449,9 @@ python tools/vogel_universal_snapshot.py --exceptional-line-denominator-cap 24 -
 python tools/vogel_rational_dimension_theorem.py --window-start 200 --window-end 1000 --target-dims 728 486 242 --out-json artifacts/vogel_rational_dimension_theorem_2026_02_11.json --out-md docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md
 python tools/vogel_rational_hit_crosswalk.py --target-dims 728 486 242 --out-json artifacts/vogel_rational_hit_crosswalk_2026_02_11.json --out-md docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md
 python tools/vogel_integer_m_locus.py --m-min -300 --m-max 300 --target-dims 728 486 242 --out-json artifacts/vogel_integer_m_locus_2026_02_11.json --out-md docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md
+python tools/prove_z22_no_global_stabilizer.py --out-json artifacts/z22_global_stabilizer_exclusion_2026_02_11.json --out-md docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md
+python tools/classify_global_full_sign_stabilizers.py --out-json artifacts/global_full_sign_stabilizer_census_2026_02_11.json --out-md docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py -q
 ```
