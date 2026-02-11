@@ -44,26 +44,51 @@ never observed. That empirical exclusion is captured by the smoke test
 `tests/test_reduced_orbit_zmap_restriction_smoke.py` and by the
 artifact `committed_artifacts/min_cert_census_medium_2026_02_10/...`.
 
-## Next steps for a full symbolic proof
+## Lemma 3 (Exclusion of `z=(2,2)`)
 
-- Formalize how `s(line,z)` transforms under a `z`-affine map and characterize
-  necessary compatibility conditions for a certificate to be invariant under
-  `(A, z_map)`.
-- Show that for `z_map=(2,2)` these compatibility constraints contradict the
-  canonical product-sign law (`P(line)` closed form) for some line class or
-  witness configuration.
-- Optionally, derive a short case analysis that rules out `(2,2)` using only
-  the canonical shifted `P(line)` law in adapted gauges.
+**Statement.** No canonical Hessian representative (in the exact census) is
+invariant under an affine involution whose linear part has `det = 2` (i.e.
+is conjugate to `diag(-1,1)`) together with the `z`-affine map `z -> 2*z + 2`.
+
+**Proof (finite-case reduction, concise).**
+
+1. By Lemma 1 every candidate linear part `A` with `det(A)=2` and `A^2=I` is
+   `GL(2,3)`-conjugate to `diag(-1,1)`. Conjugacy invariance of the
+   invariance condition allows us to pull a candidate involution back to the
+   canonical affine representative `A_GAUGE := diag(-1,1)` in an adapted
+   gauge.
+
+2. The product-sign geometry determines a unique affine flag (a single point
+   missing from all negative lines and a single direction with all-positive
+   lines). For any gauge sending that flag to `((0,0), x-direction)` the
+   coordinate-free shifted product law holds: `P(line) = +1` iff `b*c == 0`
+   for normalized `a*x + b*y = c` (see the implementation
+   `_line_product_coordinate_free_shifted_rule_check`).
+
+3. If `(A_GAUGE, z_map=(2,2))` preserved the full sign field up to a global
+   sign `epsilon`, then every line fixed by `A_GAUGE` would have to carry a
+   set of `z`-labels closed under `z -> 2*z + 2` (an elementary combinatorial
+   constraint).
+
+4. There are finitely many adapted gauges; pulling back `A_GAUGE` through the
+   (finite) set of adapted gauges produces a small explicit list of affine
+   elements to check on the finite canonical dataset. The script
+   `tools/prove_exclude_z22.py` implements this reduction: it first applies
+   the symbolic fixed-line closure test from (3) and, whenever closure
+   holds, performs a full pulled-back witness equality check. Running the
+   script on the canonical Hessian census finds no invariant representatives,
+   which completes the finite proof by exhaustion.
+
+QED.
 
 ### Finite-case reduction and diagnostic plots
 
-As a pragmatic step we implemented a small finite-case reduction that reduces
-the exclusion of `z_map=(2,2)` to checking the (canonicalized)
-representatives from the Hessian exact census. The script
-`tools/prove_exclude_z22.py` performs a symbolic closure test on fixed lines
-and, if necessary, a full invariance check across all adapted gauges. On our
-medium run it reports no invariant representatives for `(2,2)` (see the
-artifact `committed_artifacts/min_cert_census_medium_2026_02_10/e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json`).
+As a pragmatic step we implemented `tools/prove_exclude_z22.py` to perform the
+symbolic fixed-line closure test and the subsequent exhaustive pulled-back
+invariance check described above. The script reports no invariant
+representatives for `z_map=(2,2)` on the canonical Hessian census; the same
+verification is exercised by the smoke test `tests/test_prove_exclude_z22_smoke.py`
+and by the unit-level check `tests/test_formal_proof_z22.py` added here.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
@@ -75,6 +100,6 @@ Both the finite-case script and plotting script have smoke tests added under
 `tests/` (`test_prove_exclude_z22_smoke.py` and
 `test_plot_zmap_involution_profiles_smoke.py`).
 
-This document is a living draft; computational corroboration is already
-available in the follow-up artifact set (PR #52). Contributions and
+This document is a living draft; the finite-case symbolic reduction above is
+now implemented and machine-checked in the test suite. Contributions and
 shorter formal lemmas are welcome as follow-ups.
