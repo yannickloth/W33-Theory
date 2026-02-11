@@ -13,6 +13,7 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 import affine_f3
 import gl2_f3
+import gl2_enumeration
 
 namespace Z22Exclusion
 
@@ -189,5 +190,46 @@ theorem z22_no_fixed_point_stabilizer_for_candidate_line_through_origin
   have s := by simpa [z1] using SLine_c0_z1 a b
   have : 1 = -1 := by simp [p, heq, s]
   contradiction
+
+/--
+Every candidate involution is conjugate to `A_diag_mat` and therefore
+preserves some line through the origin (`c = 0`).
+-/
+
+theorem candidate_preserves_line_through_origin
+    (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (hM : List.Mem M GL2F3Enumeration.candidates) :
+    Exists fun (a : ZMod 3) (b : ZMod 3) => (line_from_abc a b 0).map (GL2F3.act M) = line_from_abc a b 0 := by
+  rcases GL2F3Enumeration.candidates_conjugate M hM with Exists.intro P hP
+  rcases hP with And.intro P_mem conj_eq
+  let invP := GL2F3Enumeration.inv2x2 P
+  let L := line_from_abc (1 : ZMod 3) 0 0
+  let L' := L.map (GL2F3.act invP)
+  have P_det_nonzero : P.det != 0 := by
+    simp [GL2F3Enumeration.invertible_matrices] at P_mem
+    rcases P_mem with And.intro _ hd
+    exact hd
+  have pointwise : forall p, List.Mem p L -> GL2F3.act M (GL2F3.act invP p) = GL2F3.act invP (GL2F3.act GL2F3.A_diag_mat p) := by
+    intro p hp
+    have H := congrArg (fun N => GL2F3.act N p) conj_eq
+    have lhs_eq := by simpa [GL2F3.act_mul] using H
+    calc
+      GL2F3.act M (GL2F3.act invP p) = GL2F3.act (invP * P) (GL2F3.act M (GL2F3.act invP p)) := by
+        simp [GL2F3.act_mul, GL2F3Enumeration.right_inv2x2 P P_det_nonzero]
+      _ = GL2F3.act invP (GL2F3.act P (GL2F3.act M (GL2F3.act invP p))) := by simp [GL2F3.act_mul]
+      _ = GL2F3.act invP (GL2F3.act GL2F3.A_diag_mat p) := by simp [lhs_eq]
+  have map_eq := List.map_congr pointwise
+  have L'_invariant : L'.map (GL2F3.act M) = L' := by
+    calc
+      L'.map (GL2F3.act M) = (L.map (GL2F3.act invP)).map (GL2F3.act M) := rfl
+      _ = L.map fun p => GL2F3.act M (GL2F3.act invP p) := by simp [List.map_map]
+      _ = L.map fun p => GL2F3.act invP (GL2F3.act GL2F3.A_diag_mat p) := by simpa using map_eq
+      _ = (L.map (GL2F3.act GL2F3.A_diag_mat)).map (GL2F3.act invP) := by simp [List.map_map]
+      _ = L.map (GL2F3.act invP) := by simp [A_diag_on_L]
+  have : Exists fun (a : ZMod 3) (b : ZMod 3) => L' = line_from_abc a b 0 := by
+    dec_trivial
+  rcases this with Exists.intro a h1
+  rcases h1 with Exists.intro b heq
+  exists a, b
+  simp [heq, L'_invariant]
 
 end Z22Exclusion

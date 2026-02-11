@@ -806,6 +806,71 @@ Additional witness-space note:
   - Jacobi/classification framing:
     https://arxiv.org/abs/2506.15280
 
+## Twenty-ninth-pass raw notes (2026-02-11, Vogel-resonance bridge loop)
+
+- New analysis pass ties three existing artifacts into a single arithmetic bridge:
+  - `artifacts/s12_universalization_report.json`,
+  - `artifacts/vogel_rational_hit_crosswalk_2026_02_11.json`,
+  - `artifacts/min_cert_census_summary.json`.
+- New tool: `tools/analyze_vogel_resonance_bridge.py`.
+- Reproducible nearest-hit profile for s12 dimensions:
+  - `242 -> 248` (gap `+6`, nearest direct table hit contains `E8`),
+  - `486 -> 484` (gap `-2`),
+  - `728 -> 782` (gap `+54`, nearest integral root includes `26`).
+- Count-level resonance checks now all pass in one report:
+  - `|242-248| = 6 = jacobi_failure_count`,
+  - `|486-484| = 2 = nonzero_grade_count`,
+  - `|728-782| = 54 = 2 * checked_grade_triples`,
+  - nearest total-dimension integral root `26` matches `A_26` rank inversion.
+- Orbit-size bridge from min-cert summary:
+  - infer `r=9` from `grade1 = 3r^2 = 243`, so `r^2 = 81`,
+  - observed orbit sizes are `1296` and `2592`,
+  - factorization is exactly `1296=81*16`, `2592=81*32`, factors are powers of two.
+- Interpretation:
+  - this is a constrained numeric resonance profile, not a closed-form TOE proof;
+    it gives a concrete target for future derivations that explain why these gaps and
+    powers-of-two factors co-occur.
+- web prompts checked in this pass:
+  - current universality overview:
+    https://arxiv.org/abs/2601.01612
+  - Jacobi-classification framing:
+    https://arxiv.org/abs/2506.15280
+  - refined universality context:
+    https://arxiv.org/abs/2504.13831
+  - published Vogel-plane classification problem (EPJC):
+    https://doi.org/10.1140/epjc/s10052-025-14943-y
+  - Macdonald deformation extension:
+    https://arxiv.org/abs/2505.16569
+  - note: an earlier DOI guess (`10.1140/epjc/s10052-025-14406-9`) 404'ed, and
+    `10.1016/j.physletb.2025.139730` resolved to an unrelated Phys. Lett. B article.
+
+## Thirtieth-pass raw notes (2026-02-11, GL2 group/graph bridge loop)
+
+- We folded the ad-hoc conjugator scratch script into a reproducible analysis pass:
+  - new tool: `tools/analyze_gl2_f3_involution_conjugacy.py`,
+  - outputs:
+    - `artifacts/gl2_f3_involution_conjugacy_2026_02_11.json`,
+    - `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md`.
+- Group-theory result (explicit finite census):
+  - `|GL(2,3)| = 48`,
+  - det-`2`, order-`2` involutions: `12`,
+  - centralizer of `diag(-1,1)`: size `4`,
+  - orbit-stabilizer class size `48/4 = 12`, matching the census exactly.
+- Graph-theory result (uniform action profile on `AG(2,3)`):
+  - points cycle as `[1,1,1,2,2,2]`,
+  - affine-line vertices cycle as `[1,1,1,1,2,2,2,2]`,
+  - this profile is identical across all 12 involutions.
+- Interpretation:
+  - reduced-orbit involution symmetry now has a concrete class-theoretic
+    skeleton: one involution class and one uniform affine-graph cycle pattern.
+  - this gives a stable `micro-axiom` layer for future algebraic closure
+    attempts (rather than isolated brute-force checks).
+- web prompts checked in this pass:
+  - finite-order automorphism baseline:
+    https://www.mathnet.ru/php/archive.phtml?wshow=paper&jrnid=im&paperid=3460&option_lang=eng
+  - graded-contraction / quasi-Jordan bridge context:
+    https://www.worldscientific.com/doi/abs/10.1142/S021949882250059X
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -851,6 +916,10 @@ Additional witness-space note:
 - Jacobi failure tests: `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`
 - sl_27 Z3 bridge: `tools/analyze_s12_sl27_z3_bridge.py`
 - sl_27 bridge tests: `tests/test_analyze_s12_sl27_z3_bridge_smoke.py`
+- Vogel resonance bridge: `tools/analyze_vogel_resonance_bridge.py`
+- Vogel resonance bridge tests: `tests/test_analyze_vogel_resonance_bridge_smoke.py`
+- GL(2,3) involution conjugacy bridge: `tools/analyze_gl2_f3_involution_conjugacy.py`
+- GL(2,3) bridge tests: `tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py`
 - Distilled narrative: `README.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 
 ## Reproduction commands
@@ -881,7 +950,11 @@ python tools/minimal_global_identity_certificates.py --out-json artifacts/minima
 python tools/global_sign_rigidity_dual_profile.py --out-json artifacts/global_sign_rigidity_dual_profile_2026_02_11.json --out-md docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
+python tools/analyze_vogel_resonance_bridge.py --out-json artifacts/vogel_resonance_bridge_2026_02_11.json --out-md docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md
+python tools/analyze_gl2_f3_involution_conjugacy.py --out-json artifacts/gl2_f3_involution_conjugacy_2026_02_11.json --out-md docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_classify_core_motif_orbit_polarization_smoke.py tests/test_core_motif_enrichment_stats_smoke.py tests/test_core_motif_anchor_channels_smoke.py tests/test_search_core_motif_anchor_sets_smoke.py tests/test_run_core_motif_chain_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
+python -m pytest tests/test_analyze_vogel_resonance_bridge_smoke.py -q
+python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q
 cd proofs/lean
 lake update
 lake build

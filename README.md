@@ -38,6 +38,13 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - New anchor-channel classifier: using motif anchors
   (`full: x:(1,1,0)`, `reduced: x:(2,2,1)`), an abstaining rule reaches
   `36/38 = 0.947` precision when it fires on combined Hessian reps.
+- New Vogel-resonance bridge: nearest Vogel-hit gaps for
+  `(242,486,728)` match `(Jacobi failures=6, nonzero grades=2, 2*checked triples=54)`,
+  and min-cert orbit sizes factor as `81*{16,32}` where `81=9^2` from the
+  `sl_27` equal-block bridge.
+- New `GL(2,3)` bridge: all det-`2` involutions are conjugate to `diag(-1,1)`,
+  and each induces the same affine-graph cycle profile on `AG(2,3)`:
+  points `[1,1,1,2,2,2]`, lines `[1,1,1,1,2,2,2,2]`.
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - This `6 vs 5` gap is stable under distinct-line and striation-complete
@@ -73,6 +80,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce minimal identity certificates at `z=(1,0)` | `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md` | `python tools/minimal_global_identity_certificates.py` | `python -m pytest tests/test_minimal_global_identity_certificates_smoke.py -q` |
 | Reproduce dual rigidity profile (negative vs positive) | `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md` | `python tools/global_sign_rigidity_dual_profile.py` | `python -m pytest tests/test_global_sign_rigidity_dual_profile_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
+| Reproduce the Vogel resonance bridge | `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md` | `python tools/analyze_vogel_resonance_bridge.py` | `python -m pytest tests/test_analyze_vogel_resonance_bridge_smoke.py -q` |
+| Reproduce the `GL(2,3)` involution conjugacy bridge | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md` | `python tools/analyze_gl2_f3_involution_conjugacy.py` | `python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
 ## Quick Setup
@@ -134,6 +143,8 @@ Additional high-signal documents:
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`
 - `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`
+- `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md`
+- `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md`
 
 ## Contribution Notes
 
