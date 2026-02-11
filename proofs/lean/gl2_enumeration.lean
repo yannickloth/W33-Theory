@@ -64,27 +64,125 @@ def adj2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) : Matrix (Fin 2) (Fin 2) (ZMod 
 def inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) : Matrix (Fin 2) (Fin 2) (ZMod 3) :=
   (M.det) • (adj2x2 M)
 
+/-- For 2×2 matrices the adjugate satisfies `M * adj(M) = det(M) * I`. -/
+theorem mul_adj2x2_eq_det_mul_one (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) :
+    M ⬝ adj2x2 M = (M.det) • 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [adj2x2, Matrix.mul_apply]
+
+/-- Dually, `adj(M) * M = det(M) * I`. -/
+theorem adj2x2_mul_eq_det_mul_one (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) :
+    adj2x2 M ⬝ M = (M.det) • 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [adj2x2, Matrix.mul_apply]
+
+/-- Nonzero elements of `ZMod 3` square to `1`. -/
+theorem nonzero_square_one (m : ZMod 3) (h : m ≠ 0) : m * m = 1 := by
+  fin_cases m <;> simp at *
+  have : (m : Int) ≠ 0 := by simp_all
+  -- the two remaining cases (1 and 2) square to 1 in ZMod 3
+  fin_cases m <;> decide
+
 /-- Left inverse property for `inv2x2` on invertible matrices. -/
 theorem left_inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (h : M.det ≠ 0) :
     M ⬝ inv2x2 M = 1 := by
-  -- Completely decidable for 2×2 matrices over F3; solve by computation.
-  dec_trivial
+  calc
+    M ⬝ inv2x2 M = M ⬝ ((M.det) • adj2x2 M) := by simp [inv2x2]
+    _ = (M.det) • (M ⬝ adj2x2 M) := by simp [Matrix.mul_smul]
+    _ = (M.det) • ((M.det) • 1) := by simp [mul_adj2x2_eq_det_mul_one]
+    _ = ((M.det * M.det : ZMod 3)) • 1 := by simp [ZMod.smul_smul]
+  have d2 : M.det * M.det = 1 := nonzero_square_one M.det h
+  simpa [d2] using (by simp [ZMod.smul_eq_mul])
 
 /-- Right inverse property for `inv2x2` on invertible matrices. -/
 theorem right_inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (h : M.det ≠ 0) :
     inv2x2 M ⬝ M = 1 := by
-  dec_trivial
+  calc
+    inv2x2 M ⬝ M = ((M.det) • adj2x2 M) ⬝ M := by simp [inv2x2]
+    _ = (M.det) • (adj2x2 M ⬝ M) := by simp [Matrix.smul_mul]
+    _ = (M.det) • ((M.det) • 1) := by simp [adj2x2_mul_eq_det_mul_one]
+    _ = ((M.det * M.det : ZMod 3)) • 1 := by simp [ZMod.smul_smul]
+  have d2 : M.det * M.det = 1 := nonzero_square_one M.det h
+  simpa [d2] using (by simp [ZMod.smul_eq_mul])
 
 /-- List of invertible matrices (GL(2,3) concrete list). -/
 def invertible_matrices : List (Matrix (Fin 2) (Fin 2) (ZMod 3)) :=
   all_matrices.filter fun M => M.det ≠ 0
 
 /-- Enumerative conjugacy result: every involution with det = 2 is conjugate to
-    `diag(-1,1)` by some invertible matrix in `GL(2,3)`. The proof is
-    computational (decidable) and checks all finite possibilities. -/
+    `diag(-1,1)` by some invertible matrix in `GL(2,3)`. We provide explicit
+    constructive witnesses (conjugator `P`) for each finite case discovered
+    by enumeration. -/
 theorem candidates_conjugate :
     ∀ M ∈ candidates, ∃ P ∈ invertible_matrices, P ⬝ M ⬝ inv2x2 P = GL2F3.A_diag_mat := by
-  -- Finite, fully decidable search over the small lists; dispatch to computation.
-  dec_trivial
+  intro M hM
+  -- The list of candidate matrices is finite; case-split on the concrete shape
+  -- (these are the twelve involutions with determinant 2 found by enumeration).
+  have cases :
+      M = mk2x2 0 1 1 0
+        ∨ M = mk2x2 0 2 2 0
+        ∨ M = mk2x2 1 0 0 2
+        ∨ M = mk2x2 1 0 1 2
+        ∨ M = mk2x2 1 0 2 2
+        ∨ M = mk2x2 1 1 0 2
+        ∨ M = mk2x2 1 2 0 2
+        ∨ M = mk2x2 2 0 0 1
+        ∨ M = mk2x2 2 0 1 1
+        ∨ M = mk2x2 2 0 2 1
+        ∨ M = mk2x2 2 1 0 1
+        ∨ M = mk2x2 2 2 0 1 := by
+    dec_trivial
+  rcases cases with
+  | Or.inl h =>
+    let P := mk2x2 1 2 1 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    -- check conjugacy by computation
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inl h) =>
+    let P := mk2x2 1 1 1 2
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inl h)) =>
+    let P := mk2x2 0 1 1 0
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inl h))) =>
+    let P := mk2x2 1 1 1 0
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))) =>
+    let P := mk2x2 1 2 1 0
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h)))))) =>
+    let P := mk2x2 0 1 1 2
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))) =>
+    let P := mk2x2 0 1 1 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))) =>
+    let P := mk2x2 1 0 0 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h)))))))))) =>
+    let P := mk2x2 1 0 1 2
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))))) =>
+    let P := mk2x2 1 0 1 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h)))))))))))) =>
+    let P := mk2x2 1 1 0 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
+  | Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))))))))))) =>
+    let P := mk2x2 1 2 0 1
+    refine Exists.intro P (And.intro (by simp [invertible_matrices, all_matrices]; simp [P]; dec_trivial) ?_)
+    simp [P, h, inv2x2, adj2x2, Matrix.mul_apply]; dec_trivial
 
 end GL2F3Enumeration

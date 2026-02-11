@@ -88,6 +88,14 @@ theorem SLine_vertical_table :
       (And (SLine (1 : ZMod 3) 0 0 1 = -1) (SLine (1 : ZMod 3) 0 0 2 = 1)) := by
   simp [SLine]
 
+/-- `SLine` when `c = 0` for `z=1` is always `-1` (works for any a,b). -/
+theorem SLine_c0_z1 (a b : ZMod 3) : SLine a b 0 1 = -1 := by
+  simp [SLine]
+
+/-- For any line through the origin (`c = 0`) the product sign is `+1`. -/
+theorem PLine_c0_eq_one (a b : ZMod 3) : PLine a b 0 = 1 := by
+  simp [PLine]
+
 open GL2F3
 
 /-- `A_diag_mat` fixes each vertical point `(0,b)` (matrix action version). -/
@@ -156,5 +164,30 @@ theorem z22_no_fixed_point_stabilizer_via_zMap :
   rcases h with Exists.intro z hrest
   rcases hrest with And.intro hz heq
   exact (z22_contradiction_of_fixed_point_via_zMap z hz) heq
+
+/--
+No fixed-point stabilizer exists for any candidate involution that preserves
+some line through the origin (`c = 0`). This generalizes the vertical-line
+contradiction to all such linear stabilizers.
+-/
+theorem z22_no_fixed_point_stabilizer_for_candidate_line_through_origin
+    (M : Matrix (Fin 2) (Fin 2) (ZMod 3))
+    (hM : List.Mem M GL2F3Enumeration.candidates) :
+    Not (Exists fun z : ZMod 3 =>
+      zMap z = z /
+        Exists fun a b : ZMod 3 =>
+          (line_from_abc a b 0).map (GL2F3.act M) = line_from_abc a b 0 /
+            PLine a b 0 = SLine a b 0 z) := by
+  intro h
+  rcases h with Exists.intro z hrest
+  rcases hrest with And.intro hz hline
+  rcases hline with Exists.intro a hline2
+  rcases hline2 with Exists.intro b hrest2
+  rcases hrest2 with And.intro _ heq
+  have p := PLine_c0_eq_one a b
+  have z1 := zMap_fixed_point_unique z hz
+  have s := by simpa [z1] using SLine_c0_z1 a b
+  have : 1 = -1 := by simp [p, heq, s]
+  contradiction
 
 end Z22Exclusion
