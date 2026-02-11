@@ -148,7 +148,9 @@ Complementing those UNSAT witnesses, `tools/minimal_global_identity_certificates
 computes exact positive certificates for the unique surviving global cell
 (`z=(1,0)`). The identity is isolated by `6` constraints in full `AGL(2,3)`
 and by `5` constraints in `Hessian216`, with exact multiplicities
-`688` and `33` minimal certificates respectively.
+`688` and `33` minimal certificates respectively. The size gap remains stable
+when certificates are constrained to use distinct lines and to cover all four
+affine striation directions.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:

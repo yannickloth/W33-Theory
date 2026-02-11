@@ -7,7 +7,20 @@ Mode | Candidates | Minimal certificate size | Number of minimal certificates
 all_agl | 864 | 6 | 688
 hessian216 | 432 | 5 | 33
 
-- Theorem flags: `{'all_agl_min_size_6': True, 'hessian216_min_size_5': True, 'hessian_strictly_smaller_than_agl': True, 'all_agl_count_688': True, 'hessian216_count_33': True}`
+Variant-constrained profile
+
+Mode | Variant | Minimal certificate size | Number of minimal certificates
+--- | --- | --- | ---
+all_agl | unconstrained | 6 | 688
+all_agl | distinct_lines | 6 | 167
+all_agl | striation_complete | 6 | 246
+all_agl | distinct_lines_striation_complete | 6 | 79
+hessian216 | unconstrained | 5 | 33
+hessian216 | distinct_lines | 5 | 17
+hessian216 | striation_complete | 5 | 4
+hessian216 | distinct_lines_striation_complete | 5 | 3
+
+- Theorem flags: `{'all_agl_min_size_6': True, 'hessian216_min_size_5': True, 'hessian_strictly_smaller_than_agl': True, 'all_agl_count_688': True, 'hessian216_count_33': True, 'gap_robust_under_distinct_lines': True, 'gap_robust_under_striation_complete': True, 'gap_robust_under_both_constraints': True}`
 
 ## all_agl
 

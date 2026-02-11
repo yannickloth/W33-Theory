@@ -153,6 +153,10 @@ changes affine/Hessian symmetries:
   witness sets that isolate the unique global identity cell `z=(1,0)`:
   size `6` with `688` certificates in full `AGL(2,3)`, and size `5` with
   `33` certificates in `Hessian216`.
+- constrained positive-identity robustness profile (`2026-02-11`):
+  the `6` vs `5` gap persists under two independent constraints on witness
+  geometry: distinct affine lines only, and striation-complete coverage of
+  all four affine line directions (`x`, `y`, `y=x`, `y=2x`).
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,

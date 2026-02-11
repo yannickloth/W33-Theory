@@ -16,7 +16,7 @@ import itertools
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -26,6 +26,13 @@ import tools.minimal_global_full_sign_cores as cores
 
 Z_MAP: Tuple[int, int] = (1, 0)
 MODES: List[str] = ["all_agl", "hessian216"]
+VARIANTS: List[str] = [
+    "unconstrained",
+    "distinct_lines",
+    "striation_complete",
+    "distinct_lines_striation_complete",
+]
+STRIATION_TYPES = {"x", "y", "y=1x", "y=2x"}
 
 
 def _target_index(masks: Sequence[int], candidate_count: int) -> Tuple[int, int]:
@@ -75,6 +82,104 @@ def _minimal_size(reject_masks: Sequence[int], universe: int) -> int:
     raise RuntimeError("No certificate found; this should be impossible.")
 
 
+def _line_key(
+    constraint: Tuple[
+        Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]],
+        int,
+    ]
+) -> Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]:
+    line, _ = constraint
+    return line
+
+
+def _line_type(
+    constraint: Tuple[
+        Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]],
+        int,
+    ]
+) -> str:
+    line, _ = constraint
+    return str(cores.analyze._line_equation_type(line)[0])
+
+
+def _variant_predicate(
+    constraints: Sequence[
+        Tuple[Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]], int]
+    ],
+    variant: str,
+) -> Callable[[Sequence[int]], bool]:
+    line_keys = [_line_key(c) for c in constraints]
+    line_types = [_line_type(c) for c in constraints]
+
+    if variant == "unconstrained":
+        return lambda _: True
+
+    if variant == "distinct_lines":
+
+        def pred(comb: Sequence[int]) -> bool:
+            seen = set()
+            for j in comb:
+                k = line_keys[j]
+                if k in seen:
+                    return False
+                seen.add(k)
+            return True
+
+        return pred
+
+    if variant == "striation_complete":
+
+        def pred(comb: Sequence[int]) -> bool:
+            return {line_types[j] for j in comb} == STRIATION_TYPES
+
+        return pred
+
+    if variant == "distinct_lines_striation_complete":
+
+        def pred(comb: Sequence[int]) -> bool:
+            seen = set()
+            types = set()
+            for j in comb:
+                k = line_keys[j]
+                if k in seen:
+                    return False
+                seen.add(k)
+                types.add(line_types[j])
+            return types == STRIATION_TYPES
+
+        return pred
+
+    raise ValueError(f"unknown variant: {variant}")
+
+
+def _enumerate_min_variant(
+    reject_masks: Sequence[int],
+    universe: int,
+    predicate: Callable[[Sequence[int]], bool],
+    search_start: int,
+    max_examples: int,
+) -> Dict[str, Any]:
+    idxs = range(len(reject_masks))
+    for k in range(max(1, search_start), len(reject_masks) + 1):
+        count = 0
+        samples: List[List[int]] = []
+        for comb in itertools.combinations(idxs, k):
+            if not predicate(comb):
+                continue
+            if not _covers_all(comb, reject_masks, universe):
+                continue
+            count += 1
+            if len(samples) < max_examples:
+                samples.append([int(j) for j in comb])
+        if count > 0:
+            return {
+                "minimal_certificate_size": int(k),
+                "minimal_certificate_count": int(count),
+                "sample_constraint_indices": samples,
+            }
+    raise RuntimeError("Variant has no certificate; this should be impossible.")
+
+
 def _summarize_mode(mode: str, max_examples: int, top_k: int) -> Dict[str, Any]:
     constraints = cores._constraints()
     signs = cores._sign_table(constraints)
@@ -115,6 +220,17 @@ def _summarize_mode(mode: str, max_examples: int, top_k: int) -> Dict[str, Any]:
         if freq > 0
     ]
 
+    variant_profiles: Dict[str, Dict[str, Any]] = {}
+    for variant in VARIANTS:
+        predicate = _variant_predicate(constraints, variant)
+        variant_profiles[variant] = _enumerate_min_variant(
+            reject_masks=reject_masks,
+            universe=universe,
+            predicate=predicate,
+            search_start=min_size,
+            max_examples=max_examples,
+        )
+
     return {
         "mode": mode,
         "z_map": [int(Z_MAP[0]), int(Z_MAP[1])],
@@ -130,6 +246,7 @@ def _summarize_mode(mode: str, max_examples: int, top_k: int) -> Dict[str, Any]:
             }
             for comb in sample_indices
         ],
+        "variant_profiles": variant_profiles,
         "top_constraints": top_constraints,
     }
 
@@ -148,6 +265,36 @@ def build_report(max_examples: int = 5, top_k: int = 8) -> Dict[str, Any]:
         < results["all_agl"]["minimal_certificate_size"],
         "all_agl_count_688": results["all_agl"]["minimal_certificate_count"] == 688,
         "hessian216_count_33": results["hessian216"]["minimal_certificate_count"] == 33,
+        "gap_robust_under_distinct_lines": (
+            results["all_agl"]["variant_profiles"]["distinct_lines"][
+                "minimal_certificate_size"
+            ]
+            == 6
+            and results["hessian216"]["variant_profiles"]["distinct_lines"][
+                "minimal_certificate_size"
+            ]
+            == 5
+        ),
+        "gap_robust_under_striation_complete": (
+            results["all_agl"]["variant_profiles"]["striation_complete"][
+                "minimal_certificate_size"
+            ]
+            == 6
+            and results["hessian216"]["variant_profiles"]["striation_complete"][
+                "minimal_certificate_size"
+            ]
+            == 5
+        ),
+        "gap_robust_under_both_constraints": (
+            results["all_agl"]["variant_profiles"]["distinct_lines_striation_complete"][
+                "minimal_certificate_size"
+            ]
+            == 6
+            and results["hessian216"]["variant_profiles"][
+                "distinct_lines_striation_complete"
+            ]["minimal_certificate_size"]
+            == 5
+        ),
     }
     return {
         "status": "ok",
@@ -178,6 +325,20 @@ def render_md(payload: Dict[str, Any]) -> str:
         lines.append(
             f"{mode} | {row['candidate_count']} | {row['minimal_certificate_size']} | {row['minimal_certificate_count']}"
         )
+    lines.append("")
+    lines.append("Variant-constrained profile")
+    lines.append("")
+    lines.append(
+        "Mode | Variant | Minimal certificate size | Number of minimal certificates"
+    )
+    lines.append("--- | --- | --- | ---")
+    for mode in MODES:
+        row = payload["mode_results"][mode]
+        for variant in VARIANTS:
+            vrow = row["variant_profiles"][variant]
+            lines.append(
+                f"{mode} | {variant} | {vrow['minimal_certificate_size']} | {vrow['minimal_certificate_count']}"
+            )
     lines.append("")
     lines.append(f"- Theorem flags: `{payload['theorem_flags']}`")
     lines.append("")

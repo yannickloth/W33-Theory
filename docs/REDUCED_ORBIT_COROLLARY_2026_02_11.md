@@ -23,4 +23,5 @@ Global strengthening:
   `tools/minimal_global_full_sign_cores.py`.
 - minimal positive-certificate extraction for the surviving identity cell
   `z=(1,0)` gives witness size `6` in full `AGL(2,3)` and `5` in `Hessian216`
-  via `tools/minimal_global_identity_certificates.py`.
+  via `tools/minimal_global_identity_certificates.py`; this `6` vs `5` split
+  persists under distinct-line and striation-complete witness constraints.

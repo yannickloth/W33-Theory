@@ -22,6 +22,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
   unsat cores (size `3` in `AGL/Hessian`, size `4` for involution mode at `z=(1,0)`).
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
+- This `6 vs 5` gap is stable under distinct-line and striation-complete
+  witness constraints.
 - Docs landing page: `docs/INDEX.md`.
 
 ## Start Here

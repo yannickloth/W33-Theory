@@ -497,6 +497,24 @@ Additional witness-space note:
     - https://arxiv.org/abs/2504.13831
     - https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y
 
+## Eighteenth-pass raw notes (2026-02-11, constrained-positive loop)
+
+- The `6` vs `5` positive-certificate gap could have been an artifact of
+  line repetition or under-covered context directions.
+- We tested two structural constraints on identity certificates:
+  - distinct affine lines only,
+  - striation-complete coverage (`x`, `y`, `y=x`, `y=2x`),
+  - and their conjunction.
+- Result: minimal sizes are unchanged in every case:
+  - `all_agl` stays at `6`,
+  - `hessian216` stays at `5`.
+- Multiplicity profile sharpens:
+  - `all_agl`: `688 -> 167 (distinct) -> 246 (striation) -> 79 (both)`,
+  - `hessian216`: `33 -> 17 (distinct) -> 4 (striation) -> 3 (both)`.
+- Interpretation:
+  - the size gap is not a degeneracy artifact; it is robust under geometric
+    stress conditions and reflects a genuine candidate-space complexity split.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
