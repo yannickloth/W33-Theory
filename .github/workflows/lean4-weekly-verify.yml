@@ -1,0 +1,50 @@
+name: Lean 4 Weekly Verification
+
+on:
+  schedule:
+    # Weekly verification to ensure the Lean containerized build remains reliable
+    - cron: '0 6 * * 0'  # Sunday 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proofs/lean
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Docker availability (fail if absent)
+        run: |
+          if docker info >/dev/null 2>&1; then
+            echo "Docker engine available"
+          else
+            echo "Docker is not available on this runner; failing verification"
+            exit 1
+          fi
+
+      - name: Pull Lean container with retries
+        run: |
+          set -eux
+          IMAGE=ghcr.io/leanprover/lean4:nightly
+          MAX_ATTEMPTS=3
+          SLEEP=10
+          attempt=1
+          until docker pull "$IMAGE"; do
+            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+              echo "docker pull failed after $attempt attempts";
+              exit 1
+            fi
+            echo "docker pull failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+            sleep $SLEEP
+            attempt=$((attempt+1))
+            SLEEP=$((SLEEP*2))
+          done
+
+      - name: Run containerized lake build (failing job)
+        run: |
+          set -eux
+          IMAGE=ghcr.io/leanprover/lean4:nightly
+          docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "set -e; lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"

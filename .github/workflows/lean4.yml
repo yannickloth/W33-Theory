@@ -118,9 +118,34 @@ jobs:
         run: |
           set -eux
           IMAGE=ghcr.io/leanprover/lean4:nightly
-          echo "Attempting to pull $IMAGE and run a containerized lake build"
-          docker pull "$IMAGE" || echo "docker pull failed; continuing"
-          docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean" || echo "docker run failed; continuing"
+          echo "Attempting to pull $IMAGE and run a containerized lake build (with retries)"
+          MAX_ATTEMPTS=3
+          SLEEP=10
+          attempt=1
+          # Retry docker pull with exponential backoff
+          until docker pull "$IMAGE"; do
+            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+              echo "docker pull failed after $attempt attempts; continuing"
+              break
+            fi
+            echo "docker pull failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+            sleep $SLEEP
+            attempt=$((attempt+1))
+            SLEEP=$((SLEEP*2))
+          done
+
+          attempt=1
+          # Run the containerized lake build with retries
+          until docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "set -e; lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"; do
+            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+              echo "docker run failed after $attempt attempts; continuing"
+              break
+            fi
+            echo "docker run failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+            sleep $SLEEP
+            attempt=$((attempt+1))
+            SLEEP=$((SLEEP*2))
+          done
 
 
       - name: Build proofs with Lake (if available)
