@@ -91,7 +91,8 @@ changes affine/Hessian symmetries:
 - full affine z-map scan check:
   allowing all six affine `z` maps leaves the split unchanged and still observes
   matches only at `(1,0)`, `(2,0)`, `(2,1)`.
-- Formal theorem and short proof sketch: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`. Equivalence verified by `tools/check_reduced_orbit_closed_form_equiv.py` and `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`.
+- Formal theorem and short proof sketch: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`. Equivalence verified by `tools/check_reduced_orbit_closed_form_equiv.py` and `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`. Medium-run artifacts (enumeration JSONs, classified reps, closed-form checks, and galleries) are archived in
+  `committed_artifacts/min_cert_census_medium_2026_02_10` and included in follow-up PR #52.
 - exact checker profile:
   `201` reps have no matching involution witness and stay full orbit (`2592`);
   `55` reps have exactly one witness and are reduced (`1296`).
@@ -112,6 +113,11 @@ changes affine/Hessian symmetries:
   then scans s12 dimensions (`728`, `486`, `242`) across universal families;
   `728` matches classical `A_26 = sl_27`, while `486` and `242` show no bounded
   classical or exceptional-line rational hits (`denominator <= 24`).
+- extended rational-hit catalog (`2026-02-11`):
+  `tools/vogel_rational_hit_catalog.py` verifies that in `D in [200,1000]`,
+  non-degenerate rational exceptional-line hits occur exactly at
+  `{248, 287, 336, 484, 603, 782}`; s12 dimensions (`728`, `486`, `242`)
+  remain outside this rational-hit set.
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,

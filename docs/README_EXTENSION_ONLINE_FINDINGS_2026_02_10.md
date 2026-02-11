@@ -169,6 +169,26 @@ Status: verified via `tools/vogel_universal_snapshot.py`:
 bounded exceptional-line rational search (`denominator <= 24`) has zero hits for
 all three dimensions.
 
+H11b. Rational exceptional-line hits should form a sparse arithmetic set, and s12
+dimensions should lie outside it.
+Status: verified via `tools/vogel_rational_hit_catalog.py` on `D in [200,1000]`:
+hit dimensions are exactly `{248, 287, 336, 484, 603, 782}`; s12 dimensions
+`728`, `486`, `242` are outside this set.
+
+- Extended rational search (rational cubic root analysis) up to denominator `500` found
+  **no** non-degenerate rational exceptional-line parameter `m` for target dims `486`
+  and `242` (degenerate root `m=-2` excluded). See `docs/VOGEL_EXTENDED_FINDINGS_2026_02_11.md` for details and search parameters.
+
+- Additional sweep (2026-02-11): broad rational-cubic sweep over dimensions
+  `D` in `[200,1000]` with denominator cap `500` found **6** hit dimensions:
+  `{248, 287, 336, 484, 603, 782}`. The s12 targets (`728`, `486`, `242`)
+  still remain outside this rational-hit set.
+  Artifacts:
+  `artifacts/vogel_rational_sweep.json`,
+  `artifacts/vogel_rational_sweep.md`,
+  `artifacts/vogel_rational_hit_catalog_2026_02_11.json`,
+  `docs/VOGEL_RATIONAL_HIT_CATALOG_2026_02_11.md`.
+
 H12. If `728` is `A_26 = sl_27`, the s12 grade split `(242,243,243)` should be
 recoverable as a finite-order (`Z3`) block-cyclic grading of `sl_27`; if this
 bridge is structural, the partition should be unique (up to permutation).

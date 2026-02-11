@@ -1,0 +1,82 @@
+{
+  "status": "ok",
+  "generated_utc": "2026-02-11T03:33:03Z",
+  "source_map_json": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json",
+  "mode": "execute",
+  "run_count": 2,
+  "runs": [
+    {
+      "candidate_space": "hessian",
+      "outputs": {
+        "enumeration_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json",
+        "classified_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+        "involution_rule_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exact_full.json",
+        "reduced_orbit_closed_form_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json",
+        "gallery_md": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_hessian_exact_full.md"
+      },
+      "k_min": 7,
+      "exact_solutions_count": 273,
+      "distinct_representatives": 256,
+      "truncated_by_max_solutions": false,
+      "truncated_by_time_limit": false,
+      "involution_rule_holds": true,
+      "involution_mismatch_count": 0,
+      "reduced_closed_form_equivalent": true,
+      "reduced_closed_form_mismatch_count": 0,
+      "reduced_closed_form_match_count_histogram": {
+        "0": 201,
+        "1": 55
+      },
+      "reduced_closed_form_strict_profile_holds": true,
+      "reduced_closed_form_zmap_restriction_holds": true,
+      "reduced_closed_form_observed_matching_z_maps": [
+        "(1, 0)",
+        "(2, 0)",
+        "(2, 1)"
+      ],
+      "orbit_histograms": {
+        "raw": {
+          "1296": 55,
+          "2592": 201
+        },
+        "weighted_by_hit_count": {
+          "1296": 55,
+          "2592": 218
+        }
+      }
+    },
+    {
+      "candidate_space": "agl",
+      "outputs": {
+        "enumeration_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json",
+        "classified_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+        "involution_rule_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exact_full.json",
+        "reduced_orbit_closed_form_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_agl_exact_full.json",
+        "gallery_md": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_agl_exact_full.md"
+      },
+      "k_min": 7,
+      "exact_solutions_count": 7,
+      "distinct_representatives": 7,
+      "truncated_by_max_solutions": false,
+      "truncated_by_time_limit": false,
+      "involution_rule_holds": true,
+      "involution_mismatch_count": 0,
+      "reduced_closed_form_equivalent": true,
+      "reduced_closed_form_mismatch_count": 0,
+      "reduced_closed_form_match_count_histogram": {
+        "0": 7
+      },
+      "reduced_closed_form_strict_profile_holds": true,
+      "reduced_closed_form_zmap_restriction_holds": true,
+      "reduced_closed_form_observed_matching_z_maps": [],
+      "orbit_histograms": {
+        "raw": {
+          "2592": 7
+        },
+        "weighted_by_hit_count": {
+          "2592": 7
+        }
+      }
+    }
+  ]
+}
