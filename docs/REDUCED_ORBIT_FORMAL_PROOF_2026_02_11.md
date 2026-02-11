@@ -55,6 +55,26 @@ artifact `committed_artifacts/min_cert_census_medium_2026_02_10/...`.
 - Optionally, derive a short case analysis that rules out `(2,2)` using only
   the canonical shifted `P(line)` law in adapted gauges.
 
+### Finite-case reduction and diagnostic plots
+
+As a pragmatic step we implemented a small finite-case reduction that reduces
+the exclusion of `z_map=(2,2)` to checking the (canonicalized)
+representatives from the Hessian exact census. The script
+`tools/prove_exclude_z22.py` performs a symbolic closure test on fixed lines
+and, if necessary, a full invariance check across all adapted gauges. On our
+medium run it reports no invariant representatives for `(2,2)` (see the
+artifact `committed_artifacts/min_cert_census_medium_2026_02_10/e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json`).
+
+For visual diagnostics we produce two small figures (Hessian medium run) via
+`tools/plot_zmap_involution_profiles.py`:
+
+- `artifacts/min_cert_census_medium_2026_02_10/figures/zmap_hist_hessian.png`
+- `artifacts/min_cert_census_medium_2026_02_10/figures/match_count_hist_hessian.png`
+
+Both the finite-case script and plotting script have smoke tests added under
+`tests/` (`test_prove_exclude_z22_smoke.py` and
+`test_plot_zmap_involution_profiles_smoke.py`).
+
 This document is a living draft; computational corroboration is already
 available in the follow-up artifact set (PR #52). Contributions and
 shorter formal lemmas are welcome as follow-ups.
