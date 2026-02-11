@@ -21,6 +21,20 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 VALID_SPACES = ("hessian", "agl")
+CORE_MOTIF_JSON_OUTPUTS = {
+    "rulebook_link_json": "core_rulebook_min_cert_link_2026_02_11.json",
+    "orbit_polarization_json": "core_motif_orbit_polarization_2026_02_11.json",
+    "enrichment_stats_json": "core_motif_enrichment_stats_2026_02_11.json",
+    "anchor_channels_json": "core_motif_anchor_channels_2026_02_11.json",
+    "anchor_search_json": "core_motif_anchor_search_2026_02_11.json",
+}
+CORE_MOTIF_MD_OUTPUTS = {
+    "rulebook_link_md": "CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md",
+    "orbit_polarization_md": "CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md",
+    "enrichment_stats_md": "CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md",
+    "anchor_channels_md": "CORE_MOTIF_ANCHOR_CHANNELS_2026_02_11.md",
+    "anchor_search_md": "CORE_MOTIF_ANCHOR_SEARCH_2026_02_11.md",
+}
 
 
 def _normalize_candidate_spaces(candidate_spaces: list[str]) -> list[str]:
@@ -63,12 +77,29 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _build_core_motif_outputs(
+    out_dir: Path, docs_dir: Path
+) -> dict[str, dict[str, str]]:
+    return {
+        "json": {
+            key: str(out_dir / filename)
+            for key, filename in CORE_MOTIF_JSON_OUTPUTS.items()
+        },
+        "markdown": {
+            key: str(docs_dir / filename)
+            for key, filename in CORE_MOTIF_MD_OUTPUTS.items()
+        },
+    }
+
+
 def _build_run_plan(
     in_json: Path,
     out_dir: Path,
     candidate_spaces: list[str],
     max_exact_solutions: int,
     time_limit_sec: float,
+    run_core_motif_chain: bool,
+    core_motif_docs_dir: Path,
 ) -> dict[str, Any]:
     runs = []
     for space in candidate_spaces:
@@ -163,12 +194,31 @@ def _build_run_plan(
                 },
             }
         )
-    return {
+    plan: dict[str, Any] = {
         "status": "ok",
         "generated_utc": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
         "source_map_json": str(in_json),
         "planned_runs": runs,
     }
+    if run_core_motif_chain:
+        core_cmd = [
+            sys.executable,
+            str(ROOT / "tools" / "run_core_motif_chain.py"),
+            "--out-dir",
+            str(out_dir),
+            "--docs-dir",
+            str(core_motif_docs_dir),
+        ]
+        plan["core_motif_chain"] = {
+            "enabled": True,
+            "outputs": _build_core_motif_outputs(
+                out_dir=out_dir,
+                docs_dir=core_motif_docs_dir,
+            ),
+            "command": core_cmd,
+            "command_preview": _cmd_preview(core_cmd),
+        }
+    return plan
 
 
 def _build_orbit_histograms(
@@ -221,6 +271,29 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
             )
         )
     lines.append("")
+    core_motif = summary.get("core_motif_chain")
+    if core_motif:
+        lines.append("## Core-Motif Chain")
+        lines.append("")
+        lines.append(f"- Requested: `{core_motif.get('requested', False)}`")
+        lines.append(f"- Executed: `{core_motif.get('executed', False)}`")
+        lines.append(
+            f"- All outputs present: `{core_motif.get('all_outputs_present', 'n/a')}`"
+        )
+        missing = core_motif.get("missing_outputs", [])
+        lines.append(f"- Missing outputs: `{missing}`")
+        json_outputs = core_motif.get("outputs", {}).get("json", {})
+        md_outputs = core_motif.get("outputs", {}).get("markdown", {})
+        if json_outputs:
+            lines.append("- JSON outputs:")
+            for key, value in sorted(json_outputs.items()):
+                lines.append(f"  - `{key}`: `{value}`")
+        if md_outputs:
+            lines.append("- Markdown outputs:")
+            for key, value in sorted(md_outputs.items()):
+                lines.append(f"  - `{key}`: `{value}`")
+        lines.append("")
+
     for run in summary.get("runs", []):
         lines.append(f"## {run['candidate_space']}")
         lines.append("")
@@ -324,6 +397,17 @@ def main() -> None:
     )
     parser.add_argument("--summary-json", type=Path, default=None)
     parser.add_argument("--summary-md", type=Path, default=None)
+    parser.add_argument(
+        "--run-core-motif-chain",
+        action="store_true",
+        help="Run the core-motif analysis chain and include its outputs in summary.",
+    )
+    parser.add_argument(
+        "--core-motif-docs-dir",
+        type=Path,
+        default=None,
+        help="Docs directory for core-motif markdown outputs (defaults to <out-dir>/core_motif_docs).",
+    )
     args = parser.parse_args()
 
     if args.execute and args.dry_run:
@@ -331,6 +415,7 @@ def main() -> None:
     execute = bool(args.execute)
 
     candidate_spaces = _normalize_candidate_spaces(list(args.candidate_spaces))
+    core_motif_docs_dir = args.core_motif_docs_dir or (args.out_dir / "core_motif_docs")
     args.out_dir.mkdir(parents=True, exist_ok=True)
     manifest = _build_run_plan(
         in_json=args.in_json,
@@ -338,6 +423,8 @@ def main() -> None:
         candidate_spaces=candidate_spaces,
         max_exact_solutions=int(args.max_exact_solutions),
         time_limit_sec=float(args.time_limit_sec),
+        run_core_motif_chain=bool(args.run_core_motif_chain),
+        core_motif_docs_dir=core_motif_docs_dir,
     )
     args.out_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = args.out_dir / "min_cert_census_plan.json"
@@ -425,6 +512,33 @@ def main() -> None:
 
         summary_runs.append(run_summary)
 
+    core_motif_summary: dict[str, Any] | None = None
+    if args.run_core_motif_chain:
+        core_manifest = manifest.get("core_motif_chain", {})
+        outputs = dict(
+            core_manifest.get(
+                "outputs",
+                _build_core_motif_outputs(
+                    out_dir=args.out_dir,
+                    docs_dir=core_motif_docs_dir,
+                ),
+            )
+        )
+        _run_checked(list(core_manifest["command"]))
+        expected_paths = [
+            Path(path)
+            for section in outputs.values()
+            for path in dict(section).values()
+        ]
+        missing = [str(path) for path in expected_paths if not path.exists()]
+        core_motif_summary = {
+            "requested": True,
+            "executed": True,
+            "outputs": outputs,
+            "all_outputs_present": len(missing) == 0,
+            "missing_outputs": missing,
+        }
+
     summary_json = args.summary_json or (args.out_dir / "min_cert_census_summary.json")
     summary_md = args.summary_md or (args.out_dir / "min_cert_census_summary.md")
     summary = {
@@ -435,6 +549,8 @@ def main() -> None:
         "run_count": len(summary_runs),
         "runs": summary_runs,
     }
+    if core_motif_summary is not None:
+        summary["core_motif_chain"] = core_motif_summary
     summary_json.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     _write_summary_md(summary, summary_md)
     print(f"Wrote summary json: {summary_json}")

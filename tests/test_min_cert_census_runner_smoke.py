@@ -57,8 +57,43 @@ def test_min_cert_census_runner_dryrun(tmp_path: Path):
     assert "reduced_check_preview" in first["commands"]
 
 
+def test_min_cert_census_runner_dryrun_with_core_motif_chain(tmp_path: Path):
+    out_dir = tmp_path / "artifacts"
+    docs_dir = tmp_path / "docs"
+    cmd = [
+        sys.executable,
+        "tools/run_min_cert_census.py",
+        "--dry-run",
+        "--run-core-motif-chain",
+        "--out-dir",
+        str(out_dir),
+        "--core-motif-docs-dir",
+        str(docs_dir),
+    ]
+    run = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    assert run.returncode == 0, run.stderr
+
+    manifest = json.loads(
+        (out_dir / "min_cert_census_plan.json").read_text(encoding="utf-8")
+    )
+    core = manifest.get("core_motif_chain")
+    assert core is not None
+    assert core.get("enabled") is True
+    assert "command_preview" in core
+    outputs = core.get("outputs", {})
+    assert "json" in outputs
+    assert "markdown" in outputs
+    assert outputs["json"]["rulebook_link_json"].endswith(
+        "core_rulebook_min_cert_link_2026_02_11.json"
+    )
+    assert outputs["markdown"]["rulebook_link_md"].endswith(
+        "CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md"
+    )
+
+
 def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
     out_dir = tmp_path / "artifacts"
+    docs_dir = tmp_path / "docs"
     in_json = tmp_path / "fixture_map.json"
     in_json.write_text(json.dumps(_fixture_payload()), encoding="utf-8")
     cmd = [
@@ -75,6 +110,9 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
         "10",
         "--out-dir",
         str(out_dir),
+        "--run-core-motif-chain",
+        "--core-motif-docs-dir",
+        str(docs_dir),
     ]
     run = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     assert run.returncode == 0, run.stderr
@@ -102,10 +140,26 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
     assert gallery_md.exists()
     assert summary_json.exists()
     assert summary_md.exists()
+    assert (out_dir / "core_rulebook_min_cert_link_2026_02_11.json").exists()
+    assert (out_dir / "core_motif_orbit_polarization_2026_02_11.json").exists()
+    assert (out_dir / "core_motif_enrichment_stats_2026_02_11.json").exists()
+    assert (out_dir / "core_motif_anchor_channels_2026_02_11.json").exists()
+    assert (out_dir / "core_motif_anchor_search_2026_02_11.json").exists()
+    assert (docs_dir / "CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md").exists()
+    assert (docs_dir / "CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md").exists()
+    assert (docs_dir / "CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md").exists()
+    assert (docs_dir / "CORE_MOTIF_ANCHOR_CHANNELS_2026_02_11.md").exists()
+    assert (docs_dir / "CORE_MOTIF_ANCHOR_SEARCH_2026_02_11.md").exists()
 
     summary = json.loads(summary_json.read_text(encoding="utf-8"))
     assert summary.get("status") == "ok"
     assert summary.get("run_count") == 1
+    core = summary.get("core_motif_chain")
+    assert core is not None
+    assert core.get("requested") is True
+    assert core.get("executed") is True
+    assert core.get("all_outputs_present") is True
+    assert core.get("missing_outputs") == []
     run0 = summary["runs"][0]
     assert run0["candidate_space"] == "hessian"
     assert run0["k_min"] == 7
