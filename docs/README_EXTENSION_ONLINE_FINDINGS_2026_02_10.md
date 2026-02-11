@@ -103,12 +103,13 @@ and full `AGL(2,3)`.
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
 Additional witness-space note:
-- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
+- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
 - Randomized enumeration (extended pass): in a 20k sweep, Hessian216 found `134` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json`), while AGL(2,3) found `7` (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl_20k.json`).
 - Exact enumeration mode (branch-and-bound) is available in `tools/enumerate_minimal_certificates.py` via `--mode exact` with runtime controls `--max-exact-solutions` and `--time-limit-sec`.
 - Bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`, `time_limit_sec=60`): Hessian216 hit the cap at `200` solutions with `190` distinct canonical representatives, while AGL(2,3) completed with `7` total solutions and `7` representatives.
 - Exhaustive Hessian census artifact (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`) reports `256` distinct canonical representatives over `273` covering combinations, indicating a substantially larger minimal-witness orbit diversity in Hessian space than in full AGL space.
+- Full exact census + classification pass now resolves an orbit-layer split: Hessian representatives split across orbit sizes `1296` and `2592` (implied stabilizer sizes `2` and `1`), while AGL representatives are all `2592`-orbit. See `artifacts/e6_f3_trilinear_min_cert_census_report.json` and `docs/MIN_CERT_CENSUS_REPORT_2026_02_10.md`.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
