@@ -490,7 +490,13 @@ def run_iterative_refinement(max_iter=10, add_tol=1e-8, tol=1e-6):
                     j = int(np.argmin(dists))
                     dist = float(dists[j])
                     if (eidx not in best_info) or (dist < best_info[eidx][0]):
-                        best_info[eidx] = (dist, tuple(arr[j]), name)
+                        # store the best candidate distance, root, transform name, and the raw lift vector
+                        best_info[eidx] = (
+                            dist,
+                            tuple(arr[j]),
+                            name,
+                            np.array(v, dtype=float),
+                        )
 
         # Solve assignment
         try:
@@ -513,13 +519,25 @@ def run_iterative_refinement(max_iter=10, add_tol=1e-8, tol=1e-6):
 
         # compute high-confidence matches (dist < add_tol)
         added = 0
+        # diagnostic: distance distribution among best_info
+        if best_info:
+            dists = [v[0] for v in best_info.values()]
+            n_below_add = sum(1 for d in dists if d < add_tol)
+            n_below_1e3 = sum(1 for d in dists if d < 1e-3)
+            print(
+                f"Iteration {it}: mapped={len(mapping)} best_dist_min={min(dists):.6g} med={np.median(dists):.6g} #<add_tol={n_below_add} #<1e-3={n_below_1e3}"
+            )
         for e, r in mapping.items():
-            dist = best_info.get(e, (math.inf, None, None))[0]
+            dist = best_info.get(e, (math.inf, None, None, None))[0]
             if dist < add_tol and e not in anchors:
-                # need the corresponding lift vector
-                # find the lift that produced this root in best_info
-                anchors[e] = (None, np.array(r, dtype=float))
-                added += 1
+                # add the corresponding lift vector from best_info if available
+                lift_vec = best_info.get(e, (None, None, None, None))[3]
+                if lift_vec is not None:
+                    anchors[e] = (lift_vec, np.array(r, dtype=float))
+                    added += 1
+                else:
+                    # skip adding anchor if we don't have the lift vector
+                    pass
 
         print(
             f"Iteration {it}: method={method_used} mapped={len(mapping)} added_anchors={added}"
@@ -528,10 +546,11 @@ def run_iterative_refinement(max_iter=10, add_tol=1e-8, tol=1e-6):
         # stop if nothing new added
         if added == 0:
             # fallback: try more lenient add_tol and break
-            if add_tol < 1e-3:
+            if add_tol < 1e-1:
                 add_tol *= 10
                 print(f"No anchors added — increasing add_tol to {add_tol}")
                 continue
+            print("No anchors could be added; stopping iterative refinement")
             break
 
         # keep best mapping

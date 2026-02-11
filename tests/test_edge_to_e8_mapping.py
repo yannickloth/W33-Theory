@@ -44,3 +44,13 @@ def test_local_search_is_idempotent_with_zero_iterations():
     # with zero iterations, score should equal initial score and mapping should be identical up to assigned edges
     assert isinstance(refined, dict)
     assert len(refined) == 240
+
+
+def test_iterative_refinement_adds_anchors_with_large_tol():
+    from scripts.edge_to_e8_mapping import run_iterative_refinement
+
+    mapping, anchors, transforms = run_iterative_refinement(max_iter=3, add_tol=1.5)
+    assert isinstance(mapping, dict)
+    assert isinstance(anchors, dict)
+    # with a very lenient add_tol we should accumulate anchors
+    assert len(anchors) >= 10
