@@ -79,6 +79,10 @@ changes affine/Hessian symmetries:
   12-line fixture with cap `max_exact_solutions=200`, Hessian216 reaches the cap
   with `190` distinct canonical representatives, while full `AGL(2,3)` terminates
   with `7` total minimal certificates and `7` representatives.
+- exact minimal-certificate orbit stratification split (full exact census):
+  Hessian216 representatives split into orbit sizes `1296` and `2592`
+  (implied stabilizer sizes `2` and `1` under the shared `AGL(2,3) x z` action),
+  while full `AGL(2,3)` representatives are all in the full-size `2592` orbit class.
 
 Outputs:
 
@@ -122,6 +126,8 @@ computational hypotheses in-repo:
    `AGL(2,3)` when every qutrit/MUB context must be represented.
 10. exact minimal-certificate multiplicity should differ sharply across candidate
     spaces, not only the minimum certificate size constraints.
+11. exact minimal-certificate orbit strata should separate candidate spaces
+    (reduced-orbit layer present in Hessian216 and absent in full `AGL(2,3)`).
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.

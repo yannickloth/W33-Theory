@@ -30,6 +30,34 @@ def _ratio(numerator: int, denominator: int) -> float:
     return float(numerator) / float(denominator)
 
 
+def _orbit_histograms(payload: dict[str, Any]) -> tuple[dict[int, int], dict[int, int]]:
+    orbit_hist: dict[int, int] = {}
+    weighted_orbit_hist: dict[int, int] = {}
+    for row in payload.get("representatives", []):
+        orbit_size = _safe_int(row.get("orbit_size"), 0)
+        if orbit_size <= 0:
+            continue
+        hit_count = _safe_int(row.get("hit_count"), 1)
+        orbit_hist[orbit_size] = orbit_hist.get(orbit_size, 0) + 1
+        weighted_orbit_hist[orbit_size] = (
+            weighted_orbit_hist.get(orbit_size, 0) + hit_count
+        )
+    return orbit_hist, weighted_orbit_hist
+
+
+def _stabilizer_histogram(
+    orbit_hist: dict[int, int], action_orbit_ceiling: int
+) -> dict[int, int]:
+    out: dict[int, int] = {}
+    if action_orbit_ceiling <= 0:
+        return out
+    for orbit_size, count in orbit_hist.items():
+        if orbit_size > 0 and action_orbit_ceiling % orbit_size == 0:
+            stabilizer_size = action_orbit_ceiling // orbit_size
+            out[stabilizer_size] = out.get(stabilizer_size, 0) + int(count)
+    return out
+
+
 def build_report(hessian: dict[str, Any], agl: dict[str, Any]) -> dict[str, Any]:
     h_source = hessian.get("source", {})
     a_source = agl.get("source", {})
@@ -49,6 +77,25 @@ def build_report(hessian: dict[str, Any], agl: dict[str, Any]) -> dict[str, Any]
 
     h_full_z = _safe_int(h_aggregate.get("has_full_z_line_count"), 0)
     a_full_z = _safe_int(a_aggregate.get("has_full_z_line_count"), 0)
+    h_orbit_hist, h_weighted_orbit_hist = _orbit_histograms(hessian)
+    a_orbit_hist, a_weighted_orbit_hist = _orbit_histograms(agl)
+    action_orbit_ceiling = 0
+    if h_orbit_hist or a_orbit_hist:
+        action_orbit_ceiling = max(
+            ([0] + list(h_orbit_hist.keys()) + list(a_orbit_hist.keys()))
+        )
+    h_stabilizer_hist = _stabilizer_histogram(h_orbit_hist, action_orbit_ceiling)
+    a_stabilizer_hist = _stabilizer_histogram(a_orbit_hist, action_orbit_ceiling)
+    h_reduced = sum(
+        count
+        for orbit_size, count in h_orbit_hist.items()
+        if orbit_size < action_orbit_ceiling
+    )
+    a_reduced = sum(
+        count
+        for orbit_size, count in a_orbit_hist.items()
+        if orbit_size < action_orbit_ceiling
+    )
 
     comparison = {
         "hessian_representatives": h_total,
@@ -85,6 +132,31 @@ def build_report(hessian: dict[str, Any], agl: dict[str, Any]) -> dict[str, Any]
         "agl_striation_family_count_hist": a_family_hist,
         "hessian_unique_lines_count_hist": h_unique_lines_hist,
         "agl_unique_lines_count_hist": a_unique_lines_hist,
+        "action_orbit_ceiling": int(action_orbit_ceiling),
+        "hessian_orbit_size_hist": {
+            str(k): int(v) for k, v in sorted(h_orbit_hist.items())
+        },
+        "agl_orbit_size_hist": {
+            str(k): int(v) for k, v in sorted(a_orbit_hist.items())
+        },
+        "hessian_weighted_orbit_size_hist": {
+            str(k): int(v) for k, v in sorted(h_weighted_orbit_hist.items())
+        },
+        "agl_weighted_orbit_size_hist": {
+            str(k): int(v) for k, v in sorted(a_weighted_orbit_hist.items())
+        },
+        "hessian_stabilizer_size_hist": {
+            str(k): int(v) for k, v in sorted(h_stabilizer_hist.items())
+        },
+        "agl_stabilizer_size_hist": {
+            str(k): int(v) for k, v in sorted(a_stabilizer_hist.items())
+        },
+        "hessian_reduced_orbit_reps": int(h_reduced),
+        "agl_reduced_orbit_reps": int(a_reduced),
+        "hessian_reduced_orbit_rep_rate": _ratio(h_reduced, h_total),
+        "agl_reduced_orbit_rep_rate": _ratio(a_reduced, a_total),
+        "hessian_has_reduced_orbit_layer": bool(h_reduced > 0),
+        "agl_all_full_orbit": bool(a_reduced == 0 and a_total > 0),
     }
     return {"status": "ok", "comparison": comparison}
 
@@ -124,6 +196,20 @@ def to_markdown(report: dict[str, Any], hessian_path: Path, agl_path: Path) -> s
         "- Hessian full-z-line rate: "
         f"`{comparison['hessian_has_full_z_line_rate']}`",
         "- AGL full-z-line rate: " f"`{comparison['agl_has_full_z_line_rate']}`",
+        "",
+        "## Orbit Stratification",
+        "",
+        "- Shared action-orbit ceiling: " f"`{comparison['action_orbit_ceiling']}`",
+        "- Hessian orbit-size histogram: " f"`{comparison['hessian_orbit_size_hist']}`",
+        "- AGL orbit-size histogram: " f"`{comparison['agl_orbit_size_hist']}`",
+        "- Hessian stabilizer-size histogram (implied): "
+        f"`{comparison['hessian_stabilizer_size_hist']}`",
+        "- AGL stabilizer-size histogram (implied): "
+        f"`{comparison['agl_stabilizer_size_hist']}`",
+        "- Hessian reduced-orbit rep rate: "
+        f"`{comparison['hessian_reduced_orbit_rep_rate']}`",
+        "- AGL reduced-orbit rep rate: "
+        f"`{comparison['agl_reduced_orbit_rep_rate']}`",
         "",
     ]
     return "\n".join(lines)

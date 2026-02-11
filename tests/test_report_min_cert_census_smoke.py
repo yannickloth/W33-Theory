@@ -117,6 +117,14 @@ def test_report_min_cert_census_smoke(tmp_path: Path):
     assert comparison.get("agl_representatives") == 1
     assert comparison.get("hessian_full_striation_reps") == 1
     assert comparison.get("agl_full_striation_reps") == 0
+    assert comparison.get("action_orbit_ceiling", 0) > 0
+    h_orbit = comparison.get("hessian_orbit_size_hist", {})
+    a_orbit = comparison.get("agl_orbit_size_hist", {})
+    assert sum(int(v) for v in h_orbit.values()) == 1
+    assert sum(int(v) for v in a_orbit.values()) == 1
+    assert isinstance(comparison.get("hessian_has_reduced_orbit_layer"), bool)
+    assert isinstance(comparison.get("agl_all_full_orbit"), bool)
 
     markdown = out_md.read_text(encoding="utf-8")
     assert "# Minimal-Certificate Census Report" in markdown
+    assert "## Orbit Stratification" in markdown

@@ -20,3 +20,13 @@
 - AGL unique-line histogram: `{'5': 4, '6': 3}`
 - Hessian full-z-line rate: `0.0546875`
 - AGL full-z-line rate: `0.14285714285714285`
+
+## Orbit Stratification
+
+- Shared action-orbit ceiling: `2592`
+- Hessian orbit-size histogram: `{'1296': 55, '2592': 201}`
+- AGL orbit-size histogram: `{'2592': 7}`
+- Hessian stabilizer-size histogram (implied): `{'1': 201, '2': 55}`
+- AGL stabilizer-size histogram (implied): `{'1': 7}`
+- Hessian reduced-orbit rep rate: `0.21484375`
+- AGL reduced-orbit rep rate: `0.0`
