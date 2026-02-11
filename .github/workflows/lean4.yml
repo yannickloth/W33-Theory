@@ -3,21 +3,45 @@ name: Lean 4 CI
 on:
   pull_request:
     branches: [ main, master ]
+    paths:
+      - "proofs/lean/**"
+      - ".github/workflows/lean4.yml"
   push:
     branches: [ main, master ]
+    paths:
+      - "proofs/lean/**"
+      - ".github/workflows/lean4.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: lean4-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lean-build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proofs/lean
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache Lake packages and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            proofs/lean/.lake/packages
+            proofs/lean/.lake/build
+          key: ${{ runner.os }}-lean4-${{ hashFiles('proofs/lean/lean-toolchain', 'proofs/lean/lakefile.lean', 'proofs/lean/proofs.lean', 'proofs/lean/z22_exclusion.lean') }}
+          restore-keys: |
+            ${{ runner.os }}-lean4-
 
       - name: Set up Lean 4
         uses: leanprover/lean4-action@v0.2.0
 
       - name: Build proofs with Lake
-        working-directory: proofs/lean
         run: |
           lake --version
           lake update
+          lake exe cache get || echo "mathlib cache unavailable; continuing with source build"
           lake build
