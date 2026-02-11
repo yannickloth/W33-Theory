@@ -40,19 +40,38 @@ jobs:
         run: |
           set -eux
           # Install elan (Lean toolchain manager) and set up the environment
-          curl -sSfL https://raw.githubusercontent.com/leanprover-community/elan/master/elan-init.sh | sh -s -- -y
-          export PATH="$HOME/.elan/bin:$PATH"
+          if ! command -v elan >/dev/null 2>&1; then
+            echo "Installing elan (try primary URL)"
+            if curl -sSfL https://raw.githubusercontent.com/leanprover-community/elan/master/elan-init.sh -o elan-init.sh; then
+              sh elan-init.sh -y || true
+            elif curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-init.sh -o elan-init.sh; then
+              sh elan-init.sh -y || true
+            else
+              echo "elan installer not found at known URLs; continuing without elan"
+            fi
+            export PATH="$HOME/.elan/bin:$PATH"
+          else
+            echo "elan already present"
+          fi
+
           # Install the pinned toolchain if present
           if [ -f lean-toolchain ]; then
             TC="$(cat lean-toolchain)"
-            elan toolchain install --force "$TC" || true
-            elan default "$TC" || true
+            if command -v elan >/dev/null 2>&1; then
+              elan toolchain install --force "$TC" || true
+              elan default "$TC" || true
+            else
+              echo "elan not available; cannot install pinned toolchain $TC"
+            fi
           fi
+
           # Ensure lake is available; try to run it via elan if needed
           if ! command -v lake >/dev/null 2>&1; then
             echo "lake not found after elan install; attempting to run via elan"
             if command -v elan >/dev/null 2>&1; then
               elan run -- lake --version || true
+            else
+              echo "elan not present; lake may be unavailable on this runner"
             fi
           fi
 
@@ -82,22 +101,25 @@ jobs:
           print("z22_exclusion.lean sanity checks passed")
           PY
 
-      - name: Try containerized Lake build (fallback)
+      - name: Check Docker availability
+        id: docker_check
+        run: |
+          if docker info >/dev/null 2>&1; then
+            echo "docker_available=true" >> $GITHUB_OUTPUT
+          else
+            echo "docker_available=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Containerized Lake build (when Docker available)
+        if: steps.docker_check.outputs.docker_available == 'true'
         continue-on-error: true
         run: |
           set -eux
-          # If lake is already present on the runner, skip the container fallback
-          if command -v lake >/dev/null 2>&1; then
-            echo "lake already present on runner; skipping container fallback"
-            exit 0
-          fi
           IMAGE=ghcr.io/leanprover/lean4:nightly
-          echo "Attempting to pull $IMAGE and run a containerized lake build (this step is allowed to fail)"
-          if docker pull "$IMAGE"; then
-            docker run --rm -v "$GITHUB_WORKSPACE":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"
-          else
-            echo "Could not pull $IMAGE; skipping containerized lake build"
-          fi
+          echo "Attempting to pull $IMAGE and run a containerized lake build"
+          docker pull "$IMAGE" || echo "docker pull failed; continuing"
+          docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean" || echo "docker run failed; continuing"
+
 
       - name: Build proofs with Lake (if available)
         run: |
@@ -107,6 +129,13 @@ jobs:
             lake exe cache get || echo "mathlib cache unavailable; continuing with source build"
             lake build
             lake env lean z22_exclusion.lean
+          elif command -v elan >/dev/null 2>&1; then
+            echo "lake not found in PATH; attempting to run via elan"
+            elan run -- lake --version || true
+            elan run -- lake update || true
+            elan run -- lake exe cache get || echo "mathlib cache unavailable; continuing with source build"
+            elan run -- lake build || echo "elan-run lake build failed; continuing"
+            elan run -- lake env lean z22_exclusion.lean || echo "elan-run lake env failed; continuing"
           else
-            echo "lake not found on runner; skipping Lean build (proofs won't be verified in CI until lake is available)"
+            echo "lake and elan not found on runner; skipping Lean build (proofs won't be verified in CI until lake or elan is available)"
           fi

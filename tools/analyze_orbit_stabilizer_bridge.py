@@ -211,6 +211,7 @@ def _build_space_report(
 def build_report(
     hessian_json: Path,
     agl_json: Path,
+    hessian_exhaustive_json: Path | None = None,
 ) -> dict[str, Any]:
     points = [(x, y) for x in range(3) for y in range(3)]
     z_maps = [(az, bz) for az in (1, 2) for bz in range(3)]
@@ -233,6 +234,17 @@ def build_report(
         points,
         lines,
     )
+
+    hessian_exhaustive = None
+    if hessian_exhaustive_json is not None and hessian_exhaustive_json.exists():
+        hessian_exhaustive = _build_space_report(
+            "hessian_exhaustive",
+            hessian_exhaustive_json,
+            affine_elements,
+            z_maps,
+            points,
+            lines,
+        )
 
     hessian_nontrivial = hessian["nontrivial_stabilizer_representative_count"]
     agl_nontrivial = agl["nontrivial_stabilizer_representative_count"]
@@ -268,6 +280,19 @@ def build_report(
             == [[1, 1, 1, 1, 2, 2, 2, 2]]
         ),
     }
+    if hessian_exhaustive is not None:
+        ex_profiles = hessian_exhaustive.get("nontrivial_profiles", {})
+        z_keys = set(ex_profiles.get("z_map_histogram", {}).keys())
+        claim_checks["hessian_exhaustive_zmap_support_is_exact_three_involutions"] = (
+            bool(z_keys == {"[1, 0]", "[2, 0]", "[2, 1]"})
+        )
+
+    spaces: dict[str, Any] = {
+        "hessian": hessian,
+        "agl": agl,
+    }
+    if hessian_exhaustive is not None:
+        spaces["hessian_exhaustive"] = hessian_exhaustive
 
     return {
         "status": "ok",
@@ -278,10 +303,7 @@ def build_report(
             "total_action_size": 2592,
             "notes": "Action on witness sets via affine map on AG(2,3) and affine map on z.",
         },
-        "spaces": {
-            "hessian": hessian,
-            "agl": agl,
-        },
+        "spaces": spaces,
         "claim_checks": claim_checks,
         "claim": (
             "In exact min-cert representative data, orbit-size splitting is exactly an "
@@ -308,7 +330,9 @@ def render_md(report: dict[str, Any]) -> str:
     lines.append(f"- claim holds: `{report.get('claim_holds')}`")
     lines.append("")
 
-    for key in ("hessian", "agl"):
+    for key in ("hessian", "agl", "hessian_exhaustive"):
+        if key not in report.get("spaces", {}):
+            continue
         space = report.get("spaces", {}).get(key, {})
         lines.append(f"## {key}")
         lines.append("")
@@ -371,6 +395,14 @@ def main() -> None:
         / "e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
     )
     parser.add_argument(
+        "--hessian-exhaustive-json",
+        type=Path,
+        default=ROOT
+        / "artifacts"
+        / "e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
+        help="Optional exhaustive Hessian representative file for stronger z-map support checks.",
+    )
+    parser.add_argument(
         "--out-json",
         type=Path,
         default=ROOT / "artifacts" / "orbit_stabilizer_bridge_2026_02_11.json",
@@ -385,6 +417,7 @@ def main() -> None:
     report = build_report(
         hessian_json=args.hessian_json,
         agl_json=args.agl_json,
+        hessian_exhaustive_json=args.hessian_exhaustive_json,
     )
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(report, indent=2), encoding="utf-8")

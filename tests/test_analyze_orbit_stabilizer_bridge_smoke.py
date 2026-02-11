@@ -31,10 +31,13 @@ def test_analyze_orbit_stabilizer_bridge_cli_smoke(tmp_path: Path) -> None:
 
     hessian = payload["spaces"]["hessian"]
     agl = payload["spaces"]["agl"]
+    hessian_exhaustive = payload["spaces"]["hessian_exhaustive"]
     assert hessian["orbit_size_histogram"] == {"1296": 11, "2592": 68}
     assert hessian["stabilizer_size_histogram"] == {"1": 68, "2": 11}
     assert agl["orbit_size_histogram"] == {"2592": 7}
     assert agl["stabilizer_size_histogram"] == {"1": 7}
+    assert hessian_exhaustive["orbit_size_histogram"] == {"1296": 55, "2592": 201}
+    assert hessian_exhaustive["stabilizer_size_histogram"] == {"1": 201, "2": 55}
 
     checks = payload["claim_checks"]
     assert checks["orbit_stabilizer_identity_holds_all_spaces"] is True
@@ -43,6 +46,7 @@ def test_analyze_orbit_stabilizer_bridge_cli_smoke(tmp_path: Path) -> None:
     assert checks["nontrivial_stabilizers_only_in_hessian"] is True
     assert checks["all_hessian_nontrivial_linear_parts_are_det2_order2"] is True
     assert checks["hessian_nontrivial_cycle_signatures_match_gl2_bridge"] is True
+    assert checks["hessian_exhaustive_zmap_support_is_exact_three_involutions"] is True
 
     text = out_md.read_text(encoding="utf-8")
     assert "Orbit-Stabilizer Bridge" in text

@@ -29,6 +29,19 @@
 - nontrivial point signatures: `[]`
 - nontrivial line signatures: `[]`
 
+## hessian_exhaustive
+
+- source: `C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\artifacts\e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json`
+- representatives: `256`
+- orbit histogram: `{'1296': 55, '2592': 201}`
+- stabilizer histogram: `{'1': 201, '2': 55}`
+- orbit-stabilizer identity holds: `True`
+- nontrivial stabilizer reps: `55`
+- nontrivial z-map histogram: `{'[1, 0]': 49, '[2, 0]': 5, '[2, 1]': 1}`
+- nontrivial linear det/order hist: `det={'2': 55}, order={'2': 55}`
+- nontrivial point signatures: `[[1, 1, 1, 2, 2, 2]]`
+- nontrivial line signatures: `[[1, 1, 1, 1, 2, 2, 2, 2]]`
+
 ## Claim Checks
 
 - `orbit_stabilizer_identity_holds_all_spaces`: `True`
@@ -37,3 +50,4 @@
 - `nontrivial_stabilizers_only_in_hessian`: `True`
 - `all_hessian_nontrivial_linear_parts_are_det2_order2`: `True`
 - `hessian_nontrivial_cycle_signatures_match_gl2_bridge`: `True`
+- `hessian_exhaustive_zmap_support_is_exact_three_involutions`: `True`
