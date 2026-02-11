@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -111,6 +112,9 @@ def main() -> None:
     predicted_reduced = 0
     mismatches = []
     matched_mats: set[tuple[int, int, int, int, int]] = set()
+    match_count_hist = Counter()
+    full_orbit_match_hist = Counter()
+    reduced_orbit_match_hist = Counter()
 
     for idx, entry in enumerate(reps):
         rows = entry.get("canonical_repr") or []
@@ -120,18 +124,22 @@ def main() -> None:
         if observed:
             observed_reduced += 1
 
-        found = False
+        match_count = 0
         for affine_elem in involutions:
             for z_map in Z_INVOLUTIONS:
                 if _transform_packed(packed, affine_elem, z_map) == packed:
-                    found = True
+                    match_count += 1
                     matched_mats.add(affine_elem[0])
-                    break
-            if found:
-                break
+        found = match_count > 0
 
         if found:
             predicted_reduced += 1
+        match_count_hist[str(int(match_count))] += 1
+        if observed:
+            reduced_orbit_match_hist[str(int(match_count))] += 1
+        else:
+            full_orbit_match_hist[str(int(match_count))] += 1
+
         if found != observed:
             mismatches.append(
                 {
@@ -139,6 +147,7 @@ def main() -> None:
                     "orbit_size": int(orbit_size),
                     "observed_reduced": bool(observed),
                     "predicted_reduced": bool(found),
+                    "matching_symmetry_count": int(match_count),
                 }
             )
 
@@ -152,6 +161,19 @@ def main() -> None:
             }
         )
 
+    full_all_zero = all(
+        int(k) == 0 for k, v in full_orbit_match_hist.items() if int(v) > 0
+    )
+    reduced_all_positive = all(
+        int(k) > 0 for k, v in reduced_orbit_match_hist.items() if int(v) > 0
+    )
+    reduced_all_exactly_one = all(
+        int(k) == 1 for k, v in reduced_orbit_match_hist.items() if int(v) > 0
+    )
+    strict_profile_holds = (
+        (len(mismatches) == 0) and full_all_zero and reduced_all_exactly_one
+    )
+
     out = {
         "status": "ok",
         "source": str(args.in_json),
@@ -162,6 +184,21 @@ def main() -> None:
         "mismatch_count": len(mismatches),
         "mismatches": mismatches,
         "equivalent": len(mismatches) == 0,
+        "match_count_histogram": dict(
+            sorted(match_count_hist.items(), key=lambda item: int(item[0]))
+        ),
+        "symmetry_profile": {
+            "full_orbit_match_count_histogram": dict(
+                sorted(full_orbit_match_hist.items(), key=lambda item: int(item[0]))
+            ),
+            "reduced_orbit_match_count_histogram": dict(
+                sorted(reduced_orbit_match_hist.items(), key=lambda item: int(item[0]))
+            ),
+            "full_orbit_all_zero_matches": bool(full_all_zero),
+            "reduced_orbit_all_positive_matches": bool(reduced_all_positive),
+            "reduced_orbit_all_exactly_one_match": bool(reduced_all_exactly_one),
+            "strict_profile_holds": bool(strict_profile_holds),
+        },
         "pulled_back_matrix_count": len(pulled_back_matrices),
         "pulled_back_matrices": pulled_back_matrices,
         "matrix_conjugacy_all_true": all(

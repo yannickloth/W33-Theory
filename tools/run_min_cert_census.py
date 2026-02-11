@@ -196,18 +196,23 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
     lines.append(f"- Source map: `{summary['source_map_json']}`")
     lines.append("")
     lines.append(
-        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds | Reduced Eq |"
+        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds | Reduced Eq | Reduced Profile |"
     )
-    lines.append("|---|---:|---:|---:|---|---|")
+    lines.append("|---|---:|---:|---:|---|---|---|")
     for run in summary.get("runs", []):
         lines.append(
-            "| {} | {} | {} | {} | {} | {} |".format(
+            "| {} | {} | {} | {} | {} | {} | {} |".format(
                 run.get("candidate_space", ""),
                 run.get("k_min", ""),
                 run.get("exact_solutions_count", ""),
                 run.get("distinct_representatives", ""),
                 "yes" if run.get("involution_rule_holds", False) else "no",
                 "yes" if run.get("reduced_closed_form_equivalent", False) else "no",
+                (
+                    "yes"
+                    if run.get("reduced_closed_form_strict_profile_holds", False)
+                    else "no"
+                ),
             )
         )
     lines.append("")
@@ -230,6 +235,16 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
         lines.append(
             "- Reduced-form mismatch count: `{}`".format(
                 run.get("reduced_closed_form_mismatch_count", "n/a")
+            )
+        )
+        lines.append(
+            "- Reduced match-count hist: `{}`".format(
+                run.get("reduced_closed_form_match_count_histogram", {})
+            )
+        )
+        lines.append(
+            "- Reduced strict profile holds: `{}`".format(
+                run.get("reduced_closed_form_strict_profile_holds", "n/a")
             )
         )
         lines.append(
@@ -342,6 +357,8 @@ def main() -> None:
             "involution_mismatch_count": None,
             "reduced_closed_form_equivalent": None,
             "reduced_closed_form_mismatch_count": None,
+            "reduced_closed_form_match_count_histogram": {},
+            "reduced_closed_form_strict_profile_holds": None,
             "orbit_histograms": {"raw": {}, "weighted_by_hit_count": {}},
         }
 
@@ -372,6 +389,12 @@ def main() -> None:
             )
             run_summary["reduced_closed_form_mismatch_count"] = int(
                 reduced_payload.get("mismatch_count", 0)
+            )
+            run_summary["reduced_closed_form_match_count_histogram"] = dict(
+                reduced_payload.get("match_count_histogram", {})
+            )
+            run_summary["reduced_closed_form_strict_profile_holds"] = bool(
+                reduced_payload.get("symmetry_profile", {}).get("strict_profile_holds")
             )
 
         if (not args.skip_gallery) and (classified_payload is not None):

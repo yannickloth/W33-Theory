@@ -51,6 +51,9 @@ This repository is meant to be read like a single, continuously updated paper.
   orbits (`1296`) now satisfy a sharp involution criterion:
   they are exactly the reps fixed by at least one `det=2`, order-`2` affine map on
   `AG(2,3)` paired with `z`-map in `{(1,0),(2,0),(2,1)}`.
+- The reduced-orbit checker now verifies the stronger symmetry profile:
+  Hessian exhaustive reps split exactly as match-count histogram `0:201, 1:55`
+  (`2592`-orbit reps have zero matches; `1296`-orbit reps each have exactly one).
 - Formal theorem & short proof sketch formalizing this equivalence: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`.
 - A one-command exact census orchestrator now runs:
   exact enumeration -> representative classification -> involution-rule check ->
@@ -61,7 +64,8 @@ This repository is meant to be read like a single, continuously updated paper.
   Hessian reached cap with `80` exact solutions (`79` canonical reps; orbit split
   `1296:11`, `2592:68`), while full `AGL(2,3)` completed with `7` solutions
   (`7` reps; all `2592`); involution rule check and reduced closed-form
-  equivalence check both reported `0` mismatches in both spaces.
+  equivalence check both reported `0` mismatches in both spaces, and the
+  reduced-form strict profile check passed in both spaces.
 - s12 universalization pass (`2026-02-11`) is now reproducible with
   `tools/universalize_s12_algebra.py`: grade laws split cleanly into a
   Jordan-Lie profile (Lie Jacobi obstruction on `6/27` grade triples, but

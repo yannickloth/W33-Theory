@@ -188,7 +188,8 @@ Additional witness-space note:
   `--candidate-spaces hessian agl --max-exact-solutions 80 --time-limit-sec 45`
   produced: Hessian `80` solutions / `79` canonical reps (`1296:11`, `2592:68`),
   AGL `7` solutions / `7` reps (all `2592`), with involution-rule mismatch count
-  `0` and reduced-closed-form mismatch count `0` in both spaces.
+  `0`, reduced-closed-form mismatch count `0`, and reduced-form strict profile
+  check `true` in both spaces.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:

@@ -25,6 +25,13 @@ def test_check_reduced_orbit_closed_form_equiv_smoke(tmp_path: Path):
     assert dd.get("status") == "ok"
     assert dd.get("equivalent") is True
     assert dd.get("mismatch_count") == 0
+    assert dd.get("match_count_histogram") == {"0": 201, "1": 55}
+
+    profile = dd.get("symmetry_profile", {})
+    assert profile.get("full_orbit_all_zero_matches") is True
+    assert profile.get("reduced_orbit_all_positive_matches") is True
+    assert profile.get("reduced_orbit_all_exactly_one_match") is True
+    assert profile.get("strict_profile_holds") is True
 
     # New: verify pulled-back matrices were observed and are conjugate to diag(-1,1)
     assert dd.get("pulled_back_matrix_count", 0) > 0
