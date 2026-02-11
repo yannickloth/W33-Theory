@@ -144,6 +144,10 @@ changes affine/Hessian symmetries:
   Only two nonzero cells remain:
   `(all_agl, z=(1,0), count=1)` and `(hessian216, z=(1,0), count=1)`;
   all other cells are zero.
+- minimal contradiction-core census (`2026-02-11`):
+  `tools/minimal_global_full_sign_cores.py` computes exact minimal UNSAT cores
+  per global cell; nontrivial `z` cells are ruled out by small cores
+  (size `3` in `all_agl/hessian216`, size `4` for involution mode at `z=(1,0)`).
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
@@ -174,6 +178,8 @@ Outputs:
 - `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md`
 - `artifacts/global_full_sign_stabilizer_census_2026_02_11.json`
 - `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`
+- `artifacts/minimal_global_full_sign_cores_2026_02_11.json`
+- `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`
 - `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`

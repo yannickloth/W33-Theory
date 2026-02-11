@@ -303,6 +303,11 @@ Status: verified via source-backed consistency:
 - `Mathlib.Data.ZMod.Basic` matches the `ZMod 3` finite-field model used in
   `proofs/lean/z22_exclusion.lean`.
 
+H17. Global unsat cells should admit compact minimal contradiction cores.
+Status: verified via `tools/minimal_global_full_sign_cores.py`:
+- in `all_agl` and `hessian216`, all nontrivial `z` cells have minimal core size `3`;
+- in `involution_det2`, minimal core size is `4` at `z=(1,0)` and `3` for other `z`.
+
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
@@ -461,6 +466,14 @@ Additional witness-space note:
   (`lakefile.lean` + `lean-toolchain` + updated README) so the symbolic
   contradiction can move from draft lemmas toward CI-checkable formal proofs.
 
+## Sixteenth-pass raw notes (2026-02-11, minimal-core loop)
+
+- The global census identifies which cells are impossible, but not their
+  obstruction strength.
+- We added an exact finite-core extractor over the 36 line/z constraints.
+- Result: unsat cells are certificate-small (mostly core size `3`), which
+  indicates rigid local contradictions rather than diffuse global mismatch.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -478,6 +491,8 @@ Additional witness-space note:
 - global z22 exclusion tests: `tests/test_prove_z22_no_global_stabilizer_smoke.py`
 - global z-map stabilizer census: `tools/classify_global_full_sign_stabilizers.py`
 - global z-map census tests: `tests/test_classify_global_full_sign_stabilizers_smoke.py`
+- global minimal-core extractor: `tools/minimal_global_full_sign_cores.py`
+- global minimal-core tests: `tests/test_minimal_global_full_sign_cores_smoke.py`
 - Lean symbolic skeleton: `proofs/lean/z22_exclusion.lean`
 - Lean package config: `proofs/lean/lakefile.lean`, `proofs/lean/lean-toolchain`
 - Jacobi failure pattern: `tools/analyze_s12_jacobi_failure_pattern.py`
@@ -501,9 +516,10 @@ python tools/vogel_rational_hit_crosswalk.py --target-dims 728 486 242 --out-jso
 python tools/vogel_integer_m_locus.py --m-min -300 --m-max 300 --target-dims 728 486 242 --out-json artifacts/vogel_integer_m_locus_2026_02_11.json --out-md docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md
 python tools/prove_z22_no_global_stabilizer.py --out-json artifacts/z22_global_stabilizer_exclusion_2026_02_11.json --out-md docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md
 python tools/classify_global_full_sign_stabilizers.py --out-json artifacts/global_full_sign_stabilizer_census_2026_02_11.json --out-md docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md
+python tools/minimal_global_full_sign_cores.py --out-json artifacts/minimal_global_full_sign_cores_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py -q
 cd proofs/lean
 lake update
 lake build

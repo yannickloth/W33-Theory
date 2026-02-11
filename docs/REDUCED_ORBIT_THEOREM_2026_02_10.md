@@ -54,7 +54,8 @@ no global full-sign stabilizer in these candidate spaces.
 - Equivalence checker (canonical algebraic test): `tools/check_reduced_orbit_closed_form_equiv.py` (writes `artifacts/e6_f3_trilinear_reduced_orbit_closed_form_equiv.json`).
 - Global z22 stabilizer exclusion: `tools/prove_z22_no_global_stabilizer.py` (writes `artifacts/z22_global_stabilizer_exclusion_2026_02_11.json` and `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md`).
 - Global z-map census: `tools/classify_global_full_sign_stabilizers.py` (writes `artifacts/global_full_sign_stabilizer_census_2026_02_11.json` and `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`).
-- Smoke tests: `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_prove_z22_no_global_stabilizer_smoke.py`, `tests/test_classify_global_full_sign_stabilizers_smoke.py`.
+- Minimal contradiction cores: `tools/minimal_global_full_sign_cores.py` (writes `artifacts/minimal_global_full_sign_cores_2026_02_11.json` and `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`).
+- Smoke tests: `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_prove_z22_no_global_stabilizer_smoke.py`, `tests/test_classify_global_full_sign_stabilizers_smoke.py`, `tests/test_minimal_global_full_sign_cores_smoke.py`.
 - GL-conjugacy unit test (new): `tests/test_gl2_3_involution_conjugacy.py`.
 
 ## Notes and future work

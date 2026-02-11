@@ -136,6 +136,12 @@ global full-sign stabilizer cell is `z_map=(1,0)` with exactly one match
 `z` maps. See `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` and
 `tests/test_classify_global_full_sign_stabilizers_smoke.py`.
 
+Finally, `tools/minimal_global_full_sign_cores.py` computes minimal UNSAT cores
+for each global cell. Nontrivial `z` cells in `AGL(2,3)` and `Hessian216`
+admit compact contradiction cores of size `3`; the involution subset has core
+size `4` at `z=(1,0)` and size `3` elsewhere. This quantifies how many
+line/z constraints are minimally needed to rule out each cell.
+
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 

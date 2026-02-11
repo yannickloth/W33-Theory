@@ -10,3 +10,13 @@ provides a short algebraic contradiction ruling out z=(2,2) for any
 representative invariant under such an involution. The argument is both
 symbolic and machine-checked (see `tools/formal_z22_proof.py` and
 `tests/test_formal_z22_module.py`).
+
+Global strengthening:
+- closed-form stabilizer scan for `z=(2,2)` gives zero matches in full
+  `AGL(2,3)` (`0/864`) and in the involution subset (`0/216`)
+  via `tools/prove_z22_no_global_stabilizer.py`.
+- full `z`-map census keeps only trivial identity cells at `z=(1,0)`
+  (`tools/classify_global_full_sign_stabilizers.py`).
+- minimal contradiction-core extraction shows nontrivial global cells are
+  eliminated by compact cores (size `3` in `AGL/Hessian`) via
+  `tools/minimal_global_full_sign_cores.py`.
