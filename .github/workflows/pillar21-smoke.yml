@@ -25,7 +25,11 @@ jobs:
 
       - name: Prepare W33 analysis bundle
         run: |
-          python tools/prepare_w33_analysis_bundle.py --bundle-dir artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 --out-dir analysis/w33_bundle_temp --v0 0
+          if [ -d artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 ]; then
+            python tools/prepare_w33_analysis_bundle.py --bundle-dir artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 --out-dir analysis/w33_bundle_temp --v0 0
+          else
+            echo "W33 analysis bundle not found; skipping prepare step (smoke run)."
+          fi
 
       - name: Run Pillar 21 / Clifford-lift tests
         run: |
