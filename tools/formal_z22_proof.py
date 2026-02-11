@@ -20,6 +20,11 @@ def z_map(z: int) -> int:
     return (2 * int(z) + 2) % 3
 
 
+def z_map_table() -> Dict[int, int]:
+    """Return explicit image table of z_map on Z/3Z."""
+    return {z: z_map(z) for z in (0, 1, 2)}
+
+
 def symbolic_exclude_z22_check() -> Dict[str, Any]:
     """Return a small report asserting the contradiction for L: x=0 and z_map=(2,2).
 
@@ -53,6 +58,8 @@ def symbolic_exclude_z22_check() -> Dict[str, Any]:
         "s(L,1)": int(s1),
         "holds": bool(holds),
         "reason": reason,
+        "z_map_table": z_map_table(),
+        "z_map_is_involution": all(z_map(z_map(z)) == z for z in (0, 1, 2)),
         "z_map_fix_1": z_map(1) == 1,
     }
 

@@ -50,8 +50,16 @@ def zMap (z : ZMod 3) : ZMod 3 :=
 @[simp] theorem zMap_two : zMap 2 = 0 := by
   simp [zMap]
 
+/-- Explicit table for `zMap` on `ZMod 3`. -/
+theorem zMap_table : And (zMap 0 = 2) (And (zMap 1 = 1) (zMap 2 = 0)) := by
+  simp [zMap]
+
 /-- The affine map `z -> 2*z+2` is an involution on `ZMod 3`. -/
 @[simp] theorem zMap_involution (z : ZMod 3) : zMap (zMap z) = z := by
+  fin_cases z <;> simp [zMap]
+
+/-- `z=1` is the unique fixed point of `zMap` in `ZMod 3`. -/
+theorem zMap_fixed_iff (z : ZMod 3) : Iff (zMap z = z) (z = 1) := by
   fin_cases z <;> simp [zMap]
 
 /-- For `x=0`, product sign is `+1`. -/
