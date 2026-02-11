@@ -1,0 +1,149 @@
+{
+  "status": "ok",
+  "generated_utc": "2026-02-11T03:32:13Z",
+  "source_map_json": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json",
+  "planned_runs": [
+    {
+      "candidate_space": "hessian",
+      "limits": {
+        "max_exact_solutions": 500,
+        "time_limit_sec": 600.0
+      },
+      "outputs": {
+        "enumeration_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json",
+        "classified_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+        "involution_rule_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exact_full.json",
+        "reduced_orbit_closed_form_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json",
+        "gallery_md": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_hessian_exact_full.md"
+      },
+      "commands": {
+        "enumerate": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\enumerate_minimal_certificates.py",
+          "--in-json",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json",
+          "--candidate-space",
+          "hessian",
+          "--mode",
+          "exact",
+          "--max-exact-solutions",
+          "500",
+          "--time-limit-sec",
+          "600.0",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json"
+        ],
+        "classify": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\classify_canonical_reps.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json"
+        ],
+        "rule_check": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_min_cert_orbit_involution_rule.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exact_full.json"
+        ],
+        "reduced_check": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_reduced_orbit_closed_form_equiv.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json"
+        ],
+        "gallery": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\make_min_cert_gallery.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+          "--out-md",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_hessian_exact_full.md",
+          "--title",
+          "Minimal-Certificate Gallery (hessian)"
+        ],
+        "enumerate_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\enumerate_minimal_certificates.py\" --in-json \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json\" --candidate-space hessian --mode exact --max-exact-solutions 500 --time-limit-sec 600.0 --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json",
+        "classify_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\classify_canonical_reps.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+        "rule_check_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_min_cert_orbit_involution_rule.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exact_full.json",
+        "reduced_check_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_reduced_orbit_closed_form_equiv.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json",
+        "gallery_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\make_min_cert_gallery.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json --out-md artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_hessian_exact_full.md --title \"Minimal-Certificate Gallery (hessian)\""
+      }
+    },
+    {
+      "candidate_space": "agl",
+      "limits": {
+        "max_exact_solutions": 500,
+        "time_limit_sec": 600.0
+      },
+      "outputs": {
+        "enumeration_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json",
+        "classified_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+        "involution_rule_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exact_full.json",
+        "reduced_orbit_closed_form_json": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_agl_exact_full.json",
+        "gallery_md": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_agl_exact_full.md"
+      },
+      "commands": {
+        "enumerate": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\enumerate_minimal_certificates.py",
+          "--in-json",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json",
+          "--candidate-space",
+          "agl",
+          "--mode",
+          "exact",
+          "--max-exact-solutions",
+          "500",
+          "--time-limit-sec",
+          "600.0",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json"
+        ],
+        "classify": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\classify_canonical_reps.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json"
+        ],
+        "rule_check": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_min_cert_orbit_involution_rule.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exact_full.json"
+        ],
+        "reduced_check": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_reduced_orbit_closed_form_equiv.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+          "--out-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_agl_exact_full.json"
+        ],
+        "gallery": [
+          "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\make_min_cert_gallery.py",
+          "--in-json",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+          "--out-md",
+          "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_agl_exact_full.md",
+          "--title",
+          "Minimal-Certificate Gallery (agl)"
+        ],
+        "enumerate_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\enumerate_minimal_certificates.py\" --in-json \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\e6_f3_trilinear_map.json\" --candidate-space agl --mode exact --max-exact-solutions 500 --time-limit-sec 600.0 --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json",
+        "classify_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\classify_canonical_reps.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+        "rule_check_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_min_cert_orbit_involution_rule.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exact_full.json",
+        "reduced_check_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\check_reduced_orbit_closed_form_equiv.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json --out-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_reduced_orbit_closed_form_equiv_agl_exact_full.json",
+        "gallery_preview": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe \"C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\tools\\make_min_cert_gallery.py\" --in-json artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json --out-md artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_gallery_agl_exact_full.md --title \"Minimal-Certificate Gallery (agl)\""
+      }
+    }
+  ]
+}

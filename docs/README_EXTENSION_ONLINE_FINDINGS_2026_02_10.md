@@ -173,6 +173,12 @@ all three dimensions.
   **no** non-degenerate rational exceptional-line parameter `m` for target dims `486`
   and `242` (degenerate root `m=-2` excluded). See `docs/VOGEL_EXTENDED_FINDINGS_2026_02_11.md` for details and search parameters.
 
+- Additional sweep (2026-02-11): we ran a broad rational-cubic sweep over dimensions
+  `D` in the range `[200,1000]` with denominator cap `500` and found **no** new
+  non-degenerate rational `m` solutions for any `D` in this range. The sweep
+  artifact is `artifacts/vogel_rational_sweep.json` and a human-readable summary
+  is available at `artifacts/vogel_rational_sweep.md`.
+
 H12. If `728` is `A_26 = sl_27`, the s12 grade split `(242,243,243)` should be
 recoverable as a finite-order (`Z3`) block-cyclic grading of `sl_27`; if this
 bridge is structural, the partition should be unique (up to permutation).

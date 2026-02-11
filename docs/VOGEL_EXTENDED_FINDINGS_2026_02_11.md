@@ -30,4 +30,6 @@ Next steps:
 - D = 486: cubic roots (approx) = [16.0673377849, -3.80067111827, -2.0 (degenerate)].
 - D = 242: cubic roots (approx) = [7.79418309566, -3.66084976233, -2.0 (degenerate)].
 
-None of the non-degenerate real roots above are rational with denominator <= 500 (see `artifacts/vogel_rational_cubic_search_2026_02_11.json`). These algebraic roots are natural candidates for algebraic-number-field analysis (minimal polynomials and Galois structure) and could be consistent with refined or deformed Vogel universality mechanisms (e.g., Macdonald/Vogel deformations)."}EOF
+None of the non-degenerate real roots above are rational with denominator <= 500 (see `artifacts/vogel_rational_cubic_search_2026_02_11.json`). These algebraic roots are natural candidates for algebraic-number-field analysis (minimal polynomials and Galois structure) and could be consistent with refined or deformed Vogel universality mechanisms (e.g., Macdonald/Vogel deformations).
+
+Additional sweep: we performed a broad rational-cubic sweep across `D` in `[200,1000]` with denominator cap `500` and found no non-degenerate rational exceptional-line solutions in this larger range. See `artifacts/vogel_rational_sweep.json` and `artifacts/vogel_rational_sweep.md` for full results and per-dimension detail."}EOF

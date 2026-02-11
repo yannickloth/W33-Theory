@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "source": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
+  "z_map_mode": "involutions",
+  "theorem_z_maps": [
+    [
+      1,
+      0
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ]
+  ],
+  "all_affine_z_maps": [
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ]
+  ],
+  "representative_count": 7,
+  "candidate_affine_involution_count": 36,
+  "observed_reduced_count": 0,
+  "predicted_reduced_count": 0,
+  "predicted_reduced_count_all_zmaps": 0,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "equivalent": true,
+  "all_zmaps_mismatch_count": 0,
+  "all_zmaps_mismatches": [],
+  "all_zmaps_equivalent": true,
+  "match_count_histogram": {
+    "0": 7
+  },
+  "match_count_histogram_all_zmaps": {
+    "0": 7
+  },
+  "observed_matching_z_map_histogram": {},
+  "observed_matching_z_maps": [],
+  "zmap_restriction_holds": true,
+  "symmetry_profile": {
+    "full_orbit_match_count_histogram": {
+      "0": 7
+    },
+    "reduced_orbit_match_count_histogram": {},
+    "full_orbit_all_zero_matches": true,
+    "reduced_orbit_all_positive_matches": true,
+    "reduced_orbit_all_exactly_one_match": true,
+    "strict_profile_holds": true
+  },
+  "pulled_back_matrix_count": 0,
+  "pulled_back_matrices": [],
+  "matrix_conjugacy_all_true": true,
+  "closed_form_rule": "reduced iff invariant under some affine involution (det=2, order=2) with z-map in {(1,0),(2,0),(2,1)}; matched involution linear parts are GL(2,3)-conjugate to diag(-1,1)"
+}
