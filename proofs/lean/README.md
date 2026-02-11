@@ -1,12 +1,21 @@
-Lean 4 skeleton proofs for the Reduced Orbit corollary
+Lean 4 starter project for the Reduced Orbit corollary
 
-This folder contains a starting point (`z22_exclusion.lean`) for a formal
-Lean 4 development showing the short symbolic exclusion of `z=(2,2)`.
+This folder contains a compact Lean formalization skeleton in
+`z22_exclusion.lean` for the short symbolic exclusion of `z=(2,2)`.
 
-To proceed locally:
-- Install Lean 4 and lake (https://leanprover.github.io/)
-- Create a `lakefile.lean` and add appropriate `mathlib` or `mathlib4` dependencies
-- Flesh out the provided lemmas with explicit finite-field arithmetic on `ZMod 3`
+Project files included:
+- `lakefile.lean` (declares the local package + `mathlib` dependency)
+- `lean-toolchain` (pins the Lean toolchain used for this folder)
+- `proofs.lean` (library entry importing local proof files)
+- `z22_exclusion.lean` (current proof skeleton)
 
-This file is intentionally minimal: it encodes the statements and a proof
-strategy but not the fully detailed formal tactics. Contributions welcome.
+Local usage:
+```bash
+cd proofs/lean
+lake update
+lake build
+```
+
+The current Lean file proves the core contradiction (`PLine = +1` but
+`SLine = -1` for the vertical line at `z=1`) and is intended as a base for
+extending to a fuller machine-checked reduced-orbit formalization.

@@ -2,6 +2,8 @@
 
 Living paper and executable research code for deriving structural Standard Model features from the finite geometry `W(3,3)` (point graph `W33`).
 
+![W33 social preview banner](docs/assets/w33-social-preview.png)
+
 [![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml)
 [![sage-verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml)
 [![Lean 4 CI](https://github.com/wilcompute/W33-Theory/actions/workflows/lean4.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/lean4.yml)
@@ -15,6 +17,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - Research format: paper narrative in Markdown plus claim-to-script-to-test traceability.
 - Current status (2026-02-11): 73 theorem-level results tracked, 120+ computational tests, 50+ quantitative predictions.
 - Scope note: "verified" in this repository means computationally verified within the stated model and code path.
+- Latest z-map result: global full-sign census leaves only the identity cell at `z=(1,0)`.
+- Docs landing page: `docs/INDEX.md`.
 
 ## Start Here
 
@@ -25,6 +29,7 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce the qutrit/Heisenberg bridge | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `python scripts/w33_heisenberg_qutrit.py` | `python -m pytest tests/test_heisenberg_qutrit_structure.py -q` |
 | Reproduce the E6/F3 trilinear pipeline | `docs/NOVEL_CONNECTIONS_2026_02_10.md` + `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md` | `python tools/build_e6_f3_trilinear_map.py` then `python tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `python -m pytest tests/test_e6_f3_trilinear.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q` |
 | Reproduce the `z=(2,2)` global exclusion | `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md` | `python tools/prove_z22_no_global_stabilizer.py` | `python -m pytest tests/test_prove_z22_no_global_stabilizer_smoke.py -q` |
+| Reproduce the full global `z`-map census | `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` | `python tools/classify_global_full_sign_stabilizers.py` | `python -m pytest tests/test_classify_global_full_sign_stabilizers_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
@@ -74,6 +79,7 @@ Additional high-signal documents:
 - `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 - `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`
 - `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md`
+- `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` (raw web-source log)
 - `docs/S12_UNIVERSALIZATION_2026_02_11.md`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`
@@ -84,3 +90,9 @@ Additional high-signal documents:
 - Use `CONTRIBUTING.md` for local workflow and pre-commit guidance.
 - Keep claims executable: each theorem update should include script path, test path, and artifact path.
 - Prefer adding new result documents under `docs/` and generated outputs under `artifacts/`.
+
+## GitHub Repository Metadata
+
+- About text and topics are tracked in `.github/settings.yml`.
+- Social preview image asset: `docs/assets/w33-social-preview.png`.
+- Upload path in GitHub UI: `Settings -> General -> Social preview -> Upload an image`.

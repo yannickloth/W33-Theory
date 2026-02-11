@@ -6,7 +6,7 @@ This script checks a stronger statement than the certificate-level exclusion:
 There is no affine u-map (in all AGL(2,3), or even in the det=2/order-2
 involution subset) and no global sign eps in {+1,-1} such that
 
-  s(A·line, z_map(z)) = eps * s(line, z)
+  s(A*line, z_map(z)) = eps * s(line, z)
 
 for all affine lines and z in {0,1,2}, with z_map(z)=2*z+2.
 
