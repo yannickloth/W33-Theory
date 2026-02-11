@@ -187,6 +187,12 @@ changes affine/Hessian symmetries:
   lift `1.176` over baseline `2592` prevalence, and one-sided
   hypergeometric `p=0.01355`; motif `x:(2,2,1)` is pure `1296` on support `2`
   (`p_enrich_1296=0.03834`).
+- core-motif anchor channels (`2026-02-11`):
+  `tools/core_motif_anchor_channels.py` turns enrichment into a small
+  abstaining classifier with anchors
+  `full = {x:(1,1,0)}` and `reduced = {x:(2,2,1)}`.
+  On combined Hessian reps it fires on `38/335` with precision `36/38 = 0.947`
+  and zero full/reduced anchor conflicts.
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:
@@ -238,6 +244,8 @@ Outputs:
 - `docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md`
 - `artifacts/core_motif_enrichment_stats_2026_02_11.json`
 - `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md`
+- `artifacts/core_motif_anchor_channels_2026_02_11.json`
+- `docs/CORE_MOTIF_ANCHOR_CHANNELS_2026_02_11.md`
 - `artifacts/minimal_global_identity_certificates_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json`

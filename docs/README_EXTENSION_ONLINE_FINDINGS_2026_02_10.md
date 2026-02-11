@@ -362,6 +362,14 @@ Status: verified via `tools/core_motif_enrichment_stats.py`:
 Companion reduced marker: `x:(2,2,1)` is pure `1296` on support `2`
 with `p_enrich_1296 = 0.03834`.
 
+H21. Enrichment-selected motifs should yield a compact high-precision
+abstaining orbit classifier in Hessian representative space.
+Status: verified via `tools/core_motif_anchor_channels.py`:
+- anchor extraction picks `full={x:(1,1,0)}` and `reduced={x:(2,2,1)}`;
+- on combined Hessian reps (`335`), anchor rule fires on `38` with
+  precision `36/38 = 0.947`;
+- no conflicting anchor fires are observed.
+
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
@@ -741,6 +749,27 @@ Additional witness-space note:
     https://arxiv.org/abs/math/0611590
   - Hessian-group order references:
     https://en.wikipedia.org/wiki/Hessian_group
+
+## Twenty-seventh-pass raw notes (2026-02-11, anchor-channel loop)
+
+- We converted enrichment outputs into an explicit motif-anchor rulebook.
+- New tool: `tools/core_motif_anchor_channels.py`.
+- Channel extraction on combined Hessian motifs picks:
+  - full channel anchor: `x:(1,1,0)`,
+  - reduced channel anchor: `x:(2,2,1)`.
+- Evaluated as an abstaining classifier on combined Hessian reps:
+  - coverage `38/335 = 0.113`,
+  - precision when fired `36/38 = 0.947`,
+  - conflict count `0`.
+- Interpretation:
+  - this is a compact, executable “micro-code” layer: not complete coverage,
+    but high-confidence anchor signals that connect global core motifs to
+    reduced-orbit stratification.
+- web prompts checked in this pass:
+  - exceptional-line classification framing:
+    https://arxiv.org/abs/2506.15280
+  - Vogel-universality extension framing:
+    https://arxiv.org/abs/2601.01612
 
 ## Where each hypothesis is encoded
 

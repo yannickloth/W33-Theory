@@ -60,3 +60,7 @@ Global strengthening:
 - enrichment refinement (`tools/core_motif_enrichment_stats.py`) quantifies
   that marker as statistically enriched for orbit `2592` in combined Hessian
   datasets (`p=0.01355`, lift `1.176`).
+- anchor-channel refinement (`tools/core_motif_anchor_channels.py`) yields a
+  high-precision abstaining classifier:
+  anchors `x:(1,1,0)` (full) and `x:(2,2,1)` (reduced), precision `36/38=0.947`
+  on combined Hessian reps when the anchor rule fires.

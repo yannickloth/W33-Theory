@@ -193,6 +193,11 @@ for combined Hessian datasets, `x:(1,1,0)` has one-sided enrichment
 `p=0.01355` for orbit `2592` (lift `1.176`), while `x:(2,2,1)` is
 pure orbit `1296` on support `2` (`p_enrich_1296=0.03834`).
 
+`tools/core_motif_anchor_channels.py` packages these into anchor channels:
+`x:(1,1,0)` for full orbit and `x:(2,2,1)` for reduced orbit. The resulting
+abstaining classifier achieves `36/38 = 0.947` precision when it fires on the
+combined Hessian representative set, with zero anchor conflicts.
+
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 
