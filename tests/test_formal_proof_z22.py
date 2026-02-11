@@ -102,3 +102,29 @@ def test_formal_proof_z22_no_invariant_reps() -> None:
     assert (
         invariant_found == []
     ), f"Found invariant representatives under diag(-1,1)+z=(2,2): {invariant_found}"
+
+
+def test_symbolic_exclude_z22_via_x0() -> None:
+    """Short symbolic check: L = x=0 fixed by diag(-1,1) leads to contradiction
+    under z_map=(2,2) using closed-form product/sign rules."""
+    import tools.analyze_e6_f3_trilinear_symmetry_breaking as analyze
+
+    # vertical line x=0
+    L = tuple(sorted(((0, 0), (0, 1), (0, 2))))
+    lines = analyze._all_affine_lines()
+    assert L in lines
+
+    a, b, c = analyze._normalized_line_abc(L)
+    assert (a, b, c) == (1, 0, 0)
+
+    # product sign closed form: P(L)=+1 iff b*c==0
+    P = 1 if (b * c) % 3 == 0 else -1
+
+    # full-sign closed form predicts s(L,1)
+    s1 = analyze._predict_full_sign_closed_form(L, 1)
+
+    assert P == 1
+    assert s1 == -1
+    assert (
+        P != s1
+    ), "Symbolic contradiction failed: P(L) should not equal s(L,1) for z=(2,2)"

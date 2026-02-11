@@ -81,6 +81,30 @@ is conjugate to `diag(-1,1)`) together with the `z`-affine map `z -> 2*z + 2`.
 
 QED.
 
+#### Short symbolic exclusion (pure algebraic)
+
+A compact, purely symbolic contradiction is immediate in the adapted gauge.
+Work in the gauge where the affine flag is `((0,0), x-direction)` and
+`A_GAUGE = diag(-1,1)` acts by `(x,y) -> (2x,y)` over `F_3`.
+
+- The vertical line `L: x=0` has normalized coefficients `(a,b,c)=(1,0,0)` and
+  is fixed by `A_GAUGE` (apply `A_GAUGE` to its points and the set is unchanged).
+- The `z`-map `z -> 2*z + 2` fixes `z=1`, so invariance of the full sign field
+  would force the global sign `epsilon = 1` (since `s(L,1) = epsilon*s(L,1)`).
+- For any fixed line under this involution, the `0<->2` swap implies
+  `s(L,0) = s(L,2)`, hence
+  `P(L) = s(L,0)*s(L,1)*s(L,2) = s(L,1)`.
+- The coordinate-free product law (`P(line)=+1 iff b*c==0`) gives
+  `P(L) = +1` for `L=x=0` (since `b*c = 0`).
+- The closed-form full sign rule for `(a,b)=(1,0)` with `c=0` and `z=1` gives
+  `s(L,1) = -1` (because `c^2 + 2c + z = 1 != 2`). Thus `P(L) = +1` but
+  `s(L,1) = -1`, a contradiction.
+
+Therefore `z_map=(2,2)` cannot preserve the sign field with any `A` conjugate
+to `diag(-1,1)`, completing a short symbolic exclusion without recourse to
+exhaustive checking.
+
+
 ### Finite-case reduction and diagnostic plots
 
 As a pragmatic step we implemented `tools/prove_exclude_z22.py` to perform the
