@@ -220,17 +220,22 @@ def build_snapshot(
                 "year": 2025,
             },
             {
-                "title": "Kernel of Jacobi identity in graph complexes",
+                "title": "On Refined Vogel's universality and link homologies",
                 "url": "https://arxiv.org/abs/2504.13831",
                 "year": 2025,
             },
             {
-                "title": "Graphical systems and Vogel's universality",
+                "title": "On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials",
                 "url": "https://arxiv.org/abs/2505.16569",
                 "year": 2025,
             },
             {
-                "title": "Vogel's universality from a formal language perspective",
+                "title": "Vogel's universality and Macdonald dimensions",
+                "url": "https://arxiv.org/abs/2507.11414",
+                "year": 2025,
+            },
+            {
+                "title": "Construction of the Lie algebra weight system kernel via Vogel algebra",
                 "url": "https://arxiv.org/abs/2411.14417",
                 "year": 2024,
             },

@@ -84,20 +84,25 @@ from the layperson narrative.
     Raw note: supports a generator/relation-driven perspective for universal Lie
     objects, which maps well to scriptable identity checks.
 
-15. Cretu et al., *Kernel of Jacobi identity in graph complexes* (2025)
+15. Cretu et al., *On Refined Vogel's universality and link homologies* (2025)
     URL: `https://arxiv.org/abs/2504.13831`
-    Raw note: directly motivates treating Jacobi-obstruction sets as first-class
-    data instead of just pass/fail flags.
+    Raw note: refines Vogel universality with link-homology structure and supports
+    using richer invariants beyond scalar dimension checks.
 
-16. Cretu et al., *Graphical systems and Vogel's universality* (2025)
+16. Cretu et al., *On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials* (2025)
     URL: `https://arxiv.org/abs/2505.16569`
-    Raw note: reinforces graph-combinatorial encodings as a practical bridge
-    between universal formulas and computable invariants.
+    Raw note: pushes beyond undeformed Vogel tables and motivates adding
+    deformation-aware scans where possible.
 
-17. Gilbride et al., *Vogel's universality from a formal language perspective* (2024)
+17. Cretu et al., *Vogel's universality and Macdonald dimensions* (2025)
+    URL: `https://arxiv.org/abs/2507.11414`
+    Raw note: strengthens the Macdonald/refined-universality direction and suggests
+    multi-parameter discriminants are now standard in the literature.
+
+18. Cretu et al., *Construction of the Lie algebra weight system kernel via Vogel algebra* (2024)
     URL: `https://arxiv.org/abs/2411.14417`
-    Raw note: indicates formal-language/rewriting viewpoints are becoming relevant
-    for universality, aligning with finite rule-table searches in this repo.
+    Raw note: reinforces kernel-level constraints as first-class universal data,
+    not just post-hoc consistency checks.
 
 ## Hypothesis chain -> repo checks
 
@@ -151,6 +156,14 @@ Status: verified via `tools/vogel_universal_snapshot.py`:
 `728` maps to `A_26` only; `486` and `242` show no classical integer-family hits;
 bounded exceptional-line rational search (`denominator <= 24`) has zero hits for
 all three dimensions.
+
+H12. If `728` is `A_26 = sl_27`, the s12 grade split `(242,243,243)` should be
+recoverable as a finite-order (`Z3`) block-cyclic grading of `sl_27`; if this
+bridge is structural, the partition should be unique (up to permutation).
+Status: verified via `tools/analyze_s12_sl27_z3_bridge.py`:
+search over all sorted triples `(a,b,c)` with `1 <= a <= b <= c <= 60` finds exactly
+one solution to `g0=a^2+b^2+c^2-1=242`, `g1=g2=ab+bc+ca=243`, namely
+`(a,b,c)=(9,9,9)`, hence `n=a+b+c=27` and `dim(sl_n)=n^2-1=728`.
 
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
@@ -226,6 +239,17 @@ Additional witness-space note:
   classical `A`-family scaling, while internal split dimensions resist simple
   Lie-family embedding in the tested search window.
 
+## Eighth-pass raw notes (2026-02-11, sl_27 Z3 bridge loop)
+
+- Dimension-only Vogel hits can overfit, so we added a structure-level check:
+  can the full s12 split `(242,243,243)` arise from a canonical `Z3` grading model?
+- For block-cyclic `Z3` gradings of `sl_n` with partition `n=a+b+c`, dimensions are
+  `g0=a^2+b^2+c^2-1`, `g1=g2=ab+bc+ca`.
+- Exhaustive triple scan (`1 <= a <= b <= c <= 60`) finds a unique match:
+  `(a,b,c)=(9,9,9)`, giving `n=27`, `A_26`, and exactly `(242,243,243)`.
+- This upgrades the Vogel bridge from "total dim compatibility" to
+  "full grade decomposition compatibility" and gives a tight canonical model.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -233,6 +257,8 @@ Additional witness-space note:
 - Tests: `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py`
 - Vogel snapshot: `tools/vogel_universal_snapshot.py`
 - Vogel tests: `tests/test_vogel_universal_snapshot_smoke.py`
+- sl_27 Z3 bridge: `tools/analyze_s12_sl27_z3_bridge.py`
+- sl_27 bridge tests: `tests/test_analyze_s12_sl27_z3_bridge_smoke.py`
 - Distilled narrative: `README.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 
 ## Reproduction commands
@@ -245,5 +271,6 @@ python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_triline
 python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
 python tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts
 python tools/vogel_universal_snapshot.py --exceptional-line-denominator-cap 24 --out-json artifacts/vogel_universal_snapshot_2026_02_11.json --out-md docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md
+python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
 ```

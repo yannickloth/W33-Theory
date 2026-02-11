@@ -28,7 +28,7 @@ This repository is meant to be read like a single, continuously updated paper.
 3. Run `scripts/w33_e8_correspondence_theorem.py` and verify the same numbers appear locally.
 4. Open referenced scripts/tests directly from this README and treat them as appendices of the paper.
 
-## Current Delta (2026-02-10)
+## Current Delta (2026-02-11)
 
 - `E6/F3` trilinear full-sign rigidity now has a dual-space obstruction certificate:
   exact minimum witness size is `7` both in Hessian216 candidate space and in full `AGL(2,3)` candidate space.
@@ -71,8 +71,13 @@ This repository is meant to be read like a single, continuously updated paper.
   `dim=728` lands on classical `A_26` (`sl_27`) and has no hits on a bounded
   rational exceptional-line search (`denominator <= 24`), while `486` and `242`
   also show no hits in that bounded exceptional scan.
+- A structural bridge now upgrades that Vogel hit from total-dimension-only to full
+  graded decomposition:
+  `tools/analyze_s12_sl27_z3_bridge.py` finds exactly one sorted 3-block partition
+  solving the s12 split `(242,243,243)`, namely `27=9+9+9`, i.e. the block-cyclic
+  `Z3` grading of `sl_27` (`A_26`).
 - Repro path:
-  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_min_cert_census_runner_smoke.py tests/test_make_min_cert_gallery_smoke.py -q`.
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts`, then `tools/vogel_universal_snapshot.py`, then `tools/analyze_s12_sl27_z3_bridge.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_min_cert_census_runner_smoke.py tests/test_make_min_cert_gallery_smoke.py tests/test_vogel_universal_snapshot_smoke.py tests/test_analyze_s12_sl27_z3_bridge_smoke.py -q`.
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
@@ -91,6 +96,7 @@ This repository is meant to be read like a single, continuously updated paper.
 | Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` then `tools/check_min_cert_orbit_involution_rule.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
 | Is the s12 Jordan-Lie universalization reproducible? | `docs/S12_UNIVERSALIZATION_2026_02_11.md` | `tools/universalize_s12_algebra.py` | `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py` | `artifacts/s12_universalization_report.json` |
 | Is the Vogel-universal cross-check reproducible? | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `tools/vogel_universal_snapshot.py` | `tests/test_vogel_universal_snapshot_smoke.py` | `artifacts/vogel_universal_snapshot_2026_02_11.json` |
+| Is there a structural `sl_27` grading bridge for the s12 split? | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | Where are raw web findings separated from the paper narrative? | `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` | (documentation-only) | (N/A) | source log + hypothesis chain |
 
 ---
@@ -114,8 +120,9 @@ This is the strict execution index for major theorem-bearing sections in this RE
 | `Reduced Orbit Theorem` | Reduced `1296` Hessian canonical representatives are exactly those invariant under a `det=2`, order-`2` affine involution on `AG(2,3)` combined with a `z`-involution in `{(1,0),(2,0),(2,1)}`; equivalently, in an adapted gauge these are fixed by `diag(-1,1)` + allowed `z`-map. | `tools/check_reduced_orbit_closed_form_equiv.py`, `tools/derive_reduced_orbit_closed_form.py` | `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_gl2_3_involution_conjugacy.py` | `artifacts/e6_f3_trilinear_reduced_orbit_closed_form_equiv.json`, `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md` |
 | `69 Verified Theorems` | unified end-to-end ToE derivation | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_unified_derivation.json` |
 | `Coupling Atlas (Part XII)` | generation couplings, Yukawa textures, phase/coset maps | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_three_generation_coupling_atlas.json`, `artifacts/toe_yukawa_textures.json`, `artifacts/toe_coupling_strengths_v5_weightbasis.json`, `artifacts/toe_phase_diagram_charge_alignment.json`, `artifacts/toe_backbone_coset_coupling_map_v3_exact.json` |
-| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks + universalized grade-law decomposition (Jordan-Lie with finite Jacobi obstruction set, nilpotent `ad^3`) | `S12_ALGEBRA_CORE_DEEP_DIVE.py`, `tools/universalize_s12_algebra.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py`, `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py` | `GOLAY_JORDAN_LIE_COMPLETE.md`, `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `artifacts/s12_universalization_report.json` |
+| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks + universalized grade-law decomposition (Jordan-Lie with finite Jacobi obstruction set, nilpotent `ad^3`) + unique `sl_27` block-cyclic `Z3` grading bridge for split `(242,243,243)` | `S12_ALGEBRA_CORE_DEEP_DIVE.py`, `tools/universalize_s12_algebra.py`, `tools/analyze_s12_sl27_z3_bridge.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py`, `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py`, `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `GOLAY_JORDAN_LIE_COMPLETE.md`, `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_universalization_report.json`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | `Vogel universal snapshot` | exceptional-line Vogel parameter checks + s12 dimension-family scan (`728`, `486`, `242`) + web-sourced research pulse (2024-2026) | `tools/vogel_universal_snapshot.py` | `tests/test_vogel_universal_snapshot_smoke.py` | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`, `artifacts/vogel_universal_snapshot_2026_02_11.json` |
+| `s12 <-> sl_27 Z3 grading bridge` | exhaustive 3-block `Z3`-grading solver finds unique partition `27=9+9+9` matching `(g0,g1,g2)=(242,243,243)` and `dim=728=A_26` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | `Monster/Leech connection` | `196560 = 728 x 270`, moonshine-linked formulas | `LEECH_GOLAY_BRIDGE.py`, `MONSTER_744_CONNECTION.py`, `MONSTER_FACTORIZATION.py` | `ALGEBRA_TEST_SUITE.py` | `LEECH_DECOMPOSITION_BREAKTHROUGH.md` |
 | `W(3,3) -> s12 logical chain` | ternary geometry-to-algebra derivation chain | `W33_TO_S12_LOGICAL_CHAIN.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
 | `Witting polytope connection` | alternate route from Witting geometry to W33/s12 chain | `WITTING_W33_S12_SYNTHESIS.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
@@ -160,6 +167,13 @@ Run the Vogel universal snapshot:
 ```bash
 python tools/vogel_universal_snapshot.py --exceptional-line-denominator-cap 24 --out-json artifacts/vogel_universal_snapshot_2026_02_11.json --out-md docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md
 python -m pytest tests/test_vogel_universal_snapshot_smoke.py -q
+```
+
+Run the s12 <-> sl_27 Z3 bridge check:
+
+```bash
+python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
+python -m pytest tests/test_analyze_s12_sl27_z3_bridge_smoke.py -q
 ```
 
 Run full regression tests (long):
