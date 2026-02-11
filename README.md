@@ -29,6 +29,12 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - New orbit-polarization link: core motif `x:(1,1,0)` is a high-precision
   marker for full-orbit (`2592`) Hessian representatives (`34/36`, precision `0.944`),
   while core-motif overlap is zero in exact full `AGL` reps (`0/7`).
+- New enrichment statistics: motif `x:(1,1,0)` shows significant enrichment
+  toward orbit `2592` (hypergeometric `p <= 0.05`), while motif `x:(2,2,1)`
+  is pure `1296` in Hessian-combined overlap support (`0/2` at `2592`).
+- New enrichment check: in combined Hessian datasets, `x:(1,1,0)` is
+  statistically enriched for orbit `2592` (one-sided hypergeometric
+  `p=0.01355`, lift `1.176`); `x:(2,2,1)` is pure orbit `1296` on its support.
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - This `6 vs 5` gap is stable under distinct-line and striation-complete
@@ -58,6 +64,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce nontrivial core rulebook compression | `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md` | `python tools/nontrivial_core_rulebook.py` | `python -m pytest tests/test_nontrivial_core_rulebook_smoke.py -q` |
 | Reproduce rulebook-to-census motif link check | `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md` | `python tools/link_core_rulebook_to_min_cert_census.py` | `python -m pytest tests/test_link_core_rulebook_to_min_cert_census_smoke.py -q` |
 | Reproduce core-motif orbit polarization check | `docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md` | `python tools/classify_core_motif_orbit_polarization.py` | `python -m pytest tests/test_classify_core_motif_orbit_polarization_smoke.py -q` |
+| Reproduce core-motif enrichment statistics | `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md` | `python tools/core_motif_enrichment_stats.py` | `python -m pytest tests/test_core_motif_enrichment_stats_smoke.py -q` |
+| Reproduce core-motif enrichment stats | `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md` | `python tools/core_motif_enrichment_stats.py` | `python -m pytest tests/test_core_motif_enrichment_stats_smoke.py -q` |
 | Reproduce minimal identity certificates at `z=(1,0)` | `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md` | `python tools/minimal_global_identity_certificates.py` | `python -m pytest tests/test_minimal_global_identity_certificates_smoke.py -q` |
 | Reproduce dual rigidity profile (negative vs positive) | `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md` | `python tools/global_sign_rigidity_dual_profile.py` | `python -m pytest tests/test_global_sign_rigidity_dual_profile_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
@@ -113,6 +121,8 @@ Additional high-signal documents:
 - `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md`
 - `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md`
 - `docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md`
+- `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md`
+- `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md`
 - `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` (raw web-source log)

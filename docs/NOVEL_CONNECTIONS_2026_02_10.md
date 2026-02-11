@@ -181,6 +181,12 @@ changes affine/Hessian symmetries:
   overlap motif `x:(1,1,0)` is strongly polarized toward full-orbit Hessian
   representatives: `15/16` (`0.938`) in exact full and `19/20` (`0.950`) in
   exhaustive2, combined `34/36` (`0.944`) for orbit `2592`.
+- core-motif enrichment stats (`2026-02-11`):
+  `tools/core_motif_enrichment_stats.py` quantifies statistical enrichment:
+  in combined Hessian datasets, motif `x:(1,1,0)` has precision `0.944`,
+  lift `1.176` over baseline `2592` prevalence, and one-sided
+  hypergeometric `p=0.01355`; motif `x:(2,2,1)` is pure `1296` on support `2`
+  (`p_enrich_1296=0.03834`).
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:
@@ -230,6 +236,8 @@ Outputs:
 - `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md`
 - `artifacts/core_motif_orbit_polarization_2026_02_11.json`
 - `docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md`
+- `artifacts/core_motif_enrichment_stats_2026_02_11.json`
+- `docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md`
 - `artifacts/minimal_global_identity_certificates_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json`

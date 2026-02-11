@@ -188,6 +188,11 @@ shows this dominant motif is strongly polarized toward full-orbit Hessian
 representatives: `15/16` in exact full and `19/20` in exhaustive2, i.e.
 combined precision `34/36 = 0.944` for orbit `2592`.
 
+`tools/core_motif_enrichment_stats.py` then adds enrichment diagnostics:
+for combined Hessian datasets, `x:(1,1,0)` has one-sided enrichment
+`p=0.01355` for orbit `2592` (lift `1.176`), while `x:(2,2,1)` is
+pure orbit `1296` on support `2` (`p_enrich_1296=0.03834`).
+
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 

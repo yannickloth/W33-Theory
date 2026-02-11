@@ -352,6 +352,16 @@ Status: verified via `tools/classify_core_motif_orbit_polarization.py`:
 - `hessian_exhaustive2`: `19/20` are orbit `2592` (precision `0.950`);
 - combined Hessian precision: `34/36 = 0.944` for orbit `2592`.
 
+H20. The `x:(1,1,0)` full-orbit concentration should exceed Hessian baseline
+`2592` prevalence by a statistically nontrivial margin.
+Status: verified via `tools/core_motif_enrichment_stats.py`:
+- combined Hessian baseline `P(2592)=269/335=0.803`;
+- motif precision `P(2592 | x:(1,1,0)) = 34/36 = 0.944`;
+- lift `1.176`;
+- one-sided hypergeometric enrichment p-value `0.01355`.
+Companion reduced marker: `x:(2,2,1)` is pure `1296` on support `2`
+with `p_enrich_1296 = 0.03834`.
+
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
@@ -709,6 +719,29 @@ Additional witness-space note:
   - universality framing reminder for coarse-vs-refined invariants:
     https://arxiv.org/abs/2601.01612
 
+## Twenty-sixth-pass raw notes (2026-02-11, enrichment-statistics loop)
+
+- We converted motif polarization from descriptive counts into enrichment tests.
+- New analyzer: `tools/core_motif_enrichment_stats.py`.
+- Combined Hessian result for motif `x:(1,1,0)`:
+  - support: `36`,
+  - precision for orbit `2592`: `0.944`,
+  - baseline `P(2592)`: `0.803`,
+  - lift: `1.176`,
+  - one-sided hypergeometric `p=0.01355`.
+- Complementary reduced marker:
+  - motif `x:(2,2,1)` appears only on orbit `1296` in support `2`,
+  - `p_enrich_1296=0.03834`.
+- Interpretation:
+  - the motif channel is not only geometrically interpretable, it is
+    statistically enriched against dataset baseline and thus useful as a
+    nontrivial orbit-structure diagnostic.
+- web prompts checked in this pass:
+  - Hesse pencil / Hessian group context:
+    https://arxiv.org/abs/math/0611590
+  - Hessian-group order references:
+    https://en.wikipedia.org/wiki/Hessian_group
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -736,6 +769,8 @@ Additional witness-space note:
 - core-rulebook x min-cert link tests: `tests/test_link_core_rulebook_to_min_cert_census_smoke.py`
 - core-motif orbit polarization: `tools/classify_core_motif_orbit_polarization.py`
 - core-motif orbit polarization tests: `tests/test_classify_core_motif_orbit_polarization_smoke.py`
+- core-motif enrichment stats: `tools/core_motif_enrichment_stats.py`
+- core-motif enrichment tests: `tests/test_core_motif_enrichment_stats_smoke.py`
 - global positive-identity certificates: `tools/minimal_global_identity_certificates.py`
 - global positive-identity tests: `tests/test_minimal_global_identity_certificates_smoke.py`
 - global dual-profile synthesis: `tools/global_sign_rigidity_dual_profile.py`
@@ -768,11 +803,12 @@ python tools/classify_nontrivial_unsat_core_geometry.py --out-json artifacts/non
 python tools/nontrivial_core_rulebook.py --out-json artifacts/nontrivial_core_rulebook_2026_02_11.json --out-md docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md
 python tools/link_core_rulebook_to_min_cert_census.py --out-json artifacts/core_rulebook_min_cert_link_2026_02_11.json --out-md docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md
 python tools/classify_core_motif_orbit_polarization.py --out-json artifacts/core_motif_orbit_polarization_2026_02_11.json --out-md docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md
+python tools/core_motif_enrichment_stats.py --out-json artifacts/core_motif_enrichment_stats_2026_02_11.json --out-md docs/CORE_MOTIF_ENRICHMENT_STATS_2026_02_11.md
 python tools/minimal_global_identity_certificates.py --out-json artifacts/minimal_global_identity_certificates_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md
 python tools/global_sign_rigidity_dual_profile.py --out-json artifacts/global_sign_rigidity_dual_profile_2026_02_11.json --out-md docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_classify_core_motif_orbit_polarization_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_classify_core_motif_orbit_polarization_smoke.py tests/test_core_motif_enrichment_stats_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
 cd proofs/lean
 lake update
 lake build

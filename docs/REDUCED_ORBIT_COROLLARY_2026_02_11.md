@@ -57,3 +57,6 @@ Global strengthening:
   (`tools/classify_core_motif_orbit_polarization.py`) shows the dominant
   motif `x:(1,1,0)` is a high-precision full-orbit marker in Hessian
   representatives (`34/36` overlap occurrences at orbit `2592`).
+- enrichment refinement (`tools/core_motif_enrichment_stats.py`) quantifies
+  that marker as statistically enriched for orbit `2592` in combined Hessian
+  datasets (`p=0.01355`, lift `1.176`).
