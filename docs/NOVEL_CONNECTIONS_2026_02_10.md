@@ -90,18 +90,24 @@ changes affine/Hessian symmetries:
   `55` reps have exactly one witness and are reduced (`1296`).
 - end-to-end census automation:
   `tools/run_min_cert_census.py` now executes exact enumeration, canonical
-  classification, involution-rule checking, and markdown gallery/summary generation
-  in a single bounded run.
+  classification, involution-rule checking, reduced-orbit closed-form
+  equivalence checking, and markdown gallery/summary generation in a single
+  bounded run.
 - bounded cross-space census replay (`2026-02-11`):
   with `--max-exact-solutions 80 --time-limit-sec 45`, Hessian reaches cap at
   `80` solutions / `79` canonical reps with orbit split `1296:11`, `2592:68`,
   while `AGL(2,3)` completes at `7` solutions / `7` reps (all `2592`);
-  involution-rule checker returns `0` mismatches in both spaces.
+  involution-rule checker and reduced closed-form checker both return `0`
+  mismatches in both spaces.
 - Vogel universality cross-check (`2026-02-11`):
   `tools/vogel_universal_snapshot.py` verifies exceptional-line Vogel dimensions,
   then scans s12 dimensions (`728`, `486`, `242`) across universal families;
   `728` matches classical `A_26 = sl_27`, while `486` and `242` show no bounded
   classical or exceptional-line rational hits (`denominator <= 24`).
+- s12 Jacobi-failure pattern check (`2026-02-11`):
+  `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
+  Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
+  forming two `S3` orbits of size `3`.
 - structural bridge refinement (`2026-02-11`):
   `tools/analyze_s12_sl27_z3_bridge.py` upgrades the Vogel hit from total
   dimension-only to full grade-structure matching:
@@ -118,6 +124,8 @@ Outputs:
 - `artifacts/min_cert_census_summary.md`
 - `artifacts/vogel_universal_snapshot_2026_02_11.json`
 - `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`
+- `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
+- `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`
 - `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`
 
@@ -163,12 +171,17 @@ computational hypotheses in-repo:
 12. if `728` is `A_26`, then the full split `(242,243,243)` should be realizable
     by a canonical `Z3` graded model of `sl_27`, ideally uniquely up to block
     permutation.
+13. the six Jacobi-obstructed grade triples should satisfy a compact closed form
+    (not only a count), ideally a permutation-stable mod-3 predicate.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
 The involution predicate check is encoded in
 `tools/check_min_cert_orbit_involution_rule.py` and
 `tests/test_check_min_cert_orbit_involution_rule_smoke.py`.
+The Jacobi-failure pattern check is encoded in
+`tools/analyze_s12_jacobi_failure_pattern.py` and
+`tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`.
 The `sl_27` bridge check is encoded in
 `tools/analyze_s12_sl27_z3_bridge.py` and
 `tests/test_analyze_s12_sl27_z3_bridge_smoke.py`.

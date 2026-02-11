@@ -165,6 +165,13 @@ search over all sorted triples `(a,b,c)` with `1 <= a <= b <= c <= 60` finds exa
 one solution to `g0=a^2+b^2+c^2-1=242`, `g1=g2=ab+bc+ca=243`, namely
 `(a,b,c)=(9,9,9)`, hence `n=a+b+c=27` and `dim(sl_n)=n^2-1=728`.
 
+H13. The six Jacobi-obstructed grade triples should satisfy a compact predicate
+and a stable permutation-orbit decomposition, not just a raw failure count.
+Status: verified via `tools/analyze_s12_jacobi_failure_pattern.py`:
+the failure set is exactly `{(a,b,c) in {0,1,2}^3 : a,b,c != 0 and (a+b+c) mod 3 != 0}`,
+equivalently the `2+1` nonzero composition pattern, and splits into exactly two
+`S3` orbits of size `3`.
+
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
@@ -174,13 +181,14 @@ Additional witness-space note:
 - Exhaustive Hessian census artifact (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`) reports `256` distinct canonical representatives over `273` covering combinations, indicating a substantially larger minimal-witness orbit diversity in Hessian space than in full AGL space.
 - Involution checker artifact (`artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`) reports zero mismatches for the reduced-orbit predicate (`55/55` reduced reps detected and `201/201` full-orbit reps rejected).
 - Census orchestrator (`tools/run_min_cert_census.py`) now composes exact
-  enumeration, classification, involution-rule checking, gallery rendering, and
-  markdown/json summary output in a single bounded execution flow.
+  enumeration, classification, involution-rule checking, reduced-orbit
+  closed-form equivalence checking, gallery rendering, and markdown/json summary
+  output in a single bounded execution flow.
 - Bounded replay run (`2026-02-11`) with
   `--candidate-spaces hessian agl --max-exact-solutions 80 --time-limit-sec 45`
   produced: Hessian `80` solutions / `79` canonical reps (`1296:11`, `2592:68`),
-  AGL `7` solutions / `7` reps (all `2592`), and involution-rule mismatch count `0`
-  in both spaces.
+  AGL `7` solutions / `7` reps (all `2592`), with involution-rule mismatch count
+  `0` and reduced-closed-form mismatch count `0` in both spaces.
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -250,6 +258,15 @@ Additional witness-space note:
 - This upgrades the Vogel bridge from "total dim compatibility" to
   "full grade decomposition compatibility" and gives a tight canonical model.
 
+## Ninth-pass raw notes (2026-02-11, Jacobi pattern loop)
+
+- A failure count (`6`) is weaker than a failure law; we added an explicit closed-form
+  detector for the Jacobi-failure triples.
+- Result: failures are exactly the nonzero triples with nonzero mod-3 sum.
+- This gives a compact law compatible with the ternary (`F3`) framework and reduces
+  the Jacobi-obstruction statement from "six exceptions exist" to an executable
+  classification rule.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -257,6 +274,8 @@ Additional witness-space note:
 - Tests: `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py`
 - Vogel snapshot: `tools/vogel_universal_snapshot.py`
 - Vogel tests: `tests/test_vogel_universal_snapshot_smoke.py`
+- Jacobi failure pattern: `tools/analyze_s12_jacobi_failure_pattern.py`
+- Jacobi failure tests: `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`
 - sl_27 Z3 bridge: `tools/analyze_s12_sl27_z3_bridge.py`
 - sl_27 bridge tests: `tests/test_analyze_s12_sl27_z3_bridge_smoke.py`
 - Distilled narrative: `README.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`
@@ -271,6 +290,7 @@ python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_triline
 python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
 python tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts
 python tools/vogel_universal_snapshot.py --exceptional-line-denominator-cap 24 --out-json artifacts/vogel_universal_snapshot_2026_02_11.json --out-md docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md
+python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
 ```

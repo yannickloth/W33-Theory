@@ -52,6 +52,9 @@ def test_min_cert_census_runner_dryrun(tmp_path: Path):
     assert "planned_runs" in data
     assert any(r["candidate_space"] == "hessian" for r in data["planned_runs"])
     assert any(r["candidate_space"] == "agl" for r in data["planned_runs"])
+    first = data["planned_runs"][0]
+    assert "reduced_orbit_closed_form_json" in first["outputs"]
+    assert "reduced_check_preview" in first["commands"]
 
 
 def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
@@ -84,6 +87,10 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
         out_dir
         / "e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exact_full.json"
     )
+    reduced_json = (
+        out_dir
+        / "e6_f3_trilinear_reduced_orbit_closed_form_equiv_hessian_exact_full.json"
+    )
     gallery_md = out_dir / "e6_f3_trilinear_min_cert_gallery_hessian_exact_full.md"
     summary_json = out_dir / "min_cert_census_summary.json"
     summary_md = out_dir / "min_cert_census_summary.md"
@@ -91,6 +98,7 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
     assert enum_json.exists()
     assert classified_json.exists()
     assert rule_json.exists()
+    assert reduced_json.exists()
     assert gallery_md.exists()
     assert summary_json.exists()
     assert summary_md.exists()
@@ -103,3 +111,5 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
     assert run0["k_min"] == 7
     assert run0["exact_solutions_count"] == 1
     assert run0["distinct_representatives"] >= 1
+    assert run0["involution_rule_holds"] is True
+    assert run0["reduced_closed_form_equivalent"] is True

@@ -54,18 +54,24 @@ This repository is meant to be read like a single, continuously updated paper.
 - Formal theorem & short proof sketch formalizing this equivalence: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`.
 - A one-command exact census orchestrator now runs:
   exact enumeration -> representative classification -> involution-rule check ->
-  representative gallery -> machine-readable/markdown summary.
+  reduced-orbit closed-form equivalence check -> representative gallery ->
+  machine-readable/markdown summary.
 - Bounded reproducibility check on `2026-02-11` via
   `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 80 --time-limit-sec 45`:
   Hessian reached cap with `80` exact solutions (`79` canonical reps; orbit split
   `1296:11`, `2592:68`), while full `AGL(2,3)` completed with `7` solutions
-  (`7` reps; all `2592`); involution rule check reported `0` mismatches in both spaces.
+  (`7` reps; all `2592`); involution rule check and reduced closed-form
+  equivalence check both reported `0` mismatches in both spaces.
 - s12 universalization pass (`2026-02-11`) is now reproducible with
   `tools/universalize_s12_algebra.py`: grade laws split cleanly into a
   Jordan-Lie profile (Lie Jacobi obstruction on `6/27` grade triples, but
   `ad^3=0` and Jordan triple symmetry still hold), while exhaustive checks on
   the Golay instance keep `728 = 242 + 243 + 243` with `ad^3=0` on all
   `59,049` grade-1 pairs.
+- Jacobi-obstruction structure is now pinned to an exact finite pattern:
+  `tools/analyze_s12_jacobi_failure_pattern.py` verifies the `6` failing grade
+  triples are exactly the nonzero triples with nonzero mod-3 sum, splitting into
+  two `S3` orbits of size `3`.
 - Vogel-universality snapshot now verifies the exceptional-line parameterization
   and scans s12 dimensions against universal families:
   `dim=728` lands on classical `A_26` (`sl_27`) and has no hits on a bounded
@@ -95,6 +101,7 @@ This repository is meant to be read like a single, continuously updated paper.
 | Is the Heisenberg/qutrit bridge reproducible? | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` | Heisenberg lift artifacts |
 | Is the E6/F3 trilinear sign program reproducible? | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `tools/build_e6_f3_trilinear_map.py` then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py` then `tools/check_min_cert_orbit_involution_rule.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py` | `artifacts/e6_f3_trilinear_*.{json,md}` |
 | Is the s12 Jordan-Lie universalization reproducible? | `docs/S12_UNIVERSALIZATION_2026_02_11.md` | `tools/universalize_s12_algebra.py` | `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py` | `artifacts/s12_universalization_report.json` |
+| Is the s12 Jacobi-failure pattern characterized exactly? | `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md` | `tools/analyze_s12_jacobi_failure_pattern.py` | `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py` | `artifacts/s12_jacobi_failure_pattern_2026_02_11.json` |
 | Is the Vogel-universal cross-check reproducible? | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `tools/vogel_universal_snapshot.py` | `tests/test_vogel_universal_snapshot_smoke.py` | `artifacts/vogel_universal_snapshot_2026_02_11.json` |
 | Is there a structural `sl_27` grading bridge for the s12 split? | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | Where are raw web findings separated from the paper narrative? | `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` | (documentation-only) | (N/A) | source log + hypothesis chain |
@@ -120,7 +127,7 @@ This is the strict execution index for major theorem-bearing sections in this RE
 | `Reduced Orbit Theorem` | Reduced `1296` Hessian canonical representatives are exactly those invariant under a `det=2`, order-`2` affine involution on `AG(2,3)` combined with a `z`-involution in `{(1,0),(2,0),(2,1)}`; equivalently, in an adapted gauge these are fixed by `diag(-1,1)` + allowed `z`-map. | `tools/check_reduced_orbit_closed_form_equiv.py`, `tools/derive_reduced_orbit_closed_form.py` | `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_gl2_3_involution_conjugacy.py` | `artifacts/e6_f3_trilinear_reduced_orbit_closed_form_equiv.json`, `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md` |
 | `69 Verified Theorems` | unified end-to-end ToE derivation | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_unified_derivation.json` |
 | `Coupling Atlas (Part XII)` | generation couplings, Yukawa textures, phase/coset maps | `tools/toe_unified_derivation.py` | `tests/test_toe_new_results.py` | `artifacts/toe_three_generation_coupling_atlas.json`, `artifacts/toe_yukawa_textures.json`, `artifacts/toe_coupling_strengths_v5_weightbasis.json`, `artifacts/toe_phase_diagram_charge_alignment.json`, `artifacts/toe_backbone_coset_coupling_map_v3_exact.json` |
-| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks + universalized grade-law decomposition (Jordan-Lie with finite Jacobi obstruction set, nilpotent `ad^3`) + unique `sl_27` block-cyclic `Z3` grading bridge for split `(242,243,243)` | `S12_ALGEBRA_CORE_DEEP_DIVE.py`, `tools/universalize_s12_algebra.py`, `tools/analyze_s12_sl27_z3_bridge.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py`, `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py`, `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `GOLAY_JORDAN_LIE_COMPLETE.md`, `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_universalization_report.json`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
+| `Golay Jordan-Lie Algebra s12` | 728-dim algebra discovery and structure checks + universalized grade-law decomposition (Jordan-Lie with finite Jacobi obstruction set, nilpotent `ad^3`) + exact Jacobi-failure orbit pattern + unique `sl_27` block-cyclic `Z3` grading bridge for split `(242,243,243)` | `S12_ALGEBRA_CORE_DEEP_DIVE.py`, `tools/universalize_s12_algebra.py`, `tools/analyze_s12_jacobi_failure_pattern.py`, `tools/analyze_s12_sl27_z3_bridge.py` | `ALGEBRA_TEST_SUITE.py`, `DEEP_STRUCTURE_TEST.py`, `tests/test_s12_universal_algebra_smoke.py`, `tests/test_universalize_s12_algebra_smoke.py`, `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`, `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `GOLAY_JORDAN_LIE_COMPLETE.md`, `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`, `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_universalization_report.json`, `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | `Vogel universal snapshot` | exceptional-line Vogel parameter checks + s12 dimension-family scan (`728`, `486`, `242`) + web-sourced research pulse (2024-2026) | `tools/vogel_universal_snapshot.py` | `tests/test_vogel_universal_snapshot_smoke.py` | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`, `artifacts/vogel_universal_snapshot_2026_02_11.json` |
 | `s12 <-> sl_27 Z3 grading bridge` | exhaustive 3-block `Z3`-grading solver finds unique partition `27=9+9+9` matching `(g0,g1,g2)=(242,243,243)` and `dim=728=A_26` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | `Monster/Leech connection` | `196560 = 728 x 270`, moonshine-linked formulas | `LEECH_GOLAY_BRIDGE.py`, `MONSTER_744_CONNECTION.py`, `MONSTER_FACTORIZATION.py` | `ALGEBRA_TEST_SUITE.py` | `LEECH_DECOMPOSITION_BREAKTHROUGH.md` |
@@ -160,6 +167,13 @@ Run the s12 universalization check:
 ```bash
 python tools/universalize_s12_algebra.py --jordan-sample-limit 2000 --out-json artifacts/s12_universalization_report.json --out-md docs/S12_UNIVERSALIZATION_2026_02_11.md
 python -m pytest tests/test_s12_universal_algebra_smoke.py tests/test_universalize_s12_algebra_smoke.py -q
+```
+
+Run the s12 Jacobi-failure pattern check:
+
+```bash
+python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
+python -m pytest tests/test_analyze_s12_jacobi_failure_pattern_smoke.py -q
 ```
 
 Run the Vogel universal snapshot:

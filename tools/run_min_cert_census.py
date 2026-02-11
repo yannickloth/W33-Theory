@@ -5,7 +5,8 @@ Default behavior is dry-run planning. With `--execute`, this tool runs:
 1) exact minimal-certificate enumeration,
 2) canonical representative classification,
 3) involution-rule checking,
-4) markdown gallery and summary generation.
+4) reduced-orbit closed-form equivalence checking,
+5) markdown gallery and summary generation.
 """
 from __future__ import annotations
 
@@ -77,6 +78,10 @@ def _build_run_plan(
             out_dir
             / f"e6_f3_trilinear_min_cert_orbit_involution_rule_check_{space}_exact_full.json"
         )
+        reduced_out = (
+            out_dir
+            / f"e6_f3_trilinear_reduced_orbit_closed_form_equiv_{space}_exact_full.json"
+        )
         gallery_out = (
             out_dir / f"e6_f3_trilinear_min_cert_gallery_{space}_exact_full.md"
         )
@@ -112,6 +117,14 @@ def _build_run_plan(
             "--out-json",
             str(rule_out),
         ]
+        reduced_cmd = [
+            sys.executable,
+            str(ROOT / "tools" / "check_reduced_orbit_closed_form_equiv.py"),
+            "--in-json",
+            str(classified_out),
+            "--out-json",
+            str(reduced_out),
+        ]
         gallery_cmd = [
             sys.executable,
             str(ROOT / "tools" / "make_min_cert_gallery.py"),
@@ -133,16 +146,19 @@ def _build_run_plan(
                     "enumeration_json": str(enum_out),
                     "classified_json": str(classified_out),
                     "involution_rule_json": str(rule_out),
+                    "reduced_orbit_closed_form_json": str(reduced_out),
                     "gallery_md": str(gallery_out),
                 },
                 "commands": {
                     "enumerate": enum_cmd,
                     "classify": classify_cmd,
                     "rule_check": rule_cmd,
+                    "reduced_check": reduced_cmd,
                     "gallery": gallery_cmd,
                     "enumerate_preview": _cmd_preview(enum_cmd),
                     "classify_preview": _cmd_preview(classify_cmd),
                     "rule_check_preview": _cmd_preview(rule_cmd),
+                    "reduced_check_preview": _cmd_preview(reduced_cmd),
                     "gallery_preview": _cmd_preview(gallery_cmd),
                 },
             }
@@ -180,17 +196,18 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
     lines.append(f"- Source map: `{summary['source_map_json']}`")
     lines.append("")
     lines.append(
-        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds |"
+        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds | Reduced Eq |"
     )
-    lines.append("|---|---:|---:|---:|---|")
+    lines.append("|---|---:|---:|---:|---|---|")
     for run in summary.get("runs", []):
         lines.append(
-            "| {} | {} | {} | {} | {} |".format(
+            "| {} | {} | {} | {} | {} | {} |".format(
                 run.get("candidate_space", ""),
                 run.get("k_min", ""),
                 run.get("exact_solutions_count", ""),
                 run.get("distinct_representatives", ""),
                 "yes" if run.get("involution_rule_holds", False) else "no",
+                "yes" if run.get("reduced_closed_form_equivalent", False) else "no",
             )
         )
     lines.append("")
@@ -200,7 +217,21 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
         lines.append(f"- Enumeration: `{run['outputs']['enumeration_json']}`")
         lines.append(f"- Classified: `{run['outputs']['classified_json']}`")
         lines.append(f"- Rule check: `{run['outputs']['involution_rule_json']}`")
+        lines.append(
+            "- Reduced closed-form check: "
+            f"`{run['outputs']['reduced_orbit_closed_form_json']}`"
+        )
         lines.append(f"- Gallery: `{run['outputs']['gallery_md']}`")
+        lines.append(
+            "- Rule mismatch count: `{}`".format(
+                run.get("involution_mismatch_count", "n/a")
+            )
+        )
+        lines.append(
+            "- Reduced-form mismatch count: `{}`".format(
+                run.get("reduced_closed_form_mismatch_count", "n/a")
+            )
+        )
         lines.append(
             "- Orbit hist (raw): `{}`".format(
                 run.get("orbit_histograms", {}).get("raw", {})
@@ -256,6 +287,11 @@ def main() -> None:
         action="store_true",
         help="Skip markdown gallery generation.",
     )
+    parser.add_argument(
+        "--skip-reduced-closed-form-check",
+        action="store_true",
+        help="Skip reduced-orbit closed-form equivalence checker.",
+    )
     parser.add_argument("--summary-json", type=Path, default=None)
     parser.add_argument("--summary-md", type=Path, default=None)
     args = parser.parse_args()
@@ -304,6 +340,8 @@ def main() -> None:
             ),
             "involution_rule_holds": None,
             "involution_mismatch_count": None,
+            "reduced_closed_form_equivalent": None,
+            "reduced_closed_form_mismatch_count": None,
             "orbit_histograms": {"raw": {}, "weighted_by_hit_count": {}},
         }
 
@@ -320,6 +358,20 @@ def main() -> None:
             run_summary["involution_rule_holds"] = bool(rule_payload.get("rule_holds"))
             run_summary["involution_mismatch_count"] = int(
                 rule_payload.get("mismatch_count", 0)
+            )
+
+        if (not args.skip_reduced_closed_form_check) and (
+            classified_payload is not None
+        ):
+            _run_checked(list(commands["reduced_check"]))
+            reduced_payload = _load_json(
+                Path(outputs["reduced_orbit_closed_form_json"])
+            )
+            run_summary["reduced_closed_form_equivalent"] = bool(
+                reduced_payload.get("equivalent")
+            )
+            run_summary["reduced_closed_form_mismatch_count"] = int(
+                reduced_payload.get("mismatch_count", 0)
             )
 
         if (not args.skip_gallery) and (classified_payload is not None):
