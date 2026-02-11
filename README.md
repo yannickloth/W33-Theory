@@ -176,7 +176,8 @@ python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_triline
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
 python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
-```
+
+Note: The finite-case exclusion of `z=(2,2)` is now **symbolically documented** and **machine-checked** (see `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md` and `tests/test_formal_proof_z22.py`).```
 
 Run the s12 universalization check:
 
