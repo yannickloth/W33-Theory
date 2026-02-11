@@ -79,11 +79,21 @@ changes affine/Hessian symmetries:
   12-line fixture with cap `max_exact_solutions=200`, Hessian216 reaches the cap
   with `190` distinct canonical representatives, while full `AGL(2,3)` terminates
   with `7` total minimal certificates and `7` representatives.
+- involution criterion for reduced Hessian certificate orbits:
+  in the exhaustive Hessian census (`256` canonical reps), reduced-orbit reps
+  (`orbit_size=1296`) are exactly those fixed by at least one symmetry whose
+  affine part has `det=2`, affine order `2`, and whose `z` map is one of
+  `(1,0)`, `(2,0)`, `(2,1)`.
+- exact checker profile:
+  `201` reps have no matching involution witness and stay full orbit (`2592`);
+  `55` reps have exactly one witness and are reduced (`1296`).
 
 Outputs:
 
 - `artifacts/e6_f3_trilinear_symmetry_breaking.json`
 - `artifacts/e6_f3_trilinear_symmetry_breaking.md`
+- `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`
+- `artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_agl_exhaustive.json`
 
 ## Why this is interesting
 
@@ -122,9 +132,14 @@ computational hypotheses in-repo:
    `AGL(2,3)` when every qutrit/MUB context must be represented.
 10. exact minimal-certificate multiplicity should differ sharply across candidate
     spaces, not only the minimum certificate size constraints.
+11. reduced-orbit Hessian representatives should satisfy a deterministic
+    involution-based predicate, not only a post-hoc orbit-size split.
 
 Both now pass directly in `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
 and `tests/test_e6_f3_trilinear_symmetry_breaking.py`.
+The involution predicate check is encoded in
+`tools/check_min_cert_orbit_involution_rule.py` and
+`tests/test_check_min_cert_orbit_involution_rule_smoke.py`.
 
 ## External references used
 

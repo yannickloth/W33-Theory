@@ -64,6 +64,16 @@ from the layperson narrative.
     Raw note: recent synthesis of Wigner/MUB constructions reinforces treating
     striation-complete witness sets as a first-class robustness diagnostic.
 
+11. GroupNames entry for `AGL(2,3)` (`SmallGroup(432,734)`)
+    URL: `https://people.maths.bris.ac.uk/~matyd/GroupNames/433/AGL%282%2C3%29.html`
+    Raw note: independent group-database check of ambient affine-group order
+    used in orbit normalization (`|AGL(2,3)|=432`).
+
+12. Artebani, Dolgachev (cit. Coxeter), Hessian group of order `216`
+    URL: `https://arxiv.org/abs/math/0611590`
+    Raw note: supports the Hessian216-vs-AGL candidate-space split used in
+    current minimal-certificate census comparisons.
+
 ## Hypothesis chain -> repo checks
 
 H1. Residual subgroup should be an explicit affine-flag stabilizer.
@@ -102,13 +112,21 @@ qutrit-MUB contexts), minimum full-sign obstruction size should separate Hessian
 and full `AGL(2,3)`.
 Status: verified (`7` for Hessian216, `8` for full `AGL(2,3)`).
 
+H10. Reduced-orbit Hessian representatives should satisfy an explicit involution
+predicate: reduced iff fixed by at least one `det=2`, order-`2` affine involution
+paired with `z` involution in `{(1,0),(2,0),(2,1)}`.
+Status: verified on exhaustive Hessian representatives (`256` total):
+`201` full-orbit reps (`2592`) match no such involution and `55` reduced-orbit reps
+(`1296`) each match exactly one.
+
 Additional witness-space note:
-- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` → `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
+- Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
 - Randomized enumeration (greedy sampler) results, initial pass: Hessian216 (`max_samples=500`) found `3` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian.json`); AGL(2,3) (`max_samples=1000`) found `2` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl.json`).
 - Randomized enumeration (extended pass): in a 20k sweep, Hessian216 found `134` distinct canonical representatives (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json`), while AGL(2,3) found `7` (`artifacts/e6_f3_trilinear_min_cert_enumeration_agl_20k.json`).
 - Exact enumeration mode (branch-and-bound) is available in `tools/enumerate_minimal_certificates.py` via `--mode exact` with runtime controls `--max-exact-solutions` and `--time-limit-sec`.
 - Bounded exact pass on the canonical 12-line fixture (`max_exact_solutions=200`, `time_limit_sec=60`): Hessian216 hit the cap at `200` solutions with `190` distinct canonical representatives, while AGL(2,3) completed with `7` total solutions and `7` representatives.
 - Exhaustive Hessian census artifact (`artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2.json`) reports `256` distinct canonical representatives over `273` covering combinations, indicating a substantially larger minimal-witness orbit diversity in Hessian space than in full AGL space.
+- Involution checker artifact (`artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json`) reports zero mismatches for the reduced-orbit predicate (`55/55` reduced reps detected and `201/201` full-orbit reps rejected).
 - Computed result fits a clean split: one distinguished context is fixed, the other
   three are maximally mixed under full `S3`.
 - This gives a stronger interpretation of symmetry breaking:
@@ -143,10 +161,21 @@ Additional witness-space note:
 - This confirms a second independent geometric penalty axis for the larger candidate
   space: context completeness, not only line distinctness.
 
+## Sixth-pass raw notes (same date, new loop)
+
+- The reduced-orbit layer (`1296`) needed a direct predicate, not only orbit-size
+  post-processing.
+- We restricted the search to involutive symmetry candidates first, then compared
+  that detector to the full orbit split.
+- Result: exact agreement on the exhaustive Hessian representative census.
+- The decision boundary now comes from a compact involution check (`36 x 3`
+  candidates), not a generic all-orbits scan.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
-- Tests: `tests/test_e6_f3_trilinear_symmetry_breaking.py`
+- Involution checker: `tools/check_min_cert_orbit_involution_rule.py`
+- Tests: `tests/test_e6_f3_trilinear_symmetry_breaking.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py`
 - Distilled narrative: `README.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 
 ## Reproduction commands
@@ -155,7 +184,7 @@ Additional witness-space note:
 python tools/build_e6_f3_trilinear_map.py
 python tools/analyze_e6_f3_trilinear_symmetry_breaking.py
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --max-samples 20000 --seed 42 --out-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_20k.json
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py -q
 python tools/enumerate_minimal_certificates.py --in-json artifacts/e6_f3_trilinear_map.json --candidate-space hessian --mode exact --max-exact-solutions 200 --time-limit-sec 60 --out-json artifacts/e6_f3_trilinear_min_cert_exact_hessian.json
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py -q
+python tools/check_min_cert_orbit_involution_rule.py --in-json artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json --out-json artifacts/e6_f3_trilinear_min_cert_orbit_involution_rule_check_hessian_exhaustive2.json
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q
 ```
