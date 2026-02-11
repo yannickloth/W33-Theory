@@ -30,8 +30,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 
 ## Layperson Guide (Restored)
 
+- Start here first: `docs/LAYPERSON_TEXTBOOK_GUIDE.md` (beginner textbook path, no physics prerequisites).
 - If you are new: treat this repo as a living paper plus calculator.
-- Read first: this `README.md`, then `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Think of the workflow as: claim -> script -> artifact -> test.
 - For every major claim in this repo, you can run the script and then run its test.
 - The long-form manuscript remains available at `docs/README_LIVING_PAPER_2026_02_11.md`.
@@ -48,6 +48,7 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce the full global `z`-map census | `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` | `python tools/classify_global_full_sign_stabilizers.py` | `python -m pytest tests/test_classify_global_full_sign_stabilizers_smoke.py -q` |
 | Reproduce minimal contradiction cores for global cells | `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md` | `python tools/minimal_global_full_sign_cores.py` | `python -m pytest tests/test_minimal_global_full_sign_cores_smoke.py -q` |
 | Reproduce minimal identity certificates at `z=(1,0)` | `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md` | `python tools/minimal_global_identity_certificates.py` | `python -m pytest tests/test_minimal_global_identity_certificates_smoke.py -q` |
+| Reproduce dual rigidity profile (negative vs positive) | `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md` | `python tools/global_sign_rigidity_dual_profile.py` | `python -m pytest tests/test_global_sign_rigidity_dual_profile_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
@@ -97,6 +98,7 @@ Additional high-signal documents:
 - `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 - `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`
 - `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md`
+- `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` (raw web-source log)
 - `docs/S12_UNIVERSALIZATION_2026_02_11.md`

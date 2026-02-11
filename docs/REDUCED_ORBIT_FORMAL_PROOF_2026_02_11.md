@@ -118,8 +118,8 @@ fully self-contained symbolic argument we also added `tools/formal_z22_proof.py`
 `x=0` contradiction in an adapted gauge without referring to the census. A
 Lean 4 skeleton formalization is available at `proofs/lean/z22_exclusion.lean`
 as a starting point for a machine-checked proof; it now includes explicit
-`zMap_one` and `z22_contradiction_via_zMap` lemmas for the same fixed-point
-contradiction path.
+`zMap_one`, `zMap_fixed_iff`, `zMap_involution`, and
+`z22_contradiction_via_zMap` lemmas for the same fixed-point contradiction path.
 
 To tighten the exclusion further, we added
 `tools/prove_z22_no_global_stabilizer.py`, which checks a stronger global
@@ -154,6 +154,12 @@ and by `5` constraints in `Hessian216`, with exact multiplicities
 `688` and `33` minimal certificates respectively. The size gap remains stable
 when certificates are constrained to use distinct lines and to cover all four
 affine striation directions.
+
+To couple both layers, `tools/global_sign_rigidity_dual_profile.py` now reports
+the dual profile in one table: in `all_agl`, negative cores are `3 -> 4` under
+striation completeness while positive identity certificates stay at `6`; in
+`hessian216`, negative cores are `3 -> 4` while positive certificates stay at
+`5`. So positive-minus-negative gap decreases by exactly one in both spaces.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:

@@ -56,7 +56,8 @@ no global full-sign stabilizer in these candidate spaces.
 - Global z-map census: `tools/classify_global_full_sign_stabilizers.py` (writes `artifacts/global_full_sign_stabilizer_census_2026_02_11.json` and `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`).
 - Minimal contradiction cores: `tools/minimal_global_full_sign_cores.py` (writes `artifacts/minimal_global_full_sign_cores_2026_02_11.json` and `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`).
 - Minimal positive identity certificates: `tools/minimal_global_identity_certificates.py` (writes `artifacts/minimal_global_identity_certificates_2026_02_11.json` and `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`).
-- Smoke tests: `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_prove_z22_no_global_stabilizer_smoke.py`, `tests/test_classify_global_full_sign_stabilizers_smoke.py`, `tests/test_minimal_global_full_sign_cores_smoke.py`, `tests/test_minimal_global_identity_certificates_smoke.py`.
+- Dual rigidity profile: `tools/global_sign_rigidity_dual_profile.py` (writes `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json` and `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md`).
+- Smoke tests: `tests/test_derive_reduced_orbit_closed_form_smoke.py`, `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`, `tests/test_prove_z22_no_global_stabilizer_smoke.py`, `tests/test_classify_global_full_sign_stabilizers_smoke.py`, `tests/test_minimal_global_full_sign_cores_smoke.py`, `tests/test_minimal_global_identity_certificates_smoke.py`, `tests/test_global_sign_rigidity_dual_profile_smoke.py`.
 - GL-conjugacy unit test (new): `tests/test_gl2_3_involution_conjugacy.py`.
 
 ## Notes and future work
