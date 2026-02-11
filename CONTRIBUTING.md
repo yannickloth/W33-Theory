@@ -4,6 +4,7 @@ Quick start
 ---------
 - Create a virtual environment and activate it: `python -m venv .venv` then `source .venv/bin/activate` (or Windows PowerShell: `.venv\Scripts\Activate.ps1`).
 - Install dependencies: `pip install -r requirements.txt` (or `pip install -e .`).
+- For development (tests, optional tooling): `pip install -r requirements-dev.txt`.
 - Run the test suite: `python -m pytest -q`.
 
 Pre-commit and CI
