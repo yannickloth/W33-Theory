@@ -12,6 +12,7 @@ formalization.
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 import affine_f3
+import gl2_f3
 
 namespace Z22Exclusion
 
@@ -87,17 +88,15 @@ theorem SLine_vertical_table :
       (And (SLine (1 : ZMod 3) 0 0 1 = -1) (SLine (1 : ZMod 3) 0 0 2 = 1)) := by
   simp [SLine]
 
-/-- Diagonal linear map `diag(-1,1)` acting on `F3^2`. -/
-def A_diag (p : Prod (ZMod 3) (ZMod 3)) : Prod (ZMod 3) (ZMod 3) :=
-  (-p.fst, p.snd)
+open GL2F3
 
-/-- `diag(-1,1)` fixes each vertical point `(0,b)`. -/
-@[simp] theorem A_diag_fix_elem (b : ZMod 3) : A_diag (0, b) = (0, b) := by
-  simp [A_diag]
+/-- `A_diag_mat` fixes each vertical point `(0,b)` (matrix action version). -/
+@[simp] theorem A_diag_fix_elem (b : ZMod 3) : GL2F3.act GL2F3.A_diag_mat (0, b) = (0, b) := by
+  simp [GL2F3.act, GL2F3.A_diag_mat]
 
-/-- `diag(-1,1)` preserves the vertical line `L`. -/
-theorem A_diag_on_L : L.map A_diag = L := by
-  simp [L, A_diag]
+/-- `A_diag_mat` preserves the vertical line `L` (matrix action version). -/
+theorem A_diag_on_L : L.map (GL2F3.act GL2F3.A_diag_mat) = L := by
+  simp [L, GL2F3.act, GL2F3.A_diag_mat]
 
 /-- Corollary: if a `z` is fixed by `zMap`, `diag(-1,1)` cannot simultaneously
     preserve the vertical line and make the product sign equal to the full sign.

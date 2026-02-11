@@ -1,6 +1,7 @@
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 import Mathlib.Data.Matrix.Basic
+import affine_f3
 
 /-!
 Basic GL(2,3) helpers: 2x2 matrices over ZMod 3 and a canonical involution
@@ -35,5 +36,19 @@ theorem A_diag_mat_det : A_diag_mat.det = (2 : ZMod 3) := by
   simp [Matrix.det]; -- this reduces to (-1) * 1 - 0 * 0
   -- compute (-1 : ZMod 3) * 1 = -1 = 2
   simp
+
+open AffineF3
+
+/-- Action of a 2×2 matrix on an affine point `(x,y)` viewed as a column vector. -/
+def act (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (p : AffineF3.Point) : AffineF3.Point :=
+  (M 0 0 * p.fst + M 0 1 * p.snd, M 1 0 * p.fst + M 1 1 * p.snd)
+
+/-- `A_diag_mat` fixes each vertical point `(0,b)`. -/
+theorem A_diag_mat_fix_elem (b : ZMod 3) : act A_diag_mat (0, b) = (0, b) := by
+  simp [act, A_diag_mat]
+
+/-- `A_diag_mat` preserves the vertical line `x = 0`. -/
+theorem A_diag_mat_on_L : (AffineF3.vertical_line.map (act A_diag_mat)) = AffineF3.vertical_line := by
+  simp [AffineF3.vertical_line, AffineF3.line_from_abc, AffineF3.all_points, act, A_diag_mat]
 
 end GL2F3
