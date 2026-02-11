@@ -115,8 +115,9 @@ verification is exercised by the smoke test `tests/test_prove_exclude_z22_smoke.
 and by the unit-level check `tests/test_formal_proof_z22.py` added here. For a
 fully self-contained symbolic argument we also added `tools/formal_z22_proof.py`
 (and unit test `tests/test_formal_z22_module.py`), which formalizes the short
-`x=0` contradiction in an adapted gauge without referring to the census.
-
+`x=0` contradiction in an adapted gauge without referring to the census. A
+Lean 4 skeleton formalization is available at `proofs/lean/z22_exclusion.lean`
+as a starting point for a machine-checked proof.
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
 
