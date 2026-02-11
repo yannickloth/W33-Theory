@@ -392,29 +392,8 @@ def main():
             logging.exception("ortools import FAILED in --check-ortools")
             sys.exit(2)
 
-    # Early check for OR-Tools and missing DLLs before expensive work
-    ok, ortools_msg = ortools_import_check()
-    if not ok:
-        outp_err = (
-            out_dir
-            / f'PART_CVII_local_hotspot_feasibility_{"_".join(map(str,args.edges))}_{ts}.json'
-        )
-        results_err = {
-            "edges": args.edges,
-            "k": args.k,
-            "radius": args.radius,
-            "time_limit": args.time_limit,
-            "tests": [],
-            "error": ortools_msg,
-        }
-        outp_err.write_text(json.dumps(results_err, indent=2), encoding="utf-8")
-        print(
-            f"ORTOOLS IMPORT CHECK FAILED: {ortools_msg}. Wrote error to {outp_err}",
-            flush=True,
-        )
-        logging.error("ORTOOLS IMPORT CHECK FAILED: %s", ortools_msg)
-        sys.exit(2)
-
+    # Defer the OR-Tools import check until after candidate generation and slicing so
+    # offset-only invocations that produce empty batches can exit successfully
     # compute candidates and iterate over candidate pairs for the hotspot edges
     X, edges_list = compute_embedding_matrix()
     roots = generate_scaled_e8_roots()
