@@ -25,3 +25,10 @@ def test_lean_z22_contains_key_lemmas() -> None:
     assert "theorem z22_contradiction_of_fixed_point_via_zMap" in text
     assert "theorem z22_no_fixed_point_stabilizer" in text
     assert "theorem z22_no_fixed_point_stabilizer_via_zMap" in text
+    # Candidate-based results
+    assert (
+        "theorem z22_no_fixed_point_stabilizer_for_candidate_line_through_origin"
+        in text
+    )
+    assert "theorem candidate_preserves_line_through_origin" in text
+    assert "theorem z22_no_fixed_point_for_any_candidate" in text

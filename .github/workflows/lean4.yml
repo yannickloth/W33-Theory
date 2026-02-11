@@ -71,12 +71,33 @@ jobs:
               "theorem z22_contradiction_via_zMap",
               "theorem z22_contradiction_of_fixed_point_via_zMap",
               "theorem z22_no_fixed_point_stabilizer_via_zMap",
+              # Candidate-based lemmas
+              "theorem candidate_preserves_line_through_origin",
+              "theorem z22_no_fixed_point_stabilizer_for_candidate_line_through_origin",
+              "theorem z22_no_fixed_point_for_any_candidate",
           ]
           missing = [tok for tok in required if tok not in text]
           if missing:
               raise SystemExit(f"missing required Lean declarations: {missing}")
           print("z22_exclusion.lean sanity checks passed")
           PY
+
+      - name: Try containerized Lake build (fallback)
+        continue-on-error: true
+        run: |
+          set -eux
+          # If lake is already present on the runner, skip the container fallback
+          if command -v lake >/dev/null 2>&1; then
+            echo "lake already present on runner; skipping container fallback"
+            exit 0
+          fi
+          IMAGE=ghcr.io/leanprover/lean4:nightly
+          echo "Attempting to pull $IMAGE and run a containerized lake build (this step is allowed to fail)"
+          if docker pull "$IMAGE"; then
+            docker run --rm -v "$GITHUB_WORKSPACE":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"
+          else
+            echo "Could not pull $IMAGE; skipping containerized lake build"
+          fi
 
       - name: Build proofs with Lake (if available)
         run: |

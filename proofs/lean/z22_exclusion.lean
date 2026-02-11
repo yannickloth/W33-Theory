@@ -232,4 +232,26 @@ theorem candidate_preserves_line_through_origin
   exists a, b
   simp [heq, L'_invariant]
 
+/--
+There is no fixed point `z` of `zMap` that is simultaneously stabilized by
+any candidate involution (i.e., no `M in candidates` preserves a `c = 0` line
+and yields equal product/full sign for a fixed `z`). This finishes the
+formal z=(2,2) exclusion for all candidates.
+-/
+theorem z22_no_fixed_point_for_any_candidate :
+    Not (Exists fun z : ZMod 3 =>
+      zMap z = z /
+        Exists fun M : Matrix (Fin 2) (Fin 2) (ZMod 3) =>
+          List.Mem M GL2F3Enumeration.candidates /
+            Exists fun a b : ZMod 3 =>
+              (line_from_abc a b 0).map (GL2F3.act M) = line_from_abc a b 0 /
+                PLine a b 0 = SLine a b 0 z) := by
+  intro h
+  rcases h with Exists.intro z hrest
+  rcases hrest with And.intro hz hM
+  rcases hM with Exists.intro M hMrest
+  rcases hMrest with And.intro hMmem hline
+  -- Use the previously proved contradiction for a single candidate M
+  exact (z22_no_fixed_point_stabilizer_for_candidate_line_through_origin M hMmem) (Exists.intro z (And.intro hz hline))
+
 end Z22Exclusion
