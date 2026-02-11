@@ -1,0 +1,44 @@
+# W33 Documentation Index
+
+Navigator for the repository's paper sections, reproducibility paths, and formal proof tracks.
+
+## Primary Entry Points
+
+| Audience | Start Here | Why |
+|---|---|---|
+| First-time reader | `README.md` | Browser-first overview and quick reproducibility path |
+| Full manuscript reader | `docs/README_LIVING_PAPER_2026_02_11.md` | Preserved long-form narrative and theorem flow |
+| Contributor | `CONTRIBUTING.md` | Local workflow, tests, and contribution standards |
+| Formalization contributor | `proofs/lean/README.md` | Lean 4 setup and current proof skeleton |
+
+## Core Research Tracks
+
+| Track | Key Docs | Main Scripts | Tests |
+|---|---|---|---|
+| W33 to E8 correspondence | `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `scripts/w33_e8_correspondence_theorem.py`, `scripts/w33_homology.py`, `scripts/w33_hodge.py` | `tests/test_e8_embedding.py`, `tests/test_w33_hodge.py` |
+| Heisenberg/qutrit structure | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `scripts/w33_heisenberg_qutrit.py` | `tests/test_heisenberg_qutrit_structure.py` |
+| E6/F3 trilinear and reduced-orbit theorems | `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`, `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md` | `tools/build_e6_f3_trilinear_map.py`, `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, `tools/check_min_cert_orbit_involution_rule.py`, `tools/prove_z22_no_global_stabilizer.py` | `tests/test_e6_f3_trilinear.py`, `tests/test_check_min_cert_orbit_involution_rule_smoke.py`, `tests/test_prove_z22_no_global_stabilizer_smoke.py` |
+| s12 universalization and pattern analysis | `docs/S12_UNIVERSALIZATION_2026_02_11.md`, `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`, `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md` | `tools/universalize_s12_algebra.py`, `tools/analyze_s12_jacobi_failure_pattern.py`, `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_universalize_s12_algebra_smoke.py`, `tests/test_analyze_s12_jacobi_failure_pattern_smoke.py`, `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` |
+| Vogel scans and arithmetic checks | `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`, `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`, `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`, `docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md` | `tools/vogel_universal_snapshot.py`, `tools/vogel_rational_dimension_theorem.py`, `tools/vogel_rational_hit_crosswalk.py`, `tools/vogel_integer_m_locus.py` | `tests/test_vogel_universal_snapshot_smoke.py`, `tests/test_vogel_rational_dimension_theorem_smoke.py`, `tests/test_vogel_rational_hit_crosswalk_smoke.py`, `tests/test_vogel_integer_m_locus_smoke.py` |
+
+## High-Signal Status and Standards
+
+- Canonical naming and counts: `STANDARDIZATION.md`
+- Current status and open gaps: `docs/STATUS_AND_GAPS.md`
+- Online-source separation log: `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`
+- CI workflows: `.github/workflows/`
+
+## Common Commands
+
+```bash
+python scripts/w33_e8_correspondence_theorem.py
+python scripts/w33_heisenberg_qutrit.py
+python tools/prove_z22_no_global_stabilizer.py
+python tools/vogel_universal_snapshot.py
+python -m pytest -q
+```
+
+## Notes
+
+- "Verified" claims are computational theorems within this repository's model and code paths.
+- GitHub browser branding assets are in `docs/assets/`, including `docs/assets/w33-social-preview.png`.

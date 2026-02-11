@@ -17,6 +17,9 @@ Equivalently, after choosing an adapted affine gauge sending the distinguished a
 3. (The z-map restriction)
    The allowed z-maps {(1,0),(2,0),(2,1)} are exactly those that, when paired with diag(-1,1) in the adapted gauge, produce the observed fixed/swapped line pattern on affine lines that matches the empirical reduced representatives. This can be verified by checking the finite set of possibilities.
 
+> See the short corollary and publication blurb: `docs/REDUCED_ORBIT_COROLLARY_2026_02_11.md`.
+> The short symbolic exclusion and machine-checked modules are in `tools/formal_z22_proof.py`, `tests/test_formal_z22_module.py`, and `proofs/lean/z22_exclusion.lean`.
+
 4. (Computational sufficiency and necessity)
    We verify the condition on an exhaustive Hessian canonical-representative census (256 representatives). The computational checker `tools/check_reduced_orbit_closed_form_equiv.py` tests equivalence between the involution-based orbit-reduction definition and the gauge-canonical diag(-1,1) formulation. On the exhaustive Hessian dataset, the two tests are equivalent (zero mismatches), and the stronger match-count profile is exact: `201` full-orbit reps have `0` matches while all `55` reduced reps have exactly `1` match.
 
