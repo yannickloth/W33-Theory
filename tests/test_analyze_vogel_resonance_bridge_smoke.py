@@ -5,13 +5,30 @@ import subprocess
 import sys
 from pathlib import Path
 
+import tools.s12_universal_algebra as s12
+from tools.vogel_rational_hit_crosswalk import build_crosswalk
+
 
 def test_analyze_vogel_resonance_bridge_cli_smoke(tmp_path: Path) -> None:
+    s12_report_path = tmp_path / "s12_universalization_report.json"
+    s12_report = s12.build_s12_universal_report(jordan_sample_limit=120)
+    s12_report_path.write_text(json.dumps(s12_report, indent=2), encoding="utf-8")
+
+    crosswalk_path = tmp_path / "vogel_crosswalk.json"
+    crosswalk = build_crosswalk([728, 486, 242])
+    crosswalk_path.write_text(json.dumps(crosswalk, indent=2), encoding="utf-8")
+
     out_json = tmp_path / "vogel_resonance_bridge.json"
     out_md = tmp_path / "vogel_resonance_bridge.md"
     cmd = [
         sys.executable,
         "tools/analyze_vogel_resonance_bridge.py",
+        "--s12-report-json",
+        str(s12_report_path),
+        "--vogel-crosswalk-json",
+        str(crosswalk_path),
+        "--min-cert-summary-json",
+        "committed_artifacts/min_cert_census_medium_2026_02_10/min_cert_census_summary.json",
         "--out-json",
         str(out_json),
         "--out-md",

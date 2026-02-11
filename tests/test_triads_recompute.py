@@ -1,4 +1,6 @@
 import csv
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -22,17 +24,29 @@ def load_recorded(path: Path):
     return d
 
 
-def test_recomputed_triads_match_recorded():
+def test_recomputed_triads_match_recorded(tmp_path: Path):
     recorded = load_recorded(
         Path(
             "bundles/phase_aware_v3/W33_N12_58_phase_aware_loop_v3/w33_four_center_triads_with_ray_holonomy.csv"
         )
     )
-    recomputed = load_recorded(
-        Path(
-            "analysis/triad_recompute_20260209/w33_four_center_triads_with_ray_holonomy.csv"
-        )
-    )
+
+    outdir = tmp_path / "triad_recompute"
+    outdir.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        sys.executable,
+        "bundles/phase_aware_v1/scripts_recompute_w33_ray_holonomy.py",
+        "--w33_csv",
+        "data/_workbench/02_geometry/W33_line_phase_map.csv",
+        "--rays_csv",
+        "data/_toe/w33_orthonormal_phase_solution_20260110/W33_point_rays_C4_complex.csv",
+        "--outdir",
+        str(outdir),
+    ]
+    run = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    assert run.returncode == 0, run.stderr
+
+    recomputed = load_recorded(outdir / "w33_four_center_triads_with_ray_holonomy.csv")
     # ensure counts match
     assert len(recorded) == len(recomputed)
     # ensure exact match of triad -> hol value

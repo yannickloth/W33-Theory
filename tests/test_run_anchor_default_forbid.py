@@ -9,7 +9,7 @@ ART = ROOT / "artifacts"
 CFG = Path(__file__).resolve().parents[1] / "config" / "canonical_forbid.json"
 
 
-def test_run_anchor_uses_config_default():
+def test_run_anchor_uses_config_default(tmp_path: Path):
     assert CFG.exists(), "Canonical config not present"
     cf = json.loads(CFG.read_text(encoding="utf-8")).get("canonical_forbid")
     assert cf and len(cf) == 3
@@ -24,6 +24,8 @@ def test_run_anchor_uses_config_default():
         "0",
         "--workers",
         "1",
+        "--reports-dir",
+        str(tmp_path),
     ]
     # best-effort: allow failures but expect the anchor summary file to be created for canonical forbid
     try:

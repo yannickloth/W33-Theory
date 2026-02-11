@@ -13,7 +13,7 @@ def test_derive_reduced_orbit_closed_form_smoke(tmp_path: Path):
         sys.executable,
         "tools/derive_reduced_orbit_closed_form.py",
         "--in-json",
-        "artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
+        "committed_artifacts/min_cert_census_medium_2026_02_10/e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
         "--out-json",
         str(out_json),
         "--out-md",

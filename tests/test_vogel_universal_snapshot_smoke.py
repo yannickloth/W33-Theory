@@ -5,12 +5,17 @@ import subprocess
 import sys
 from pathlib import Path
 
+import tools.s12_universal_algebra as s12_universal
 import tools.vogel_universal_snapshot as vogel
 
 
-def test_vogel_snapshot_core_smoke():
+def test_vogel_snapshot_core_smoke(tmp_path: Path):
+    s12_report_path = tmp_path / "s12_universalization_report.json"
+    s12_report = s12_universal.build_s12_universal_report(jordan_sample_limit=120)
+    s12_report_path.write_text(json.dumps(s12_report, indent=2), encoding="utf-8")
+
     snapshot = vogel.build_snapshot(
-        s12_report_path=Path("artifacts/s12_universalization_report.json"),
+        s12_report_path=s12_report_path,
         exceptional_line_denominator_cap=12,
     )
     assert snapshot["status"] == "ok"
@@ -36,11 +41,17 @@ def test_vogel_snapshot_core_smoke():
 
 
 def test_vogel_snapshot_cli_smoke(tmp_path: Path):
+    s12_report_path = tmp_path / "s12_universalization_report.json"
+    s12_report = s12_universal.build_s12_universal_report(jordan_sample_limit=120)
+    s12_report_path.write_text(json.dumps(s12_report, indent=2), encoding="utf-8")
+
     out_json = tmp_path / "vogel_snapshot.json"
     out_md = tmp_path / "vogel_snapshot.md"
     cmd = [
         sys.executable,
         "tools/vogel_universal_snapshot.py",
+        "--s12-report-json",
+        str(s12_report_path),
         "--exceptional-line-denominator-cap",
         "12",
         "--out-json",

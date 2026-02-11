@@ -5,13 +5,21 @@ import subprocess
 import sys
 from pathlib import Path
 
+import tools.s12_universal_algebra as s12
+
 
 def test_analyze_s12_jacobi_failure_pattern_cli_smoke(tmp_path: Path) -> None:
+    s12_report_path = tmp_path / "s12_universalization_report.json"
+    s12_report = s12.build_s12_universal_report(jordan_sample_limit=120)
+    s12_report_path.write_text(json.dumps(s12_report, indent=2), encoding="utf-8")
+
     out_json = tmp_path / "jacobi_pattern.json"
     out_md = tmp_path / "jacobi_pattern.md"
     cmd = [
         sys.executable,
         "tools/analyze_s12_jacobi_failure_pattern.py",
+        "--s12-report-json",
+        str(s12_report_path),
         "--out-json",
         str(out_json),
         "--out-md",

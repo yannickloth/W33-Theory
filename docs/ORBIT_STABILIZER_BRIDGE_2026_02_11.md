@@ -5,20 +5,20 @@
 
 ## hessian
 
-- source: `C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\artifacts\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json`
-- representatives: `79`
-- orbit histogram: `{'1296': 11, '2592': 68}`
-- stabilizer histogram: `{'1': 68, '2': 11}`
+- source: `committed_artifacts\min_cert_census_medium_2026_02_10\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json`
+- representatives: `256`
+- orbit histogram: `{'1296': 55, '2592': 201}`
+- stabilizer histogram: `{'1': 201, '2': 55}`
 - orbit-stabilizer identity holds: `True`
-- nontrivial stabilizer reps: `11`
-- nontrivial z-map histogram: `{'[1, 0]': 9, '[2, 0]': 2}`
-- nontrivial linear det/order hist: `det={'2': 11}, order={'2': 11}`
+- nontrivial stabilizer reps: `55`
+- nontrivial z-map histogram: `{'[1, 0]': 49, '[2, 0]': 5, '[2, 1]': 1}`
+- nontrivial linear det/order hist: `det={'2': 55}, order={'2': 55}`
 - nontrivial point signatures: `[[1, 1, 1, 2, 2, 2]]`
 - nontrivial line signatures: `[[1, 1, 1, 1, 2, 2, 2, 2]]`
 
 ## agl
 
-- source: `C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\artifacts\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json`
+- source: `committed_artifacts\min_cert_census_medium_2026_02_10\e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json`
 - representatives: `7`
 - orbit histogram: `{'2592': 7}`
 - stabilizer histogram: `{'1': 7}`
@@ -31,7 +31,7 @@
 
 ## hessian_exhaustive
 
-- source: `C:\Users\wiljd\OneDrive\Desktop\Theory of Everything\artifacts\e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json`
+- source: `committed_artifacts\min_cert_census_medium_2026_02_10\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json`
 - representatives: `256`
 - orbit histogram: `{'1296': 55, '2592': 201}`
 - stabilizer histogram: `{'1': 201, '2': 55}`

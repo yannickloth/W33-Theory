@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from tools.w33_rootword_uv_parser import W33RootwordParser
@@ -19,43 +21,60 @@ def is_rotation(a, b):
     return False
 
 
+SAMPLE_EDGE_ROOTS = [
+    [-1, -1, -2, -2, -2, -2, -1, -1],
+    [1, 1, 2, 2, 2, 2, 1, 1],
+    [-1, -1, -1, -2, -2, -1, -1, 0],
+    [1, 2, 3, 4, 3, 2, 1, 0],
+    [-1, -3, -3, -5, -4, -3, -2, -1],
+    [0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0],
+    [0, -1, -1, -1, -1, -1, 0, 0],
+]
+
+
+def build_minimal_rootwords(tmp_path: Path) -> list[dict]:
+    outdir = tmp_path / "minimal_commutator_cycles"
+    cmd = [
+        sys.executable,
+        "tools/compute_ordered_root_word_invariants.py",
+        "--outdir",
+        str(outdir),
+        "--require-root-edges",
+    ]
+    run = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    assert run.returncode == 0, run.stderr
+
+    return json.loads(
+        (outdir / "minimal_holonomy_cycles_ordered_rootwords.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+
 def test_sample_cycle_parses_correctly():
     p = W33RootwordParser()
-    data = json.loads(
-        Path(
-            "analysis/minimal_commutator_cycles/minimal_holonomy_cycles_ordered_rootwords.json"
-        ).read_text(encoding="utf-8")
-    )
-    # find first cycle with edge_roots_present
-    entry = next(e for e in data if e.get("edge_roots_present"))
-    rootword = entry["edge_roots"]
-
-    out = p.parse(rootword)
+    out = p.parse(SAMPLE_EDGE_ROOTS)
 
     # sample expected values from repo minimal sample
-    expected_cycle = [1, 2, 37, 19, 21, 12, 1, 10]
+    expected_cycle = [4, 23, 4, 24, 8, 5, 35, 30]
     assert len(out["cycle_vertices"]) == 8
     assert is_rotation(out["cycle_vertices"], expected_cycle)
 
-    # canonical direction vectors should map to (0,1) and (1,0) for this sample
-    assert out["u_canonical"] == (0, 1)
-    assert out["v_canonical"] == (1, 0)
-    assert out["k_canonical"] == entry["k"]
+    assert out["u_canonical"] == (1, 0)
+    assert out["v_canonical"] == (1, 2)
+    assert out["k_canonical"] == 1
 
     # basepoint p recovered as the intersection of the two N12 lines
-    assert out.get("p") == (0, 0)
+    assert out.get("p") == (2, 2)
 
 
-def test_parse_all_minimal_root_covered_cycles_no_exceptions():
+def test_parse_all_minimal_root_covered_cycles_no_exceptions(tmp_path: Path):
     p = W33RootwordParser()
-    data = json.loads(
-        Path(
-            "analysis/minimal_commutator_cycles/minimal_holonomy_cycles_ordered_rootwords.json"
-        ).read_text(encoding="utf-8")
-    )
+    data = build_minimal_rootwords(tmp_path)
+    assert data, "compute_ordered_root_word_invariants.py produced no cycles"
     for entry in data:
-        if not entry.get("edge_roots_present"):
-            continue
+        assert entry.get("edge_roots_present") is True
         rw = entry["edge_roots"]
         out = p.parse(rw)
         assert isinstance(out["k_canonical"], int)

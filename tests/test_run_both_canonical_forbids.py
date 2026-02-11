@@ -7,7 +7,7 @@ import pytest
 ART = Path(__file__).resolve().parents[1] / "artifacts"
 
 
-def test_run_both_canonical_forbids_smoke():
+def test_run_both_canonical_forbids_smoke(tmp_path: Path):
     # run with very small W set and short time to be CI friendly
     cmd = [
         "python",
@@ -20,6 +20,8 @@ def test_run_both_canonical_forbids_smoke():
         "0",
         "--workers",
         "1",
+        "--reports-dir",
+        str(tmp_path),
     ]
     # Allow the script to run but do not fail CI if underlying solvers are absent
     try:

@@ -12,9 +12,7 @@ def test_check_reduced_orbit_closed_form_equiv_smoke(tmp_path: Path):
         sys.executable,
         "tools/check_reduced_orbit_closed_form_equiv.py",
         "--in-json",
-        "artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
-        "--sign-map-json",
-        "artifacts/e6_f3_trilinear_map.json",
+        "committed_artifacts/min_cert_census_medium_2026_02_10/e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
         "--out-json",
         str(out_json),
     ]
@@ -54,7 +52,7 @@ def test_check_reduced_orbit_closed_form_equiv_smoke(tmp_path: Path):
         "--z-map-mode",
         "all",
         "--in-json",
-        "artifacts/e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
+        "committed_artifacts/min_cert_census_medium_2026_02_10/e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
         "--out-json",
         str(out_json_all),
     ]

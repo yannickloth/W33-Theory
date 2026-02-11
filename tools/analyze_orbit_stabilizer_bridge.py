@@ -30,6 +30,14 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _repo_rel(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(ROOT.resolve()))
+    except ValueError:
+        return str(resolved)
+
+
 def _canonicalize_witnesses(
     witnesses: list[dict[str, Any]],
 ) -> tuple[tuple[Any, ...], ...]:
@@ -180,7 +188,7 @@ def _build_space_report(
 
     return {
         "candidate_space": space_name,
-        "source_json": str(classified_json),
+        "source_json": _repo_rel(classified_json),
         "action_size": int(action_size),
         "representative_count": int(len(representatives)),
         "orbit_size_histogram": {str(k): int(v) for k, v in sorted(orbit_hist.items())},
@@ -237,14 +245,18 @@ def build_report(
 
     hessian_exhaustive = None
     if hessian_exhaustive_json is not None and hessian_exhaustive_json.exists():
-        hessian_exhaustive = _build_space_report(
-            "hessian_exhaustive",
-            hessian_exhaustive_json,
-            affine_elements,
-            z_maps,
-            points,
-            lines,
-        )
+        if hessian_exhaustive_json.resolve() == hessian_json.resolve():
+            hessian_exhaustive = dict(hessian)
+            hessian_exhaustive["candidate_space"] = "hessian_exhaustive"
+        else:
+            hessian_exhaustive = _build_space_report(
+                "hessian_exhaustive",
+                hessian_exhaustive_json,
+                affine_elements,
+                z_maps,
+                points,
+                lines,
+            )
 
     hessian_nontrivial = hessian["nontrivial_stabilizer_representative_count"]
     agl_nontrivial = agl["nontrivial_stabilizer_representative_count"]
@@ -384,22 +396,25 @@ def main() -> None:
         "--hessian-json",
         type=Path,
         default=ROOT
-        / "artifacts"
+        / "committed_artifacts"
+        / "min_cert_census_medium_2026_02_10"
         / "e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
     )
     parser.add_argument(
         "--agl-json",
         type=Path,
         default=ROOT
-        / "artifacts"
+        / "committed_artifacts"
+        / "min_cert_census_medium_2026_02_10"
         / "e6_f3_trilinear_min_cert_exact_agl_full_with_geotypes.json",
     )
     parser.add_argument(
         "--hessian-exhaustive-json",
         type=Path,
         default=ROOT
-        / "artifacts"
-        / "e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
+        / "committed_artifacts"
+        / "min_cert_census_medium_2026_02_10"
+        / "e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
         help="Optional exhaustive Hessian representative file for stronger z-map support checks.",
     )
     parser.add_argument(

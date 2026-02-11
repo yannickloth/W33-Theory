@@ -54,9 +54,18 @@ def main() -> None:
         "--classified-json",
         type=Path,
         default=ROOT
-        / "artifacts"
+        / "committed_artifacts"
         / "min_cert_census_medium_2026_02_10"
         / "e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+    )
+    p.add_argument(
+        "--sign-map-json",
+        type=Path,
+        default=ROOT / "artifacts" / "e6_f3_trilinear_map.json",
+        help=(
+            "Optional sign-field JSON used to derive the canonical affine flag. "
+            "If missing, the script falls back to the known flag (point=[2,2], direction='x')."
+        ),
     )
     args = p.parse_args()
 
@@ -65,27 +74,33 @@ def main() -> None:
     payload = json.loads(args.classified_json.read_text(encoding="utf-8"))
     reps = payload.get("representatives", [])
 
-    # locate the flag and adapted gauges from the global product sign
-    lines, sign_field = analyze._load_sign_field(
-        ROOT / "artifacts" / "e6_f3_trilinear_map.json"
-    )
-    product_sign = analyze._line_product_signs(lines, sign_field)
-    flag = analyze._line_product_flag_geometry_check(lines, product_sign, [])
-    # The flag geometry function historically returned keys named
-    # 'missing_point'/'full_positive_direction' but newer returns use
-    # 'unique_missing_point_from_negative_lines'/'distinguished_direction_all_positive'.
-    point = None
-    direction = None
-    if flag:
-        point = flag.get("missing_point") or flag.get(
-            "unique_missing_point_from_negative_lines"
-        )
-        direction = flag.get("full_positive_direction") or flag.get(
-            "distinguished_direction_all_positive"
-        )
-    if point is None or direction is None:
-        print("Could not find canonical affine flag from product sign; aborting.")
-        sys.exit(2)
+    # Locate the flag and adapted gauges from the global product sign if present.
+    # Otherwise fall back to the known canonical flag from docs/NOVEL_CONNECTIONS_2026_02_10.md.
+    lines = list(analyze._all_affine_lines())
+    point = (2, 2)
+    direction = "x"
+    if args.sign_map_json.exists():
+        try:
+            lines_map, sign_field = analyze._load_sign_field(args.sign_map_json)
+            product_sign = analyze._line_product_signs(lines_map, sign_field)
+            flag = analyze._line_product_flag_geometry_check(
+                lines_map, product_sign, []
+            )
+            raw_point = flag.get("missing_point") or flag.get(
+                "unique_missing_point_from_negative_lines"
+            )
+            raw_direction = flag.get("full_positive_direction") or flag.get(
+                "distinguished_direction_all_positive"
+            )
+            if raw_point is not None and raw_direction is not None:
+                point = (int(raw_point[0]), int(raw_point[1]))
+                direction = str(raw_direction)
+                lines = list(lines_map)
+        except Exception as exc:
+            print(
+                f"Warning: failed to load/derive flag from {args.sign_map_json}: {exc}; "
+                "falling back to point=[2,2], direction='x'."
+            )
 
     adapted_gauges = analyze._line_product_adapted_gauges(lines, point, direction)
 

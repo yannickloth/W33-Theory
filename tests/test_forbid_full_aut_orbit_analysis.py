@@ -24,10 +24,14 @@ def test_full_aut_orbit_analysis_runs_and_finds_intersection():
         "--pick",
         "lex_min",
     ]
-    try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        pytest.skip(f"forbid_full_aut_orbit_analysis failed: {e}; skipping in CI")
+    run = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if run.returncode != 0:
+        detail = (run.stderr or run.stdout or "").strip().splitlines()
+        tail = "\n".join(detail[-8:]) if detail else "<no output>"
+        pytest.skip(
+            "forbid_full_aut_orbit_analysis failed in this environment; skipping.\n"
+            f"{tail}"
+        )
 
     out = ART / "forbid_full_aut_orbit_analysis.json"
     assert out.exists(), "Output JSON not written"

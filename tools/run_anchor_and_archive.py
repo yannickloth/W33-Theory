@@ -6,7 +6,7 @@ Usage: python tools/run_anchor_and_archive.py --forbid 0-18-25 --time 300
 It will:
  - run tools/anchor_core_and_maximize_cpsat.py with the provided forbid and time
  - copy artifacts/anchor_core_cpsat_summary.json to artifacts/anchor_core_cpsat_summary_forbid_<forbid>.json
- - write reports/anchor_forbid_<forbid>.md and .json summarizing per-W status
+ - write anchor-forbid reports summarizing per-W status
 """
 from __future__ import annotations
 
@@ -31,6 +31,12 @@ parser.add_argument(
 parser.add_argument("--time", type=int, default=300)
 parser.add_argument("--w-list", type=str, default="0,4,5,6,7,8,9,10,11,12,13,14,15")
 parser.add_argument("--workers", type=int, default=4)
+parser.add_argument(
+    "--reports-dir",
+    type=Path,
+    default=REPORTS,
+    help="Directory to write anchor-forbid reports (defaults to repo reports/).",
+)
 args = parser.parse_args()
 
 # Resolve forbid: prefer explicit argument, otherwise fall back to config file
@@ -80,9 +86,10 @@ print("Copied summary to", dst)
 
 # read summary and write reports
 data = json.loads(src.read_text(encoding="utf-8"))
-REPORTS.mkdir(parents=True, exist_ok=True)
-md = REPORTS / f"anchor_forbid_{forbid.replace(',','_')}.md"
-js = REPORTS / f"anchor_forbid_{forbid.replace(',','_')}.json"
+reports_dir = Path(args.reports_dir)
+reports_dir.mkdir(parents=True, exist_ok=True)
+md = reports_dir / f"anchor_forbid_{forbid.replace(',','_')}.md"
+js = reports_dir / f"anchor_forbid_{forbid.replace(',','_')}.json"
 lines = [f"# Anchor CP-SAT summary (forbid: {forbid})", ""]
 for e in data:
     lines.append(

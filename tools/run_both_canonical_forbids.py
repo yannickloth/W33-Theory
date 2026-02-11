@@ -114,6 +114,12 @@ def main():
     parser.add_argument("--w-list", type=str, default="0,4,5,6,7,8,9,10,11,12,13,14,15")
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument(
+        "--reports-dir",
+        type=Path,
+        default=REPORTS,
+        help="Directory to write markdown reports (defaults to repo reports/).",
+    )
+    parser.add_argument(
         "--pick1", type=str, default="lex_min", choices=["lex_min", "max_stab"]
     )
     parser.add_argument(
@@ -136,10 +142,28 @@ def main():
 
     summary = {"forbids": []}
 
+    reports_dir = Path(args.reports_dir)
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
     for name, tri in forbids:
         forbid_str = "-".join(map(str, tri))
         try:
-            run_anchor_and_archive(forbid_str, args.time, args.w_list, args.workers)
+            cmd = [
+                "python",
+                str(ROOT / "tools" / "run_anchor_and_archive.py"),
+                "--forbid",
+                forbid_str,
+                "--time",
+                str(args.time),
+                "--w-list",
+                args.w_list,
+                "--workers",
+                str(args.workers),
+                "--reports-dir",
+                str(reports_dir),
+            ]
+            print("Running anchored CP-SAT for forbid:", forbid_str)
+            subprocess.run(cmd, check=True)
         except subprocess.CalledProcessError as e:
             print(f"Anchored run failed for forbid {forbid_str}:", e)
 
@@ -184,7 +208,7 @@ def main():
         lines.append(f"- pick: {r['pick']}, forbid: {r['forbid']}")
         lines.append(f"  - anchor_summary_exists: {r['anchor_summary_exists']}")
         lines.append(f"  - gf2_exists: {r['gf2_exists']}")
-    (REPORTS / "canonical_forbid_verification_summary.md").write_text(
+    (reports_dir / "canonical_forbid_verification_summary.md").write_text(
         "\n".join(lines), encoding="utf-8"
     )
 
