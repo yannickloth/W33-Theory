@@ -88,6 +88,9 @@ changes affine/Hessian symmetries:
   the same exhaustive Hessian census has exact match-count split `0:201`, `1:55`,
   i.e., every full-orbit rep has zero involution matches and every reduced rep
   has exactly one match.
+- full affine z-map scan check:
+  allowing all six affine `z` maps leaves the split unchanged and still observes
+  matches only at `(1,0)`, `(2,0)`, `(2,1)`.
 - Formal theorem and short proof sketch: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`. Equivalence verified by `tools/check_reduced_orbit_closed_form_equiv.py` and `tests/test_check_reduced_orbit_closed_form_equiv_smoke.py`.
 - exact checker profile:
   `201` reps have no matching involution witness and stay full orbit (`2592`);

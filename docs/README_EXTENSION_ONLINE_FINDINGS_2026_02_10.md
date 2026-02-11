@@ -148,6 +148,7 @@ paired with `z` involution in `{(1,0),(2,0),(2,1)}`.
 Status: verified on exhaustive Hessian representatives (`256` total):
 `201` full-orbit reps (`2592`) match no such involution and `55` reduced-orbit reps
 (`1296`) each match exactly one.
+Full affine `z`-map scan status: verified with `tools/check_reduced_orbit_closed_form_equiv.py --z-map-mode all`; no additional `z` map beyond `{(1,0),(2,0),(2,1)}` appears in any match.
 
 H11. s12 dimensions should be cross-checkable against Vogel-universal families:
 `728` should be classically explainable (`sl_27`) while `486` and `242` should not

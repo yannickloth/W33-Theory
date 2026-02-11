@@ -196,12 +196,12 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
     lines.append(f"- Source map: `{summary['source_map_json']}`")
     lines.append("")
     lines.append(
-        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds | Reduced Eq | Reduced Profile |"
+        "| Candidate Space | k_min | Exact Solutions | Distinct Reps | Rule Holds | Reduced Eq | Reduced Profile | z-map Restriction |"
     )
-    lines.append("|---|---:|---:|---:|---|---|---|")
+    lines.append("|---|---:|---:|---:|---|---|---|---|")
     for run in summary.get("runs", []):
         lines.append(
-            "| {} | {} | {} | {} | {} | {} | {} |".format(
+            "| {} | {} | {} | {} | {} | {} | {} | {} |".format(
                 run.get("candidate_space", ""),
                 run.get("k_min", ""),
                 run.get("exact_solutions_count", ""),
@@ -211,6 +211,11 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
                 (
                     "yes"
                     if run.get("reduced_closed_form_strict_profile_holds", False)
+                    else "no"
+                ),
+                (
+                    "yes"
+                    if run.get("reduced_closed_form_zmap_restriction_holds", False)
                     else "no"
                 ),
             )
@@ -245,6 +250,16 @@ def _write_summary_md(summary: dict[str, Any], out_md: Path) -> None:
         lines.append(
             "- Reduced strict profile holds: `{}`".format(
                 run.get("reduced_closed_form_strict_profile_holds", "n/a")
+            )
+        )
+        lines.append(
+            "- Reduced z-map restriction holds: `{}`".format(
+                run.get("reduced_closed_form_zmap_restriction_holds", "n/a")
+            )
+        )
+        lines.append(
+            "- Reduced matching z-maps: `{}`".format(
+                run.get("reduced_closed_form_observed_matching_z_maps", [])
             )
         )
         lines.append(
@@ -359,6 +374,8 @@ def main() -> None:
             "reduced_closed_form_mismatch_count": None,
             "reduced_closed_form_match_count_histogram": {},
             "reduced_closed_form_strict_profile_holds": None,
+            "reduced_closed_form_zmap_restriction_holds": None,
+            "reduced_closed_form_observed_matching_z_maps": [],
             "orbit_histograms": {"raw": {}, "weighted_by_hit_count": {}},
         }
 
@@ -395,6 +412,12 @@ def main() -> None:
             )
             run_summary["reduced_closed_form_strict_profile_holds"] = bool(
                 reduced_payload.get("symmetry_profile", {}).get("strict_profile_holds")
+            )
+            run_summary["reduced_closed_form_zmap_restriction_holds"] = bool(
+                reduced_payload.get("zmap_restriction_holds")
+            )
+            run_summary["reduced_closed_form_observed_matching_z_maps"] = list(
+                reduced_payload.get("observed_matching_z_maps", [])
             )
 
         if (not args.skip_gallery) and (classified_payload is not None):

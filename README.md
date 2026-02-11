@@ -54,6 +54,9 @@ This repository is meant to be read like a single, continuously updated paper.
 - The reduced-orbit checker now verifies the stronger symmetry profile:
   Hessian exhaustive reps split exactly as match-count histogram `0:201, 1:55`
   (`2592`-orbit reps have zero matches; `1296`-orbit reps each have exactly one).
+- Full affine `z`-map scan (`6` maps total) now reports the same decision boundary
+  on exhaustive Hessian reps and observes matches only for
+  `{(1,0),(2,0),(2,1)}`, confirming the explicit `z`-map restriction.
 - Formal theorem & short proof sketch formalizing this equivalence: `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`.
 - A one-command exact census orchestrator now runs:
   exact enumeration -> representative classification -> involution-rule check ->

@@ -115,3 +115,5 @@ def test_min_cert_census_runner_execute_smoke(tmp_path: Path):
     assert run0["reduced_closed_form_equivalent"] is True
     assert run0["reduced_closed_form_match_count_histogram"]
     assert run0["reduced_closed_form_strict_profile_holds"] is True
+    assert run0["reduced_closed_form_zmap_restriction_holds"] is True
+    assert isinstance(run0["reduced_closed_form_observed_matching_z_maps"], list)

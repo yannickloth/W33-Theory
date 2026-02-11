@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 Z_INVOLUTIONS = [(1, 0), (2, 0), (2, 1)]
+ALL_Z_AFFINE = [(az, bz) for az in (1, 2) for bz in range(3)]
 FULL_ORBIT = 2592
 
 
@@ -102,19 +103,37 @@ def main() -> None:
         / "artifacts"
         / "e6_f3_trilinear_reduced_orbit_closed_form_equiv.json",
     )
+    parser.add_argument(
+        "--z-map-mode",
+        choices=["involutions", "all"],
+        default="involutions",
+        help=(
+            "Matcher mode for theorem equivalence. Always reports full-z-map "
+            "diagnostics; this flag controls the primary equivalence predicate."
+        ),
+    )
     args = parser.parse_args()
 
     payload = json.loads(args.in_json.read_text(encoding="utf-8"))
     reps = payload.get("representatives", [])
     involutions = _candidate_affine_involutions()
+    theorem_z_maps = (
+        list(Z_INVOLUTIONS)
+        if args.z_map_mode == "involutions"
+        else [tuple(v) for v in ALL_Z_AFFINE]
+    )
 
     observed_reduced = 0
     predicted_reduced = 0
+    all_zmap_predicted_reduced = 0
+    all_zmap_mismatches = []
     mismatches = []
     matched_mats: set[tuple[int, int, int, int, int]] = set()
     match_count_hist = Counter()
     full_orbit_match_hist = Counter()
     reduced_orbit_match_hist = Counter()
+    all_match_count_hist = Counter()
+    observed_matching_z_maps = Counter()
 
     for idx, entry in enumerate(reps):
         rows = entry.get("canonical_repr") or []
@@ -125,16 +144,30 @@ def main() -> None:
             observed_reduced += 1
 
         match_count = 0
+        all_match_count = 0
+        seen_z_maps_for_rep = set()
         for affine_elem in involutions:
-            for z_map in Z_INVOLUTIONS:
-                if _transform_packed(packed, affine_elem, z_map) == packed:
+            for z_map in ALL_Z_AFFINE:
+                if _transform_packed(packed, affine_elem, tuple(z_map)) == packed:
+                    all_match_count += 1
+                    seen_z_maps_for_rep.add(tuple(z_map))
+                if (
+                    tuple(z_map) in theorem_z_maps
+                    and _transform_packed(packed, affine_elem, tuple(z_map)) == packed
+                ):
                     match_count += 1
                     matched_mats.add(affine_elem[0])
+        for z_map in seen_z_maps_for_rep:
+            observed_matching_z_maps[str(z_map)] += 1
         found = match_count > 0
+        all_found = all_match_count > 0
 
         if found:
             predicted_reduced += 1
+        if all_found:
+            all_zmap_predicted_reduced += 1
         match_count_hist[str(int(match_count))] += 1
+        all_match_count_hist[str(int(all_match_count))] += 1
         if observed:
             reduced_orbit_match_hist[str(int(match_count))] += 1
         else:
@@ -148,6 +181,16 @@ def main() -> None:
                     "observed_reduced": bool(observed),
                     "predicted_reduced": bool(found),
                     "matching_symmetry_count": int(match_count),
+                }
+            )
+        if all_found != observed:
+            all_zmap_mismatches.append(
+                {
+                    "index": int(idx),
+                    "orbit_size": int(orbit_size),
+                    "observed_reduced": bool(observed),
+                    "predicted_reduced_all_zmaps": bool(all_found),
+                    "matching_symmetry_count_all_zmaps": int(all_match_count),
                 }
             )
 
@@ -173,20 +216,41 @@ def main() -> None:
     strict_profile_holds = (
         (len(mismatches) == 0) and full_all_zero and reduced_all_exactly_one
     )
+    matched_z_keys = set(observed_matching_z_maps.keys())
+    allowed_z_keys = {str(tuple(z)) for z in Z_INVOLUTIONS}
+    zmap_restriction_holds = matched_z_keys.issubset(allowed_z_keys)
 
     out = {
         "status": "ok",
         "source": str(args.in_json),
+        "z_map_mode": str(args.z_map_mode),
+        "theorem_z_maps": [list(v) for v in theorem_z_maps],
+        "all_affine_z_maps": [list(v) for v in ALL_Z_AFFINE],
         "representative_count": len(reps),
         "candidate_affine_involution_count": len(involutions),
         "observed_reduced_count": int(observed_reduced),
         "predicted_reduced_count": int(predicted_reduced),
+        "predicted_reduced_count_all_zmaps": int(all_zmap_predicted_reduced),
         "mismatch_count": len(mismatches),
         "mismatches": mismatches,
         "equivalent": len(mismatches) == 0,
+        "all_zmaps_mismatch_count": len(all_zmap_mismatches),
+        "all_zmaps_mismatches": all_zmap_mismatches,
+        "all_zmaps_equivalent": len(all_zmap_mismatches) == 0,
         "match_count_histogram": dict(
             sorted(match_count_hist.items(), key=lambda item: int(item[0]))
         ),
+        "match_count_histogram_all_zmaps": dict(
+            sorted(all_match_count_hist.items(), key=lambda item: int(item[0]))
+        ),
+        "observed_matching_z_map_histogram": dict(
+            sorted(
+                observed_matching_z_maps.items(),
+                key=lambda item: item[0],
+            )
+        ),
+        "observed_matching_z_maps": sorted(matched_z_keys),
+        "zmap_restriction_holds": bool(zmap_restriction_holds),
         "symmetry_profile": {
             "full_orbit_match_count_histogram": dict(
                 sorted(full_orbit_match_hist.items(), key=lambda item: int(item[0]))

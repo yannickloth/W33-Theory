@@ -20,6 +20,9 @@ Equivalently, after choosing an adapted affine gauge sending the distinguished a
 4. (Computational sufficiency and necessity)
    We verify the condition on an exhaustive Hessian canonical-representative census (256 representatives). The computational checker `tools/check_reduced_orbit_closed_form_equiv.py` tests equivalence between the involution-based orbit-reduction definition and the gauge-canonical diag(-1,1) formulation. On the exhaustive Hessian dataset, the two tests are equivalent (zero mismatches), and the stronger match-count profile is exact: `201` full-orbit reps have `0` matches while all `55` reduced reps have exactly `1` match.
 
+5. (z-map restriction is exact under full affine z scan)
+   Extending the checker to all affine `z` maps (`(a,b)` with `a in {1,2}`, `b in F3`, total `6`) gives the same reduced/full split and finds matches only for `z` maps `{(1,0),(2,0),(2,1)}`. No additional `z` map contributes any match.
+
 ## Scripts & tests
 
 - Computation and candidate derivation: `tools/derive_reduced_orbit_closed_form.py` (outputs `docs/MIN_CERT_REDUCED_ORBIT_RULE_2026_02_10.md`).
