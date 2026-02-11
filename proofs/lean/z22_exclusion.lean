@@ -1,45 +1,69 @@
 /-!
-Short Lean 4 skeleton: symbolic exclusion of z = 2*z + 2 on Z/3Z (F3)
+Lean 4 skeleton for the short symbolic exclusion of z -> 2*z + 2.
 
-This file provides a minimal statement and proof sketch in Lean-style pseudocode.
-It is intended as a starting point for a fully machine-checked formalization.
+This captures the same x=0 contradiction used in:
+- tools/formal_z22_proof.py
+- tests/test_formal_proof_z22.py
 
-To complete formally, one should:
-  - import a finite-field development for F3 (Zmod 3 or finite ring library),
-  - define points (x,y) in F3^2, affine lines as solution sets to a*x + b*y = c,
-  - implement the coordinate-free product law `P(line) = +1 iff b*c = 0`, and
-  - implement the full-sign closed form for the (a,b)=(1,0) case.
-
-The lemma below encodes the short x=0 contradiction used in the repo.
+It is intentionally compact so it can be extended to the full reduced-orbit
+formalization.
 -/
+
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic
 
 namespace Z22Exclusion
 
--- We use `ZMod 3` for F3
-open ZMod
-
 /-- Vertical line L: x = 0 in F3^2. -/
-def L : List (ZMod 3 × ZMod 3) :=
-  [(0,0), (0,1), (0,2)]
+def L : List (Prod (ZMod 3) (ZMod 3)) := [(0, 0), (0, 1), (0, 2)]
 
-/-- Normalized coefficients for x = 0 are (a,b,c) = (1,0,0). -/
-lemma normalized_abc_L : (1 : ZMod 3, 0, 0) = (1, 0, 0) := by rfl
+/-- Product-sign rule encoded as +/- 1 in Int. -/
+def PLine (a b c : ZMod 3) : Int :=
+  if b * c = 0 then 1 else -1
 
-/-- Product sign law: for normalized a*x + b*y = c, P(line) = +1 iff b*c = 0.
-    Here (b,c)=(0,0) so P(L) = +1. -/
-lemma product_sign_L : (true) := by
-  -- machine-friendly proof: compute b*c = 0, conclude P(L) = +1
-  trivial
+/-- Equivalence lemma: PLine equals +1 iff b*c = 0. -/
+theorem PLine_eq_iff (a b c : ZMod 3) : (PLine a b c = 1) ↔ (b * c = 0) := by
+  dsimp [PLine]
+  apply Iff.intro
+  . intro h
+    by_cases h0 : b * c = 0
+    . exact h0
+    . have : (if h0 then (1 : Int) else (-1 : Int)) = -1 := by simp [h0]
+      simp [this] at h
+      contradiction
+  . intro h0
+    simp [h0]
 
-/-- Full-sign closed form for (a,b) = (1,0): s(line,z) = +1 iff (c^2 + 2c + z) == 2.
-    For c = 0 and z = 1 we get (0 + 0 + 1) = 1 != 2, hence s(L,1) = -1. -/
-lemma full_sign_L_z1 : (true) := by
-  -- machine-friendly proof: compute expression value = 1, conclude s(L,1) = -1
-  trivial
+/-- Closed-form full-sign rule for (a,b)=(1,0) branch, encoded as +/- 1 in Int. -/
+def SLine (a b c : ZMod 3) (z : ZMod 3) : Int :=
+  if (c * c + 2 * c + z : ZMod 3) = 2 then 1 else -1
 
-/-- Contradiction: P(L) = +1 but s(L,1) = -1. -/
-theorem z22_contradiction : (true) := by
-  -- combine product_sign_L and full_sign_L_z1 to derive contradiction
-  trivial
+/-- Equivalence lemma for the deterministic (1,0) slice: s=+1 iff polynomial equals 2. -/
+theorem SLine_for_1_0_eq_iff (c z : ZMod 3) : (SLine (1 : ZMod 3) 0 c z = 1) ↔ ((c * c + 2 * c + z : ZMod 3) = 2) := by
+  dsimp [SLine]
+  apply Iff.intro
+  . intro h
+    by_cases h0 : (c * c + 2 * c + z : ZMod 3) = 2
+    . exact h0
+    . have : (if h0 then (1 : Int) else (-1 : Int)) = -1 := by simp [h0]
+      simp [this] at h
+      contradiction
+  . intro h0
+    simp [h0]
+
+/-- For x=0, product sign is +1. -/
+@[simp] theorem PLine_vertical : PLine (1 : ZMod 3) 0 0 = 1 := by
+  dsimp [PLine]
+  simp
+
+/-- For x=0 and z=1, closed-form sign is -1. -/
+@[simp] theorem SLine_vertical_z1 : SLine (1 : ZMod 3) 0 0 1 = -1 := by
+  dsimp [SLine]
+  have : (0 * 0 + 2 * 0 + 1 : ZMod 3) = 1 := by simp
+  simp [this]
+
+/-- Core contradiction used to exclude z=(2,2): +1 != -1. -/
+theorem z22_contradiction : PLine (1 : ZMod 3) 0 0 ≠ SLine (1 : ZMod 3) 0 0 1 := by
+  simp [PLine_vertical, SLine_vertical_z1]
 
 end Z22Exclusion
