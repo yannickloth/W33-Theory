@@ -156,6 +156,28 @@ from the layperson narrative.
     Raw note: confirms the standard Lean finite-field base (`ZMod`) used by the
     new `proofs/lean/z22_exclusion.lean` skeleton.
 
+29. Rozikov et al., *On finite-dimensional derived Jordan and bicommutative algebras* (2026)
+    URL: `https://arxiv.org/abs/2601.22110`
+    Raw note: recent finite-dimensional Jordan-structure work supports treating
+    low-complexity finite rulebooks as first-class algebraic objects rather than
+    only ad hoc combinatorial summaries.
+
+30. Bae et al., *A Cohomological Hall Algebra Construction for Jordan Quivers* (2025)
+    URL: `https://arxiv.org/abs/2505.16569`
+    Raw note: Jordan-quiver/CoHA constructions motivate explicitly tracking which
+    finite motifs survive when moving between ambient symmetry classes.
+
+31. Muller et al., *Fermion mass ratios from the exceptional Jordan algebra* (2025)
+    URL: `https://arxiv.org/abs/2510.14736`
+    Raw note: while model-specific, this reinforces keeping exceptional-Jordan
+    references in the hypothesis chain when testing `s12` universalization ideas.
+
+32. Nguyen et al., *Jordan decomposition in finite-dimensional Lie algebras over arbitrary fields* (2026)
+    URL: `https://arxiv.org/abs/2601.07168`
+    Raw note: decomposition-level structure over arbitrary fields aligns with our
+    finite-field split between coarse obstruction counts and finer motif-level
+    overlap signatures.
+
 ## Hypothesis chain -> repo checks
 
 H1. Residual subgroup should be an explicit affine-flag stabilizer.
@@ -307,6 +329,14 @@ H17. Global unsat cells should admit compact minimal contradiction cores.
 Status: verified via `tools/minimal_global_full_sign_cores.py`:
 - in `all_agl` and `hessian216`, all nontrivial `z` cells have minimal core size `3`;
 - in `involution_det2`, minimal core size is `4` at `z=(1,0)` and `3` for other `z`.
+
+H18. Nontrivial-core motifs should cross-link differently to minimal-certificate
+representatives in `AGL(2,3)` vs Hessian census datasets.
+Status: verified via `tools/link_core_rulebook_to_min_cert_census.py`:
+- core motif overlap is exactly `0/7` representatives in `agl_exact_full`;
+- overlap is positive in Hessian datasets (`18/79` in exact full,
+  `30/256` in exhaustive2);
+- dominant overlap motif is `x:(1,1,0)` in both Hessian datasets.
 
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
@@ -590,6 +620,57 @@ Additional witness-space note:
   - affine-plane parallel classes summary: https://en.wikipedia.org/wiki/Incidence_geometry
   - Hessian216 context: https://en.wikipedia.org/wiki/Hessian_group
 
+## Twenty-third-pass raw notes (2026-02-11, rulebook compression loop)
+
+- Core geometry census proved every nontrivial size-`3` core is a parallel-class
+  triplet; next step was to compress these into offset-coordinate laws.
+- New rulebook extractor on triplets `(z0,z1,z2)` by direction:
+  - all families are full cartesian boxes over allowed coordinate subsets,
+  - except one unique corner-exclusion family:
+    `z=(1,1)`, direction `x`, triples `{(1,1,1),(1,2,1),(2,1,1)}`.
+- Equivalent compressed form of that unique family:
+  - fixed `z2=1`,
+  - `z0,z1 in {1,2}`,
+  - missing corner `(2,2)`.
+- Interpretation:
+  - nontrivial obstruction families are almost axis-aligned affine boxes;
+    the unique non-cartesian corner cut is the only combinatorial asymmetry.
+- web prompts checked in this pass:
+  - finite affine phase-space / striations (quantum framing):
+    https://arxiv.org/abs/quant-ph/0406032
+    https://arxiv.org/abs/quant-ph/0401155
+  - hesse pencil / AG(2,3)-incidence background:
+    https://arxiv.org/abs/math/0611590
+  - recent universality framing:
+    https://arxiv.org/abs/2601.01612
+    https://arxiv.org/abs/2506.15280
+
+## Twenty-fourth-pass raw notes (2026-02-11, multi-assistant synthesis loop)
+
+- We cross-linked the new nontrivial-core rulebook with the canonical
+  minimal-certificate census artifacts produced in the enumerator branch.
+- New executable link check: `tools/link_core_rulebook_to_min_cert_census.py`.
+- Result:
+  - `agl_exact_full`: nontrivial-core motif overlap is exactly `0/7`;
+  - `hessian_exact_full`: overlap is `18/79`;
+  - `hessian_exhaustive2`: overlap is `30/256`.
+- Dominant overlap motif in Hessian datasets: `x:(1,1,0)`.
+- Interpretation:
+  - the nontrivial global-core motif layer is not generically present in the
+    full `AGL` minimal-certificate representatives, but it appears as a
+    measurable subfamily in Hessian representative space.
+  - this is a concrete bridge between the global-core rulebook and the
+    enumerator's canonical-representative census.
+- web prompts checked in this pass:
+  - finite-dimensional derived Jordan/bicommutative structures:
+    https://arxiv.org/abs/2601.22110
+  - Jordan quiver / CoHA constructions:
+    https://arxiv.org/abs/2505.16569
+  - exceptional Jordan + phenomenology prompt:
+    https://arxiv.org/abs/2510.14736
+  - Jordan decomposition over arbitrary fields:
+    https://arxiv.org/abs/2601.07168
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -611,6 +692,10 @@ Additional witness-space note:
 - global minimal-core tests: `tests/test_minimal_global_full_sign_cores_smoke.py`
 - nontrivial UNSAT core-geometry census: `tools/classify_nontrivial_unsat_core_geometry.py`
 - nontrivial core-geometry tests: `tests/test_classify_nontrivial_unsat_core_geometry_smoke.py`
+- nontrivial core rulebook compression: `tools/nontrivial_core_rulebook.py`
+- nontrivial core rulebook tests: `tests/test_nontrivial_core_rulebook_smoke.py`
+- core-rulebook x min-cert census link: `tools/link_core_rulebook_to_min_cert_census.py`
+- core-rulebook x min-cert link tests: `tests/test_link_core_rulebook_to_min_cert_census_smoke.py`
 - global positive-identity certificates: `tools/minimal_global_identity_certificates.py`
 - global positive-identity tests: `tests/test_minimal_global_identity_certificates_smoke.py`
 - global dual-profile synthesis: `tools/global_sign_rigidity_dual_profile.py`
@@ -640,11 +725,13 @@ python tools/prove_z22_no_global_stabilizer.py --out-json artifacts/z22_global_s
 python tools/classify_global_full_sign_stabilizers.py --out-json artifacts/global_full_sign_stabilizer_census_2026_02_11.json --out-md docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md
 python tools/minimal_global_full_sign_cores.py --out-json artifacts/minimal_global_full_sign_cores_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md
 python tools/classify_nontrivial_unsat_core_geometry.py --out-json artifacts/nontrivial_unsat_core_geometry_2026_02_11.json --out-md docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md
+python tools/nontrivial_core_rulebook.py --out-json artifacts/nontrivial_core_rulebook_2026_02_11.json --out-md docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md
+python tools/link_core_rulebook_to_min_cert_census.py --out-json artifacts/core_rulebook_min_cert_link_2026_02_11.json --out-md docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md
 python tools/minimal_global_identity_certificates.py --out-json artifacts/minimal_global_identity_certificates_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md
 python tools/global_sign_rigidity_dual_profile.py --out-json artifacts/global_sign_rigidity_dual_profile_2026_02_11.json --out-md docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
 cd proofs/lean
 lake update
 lake build

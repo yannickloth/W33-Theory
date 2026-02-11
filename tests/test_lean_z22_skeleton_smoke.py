@@ -18,5 +18,8 @@ def test_lean_z22_contains_key_lemmas() -> None:
     assert "theorem zMap_table" in text
     assert "theorem zMap_one" in text
     assert "theorem zMap_fixed_iff" in text
+    assert "theorem zMap_fixed_point_unique" in text
     assert "theorem zMap_involution" in text
     assert "theorem z22_contradiction_via_zMap" in text
+    assert "theorem z22_contradiction_of_fixed_point" in text
+    assert "theorem z22_contradiction_of_fixed_point_via_zMap" in text

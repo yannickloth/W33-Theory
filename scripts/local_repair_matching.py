@@ -21,7 +21,11 @@ from typing import List, Tuple
 import numpy as np
 
 # reuse candidate builder
-from scripts.check_triangle_coverage import build_w33_graph, compute_embedding_matrix, generate_scaled_e8_roots
+from scripts.check_triangle_coverage import (
+    build_w33_graph,
+    compute_embedding_matrix,
+    generate_scaled_e8_roots,
+)
 
 
 def hopcroft_karp(adj, n_left, n_right):
@@ -70,10 +74,14 @@ def hopcroft_karp(adj, n_left, n_right):
 
 def build_candidates(k: int, seed_json: str = None):
     X, edges = compute_embedding_matrix()
-    A_mat = np.vstack([(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges])
+    A_mat = np.vstack(
+        [(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges]
+    )
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
 
     N_edges = len(A_mat)
@@ -122,7 +130,7 @@ def triangles_from_edges(edges):
 def count_violations(assign, tris, roots):
     cnt = 0
     bad = []
-    for (e1, e2, e3) in tris:
+    for e1, e2, e3 in tris:
         r1 = roots[assign[e1]]
         r2 = roots[assign[e2]]
         r3 = roots[assign[e3]]
@@ -144,12 +152,25 @@ def main():
     parser.add_argument("--time-limit", type=float, default=120)
     parser.add_argument("--seed-json", type=str, default=None)
     parser.add_argument("--tries", type=int, default=200000)
-    parser.add_argument("--post-tries", type=int, default=100000, help="additional tries to maximize consistent positions after reducing violations")
-    parser.add_argument("--maximize-nodes", action="store_true", help="run post-optimization to maximize number of connected vertices in positions mapping")
+    parser.add_argument(
+        "--post-tries",
+        type=int,
+        default=100000,
+        help="additional tries to maximize consistent positions after reducing violations",
+    )
+    parser.add_argument(
+        "--maximize-nodes",
+        action="store_true",
+        help="run post-optimization to maximize number of connected vertices in positions mapping",
+    )
     args = parser.parse_args()
 
-    candidates, edges, roots, seed_assign = build_candidates(args.k, seed_json=args.seed_json)
-    print(f"Built candidates k={args.k} edges={len(edges)} roots={len(roots)} seed_edges={len(seed_assign)}")
+    candidates, edges, roots, seed_assign = build_candidates(
+        args.k, seed_json=args.seed_json
+    )
+    print(
+        f"Built candidates k={args.k} edges={len(edges)} roots={len(roots)} seed_edges={len(seed_assign)}"
+    )
 
     # build bipartite adjacency for matching
     n_edges = len(candidates)
@@ -157,9 +178,9 @@ def main():
     adj = [list(set(candidates[e])) for e in range(n_edges)]
 
     match_size, pair_u, pair_v = hopcroft_karp(adj, n_edges, n_roots)
-    print('Initial matching size:', match_size)
+    print("Initial matching size:", match_size)
     if match_size < n_edges:
-        print('No perfect matching available at this k; aborting')
+        print("No perfect matching available at this k; aborting")
         return
 
     # initial assignment from matching
@@ -190,7 +211,7 @@ def main():
     tris = triangles_from_edges(edges)
     best_assign = list(assign)
     best_cnt, _ = count_violations(assign, tris, roots)
-    print('Initial violations:', best_cnt)
+    print("Initial violations:", best_cnt)
 
     start = time.time()
     T = args.time_limit
@@ -252,22 +273,27 @@ def main():
             if total_cnt < best_cnt:
                 best_cnt = total_cnt
                 best_assign = list(assign)
-                print(f'Iter {iters} improved best_cnt to {best_cnt} time={time.time()-start:.2f}s')
+                print(
+                    f"Iter {iters} improved best_cnt to {best_cnt} time={time.time()-start:.2f}s"
+                )
         else:
             # revert
             assign[e] = cur_r
 
     end = time.time()
-    print(f'Finished local repair in {end-start:.2f}s iters={iters} best_cnt={best_cnt}')
+    print(
+        f"Finished local repair in {end-start:.2f}s iters={iters} best_cnt={best_cnt}"
+    )
 
     # convert edge->root to vertex positions (pos) similar to backtrack output
     def assignment_to_positions_consistent(edges, assignment, roots):
         # BFS from vertex 0, only follow edges whose induced position doesn't conflict
         from collections import deque
+
         pos = {0: tuple([0] * 8)}
         # build adjacency set
         adj = [set() for _ in range(40)]
-        for (i, j) in edges:
+        for i, j in edges:
             adj[i].add(j)
             adj[j].add(i)
 
@@ -299,7 +325,9 @@ def main():
                         if z == v:
                             continue
                         diff = tuple(a - b for a, b in zip(candidate, pz))
-                        is_root = diff in roots_set or tuple(-d for d in diff) in roots_set
+                        is_root = (
+                            diff in roots_set or tuple(-d for d in diff) in roots_set
+                        )
                         if z in adj[v]:
                             # if neighbors, diff must be a root
                             if not is_root:
@@ -317,6 +345,7 @@ def main():
 
     # post-optimization: try to maximize number of vertices in positions mapping
     best_assign_post = list(best_assign)
+
     def compute_pos_nodes(assign_map):
         a_map = {i: r for i, r in enumerate(assign_map) if r != -1}
         pos = assignment_to_positions_consistent(edges, a_map, roots)
@@ -359,7 +388,7 @@ def main():
     edges = build_w33_edges_internal()
     # compute initial nodes
     best_nodes, best_positions = compute_pos_nodes(best_assign_post)
-    print(f'Initial BFS-consistent nodes from best assign: {best_nodes}')
+    print(f"Initial BFS-consistent nodes from best assign: {best_nodes}")
 
     if args.maximize_nodes:
         post_tries = args.post_tries
@@ -384,7 +413,9 @@ def main():
                 best_nodes = nodes
                 best_positions = pos
                 best_cnt = total_cnt
-                print(f'post iter {post_iters} improved nodes to {best_nodes} violations={best_cnt}')
+                print(
+                    f"post iter {post_iters} improved nodes to {best_nodes} violations={best_cnt}"
+                )
             else:
                 # revert
                 best_assign_post[e] = old
@@ -425,21 +456,31 @@ def main():
 
     # final output: prefer post-optimized assignment if available
     final_assign = best_assign_post if args.maximize_nodes else best_assign
-    final_positions = best_positions if args.maximize_nodes else assignment_to_positions_consistent(edges, {i: r for i, r in enumerate(best_assign) if r != -1}, roots)
+    final_positions = (
+        best_positions
+        if args.maximize_nodes
+        else assignment_to_positions_consistent(
+            edges, {i: r for i, r in enumerate(best_assign) if r != -1}, roots
+        )
+    )
 
     out = {
-        'best_violations': best_cnt,
-        'time_seconds': end - start,
-        'iters': iters,
-        'edge_to_root': {str(i): int(r) for i, r in enumerate(final_assign)},
-        'best_assignment_count': sum(1 for r in final_assign if r != -1),
-        'best': {'pos': {str(k): list(v) for k, v in final_positions.items()}, 'max_assigned': sum(1 for r in final_assign if r != -1)},
-        'best_assigned': sum(1 for r in final_assign if r != -1)
+        "best_violations": best_cnt,
+        "time_seconds": end - start,
+        "iters": iters,
+        "edge_to_root": {str(i): int(r) for i, r in enumerate(final_assign)},
+        "best_assignment_count": sum(1 for r in final_assign if r != -1),
+        "best": {
+            "pos": {str(k): list(v) for k, v in final_positions.items()},
+            "max_assigned": sum(1 for r in final_assign if r != -1),
+        },
+        "best_assigned": sum(1 for r in final_assign if r != -1),
     }
-    with open('checks/PART_CVII_e8_local_repair.json', 'w') as f:
-        json.dump(out, f, indent=2)
-    print('Wrote checks/PART_CVII_e8_local_repair.json (with positions & edge_to_root)')
+    from utils.json_safe import dump_json
+
+    dump_json(out, "checks/PART_CVII_e8_local_repair.json", indent=2)
+    print("Wrote checks/PART_CVII_e8_local_repair.json (with positions & edge_to_root)")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

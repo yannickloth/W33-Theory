@@ -6,7 +6,12 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 
 | Audience | Start Here | Why |
 |---|---|---|
-| First-time reader | `README.md` | Browser-first overview and quick reproducibility path |
+| First-time reader (1-page) | `docs/LAYPERSON_ONE_PAGE_MAP.md` | Fast orientation with immediate run path |
+| First-time reader | `docs/LAYPERSON_TEXTBOOK_GUIDE.md` | Full beginner textbook path with zero assumed physics background |
+| Beginner practice | `docs/LAYPERSON_WORKBOOK.md` | Step-by-step learning tasks with evidence collection |
+| Beginner claim audit | `docs/LAYPERSON_EVIDENCE_AUDIT_TEMPLATE.md` | Reproducibility-first template for scoring claim strength |
+| Beginner concept navigation | `docs/LAYPERSON_CONCEPT_MAP.md` | Visual/structural map from objects to evidence paths |
+| First-time reader (short) | `README.md` | Browser-first overview and quick reproducibility path |
 | Full manuscript reader | `docs/README_LIVING_PAPER_2026_02_11.md` | Preserved long-form narrative and theorem flow |
 | Contributor | `CONTRIBUTING.md` | Local workflow, tests, and contribution standards |
 | Formalization contributor | `proofs/lean/README.md` | Lean 4 setup and current proof skeleton |

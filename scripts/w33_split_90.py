@@ -260,8 +260,9 @@ def main():
                     / f"PART_CVII_complete_decomposition_{ts}.json"
                 )
                 out_path.parent.mkdir(parents=True, exist_ok=True)
-                with open(out_path, "w", encoding="utf-8") as f:
-                    json.dump(result, f, indent=2)
+                from utils.json_safe import dump_json
+
+                dump_json(result, out_path, indent=2)
                 print(f"\n  Wrote: {out_path}")
                 print(f"  Elapsed: {time.time() - t0:.1f}s")
                 return result

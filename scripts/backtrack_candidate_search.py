@@ -109,7 +109,14 @@ def enumerate_triangles(n: int, adj: List[List[int]]):
 
 
 class Backtracker:
-    def __init__(self, candidates: List[List[int]], edges: List[Tuple[int, int]], roots: List[Tuple[int, ...]], seed_assign: Dict[int, int] = None, seed_first: bool = True):
+    def __init__(
+        self,
+        candidates: List[List[int]],
+        edges: List[Tuple[int, int]],
+        roots: List[Tuple[int, ...]],
+        seed_assign: Dict[int, int] = None,
+        seed_first: bool = True,
+    ):
         self.candidates = [list(c) for c in candidates]
         self.edges = edges
         self.N_edges = len(edges)
@@ -125,7 +132,7 @@ class Backtracker:
         edge_index = {edges[i]: i for i in range(len(edges))}
         edge_index.update({(j, i): idx for (i, j), idx in edge_index.items()})
         self.tri_edges = []
-        for (a, b, c) in tris:
+        for a, b, c in tris:
             try:
                 e_ab = edge_index[(a, b)]
                 e_bc = edge_index[(b, c)]
@@ -143,7 +150,9 @@ class Backtracker:
 
         # ordering: try to prefer seed root first if available
 
-    def search(self, time_limit: float = 60.0, max_nodes: int = 2_000_000) -> Tuple[bool, Dict[int, int], int]:
+    def search(
+        self, time_limit: float = 60.0, max_nodes: int = 2_000_000
+    ) -> Tuple[bool, Dict[int, int], int]:
         start = time.time()
         self.start_time = start
         self.end_time = start + time_limit
@@ -166,7 +175,9 @@ class Backtracker:
         success = self._dfs(assignments, used_roots, domains)
         return success, (self.best_assign if not success else assignments), self.nodes
 
-    def _dfs(self, assignments: Dict[int, int], used_roots: Set[int], domains: List[Set[int]]) -> bool:
+    def _dfs(
+        self, assignments: Dict[int, int], used_roots: Set[int], domains: List[Set[int]]
+    ) -> bool:
         # time / node bounds
         self.nodes += 1
         if self.nodes % 1000 == 0:
@@ -191,7 +202,7 @@ class Backtracker:
             dom = [r for r in domains[e] if r not in used_roots]
             # propagate triangle-derived requirements: if any triangle has two assigned edges and this is third, required root must be r_ab + r_bc
             forced_vals = None
-            for (tidx, (e1, e2, e3)) in self.edge_to_tris[e]:
+            for tidx, (e1, e2, e3) in self.edge_to_tris[e]:
                 # if two of the edges are assigned
                 assigned = []
                 for ee in (e1, e2, e3):
@@ -212,7 +223,10 @@ class Backtracker:
                         if e == e3 and e1 in assignments and e2 in assignments:
                             r_ab = assignments[e1]
                             r_bc = assignments[e2]
-                            r_req = tuple(x + y for x, y in zip(self.roots[r_ab], self.roots[r_bc]))
+                            r_req = tuple(
+                                x + y
+                                for x, y in zip(self.roots[r_ab], self.roots[r_bc])
+                            )
                             # find root index matching r_req
                             ridx = None
                             # create mapping once per construction could be heavy; we do linear scan
@@ -222,7 +236,11 @@ class Backtracker:
                                     break
                             if ridx is None:
                                 return False  # impossible
-                            forced_vals = set([ridx]) if forced_vals is None else forced_vals & set([ridx])
+                            forced_vals = (
+                                set([ridx])
+                                if forced_vals is None
+                                else forced_vals & set([ridx])
+                            )
                         # other permutations: if e is e1 (ab) and e2 (bc) and e3 (ac) assigned etc.
                         if e == e1 and e2 in assignments and e3 in assignments:
                             # r_ab = r_ac - r_bc
@@ -236,7 +254,11 @@ class Backtracker:
                                     break
                             if ridx is None:
                                 return False
-                            forced_vals = set([ridx]) if forced_vals is None else forced_vals & set([ridx])
+                            forced_vals = (
+                                set([ridx])
+                                if forced_vals is None
+                                else forced_vals & set([ridx])
+                            )
                         if e == e2 and e1 in assignments and e3 in assignments:
                             # r_bc = r_ac - r_ab
                             r_ac = self.roots[assignments[e3]]
@@ -249,7 +271,11 @@ class Backtracker:
                                     break
                             if ridx is None:
                                 return False
-                            forced_vals = set([ridx]) if forced_vals is None else forced_vals & set([ridx])
+                            forced_vals = (
+                                set([ridx])
+                                if forced_vals is None
+                                else forced_vals & set([ridx])
+                            )
             if forced_vals is not None:
                 dom = [r for r in dom if r in forced_vals]
             if min_dom is None or len(dom) < len(min_dom):
@@ -284,9 +310,13 @@ class Backtracker:
             forced_stack = []
             while queue and consistent:
                 ee = queue.popleft()
-                for (tidx, (e1, e2, e3)) in self.edge_to_tris[ee]:
+                for tidx, (e1, e2, e3) in self.edge_to_tris[ee]:
                     # if two assigned and third unassigned -> deduce
-                    assigned = [(ed, assignments[ed]) for ed in (e1, e2, e3) if ed in assignments]
+                    assigned = [
+                        (ed, assignments[ed])
+                        for ed in (e1, e2, e3)
+                        if ed in assignments
+                    ]
                     unassigned = [ed for ed in (e1, e2, e3) if ed not in assignments]
                     if len(assigned) == 2 and len(unassigned) == 1:
                         # find required root for the missing edge as above
@@ -296,15 +326,30 @@ class Backtracker:
                         # tri tuple is (e_ab,e_bc,e_ac)
                         e_ab, e_bc, e_ac = (e1, e2, e3)
                         try:
-                            if missing == e_ac and e_ab in assignments and e_bc in assignments:
+                            if (
+                                missing == e_ac
+                                and e_ab in assignments
+                                and e_bc in assignments
+                            ):
                                 r_ab = assignments[e_ab]
                                 r_bc = assignments[e_bc]
-                                r_req = tuple(x + y for x, y in zip(self.roots[r_ab], self.roots[r_bc]))
-                            elif missing == e_ab and e_ac in assignments and e_bc in assignments:
+                                r_req = tuple(
+                                    x + y
+                                    for x, y in zip(self.roots[r_ab], self.roots[r_bc])
+                                )
+                            elif (
+                                missing == e_ab
+                                and e_ac in assignments
+                                and e_bc in assignments
+                            ):
                                 r_ac = self.roots[assignments[e_ac]]
                                 r_bc = self.roots[assignments[e_bc]]
                                 r_req = tuple(a - b for a, b in zip(r_ac, r_bc))
-                            elif missing == e_bc and e_ac in assignments and e_ab in assignments:
+                            elif (
+                                missing == e_bc
+                                and e_ac in assignments
+                                and e_ab in assignments
+                            ):
                                 r_ac = self.roots[assignments[e_ac]]
                                 r_ab = self.roots[assignments[e_ab]]
                                 r_req = tuple(a - b for a, b in zip(r_ac, r_ab))
@@ -356,10 +401,14 @@ class Backtracker:
 
 def build_candidates(k: int, seed_json: Optional[str] = None):
     X, edges = compute_embedding_matrix()
-    A_mat = np.vstack([(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges])
+    A_mat = np.vstack(
+        [(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges]
+    )
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
 
     N_edges = len(A_mat)
@@ -393,22 +442,36 @@ def main():
     parser.add_argument("--seed-first", action="store_true", default=True)
     args = parser.parse_args()
 
-    candidates, edges, roots, seed_assign = build_candidates(args.k, seed_json=args.seed_json)
-    print(f"Built candidates: k={args.k} edges={len(edges)} roots={len(roots)} seed_edges={len(seed_assign)}")
+    candidates, edges, roots, seed_assign = build_candidates(
+        args.k, seed_json=args.seed_json
+    )
+    print(
+        f"Built candidates: k={args.k} edges={len(edges)} roots={len(roots)} seed_edges={len(seed_assign)}"
+    )
 
     bt = Backtracker(candidates, edges, roots, seed_assign, seed_first=args.seed_first)
     start = time.time()
-    success, best, nodes = bt.search(time_limit=args.time_limit, max_nodes=args.max_nodes)
+    success, best, nodes = bt.search(
+        time_limit=args.time_limit, max_nodes=args.max_nodes
+    )
     end = time.time()
     if success:
         print(f"Found full assignment in {end-start:.2f}s nodes={nodes}")
         # write assignment
-        out = {"assignments": {str(k): int(v) for k, v in best.items()}, "time_seconds": end-start, "nodes": nodes}
-        with open('checks/PART_CVII_e8_embedding_backtrack.json', 'w') as f:
-            json.dump(out, f, indent=2)
-        print('Wrote checks/PART_CVII_e8_embedding_backtrack.json')
+        out = {
+            "assignments": {str(k): int(v) for k, v in best.items()},
+            "time_seconds": end - start,
+            "nodes": nodes,
+        }
+        from utils.json_safe import dump_json
+
+        dump_json(out, "checks/PART_CVII_e8_embedding_backtrack.json", indent=2)
+        print("Wrote checks/PART_CVII_e8_embedding_backtrack.json")
     else:
-        print(f"No full assignment (best={len(best)} assigned) after {end-start:.2f}s nodes={nodes}")
+        print(
+            f"No full assignment (best={len(best)} assigned) after {end-start:.2f}s nodes={nodes}"
+        )
+
         # convert edge->root assignment to vertex positions (partial) for bootstrap
         def assignment_to_positions(edges, assignment, roots):
             pos = {0: tuple([0] * 8)}
@@ -431,15 +494,21 @@ def main():
         positions = assignment_to_positions(edges, best, [tuple(r) for r in roots])
         out = {
             "best_assigned": len(best),
-            "time_seconds": end-start,
+            "time_seconds": end - start,
             "nodes": nodes,
-            "best": {"pos": {str(k): list(v) for k, v in positions.items()}, "max_assigned": len(best)},
+            "best": {
+                "pos": {str(k): list(v) for k, v in positions.items()},
+                "max_assigned": len(best),
+            },
             "edge_to_root": {str(k): int(v) for k, v in best.items()},
         }
-        with open('checks/PART_CVII_e8_embedding_backtrack_partial.json', 'w') as f:
-            json.dump(out, f, indent=2)
-        print('Wrote checks/PART_CVII_e8_embedding_backtrack_partial.json (with positions & edge_to_root)')
+        from utils.json_safe import dump_json
+
+        dump_json(out, "checks/PART_CVII_e8_embedding_backtrack_partial.json", indent=2)
+        print(
+            "Wrote checks/PART_CVII_e8_embedding_backtrack_partial.json (with positions & edge_to_root)"
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

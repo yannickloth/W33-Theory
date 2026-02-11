@@ -14,6 +14,10 @@ symbolic and machine-checked (see `tools/formal_z22_proof.py` and
 `proofs/lean/z22_exclusion.lean`.
 In the same Lean file, `zMap_fixed_iff` pins `z=1` as the unique fixed point
 of `z -> 2*z+2` and `zMap_table` makes the `0 <-> 2` swap explicit.
+It now also includes `zMap_fixed_point_unique`,
+`z22_contradiction_of_fixed_point`, and
+`z22_contradiction_of_fixed_point_via_zMap`, so the contradiction is reusable
+from an abstract fixed-point hypothesis and not only from the literal `z=1`.
 
 Global strengthening:
 - closed-form stabilizer scan for `z=(2,2)` gives zero matches in full
@@ -30,6 +34,9 @@ Global strengthening:
 - exhaustive core-geometry census shows every nontrivial size-`3` UNSAT core
   in `AGL/Hessian` is a full affine parallel class triplet (same direction,
   three offsets) via `tools/classify_nontrivial_unsat_core_geometry.py`.
+- rulebook compression reduces each nontrivial core family to compact
+  coordinate constraints on `(z0,z1,z2)` with a unique non-cartesian case at
+  `z=(1,1)` in direction `x` via `tools/nontrivial_core_rulebook.py`.
 - minimal positive-certificate extraction for the surviving identity cell
   `z=(1,0)` gives witness size `6` in full `AGL(2,3)` and `5` in `Hessian216`
   via `tools/minimal_global_identity_certificates.py`; this `6` vs `5` split
@@ -37,3 +44,8 @@ Global strengthening:
 - dual profile synthesis (`tools/global_sign_rigidity_dual_profile.py`) shows
   the positive-minus-negative gap contracts by exactly one under
   striation-complete constraints in both `AGL` and `Hessian216`.
+- cross-link to minimal-certificate census
+  (`tools/link_core_rulebook_to_min_cert_census.py`) finds zero overlap with
+  nontrivial core motifs in `agl_exact_full` (`0/7`) but positive overlap in
+  Hessian datasets (`18/79` exact full, `30/256` exhaustive2), with dominant
+  overlap motif `x:(1,1,0)`.

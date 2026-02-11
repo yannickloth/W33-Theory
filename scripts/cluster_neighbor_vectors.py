@@ -109,8 +109,9 @@ def main():
             "contingency": {str(k): dict(v) for k, v in conting.items()},
         }
 
-    with open(OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(results, OUT_PATH, indent=2)
 
     for k, res in results.items():
         print(f"k={k}: inertia={res['inertia']:.3f}, purity={res['purity']:.3f}")

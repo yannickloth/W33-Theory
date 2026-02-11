@@ -49,8 +49,10 @@ jobs:
               raise SystemExit(f"non-ascii codepoints found: {non_ascii}")
           required = [
               "theorem zMap_one",
+              "theorem zMap_fixed_point_unique",
               "theorem zMap_involution",
               "theorem z22_contradiction_via_zMap",
+              "theorem z22_contradiction_of_fixed_point_via_zMap",
           ]
           missing = [tok for tok in required if tok not in text]
           if missing:

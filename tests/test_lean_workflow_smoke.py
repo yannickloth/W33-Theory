@@ -23,6 +23,8 @@ def test_lean_workflow_has_cache_and_mathlib_cache_get() -> None:
 def test_lean_workflow_has_source_sanity_and_direct_typecheck() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     assert "Sanity-check z22 Lean source" in text
+    assert "theorem zMap_fixed_point_unique" in text
     assert "theorem zMap_involution" in text
     assert "theorem z22_contradiction_via_zMap" in text
+    assert "theorem z22_contradiction_of_fixed_point_via_zMap" in text
     assert "lake env lean z22_exclusion.lean" in text

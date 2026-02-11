@@ -29,9 +29,9 @@ import numpy as np
 # import helper functions from solver module
 try:
     from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
         compute_embedding_matrix,
         generate_scaled_e8_roots,
-        build_edge_vectors,
     )
 except Exception:
     # ensure repo root on path
@@ -39,14 +39,17 @@ except Exception:
 
     _sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
         compute_embedding_matrix,
         generate_scaled_e8_roots,
-        build_edge_vectors,
     )
 
 
 def find_latest_registered_candidate(rep_only: bool = True) -> Path | None:
-    files = sorted(glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"), key=os.path.getmtime)
+    files = sorted(
+        glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"),
+        key=os.path.getmtime,
+    )
     if not files:
         return None
     if rep_only:
@@ -61,7 +64,9 @@ def find_latest_registered_candidate(rep_only: bool = True) -> Path | None:
     return Path(files[-1])
 
 
-def edge_orbits_from_perm(edges: List[Tuple[int, int]], perm: Tuple[int, ...]) -> List[List[int]]:
+def edge_orbits_from_perm(
+    edges: List[Tuple[int, int]], perm: Tuple[int, ...]
+) -> List[List[int]]:
     # Build mapping of edge->index for quick lookup (unordered edge canonicalized)
     edge_to_idx = {tuple(sorted(e)): i for i, e in enumerate(edges)}
 
@@ -86,7 +91,9 @@ def edge_orbits_from_perm(edges: List[Tuple[int, int]], perm: Tuple[int, ...]) -
     return orbits
 
 
-def build_seed_from_candidate(candidate_json: Path, min_consensus: float = 0.6, max_seeds: int | None = None) -> Dict:
+def build_seed_from_candidate(
+    candidate_json: Path, min_consensus: float = 0.6, max_seeds: int | None = None
+) -> Dict:
     meta = json.loads(open(candidate_json, encoding="utf-8").read())
     cand_perm = tuple(meta.get("vertex_perm", []))
 
@@ -94,7 +101,9 @@ def build_seed_from_candidate(candidate_json: Path, min_consensus: float = 0.6, 
     A_mat = build_edge_vectors(X, edges)
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     N_edges = len(A_mat)
 
@@ -126,39 +135,107 @@ def build_seed_from_candidate(candidate_json: Path, min_consensus: float = 0.6, 
             used_roots.add(root_idx)
             if max_seeds is not None and len(seed_edges) >= int(max_seeds):
                 break
-    seed_obj = {"seed_edges": seed_edges, "rotation": None, "source_candidate": str(candidate_json)}
+    seed_obj = {
+        "seed_edges": seed_edges,
+        "rotation": None,
+        "source_candidate": str(candidate_json),
+    }
     return seed_obj
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--candidate-json", help="Path to committed_artifacts candidate JSON (default: latest rep)")
-    parser.add_argument("--min-consensus", type=float, default=0.6, help="Min fraction of orbit agreeing on root to accept seed")
-    parser.add_argument("--max-seeds", type=int, default=None, help="Max seeds to include (None = unlimited)")
-    parser.add_argument("--out", help="Path to write seed JSON (default: checks/PART_CVII_z3_candidate_seed_<ts>.json)")
-    parser.add_argument("--run-solver", action="store_true", help="Run scripts/solve_e8_embedding_cpsat.py with the produced seed (uses --force-seed)")
-    parser.add_argument("--solver-time", type=float, default=600.0, help="Time limit for CP-SAT solver when --run-solver")
-    parser.add_argument("--solver-k", type=int, default=40, help="k parameter for solver (top-K roots per edge)")
+    parser.add_argument(
+        "--candidate-json",
+        help="Path to committed_artifacts candidate JSON (default: latest rep)",
+    )
+    parser.add_argument(
+        "--min-consensus",
+        type=float,
+        default=0.6,
+        help="Min fraction of orbit agreeing on root to accept seed",
+    )
+    parser.add_argument(
+        "--max-seeds",
+        type=int,
+        default=None,
+        help="Max seeds to include (None = unlimited)",
+    )
+    parser.add_argument(
+        "--out",
+        help="Path to write seed JSON (default: checks/PART_CVII_z3_candidate_seed_<ts>.json)",
+    )
+    parser.add_argument(
+        "--run-solver",
+        action="store_true",
+        help="Run scripts/solve_e8_embedding_cpsat.py with the produced seed (uses --force-seed)",
+    )
+    parser.add_argument(
+        "--solver-time",
+        type=float,
+        default=600.0,
+        help="Time limit for CP-SAT solver when --run-solver",
+    )
+    parser.add_argument(
+        "--solver-k",
+        type=int,
+        default=40,
+        help="k parameter for solver (top-K roots per edge)",
+    )
     parser.add_argument("--seed", type=int, default=212, help="random seed for solver")
     args = parser.parse_args()
 
-    cand = Path(args.candidate_json) if args.candidate_json else find_latest_registered_candidate(rep_only=True)
+    cand = (
+        Path(args.candidate_json)
+        if args.candidate_json
+        else find_latest_registered_candidate(rep_only=True)
+    )
     if cand is None or not cand.exists():
-        raise FileNotFoundError("No candidate JSON found; register a z3 candidate first")
+        raise FileNotFoundError(
+            "No candidate JSON found; register a z3 candidate first"
+        )
 
     print("Building seed from candidate:", cand)
-    seed = build_seed_from_candidate(cand, min_consensus=args.min_consensus, max_seeds=args.max_seeds)
+    seed = build_seed_from_candidate(
+        cand, min_consensus=args.min_consensus, max_seeds=args.max_seeds
+    )
     ts = int(time.time())
-    out_path = Path(args.out) if args.out else Path("checks") / f"PART_CVII_z3_candidate_seed_{ts}.json"
+    out_path = (
+        Path(args.out)
+        if args.out
+        else Path("checks") / f"PART_CVII_z3_candidate_seed_{ts}.json"
+    )
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(seed, f, indent=2)
-    print("Wrote seed JSON:", out_path, "(seed_edges=", len(seed.get('seed_edges',[])), ")")
+    from utils.json_safe import dump_json
+
+    dump_json(seed, out_path, indent=2)
+    print(
+        "Wrote seed JSON:",
+        out_path,
+        "(seed_edges=",
+        len(seed.get("seed_edges", [])),
+        ")",
+    )
 
     if args.run_solver:
-        cmd = ["py", "-3", "scripts/solve_e8_embedding_cpsat.py", "--seed-json", str(out_path), "--k", str(args.solver_k), "--time-limit", str(args.solver_time), "--seed", str(int(args.seed)), "--force-seed"]
+        cmd = [
+            "py",
+            "-3",
+            "scripts/solve_e8_embedding_cpsat.py",
+            "--seed-json",
+            str(out_path),
+            "--k",
+            str(args.solver_k),
+            "--time-limit",
+            str(args.solver_time),
+            "--seed",
+            str(int(args.seed)),
+            "--force-seed",
+        ]
         print("Running solver with seed (cmd):", " ".join(cmd))
-        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        proc = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        )
         print("Solver stdout:\n", proc.stdout)
         print("Solver stderr:\n", proc.stderr)
         # read solver output summary if present

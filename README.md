@@ -24,6 +24,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
   sizes to `4` (nontrivial `AGL/Hessian`) and `5` (involution at `z=(1,0)`).
 - New geometric core classification: every nontrivial size-`3` global UNSAT
   core in `AGL/Hessian` is exactly one full affine parallel class triplet.
+- New rulebook compression: nontrivial core families reduce to low-complexity
+  coordinate rules, with a unique non-cartesian family at `z=(1,1)` in `x`.
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - This `6 vs 5` gap is stable under distinct-line and striation-complete
@@ -50,6 +52,8 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce the full global `z`-map census | `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` | `python tools/classify_global_full_sign_stabilizers.py` | `python -m pytest tests/test_classify_global_full_sign_stabilizers_smoke.py -q` |
 | Reproduce minimal contradiction cores for global cells | `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md` | `python tools/minimal_global_full_sign_cores.py` | `python -m pytest tests/test_minimal_global_full_sign_cores_smoke.py -q` |
 | Reproduce nontrivial UNSAT core geometry census | `docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md` | `python tools/classify_nontrivial_unsat_core_geometry.py` | `python -m pytest tests/test_classify_nontrivial_unsat_core_geometry_smoke.py -q` |
+| Reproduce nontrivial core rulebook compression | `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md` | `python tools/nontrivial_core_rulebook.py` | `python -m pytest tests/test_nontrivial_core_rulebook_smoke.py -q` |
+| Reproduce rulebook-to-census motif link check | `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md` | `python tools/link_core_rulebook_to_min_cert_census.py` | `python -m pytest tests/test_link_core_rulebook_to_min_cert_census_smoke.py -q` |
 | Reproduce minimal identity certificates at `z=(1,0)` | `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md` | `python tools/minimal_global_identity_certificates.py` | `python -m pytest tests/test_minimal_global_identity_certificates_smoke.py -q` |
 | Reproduce dual rigidity profile (negative vs positive) | `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md` | `python tools/global_sign_rigidity_dual_profile.py` | `python -m pytest tests/test_global_sign_rigidity_dual_profile_smoke.py -q` |
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
@@ -102,6 +106,8 @@ Additional high-signal documents:
 - `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md`
 - `docs/REDUCED_ORBIT_FORMAL_PROOF_2026_02_11.md`
 - `docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md`
+- `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md`
+- `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md`
 - `docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` (raw web-source log)

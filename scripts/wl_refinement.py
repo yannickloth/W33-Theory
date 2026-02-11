@@ -52,8 +52,9 @@ def main():
     adj = read_adj(ADJ_PATH)
     classes = wl_refine(adj)
     out = {str(k): v for k, v in classes.items()}
-    with open(OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(out, OUT_PATH, indent=2)
     print(f"WL refinement produced {len(classes)} color classes")
     for k, v in classes.items():
         print(f" - color {k}: size {len(v)} -> {v}")

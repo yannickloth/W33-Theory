@@ -10,19 +10,20 @@
 from __future__ import annotations
 
 import json
+
+# ensure we can import sibling modules in scripts/ (same pattern as other scripts)
+import sys
 import time
 from pathlib import Path
+from pathlib import Path as _Path
 from typing import List, Tuple
 
 import numpy as np
 
-# ensure we can import sibling modules in scripts/ (same pattern as other scripts)
-import sys
-from pathlib import Path as _Path
 sys.path.insert(0, str(_Path(__file__).parent))
 
 # re-use clique complex and boundary helpers
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
 
 
 def build_incidence_matrix(n: int, edges: List[Tuple[int, int]]) -> np.ndarray:
@@ -104,7 +105,9 @@ def compute_h27_vertices(adj: List[List[int]]):
     # Choose a canonical vertex (0)
     n = len(adj)
     non_neighbors = [v for v in range(n) if v != 0 and v not in adj[0]]
-    assert len(non_neighbors) == 27, f"H27 expected 27 vertices, found {len(non_neighbors)}"
+    assert (
+        len(non_neighbors) == 27
+    ), f"H27 expected 27 vertices, found {len(non_neighbors)}"
     return sorted(non_neighbors)
 
 
@@ -116,7 +119,13 @@ def compute_h1_kernel(L1: np.ndarray, tol=1e-8):
     return basis, w
 
 
-def compute_inclusion_rank(h27_edges_global_idx: List[int], h27_kernel_basis: np.ndarray, w33_kernel_basis: np.ndarray, n_edges_global: int, tol=1e-8):
+def compute_inclusion_rank(
+    h27_edges_global_idx: List[int],
+    h27_kernel_basis: np.ndarray,
+    w33_kernel_basis: np.ndarray,
+    n_edges_global: int,
+    tol=1e-8,
+):
     """Given harmonic basis for H1(H27) (in local edge coords) embed into global edge space and compute rank of images in global H1 space.
 
     - h27_edges_global_idx: list mapping local edge index -> global edge index, length m_local
@@ -166,7 +175,7 @@ def compute_h27_inclusion():
     # Create small adjacency for H27
     n_h = len(h27_vertices)
     adj_h = [[] for _ in range(n_h)]
-    for (i, j) in h27_edges:
+    for i, j in h27_edges:
         adj_h[i].append(j)
         adj_h[j].append(i)
     simplices_h = _build_clique(n_h, adj_h)
@@ -193,7 +202,7 @@ def compute_h27_inclusion():
     global_edge_index = {e: i for i, e in enumerate(edges)}
     # H27 edges in global indices
     h27_edges_global_idx = []
-    for (i, j) in simplices_h[1]:
+    for i, j in simplices_h[1]:
         u = h27_vertices[i]
         v = h27_vertices[j]
         # canonical ordering (min,max)
@@ -202,7 +211,9 @@ def compute_h27_inclusion():
         assert ge is not None
         h27_edges_global_idx.append(ge)
 
-    rank = compute_inclusion_rank(h27_edges_global_idx, h27_harm_basis, w33_harm_basis, len(edges))
+    rank = compute_inclusion_rank(
+        h27_edges_global_idx, h27_harm_basis, w33_harm_basis, len(edges)
+    )
 
     return {
         "h27_vertices": h27_vertices,
@@ -276,12 +287,13 @@ def main():
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_w33_hodge_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(out, out_path, indent=2)
 
     print(f"Wrote results to {out_path}")
     print("Summary:")
-    print(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2, default=str))
 
 
 if __name__ == "__main__":

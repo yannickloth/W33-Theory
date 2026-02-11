@@ -150,6 +150,9 @@ An additional exhaustive classifier now shows that each nontrivial size-`3`
 UNSAT core in `AGL/Hessian` is exactly one full affine parallel class triplet
 (three lines of one direction with offsets `0,1,2`), and this core-signature
 family is identical between `AGL` and `Hessian216` at each nontrivial `z` cell.
+We then compressed these families into coordinate-level rulebooks on
+`(z0,z1,z2)` per direction: all families are cartesian boxes except one
+non-cartesian corner-exclusion family at `z=(1,1)` in direction `x`.
 
 Complementing those UNSAT witnesses, `tools/minimal_global_identity_certificates.py`
 computes exact positive certificates for the unique surviving global cell
@@ -164,6 +167,14 @@ the dual profile in one table: in `all_agl`, negative cores are `3 -> 4` under
 striation completeness while positive identity certificates stay at `6`; in
 `hessian216`, negative cores are `3 -> 4` while positive certificates stay at
 `5`. So positive-minus-negative gap decreases by exactly one in both spaces.
+
+We also added `tools/link_core_rulebook_to_min_cert_census.py` to cross-link
+the nontrivial-core motif rulebook with canonical minimal-certificate
+representatives from the census artifacts. The overlap is exactly zero in
+`agl_exact_full` (`0/7`) but positive in Hessian datasets
+(`18/79` exact full, `30/256` exhaustive2), with dominant overlap motif
+`x:(1,1,0)`. This provides a direct bridge between global-core motifs and
+enumerator-side representative structure.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:

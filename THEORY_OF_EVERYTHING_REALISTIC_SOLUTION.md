@@ -1,4 +1,4 @@
-# Solving the "Theory of Everything": A Realistic Resolution
+﻿# Solving the "Theory of Everything": A Realistic Resolution
 
 ## Short answer
 
@@ -21,7 +21,7 @@ A true ToE must satisfy all of the following simultaneously:
 - **Asymptotic safety:** promising renormalization-group structure; full realistic matter embedding still open.
 - **Causal / emergent approaches:** conceptually fresh, but currently underconstrained by data.
 
-## Practical “solve it” protocol
+## Practical "solve it" protocol
 
 The nearest feasible path is not one equation, but a pipeline:
 
@@ -37,7 +37,7 @@ A framework is "the ToE" only after it survives repeated failed attempts at fals
 
 Until then, the scientifically honest status is:
 
-> **Not solved yet — but solvable in principle through mathematically rigid, experimentally driven iteration.**
+> **Not solved yet - but solvable in principle through mathematically rigid, experimentally driven iteration.**
 
 ## Concrete next step in this repo
 

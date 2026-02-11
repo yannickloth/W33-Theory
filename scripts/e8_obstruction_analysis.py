@@ -751,8 +751,9 @@ The analysis reveals the embedding problem is HIGHLY constrained:
 
     out_path = Path.cwd() / "checks" / "PART_CVII_e8_obstruction_analysis.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w") as f:
-        json.dump(output, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(output, out_path, indent=2)
     print(f"\nWrote: {out_path}")
 
 

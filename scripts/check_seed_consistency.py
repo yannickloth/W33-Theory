@@ -102,16 +102,18 @@ def compute_embedding_matrix():
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('seed_json')
+    p.add_argument("seed_json")
     args = p.parse_args()
 
     seed_path = Path(args.seed_json)
     if not seed_path.exists():
-        print('Seed file not found:', seed_path)
+        print("Seed file not found:", seed_path)
         sys.exit(2)
 
-    seed = json.loads(open(seed_path, encoding='utf-8').read())
-    seeded: Dict[int, int] = {int(s['edge_index']): int(s['root_index']) for s in seed.get('seed_edges', [])}
+    seed = json.loads(open(seed_path, encoding="utf-8").read())
+    seeded: Dict[int, int] = {
+        int(s["edge_index"]): int(s["root_index"]) for s in seed.get("seed_edges", [])
+    }
 
     # load roots and edges
     X, edges = compute_embedding_matrix()
@@ -122,7 +124,7 @@ def main():
     n = max(max(a, b) for e in edges for (a, b) in [e]) + 1  # rough
     # build adjacency
     adj = [[] for _ in range(n)]
-    for (i, j) in edges:
+    for i, j in edges:
         adj[i].append(j)
         adj[j].append(i)
 
@@ -146,11 +148,17 @@ def main():
     missing_roots = []
 
     # 1) direct triangle checks where two seeded edges imply the third
-    for (a, b, c) in triangles:
+    for a, b, c in triangles:
         # oriented edges e_ab, e_bc, e_ac as in solver
-        e_ab = edge_index.get((a, b)) if (a, b) in edge_index else edge_index.get((b, a))
-        e_bc = edge_index.get((b, c)) if (b, c) in edge_index else edge_index.get((c, b))
-        e_ac = edge_index.get((a, c)) if (a, c) in edge_index else edge_index.get((c, a))
+        e_ab = (
+            edge_index.get((a, b)) if (a, b) in edge_index else edge_index.get((b, a))
+        )
+        e_bc = (
+            edge_index.get((b, c)) if (b, c) in edge_index else edge_index.get((c, b))
+        )
+        e_ac = (
+            edge_index.get((a, c)) if (a, c) in edge_index else edge_index.get((c, a))
+        )
         if e_ab is None or e_bc is None or e_ac is None:
             continue
         # if e_ab and e_bc both seeded, we can compute implied r_ac
@@ -160,13 +168,31 @@ def main():
             # implied r_ac = r_ab + r_bc coordinate-wise
             implied = tuple(int(x + y) for x, y in zip(r_ab, r_bc))
             if implied not in roots_map:
-                missing_roots.append({'triangle': (a, b, c), 'implied': implied, 'e_ab': e_ab, 'e_bc': e_bc})
+                missing_roots.append(
+                    {
+                        "triangle": (a, b, c),
+                        "implied": implied,
+                        "e_ab": e_ab,
+                        "e_bc": e_bc,
+                    }
+                )
             else:
                 implied_idx = roots_map[implied]
                 # if e_ac seeded, check equality
                 if e_ac in seeded:
                     if seeded[e_ac] != implied_idx:
-                        contradictions.append({'triangle': (a, b, c), 'e_ab': e_ab, 'r_ab': seeded[e_ab], 'e_bc': e_bc, 'r_bc': seeded[e_bc], 'e_ac': e_ac, 'r_ac': seeded[e_ac], 'implied': implied_idx})
+                        contradictions.append(
+                            {
+                                "triangle": (a, b, c),
+                                "e_ab": e_ab,
+                                "r_ab": seeded[e_ab],
+                                "e_bc": e_bc,
+                                "r_bc": seeded[e_bc],
+                                "e_ac": e_ac,
+                                "r_ac": seeded[e_ac],
+                                "implied": implied_idx,
+                            }
+                        )
 
     # 2) iterative propagation: start with seeded assignments and deduce further edges
     propagated = dict(seeded)
@@ -175,10 +201,22 @@ def main():
     changed = True
     while changed:
         changed = False
-        for (a, b, c) in triangles:
-            e_ab = edge_index.get((a, b)) if (a, b) in edge_index else edge_index.get((b, a))
-            e_bc = edge_index.get((b, c)) if (b, c) in edge_index else edge_index.get((c, b))
-            e_ac = edge_index.get((a, c)) if (a, c) in edge_index else edge_index.get((c, a))
+        for a, b, c in triangles:
+            e_ab = (
+                edge_index.get((a, b))
+                if (a, b) in edge_index
+                else edge_index.get((b, a))
+            )
+            e_bc = (
+                edge_index.get((b, c))
+                if (b, c) in edge_index
+                else edge_index.get((c, b))
+            )
+            e_ac = (
+                edge_index.get((a, c))
+                if (a, c) in edge_index
+                else edge_index.get((c, a))
+            )
             if e_ab is None or e_bc is None or e_ac is None:
                 continue
             # if two are known, deduce third
@@ -188,7 +226,14 @@ def main():
                 r_bc = roots[propagated[e_bc]]
                 implied = tuple(int(x + y) for x, y in zip(r_ab, r_bc))
                 if implied not in roots_map:
-                    prop_missing.append({'triangle': (a, b, c), 'implied': implied, 'e_ab': e_ab, 'e_bc': e_bc})
+                    prop_missing.append(
+                        {
+                            "triangle": (a, b, c),
+                            "implied": implied,
+                            "e_ab": e_ab,
+                            "e_bc": e_bc,
+                        }
+                    )
                     continue
                 propagated[e_ac] = roots_map[implied]
                 changed = True
@@ -198,7 +243,14 @@ def main():
                 r_ac = roots[propagated[e_ac]]
                 implied = tuple(int(c - a) for a, c in zip(r_ab, r_ac))
                 if implied not in roots_map:
-                    prop_missing.append({'triangle': (a, b, c), 'implied': implied, 'e_ab': e_ab, 'e_ac': e_ac})
+                    prop_missing.append(
+                        {
+                            "triangle": (a, b, c),
+                            "implied": implied,
+                            "e_ab": e_ab,
+                            "e_ac": e_ac,
+                        }
+                    )
                     continue
                 propagated[e_bc] = roots_map[implied]
                 changed = True
@@ -208,36 +260,46 @@ def main():
                 r_ac = roots[propagated[e_ac]]
                 implied = tuple(int(c - b) for b, c in zip(r_bc, r_ac))
                 if implied not in roots_map:
-                    prop_missing.append({'triangle': (a, b, c), 'implied': implied, 'e_bc': e_bc, 'e_ac': e_ac})
+                    prop_missing.append(
+                        {
+                            "triangle": (a, b, c),
+                            "implied": implied,
+                            "e_bc": e_bc,
+                            "e_ac": e_ac,
+                        }
+                    )
                     continue
                 propagated[e_ab] = roots_map[implied]
                 changed = True
         # check for contradictions with seeded values
         for ei, ridx in list(propagated.items()):
             if ei in seeded and seeded[ei] != ridx:
-                prop_contradictions.append({'edge': ei, 'seeded': seeded[ei], 'propagated': ridx})
+                prop_contradictions.append(
+                    {"edge": ei, "seeded": seeded[ei], "propagated": ridx}
+                )
                 # stop early
                 changed = False
                 break
     res = {
-        'seed_file': str(seed_path),
-        'num_seeded_edges': len(seeded),
-        'triangles_checked': len(triangles),
-        'contradictions': contradictions,
-        'missing_roots': missing_roots,
-        'propagated_count': len(propagated),
-        'prop_contradictions': prop_contradictions,
-        'prop_missing': prop_missing,
+        "seed_file": str(seed_path),
+        "num_seeded_edges": len(seeded),
+        "triangles_checked": len(triangles),
+        "contradictions": contradictions,
+        "missing_roots": missing_roots,
+        "propagated_count": len(propagated),
+        "prop_contradictions": prop_contradictions,
+        "prop_missing": prop_missing,
     }
-    outp = Path('checks') / f"PART_CVII_z3_seed_consistency_{seed_path.stem}.json"
+    outp = Path("checks") / f"PART_CVII_z3_seed_consistency_{seed_path.stem}.json"
     outp.parent.mkdir(parents=True, exist_ok=True)
-    with open(outp, 'w', encoding='utf-8') as f:
-        json.dump(res, f, indent=2)
-    print('Wrote', outp)
+    from utils.json_safe import dump_json
+
+    dump_json(res, outp, indent=2)
+    print("Wrote", outp)
 
     if contradictions or missing_roots:
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

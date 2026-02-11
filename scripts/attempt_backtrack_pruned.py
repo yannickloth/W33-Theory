@@ -15,10 +15,10 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import time
 from collections import defaultdict, deque
 from typing import Dict, List, Set, Tuple
-import os
 
 import numpy as np
 
@@ -103,7 +103,7 @@ def compute_embedding_matrix():
 
 def build_edge_vectors(X: np.ndarray, edges: List[Tuple[int, int]]):
     E = []
-    for (i, j) in edges:
+    for i, j in edges:
         v = X[i] - X[j]
         nv = np.linalg.norm(v)
         if nv > 0:
@@ -130,10 +130,22 @@ def enumerate_triangles(n: int, adj: List[List[int]]):
 
 
 class Backtracker:
-    def __init__(self, candidates: List[List[int]], roots: List[Tuple[int, ...]], edges: List[Tuple[int, int]], triangles: List[Tuple[int, int, int]], cost: np.ndarray, time_limit: float = 1800.0, initial_assign: Dict[int, int] = None, verbose: bool = False):
+    def __init__(
+        self,
+        candidates: List[List[int]],
+        roots: List[Tuple[int, ...]],
+        edges: List[Tuple[int, int]],
+        triangles: List[Tuple[int, int, int]],
+        cost: np.ndarray,
+        time_limit: float = 1800.0,
+        initial_assign: Dict[int, int] = None,
+        verbose: bool = False,
+    ):
         self.verbose = verbose
         # sort candidates by cost
-        self.candidates = [list(sorted(c, key=lambda r: cost[e, r])) for e, c in enumerate(candidates)]
+        self.candidates = [
+            list(sorted(c, key=lambda r: cost[e, r])) for e, c in enumerate(candidates)
+        ]
         self.roots = roots
         self.edges = edges
         self.triangles = triangles
@@ -168,8 +180,11 @@ class Backtracker:
                 self.root_used.add(r)
             # remove used roots from other candidates
             for e in range(self.N_edges):
-                if e in self.edge_assign: continue
-                self.candidates[e] = [r for r in self.candidates[e] if r not in self.root_used]
+                if e in self.edge_assign:
+                    continue
+                self.candidates[e] = [
+                    r for r in self.candidates[e] if r not in self.root_used
+                ]
                 if not self.candidates[e]:
                     print(f"Initial assignments eliminated all candidates for edge {e}")
                     self.conflicts.append(e)
@@ -184,9 +199,12 @@ class Backtracker:
             e_ab = edge_index.get((a, b), edge_index.get((b, a)))
             e_bc = edge_index.get((b, c), edge_index.get((c, b)))
             e_ac = edge_index.get((a, c), edge_index.get((c, a)))
-            if e_ab is not None: self.edge_to_tri[e_ab].append((e_ab, e_bc, e_ac))
-            if e_bc is not None: self.edge_to_tri[e_bc].append((e_ab, e_bc, e_ac))
-            if e_ac is not None: self.edge_to_tri[e_ac].append((e_ab, e_bc, e_ac))
+            if e_ab is not None:
+                self.edge_to_tri[e_ab].append((e_ab, e_bc, e_ac))
+            if e_bc is not None:
+                self.edge_to_tri[e_bc].append((e_ab, e_bc, e_ac))
+            if e_ac is not None:
+                self.edge_to_tri[e_ac].append((e_ab, e_bc, e_ac))
 
     def time_exceeded(self):
         return (time.time() - self.t0) > self.time_limit
@@ -196,7 +214,8 @@ class Backtracker:
         best_e = None
         best_len = 1_000_000
         for e in range(self.N_edges):
-            if e in self.edge_assign: continue
+            if e in self.edge_assign:
+                continue
             le = len(self.candidates[e])
             if le < best_len:
                 best_len = le
@@ -255,12 +274,17 @@ class Backtracker:
         while changed:
             changed = False
             for e in range(self.N_edges):
-                if e in self.edge_assign: continue
+                if e in self.edge_assign:
+                    continue
                 # Filter candidate list to remove used roots
-                    self.candidates[e] = [r for r in self.candidates[e] if r not in self.root_used]
+                self.candidates[e] = [
+                    r for r in self.candidates[e] if r not in self.root_used
+                ]
                 if not self.candidates[e]:
                     # record conflict edges and abort
-                    self.conflicts = [i for i in range(self.N_edges) if not self.candidates[i]]
+                    self.conflicts = [
+                        i for i in range(self.N_edges) if not self.candidates[i]
+                    ]
                     return False
                 if len(self.candidates[e]) == 1:
                     r = self.candidates[e][0]
@@ -277,7 +301,9 @@ class Backtracker:
             return True
         self.nodes += 1
         if self.nodes % 1000 == 0 and self.verbose:
-            print(f"nodes={self.nodes} assigned={len(self.edge_assign)} time={time.time()-self.t0:.1f}s")
+            print(
+                f"nodes={self.nodes} assigned={len(self.edge_assign)} time={time.time()-self.t0:.1f}s"
+            )
         e = self.select_edge()
         if e is None:
             return False
@@ -301,7 +327,8 @@ class Backtracker:
             # propagate: reduce candidate lists for adjacent edges by removing r
             modified = []
             for ee in range(self.N_edges):
-                if ee in self.edge_assign: continue
+                if ee in self.edge_assign:
+                    continue
                 before = len(self.candidates[ee])
                 newlist = [x for x in self.candidates[ee] if x != r]
                 if len(newlist) != before:
@@ -329,7 +356,11 @@ class Backtracker:
                             if r_ac is not None and r_bc is not None:
                                 needed = tuple(int(a - b) for a, b in zip(r_ac, r_bc))
                                 idx_needed = self.root_tuple_to_index.get(needed)
-                                if idx_needed is None or idx_needed in self.root_used or idx_needed not in self.candidates[e_ab]:
+                                if (
+                                    idx_needed is None
+                                    or idx_needed in self.root_used
+                                    or idx_needed not in self.candidates[e_ab]
+                                ):
                                     inconsistent = True
                                     break
                                 # forced assignment
@@ -340,7 +371,11 @@ class Backtracker:
                             if r_ab is not None and r_ac is not None:
                                 needed = tuple(int(a - b) for a, b in zip(r_ac, r_ab))
                                 idx_needed = self.root_tuple_to_index.get(needed)
-                                if idx_needed is None or idx_needed in self.root_used or idx_needed not in self.candidates[e_bc]:
+                                if (
+                                    idx_needed is None
+                                    or idx_needed in self.root_used
+                                    or idx_needed not in self.candidates[e_bc]
+                                ):
                                     inconsistent = True
                                     break
                                 forced_assigns.append((e_bc, idx_needed))
@@ -350,7 +385,11 @@ class Backtracker:
                             if r_ab is not None and r_bc is not None:
                                 needed = tuple(int(a + b) for a, b in zip(r_ab, r_bc))
                                 idx_needed = self.root_tuple_to_index.get(needed)
-                                if idx_needed is None or idx_needed in self.root_used or idx_needed not in self.candidates[e_ac]:
+                                if (
+                                    idx_needed is None
+                                    or idx_needed in self.root_used
+                                    or idx_needed not in self.candidates[e_ac]
+                                ):
                                     inconsistent = True
                                     break
                                 forced_assigns.append((e_ac, idx_needed))
@@ -395,10 +434,24 @@ def main():
     parser.add_argument("--m", type=int, default=24)
     parser.add_argument("--k", type=int, default=30)
     parser.add_argument("--time-limit", type=float, default=600.0)
-    parser.add_argument("--seed-json", type=str, default=os.path.join('checks', 'PART_CVII_e8_embedding_attempt_seed.json'))
-    parser.add_argument("--use-partial", action='store_true', help="Use partial mapping from checks/PART_CVII_e8_embedding_backtrack_partial.json if present (soft)")
-    parser.add_argument("--force-partial", action='store_true', help="Force partial mapping as initial assignments (hard)")
-    parser.add_argument("--debug", action='store_true', help="Print debug info during search")
+    parser.add_argument(
+        "--seed-json",
+        type=str,
+        default=os.path.join("checks", "PART_CVII_e8_embedding_attempt_seed.json"),
+    )
+    parser.add_argument(
+        "--use-partial",
+        action="store_true",
+        help="Use partial mapping from checks/PART_CVII_e8_embedding_backtrack_partial.json if present (soft)",
+    )
+    parser.add_argument(
+        "--force-partial",
+        action="store_true",
+        help="Force partial mapping as initial assignments (hard)",
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="Print debug info during search"
+    )
     args = parser.parse_args()
 
     X, edges, adj = compute_embedding_matrix()
@@ -406,7 +459,9 @@ def main():
 
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     N_edges = len(A_mat)
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
@@ -422,23 +477,43 @@ def main():
     seed_obj = None
     if args.seed_json and os.path.exists(args.seed_json):
         seed_obj = json.load(open(args.seed_json))
-        for sd in seed_obj.get('seed_edges', []):
-            eidx = sd.get('edge_index')
-            ridx = sd.get('root_index')
-            if eidx is not None and ridx is not None and 0 <= eidx < N_edges and 0 <= ridx < len(roots):
+        for sd in seed_obj.get("seed_edges", []):
+            eidx = sd.get("edge_index")
+            ridx = sd.get("root_index")
+            if (
+                eidx is not None
+                and ridx is not None
+                and 0 <= eidx < N_edges
+                and 0 <= ridx < len(roots)
+            ):
                 if ridx not in candidates[eidx]:
                     candidates[eidx].append(ridx)
 
     # base orbit pruning: take top-M roots by mean cost over edges incident to base vertex
     base = int(args.base)
     edges_incident = [i for i, (u, v) in enumerate(edges) if u == base or v == base]
-    mean_cost = cost[edges_incident].mean(axis=0) if edges_incident else np.full((len(roots),), np.inf)
+    mean_cost = (
+        cost[edges_incident].mean(axis=0)
+        if edges_incident
+        else np.full((len(roots),), np.inf)
+    )
     top_m_roots = list(np.argsort(mean_cost)[: int(args.m)])
     top_m_set = set(top_m_roots)
     # prune only incident edges
     for e in range(N_edges):
         if e in edges_incident:
-            new = [r for r in candidates[e] if r in top_m_set or (seed_obj and any(sd.get('edge_index') == e and sd.get('root_index') == r for sd in seed_obj.get('seed_edges', [])))]
+            new = [
+                r
+                for r in candidates[e]
+                if r in top_m_set
+                or (
+                    seed_obj
+                    and any(
+                        sd.get("edge_index") == e and sd.get("root_index") == r
+                        for sd in seed_obj.get("seed_edges", [])
+                    )
+                )
+            ]
             if not new:
                 # if pruning removed all, keep original
                 continue
@@ -448,13 +523,17 @@ def main():
 
     partial_assign = None
     if args.use_partial:
-        partial_path = os.path.join('checks', 'PART_CVII_e8_embedding_backtrack_partial.json')
+        partial_path = os.path.join(
+            "checks", "PART_CVII_e8_embedding_backtrack_partial.json"
+        )
         if os.path.exists(partial_path):
             try:
                 partial_obj = json.load(open(partial_path))
-                e2r = partial_obj.get('edge_to_root', {})
+                e2r = partial_obj.get("edge_to_root", {})
                 partial_assign = {int(k): int(v) for k, v in e2r.items()}
-                print(f"Loaded partial mapping with {len(partial_assign)} edge->root entries")
+                print(
+                    f"Loaded partial mapping with {len(partial_assign)} edge->root entries"
+                )
             except Exception as exc:
                 print("Failed to load partial mapping:", exc)
 
@@ -462,7 +541,7 @@ def main():
     # If --force-partial is set, force those assignments as initial assignments
     initial_assign = None
     if partial_assign:
-        if not getattr(args, 'force_partial', False):
+        if not getattr(args, "force_partial", False):
             # ensure assigned roots are included in candidate lists, but don't force their assignment
             assigned_roots = set(partial_assign.values())
             for e, r in partial_assign.items():
@@ -483,40 +562,53 @@ def main():
             # force partial mapping
             initial_assign = partial_assign
 
-    bt = Backtracker(candidates, roots, edges, triangles, cost, time_limit=float(args.time_limit), initial_assign=initial_assign, verbose=bool(args.debug))
+    bt = Backtracker(
+        candidates,
+        roots,
+        edges,
+        triangles,
+        cost,
+        time_limit=float(args.time_limit),
+        initial_assign=initial_assign,
+        verbose=bool(args.debug),
+    )
     if bt.initially_inconsistent:
         print("Initial assignments inconsistent; aborting")
         out = {
-            'found': False,
-            'nodes': bt.nodes,
-            'time_seconds': time.time() - bt.t0,
-            'assigned': len(bt.edge_assign),
-            'assignments': {str(k): int(v) for k, v in bt.edge_assign.items()},
-            'error': 'initial_inconsistent'
+            "found": False,
+            "nodes": bt.nodes,
+            "time_seconds": time.time() - bt.t0,
+            "assigned": len(bt.edge_assign),
+            "assignments": {str(k): int(v) for k, v in bt.edge_assign.items()},
+            "error": "initial_inconsistent",
         }
-        out_path = os.path.join('checks', 'PART_CVII_e8_backtrack_pruned.json')
-        with open(out_path, 'w', encoding='utf-8') as f:
-            json.dump(out, f, indent=2)
-        print('Wrote', out_path)
-        print(json.dumps(out, indent=2))
+        out_path = os.path.join("checks", "PART_CVII_e8_backtrack_pruned.json")
+        from utils.json_safe import dump_json
+
+        dump_json(out, out_path, indent=2)
+        print("Wrote", out_path)
+        print(json.dumps(out, indent=2, default=str))
         return
 
-    print(f"Starting backtracking: edges={N_edges} initial_vars={sum(len(c) for c in candidates)} time_limit={args.time_limit}s")
+    print(
+        f"Starting backtracking: edges={N_edges} initial_vars={sum(len(c) for c in candidates)} time_limit={args.time_limit}s"
+    )
     ok = bt.search()
     out = {
-        'found': bool(ok),
-        'nodes': bt.nodes,
-        'time_seconds': time.time() - bt.t0,
-        'assigned': len(bt.edge_assign),
-        'assignments': {str(k): int(v) for k, v in bt.edge_assign.items()},
-        'conflicts': bt.conflicts,
+        "found": bool(ok),
+        "nodes": bt.nodes,
+        "time_seconds": time.time() - bt.t0,
+        "assigned": len(bt.edge_assign),
+        "assignments": {str(k): int(v) for k, v in bt.edge_assign.items()},
+        "conflicts": bt.conflicts,
     }
-    out_path = os.path.join('checks', 'PART_CVII_e8_backtrack_pruned.json')
-    with open(out_path, 'w', encoding='utf-8') as f:
-        json.dump(out, f, indent=2)
-    print('Wrote', out_path)
-    print(json.dumps(out, indent=2))
+    out_path = os.path.join("checks", "PART_CVII_e8_backtrack_pruned.json")
+    from utils.json_safe import dump_json
+
+    dump_json(out, out_path, indent=2)
+    print("Wrote", out_path)
+    print(json.dumps(out, indent=2, default=str))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

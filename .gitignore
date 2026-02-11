@@ -16,6 +16,18 @@ __pycache__/
 # Temp files
 tmpclaude-*
 *.tmp
+tmp*.log
+run*.log
+latex_build.log
+
+# Multi-run local scratch directories (safe to ignore)
+artifacts_for_release_*/
+artifacts_run_*/
+artifacts_try_*/
+tmp_artifacts_*/
+ChatGPT 5.2/
+tmpclaude-*/
+logs/
 
 # Local artifacts & CI outputs
 artifacts/
@@ -46,6 +58,8 @@ external/sage/
 
 # local workspace data
 claude_workspace/data/
+.mypy_cache/
+.pytest_cache/
 
 # Editor / OS files
 .DS_Store

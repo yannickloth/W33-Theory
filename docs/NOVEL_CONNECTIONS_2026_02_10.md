@@ -158,12 +158,24 @@ changes affine/Hessian symmetries:
   full parallel-class triplet (same line direction, offsets `0/1/2`); core
   signature sets and per-cell counts match exactly between `all_agl` and
   `hessian216` (`6,2,4,2,2` across `z=(1,1),(1,2),(2,0),(2,1),(2,2)`).
+- nontrivial core-rulebook compression (`2026-02-11`):
+  `tools/nontrivial_core_rulebook.py` compresses each nontrivial core family
+  into coordinate rules on offset-ordered triplets `(z0,z1,z2)`.
+  All families are full cartesian boxes except one unique non-cartesian
+  family (`z=(1,1)`, direction `x`): `z2=1`, `z0,z1 in {1,2}`, with only
+  the corner `(2,2)` missing.
 - dual rigidity profile (`2026-02-11`):
   `tools/global_sign_rigidity_dual_profile.py` combines negative-core and
   positive-certificate layers into one summary:
   `all_agl` has `3 -> 4` (negative) against `6 -> 6` (positive), while
   `hessian216` has `3 -> 4` against `5 -> 5`, so positive-minus-negative
   gap shrinks by exactly `1` under striation completeness in both spaces.
+- rulebook-to-census motif link (`2026-02-11`):
+  `tools/link_core_rulebook_to_min_cert_census.py` cross-links nontrivial
+  global-core motifs with canonical minimal-certificate representatives from
+  the census artifacts. Result: overlap is exactly zero in `agl_exact_full`
+  (`0/7` reps), but positive in Hessian datasets (`18/79` exact full,
+  `30/256` exhaustive2), with dominant overlap motif `x:(1,1,0)`.
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:
@@ -207,6 +219,10 @@ Outputs:
 - `docs/MINIMAL_GLOBAL_FULL_SIGN_CORES_2026_02_11.md`
 - `artifacts/nontrivial_unsat_core_geometry_2026_02_11.json`
 - `docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md`
+- `artifacts/nontrivial_core_rulebook_2026_02_11.json`
+- `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md`
+- `artifacts/core_rulebook_min_cert_link_2026_02_11.json`
+- `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md`
 - `artifacts/minimal_global_identity_certificates_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json`

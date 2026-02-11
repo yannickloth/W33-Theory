@@ -62,6 +62,10 @@ theorem zMap_table : And (zMap 0 = 2) (And (zMap 1 = 1) (zMap 2 = 0)) := by
 theorem zMap_fixed_iff (z : ZMod 3) : Iff (zMap z = z) (z = 1) := by
   fin_cases z <;> simp [zMap]
 
+/-- Any fixed point of `zMap` must be `z=1`. -/
+theorem zMap_fixed_point_unique (z : ZMod 3) (hz : zMap z = z) : z = 1 := by
+  exact (zMap_fixed_iff z).1 hz
+
 /-- For `x=0`, product sign is `+1`. -/
 @[simp] theorem PLine_vertical : PLine (1 : ZMod 3) 0 0 = 1 := by
   simp [PLine]
@@ -83,5 +87,24 @@ theorem z22_contradiction :
 theorem z22_contradiction_via_zMap :
     Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 (zMap 1)) := by
   simp [PLine_vertical, SLine_vertical_zMap_one]
+
+/--
+If one assumes a fixed point `z` of `zMap`, the same vertical-line contradiction
+follows after reducing to the unique fixed value `z=1`.
+-/
+theorem z22_contradiction_of_fixed_point
+    (z : ZMod 3) (hz : zMap z = z) :
+    Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 z) := by
+  have hz1 : z = 1 := zMap_fixed_point_unique z hz
+  simpa [hz1] using z22_contradiction
+
+/--
+Same fixed-point contradiction written in the explicit `zMap` target form.
+-/
+theorem z22_contradiction_of_fixed_point_via_zMap
+    (z : ZMod 3) (hz : zMap z = z) :
+    Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 (zMap z)) := by
+  have hz1 : z = 1 := zMap_fixed_point_unique z hz
+  simpa [hz1] using z22_contradiction_via_zMap
 
 end Z22Exclusion

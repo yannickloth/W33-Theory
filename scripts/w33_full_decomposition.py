@@ -44,7 +44,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
 from w33_h1_decomposition import (
     J_matrix,
     build_incidence_matrix,
@@ -75,11 +76,11 @@ def compute_full_hodge_eigenbasis(n, adj, edges, simplices):
     return {
         "eigenvalues": w,
         "eigenvectors": v,
-        "harmonic": v[:, harmonic_idx],   # 240 x 81
-        "coexact": v[:, coexact_idx],     # 240 x 120
-        "exact": v[:, exact_idx],         # 240 x 39
-        "exact_10": v[:, exact_10_idx],   # 240 x 24
-        "exact_16": v[:, exact_16_idx],   # 240 x 15
+        "harmonic": v[:, harmonic_idx],  # 240 x 81
+        "coexact": v[:, coexact_idx],  # 240 x 120
+        "exact": v[:, exact_idx],  # 240 x 39
+        "exact_10": v[:, exact_10_idx],  # 240 x 24
+        "exact_16": v[:, exact_16_idx],  # 240 x 15
     }
 
 
@@ -216,27 +217,43 @@ def main():
     print(f"\n  CO-EXACT (120-dim):")
     print(f"    commutant_dim = {rep_coex['commutant_dim']}")
     print(f"    <|chi|^2> = {rep_coex['avg_chi_squared']:.6f}")
-    coex_status = "IRREDUCIBLE" if rep_coex["irreducible"] else f"REDUCIBLE into ~{rep_coex['commutant_dim']} components"
+    coex_status = (
+        "IRREDUCIBLE"
+        if rep_coex["irreducible"]
+        else f"REDUCIBLE into ~{rep_coex['commutant_dim']} components"
+    )
     print(f"    {coex_status}")
 
     rep_ex = analyze_representation_on_subspace(hodge["exact"], group, m)
     print(f"\n  EXACT (39-dim):")
     print(f"    commutant_dim = {rep_ex['commutant_dim']}")
     print(f"    <|chi|^2> = {rep_ex['avg_chi_squared']:.6f}")
-    ex_status = "IRREDUCIBLE" if rep_ex["irreducible"] else f"REDUCIBLE into ~{rep_ex['commutant_dim']} components"
+    ex_status = (
+        "IRREDUCIBLE"
+        if rep_ex["irreducible"]
+        else f"REDUCIBLE into ~{rep_ex['commutant_dim']} components"
+    )
     print(f"    {ex_status}")
 
     # Also check the sub-sectors of exact
     rep_ex10 = analyze_representation_on_subspace(hodge["exact_10"], group, m)
     print(f"\n  EXACT eigenvalue=10 (24-dim):")
     print(f"    commutant_dim = {rep_ex10['commutant_dim']}")
-    ex10_status = "IRREDUCIBLE" if rep_ex10["irreducible"] else f"REDUCIBLE into ~{rep_ex10['commutant_dim']} pieces"
+    ex10_status = (
+        "IRREDUCIBLE"
+        if rep_ex10["irreducible"]
+        else f"REDUCIBLE into ~{rep_ex10['commutant_dim']} pieces"
+    )
     print(f"    {ex10_status}")
 
     rep_ex16 = analyze_representation_on_subspace(hodge["exact_16"], group, m)
     print(f"\n  EXACT eigenvalue=16 (15-dim):")
     print(f"    commutant_dim = {rep_ex16['commutant_dim']}")
-    ex16_status = "IRREDUCIBLE" if rep_ex16["irreducible"] else f"REDUCIBLE into ~{rep_ex16['commutant_dim']} pieces"
+    ex16_status = (
+        "IRREDUCIBLE"
+        if rep_ex16["irreducible"]
+        else f"REDUCIBLE into ~{rep_ex16['commutant_dim']} pieces"
+    )
     print(f"    {ex16_status}")
 
     # Full 240-dim
@@ -260,7 +277,8 @@ def main():
     # The Mayer-Vietoris exact sequence:
     # H_1(link) -> H_0(link ∩ star) -> H_0(link) ⊕ H_0(star) -> H_0(W33) -> 0
     # gives: 81 = 78 + (b0(link) - 1) = 78 + 3
-    print(f"""
+    print(
+        f"""
   THEOREM (Topological Protection of 3 Generations):
 
   For W33 = SRG(40,12,2,4), the Mayer-Vietoris sequence for the
@@ -283,7 +301,8 @@ def main():
 
   Physical consequence: The 3 fermion generations of the Standard Model
   arise from the 4-component link structure of W33, which is rigid.
-""")
+"""
+    )
 
     # ================================================================
     # PART 5: Standard Model connection
@@ -291,7 +310,8 @@ def main():
     print(f"{'='*72}")
     print(f"  PART 5: COMPLETE STANDARD MODEL CONNECTION")
     print(f"{'='*72}")
-    print(f"""
+    print(
+        f"""
   E8 BREAKING CHAIN:
     E8 (248) -> E6 (78) x SU(3) (8)   [Z3-grading]
     E6 (78) -> SO(10) (45) x U(1)      [maximal subgroup]
@@ -331,7 +351,8 @@ def main():
     The gap separates massless gauge/matter modes from massive states.
     The ratio 10/4 = 2.5 and 16/4 = 4 encode the relative masses
     of the first two massive Kaluza-Klein-like excitations.
-""")
+"""
+    )
 
     # ================================================================
     # PART 6: Summary of all Pillars
@@ -367,14 +388,16 @@ def main():
         + rep_ex10["commutant_dim"]
         + rep_ex16["commutant_dim"]
     )
-    print(f"""
+    print(
+        f"""
   PSp(4,3) REPRESENTATION DECOMPOSITION:
     C_1 = 240 decomposes into {rep_full['commutant_dim']} irreducible components total
     Harmonic (81):      {rep_harm['commutant_dim']} component(s) {'[IRREDUCIBLE]' if rep_harm['irreducible'] else ''}
     Co-exact (120):     {rep_coex['commutant_dim']} component(s) {'[IRREDUCIBLE]' if rep_coex['irreducible'] else ''}
     Exact eig=10 (24):  {rep_ex10['commutant_dim']} component(s) {'[IRREDUCIBLE]' if rep_ex10['irreducible'] else ''}
     Exact eig=16 (15):  {rep_ex16['commutant_dim']} component(s) {'[IRREDUCIBLE]' if rep_ex16['irreducible'] else ''}
-""")
+"""
+    )
 
     elapsed = time.time() - t0
 
@@ -397,8 +420,9 @@ def main():
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_full_decomposition_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(result, out_path, indent=2)
     print(f"  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 

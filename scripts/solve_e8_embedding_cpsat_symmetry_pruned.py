@@ -111,7 +111,7 @@ def compute_embedding_matrix():
 
 def build_edge_vectors(X: np.ndarray, edges: List[Tuple[int, int]]):
     E = []
-    for (i, j) in edges:
+    for i, j in edges:
         v = X[i] - X[j]
         nv = np.linalg.norm(v)
         if nv > 0:
@@ -139,15 +139,46 @@ def enumerate_triangles(n: int, adj: List[List[int]]):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base", type=int, default=0, help="base vertex id (stabilizer) to use for pruning")
-    parser.add_argument("--m", type=int, default=12, help="Top-M roots (by mean cost over base orbit) to keep for base-incident edges")
-    parser.add_argument("--k", type=int, default=30, help="top-K candidate roots per edge (before pruning)")
-    parser.add_argument("--time-limit", type=float, default=600.0, help="solver time limit in seconds")
-    parser.add_argument("--seed-json", type=str, default=os.path.join('checks', 'PART_CVII_e8_embedding_attempt_seed.json'), help='seed file with seed_edges')
-    parser.add_argument("--seed-reward", type=float, default=10000.0, help="seed reward (soft preference)")
+    parser.add_argument(
+        "--base",
+        type=int,
+        default=0,
+        help="base vertex id (stabilizer) to use for pruning",
+    )
+    parser.add_argument(
+        "--m",
+        type=int,
+        default=12,
+        help="Top-M roots (by mean cost over base orbit) to keep for base-incident edges",
+    )
+    parser.add_argument(
+        "--k",
+        type=int,
+        default=30,
+        help="top-K candidate roots per edge (before pruning)",
+    )
+    parser.add_argument(
+        "--time-limit", type=float, default=600.0, help="solver time limit in seconds"
+    )
+    parser.add_argument(
+        "--seed-json",
+        type=str,
+        default=os.path.join("checks", "PART_CVII_e8_embedding_attempt_seed.json"),
+        help="seed file with seed_edges",
+    )
+    parser.add_argument(
+        "--seed-reward",
+        type=float,
+        default=10000.0,
+        help="seed reward (soft preference)",
+    )
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--log", action='store_true')
-    parser.add_argument("--force-seed", action='store_true', help="Force seed assignments as hard constraints (default: False)")
+    parser.add_argument("--log", action="store_true")
+    parser.add_argument(
+        "--force-seed",
+        action="store_true",
+        help="Force seed assignments as hard constraints (default: False)",
+    )
     args = parser.parse_args()
 
     t0 = time.time()
@@ -156,7 +187,9 @@ def main():
 
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     N_edges = len(A_mat)
     N_roots = len(roots_arr)
@@ -192,7 +225,12 @@ def main():
         for sd in seed_obj.get("seed_edges", []):
             eidx = sd.get("edge_index")
             ridx = sd.get("root_index")
-            if eidx is not None and ridx is not None and 0 <= eidx < N_edges and 0 <= ridx < N_roots:
+            if (
+                eidx is not None
+                and ridx is not None
+                and 0 <= eidx < N_edges
+                and 0 <= ridx < N_roots
+            ):
                 if ridx not in candidates[eidx]:
                     candidates[eidx].append(ridx)
                 forced_assignments[int(eidx)] = int(ridx)
@@ -203,9 +241,15 @@ def main():
     print(f"Base vertex {base}: incident edges count = {len(edges_incident)}")
 
     # compute mean cost per root across incident edges
-    mean_cost = cost[edges_incident].mean(axis=0) if edges_incident else np.full((N_roots,), np.inf)
+    mean_cost = (
+        cost[edges_incident].mean(axis=0)
+        if edges_incident
+        else np.full((N_roots,), np.inf)
+    )
     top_m_roots = list(np.argsort(mean_cost)[: int(args.m)])
-    print(f"Top-{args.m} roots across base-incident edges: {top_m_roots[:10]} ... (showing up to 10)")
+    print(
+        f"Top-{args.m} roots across base-incident edges: {top_m_roots[:10]} ... (showing up to 10)"
+    )
 
     # prune candidates for incident edges: keep only roots in top_m_roots
     top_m_set = set(top_m_roots)
@@ -227,7 +271,9 @@ def main():
             pruned_candidates.append(candidates[e])
             pruned_counts.append(len(candidates[e]))
 
-    print(f"Candidate counts (min,max,mean) after pruning: {min(pruned_counts)},{max(pruned_counts)},{sum(pruned_counts)/len(pruned_counts):.2f}")
+    print(
+        f"Candidate counts (min,max,mean) after pruning: {min(pruned_counts)},{max(pruned_counts)},{sum(pruned_counts)/len(pruned_counts):.2f}"
+    )
 
     # Build CP-SAT model using pruned_candidates
     model = cp_model.CpModel()
@@ -237,7 +283,7 @@ def main():
             bvars[(e, r)] = model.NewBoolVar(f"b_e{e}_r{r}")
 
     # enforce forced assignments (if requested)
-    if getattr(args, 'force_seed', False):
+    if getattr(args, "force_seed", False):
         for eidx, ridx in forced_assignments.items():
             if (eidx, ridx) in bvars:
                 model.Add(bvars[(eidx, ridx)] == 1)
@@ -253,7 +299,7 @@ def main():
 
     # root uniqueness
     root_to_pairs = defaultdict(list)
-    for (e, r) in bvars.keys():
+    for e, r in bvars.keys():
         root_to_pairs[r].append((e, r))
     for r, pairs in root_to_pairs.items():
         model.Add(sum(bvars[p] for p in pairs) <= 1)
@@ -262,7 +308,7 @@ def main():
     n, vertices, adj, _ = build_w33_graph()
     triangles = enumerate_triangles(n, adj)
     roots_arr_int = np.array(roots, dtype=int)
-    for (a, b, c) in triangles:
+    for a, b, c in triangles:
         e_ab = None
         e_bc = None
         e_ac = None
@@ -303,7 +349,11 @@ def main():
     for (e, r), var in bvars.items():
         c = cost[e, r]
         ic = int(round(c * scale))
-        if e in forced_assignments and forced_assignments[e] is not None and r == forced_assignments[e]:
+        if (
+            e in forced_assignments
+            and forced_assignments[e] is not None
+            and r == forced_assignments[e]
+        ):
             ic = max(0, ic - int(round(seed_reward)))
         objective_terms.append(ic * var)
     model.Minimize(sum(objective_terms))
@@ -314,7 +364,9 @@ def main():
     solver.parameters.random_seed = int(args.seed)
     solver.parameters.log_search_progress = args.log
 
-    print(f"Starting CP-SAT (pruned): edges={N_edges} vars={len(bvars)} triangles={len(triangles)} K={K} M={args.m} time_limit={args.time_limit}s")
+    print(
+        f"Starting CP-SAT (pruned): edges={N_edges} vars={len(bvars)} triangles={len(triangles)} K={K} M={args.m} time_limit={args.time_limit}s"
+    )
     status = solver.Solve(model)
     status_name = solver.StatusName(status)
     print("Solver status:", status_name)
@@ -371,18 +423,25 @@ def main():
             if ok:
                 res["found"] = True
                 res["positions"] = {str(k): list(v) for k, v in pos.items()}
-                res["edge_to_root"] = {str(ei): int(assignment[str(ei)]) for ei in range(N_edges) if str(ei) in assignment}
+                res["edge_to_root"] = {
+                    str(ei): int(assignment[str(ei)])
+                    for ei in range(N_edges)
+                    if str(ei) in assignment
+                }
         else:
             res["found"] = False
             res["positions_partial"] = {str(k): list(v) for k, v in pos.items()}
             res["assigned_vertices"] = len(pos)
 
-    out_path = os.path.join(os.getcwd(), "checks", "PART_CVII_e8_embedding_cpsat_symmetry_pruned.json")
+    out_path = os.path.join(
+        os.getcwd(), "checks", "PART_CVII_e8_embedding_cpsat_symmetry_pruned.json"
+    )
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(res, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(res, out_path, indent=2)
     print("Wrote", out_path)
-    print(json.dumps(res, indent=2))
+    print(json.dumps(res, indent=2, default=str))
 
 
 if __name__ == "__main__":

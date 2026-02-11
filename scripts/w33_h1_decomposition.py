@@ -38,12 +38,12 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
-
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
 
 # =========================================================================
 # GF(3) symplectic machinery
 # =========================================================================
+
 
 def gf3(x: int) -> int:
     return int(x % 3)
@@ -56,8 +56,10 @@ def mat_mod3(A) -> np.ndarray:
 def J_matrix() -> np.ndarray:
     """Symplectic form J = [[0,I],[-I,0]] on GF(3)^4."""
     J = np.zeros((4, 4), dtype=int)
-    J[0, 1] = 1; J[1, 0] = -1
-    J[2, 3] = 1; J[3, 2] = -1
+    J[0, 1] = 1
+    J[1, 0] = -1
+    J[2, 3] = 1
+    J[3, 2] = -1
     return mat_mod3(J)
 
 
@@ -89,6 +91,7 @@ def apply_matrix_projective(M: np.ndarray, v: tuple) -> tuple:
 # Build Hodge Laplacian and harmonic basis
 # =========================================================================
 
+
 def build_incidence_matrix(n: int, edges: list) -> np.ndarray:
     """Oriented vertex-edge incidence matrix D (n x m).
     For edge (i,j) with i<j: D[i,col] = +1, D[j,col] = -1.
@@ -118,6 +121,7 @@ def compute_harmonic_basis(n, adj, edges, simplices):
 # =========================================================================
 # SIGNED edge permutation (critical for correct H1 action)
 # =========================================================================
+
 
 def make_vertex_permutation(M: np.ndarray, vertices: list) -> list:
     """Compute permutation of vertices induced by matrix M."""
@@ -170,6 +174,7 @@ def signed_permutation_matrix(perm: list, signs: list, m: int) -> np.ndarray:
 # =========================================================================
 # Main decomposition
 # =========================================================================
+
 
 def find_irreducible_decomposition():
     t0 = time.time()
@@ -327,7 +332,9 @@ def find_irreducible_decomposition():
 
         chi_sq_avg = chi_sq_sum / group_size
         is_irr = abs(chi_sq_avg - 1.0) < 0.1
-        print(f"    Component {ci} (dim {mult}): <|chi|^2> = {chi_sq_avg:.6f} {'IRREDUCIBLE' if is_irr else f'REDUCIBLE (decomposes into ~{int(round(chi_sq_avg))} pieces)'}")
+        print(
+            f"    Component {ci} (dim {mult}): <|chi|^2> = {chi_sq_avg:.6f} {'IRREDUCIBLE' if is_irr else f'REDUCIBLE (decomposes into ~{int(round(chi_sq_avg))} pieces)'}"
+        )
 
     # Verify generators preserve each component
     print("\n  Verification: generators preserve components?")
@@ -347,13 +354,16 @@ def find_irreducible_decomposition():
         ok = max_leak < 1e-6
         if not ok:
             all_preserved = False
-        print(f"    Generator {gi}: max cross-component leakage = {max_leak:.2e} {'OK' if ok else 'FAIL'}")
+        print(
+            f"    Generator {gi}: max cross-component leakage = {max_leak:.2e} {'OK' if ok else 'FAIL'}"
+        )
 
     # Physical interpretation
     print("\n" + "=" * 70)
     print("  RESULTS & PHYSICAL INTERPRETATION")
     print("=" * 70)
-    print(f"""
+    print(
+        f"""
   PSp(4,3) (order {group_size}) acts on H1(W33; R) = R^81
 
   Commutant dimension: {commutant_dim}
@@ -368,7 +378,8 @@ def find_irreducible_decomposition():
 
   Cup product H^1 x H^1 -> H^2 = 0 still holds: no component self-interacts.
   All interactions are mediated by the gauge sector (E6 = 78-dim).
-""")
+"""
+    )
 
     elapsed = time.time() - t0
 
@@ -411,8 +422,9 @@ def find_irreducible_decomposition():
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_h1_decomposition_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(result, out_path, indent=2)
     print(f"\n  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 

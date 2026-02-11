@@ -33,14 +33,13 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 from e8_embedding_group_theoretic import build_sp43_generators, build_w33
+from w33_deep_structure import compute_subgraph_homology
 from w33_homology import (
     boundary_matrix,
     build_clique_complex,
     compute_homology,
     compute_rank_exact,
 )
-from w33_deep_structure import compute_subgraph_homology
-
 
 # =========================================================================
 # 1. Hodge Laplacian on 1-chains
@@ -62,13 +61,13 @@ def compute_hodge_laplacian(n: int, adj: List[List[int]]) -> Dict:
     triangles = simplices[2]
     vertices = simplices[0]
 
-    B1 = boundary_matrix(edges, vertices).astype(np.float64)   # 40 x 240
-    B2 = boundary_matrix(triangles, edges).astype(np.float64)   # 240 x 160
+    B1 = boundary_matrix(edges, vertices).astype(np.float64)  # 40 x 240
+    B2 = boundary_matrix(triangles, edges).astype(np.float64)  # 240 x 160
 
     # Hodge Laplacian on 1-chains
     # Delta_1 = B1^T @ B1 + B2 @ B2^T
-    up_lap = B1.T @ B1      # 240 x 240 (from vertices)
-    down_lap = B2 @ B2.T    # 240 x 240 (from triangles)
+    up_lap = B1.T @ B1  # 240 x 240 (from vertices)
+    down_lap = B2 @ B2.T  # 240 x 240 (from triangles)
     Delta1 = up_lap + down_lap
 
     # Compute eigenvalues
@@ -149,8 +148,9 @@ def compute_hodge_laplacian(n: int, adj: List[List[int]]) -> Dict:
 # =========================================================================
 
 
-def compute_vertex_deletion_homology(v: int, n: int, adj: List[List[int]],
-                                      adj_sets: List[Set[int]]) -> Dict:
+def compute_vertex_deletion_homology(
+    v: int, n: int, adj: List[List[int]], adj_sets: List[Set[int]]
+) -> Dict:
     r"""Compute b_1(W33 \ {v}).
 
     THEOREM (Mayer-Vietoris):
@@ -164,7 +164,9 @@ def compute_vertex_deletion_homology(v: int, n: int, adj: List[List[int]],
     return compute_subgraph_homology(remaining, adj_sets, f"W33\\{{{v}}}")
 
 
-def verify_mayer_vietoris(n: int, adj: List[List[int]], adj_sets: List[Set[int]]) -> Dict:
+def verify_mayer_vietoris(
+    n: int, adj: List[List[int]], adj_sets: List[Set[int]]
+) -> Dict:
     """Verify the Mayer-Vietoris decomposition 81 = 78 + 3 for all vertices."""
     print("    Testing vertex deletions...")
 
@@ -255,7 +257,9 @@ def compute_mod_p_rank(M: np.ndarray, p: int) -> int:
     return rank
 
 
-def compute_mod_p_homology(n: int, adj: List[List[int]], primes: List[int] = [2, 3, 5, 7]) -> Dict:
+def compute_mod_p_homology(
+    n: int, adj: List[List[int]], primes: List[int] = [2, 3, 5, 7]
+) -> Dict:
     """Compute H_1(W33; F_p) for various primes p.
 
     By the Universal Coefficient Theorem:
@@ -301,9 +305,13 @@ def compute_mod_p_homology(n: int, adj: List[List[int]], primes: List[int] = [2,
         "mod_p_results": {str(p): v for p, v in results.items()},
         "universal_coefficient_theorem": uct_holds,
         "interpretation": (
-            "H_1(W33; F_p) = F_p^81 for all primes p, "
-            "confirming H_1(W33; Z) = Z^81 is torsion-free (UCT verification)."
-        ) if uct_holds else "UNEXPECTED: UCT does not hold for some prime!",
+            (
+                "H_1(W33; F_p) = F_p^81 for all primes p, "
+                "confirming H_1(W33; Z) = Z^81 is torsion-free (UCT verification)."
+            )
+            if uct_holds
+            else "UNEXPECTED: UCT does not hold for some prime!"
+        ),
     }
 
 
@@ -537,15 +545,21 @@ def main():
     print("-" * 40)
 
     hodge = compute_hodge_laplacian(n, adj)
-    print(f"\n  Delta_1: {hodge['hodge_laplacian']['dimension']}x{hodge['hodge_laplacian']['dimension']} matrix")
-    print(f"  Harmonic forms (ker Delta_1): {hodge['hodge_laplacian']['harmonic_forms']}")
+    print(
+        f"\n  Delta_1: {hodge['hodge_laplacian']['dimension']}x{hodge['hodge_laplacian']['dimension']} matrix"
+    )
+    print(
+        f"  Harmonic forms (ker Delta_1): {hodge['hodge_laplacian']['harmonic_forms']}"
+    )
     print(f"  SPECTRAL GAP: {hodge['hodge_laplacian']['spectral_gap']}")
     print(f"  Max eigenvalue: {hodge['hodge_laplacian']['max_eigenvalue']}")
     print(f"\n  Hodge decomposition:")
     for k, v in hodge["hodge_decomposition"].items():
         print(f"    {k}: {v}")
     print(f"\n  Hodge spectrum (eigenvalue: multiplicity):")
-    for ev, mult in sorted(hodge["hodge_laplacian"]["spectrum"].items(), key=lambda x: float(x[0])):
+    for ev, mult in sorted(
+        hodge["hodge_laplacian"]["spectrum"].items(), key=lambda x: float(x[0])
+    ):
         print(f"    {ev}: {mult}")
 
     results["hodge_laplacian"] = hodge
@@ -555,7 +569,9 @@ def main():
     print("-" * 40)
 
     mv = verify_mayer_vietoris(n, adj, adj_sets)
-    print(f"\n  THEOREM: b_1(W33 \\ {{v}}) = {mv['mayer_vietoris_sequence']['H1_deleted']} = dim(E6) for ALL vertices v")
+    print(
+        f"\n  THEOREM: b_1(W33 \\ {{v}}) = {mv['mayer_vietoris_sequence']['H1_deleted']} = dim(E6) for ALL vertices v"
+    )
     print(f"  All 40 vertices verified: {mv['all_vertices_give_78']}")
     print(f"\n  Mayer-Vietoris exact sequence:")
     print(f"    0 -> H_1(W33\\{{v}}) -> H_1(W33) -> Z^3 -> 0")
@@ -631,7 +647,8 @@ def main():
     gap = hodge["hodge_laplacian"]["spectral_gap"]
     all_78 = mv["all_vertices_give_78"]
 
-    print(f"""
+    print(
+        f"""
   DISCOVERY 6: HODGE LAPLACIAN
     ker(Delta_1) = {harmonic} harmonic 1-forms (massless modes)
     Spectral gap = {gap} (mass gap of theory)
@@ -658,14 +675,16 @@ def main():
     Joint probability estimate: {coincidences['joint_probability_estimate']}
 
   Computation time: {elapsed:.2f}s
-""")
+"""
+    )
 
     # Write artifact
     out_path = Path.cwd() / "checks" / "PART_CVII_w33_representation_theory.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     clean = json.loads(json.dumps(results, default=str))
-    with open(out_path, "w") as f:
-        json.dump(clean, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(clean, out_path, indent=2)
     print(f"  Wrote: {out_path}")
 
 

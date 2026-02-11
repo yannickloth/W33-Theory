@@ -94,7 +94,7 @@ def build_w33_graph():
 
 def build_edge_vectors(X: np.ndarray, edges: List[Tuple[int, int]]):
     E = []
-    for (i, j) in edges:
+    for i, j in edges:
         v = X[i] - X[j]
         nv = np.linalg.norm(v)
         if nv > 0:
@@ -146,21 +146,58 @@ def enumerate_triangles(n: int, adj: List[List[int]]):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--seed-json", type=str, default=None, help="seed file with 'picked_indices' and 'seed_edges'")
-    parser.add_argument("--k", type=int, default=30, help="top-K candidate roots per edge")
-    parser.add_argument("--time-limit", type=float, default=600.0, help="solver time limit in seconds")
-    parser.add_argument("--cost-scale", type=float, default=10000.0, help="scale factor for float costs -> int")
+    parser.add_argument(
+        "--seed-json",
+        type=str,
+        default=None,
+        help="seed file with 'picked_indices' and 'seed_edges'",
+    )
+    parser.add_argument(
+        "--k", type=int, default=30, help="top-K candidate roots per edge"
+    )
+    parser.add_argument(
+        "--time-limit", type=float, default=600.0, help="solver time limit in seconds"
+    )
+    parser.add_argument(
+        "--cost-scale",
+        type=float,
+        default=10000.0,
+        help="scale factor for float costs -> int",
+    )
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--force-seed", action="store_true", help="Force seed assignments as hard constraints (default: False)")
-    parser.add_argument("--seed-reward", type=float, default=10000.0, help="Reward subtracted from the assignment cost when choosing the seed root (larger = prefer seeds)")
-    parser.add_argument('--workers', type=int, default=8, help='Number of CP-SAT search workers (num_search_workers)')
-    parser.add_argument('--log', action='store_true', help='Enable CP‑SAT search progress logs')
-    parser.add_argument('--forbid-json', type=str, default=None, help='Optional JSON file with obstruction sets to forbid (checks/PART_CVII_forbids.json)')
+    parser.add_argument(
+        "--force-seed",
+        action="store_true",
+        help="Force seed assignments as hard constraints (default: False)",
+    )
+    parser.add_argument(
+        "--seed-reward",
+        type=float,
+        default=10000.0,
+        help="Reward subtracted from the assignment cost when choosing the seed root (larger = prefer seeds)",
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=8,
+        help="Number of CP-SAT search workers (num_search_workers)",
+    )
+    parser.add_argument(
+        "--log", action="store_true", help="Enable CP‑SAT search progress logs"
+    )
+    parser.add_argument(
+        "--forbid-json",
+        type=str,
+        default=None,
+        help="Optional JSON file with obstruction sets to forbid (checks/PART_CVII_forbids.json)",
+    )
     args = parser.parse_args()
     # if a canonical forbids file exists and none was specified, use it
-    if args.forbid_json is None and os.path.exists(os.path.join('checks', 'PART_CVII_forbids.json')):
-        args.forbid_json = os.path.join('checks', 'PART_CVII_forbids.json')
-        print('Using default forbids file:', args.forbid_json)
+    if args.forbid_json is None and os.path.exists(
+        os.path.join("checks", "PART_CVII_forbids.json")
+    ):
+        args.forbid_json = os.path.join("checks", "PART_CVII_forbids.json")
+        print("Using default forbids file:", args.forbid_json)
 
     t0 = time.time()
     X, edges = compute_embedding_matrix()
@@ -169,7 +206,9 @@ def main():
     roots_arr = np.array(roots, dtype=int)
 
     # normalize root vectors to unit length (float) for distance matching
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     # optional rotation from seed (if present)
     rotation = None
@@ -204,7 +243,12 @@ def main():
         for sd in seed_obj.get("seed_edges", []):
             eidx = sd.get("edge_index")
             ridx = sd.get("root_index")
-            if eidx is not None and ridx is not None and 0 <= eidx < N_edges and 0 <= ridx < N_roots:
+            if (
+                eidx is not None
+                and ridx is not None
+                and 0 <= eidx < N_edges
+                and 0 <= ridx < N_roots
+            ):
                 if ridx not in candidates[eidx]:
                     candidates[eidx].append(ridx)
                 forced_assignments[int(eidx)] = int(ridx)
@@ -224,7 +268,7 @@ def main():
 
     # root uniqueness (at most one edge per root among candidate links)
     root_to_edges: Dict[int, List[Tuple[int, int]]] = defaultdict(list)
-    for (e, r) in bvars:
+    for e, r in bvars:
         root_to_edges[r].append((e, r))
     for r, pairs in root_to_edges.items():
         model.Add(sum(bvars[p] for p in pairs) <= 1)
@@ -235,7 +279,7 @@ def main():
     # map vertex pair to edge index
     edge_index = {edges[i]: i for i in range(len(edges))}
 
-    for (a, b, c) in triangles:
+    for a, b, c in triangles:
         # oriented edges: (a,b), (b,c), (a,c)
         e_ab = edge_index[(a, b)] if (a, b) in edge_index else edge_index.get((b, a))
         e_bc = edge_index[(b, c)] if (b, c) in edge_index else edge_index.get((c, b))
@@ -263,12 +307,12 @@ def main():
             model.Add(sum(coeff * var for (var, coeff) in expr) == 0)
 
     # optional forbids: load obstruction sets and add constraints to forbid exact combinations
-    if getattr(args, 'forbid_json', None):
+    if getattr(args, "forbid_json", None):
         try:
-            forb = json.loads(open(args.forbid_json, encoding='utf-8').read())
-            for entry in forb.get('obstruction_sets', []):
-                edges_forbid = entry.get('set', [])
-                roots_forbid = entry.get('roots', [])
+            forb = json.loads(open(args.forbid_json, encoding="utf-8").read())
+            for entry in forb.get("obstruction_sets", []):
+                edges_forbid = entry.get("set", [])
+                roots_forbid = entry.get("roots", [])
                 # pair edges->roots mapping: assume same length
                 pairs = []
                 for e, r in zip(edges_forbid, roots_forbid):
@@ -276,9 +320,9 @@ def main():
                         pairs.append(bvars[(int(e), int(r))])
                 if len(pairs) >= 1:
                     # forbid the simultaneous assignment of all listed pairs
-                    model.Add(sum(pairs) <= max(0, len(pairs)-1))
+                    model.Add(sum(pairs) <= max(0, len(pairs) - 1))
         except Exception as e:
-            print('Failed to load forbid JSON:', e)
+            print("Failed to load forbid JSON:", e)
 
     # enforce forced assignments (only if requested)
     if args.force_seed:
@@ -293,11 +337,13 @@ def main():
                 # adding this var increases domain; original sum(...) == 1 will include it implicitly
     else:
         if forced_assignments:
-            print(f"Seed present with {len(forced_assignments)} entries, but not enforcing them (use --force-seed to force). Using seed as soft preference via --seed-reward")
+            print(
+                f"Seed present with {len(forced_assignments)} entries, but not enforcing them (use --force-seed to force). Using seed as soft preference via --seed-reward"
+            )
 
     # objective: minimize scaled assignment distance, optionally reward selecting seed root
     scale = float(args.cost_scale)
-    seed_reward = float(getattr(args, 'seed_reward', 0.0))
+    seed_reward = float(getattr(args, "seed_reward", 0.0))
     objective_terms = []
     for (e, r), var in bvars.items():
         c = cost[e, r]
@@ -317,7 +363,9 @@ def main():
     solver.parameters.random_seed = int(args.seed)
     solver.parameters.log_search_progress = args.log
 
-    print(f"Starting CP-SAT: edges={N_edges} vars={len(bvars)} triangles={len(triangles)} k={K} time_limit={args.time_limit}s")
+    print(
+        f"Starting CP-SAT: edges={N_edges} vars={len(bvars)} triangles={len(triangles)} k={K} time_limit={args.time_limit}s"
+    )
 
     status = solver.Solve(model)
     status_name = solver.StatusName(status)
@@ -391,7 +439,11 @@ def main():
             if ok:
                 res["found"] = True
                 res["positions"] = {str(k): list(v) for k, v in pos.items()}
-                res["edge_to_root"] = {str(ei): int(assignment[str(ei)]) for ei in range(N_edges) if str(ei) in assignment}
+                res["edge_to_root"] = {
+                    str(ei): int(assignment[str(ei)])
+                    for ei in range(N_edges)
+                    if str(ei) in assignment
+                }
             else:
                 res["found"] = False
         else:
@@ -403,10 +455,11 @@ def main():
 
     out_path = os.path.join(os.getcwd(), "checks", "PART_CVII_e8_embedding_cpsat.json")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(res, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(res, out_path, indent=2)
     print("Wrote", out_path)
-    print(json.dumps(res, indent=2))
+    print(json.dumps(res, indent=2, default=str))
 
 
 if __name__ == "__main__":

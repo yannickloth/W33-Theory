@@ -186,8 +186,9 @@ def main():
     }
 
     # Write JSON
-    with open(OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(out, OUT_PATH, indent=2)
 
     # Print a concise summary
     print("Group adjacency summary:")

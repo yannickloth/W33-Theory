@@ -10,12 +10,20 @@ from pathlib import Path
 import numpy as np
 
 try:
-    from scripts.solve_e8_embedding_cpsat import compute_embedding_matrix, generate_scaled_e8_roots, build_edge_vectors
+    from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
+        compute_embedding_matrix,
+        generate_scaled_e8_roots,
+    )
 except Exception:
     import sys as _sys
 
     _sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from scripts.solve_e8_embedding_cpsat import compute_embedding_matrix, generate_scaled_e8_roots, build_edge_vectors
+    from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
+        compute_embedding_matrix,
+        generate_scaled_e8_roots,
+    )
 
 
 def build_top_gap_seed(top_n: int = 6):
@@ -23,7 +31,9 @@ def build_top_gap_seed(top_n: int = 6):
     A_mat = build_edge_vectors(X, edges)
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     dists = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
     sorted_idx = np.argsort(dists, axis=1)
@@ -54,13 +64,19 @@ def main():
 
     seed_obj = build_top_gap_seed(top_n=args.top)
     ts = int(time.time())
-    outp = Path(args.out) if args.out else Path('checks') / f"PART_CVII_z3_candidate_seed_manual_top{args.top}_{ts}.json"
+    outp = (
+        Path(args.out)
+        if args.out
+        else Path("checks")
+        / f"PART_CVII_z3_candidate_seed_manual_top{args.top}_{ts}.json"
+    )
     outp.parent.mkdir(parents=True, exist_ok=True)
-    with open(outp, 'w', encoding='utf-8') as f:
-        json.dump(seed_obj, f, indent=2)
-    print('Wrote seed file:', outp, 'seed_edges=', len(seed_obj['seed_edges']))
-    print(json.dumps(seed_obj, indent=2))
+    from utils.json_safe import dump_json
+
+    dump_json(seed_obj, outp, indent=2)
+    print("Wrote seed file:", outp, "seed_edges=", len(seed_obj["seed_edges"]))
+    print(json.dumps(seed_obj, indent=2, default=str))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

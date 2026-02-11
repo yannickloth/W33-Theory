@@ -8,11 +8,11 @@ collective summary file `artifacts/toe_coupling_atlas_sweep.json`.
 """
 from __future__ import annotations
 
+import argparse
 import json
 from collections import Counter
 from pathlib import Path
 from statistics import mean
-import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLES = ROOT / "artifacts" / "more_new_work_extracted"
@@ -33,7 +33,7 @@ def summarize_bundle(bundle_dir: Path):
         if c.exists():
             used = c
             try:
-                data = json.loads(open(c, encoding='utf-8').read())
+                data = json.loads(open(c, encoding="utf-8").read())
             except Exception as e:
                 return {"bundle": bundle_dir.name, "error": f"failed to load {c}: {e}"}
             break
@@ -128,22 +128,28 @@ def main():
         entries.append(s)
         # per-bundle write
         outp = OUT / f"toe_coupling_atlas_summary_{d.name}.json"
-        with open(outp, 'w', encoding='utf-8') as f:
-            json.dump(s, f, indent=2)
-        print('Wrote', outp)
+        from utils.json_safe import dump_json
+
+        dump_json(s, outp, indent=2)
+        print("Wrote", outp)
 
     # aggregate
     agg = {"bundles": entries}
-    with open(OUT / "toe_coupling_atlas_sweep.json", 'w', encoding='utf-8') as f:
-        json.dump(agg, f, indent=2)
-    print('Wrote', OUT / "toe_coupling_atlas_sweep.json")
+    from utils.json_safe import dump_json
+
+    dump_json(agg, OUT / "toe_coupling_atlas_sweep.json", indent=2)
+    print("Wrote", OUT / "toe_coupling_atlas_sweep.json")
 
     # print table
-    print('\nSUMMARY TABLE')
-    print('bundle\ttotal\tbackbone_major\tcoset_major\tmixed\tfirewall_blocked\tschlafli_edges')
+    print("\nSUMMARY TABLE")
+    print(
+        "bundle\ttotal\tbackbone_major\tcoset_major\tmixed\tfirewall_blocked\tschlafli_edges"
+    )
     for e in entries:
-        print(f"{e.get('bundle')}\t{e.get('total_couplings')}\t{e.get('backbone_major')}\t{e.get('coset_major')}\t{e.get('mixed')}\t{e.get('firewall_blocked_count')}\t{e.get('schlafli_edges')}")
+        print(
+            f"{e.get('bundle')}\t{e.get('total_couplings')}\t{e.get('backbone_major')}\t{e.get('coset_major')}\t{e.get('mixed')}\t{e.get('firewall_blocked_count')}\t{e.get('schlafli_edges')}"
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

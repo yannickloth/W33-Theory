@@ -388,8 +388,9 @@ def main():
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_complex_type_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+    from utils.json_safe import dump_json
+
+    dump_json(result, out_path, indent=2)
     print(f"  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 
