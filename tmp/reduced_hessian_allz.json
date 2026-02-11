@@ -1,0 +1,204 @@
+{
+  "status": "ok",
+  "source": "artifacts\\e6_f3_trilinear_min_cert_enumeration_hessian_exhaustive2_with_geotypes.json",
+  "z_map_mode": "all",
+  "theorem_z_maps": [
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ]
+  ],
+  "all_affine_z_maps": [
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ]
+  ],
+  "representative_count": 256,
+  "candidate_affine_involution_count": 36,
+  "observed_reduced_count": 55,
+  "predicted_reduced_count": 55,
+  "predicted_reduced_count_all_zmaps": 55,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "equivalent": true,
+  "all_zmaps_mismatch_count": 0,
+  "all_zmaps_mismatches": [],
+  "all_zmaps_equivalent": true,
+  "match_count_histogram": {
+    "0": 201,
+    "1": 55
+  },
+  "match_count_histogram_all_zmaps": {
+    "0": 201,
+    "1": 55
+  },
+  "observed_matching_z_map_histogram": {
+    "(1, 0)": 49,
+    "(2, 0)": 5,
+    "(2, 1)": 1
+  },
+  "observed_matching_z_maps": [
+    "(1, 0)",
+    "(2, 0)",
+    "(2, 1)"
+  ],
+  "zmap_restriction_holds": true,
+  "symmetry_profile": {
+    "full_orbit_match_count_histogram": {
+      "0": 201
+    },
+    "reduced_orbit_match_count_histogram": {
+      "1": 55
+    },
+    "full_orbit_all_zero_matches": true,
+    "reduced_orbit_all_positive_matches": true,
+    "reduced_orbit_all_exactly_one_match": true,
+    "strict_profile_holds": true
+  },
+  "pulled_back_matrix_count": 10,
+  "pulled_back_matrices": [
+    {
+      "A": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        0,
+        2,
+        2,
+        0
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        2,
+        0,
+        0,
+        1
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        2,
+        0,
+        2,
+        1
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    },
+    {
+      "A": [
+        2,
+        1,
+        0,
+        1
+      ],
+      "det": 2,
+      "conjugate_to_diag": true
+    }
+  ],
+  "matrix_conjugacy_all_true": true,
+  "closed_form_rule": "reduced iff invariant under some affine involution (det=2, order=2) with z-map in {(1,0),(2,0),(2,1)}; matched involution linear parts are GL(2,3)-conjugate to diag(-1,1)"
+}

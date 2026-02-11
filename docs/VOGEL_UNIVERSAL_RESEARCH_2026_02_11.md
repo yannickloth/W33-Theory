@@ -30,3 +30,5 @@
 - 2025: [On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials](https://arxiv.org/abs/2505.16569)
 - 2025: [Vogel's universality and Macdonald dimensions](https://arxiv.org/abs/2507.11414)
 - 2024: [Construction of the Lie algebra weight system kernel via Vogel algebra](https://arxiv.org/abs/2411.14417)
+- 2025: [Vogel universality and differential operators on Jacobi diagrams](https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9)
+- 2025: [On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials](https://doi.org/10.1016/j.physletb.2025.139730)

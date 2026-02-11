@@ -239,6 +239,16 @@ def build_snapshot(
                 "url": "https://arxiv.org/abs/2411.14417",
                 "year": 2024,
             },
+            {
+                "title": "Vogel universality and differential operators on Jacobi diagrams",
+                "url": "https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9",
+                "year": 2025,
+            },
+            {
+                "title": "On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials",
+                "url": "https://doi.org/10.1016/j.physletb.2025.139730",
+                "year": 2025,
+            },
         ],
     }
     return snapshot

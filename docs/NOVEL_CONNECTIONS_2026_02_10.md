@@ -228,3 +228,7 @@ The `sl_27` bridge check is encoded in
   Link: `https://arxiv.org/abs/2507.11414`
 - Cretu et al., *Construction of the Lie algebra weight system kernel via Vogel algebra*, arXiv:2411.14417 (2024)
   Link: `https://arxiv.org/abs/2411.14417`
+- Cretu et al., *Vogel universality and differential operators on Jacobi diagrams*, EPJC (2025)
+  Link: `https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9`
+- Cretu et al., *On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials*, Phys. Lett. B (2025)
+  Link: `https://doi.org/10.1016/j.physletb.2025.139730`

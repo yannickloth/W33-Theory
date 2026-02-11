@@ -104,6 +104,17 @@ from the layperson narrative.
     Raw note: reinforces kernel-level constraints as first-class universal data,
     not just post-hoc consistency checks.
 
+19. Cretu et al., *Vogel universality and differential operators on Jacobi diagrams* (EPJC, 2025)
+    URL: `https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9`
+    Raw note: the differential-operator/Jacobi-diagram framing supports treating
+    finite Jacobi-obstruction patterns as operator-level invariants, not only
+    grade-count anomalies.
+
+20. Cretu et al., *On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials* (Phys. Lett. B, 2025)
+    URL: `https://doi.org/10.1016/j.physletb.2025.139730`
+    Raw note: confirms the deformation branch is not speculative; journal-level
+    versions motivate preserving both arXiv and DOI links in the source chain.
+
 ## Hypothesis chain -> repo checks
 
 H1. Residual subgroup should be an explicit affine-flag stabilizer.
@@ -268,6 +279,13 @@ Additional witness-space note:
 - This gives a compact law compatible with the ternary (`F3`) framework and reduces
   the Jacobi-obstruction statement from "six exceptions exist" to an executable
   classification rule.
+
+## Tenth-pass raw notes (2026-02-11, source-hardening loop)
+
+- We added journal-level links for the recent Vogel branch (EPJC and Phys. Lett. B),
+  not just arXiv IDs, to stabilize citation targets in the living README paper.
+- This does not alter computed invariants, but it improves traceability and
+  reproducibility for external readers following the theory-to-source chain.
 
 ## Where each hypothesis is encoded
 
