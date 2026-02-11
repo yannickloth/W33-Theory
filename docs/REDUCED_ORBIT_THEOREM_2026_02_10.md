@@ -32,6 +32,6 @@ Equivalently, after choosing an adapted affine gauge sending the distinguished a
 
 ## Notes and future work
 
-- The above proof is a concise, canonical algebraic argument augmented by exhaustive computational verification on the canonical Hessian representative census. A fully symbolic, machine-assisted formal proof (removing the finite computational check) is desirable and remains a short-term target. In particular, a compact derivation that explains why the set of allowed z-maps is exactly `{(1,0),(2,0),(2,1)}` would be valuable.
+- The above proof is a concise, canonical algebraic argument augmented by exhaustive computational verification on the canonical Hessian representative census. The finite-case reduction to exclude `z=(2,2)` has now been implemented and machine-checked (`tools/prove_exclude_z22.py`, `tests/test_prove_exclude_z22_smoke.py`, `tests/test_formal_proof_z22.py`). A fully symbolic, machine-assisted formal proof that removes the finite verification step remains a short-term target; a compact derivation explaining exactly why the allowed `z`-maps are `{(1,0),(2,0),(2,1)}` would be valuable.
 
 - See `docs/NOVEL_CONNECTIONS_2026_02_10.md` for discussion and empirical statistics.

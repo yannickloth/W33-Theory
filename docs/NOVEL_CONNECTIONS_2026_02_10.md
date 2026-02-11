@@ -118,6 +118,16 @@ changes affine/Hessian symmetries:
   non-degenerate rational exceptional-line hits occur exactly at
   `{248, 287, 336, 484, 603, 782}`; s12 dimensions (`728`, `486`, `242`)
   remain outside this rational-hit set.
+- arithmetic closure theorem for integer-dimensional hits (`2026-02-11`):
+  `tools/vogel_rational_dimension_theorem.py` reduces the discriminant to
+  `Delta(D)=(D+122)^2-120^2` and the hit condition to
+  `(D+122-r)(D+122+r)=14400`, yielding the exact positive hit set
+  `{1,3,8,14,28,47,52,78,96,119,133,190,248,287,336,484,603,782,1081,1680,3479}`.
+- hit-set family crosswalk (`2026-02-11`):
+  `tools/vogel_rational_hit_crosswalk.py` splits the 21 positive hits into
+  classical-family hits (`7` dims), direct-table hits (`7` dims), and
+  arithmetic-only hits (`10` dims). s12 targets remain outside the hit set;
+  nearest-hit distances are `54` for `728`, `2` for `486`, and `6` for `242`.
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
@@ -138,6 +148,10 @@ Outputs:
 - `artifacts/min_cert_census_summary.md`
 - `artifacts/vogel_universal_snapshot_2026_02_11.json`
 - `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`
+- `artifacts/vogel_rational_dimension_theorem_2026_02_11.json`
+- `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`
+- `artifacts/vogel_rational_hit_crosswalk_2026_02_11.json`
+- `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
 - `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`
@@ -236,5 +250,11 @@ The `sl_27` bridge check is encoded in
   Link: `https://arxiv.org/abs/2411.14417`
 - Cretu et al., *Vogel universality and differential operators on Jacobi diagrams*, EPJC (2025)
   Link: `https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9`
+- Cretu et al., *Classification Problem for Jacobi identities in Vogel's universality classes*, arXiv:2507.07901 (2025)
+  Link: `https://arxiv.org/abs/2507.07901`
+- Cretu et al., *Classification Problem on Vogel's Plane*, EPJC (2025)
+  Link: `https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y`
 - Cretu et al., *On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials*, Phys. Lett. B (2025)
   Link: `https://doi.org/10.1016/j.physletb.2025.139730`
+- Zinoviev, *Diophantine equations and platonic solids*, arXiv:1604.06062 (2016)
+  Link: `https://arxiv.org/abs/1604.06062`

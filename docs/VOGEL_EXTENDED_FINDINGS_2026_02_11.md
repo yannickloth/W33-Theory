@@ -31,6 +31,10 @@ See artifacts:
 - `artifacts/vogel_rational_sweep.md`
 - `artifacts/vogel_rational_hit_catalog_2026_02_11.json`
 - `docs/VOGEL_RATIONAL_HIT_CATALOG_2026_02_11.md`
+- `artifacts/vogel_rational_dimension_theorem_2026_02_11.json`
+- `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`
+- `artifacts/vogel_rational_hit_crosswalk_2026_02_11.json`
+- `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
 
 ## Closed-form note
 
@@ -49,3 +53,17 @@ For s12 dimensions:
 
 This gives a compact arithmetic obstruction certificate for rational-hit absence
 at the current s12 target dimensions.
+
+Using
+`Delta(D)=(D+122)^2-120^2`,
+the square-discriminant condition is equivalent to
+`(D+122-r)(D+122+r)=14400`, so integer-dimensional hits are an exact finite
+divisor-pair classification problem.
+
+The complete positive non-degenerate hit set is:
+`{1,3,8,14,28,47,52,78,96,119,133,190,248,287,336,484,603,782,1081,1680,3479}`.
+
+Crosswalk classification of this finite set:
+- classical-family hits: `{3,8,28,78,190,1081,1680}`
+- direct-table hits: `{8,14,28,52,78,133,248}`
+- arithmetic-only hits: `{1,47,96,119,287,336,484,603,782,3479}`

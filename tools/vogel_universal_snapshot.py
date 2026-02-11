@@ -245,6 +245,16 @@ def build_snapshot(
                 "year": 2025,
             },
             {
+                "title": "Classification Problem for Jacobi identities in Vogel's universality classes",
+                "url": "https://arxiv.org/abs/2507.07901",
+                "year": 2025,
+            },
+            {
+                "title": "Classification Problem on Vogel's Plane",
+                "url": "https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y",
+                "year": 2025,
+            },
+            {
                 "title": "On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials",
                 "url": "https://doi.org/10.1016/j.physletb.2025.139730",
                 "year": 2025,
@@ -284,6 +294,11 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
                 value["hit_count"],
             )
         )
+    lines.append(
+        "- arithmetic closure and family split docs: "
+        "`docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`, "
+        "`docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`"
+    )
     lines.append("")
     s12 = snapshot.get("s12_bridge")
     if s12:
