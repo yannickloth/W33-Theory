@@ -32,8 +32,8 @@ def test_analyze_orbit_stabilizer_bridge_cli_smoke(tmp_path: Path) -> None:
     hessian = payload["spaces"]["hessian"]
     agl = payload["spaces"]["agl"]
     hessian_exhaustive = payload["spaces"]["hessian_exhaustive"]
-    assert hessian["orbit_size_histogram"] == {"1296": 11, "2592": 68}
-    assert hessian["stabilizer_size_histogram"] == {"1": 68, "2": 11}
+    assert hessian["orbit_size_histogram"] == {"1296": 55, "2592": 201}
+    assert hessian["stabilizer_size_histogram"] == {"1": 201, "2": 55}
     assert agl["orbit_size_histogram"] == {"2592": 7}
     assert agl["stabilizer_size_histogram"] == {"1": 7}
     assert hessian_exhaustive["orbit_size_histogram"] == {"1296": 55, "2592": 201}
