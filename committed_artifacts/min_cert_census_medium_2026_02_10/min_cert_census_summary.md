@@ -23,6 +23,9 @@
 - Reduced matching z-maps: `['(1, 0)', '(2, 0)', '(2, 1)']`
 - Orbit hist (raw): `{'1296': 55, '2592': 201}`
 - Orbit hist (weighted): `{'1296': 55, '2592': 218}`
+- Figures:
+  - `committed_artifacts/min_cert_census_medium_2026_02_10/figures/zmap_hist_hessian.png`
+  - `committed_artifacts/min_cert_census_medium_2026_02_10/figures/match_count_hist_hessian.png`
 
 ## agl
 
