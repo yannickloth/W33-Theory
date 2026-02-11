@@ -871,6 +871,29 @@ Additional witness-space note:
   - graded-contraction / quasi-Jordan bridge context:
     https://www.worldscientific.com/doi/abs/10.1142/S021949882250059X
 
+## Thirty-first-pass raw notes (2026-02-11, orbit-stabilizer bridge loop)
+
+- New tool: `tools/analyze_orbit_stabilizer_bridge.py`.
+- This pass computes stabilizers directly on canonical exact representatives under
+  the full witness action model:
+  - affine maps on `AG(2,3)`: `432`,
+  - affine maps on `z`: `6`,
+  - total action size: `2592`.
+- Result:
+  - Hessian reps split exactly as
+    - `68` reps with orbit `2592` and stabilizer size `1`,
+    - `11` reps with orbit `1296` and stabilizer size `2`.
+  - full `AGL` reps are all full-orbit:
+    - `7` reps with orbit `2592` and stabilizer size `1`.
+- Nontrivial stabilizers occur only in the Hessian reduced sector and are all
+  det-`2`, order-`2` linear parts; their cycle signatures are uniformly
+  `[1,1,1,2,2,2]` on points and `[1,1,1,1,2,2,2,2]` on lines, matching the GL(2,3)
+  involution-conjugacy bridge exactly.
+- Interpretation:
+  - the reduced/full orbit dichotomy is now quantitatively equivalent to a
+    stabilizer dichotomy (`2` vs `1`) inside one explicit finite action.
+  - this is a stronger group-theoretic closure than a pattern-level statement.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -920,6 +943,8 @@ Additional witness-space note:
 - Vogel resonance bridge tests: `tests/test_analyze_vogel_resonance_bridge_smoke.py`
 - GL(2,3) involution conjugacy bridge: `tools/analyze_gl2_f3_involution_conjugacy.py`
 - GL(2,3) bridge tests: `tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py`
+- Orbit-stabilizer bridge: `tools/analyze_orbit_stabilizer_bridge.py`
+- Orbit-stabilizer bridge tests: `tests/test_analyze_orbit_stabilizer_bridge_smoke.py`
 - Distilled narrative: `README.md` and `docs/NOVEL_CONNECTIONS_2026_02_10.md`
 
 ## Reproduction commands
@@ -952,9 +977,11 @@ python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jaco
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
 python tools/analyze_vogel_resonance_bridge.py --out-json artifacts/vogel_resonance_bridge_2026_02_11.json --out-md docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md
 python tools/analyze_gl2_f3_involution_conjugacy.py --out-json artifacts/gl2_f3_involution_conjugacy_2026_02_11.json --out-md docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md
+python tools/analyze_orbit_stabilizer_bridge.py --out-json artifacts/orbit_stabilizer_bridge_2026_02_11.json --out-md docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md
 python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_classify_core_motif_orbit_polarization_smoke.py tests/test_core_motif_enrichment_stats_smoke.py tests/test_core_motif_anchor_channels_smoke.py tests/test_search_core_motif_anchor_sets_smoke.py tests/test_run_core_motif_chain_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
 python -m pytest tests/test_analyze_vogel_resonance_bridge_smoke.py -q
 python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q
+python -m pytest tests/test_analyze_orbit_stabilizer_bridge_smoke.py -q
 cd proofs/lean
 lake update
 lake build

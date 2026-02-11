@@ -124,8 +124,14 @@ This repository is meant to be read like a single, continuously updated paper.
   elements are one conjugacy class of size `12` around `diag(-1,1)`, with
   uniform cycle profile on `AG(2,3)` points `[1,1,1,2,2,2]` and lines
   `[1,1,1,1,2,2,2,2]`.
+- A direct orbit-stabilizer bridge now closes the reduced/full split on exact
+  min-cert reps:
+  `tools/analyze_orbit_stabilizer_bridge.py` verifies action size `2592`,
+  Hessian split `2592:68` with stabilizer `1` and `1296:11` with stabilizer `2`,
+  and full `AGL` split `2592:7` with stabilizer `1` only; nontrivial stabilizers
+  are det-`2`, order-`2` and match the same GL(2,3) cycle signatures.
 - Repro path:
-  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts`, then `tools/vogel_universal_snapshot.py`, then `tools/vogel_rational_dimension_theorem.py`, then `tools/vogel_rational_hit_crosswalk.py`, then `tools/vogel_integer_m_locus.py`, then `tools/analyze_s12_sl27_z3_bridge.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_min_cert_census_runner_smoke.py tests/test_make_min_cert_gallery_smoke.py tests/test_vogel_universal_snapshot_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_analyze_s12_sl27_z3_bridge_smoke.py -q`.
+  run `tools/build_e6_f3_trilinear_map.py`, then `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`, then `tools/enumerate_minimal_certificates.py` (sampling or `--mode exact`), then `tools/check_min_cert_orbit_involution_rule.py`, then `tools/run_min_cert_census.py --execute --candidate-spaces hessian agl --max-exact-solutions 500 --time-limit-sec 600 --out-dir artifacts`, then `tools/vogel_universal_snapshot.py`, then `tools/vogel_rational_dimension_theorem.py`, then `tools/vogel_rational_hit_crosswalk.py`, then `tools/vogel_integer_m_locus.py`, then `tools/analyze_s12_sl27_z3_bridge.py`, then `tools/analyze_vogel_resonance_bridge.py`, then `tools/analyze_gl2_f3_involution_conjugacy.py`, then `tools/analyze_orbit_stabilizer_bridge.py`, then `python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_min_cert_census_runner_smoke.py tests/test_make_min_cert_gallery_smoke.py tests/test_vogel_universal_snapshot_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_analyze_s12_sl27_z3_bridge_smoke.py tests/test_analyze_vogel_resonance_bridge_smoke.py tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py tests/test_analyze_orbit_stabilizer_bridge_smoke.py -q`.
 - Read first: `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
 - Raw online search/source chaining is separated in:
   `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`.
@@ -148,6 +154,7 @@ This repository is meant to be read like a single, continuously updated paper.
 | Is there a structural `sl_27` grading bridge for the s12 split? | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | Is the Vogel-resonance bridge reproducible? | `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md` | `tools/analyze_vogel_resonance_bridge.py` | `tests/test_analyze_vogel_resonance_bridge_smoke.py` | `artifacts/vogel_resonance_bridge_2026_02_11.json` |
 | Is the `GL(2,3)` involution conjugacy bridge reproducible? | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md` | `tools/analyze_gl2_f3_involution_conjugacy.py` | `tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py` | `artifacts/gl2_f3_involution_conjugacy_2026_02_11.json` |
+| Is the orbit-stabilizer bridge reproducible? | `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md` | `tools/analyze_orbit_stabilizer_bridge.py` | `tests/test_analyze_orbit_stabilizer_bridge_smoke.py` | `artifacts/orbit_stabilizer_bridge_2026_02_11.json` |
 | Where are raw web findings separated from the paper narrative? | `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md` | (documentation-only) | (N/A) | source log + hypothesis chain |
 
 ---
@@ -176,6 +183,7 @@ This is the strict execution index for major theorem-bearing sections in this RE
 | `s12 <-> sl_27 Z3 grading bridge` | exhaustive 3-block `Z3`-grading solver finds unique partition `27=9+9+9` matching `(g0,g1,g2)=(242,243,243)` and `dim=728=A_26` | `tools/analyze_s12_sl27_z3_bridge.py` | `tests/test_analyze_s12_sl27_z3_bridge_smoke.py` | `docs/S12_SL27_Z3_BRIDGE_2026_02_11.md`, `artifacts/s12_sl27_z3_bridge_2026_02_11.json` |
 | `Vogel resonance bridge` | nearest-hit arithmetic profile for `(242,486,728)` matches s12 grade-law counts (`6`,`2`,`54`), and min-cert orbit sizes factor as `81*{16,32}` with `81=9^2` from the `sl_27` equal-block bridge | `tools/analyze_vogel_resonance_bridge.py` | `tests/test_analyze_vogel_resonance_bridge_smoke.py` | `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md`, `artifacts/vogel_resonance_bridge_2026_02_11.json` |
 | `GL(2,3) involution conjugacy bridge` | det-`2` order-`2` matrices form a single conjugacy class around `diag(-1,1)` (size `12`), with uniform induced cycle signatures on `AG(2,3)` points and affine lines | `tools/analyze_gl2_f3_involution_conjugacy.py` | `tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py` | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md`, `artifacts/gl2_f3_involution_conjugacy_2026_02_11.json` |
+| `Orbit-stabilizer bridge` | exact min-cert orbit split is exactly stabilizer split under the `2592`-element action; Hessian reduced reps are exactly the stabilizer-2 sector and carry det-`2` order-`2` symmetry signatures | `tools/analyze_orbit_stabilizer_bridge.py` | `tests/test_analyze_orbit_stabilizer_bridge_smoke.py` | `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md`, `artifacts/orbit_stabilizer_bridge_2026_02_11.json` |
 | `Monster/Leech connection` | `196560 = 728 x 270`, moonshine-linked formulas | `LEECH_GOLAY_BRIDGE.py`, `MONSTER_744_CONNECTION.py`, `MONSTER_FACTORIZATION.py` | `ALGEBRA_TEST_SUITE.py` | `LEECH_DECOMPOSITION_BREAKTHROUGH.md` |
 | `W(3,3) -> s12 logical chain` | ternary geometry-to-algebra derivation chain | `W33_TO_S12_LOGICAL_CHAIN.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
 | `Witting polytope connection` | alternate route from Witting geometry to W33/s12 chain | `WITTING_W33_S12_SYNTHESIS.py` | `ALGEBRA_TEST_SUITE.py` | `W33_COMPLETE_THEORY.md` |
@@ -259,6 +267,13 @@ Run the `GL(2,3)` involution conjugacy bridge check:
 ```bash
 python tools/analyze_gl2_f3_involution_conjugacy.py --out-json artifacts/gl2_f3_involution_conjugacy_2026_02_11.json --out-md docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md
 python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q
+```
+
+Run the orbit-stabilizer bridge check:
+
+```bash
+python tools/analyze_orbit_stabilizer_bridge.py --out-json artifacts/orbit_stabilizer_bridge_2026_02_11.json --out-md docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md
+python -m pytest tests/test_analyze_orbit_stabilizer_bridge_smoke.py -q
 ```
 
 Run full regression tests (long):

@@ -45,6 +45,11 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - New `GL(2,3)` bridge: all det-`2` involutions are conjugate to `diag(-1,1)`,
   and each induces the same affine-graph cycle profile on `AG(2,3)`:
   points `[1,1,1,2,2,2]`, lines `[1,1,1,1,2,2,2,2]`.
+- New orbit-stabilizer bridge: exact min-cert reps now split as pure
+  orbit-stabilizer law under the `2592`-element action
+  (`AGL(2,3)` x affine-`z`): Hessian has `68` full-orbit reps (`2592`, stab `1`)
+  and `11` reduced-orbit reps (`1296`, stab `2`), while full `AGL` has only
+  full orbits (`7`, all stab `1`).
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - This `6 vs 5` gap is stable under distinct-line and striation-complete
@@ -82,6 +87,7 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 | Reproduce s12 universalization and Vogel scans | `docs/S12_UNIVERSALIZATION_2026_02_11.md` + `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md` | `python tools/universalize_s12_algebra.py` and `python tools/vogel_universal_snapshot.py` | `python -m pytest tests/test_universalize_s12_algebra_smoke.py tests/test_vogel_universal_snapshot_smoke.py -q` |
 | Reproduce the Vogel resonance bridge | `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md` | `python tools/analyze_vogel_resonance_bridge.py` | `python -m pytest tests/test_analyze_vogel_resonance_bridge_smoke.py -q` |
 | Reproduce the `GL(2,3)` involution conjugacy bridge | `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md` | `python tools/analyze_gl2_f3_involution_conjugacy.py` | `python -m pytest tests/test_analyze_gl2_f3_involution_conjugacy_smoke.py -q` |
+| Reproduce the orbit-stabilizer bridge | `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md` | `python tools/analyze_orbit_stabilizer_bridge.py` | `python -m pytest tests/test_analyze_orbit_stabilizer_bridge_smoke.py -q` |
 | Inspect formalization progress in Lean 4 | `proofs/lean/README.md` | `cd proofs/lean && lake build` | CI: `.github/workflows/lean4.yml` |
 
 ## Quick Setup
@@ -145,6 +151,7 @@ Additional high-signal documents:
 - `docs/VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md`
 - `docs/VOGEL_RESONANCE_BRIDGE_2026_02_11.md`
 - `docs/GL2_F3_INVOLUTION_CONJUGACY_2026_02_11.md`
+- `docs/ORBIT_STABILIZER_BRIDGE_2026_02_11.md`
 
 ## Contribution Notes
 
