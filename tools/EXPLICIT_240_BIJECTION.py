@@ -10,14 +10,15 @@ This is not a vague correspondence - we construct THE map.
 
 Key insight: W33 = Sp(4, GF(3)) / center on isotropic lines
            E8 roots = minimal vectors in E8 lattice
-           
+
 The bijection should be W(E6)-equivariant since Aut(W33) ≅ W(E6).
 """
 
-import numpy as np
-from itertools import combinations, product
 from collections import defaultdict
 from fractions import Fraction
+from itertools import combinations, product
+
+import numpy as np
 
 print("=" * 70)
 print("EXPLICIT 240↔240 BIJECTION: W33 EDGES ↔ E8 ROOTS")
@@ -31,24 +32,28 @@ print("\n" + "=" * 70)
 print("PART 1: W33 CONSTRUCTION - ISOTROPIC LINES IN SP(4, GF(3))")
 print("=" * 70)
 
+
 def gf3_dot(v, w):
     """Dot product over GF(3)."""
     return sum(a * b for a, b in zip(v, w)) % 3
+
 
 def symplectic_form(v, w):
     """
     Standard symplectic form on GF(3)^4:
     ω(v, w) = v₁w₃ + v₂w₄ - v₃w₁ - v₄w₂  (mod 3)
-    
+
     Using block matrix J = [[0, I], [-I, 0]]
     """
-    return (v[0]*w[2] + v[1]*w[3] - v[2]*w[0] - v[3]*w[1]) % 3
+    return (v[0] * w[2] + v[1] * w[3] - v[2] * w[0] - v[3] * w[1]) % 3
+
 
 def is_isotropic(v):
     """Check if v is isotropic: ω(v, v) = 0."""
     # For symplectic forms, ω(v,v) = 0 always, so isotropic means
     # we're looking at isotropic LINES (1-dimensional subspaces)
     return True  # All vectors are self-isotropic
+
 
 def find_isotropic_lines():
     """
@@ -57,12 +62,12 @@ def find_isotropic_lines():
     """
     lines = []
     seen = set()
-    
+
     # Enumerate all non-zero vectors in GF(3)^4
     for v in product(range(3), repeat=4):
         if v == (0, 0, 0, 0):
             continue
-        
+
         # Normalize to canonical representative (first non-zero coord = 1)
         v = list(v)
         for i in range(4):
@@ -70,19 +75,21 @@ def find_isotropic_lines():
                 inv = 1 if v[i] == 1 else 2  # inverse of v[i] in GF(3)
                 v = tuple((x * inv) % 3 for x in v)
                 break
-        
+
         if v not in seen:
             seen.add(v)
             # Also add 2*v (the other non-zero element of the line)
             v2 = tuple((2 * x) % 3 for x in v)
             seen.add(v2)
             lines.append(v)
-    
+
     return lines
+
 
 def are_orthogonal(v, w):
     """Check if two vectors are symplectically orthogonal."""
     return symplectic_form(v, w) == 0
+
 
 # Find the 40 isotropic lines
 lines = find_isotropic_lines()
@@ -122,18 +129,19 @@ print("\n" + "=" * 70)
 print("PART 2: E8 ROOT SYSTEM - ALL 240 ROOTS")
 print("=" * 70)
 
+
 def generate_e8_roots():
     """
     Generate all 240 roots of E8.
-    
+
     E8 roots are vectors in R^8 of the form:
     1) (±1, ±1, 0, 0, 0, 0, 0, 0) and permutations: 112 roots
     2) (±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2) with even # of minus: 128 roots
-    
+
     Total: 112 + 128 = 240
     """
     roots = []
-    
+
     # Type 1: Two non-zero coordinates, each ±1
     for pos in combinations(range(8), 2):
         for signs in product([1, -1], repeat=2):
@@ -141,27 +149,32 @@ def generate_e8_roots():
             root[pos[0]] = signs[0]
             root[pos[1]] = signs[1]
             roots.append(tuple(root))
-    
+
     # Type 2: All ±1/2, even number of minuses
     for signs in product([1, -1], repeat=8):
         if signs.count(-1) % 2 == 0:  # even number of minuses
             root = tuple(s * Fraction(1, 2) for s in signs)
             roots.append(root)
-    
+
     return roots
+
 
 e8_roots = generate_e8_roots()
 print(f"Generated {len(e8_roots)} E8 roots")
 
 # Separate by type
-type1_roots = [r for r in e8_roots if Fraction(1, 2) not in r and Fraction(-1, 2) not in r]
+type1_roots = [
+    r for r in e8_roots if Fraction(1, 2) not in r and Fraction(-1, 2) not in r
+]
 type2_roots = [r for r in e8_roots if Fraction(1, 2) in r or Fraction(-1, 2) in r]
 print(f"Type 1 (integer coords): {len(type1_roots)}")
 print(f"Type 2 (half-integer): {len(type2_roots)}")
 
+
 # Verify squared lengths
 def squared_length(v):
     return sum(x * x for x in v)
+
 
 type1_lens = set(squared_length(r) for r in type1_roots)
 type2_lens = set(squared_length(r) for r in type2_roots)
@@ -176,7 +189,8 @@ print("\n" + "=" * 70)
 print("PART 3: CONSTRUCTING THE BIJECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE STRATEGY:
 
 1. W33 edges arise from pairs of non-orthogonal isotropic lines
@@ -189,14 +203,17 @@ The E8 lattice over Z can be reduced mod 3 to get GF(3)^8.
 The symplectic structure emerges from the E8 inner product mod 3.
 
 Let's trace how E8 roots map to pairs of isotropic lines.
-""")
+"""
+)
 
 # The E8 lattice has a natural E6 sublattice
 # Aut(W33) ≅ W(E6) suggests we should look at E6 orbits
 
+
 def e8_inner_product(v, w):
     """Standard inner product in R^8."""
     return sum(a * b for a, b in zip(v, w))
+
 
 # Let's analyze the E6 ⊂ E8 embedding
 print("Analyzing E6 ⊂ E8 structure...")
@@ -220,7 +237,8 @@ print("\n" + "=" * 70)
 print("PART 4: GEOMETRIC BIJECTION VIA QUATERNIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 CRUCIAL INSIGHT: E8 ≅ Pair of E4 lattices (icosians × icosians)
 
 The icosians are quaternions of the form a + bi + cj + dk where
@@ -232,15 +250,17 @@ But we can also view E8 through the lens of GF(3):
 
 THE MAP:
   E8 root r ↦ (r mod 3, structure)
-  
+
   But r mod 3 lives in GF(3)^8, while W33 uses GF(3)^4.
-  
+
   The dimensional collapse 8 → 4 happens via the E6 symmetry:
   - E8 = E6 × U(1) × U(1) at the Lie algebra level
   - The 4D symplectic space is the "transverse" space
-""")
+"""
+)
 
 # Let's try a direct approach: use the graph structure
+
 
 def e8_root_graph_edges(roots):
     """
@@ -249,14 +269,15 @@ def e8_root_graph_edges(roots):
     """
     edges = []
     n = len(roots)
-    
+
     for i in range(n):
-        for j in range(i+1, n):
+        for j in range(i + 1, n):
             ip = sum(a * b for a, b in zip(roots[i], roots[j]))
             if ip == 1 or ip == -1:
                 edges.append((i, j))
-    
+
     return edges
+
 
 print("Computing E8 root graph adjacencies (this may take a moment)...")
 e8_edges = e8_root_graph_edges(e8_roots)
@@ -280,7 +301,8 @@ print("\n" + "=" * 70)
 print("PART 5: THE DOUBLE COVER AND BIJECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 CRITICAL REALIZATION:
 
 E8 has 240 roots, but they come in 120 PAIRS: {r, -r}
@@ -299,7 +321,7 @@ Let's think differently:
 
 W33: Each edge (v, w) where v, w are isotropic lines with ω(v,w) ≠ 0
      The symplectic product ω(v,w) = 1 or 2 (mod 3)
-     
+
 E8:  Each root r with ∥r∥² = 2
 
 THE BIJECTION:
@@ -308,7 +330,8 @@ For each edge (v, w) in W33 with ω(v,w) = ε ∈ {1, 2}:
   - v and w span a 2D symplectic subspace
   - This 2D subspace determines a point in the E8 structure
   - The sign ε = ω(v,w) determines the orientation → picks one of ±r
-""")
+"""
+)
 
 # Let's verify the symplectic products
 edge_products = []
@@ -318,6 +341,7 @@ for i, j in w33_edges:
     edge_products.append(sp)
 
 from collections import Counter
+
 product_counts = Counter(edge_products)
 print(f"Symplectic products of W33 edges: {dict(product_counts)}")
 print(f"Total: {sum(product_counts.values())}")
@@ -333,26 +357,29 @@ print("\n" + "=" * 70)
 print("PART 6: EXPLICIT BIJECTION CONSTRUCTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE EXPLICIT MAP:
 
 We construct a bijection by identifying the natural group actions.
 
 W33: Aut(W33) = Sp(4, GF(3)) / center ≅ PSp(4, 3) ≅ W(E6)
      Acts on 40 isotropic lines and hence on 240 edges
-     
+
 E8:  W(E8) acts on 240 roots
      W(E6) ⊂ W(E8) is a maximal subgroup
-     
+
 Under W(E6):
   - 240 E8 roots split into orbits
   - 240 W33 edges split into orbits
-  
+
 If the orbit structures match, we can define the bijection orbit-by-orbit!
-""")
+"""
+)
 
 # Analyze W33 edge orbits under Aut(W33)
 # We'll classify edges by their "type"
+
 
 def edge_type(i, j, adj):
     """
@@ -361,27 +388,30 @@ def edge_type(i, j, adj):
     """
     v, w = lines[i], lines[j]
     sp = symplectic_form(v, w)
-    
+
     # Number of common neighbors
     common = adj[i] & adj[j]
     n_common = len(common)
-    
+
     return (sp, n_common)
+
 
 edge_types = [edge_type(i, j, w33_adj) for i, j in w33_edges]
 type_counts_w33 = Counter(edge_types)
 print(f"W33 edge types (sympl_prod, common_neighbors): {dict(type_counts_w33)}")
+
 
 # Analyze E8 root orbits
 def e8_root_type(i, adj, roots):
     """Classify an E8 root by local structure."""
     degree = len(adj[i])
     r = roots[i]
-    
+
     # Type based on coordinates
     has_half = Fraction(1, 2) in r or Fraction(-1, 2) in r
-    
+
     return (degree, has_half)
+
 
 root_types = [e8_root_type(i, e8_adj, e8_roots) for i in range(len(e8_roots))]
 type_counts_e8 = Counter(root_types)
@@ -395,7 +425,8 @@ print("\n" + "=" * 70)
 print("PART 7: THE CANONICAL BIJECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 THEOREM (Bijection Existence):
 
 There exists a W(E6)-equivariant bijection φ: W33_edges → E8_roots.
@@ -410,7 +441,7 @@ PROOF SKETCH:
 
 3. Under W(E6), both 240-element sets have the same orbit structure:
    - E8 roots split into E6-orbits of sizes matching W33 edge orbits
-   
+
 4. Any bijection respecting this orbit structure is canonical.
 
 EXPLICIT CONSTRUCTION:
@@ -420,11 +451,12 @@ We can describe φ explicitly using the GF(3)^4 ↔ R^8 correspondence:
 For an edge (L₁, L₂) where Lᵢ are isotropic lines:
   - Let v₁, v₂ be representatives in GF(3)^4
   - The symplectic product ω(v₁, v₂) = ε ∈ {1, 2}
-  
+
 φ(L₁, L₂) = the unique E8 root r such that:
   - r projected to the "E6 transverse space" encodes (v₁, v₂)
   - The sign of r is determined by ε
-""")
+"""
+)
 
 # Let's verify orbit structure compatibility numerically
 # Under W(E6), E8 roots should decompose as:
@@ -433,7 +465,8 @@ For an edge (L₁, L₂) where Lᵢ are isotropic lines:
 # Actually, E6 has 72 roots, and E8 = E6 + extra roots
 # Let's count E6 roots within E8
 
-def is_e6_root(r, embedding='standard'):
+
+def is_e6_root(r, embedding="standard"):
     """
     Check if an E8 root lies in the E6 sublattice.
     Standard embedding: E6 ⊂ E8 via roots orthogonal to
@@ -441,11 +474,18 @@ def is_e6_root(r, embedding='standard'):
     """
     # E6 roots are E8 roots with sum of first two coords = 0
     # and sum of 6th and 7th coords = 0
-    cond1 = (r[0] + r[1] == 0) if r[0] not in [Fraction(1,2), Fraction(-1,2)] else \
-            (float(r[0]) + float(r[1]) == 0)
-    cond2 = (r[5] + r[6] == 0) if r[5] not in [Fraction(1,2), Fraction(-1,2)] else \
-            (float(r[5]) + float(r[6]) == 0)
+    cond1 = (
+        (r[0] + r[1] == 0)
+        if r[0] not in [Fraction(1, 2), Fraction(-1, 2)]
+        else (float(r[0]) + float(r[1]) == 0)
+    )
+    cond2 = (
+        (r[5] + r[6] == 0)
+        if r[5] not in [Fraction(1, 2), Fraction(-1, 2)]
+        else (float(r[5]) + float(r[6]) == 0)
+    )
     return cond1 and cond2
+
 
 e6_roots_in_e8 = [r for r in e8_roots if is_e6_root(r)]
 print(f"E6 roots within E8 (standard embedding): {len(e6_roots_in_e8)}")
@@ -464,7 +504,8 @@ print("\n" + "=" * 70)
 print("PART 8: VERIFICATION OF BIJECTION PROPERTIES")
 print("=" * 70)
 
-print("""
+print(
+    """
 CHECKLIST FOR A VALID BIJECTION:
 
 ✓ Both sets have cardinality 240
@@ -476,7 +517,8 @@ The bijection φ should satisfy:
   - φ is a bijection (one-to-one and onto)
   - For g ∈ W(E6): φ(g·e) = g·φ(e) (equivariance)
   - Some "distance" compatibility
-""")
+"""
+)
 
 # Let's construct a numerical bijection by matching structures
 # Strategy: use graph isomorphism between derived structures
@@ -498,19 +540,23 @@ for idx1, (a, b) in enumerate(w33_edges):
 
 # Count degrees in this edge-graph
 edge_degrees_w33 = [len(edge_adj_w33[i]) for i in range(len(w33_edges))]
-print(f"W33 edge-graph degrees: min={min(edge_degrees_w33)}, max={max(edge_degrees_w33)}")
+print(
+    f"W33 edge-graph degrees: min={min(edge_degrees_w33)}, max={max(edge_degrees_w33)}"
+)
 print(f"Degree distribution: {Counter(edge_degrees_w33)}")
 
 # For E8, build similar structure
 print("\nBuilding analogous structure for E8 roots...")
 
+
 # Two roots are "adjacent" if their inner product is non-zero
 def e8_inner(r1, r2):
-    return sum(float(a)*float(b) for a, b in zip(r1, r2))
+    return sum(float(a) * float(b) for a, b in zip(r1, r2))
+
 
 root_adj_by_ip = defaultdict(lambda: defaultdict(set))
 for i in range(len(e8_roots)):
-    for j in range(i+1, len(e8_roots)):
+    for j in range(i + 1, len(e8_roots)):
         ip = e8_inner(e8_roots[i], e8_roots[j])
         if ip != 0:
             root_adj_by_ip[i][ip].add(j)
@@ -536,7 +582,8 @@ print("\n" + "=" * 70)
 print("PART 9: SAMPLE BIJECTION (EXPLICIT MAPPING)")
 print("=" * 70)
 
-print("""
+print(
+    """
 We construct the bijection explicitly by leveraging the GF(3) structure.
 
 The idea: encode W33 edge data into E8 root coordinates.
@@ -546,12 +593,15 @@ For an edge (v, w) in W33 where v, w ∈ GF(3)^4:
   - Lift to Z^8 in a canonical way
   - Project onto the E8 lattice
   - Normalize to get a root
-""")
+"""
+)
+
 
 def lift_to_Z(x):
     """Lift GF(3) element to centered representative in Z."""
     # 0 → 0, 1 → 1, 2 → -1
     return x if x <= 1 else -1
+
 
 def edge_to_root_candidate(v, w):
     """
@@ -559,12 +609,13 @@ def edge_to_root_candidate(v, w):
     """
     # Lift to Z^8
     z8 = [lift_to_Z(x) for x in v] + [lift_to_Z(x) for x in w]
-    
+
     # This gives a vector in {-1, 0, 1}^8
     # Check if it's an E8 root
-    sq_len = sum(x*x for x in z8)
-    
+    sq_len = sum(x * x for x in z8)
+
     return tuple(z8), sq_len
+
 
 print("\nSample edges and their lifted vectors:")
 for k in range(10):
@@ -591,7 +642,8 @@ print("\n" + "=" * 70)
 print("PART 10: THEORETICAL BIJECTION FRAMEWORK")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                    THE 240 ↔ 240 BIJECTION THEOREM                   ║
 ╠══════════════════════════════════════════════════════════════════════╣
@@ -627,7 +679,8 @@ print("""
 ║  UNIQUENESS: The bijection is unique up to the action of W(E6).      ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # FINAL SUMMARY
@@ -637,11 +690,12 @@ print("\n" + "=" * 70)
 print("SUMMARY: THE BIJECTION IS REAL AND COMPUTABLE")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 KEY RESULTS:
 
 1. W33 has exactly 240 edges ✓
-2. E8 has exactly 240 roots ✓  
+2. E8 has exactly 240 roots ✓
 3. Both carry W(E6) symmetry ✓
 4. The bijection exists and is W(E6)-equivariant ✓
 
@@ -650,7 +704,7 @@ THE BIJECTION IN PRACTICE:
   W33 edge (v, w) where v, w ∈ GF(3)^4 are isotropic lines
     ↓
   Encode as 8-tuple in GF(3)^8 via (v, w) ↦ (v | w)
-    ↓  
+    ↓
   Lift to Z^8 via canonical centered representatives
     ↓
   Project to E8 lattice (normalize)
@@ -662,9 +716,10 @@ for any given W33 edge.
 
 NEXT STEPS FOR FULL RIGOR:
   1. Verify the lift-and-project gives exactly 240 distinct roots
-  2. Prove the W(E6)-equivariance explicitly  
+  2. Prove the W(E6)-equivariance explicitly
   3. Verify the adjacency correspondence property
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("THE 240 ↔ 240 BIJECTION: FOUNDATION OF THE THEORY")

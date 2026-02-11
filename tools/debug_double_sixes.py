@@ -4,9 +4,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools.compute_double_sixes import (build_schlafli_adjacency,
-                                        compute_we6_orbits, construct_e8_roots,
-                                        find_independent_sets_of_size_k)
+from tools.compute_double_sixes import (
+    build_schlafli_adjacency,
+    compute_we6_orbits,
+    construct_e8_roots,
+    find_independent_sets_of_size_k,
+)
 
 roots = construct_e8_roots()
 we6_orbits = compute_we6_orbits(roots)

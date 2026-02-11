@@ -9,13 +9,13 @@ Usage: python scripts/ddmin_z3_candidate.py --artifact committed_artifacts/PART_
 from __future__ import annotations
 
 import argparse
-import math
-import time
-import json
 import glob
+import json
+import math
 import os
 import shutil
 import subprocess
+import time
 from pathlib import Path
 from typing import List, Tuple
 
@@ -31,7 +31,12 @@ except Exception:
     from utils.json_safe import dump_json
 
 
-def ddmin(S: List[int], test_func, max_checks: int | None = None, time_limit: float | None = None):
+def ddmin(
+    S: List[int],
+    test_func,
+    max_checks: int | None = None,
+    time_limit: float | None = None,
+):
     n = 2
     checks = 0
     start_time = time.time()
@@ -87,7 +92,9 @@ def ddmin(S: List[int], test_func, max_checks: int | None = None, time_limit: fl
             n = min(len(S), n * 2)
 
 
-def make_test_function(cluster_bases: List[np.ndarray], target_ranks: List[int], tol: float = 1e-8):
+def make_test_function(
+    cluster_bases: List[np.ndarray], target_ranks: List[int], tol: float = 1e-8
+):
     # cluster_bases: list of arrays cluster_k with shape (m, c_k)
     # We flatten indices as [0..c0-1] U [c0..c0+c1-1] U [c0+c1..]
     counts = [int(b.shape[1]) for b in cluster_bases]
@@ -152,7 +159,9 @@ def make_test_function(cluster_bases: List[np.ndarray], target_ranks: List[int],
     return test
 
 
-def process_candidate(npz_path: Path, max_checks: int | None, time_limit: float) -> dict:
+def process_candidate(
+    npz_path: Path, max_checks: int | None, time_limit: float
+) -> dict:
     # load clusters
     with np.load(str(npz_path)) as f:
         cluster_0 = f.get("cluster_0", None)
@@ -183,7 +192,6 @@ def process_candidate(npz_path: Path, max_checks: int | None, time_limit: float)
         # if ddmin returned a subset but may have terminated due to time, attempt to detect that
         # (ddmin will stop early if time exceeded and return current S)
         pass
-
 
     # map subset back to clusters
     per = {0: [], 1: [], 2: []}
@@ -224,7 +232,9 @@ def process_candidate(npz_path: Path, max_checks: int | None, time_limit: float)
         if cols:
             sel_bases[f"cluster_{k}"] = cluster_bases[k][:, cols]
         else:
-            sel_bases[f"cluster_{k}"] = np.zeros((cluster_bases[k].shape[0], 0), dtype=complex)
+            sel_bases[f"cluster_{k}"] = np.zeros(
+                (cluster_bases[k].shape[0], 0), dtype=complex
+            )
 
     np.savez_compressed(subset_npz, **sel_bases)
     result["subset_npz"] = str(subset_npz)
@@ -245,19 +255,32 @@ def main():
         help="Committed artifact JSON (committed_artifacts/PART_CVII_z3_candidate_*.json) or path to NPZ",
     )
     parser.add_argument("--n", type=int, default=5, help="Top N artifacts to process")
-    parser.add_argument("--time-limit", type=float, default=30.0, help="Time limit per candidate (sec)")
-    parser.add_argument("--max-checks", type=int, default=5000, help="Max ddmin checks per candidate")
-    parser.add_argument("--commit", action="store_true", help="Commit any resultant artifacts")
+    parser.add_argument(
+        "--time-limit", type=float, default=30.0, help="Time limit per candidate (sec)"
+    )
+    parser.add_argument(
+        "--max-checks", type=int, default=5000, help="Max ddmin checks per candidate"
+    )
+    parser.add_argument(
+        "--commit", action="store_true", help="Commit any resultant artifacts"
+    )
     args = parser.parse_args()
 
     if args.artifact_json and Path(args.artifact_json).suffix == ".npz":
         # single NPZ provided
-        res = process_candidate(Path(args.artifact_json), max_checks=args.max_checks, time_limit=args.time_limit)
+        res = process_candidate(
+            Path(args.artifact_json),
+            max_checks=args.max_checks,
+            time_limit=args.time_limit,
+        )
         print("Result:", res)
         return
 
     # find top committed artifacts
-    files = sorted(glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"), key=os.path.getmtime)
+    files = sorted(
+        glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"),
+        key=os.path.getmtime,
+    )
     if not files:
         raise FileNotFoundError("No committed z3 candidate metadata found")
 
@@ -275,7 +298,9 @@ def main():
             print("NPZ not found for", jf, npzpath)
             continue
         print("Processing", npzpath)
-        res = process_candidate(npzpath, max_checks=args.max_checks, time_limit=args.time_limit)
+        res = process_candidate(
+            npzpath, max_checks=args.max_checks, time_limit=args.time_limit
+        )
         res["candidate_meta"] = meta
         all_results.append(res)
 
@@ -284,15 +309,41 @@ def main():
             # only commit if a strictly smaller subset was found
             if res.get("final_total", 0) < sum(res.get("initial_counts", [])):
                 subset_npz = Path(res["subset_npz"])
-                summary_json = Path(res["summary_json"]) if res.get("summary_json") else None
+                summary_json = (
+                    Path(res["summary_json"]) if res.get("summary_json") else None
+                )
                 # copy NPZ into committed_artifacts and write a small metadata JSON
                 ts = int(time.time())
-                dest_npz = Path("committed_artifacts") / f"PART_CVII_z3_candidate_ddmin_{ts}_{subset_npz.stem}.npz"
+                dest_npz = (
+                    Path("committed_artifacts")
+                    / f"PART_CVII_z3_candidate_ddmin_{ts}_{subset_npz.stem}.npz"
+                )
                 shutil.copy2(subset_npz, dest_npz)
-                meta_json = Path("committed_artifacts") / f"PART_CVII_z3_candidate_ddmin_{ts}_{subset_npz.stem}.json"
-                dump_json({"source_npz": str(npzpath), "subset_npz": str(dest_npz.name), "summary": str(summary_json)}, meta_json, indent=2)
+                meta_json = (
+                    Path("committed_artifacts")
+                    / f"PART_CVII_z3_candidate_ddmin_{ts}_{subset_npz.stem}.json"
+                )
+                dump_json(
+                    {
+                        "source_npz": str(npzpath),
+                        "subset_npz": str(dest_npz.name),
+                        "summary": str(summary_json),
+                    },
+                    meta_json,
+                    indent=2,
+                )
                 subprocess.run(["git", "add", str(dest_npz), str(meta_json)])
-                cp = subprocess.run(["git", "commit", "-m", f"Add ddmin reduced NPZ for {npzpath.name}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                cp = subprocess.run(
+                    [
+                        "git",
+                        "commit",
+                        "-m",
+                        f"Add ddmin reduced NPZ for {npzpath.name}",
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
                 if cp.returncode != 0:
                     print("git commit failed:", cp.stderr)
                 else:

@@ -67,14 +67,12 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         data["cross_checks"]["line_product_group_structure"]["unique_c3_subgroup"]
         is True
     )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"]["point_orbit_sizes"]
-        == [1, 2, 6]
-    )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"]["line_orbit_sizes"]
-        == [1, 2, 3, 6]
-    )
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "point_orbit_sizes"
+    ] == [1, 2, 6]
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "line_orbit_sizes"
+    ] == [1, 2, 3, 6]
     assert (
         data["cross_checks"]["line_product_orbit_fingerprint"]["missing_point_fixed"]
         is True
@@ -85,12 +83,9 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         == 1
     )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"][
-            "distinguished_direction_orbit_sizes_inside_family"
-        ]
-        == [1, 2]
-    )
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "distinguished_direction_orbit_sizes_inside_family"
+    ] == [1, 2]
     assert (
         data["cross_checks"]["line_product_orbit_fingerprint"][
             "qutrit_phase_space_orbit_signature_holds"
@@ -103,10 +98,9 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         is True
     )
-    assert (
-        data["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
-        == [1, 3]
-    )
+    assert data["cross_checks"]["line_product_striation_action"][
+        "striation_orbit_sizes"
+    ] == [1, 3]
     assert (
         data["cross_checks"]["line_product_striation_action"][
             "distinguished_striation_fixed_setwise"
@@ -137,28 +131,26 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         == 2
     )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
-        == [1, 2, 3, 6]
-    )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
-        == {
-            "through_missing_and_in_distinguished_direction": 1,
-            "not_through_missing_and_in_distinguished_direction": 2,
-            "through_missing_and_not_in_distinguished_direction": 3,
-            "not_through_missing_and_not_in_distinguished_direction": 6,
-        }
-    )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
-        == {
-            "through_missing_and_in_distinguished_direction": 1,
-            "not_through_missing_and_in_distinguished_direction": 1,
-            "through_missing_and_not_in_distinguished_direction": 1,
-            "not_through_missing_and_not_in_distinguished_direction": 1,
-        }
-    )
+    assert data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"] == [
+        1,
+        2,
+        3,
+        6,
+    ]
+    assert data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"] == {
+        "through_missing_and_in_distinguished_direction": 1,
+        "not_through_missing_and_in_distinguished_direction": 2,
+        "through_missing_and_not_in_distinguished_direction": 3,
+        "not_through_missing_and_not_in_distinguished_direction": 6,
+    }
+    assert data["cross_checks"]["line_product_flag_line_orbits"][
+        "class_to_orbit_count"
+    ] == {
+        "through_missing_and_in_distinguished_direction": 1,
+        "not_through_missing_and_in_distinguished_direction": 1,
+        "through_missing_and_not_in_distinguished_direction": 1,
+        "not_through_missing_and_not_in_distinguished_direction": 1,
+    }
     assert (
         data["cross_checks"]["line_product_flag_line_orbits"][
             "orbit_homogeneous_by_flag_class"
@@ -314,12 +306,9 @@ def test_e6_f3_trilinear_symmetry_breaking_integration():
         ]
         == 7
     )
-    assert (
-        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
-            "required_striations"
-        ]
-        == ["x", "y", "y=1x", "y=2x"]
-    )
+    assert data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+        "required_striations"
+    ] == ["x", "y", "y=1x", "y=2x"]
     assert (
         data["cross_checks"]["full_sign_striation_certificate_agl23"][
             "min_striation_complete_certificate_found"
@@ -423,14 +412,12 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         data["cross_checks"]["line_product_group_structure"]["unique_c3_subgroup"]
         is True
     )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"]["point_orbit_sizes"]
-        == [1, 2, 6]
-    )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"]["line_orbit_sizes"]
-        == [1, 2, 3, 6]
-    )
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "point_orbit_sizes"
+    ] == [1, 2, 6]
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "line_orbit_sizes"
+    ] == [1, 2, 3, 6]
     assert (
         data["cross_checks"]["line_product_orbit_fingerprint"]["missing_point_fixed"]
         is True
@@ -441,12 +428,9 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         ]
         == 1
     )
-    assert (
-        data["cross_checks"]["line_product_orbit_fingerprint"][
-            "distinguished_direction_orbit_sizes_inside_family"
-        ]
-        == [1, 2]
-    )
+    assert data["cross_checks"]["line_product_orbit_fingerprint"][
+        "distinguished_direction_orbit_sizes_inside_family"
+    ] == [1, 2]
     assert (
         data["cross_checks"]["line_product_orbit_fingerprint"][
             "qutrit_phase_space_orbit_signature_holds"
@@ -459,10 +443,9 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         ]
         is True
     )
-    assert (
-        data["cross_checks"]["line_product_striation_action"]["striation_orbit_sizes"]
-        == [1, 3]
-    )
+    assert data["cross_checks"]["line_product_striation_action"][
+        "striation_orbit_sizes"
+    ] == [1, 3]
     assert (
         data["cross_checks"]["line_product_striation_action"][
             "distinguished_striation_fixed_setwise"
@@ -493,28 +476,26 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         ]
         == 2
     )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"]
-        == [1, 2, 3, 6]
-    )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"]
-        == {
-            "through_missing_and_in_distinguished_direction": 1,
-            "not_through_missing_and_in_distinguished_direction": 2,
-            "through_missing_and_not_in_distinguished_direction": 3,
-            "not_through_missing_and_not_in_distinguished_direction": 6,
-        }
-    )
-    assert (
-        data["cross_checks"]["line_product_flag_line_orbits"]["class_to_orbit_count"]
-        == {
-            "through_missing_and_in_distinguished_direction": 1,
-            "not_through_missing_and_in_distinguished_direction": 1,
-            "through_missing_and_not_in_distinguished_direction": 1,
-            "not_through_missing_and_not_in_distinguished_direction": 1,
-        }
-    )
+    assert data["cross_checks"]["line_product_flag_line_orbits"]["orbit_sizes"] == [
+        1,
+        2,
+        3,
+        6,
+    ]
+    assert data["cross_checks"]["line_product_flag_line_orbits"]["class_sizes"] == {
+        "through_missing_and_in_distinguished_direction": 1,
+        "not_through_missing_and_in_distinguished_direction": 2,
+        "through_missing_and_not_in_distinguished_direction": 3,
+        "not_through_missing_and_not_in_distinguished_direction": 6,
+    }
+    assert data["cross_checks"]["line_product_flag_line_orbits"][
+        "class_to_orbit_count"
+    ] == {
+        "through_missing_and_in_distinguished_direction": 1,
+        "not_through_missing_and_in_distinguished_direction": 1,
+        "through_missing_and_not_in_distinguished_direction": 1,
+        "not_through_missing_and_not_in_distinguished_direction": 1,
+    }
     assert (
         data["cross_checks"]["line_product_flag_line_orbits"][
             "orbit_homogeneous_by_flag_class"
@@ -610,12 +591,9 @@ def test_e6_f3_trilinear_symmetry_breaking_closed_form_fixture(tmp_path: Path):
         ]
         == 7
     )
-    assert (
-        data["cross_checks"]["full_sign_striation_certificate_hessian216"][
-            "required_striations"
-        ]
-        == ["x", "y", "y=1x", "y=2x"]
-    )
+    assert data["cross_checks"]["full_sign_striation_certificate_hessian216"][
+        "required_striations"
+    ] == ["x", "y", "y=1x", "y=2x"]
     assert (
         data["cross_checks"]["full_sign_striation_certificate_agl23"][
             "min_striation_complete_certificate_size"

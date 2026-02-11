@@ -39,7 +39,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
 from w33_h1_decomposition import (
     J_matrix,
     build_incidence_matrix,
@@ -122,8 +123,10 @@ def main():
     n_tri = len(triangles)
     n_tet = len(tetrahedra)
 
-    print(f"\n  W33 clique complex: {n} vertices, {m} edges, "
-          f"{n_tri} triangles, {n_tet} tetrahedra")
+    print(
+        f"\n  W33 clique complex: {n} vertices, {m} edges, "
+        f"{n_tri} triangles, {n_tet} tetrahedra"
+    )
 
     # Build indices
     tri_idx = {t: i for i, t in enumerate(triangles)}
@@ -194,19 +197,19 @@ def main():
         ep, es = signed_edge_permutation(vp, edges)
         ep_np = np.asarray(ep, dtype=int)
         es_np = np.asarray(es, dtype=float)
-        fixed_e = (ep_np == ar_m)
+        fixed_e = ep_np == ar_m
         chi1 = float(np.sum(es_np[fixed_e]))
 
         # C_2 character: signed triangle
         tp, ts = build_triangle_permutation(vp, triangles, tri_idx)
-        fixed_t = (tp == ar_tri)
+        fixed_t = tp == ar_tri
         chi2 = float(np.sum(ts[fixed_t]))
         chi2_list.append(chi2)
 
         # C_3 character: signed tetrahedron
         ttp, tts = build_tet_permutation(vp, tetrahedra, tet_idx)
         ar_tet = np.arange(n_tet, dtype=int)
-        fixed_tet = (ttp == ar_tet)
+        fixed_tet = ttp == ar_tet
         chi3 = float(np.sum(tts[fixed_tet]))
 
         characters.append((chi0, chi1, chi2, chi3))
@@ -214,7 +217,7 @@ def main():
     chi2_arr = np.array(chi2_list, dtype=float)
 
     # Commutant dimension check
-    comm2 = np.sum(chi2_arr ** 2) / G
+    comm2 = np.sum(chi2_arr**2) / G
     print(f"\n  <|chi_2|^2> = {comm2:.6f}")
     print(f"  Number of irreps in C_2: {int(round(comm2))}")
 
@@ -391,14 +394,18 @@ def main():
         fs_str = {0: "complex", 1: "real", -1: "quaternionic", None: "?"}[fs_indicator]
 
         print(f"    Component {ci+1} (dim {d}): {status}, FS={fs_indicator} ({fs_str})")
-        print(f"      ||A_sym - scalar*I|| = {A_s_dev:.2e}, ||A_anti|| = {A_a_norm:.2e}")
+        print(
+            f"      ||A_sym - scalar*I|| = {A_s_dev:.2e}, ||A_anti|| = {A_a_norm:.2e}"
+        )
 
-        irrep_data.append({
-            'dim': d,
-            'irreducible': is_irreducible,
-            'fs_indicator': fs_indicator,
-            'fs_type': fs_str,
-        })
+        irrep_data.append(
+            {
+                "dim": d,
+                "irreducible": is_irreducible,
+                "fs_indicator": fs_indicator,
+                "fs_type": fs_str,
+            }
+        )
 
     # =====================================================================
     # Step 8: Identify the physical content
@@ -407,7 +414,7 @@ def main():
     print("  PHYSICAL INTERPRETATION OF C_2 DECOMPOSITION")
     print("=" * 72)
 
-    dims_sorted = sorted([d['dim'] for d in irrep_data])
+    dims_sorted = sorted([d["dim"] for d in irrep_data])
     print(f"\n  C_2(160) = {' + '.join(map(str, dims_sorted))}")
     print(f"  under PSp(4,3) (order 25920)")
 
@@ -441,14 +448,19 @@ def main():
 
     tol_ev = 1e-6
     hodge_sectors = {}
-    for label, target_ev in [('harm', 0.0), ('coex', 4.0), ('ex10', 10.0), ('ex16', 16.0)]:
+    for label, target_ev in [
+        ("harm", 0.0),
+        ("coex", 4.0),
+        ("ex10", 10.0),
+        ("ex16", 16.0),
+    ]:
         idx = np.where(np.abs(w - target_ev) < tol_ev)[0]
         hodge_sectors[label] = v[:, idx]
 
     # Compute character of each C_1 Hodge sector at each group element
     print(f"  Computing C_1 Hodge sector characters...")
 
-    chi_c1_sectors = {k: np.zeros(G) for k in ['harm', 'coex', 'ex10', 'ex16']}
+    chi_c1_sectors = {k: np.zeros(G) for k in ["harm", "coex", "ex10", "ex16"]}
 
     for idx_g, vp in enumerate(all_vperms):
         ep, es = signed_edge_permutation(vp, edges)
@@ -476,17 +488,21 @@ def main():
 
     # Inner products between C_2 components and C_1 sectors
     print(f"\n  Character inner products <chi_C2, chi_C1>:")
-    print(f"  {'C2 comp':>10s} | {'harm(81)':>10s} | {'coex(120)':>10s} | {'ex10(24)':>10s} | {'ex16(15)':>10s}")
+    print(
+        f"  {'C2 comp':>10s} | {'harm(81)':>10s} | {'coex(120)':>10s} | {'ex10(24)':>10s} | {'ex16(15)':>10s}"
+    )
     print(f"  {'-'*10}-+-{'-'*10}-+-{'-'*10}-+-{'-'*10}-+-{'-'*10}")
 
     for ci, chi_c2 in enumerate(chi_c2_components):
         d = len(clusters[ci])
         ips = {}
-        for label in ['harm', 'coex', 'ex10', 'ex16']:
+        for label in ["harm", "coex", "ex10", "ex16"]:
             ip = np.dot(chi_c2, chi_c1_sectors[label]) / G
             ips[label] = ip
-        print(f"  dim={d:>5d} | {ips['harm']:10.4f} | {ips['coex']:10.4f} | "
-              f"{ips['ex10']:10.4f} | {ips['ex16']:10.4f}")
+        print(
+            f"  dim={d:>5d} | {ips['harm']:10.4f} | {ips['coex']:10.4f} | "
+            f"{ips['ex10']:10.4f} | {ips['ex16']:10.4f}"
+        )
 
     # Inner products with C_0 characters
     print(f"\n  Character inner products with C_0 and C_3:")
@@ -499,8 +515,10 @@ def main():
         ip_c0 = np.dot(chi_c2, chi_c0) / G
         ip_c3 = np.dot(chi_c2, chi_c3) / G
         ip_c1 = np.dot(chi_c2, np.array([c[1] for c in characters], dtype=float)) / G
-        print(f"    C_2 dim={d}: <chi, chi_C0>={ip_c0:.4f}, <chi, chi_C1>={ip_c1:.4f}, "
-              f"<chi, chi_C3>={ip_c3:.4f}")
+        print(
+            f"    C_2 dim={d}: <chi, chi_C0>={ip_c0:.4f}, <chi, chi_C1>={ip_c1:.4f}, "
+            f"<chi, chi_C3>={ip_c3:.4f}"
+        )
 
     # =====================================================================
     # Step 10: Boundary map structure
@@ -548,7 +566,9 @@ def main():
         coex_dim = np.trace(V.T @ P_coex2 @ V)
         ex_dim = np.trace(V.T @ P_ex2 @ V)
 
-        print(f"    dim={d}: coex_2 overlap = {coex_dim:.4f}, exact_2 overlap = {ex_dim:.4f}")
+        print(
+            f"    dim={d}: coex_2 overlap = {coex_dim:.4f}, exact_2 overlap = {ex_dim:.4f}"
+        )
 
     # =====================================================================
     # Step 11: Summary and synthesis
@@ -557,7 +577,8 @@ def main():
     print("  SYNTHESIS: TRIANGLE DECOMPOSITION")
     print("=" * 72)
 
-    print(f"""
+    print(
+        f"""
   C_2(W33) = R^160 decomposes under PSp(4,3) as:
 
     160 = {' + '.join(map(str, dims_sorted))}
@@ -574,22 +595,23 @@ def main():
     - 160 = 4 x 40 = faces per tetrahedron x tetrahedra
     - The 8-irrep decomposition reveals the internal structure
       of gauge boson interactions
-""")
+"""
+    )
 
     elapsed = time.time() - t0
     print(f"  Elapsed: {elapsed:.1f}s")
 
     # Save results
     results = {
-        'n_triangles': n_tri,
-        'n_components': len(clusters),
-        'dimensions': dims_sorted,
-        'irrep_data': irrep_data,
-        'L2_error': float(L2_error),
-        'rank_d2': rank_d2,
-        'rank_d3': rank_d3,
-        'b2': n_tri - rank_d2 - rank_d3,
-        'elapsed_seconds': elapsed,
+        "n_triangles": n_tri,
+        "n_components": len(clusters),
+        "dimensions": dims_sorted,
+        "irrep_data": irrep_data,
+        "L2_error": float(L2_error),
+        "rank_d2": rank_d2,
+        "rank_d3": rank_d3,
+        "b2": n_tri - rank_d2 - rank_d3,
+        "elapsed_seconds": elapsed,
     }
 
     ts = int(time.time())

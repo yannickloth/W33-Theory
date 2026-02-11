@@ -7,7 +7,14 @@ import scripts.git_auto_keep as gak
 
 
 def run(cmd, cwd):
-    return subprocess.run(cmd, check=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    return subprocess.run(
+        cmd,
+        check=True,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
 
 
 def test_git_add_commit_local(tmp_path):

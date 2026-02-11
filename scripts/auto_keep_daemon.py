@@ -39,7 +39,15 @@ except Exception:  # pragma: no cover - permissive import
 DEFAULT_WATCH = ["committed_artifacts", "checks"]
 # Add common temporary/check artifacts to exclude to avoid noisy commits and
 # pre-commit conflicts on Windows (e.g., checks/_tmp_seed_shrink_*.json).
-DEFAULT_EXCLUDE = [".git", "*.bak", "*.localbak", "*.tmp", "*~", "checks/_tmp_*", "checks/*_tmp_*"]
+DEFAULT_EXCLUDE = [
+    ".git",
+    "*.bak",
+    "*.localbak",
+    "*.tmp",
+    "*~",
+    "checks/_tmp_*",
+    "checks/*_tmp_*",
+]
 LOG_PATH = Path("committed_artifacts") / "auto_keep.log"
 
 
@@ -55,7 +63,11 @@ def scan_dir_files(dirs: List[Path], exclude_patterns: List[str]) -> Dict[str, f
                 rel = str(path)
                 skip = False
                 for pat in exclude_patterns:
-                    if fnmatch.fnmatch(path.name, pat) or fnmatch.fnmatch(rel, pat) or pat in rel:
+                    if (
+                        fnmatch.fnmatch(path.name, pat)
+                        or fnmatch.fnmatch(rel, pat)
+                        or pat in rel
+                    ):
                         skip = True
                         break
                 if skip:
@@ -68,7 +80,9 @@ def scan_dir_files(dirs: List[Path], exclude_patterns: List[str]) -> Dict[str, f
     return files
 
 
-def commit_files(files: List[str], branch: str | None = None, push: bool = False) -> Tuple[bool, str]:
+def commit_files(
+    files: List[str], branch: str | None = None, push: bool = False
+) -> Tuple[bool, str]:
     """
     Commit files, skipping ignored ones. For files ignored by git (e.g., in checks/),
     copy them to `committed_artifacts/<filename>` and commit the copy instead.
@@ -85,8 +99,10 @@ def commit_files(files: List[str], branch: str | None = None, push: bool = False
         p = Path(f)
         # check if file is ignored by git
         try:
-            res = subprocess.run(["git", "check-ignore", "-q", "--", str(p)], check=False)
-            is_ignored = (res.returncode == 0)
+            res = subprocess.run(
+                ["git", "check-ignore", "-q", "--", str(p)], check=False
+            )
+            is_ignored = res.returncode == 0
         except Exception:
             is_ignored = False
 
@@ -116,9 +132,14 @@ def commit_files(files: List[str], branch: str | None = None, push: bool = False
     successes = 0
     messages = []
     try:
-        chunks = [to_commit[i : i + BATCH_SIZE] for i in range(0, len(to_commit), BATCH_SIZE)]
+        chunks = [
+            to_commit[i : i + BATCH_SIZE] for i in range(0, len(to_commit), BATCH_SIZE)
+        ]
         for idx, chunk in enumerate(chunks):
-            msg = f"auto-keep: {len(chunk)} file(s) changed ({idx+1}/{len(chunks)}): " + ", ".join(Path(f).name for f in chunk[:5])
+            msg = (
+                f"auto-keep: {len(chunk)} file(s) changed ({idx+1}/{len(chunks)}): "
+                + ", ".join(Path(f).name for f in chunk[:5])
+            )
             ok, out = git_auto_keep.git_add_commit(chunk, msg, branch=branch, push=push)
             if ok:
                 successes += 1
@@ -135,29 +156,51 @@ def commit_files(files: List[str], branch: str | None = None, push: bool = False
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--watch", type=str, default=','.join(DEFAULT_WATCH), help="Comma-separated list of directories to watch")
-    parser.add_argument("--interval", type=float, default=10.0, help="Polling interval in seconds")
-    parser.add_argument("--exclude", type=str, default=','.join(DEFAULT_EXCLUDE), help="Comma-separated exclude patterns")
-    parser.add_argument("--branch", type=str, default=None, help="Optional branch name to push to")
-    parser.add_argument("--push", action="store_true", help="Push commits to remote branch after committing (opt-in)")
-    parser.add_argument("--dry-run", action="store_true", help="Only show what would be committed")
+    parser.add_argument(
+        "--watch",
+        type=str,
+        default=",".join(DEFAULT_WATCH),
+        help="Comma-separated list of directories to watch",
+    )
+    parser.add_argument(
+        "--interval", type=float, default=10.0, help="Polling interval in seconds"
+    )
+    parser.add_argument(
+        "--exclude",
+        type=str,
+        default=",".join(DEFAULT_EXCLUDE),
+        help="Comma-separated exclude patterns",
+    )
+    parser.add_argument(
+        "--branch", type=str, default=None, help="Optional branch name to push to"
+    )
+    parser.add_argument(
+        "--push",
+        action="store_true",
+        help="Push commits to remote branch after committing (opt-in)",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Only show what would be committed"
+    )
     parser.add_argument("--once", action="store_true", help="Run one scan and exit")
     args = parser.parse_args()
 
-    watch_dirs = [Path(p.strip()) for p in args.watch.split(',') if p.strip()]
-    exclude_patterns = [p.strip() for p in args.exclude.split(',') if p.strip()]
+    watch_dirs = [Path(p.strip()) for p in args.watch.split(",") if p.strip()]
+    exclude_patterns = [p.strip() for p in args.exclude.split(",") if p.strip()]
     interval = float(args.interval)
 
     # initial snapshot
     snapshot = scan_dir_files(watch_dirs, exclude_patterns)
-    print(f"Watching: {[str(p) for p in watch_dirs]} (interval={interval}s) -> {len(snapshot)} files seen")
+    print(
+        f"Watching: {[str(p) for p in watch_dirs]} (interval={interval}s) -> {len(snapshot)} files seen"
+    )
 
     def log(msg: str):
-        ts = datetime.utcnow().isoformat() + 'Z'
+        ts = datetime.utcnow().isoformat() + "Z"
         out = f"[{ts}] {msg}\n"
         try:
             LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-            with open(LOG_PATH, 'a', encoding='utf-8') as f:
+            with open(LOG_PATH, "a", encoding="utf-8") as f:
                 f.write(out)
         except Exception:
             pass
@@ -166,7 +209,9 @@ def main():
     # single pass: just show what would be committed
     if args.dry_run and args.once:
         current = scan_dir_files(watch_dirs, exclude_patterns)
-        added_or_changed = [p for p, m in current.items() if p not in snapshot or snapshot[p] < m]
+        added_or_changed = [
+            p for p, m in current.items() if p not in snapshot or snapshot[p] < m
+        ]
         if added_or_changed:
             print("Dry-run: would commit the following files:")
             for p in added_or_changed:
@@ -177,14 +222,18 @@ def main():
 
     if args.once:
         current = scan_dir_files(watch_dirs, exclude_patterns)
-        added_or_changed = [p for p, m in current.items() if p not in snapshot or snapshot[p] < m]
+        added_or_changed = [
+            p for p, m in current.items() if p not in snapshot or snapshot[p] < m
+        ]
         if added_or_changed:
             if args.dry_run:
                 print("Dry-run once: would commit:")
                 for p in added_or_changed:
                     print("  ", p)
             else:
-                ok, msg = commit_files(added_or_changed, branch=args.branch, push=args.push)
+                ok, msg = commit_files(
+                    added_or_changed, branch=args.branch, push=args.push
+                )
                 log(f"Once commit: ok={ok} msg={msg} files={len(added_or_changed)}")
         else:
             print("Once: no changes detected")
@@ -194,7 +243,9 @@ def main():
     try:
         while True:
             current = scan_dir_files(watch_dirs, exclude_patterns)
-            added_or_changed = [p for p, m in current.items() if p not in snapshot or snapshot[p] < m]
+            added_or_changed = [
+                p for p, m in current.items() if p not in snapshot or snapshot[p] < m
+            ]
             removed = [p for p in snapshot.keys() if p not in current]
             if added_or_changed:
                 if args.dry_run:
@@ -202,7 +253,9 @@ def main():
                     for p in added_or_changed:
                         print("  ", p)
                 else:
-                    ok, msg = commit_files(added_or_changed, branch=args.branch, push=args.push)
+                    ok, msg = commit_files(
+                        added_or_changed, branch=args.branch, push=args.push
+                    )
                     log(f"Committed {len(added_or_changed)} files (ok={ok}): {msg}")
                 # update snapshot for committed files
                 for p in added_or_changed:
@@ -215,5 +268,5 @@ def main():
         print("Auto-keep daemon stopped by user")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

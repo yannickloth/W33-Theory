@@ -81,7 +81,8 @@ def propose_quantum_number_test():
     print("PROPOSED TEST: HOLONOMY ↔ QUANTUM NUMBER CONNECTION")
     print("=" * 70)
 
-    print("""
+    print(
+        """
 Hypothesis: The 2160 fermion-like triangles (2,2,2 holonomy) correspond
 to specific (Z4, Z3) quantum numbers, while 2880 boson-like triangles
 (3,1,1,1 holonomy) correspond to others.
@@ -117,7 +118,8 @@ Impact if Confirmed:
   ✓ Provides mechanism for spin-statistics theorem
 
 This test could be "smoking gun" evidence!
-""")
+"""
+    )
 
 
 if __name__ == "__main__":
@@ -128,7 +130,8 @@ if __name__ == "__main__":
         print("\n" + "=" * 70)
         print("NEXT ACTION REQUIRED")
         print("=" * 70)
-        print("""
+        print(
+            """
 To complete this test, we need to:
 
 1. Load W33 rays (40 points with complex phases)
@@ -141,4 +144,5 @@ To complete this test, we need to:
 5. Analyze correlation structure
 
 This will be the DEFINING TEST of the W33 theory!
-""")
+"""
+        )

@@ -11,10 +11,10 @@ import argparse
 import json
 import time
 from collections import Counter
+from importlib import util
 from pathlib import Path
 
 import numpy as np
-from importlib import util
 
 # load helper functions
 spec_chk = util.spec_from_file_location("check", "scripts/check_triangle_coverage.py")
@@ -32,10 +32,14 @@ spec_opt.loader.exec_module(opt)
 
 def compute_costs():
     X, edges = check.compute_embedding_matrix()
-    A_mat = np.vstack([(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges])
+    A_mat = np.vstack(
+        [(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges]
+    )
     roots = check.generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
     return cost, edges, roots
 
@@ -50,7 +54,11 @@ def main():
     if not inpath.exists():
         raise SystemExit(f"Input file not found: {inpath}")
 
-    outpath = Path(args.outpath) if args.outpath else Path("checks") / f"PART_CVII_e8_bijection_repaired_from_{inpath.stem}.json"
+    outpath = (
+        Path(args.outpath)
+        if args.outpath
+        else Path("checks") / f"PART_CVII_e8_bijection_repaired_from_{inpath.stem}.json"
+    )
 
     j = json.loads(inpath.read_text(encoding="utf-8"))
     bij = {int(k): int(v) for k, v in j.get("bijection", {}).items()}
@@ -63,14 +71,21 @@ def main():
     duplicates = [r for r, c in cnt.items() if c > 1]
     if not duplicates:
         print("No duplicates found; writing copy of input to", outpath)
-        outpath.write_text(json.dumps({"bijection": {str(k): int(v) for k, v in bij.items()}}, indent=2), encoding="utf-8")
+        outpath.write_text(
+            json.dumps(
+                {"bijection": {str(k): int(v) for k, v in bij.items()}}, indent=2
+            ),
+            encoding="utf-8",
+        )
         return
 
     # determine available roots (those not used)
     used = set(vals)
     all_roots = set(range(len(roots)))
     unused = sorted(list(all_roots - used))
-    print(f"Found {len(duplicates)} duplicated roots (duplicates_count={sum(cnt[r]-1 for r in duplicates)}). Unused roots: {len(unused)}")
+    print(
+        f"Found {len(duplicates)} duplicated roots (duplicates_count={sum(cnt[r]-1 for r in duplicates)}). Unused roots: {len(unused)}"
+    )
 
     # build list of edges that have duplicate assignments (but keep one occurrence per duplicate root)
     edge_by_root = {}
@@ -81,7 +96,9 @@ def main():
     for r, es in edge_by_root.items():
         if len(es) > 1:
             # keep the one edge with smallest cost to root r (best match); reassign others
-            es_sorted = sorted(es, key=lambda e: cost[e, r] if r < cost.shape[1] else float('inf'))
+            es_sorted = sorted(
+                es, key=lambda e: cost[e, r] if r < cost.shape[1] else float("inf")
+            )
             keep = es_sorted[0]
             for e in es_sorted[1:]:
                 edges_to_fix.append(e)
@@ -128,11 +145,24 @@ def main():
     tri_list = opt.build_triangles(n, adj)
     roots_full = e8.generate_e8_roots()
 
-    exact_before = sum(1 for t in tri_list if opt.triangle_exact(roots_full, {int(k):int(v) for k,v in j.get('bijection',{}).items()}, edges, t))
-    exact_after = sum(1 for t in tri_list if opt.triangle_exact(roots_full, bij, edges, t))
+    exact_before = sum(
+        1
+        for t in tri_list
+        if opt.triangle_exact(
+            roots_full,
+            {int(k): int(v) for k, v in j.get("bijection", {}).items()},
+            edges,
+            t,
+        )
+    )
+    exact_after = sum(
+        1 for t in tri_list if opt.triangle_exact(roots_full, bij, edges, t)
+    )
 
-    print(f"Wrote {outpath}: duplicates_before={len(duplicates)}, duplicates_after={len(duplicates2)}, exact_before={exact_before}, exact_after={exact_after}")
+    print(
+        f"Wrote {outpath}: duplicates_before={len(duplicates)}, duplicates_after={len(duplicates2)}, exact_before={exact_before}, exact_after={exact_after}"
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

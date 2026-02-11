@@ -43,7 +43,7 @@ def map_to_mod12(ph: complex) -> int:
     # Map to nearest of +i or -i => 3 or 9 (mod 12)
     targets = {3: 1j, 9: -1j}
     best_k = None
-    best_d = float('inf')
+    best_d = float("inf")
     for k, t in targets.items():
         d = abs(ph - t)
         if d < best_d:
@@ -57,11 +57,13 @@ def map_to_mod12(ph: complex) -> int:
 
 def parse_rays_csv(path: Path):
     out = {}
-    with path.open('r', encoding='utf-8') as f:
+    with path.open("r", encoding="utf-8") as f:
         rdr = csv.DictReader(f)
         for r in rdr:
-            pid = int(r['point_id'])
-            comps = [complex(str(r[c]).replace('i', 'j')) for c in ('v0', 'v1', 'v2', 'v3')]
+            pid = int(r["point_id"])
+            comps = [
+                complex(str(r[c]).replace("i", "j")) for c in ("v0", "v1", "v2", "v3")
+            ]
             v = np.array(comps, dtype=complex)
             v = v / np.linalg.norm(v)
             out[pid] = v
@@ -74,12 +76,20 @@ def main():
     p.add_argument("--bundle-dir", type=Path, required=True)
     p.add_argument("--mub-phase-csv", type=Path, default=None)
     p.add_argument("--rays-csv", type=Path, default=None)
-    p.add_argument("--out-json", type=Path, default=Path("analysis/triad_bargmann_vs_record.json"))
+    p.add_argument(
+        "--out-json", type=Path, default=Path("analysis/triad_bargmann_vs_record.json")
+    )
     args = p.parse_args()
 
     triad_csv = args.triad_csv
     bundle_dir = args.bundle_dir
-    mub_csv = args.mub_phase_csv if args.mub_phase_csv else bundle_dir / "analysis" / "qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv"
+    mub_csv = (
+        args.mub_phase_csv
+        if args.mub_phase_csv
+        else bundle_dir
+        / "analysis"
+        / "qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv"
+    )
     mub = parse_mub_csv(mub_csv) if args.rays_csv is None else {}
     rays = parse_rays_csv(args.rays_csv) if args.rays_csv else None
 
@@ -131,13 +141,26 @@ def main():
             if k == rec:
                 matches += 1
             else:
-                mismatches.append({"triad": (a, b, c), "recorded": rec, "bargmann_k": k, "bargmann_phase": [round(ph.real, 6), round(ph.imag, 6)]})
+                mismatches.append(
+                    {
+                        "triad": (a, b, c),
+                        "recorded": rec,
+                        "bargmann_k": k,
+                        "bargmann_phase": [round(ph.real, 6), round(ph.imag, 6)],
+                    }
+                )
 
-    out = {"total_triads": total, "matches": matches, "match_fraction": matches / total if total else None, "mismatches_sample": mismatches[:30]}
+    out = {
+        "total_triads": total,
+        "matches": matches,
+        "match_fraction": matches / total if total else None,
+        "mismatches_sample": mismatches[:30],
+    }
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(f"Wrote {args.out_json}")
     print(json.dumps(out, indent=2))
+
 
 if __name__ == "__main__":
     main()

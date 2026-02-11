@@ -13,19 +13,20 @@ Outputs:
  - checks/seed_e6_struct.json (matching result from check_bipartite_matching)
 """
 from __future__ import annotations
-import json
+
 import argparse
+import json
 import random
 import subprocess
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
 from typing import List, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
-ART_WE6 = ROOT / 'artifacts' / 'we6_true_action.json'
-OUT_SEED = ROOT / 'checks' / 'PART_CVII_e8_seed_e6_structural.json'
-OUT_MATCH = ROOT / 'checks' / 'match_e6_struct.json'
-OUT_SEED_FROM_MATCH = ROOT / 'checks' / 'seed_e6_struct.json'
+ART_WE6 = ROOT / "artifacts" / "we6_true_action.json"
+OUT_SEED = ROOT / "checks" / "PART_CVII_e8_seed_e6_structural.json"
+OUT_MATCH = ROOT / "checks" / "match_e6_struct.json"
+OUT_SEED_FROM_MATCH = ROOT / "checks" / "seed_e6_struct.json"
 
 # import W33 builder
 from e8_embedding_group_theoretic import build_w33, generate_e8_roots
@@ -34,9 +35,9 @@ Edge = Tuple[int, int]
 
 
 def load_we6_artifact(path: Path):
-    j = json.loads(path.read_text(encoding='utf-8'))
-    roots_int2 = j['roots_int2']
-    gen_perms = j['we6_generators']
+    j = json.loads(path.read_text(encoding="utf-8"))
+    roots_int2 = j["roots_int2"]
+    gen_perms = j["we6_generators"]
     # convert perms to 0-based lists
     perms = [[p - 1 for p in perm] for perm in gen_perms]
     return roots_int2, perms
@@ -87,11 +88,11 @@ def decompose_edges(n, adj):
             else:
                 cross.append((i, j))
     return {
-        'incident': incident,
-        'h12_internal': h12_internal,
-        'h27_internal': h27_internal,
-        'cross': cross,
-        'edges': edges_list,
+        "incident": incident,
+        "h12_internal": h12_internal,
+        "h27_internal": h27_internal,
+        "cross": cross,
+        "edges": edges_list,
     }
 
 
@@ -108,7 +109,13 @@ def pick_and_assign(pool: List[int], count: int, rng: random.Random, used: set):
     return picks
 
 
-def build_seed(seed_out: Path, seed:int=42, repair:bool=False, local_time:int=120, run_check: bool = True):
+def build_seed(
+    seed_out: Path,
+    seed: int = 42,
+    repair: bool = False,
+    local_time: int = 120,
+    run_check: bool = True,
+):
     rng = random.Random(seed)
     n, vertices, adj, edges = build_w33()
     decomposition = decompose_edges(n, adj)
@@ -138,22 +145,24 @@ def build_seed(seed_out: Path, seed:int=42, repair:bool=False, local_time:int=12
     edge_to_root = {}
 
     # Assign H27 internal edges -> prefer pool_27 (108 edges)
-    h27_edges = decomposition['h27_internal']
+    h27_edges = decomposition["h27_internal"]
     picks = pick_and_assign(pool_27, len(h27_edges), rng, used)
     for e, r in zip(h27_edges, picks):
         idx = edges.index(e)
         edge_to_root[idx] = int(r)
 
     # Assign H12 internal edges (12) -> prefer e6 pool
-    h12_edges = decomposition['h12_internal']
+    h12_edges = decomposition["h12_internal"]
     picks = pick_and_assign(pool_e6, len(h12_edges), rng, used)
     for e, r in zip(h12_edges, picks):
         idx = edges.index(e)
         edge_to_root[idx] = int(r)
 
     # Assign incident edges (12) -> prefer singletons + leftover e6
-    inc_edges = decomposition['incident']
-    picks1 = pick_and_assign(pool_single, min(len(pool_single), len(inc_edges)), rng, used)
+    inc_edges = decomposition["incident"]
+    picks1 = pick_and_assign(
+        pool_single, min(len(pool_single), len(inc_edges)), rng, used
+    )
     remaining = len(inc_edges) - len(picks1)
     picks2 = pick_and_assign(pool_e6, remaining, rng, used)
     picks = picks1 + picks2
@@ -162,7 +171,7 @@ def build_seed(seed_out: Path, seed:int=42, repair:bool=False, local_time:int=12
         edge_to_root[idx] = int(r)
 
     # Assign cross edges (108) -> fill from remaining unused roots
-    cross_edges = decomposition['cross']
+    cross_edges = decomposition["cross"]
     picks = pick_and_assign(list(pool_all), len(cross_edges), rng, used)
     for e, r in zip(cross_edges, picks):
         idx = edges.index(e)
@@ -172,34 +181,72 @@ def build_seed(seed_out: Path, seed:int=42, repair:bool=False, local_time:int=12
     assert len(edge_to_root) == 240
 
     seed_obj = {
-        'seed_edges': [{'edge_index': int(k), 'root_index': int(v)} for k, v in sorted(edge_to_root.items())]
+        "seed_edges": [
+            {"edge_index": int(k), "root_index": int(v)}
+            for k, v in sorted(edge_to_root.items())
+        ]
     }
     seed_out.parent.mkdir(parents=True, exist_ok=True)
-    seed_out.write_text(json.dumps(seed_obj, indent=2), encoding='utf-8')
-    print('Wrote', seed_out)
+    seed_out.write_text(json.dumps(seed_obj, indent=2), encoding="utf-8")
+    print("Wrote", seed_out)
 
     # Run bipartite check & write match/seed
     if run_check:
-        cmd = ['py','-3','scripts/check_bipartite_matching.py','--mapping-json',str(seed_out),'--write-match',str(OUT_MATCH),'--write-seed',str(OUT_SEED_FROM_MATCH),'--check-triangles','--verbose']
-        print('Running:', ' '.join(cmd))
-        subprocess.run(' '.join(cmd), shell=True)
+        cmd = [
+            "py",
+            "-3",
+            "scripts/check_bipartite_matching.py",
+            "--mapping-json",
+            str(seed_out),
+            "--write-match",
+            str(OUT_MATCH),
+            "--write-seed",
+            str(OUT_SEED_FROM_MATCH),
+            "--check-triangles",
+            "--verbose",
+        ]
+        print("Running:", " ".join(cmd))
+        subprocess.run(" ".join(cmd), shell=True)
 
     if repair:
         # run local_repair on produced seed (from match output)
-        cmd = ['py','-3','-m','scripts.local_repair_matching','--k','60','--time-limit',str(local_time),'--seed-json',str(OUT_SEED_FROM_MATCH),'--tries','500000']
-        print('Running local_repair:', ' '.join(cmd))
-        subprocess.run(' '.join(cmd), shell=True)
+        cmd = [
+            "py",
+            "-3",
+            "-m",
+            "scripts.local_repair_matching",
+            "--k",
+            "60",
+            "--time-limit",
+            str(local_time),
+            "--seed-json",
+            str(OUT_SEED_FROM_MATCH),
+            "--tries",
+            "500000",
+        ]
+        print("Running local_repair:", " ".join(cmd))
+        subprocess.run(" ".join(cmd), shell=True)
 
     return seed_out
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', type=int, default=42)
-    parser.add_argument('--output', type=str, default=str(OUT_SEED))
-    parser.add_argument('--repair', action='store_true')
-    parser.add_argument('--local-time', type=int, default=120)
-    parser.add_argument('--no-check', action='store_true', help='Skip running check_bipartite_matching and local repair')
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--output", type=str, default=str(OUT_SEED))
+    parser.add_argument("--repair", action="store_true")
+    parser.add_argument("--local-time", type=int, default=120)
+    parser.add_argument(
+        "--no-check",
+        action="store_true",
+        help="Skip running check_bipartite_matching and local repair",
+    )
     args = parser.parse_args()
 
-    build_seed(Path(args.output), seed=args.seed, repair=args.repair, local_time=args.local_time, run_check=not args.no_check)
+    build_seed(
+        Path(args.output),
+        seed=args.seed,
+        repair=args.repair,
+        local_time=args.local_time,
+        run_check=not args.no_check,
+    )

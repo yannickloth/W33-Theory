@@ -8,7 +8,14 @@ import scripts.git_auto_keep as gak
 
 
 def run(cmd, cwd):
-    return subprocess.run(cmd, check=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    return subprocess.run(
+        cmd,
+        check=True,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
 
 
 def main():
@@ -29,15 +36,17 @@ def main():
         cwd = os.getcwd()
         try:
             os.chdir(repo)
-            ok, msg = gak.git_add_commit([str(f)], "test commit", branch=None, push=False)
+            ok, msg = gak.git_add_commit(
+                [str(f)], "test commit", branch=None, push=False
+            )
         finally:
             os.chdir(cwd)
 
-        print('ok', ok, msg)
+        print("ok", ok, msg)
         # confirm commit exists
         res = run(["git", "log", "--oneline"], cwd=repo)
         print(res.stdout)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

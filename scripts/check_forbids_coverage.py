@@ -6,13 +6,14 @@ Writes checks/PART_CVII_forbids_coverage.json with results.
 """
 from __future__ import annotations
 
-import json
 import argparse
+import json
 import time
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
 
 # Local copies of helper functions from solve_e8_embedding_cpsat.py to avoid importing that module
+
 
 def generate_scaled_e8_roots() -> list:
     roots = set()
@@ -27,6 +28,7 @@ def generate_scaled_e8_roots() -> list:
                     roots.add(tuple(v))
     # Type 2: (±1)^8 with even number of -1
     from itertools import product
+
     for signs in product((-1, 1), repeat=8):
         if sum(1 for s in signs if s < 0) % 2 == 0:
             roots.add(tuple(int(s) for s in signs))
@@ -108,22 +110,24 @@ def enumerate_triangles(n: int, adj: list):
                         tris.append(tri)
     return tris
 
-from ortools.sat.python import cp_model
-import numpy as np
 
-CHECKS = Path('checks')
-FORB = CHECKS / 'PART_CVII_forbids.json'
-OUT = CHECKS / 'PART_CVII_forbids_coverage.json'
+import numpy as np
+from ortools.sat.python import cp_model
+
+CHECKS = Path("checks")
+FORB = CHECKS / "PART_CVII_forbids.json"
+OUT = CHECKS / "PART_CVII_forbids_coverage.json"
 
 
 def compute_candidates(k: int = 40):
     X, edges = compute_embedding_matrix()
     A_mat = X
+
     # build edge vectors from solve script logic
     # reuse the function's behavior: build_edge_vectors is not exported; recompute here
     def build_edge_vectors(X, edges):
         E = []
-        for (i, j) in edges:
+        for i, j in edges:
             v = X[i] - X[j]
             nv = np.linalg.norm(v)
             if nv > 0:
@@ -131,10 +135,13 @@ def compute_candidates(k: int = 40):
             else:
                 E.append(v)
         return np.vstack(E)
+
     E_mat = build_edge_vectors(X, edges)
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
     N_edges = len(E_mat)
     cost = np.linalg.norm(E_mat[:, None, :] - roots_unit[None, :, :], axis=2)
     candidates = {}
@@ -148,8 +155,8 @@ def single_edge_coverage_test(forbids, candidates):
     # forbids: list of entries with 'set' and 'roots'
     forbidden_by_edge = defaultdict(set)
     for ent in forbids:
-        s = ent.get('set', [])
-        roots = ent.get('roots', [])
+        s = ent.get("set", [])
+        roots = ent.get("roots", [])
         if len(s) == 1:
             e = int(s[0])
             r = int(roots[0]) if roots else None
@@ -160,7 +167,9 @@ def single_edge_coverage_test(forbids, candidates):
         forbidden = forbidden_by_edge.get(e, set())
         allowed = [r for r in cand if r not in forbidden]
         if not allowed:
-            blocked_edges.append({'edge': e, 'forbidden_roots': list(forbidden), 'candidates': cand})
+            blocked_edges.append(
+                {"edge": e, "forbidden_roots": list(forbidden), "candidates": cand}
+            )
     return blocked_edges
 
 
@@ -170,13 +179,14 @@ def build_subgraph_model(edges, candidates, forbids, radius=0):
     involved_edges = set()
     vertices = set()
     for ent in forbids:
-        s = ent.get('set', [])
+        s = ent.get("set", [])
         for e in s:
             involved_edges.add(int(e))
     # expand to include edges within radius by vertex adjacency
     for eidx in list(involved_edges):
         i, j = edges[eidx]
-        vertices.add(i); vertices.add(j)
+        vertices.add(i)
+        vertices.add(j)
     if radius > 0:
         # include edges incident to these vertices
         for ei, (a, b) in enumerate(edges):
@@ -187,7 +197,7 @@ def build_subgraph_model(edges, candidates, forbids, radius=0):
     bvars = {}
     for e in sorted(involved_edges):
         for r in candidates[e]:
-            bvars[(e, r)] = model.NewBoolVar(f'b_e{e}_r{r}')
+            bvars[(e, r)] = model.NewBoolVar(f"b_e{e}_r{r}")
     # per-edge assignment
     for e in sorted(involved_edges):
         model.Add(sum(bvars[(e, r)] for r in candidates[e]) == 1)
@@ -201,37 +211,52 @@ def build_subgraph_model(edges, candidates, forbids, radius=0):
     n, vertices_all, adj, edges_all = build_w33_graph()
     triangles = enumerate_triangles(n, adj)
     edge_index = {edges_all[i]: i for i in range(len(edges_all))}
-    for (a, b, c) in triangles:
+    for a, b, c in triangles:
         # include only if corresponding edges in our involved_edges
-        e_ab = edge_index.get((a, b)) if (a, b) in edge_index else edge_index.get((b, a))
-        e_bc = edge_index.get((b, c)) if (b, c) in edge_index else edge_index.get((c, b))
-        e_ac = edge_index.get((a, c)) if (a, c) in edge_index else edge_index.get((c, a))
+        e_ab = (
+            edge_index.get((a, b)) if (a, b) in edge_index else edge_index.get((b, a))
+        )
+        e_bc = (
+            edge_index.get((b, c)) if (b, c) in edge_index else edge_index.get((c, b))
+        )
+        e_ac = (
+            edge_index.get((a, c)) if (a, c) in edge_index else edge_index.get((c, a))
+        )
         if e_ab in involved_edges and e_bc in involved_edges and e_ac in involved_edges:
             # add triangle constraints as in solver
             for t in range(8):
                 expr = []
                 for r in candidates[e_ab]:
                     if (e_ab, r) in bvars:
-                        expr.append((bvars[(e_ab, r)], int(generate_scaled_e8_roots()[r][t])))
+                        expr.append(
+                            (bvars[(e_ab, r)], int(generate_scaled_e8_roots()[r][t]))
+                        )
                 for r in candidates[e_bc]:
                     if (e_bc, r) in bvars:
-                        expr.append((bvars[(e_bc, r)], int(generate_scaled_e8_roots()[r][t])))
+                        expr.append(
+                            (bvars[(e_bc, r)], int(generate_scaled_e8_roots()[r][t]))
+                        )
                 for r in candidates[e_ac]:
                     if (e_ac, r) in bvars:
-                        expr.append((bvars[(e_ac, r)], -int(generate_scaled_e8_roots()[r][t])))
+                        expr.append(
+                            (bvars[(e_ac, r)], -int(generate_scaled_e8_roots()[r][t]))
+                        )
                 if expr:
-                    model.Add(sum(c * v for v, c in [(pair[0], pair[1]) for pair in expr]) == 0)
+                    model.Add(
+                        sum(c * v for v, c in [(pair[0], pair[1]) for pair in expr])
+                        == 0
+                    )
     # apply forbids only those that fit into bvars
     for ent in forbids:
-        edges_f = ent.get('set', [])
-        roots_f = ent.get('roots', [])
+        edges_f = ent.get("set", [])
+        roots_f = ent.get("roots", [])
         pairs = []
         for e, r in zip(edges_f, roots_f):
             t = (int(e), int(r))
             if t in bvars:
                 pairs.append(bvars[t])
         if len(pairs) >= 1:
-            model.Add(sum(pairs) <= max(0, len(pairs)-1))
+            model.Add(sum(pairs) <= max(0, len(pairs) - 1))
     return model
 
 
@@ -245,36 +270,38 @@ def run_focused_solver(model, time_limit=30):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--k', type=int, default=40)
-    parser.add_argument('--time-limit', type=int, default=30)
+    parser.add_argument("--k", type=int, default=40)
+    parser.add_argument("--time-limit", type=int, default=30)
     args = parser.parse_args()
 
     if not FORB.exists():
-        print('No forbids file found')
+        print("No forbids file found")
         raise SystemExit(0)
-    forb = json.loads(open(FORB, encoding='utf-8').read())
+    forb = json.loads(open(FORB, encoding="utf-8").read())
 
     candidates, edges, roots = compute_candidates(args.k)
-    blocked = single_edge_coverage_test(forb.get('obstruction_sets', []), candidates)
+    blocked = single_edge_coverage_test(forb.get("obstruction_sets", []), candidates)
 
-    out = {'timestamp': time.time(), 'single_edge_blocked': blocked, 'focused': None}
+    out = {"timestamp": time.time(), "single_edge_blocked": blocked, "focused": None}
 
     if blocked:
-        print('Single-edge coverage found blocked edges:', blocked)
+        print("Single-edge coverage found blocked edges:", blocked)
     else:
         # build focused model and run solver
-        model = build_subgraph_model(edges, candidates, forb.get('obstruction_sets', []), radius=1)
+        model = build_subgraph_model(
+            edges, candidates, forb.get("obstruction_sets", []), radius=1
+        )
         # if model uses no vars -> nothing to test
         if len([v for v in dir(model) if v]) == 0:
-            print('No focused model constructed')
+            print("No focused model constructed")
         else:
             st = run_focused_solver(model, time_limit=args.time_limit)
-            out['focused'] = {'status': st}
-            print('Focused solver status:', st)
+            out["focused"] = {"status": st}
+            print("Focused solver status:", st)
 
-    OUT.write_text(json.dumps(out, indent=2), encoding='utf-8')
-    print('Wrote summary to', OUT)
+    OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+    print("Wrote summary to", OUT)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

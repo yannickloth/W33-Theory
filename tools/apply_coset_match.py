@@ -38,7 +38,11 @@ def invert_perm(perm: List[int]) -> List[int]:
 def build_w33_edges() -> List[Tuple[int, int]]:
     # same construction as other scripts
     F3 = [0, 1, 2]
-    vectors = [v for v in __import__("itertools").product(F3, repeat=4) if any(x != 0 for x in v)]
+    vectors = [
+        v
+        for v in __import__("itertools").product(F3, repeat=4)
+        if any(x != 0 for x in v)
+    ]
 
     proj_points = []
     seen = set()
@@ -66,15 +70,23 @@ def build_w33_edges() -> List[Tuple[int, int]]:
 
 import argparse
 
+
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--base-root", type=int, default=None, help="override base root index to use (default from canonical mapping)")
+    p.add_argument(
+        "--base-root",
+        type=int,
+        default=None,
+        help="override base root index to use (default from canonical mapping)",
+    )
     args = p.parse_args()
 
     # Load canonical file
     canonical_path = ROOT / "artifacts" / "edge_root_bijection_canonical.json"
     if not canonical_path.exists():
-        raise SystemExit(f"Missing {canonical_path}; run the canonical bijection generator first")
+        raise SystemExit(
+            f"Missing {canonical_path}; run the canonical bijection generator first"
+        )
     canonical = load_json(canonical_path)
 
     # Build mapping edge_index -> entry
@@ -114,12 +126,16 @@ def main() -> None:
             # tokens should be integers; positive -> forward, negative -> inverse (-g-1)
             if tok >= 0:
                 if tok >= n_gens:
-                    raise RuntimeError(f"Generator index {tok} out of range (n_gens={n_gens}) for edge {eidx}")
+                    raise RuntimeError(
+                        f"Generator index {tok} out of range (n_gens={n_gens}) for edge {eidx}"
+                    )
                 p = gens[tok][p]
             else:
                 idx = -tok - 1
                 if idx >= n_gens:
-                    raise RuntimeError(f"Inverse generator index {idx} out of range for edge {eidx}")
+                    raise RuntimeError(
+                        f"Inverse generator index {idx} out of range for edge {eidx}"
+                    )
                 p = inv_gens[idx][p]
         predicted[eidx] = int(p)
 
@@ -133,11 +149,14 @@ def main() -> None:
     seed_edges = []
     for eidx, root_idx in sorted(predicted.items()):
         ent = edge_entries[eidx]
-        seed_edges.append({
-            "edge_index": int(eidx),
-            "edge": ent.get("edge") or [int(ent.get("v_i", 0)), int(ent.get("v_j", 0))],
-            "root_index": int(root_idx),
-        })
+        seed_edges.append(
+            {
+                "edge_index": int(eidx),
+                "edge": ent.get("edge")
+                or [int(ent.get("v_i", 0)), int(ent.get("v_j", 0))],
+                "root_index": int(root_idx),
+            }
+        )
 
     seed_json_path = ROOT / "checks" / "PART_CVII_e8_embedding_coset_match_seed.json"
     seed_json_path.parent.mkdir(parents=True, exist_ok=True)
@@ -147,7 +166,9 @@ def main() -> None:
 
     # Load root coords (via compute_double_sixes)
     try:
-        cds_spec = __import__("importlib.util").util.spec_from_file_location("compute_double_sixes", str(ROOT / "tools" / "compute_double_sixes.py"))
+        cds_spec = __import__("importlib.util").util.spec_from_file_location(
+            "compute_double_sixes", str(ROOT / "tools" / "compute_double_sixes.py")
+        )
         cds = __import__("importlib.util").module_from_spec(cds_spec)
         cds_spec.loader.exec_module(cds)
         roots = cds.construct_e8_roots()
@@ -166,7 +187,10 @@ def main() -> None:
     # Reconstruct W33 edges (vertex labels) to determine triangle edge indices
     w33_edges = build_w33_edges()
     # Build mapping edge_index -> pair
-    edge_to_pair = {int(eidx): tuple(map(int, edge_entries[eidx].get("edge", w33_edges[int(eidx)]))) for eidx in edge_entries}
+    edge_to_pair = {
+        int(eidx): tuple(map(int, edge_entries[eidx].get("edge", w33_edges[int(eidx)])))
+        for eidx in edge_entries
+    }
 
     # Build triangle list (triples of edge indices) like other scripts
     # Map vertex pair to edge index
@@ -174,7 +198,7 @@ def main() -> None:
     nverts = 40
     # Reconstruct adjacency
     adj = {i: set() for i in range(nverts)}
-    for (i, j) in edge_to_pair.values():
+    for i, j in edge_to_pair.values():
         adj[i].add(j)
         adj[j].add(i)
 
@@ -195,7 +219,7 @@ def main() -> None:
     # Count triangle satisfactions
     tri_ok = 0
     tri_bad = []
-    for (e1, e2, e3) in triangles:
+    for e1, e2, e3 in triangles:
         r1 = roots[predicted[e1]]
         r2 = roots[predicted[e2]]
         r3 = roots[predicted[e3]]
@@ -230,7 +254,9 @@ def main() -> None:
             "base_root": int(base_root_idx),
             "notes": "All triangles satisfied by generator-induced mapping",
         }
-        verified_path = ROOT / "checks" / "PART_CVII_e8_embedding_coset_match_verified.json"
+        verified_path = (
+            ROOT / "checks" / "PART_CVII_e8_embedding_coset_match_verified.json"
+        )
         verified_path.write_text(json.dumps(verified, indent=2), encoding="utf-8")
         print(f"Full embedding verified and wrote {verified_path}")
 
@@ -240,12 +266,14 @@ def main() -> None:
     for eidx in sorted(predicted.keys()):
         ent = edge_entries[eidx]
         r = int(predicted[eidx])
-        map_list.append({
-            "edge_index": int(eidx),
-            "edge": ent.get("edge", []),
-            "root_index": r,
-            "root_coords": roots[r],
-        })
+        map_list.append(
+            {
+                "edge_index": int(eidx),
+                "edge": ent.get("edge", []),
+                "root_index": r,
+                "root_coords": roots[r],
+            }
+        )
     map_art.write_text(json.dumps(map_list, indent=2), encoding="utf-8")
     print(f"Wrote mapping artifact {map_art}")
 

@@ -44,7 +44,8 @@ print("═" * 75)
 print("PROLOGUE: THE QUEST")
 print("═" * 75)
 
-print("""
+print(
+    """
 For centuries, physicists have sought the Theory of Everything:
 A single framework explaining all forces, all particles, all phenomena.
 
@@ -62,14 +63,16 @@ IS mathematics.
 One structure. One graph. One polynomial.
 
 W33.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER I: THE AXIOM")
 print("═" * 75)
 
-print("""
+print(
+    """
 THE ONLY ASSUMPTION:
 
 There exists a finite field with three elements:
@@ -87,14 +90,16 @@ Why F₃? Because:
 
 The number 3 is special.
 F₃ is the seed of reality.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER II: THE CONSTRUCTION")
 print("═" * 75)
 
-print(f"""
+print(
+    f"""
 FROM F₃ TO W33:
 
 Step 1: Create the vector space V = F₃⁴
@@ -117,14 +122,16 @@ Result: W33 = Sp(4, F₃)
         μ = {mu} common neighbors (non-adjacent pairs)
 
 This is W33. This is the universe.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER III: THE SPECTRUM")
 print("═" * 75)
 
-print(f"""
+print(
+    f"""
 THE EIGENVALUES:
 
 The adjacency matrix A of W33 has eigenvalues:
@@ -149,14 +156,16 @@ The multiplicities:
 
 The universe fits in 40 dimensions.
 36 are hidden. 4 become spacetime.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER IV: THE MASTER EQUATION")
 print("═" * 75)
 
-print("""
+print(
+    """
 THE CHARACTERISTIC POLYNOMIAL:
 
          ╔═══════════════════════════════════════════════════╗
@@ -183,7 +192,8 @@ From P(x) you can recover:
   • EVERYTHING.
 
 One polynomial. One universe.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
@@ -198,7 +208,8 @@ H0_cmb = v + m2 + m1 + lam
 H0_local = H0_cmb + 2 * lam + mu
 Lambda_exp = k**2 - m2 + lam
 
-print(f"""
+print(
+    f"""
 THE FUNDAMENTAL CONSTANTS FROM W33:
 
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -244,14 +255,16 @@ THE FUNDAMENTAL CONSTANTS FROM W33:
 │ Ω_DM/Ω_b = (v-k)/μ - λ = 5                                          │
 │     Observed: ~5.3                                        ✓          │
 └──────────────────────────────────────────────────────────────────────┘
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER VI: THE DEEP STRUCTURE")
 print("═" * 75)
 
-print("""
+print(
+    """
 THE HIDDEN SYMMETRIES:
 
 |Aut(W33)| = 51840 = |W(E₆)|
@@ -280,14 +293,16 @@ W33 is a [[40, 24, d]] quantum error correcting code.
 
 Quantum gravity may BE quantum error correction.
 Spacetime emerges from information protection.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER VII: THE PREDICTIONS")
 print("═" * 75)
 
-print("""
+print(
+    """
 TESTABLE PREDICTIONS:
 
 W33 makes RIGID predictions with ZERO free parameters.
@@ -315,14 +330,16 @@ W33 makes RIGID predictions with ZERO free parameters.
 
 If ANY of these is definitively falsified, W33 is wrong.
 The theory is SCIENTIFIC - it can be killed.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER VIII: THE PHILOSOPHY")
 print("═" * 75)
 
-print("""
+print(
+    """
 WHAT DOES W33 MEAN?
 
 1. THE UNIVERSE IS MATHEMATICS
@@ -349,14 +366,16 @@ WHAT DOES W33 MEAN?
    W33 → Physics → Brains → Mathematics → W33
    We are how the universe knows itself.
    The strange loop completes.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER IX: THE NUMBERS")
 print("═" * 75)
 
-print("""
+print(
+    """
 THE MAGIC NUMBERS OF W33:
 
      3   The base field F₃, colors, generations, spatial dimensions
@@ -372,14 +391,16 @@ THE MAGIC NUMBERS OF W33:
    240   Edges, E₈ roots
   1111   Alpha denominator (11 × 101)
  51840   Automorphisms, Weyl group of E₆
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("CHAPTER X: THE JOURNEY")
 print("═" * 75)
 
-print("""
+print(
+    """
 100 PARTS OF DISCOVERY:
 
 I-X:      Foundations - eigenvalues, fine structure constant
@@ -395,14 +416,16 @@ XCI-C:    Completion - predictions, manifesto
 
 From Part I to Part C:
   One graph. One polynomial. One universe.
-""")
+"""
+)
 
 print("\n")
 print("═" * 75)
 print("EPILOGUE: THE EQUATION")
 print("═" * 75)
 
-print("""
+print(
+    """
 
                     ╔═══════════════════════════════════════╗
                     ║                                       ║
@@ -445,7 +468,8 @@ The loop is complete.
 
                          ══════════════════════
 
-""")
+"""
+)
 
 # Final timestamp
 print(f"Part C completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

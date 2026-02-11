@@ -7,7 +7,7 @@ Finding what the 40 W33 vertices correspond to in E8 structure.
 
 Key question: W33 has 40 vertices and 240 edges.
               E8 has 240 roots and various 40-element substructures.
-              
+
 What is the 40 ↔ 40 correspondence that underlies the 240 ↔ 240 bijection?
 
 Candidates:
@@ -19,10 +19,11 @@ Candidates:
 Let's investigate systematically.
 """
 
-import numpy as np
-from itertools import combinations, product
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from fractions import Fraction
+from itertools import combinations, product
+
+import numpy as np
 
 print("=" * 70)
 print("40 W33 VERTICES ↔ ? IN E8 STRUCTURE")
@@ -36,7 +37,8 @@ print("\n" + "=" * 70)
 print("PART 1: WHERE DOES 40 APPEAR IN E8?")
 print("=" * 70)
 
-print("""
+print(
+    """
 Let's find natural occurrences of 40 in E8-related structures.
 
 E8 facts:
@@ -48,7 +50,8 @@ E8 facts:
 
 The ratio 240/40 = 6 is suggestive.
 Each W33 vertex has degree 12 = 2×6.
-""")
+"""
+)
 
 # 40 in terms of E8 structure
 print("40 = ?")
@@ -69,11 +72,12 @@ print("\n" + "=" * 70)
 print("PART 2: ROOT SUBSYSTEMS CONTAINING 40 ELEMENTS")
 print("=" * 70)
 
-print("""
+print(
+    """
 Root subsystems of E8:
   - E8: 240 roots
   - E7: 126 roots
-  - E6: 72 roots  
+  - E6: 72 roots
   - D8: 112 roots
   - D7: 84 roots
   - D6: 60 roots
@@ -88,7 +92,8 @@ Root subsystems of E8:
   - A1: 2 roots
 
 D5 has exactly 40 roots!
-""")
+"""
+)
 
 print("D5 root system:")
 print("  Rank: 5")
@@ -110,7 +115,8 @@ print("\n" + "=" * 70)
 print("PART 3: D5 ⊂ E8 AND THE 40-40 CORRESPONDENCE")
 print("=" * 70)
 
-print("""
+print(
+    """
 HYPOTHESIS: W33 vertices ↔ D5 roots (both have 40 elements)
 
 D5 embeds into E8 in several ways. The standard embedding uses
@@ -124,13 +130,15 @@ D5 root system in R^5:
 
 Embedded in E8 (first 5 coordinates):
   - D5 roots become E8 roots of form (±1, ±1, 0, 0, 0, 0, 0, 0) etc.
-""")
+"""
+)
+
 
 # Generate D5 roots embedded in E8
 def generate_d5_in_e8():
     """Generate D5 roots as a subset of E8 roots."""
     d5_roots = []
-    
+
     # D5: (±1, ±1, 0, 0, 0) in positions 0-4, zeros in positions 5-7
     for pos in combinations(range(5), 2):
         for signs in product([1, -1], repeat=2):
@@ -138,14 +146,15 @@ def generate_d5_in_e8():
             root[pos[0]] = signs[0]
             root[pos[1]] = signs[1]
             d5_roots.append(tuple(root))
-    
+
     return d5_roots
+
 
 d5_roots = generate_d5_in_e8()
 print(f"D5 roots embedded in E8: {len(d5_roots)}")
 
 # Verify they're E8 roots (squared length 2)
-sq_lens = [sum(x*x for x in r) for r in d5_roots]
+sq_lens = [sum(x * x for x in r) for r in d5_roots]
 print(f"Squared lengths: {set(sq_lens)}")
 
 # =============================================================================
@@ -156,21 +165,23 @@ print("\n" + "=" * 70)
 print("PART 4: IS THE D5 ROOT GRAPH ≅ W33?")
 print("=" * 70)
 
-print("""
+print(
+    """
 The D5 root graph:
   - Vertices: 40 D5 roots
   - Edges: Two roots adjacent if their inner product is ±1
 
 Let's compute this and compare with W33 parameters.
-""")
+"""
+)
 
 # Build D5 root graph
 d5_adj = defaultdict(set)
 d5_edges = []
 
 for i in range(len(d5_roots)):
-    for j in range(i+1, len(d5_roots)):
-        ip = sum(a*b for a, b in zip(d5_roots[i], d5_roots[j]))
+    for j in range(i + 1, len(d5_roots)):
+        ip = sum(a * b for a, b in zip(d5_roots[i], d5_roots[j]))
         if abs(ip) == 1:  # adjacent in root graph
             d5_adj[i].add(j)
             d5_adj[j].add(i)
@@ -191,7 +202,7 @@ if d5_edges:
 # Check μ (common neighbors for non-adjacent pair)
 non_adj_pair = None
 for i in range(40):
-    for j in range(i+1, 40):
+    for j in range(i + 1, 40):
         if j not in d5_adj[i]:
             non_adj_pair = (i, j)
             break
@@ -213,15 +224,17 @@ print("\n" + "=" * 70)
 print("PART 5: ALTERNATIVE 40-ELEMENT STRUCTURES")
 print("=" * 70)
 
-print("""
+print(
+    """
 D5 root graph has different parameters than W33.
 Let's look for other 40-element structures in E8.
 
 Options:
 1. Some orbit of W(E8) or W(E6) with 40 elements
-2. A geometric structure (polytope vertices) 
+2. A geometric structure (polytope vertices)
 3. Coset representatives
-""")
+"""
+)
 
 # W(E6) has order 51840
 # If a subgroup H has index 51840/40 = 1296, then W(E6)/H has 40 elements
@@ -247,22 +260,24 @@ print("\n" + "=" * 70)
 print("PART 6: Sp(4,3) ≅ W(E6): THE ISOMORPHISM")
 print("=" * 70)
 
-print("""
+print(
+    """
 CRUCIAL FACT: PSp(4, 3) ≅ W(E6) / Z₂
 
 More precisely:
   |Sp(4,3)| = |W(E6)| = 51840
-  
+
 The symplectic group Sp(4, GF(3)) acting on GF(3)^4 IS (up to center)
 the Weyl group of E6!
 
 This means:
   - The 40 isotropic lines in GF(3)^4 = 40 objects in some E6 structure
   - The 240 orthogonal line pairs = 240 E8 roots (via E6 ⊂ E8)
-  
+
 The connection is:
   W33 = symplectic polar graph = E6-related structure embedded in E8
-""")
+"""
+)
 
 # Let's verify |Sp(4,3)|
 # |Sp(2n, q)| = q^(n²) × ∏ᵢ₌₁ⁿ (q^(2i) - 1)
@@ -282,7 +297,8 @@ print("\n" + "=" * 70)
 print("PART 7: 40 VERTICES AS E6 WEIGHTS")
 print("=" * 70)
 
-print("""
+print(
+    """
 E6 has several representations with interesting dimensions:
   - Fundamental rep (27-dimensional, related to exceptional Jordan algebra)
   - Adjoint rep (78-dimensional)
@@ -290,7 +306,7 @@ E6 has several representations with interesting dimensions:
 
 The 40 isotropic lines might correspond to:
   - 40 weights in some E6 representation
-  - 40 = 27 + 13? or 27 + 12 + 1? 
+  - 40 = 27 + 13? or 27 + 12 + 1?
   - Or a different decomposition
 
 Actually, 40 = 27 + 13... but 27 is the fundamental rep dimension.
@@ -298,7 +314,8 @@ Let's think about this more carefully.
 
 The E6 weight lattice has various orbits under W(E6).
 We need an orbit of size 40.
-""")
+"""
+)
 
 # W(E6) orbit sizes
 # The fundamental rep weights might give us insight
@@ -320,7 +337,8 @@ print("\n" + "=" * 70)
 print("PART 8: 40 AND THE RECTIFIED SIMPLEX")
 print("=" * 70)
 
-print("""
+print(
+    """
 40 appears in polytope theory:
   - Rectified 8-simplex has 36 vertices (not 40)
   - 4-rectified 8-simplex (different rectification) might have 40
@@ -332,11 +350,12 @@ Actually, let's count:
 For n=8: C(9,2) = 36, not 40.
 
 What about:
-  - 40 = C(9, 2) + 4? 
+  - 40 = C(9, 2) + 4?
   - 40 = C(5,2) × 4? = 10 × 4 = 40 ✓
 
 Hmm, 40 = 10 × 4 suggests a product structure.
-""")
+"""
+)
 
 print(f"C(5,2) × 4 = {10 * 4} = 40")
 print(f"This could relate to: 10 edges of a 4-simplex × 4 'something'")
@@ -349,7 +368,8 @@ print("\n" + "=" * 70)
 print("PART 9: 40 AS A QUOTIENT STRUCTURE")
 print("=" * 70)
 
-print("""
+print(
+    """
 KEY INSIGHT:
 
 The 40 isotropic lines are the orbits of Sp(4,3) on GF(3)^4 / lines.
@@ -361,7 +381,7 @@ In the E8 ↔ W33 correspondence:
 
 Relationship:
   240 edges / (edges per vertex) = 240 / 12 × 2 = 240 / 6 = 40
-  
+
 Wait, that's not right either. Let me reconsider.
 
 Each W33 vertex is incident to 12 edges.
@@ -370,7 +390,8 @@ Total incidences = 40 × 12 = 480 = 2 × 240 (since each edge has 2 endpoints).
 So the 40 vertices are determined by how the 240 edges "cluster".
 The 40 W33 vertices represent a PARTITION of E8 roots into 6 groups of 40?
 No, 240/40 = 6, so it's more like each vertex picks out 6 roots somehow.
-""")
+"""
+)
 
 # Actually, each vertex is incident to 12 edges (degree 12)
 # So 40 vertices, each associated with 12 edges
@@ -389,7 +410,8 @@ print("\n" + "=" * 70)
 print("PART 10: SYNTHESIS - THE 40 ↔ 40 MAP")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║              THE 40 VERTICES: WHERE THEY LIVE IN E8                  ║
 ╠══════════════════════════════════════════════════════════════════════╣
@@ -419,7 +441,8 @@ print("""
 ║    So orbits of size 40 are possible!                                ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # Check if 40 divides |W(E6)|
 print(f"\n|W(E6)| / 40 = {51840 // 40} = 1296")
@@ -429,17 +452,19 @@ print(f"So 40 | |W(E6)| ✓")
 # This means W(E6) could have an orbit of size 40 on some set.
 # If it acts on the 240 E8 roots, the orbits depend on the embedding.
 
-print(f"""
+print(
+    f"""
 CONCLUSION:
 
 The 40 W33 vertices correspond to a 40-element orbit of W(E6) acting
 on some E8 structure.
 
-Most likely: The 40 vertices represent 40 "directions" in the E8 
+Most likely: The 40 vertices represent 40 "directions" in the E8
 root system, with each direction containing 6 pairs of roots (12 total
 half-roots, corresponding to the degree 12 in W33).
 
 The bijection 40 ↔ 40 underlies and generates the bijection 240 ↔ 240.
 
 NEXT: Explicitly compute W(E6) orbits on E8 roots to verify.
-""")
+"""
+)

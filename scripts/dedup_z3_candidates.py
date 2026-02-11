@@ -26,7 +26,10 @@ except Exception:
 
 
 def find_latest_conjugacy():
-    files = sorted(glob.glob("checks/PART_CVII_z3_conjugacy_*.json"), key=lambda p: Path(p).stat().st_mtime)
+    files = sorted(
+        glob.glob("checks/PART_CVII_z3_conjugacy_*.json"),
+        key=lambda p: Path(p).stat().st_mtime,
+    )
     return Path(files[-1]) if files else None
 
 
@@ -38,9 +41,13 @@ def main():
     parser.add_argument("--commit", action="store_true")
     args = parser.parse_args()
 
-    conj_file = Path(args.conjugacy_file) if args.conjugacy_file else find_latest_conjugacy()
+    conj_file = (
+        Path(args.conjugacy_file) if args.conjugacy_file else find_latest_conjugacy()
+    )
     if not conj_file or not conj_file.exists():
-        raise FileNotFoundError("No conjugacy file found; run w33_z3_conjugacy_classes.py first")
+        raise FileNotFoundError(
+            "No conjugacy file found; run w33_z3_conjugacy_classes.py first"
+        )
 
     conj = json.loads(open(conj_file, encoding="utf-8").read())
     groups = {}
@@ -56,12 +63,14 @@ def main():
         best_r3 = None
         for idx in idxs:
             # find committed artifact with index
-            matches = glob.glob(f"committed_artifacts/PART_CVII_z3_candidate_*_{idx:02d}.json")
+            matches = glob.glob(
+                f"committed_artifacts/PART_CVII_z3_candidate_*_{idx:02d}.json"
+            )
             if matches:
                 # choose the most recent one
                 path = sorted(matches, key=lambda p: Path(p).stat().st_mtime)[-1]
                 data = json.loads(open(path, encoding="utf-8").read())
-                r3 = data.get("R3_norm", float('inf'))
+                r3 = data.get("R3_norm", float("inf"))
                 if best is None or r3 < best_r3:
                     best = path
                     best_r3 = r3
@@ -75,7 +84,9 @@ def main():
     modified = []
     for gid, info in reps.items():
         for idx in info["indices"]:
-            matches = glob.glob(f"committed_artifacts/PART_CVII_z3_candidate_*_{idx:02d}.json")
+            matches = glob.glob(
+                f"committed_artifacts/PART_CVII_z3_candidate_*_{idx:02d}.json"
+            )
             if not matches:
                 continue
             path = sorted(matches, key=lambda p: Path(p).stat().st_mtime)[-1]
@@ -98,7 +109,12 @@ def main():
 
     if args.commit and modified:
         subprocess.run(["git", "add"] + modified)
-        cp = subprocess.run(["git", "commit", "-m", "Annotate z3 candidates with conjugacy group ids"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        cp = subprocess.run(
+            ["git", "commit", "-m", "Annotate z3 candidates with conjugacy group ids"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
         if cp.returncode != 0:
             print("git commit failed:", cp.stderr)
         else:

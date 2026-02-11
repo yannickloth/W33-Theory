@@ -26,7 +26,8 @@ print("\n" + "=" * 70)
 print("SECTION 1: THE JARLSKOG INVARIANT")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Jarlskog invariant J is the unique measure of CP violation
 in the quark sector. It's defined as:
 
@@ -39,7 +40,8 @@ Experimental value:
   J = (3.18 ± 0.15) × 10^{-5}
 
 This tiny number is responsible for matter-antimatter asymmetry!
-""")
+"""
+)
 
 # Experimental CKM values
 s12_exp = 0.22501  # sin(theta_12)
@@ -64,14 +66,16 @@ print("\n" + "=" * 70)
 print("SECTION 2: W33 CKM ANGLE PREDICTIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 From Part LXVIII, we have W33 predictions:
 
   sin(theta_12) = 9/40 = 0.225  [verified!]
 
 For theta_23 and theta_13, let's search systematically
 using W33 numbers: 40, 27, 12, 24, 15, 2, 4, 240, 160...
-""")
+"""
+)
 
 # Known W33 numbers
 w33_numbers = {
@@ -147,7 +151,8 @@ print("\n" + "=" * 70)
 print("SECTION 3: THE CP PHASE DELTA")
 print("=" * 70)
 
-print("""
+print(
+    """
 The CP phase delta is about 68.75° = 1.200 radians.
 
 Searching for delta in W33:
@@ -155,7 +160,8 @@ Searching for delta in W33:
   delta ≈ arctan(something)?
 
 Let's check: 68.75° is close to...
-""")
+"""
+)
 
 delta_deg_exp = 68.75
 print(f"Experimental delta = {delta_deg_exp}°")
@@ -230,7 +236,8 @@ print("\n" + "=" * 70)
 print("SECTION 5: REFINED W33 CKM PREDICTIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 Let's refine our predictions by finding better W33 expressions.
 
 For theta_23, experimental sin(theta_23) = 0.0418
@@ -243,7 +250,8 @@ For theta_13, experimental sin(theta_13) = 0.00369
   Try: lambda/(v × k) = 2/480 = 0.00417 (13% error)
   Try: 1/271 = 0.00369 (exact!)
   Note: 271 is prime, but 271 = 240 + 31 = edges + 31!
-""")
+"""
+)
 
 # Refined predictions
 s23_w33_refined = 4 / 96  # mu/(3^4 + m3)
@@ -286,7 +294,8 @@ print("\n" + "=" * 70)
 print("SECTION 6: THE MEANING OF CP VIOLATION")
 print("=" * 70)
 
-print("""
+print(
+    """
 =======================================================
     CP VIOLATION AND THE W33 PHASE
 =======================================================
@@ -315,7 +324,8 @@ CP VIOLATION FORMULA:
   delta = arctan(v / m_3) = arctan(40/15)
 
 =======================================================
-""")
+"""
+)
 
 delta_formula = math.atan(40 / 15) * 180 / math.pi
 print(f"W33 CP phase: delta = arctan(40/15) = {delta_formula:.2f}°")
@@ -330,7 +340,8 @@ print("\n" + "=" * 70)
 print("SECTION 7: MATTER-ANTIMATTER ASYMMETRY")
 print("=" * 70)
 
-print("""
+print(
+    """
 The baryon asymmetry of the universe:
   eta = (n_B - n_Bbar) / n_gamma ≈ 6 × 10^{-10}
 
@@ -349,7 +360,8 @@ Asymmetry measure:
 
 But the SMALL J comes from the small mixing angles,
 which in W33 come from ratios like 1/240, 4/96, etc.
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 8: COMPLETE CKM MATRIX FROM W33
@@ -431,7 +443,8 @@ print("\n" + "=" * 70)
 print("PART LXIX CONCLUSIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 CP VIOLATION FROM W33!
 
 Complete CKM parametrization:
@@ -452,5 +465,6 @@ The CP phase arises from the ratio of:
 W33 encodes ALL of flavor physics!
 
 Results saved to PART_LXIX_CP_violation.json
-""")
+"""
+)
 print("=" * 70)

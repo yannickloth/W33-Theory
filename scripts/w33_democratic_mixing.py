@@ -25,16 +25,20 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
 
 from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
 from w33_h1_decomposition import (
-    J_matrix, build_incidence_matrix,
-    make_vertex_permutation, signed_edge_permutation, transvection_matrix,
+    J_matrix,
+    build_incidence_matrix,
+    make_vertex_permutation,
+    signed_edge_permutation,
+    transvection_matrix,
 )
 
 
 def build_r_g(data, element):
     """Build the 81x81 representation matrix for a group element."""
-    m = data['m']
-    W = data['W']
+    m = data["m"]
+    W = data["W"]
     cur_v, cur_ep, cur_es = element
     cur_ep_np = np.asarray(cur_ep, dtype=int)
     cur_es_np = np.asarray(cur_es, dtype=float)
@@ -115,8 +119,15 @@ def main():
 
     print(f"  |PSp(4,3)| = {len(visited)}")
 
-    data = {'n': n, 'vertices': vertices, 'adj': adj, 'edges': edges,
-            'm': m, 'W': W, 'visited': visited}
+    data = {
+        "n": n,
+        "vertices": vertices,
+        "adj": adj,
+        "edges": edges,
+        "m": m,
+        "W": W,
+        "visited": visited,
+    }
 
     # Find order-3 elements
     order3 = []
@@ -155,7 +166,9 @@ def main():
 
     # Verify projector properties
     print(f"\n  Projector verification for element 1:")
-    print(f"    ||P0 + P1 + P2 - I|| = {np.linalg.norm(P1_0 + P1_1 + P1_2 - np.eye(b1)):.2e}")
+    print(
+        f"    ||P0 + P1 + P2 - I|| = {np.linalg.norm(P1_0 + P1_1 + P1_2 - np.eye(b1)):.2e}"
+    )
     print(f"    Tr(P0) = {np.real(np.trace(P1_0)):.6f} (should be 27)")
     print(f"    Tr(P1) = {np.real(np.trace(P1_1)):.6f} (should be 27)")
     print(f"    Tr(P2) = {np.real(np.trace(P1_2)):.6f} (should be 27)")
@@ -163,7 +176,9 @@ def main():
     print(f"    ||P0 P1||     = {np.linalg.norm(P1_0 @ P1_1):.2e}")
 
     print(f"\n  Projector verification for element 2:")
-    print(f"    ||P0 + P1 + P2 - I|| = {np.linalg.norm(P2_0 + P2_1 + P2_2 - np.eye(b1)):.2e}")
+    print(
+        f"    ||P0 + P1 + P2 - I|| = {np.linalg.norm(P2_0 + P2_1 + P2_2 - np.eye(b1)):.2e}"
+    )
     print(f"    Tr(P0) = {np.real(np.trace(P2_0)):.6f}")
     print(f"    Tr(P1) = {np.real(np.trace(P2_1)):.6f}")
     print(f"    Tr(P2) = {np.real(np.trace(P2_2)):.6f}")
@@ -179,10 +194,10 @@ def main():
             M[i, j] = np.real(np.trace(projs1[i] @ projs2[j])) / 27.0
 
     print(f"\n  EXACT mixing matrix M_{{ij}} = Tr(P_i^{{(1)}} P_j^{{(2)}}) / 27:")
-    labels = ['Gen 1 (1)', 'Gen 2 (w)', 'Gen 3 (w*)']
+    labels = ["Gen 1 (1)", "Gen 2 (w)", "Gen 3 (w*)"]
     print(f"           {'  '.join(f'{l:>12s}' for l in labels)}")
     for i, l in enumerate(labels):
-        row = '  '.join(f'{M[i,j]:12.8f}' for j in range(3))
+        row = "  ".join(f"{M[i,j]:12.8f}" for j in range(3))
         print(f"    {l}: {row}")
 
     print(f"\n  Row sums: {M.sum(axis=1)}")
@@ -193,15 +208,21 @@ def main():
     print(f"\n  Democratic (all entries = 1/3)? {democratic}")
 
     if democratic:
-        max_dev = np.max(np.abs(M - 1/3))
+        max_dev = np.max(np.abs(M - 1 / 3))
         print(f"  Max deviation from 1/3: {max_dev:.2e}")
         print(f"\n  *** THEOREM: Generation mixing is EXACTLY democratic ***")
-        print(f"  *** This is a CONSEQUENCE of the irreducibility of the 81-dim rep ***")
+        print(
+            f"  *** This is a CONSEQUENCE of the irreducibility of the 81-dim rep ***"
+        )
         print(f"\n  Proof sketch:")
         print(f"    1. The 81-dim rep of PSp(4,3) is IRREDUCIBLE (Pillar 11)")
         print(f"    2. PSp(4,3) acts transitively on Z3 subgroups by conjugation")
-        print(f"    3. Therefore Tr(P_i^{{(1)}} P_j^{{(2)}}) is invariant under PSp(4,3)")
-        print(f"    4. By Schur's lemma, the only invariant bilinear form is proportional")
+        print(
+            f"    3. Therefore Tr(P_i^{{(1)}} P_j^{{(2)}}) is invariant under PSp(4,3)"
+        )
+        print(
+            f"    4. By Schur's lemma, the only invariant bilinear form is proportional"
+        )
         print(f"       to the identity on each isotypic component")
         print(f"    5. Since each P_i has rank 27 and there are 3 projectors,")
         print(f"       Tr(P_i P_j) = 27/3 = 9 = 27 * (1/3)")
@@ -230,11 +251,13 @@ def main():
             for jj in range(3):
                 M_trial[ii, jj] = np.real(np.trace(Pa[ii] @ Pb[jj])) / 27.0
 
-        max_dev = np.max(np.abs(M_trial - 1/3))
+        max_dev = np.max(np.abs(M_trial - 1 / 3))
         is_dem = max_dev < 1e-6
         if not is_dem:
             all_democratic = False
-        print(f"    Pair {trial}: max deviation = {max_dev:.2e} {'DEMOCRATIC' if is_dem else 'NON-DEMOCRATIC'}")
+        print(
+            f"    Pair {trial}: max deviation = {max_dev:.2e} {'DEMOCRATIC' if is_dem else 'NON-DEMOCRATIC'}"
+        )
 
     print(f"\n  All pairs democratic: {all_democratic}")
 
@@ -242,7 +265,8 @@ def main():
     print(f"\n{'='*72}")
     print(f"  PHYSICAL SIGNIFICANCE OF DEMOCRATIC MIXING")
     print(f"{'='*72}")
-    print(f"""
+    print(
+        f"""
   RESULT: At the PSp(4,3)-symmetric (GUT) scale, the mixing between
   any two generation bases is EXACTLY democratic: M_{{ij}} = 1/3.
 
@@ -268,15 +292,18 @@ def main():
 
   Prediction: At sufficiently high energies (above GUT scale), all mixing
   matrices should approach the democratic pattern 1/3.
-""")
+"""
+    )
 
     elapsed = time.time() - t0
     print(f"  Elapsed: {elapsed:.1f}s")
 
     return {
-        'democratic': bool(democratic) if not isinstance(democratic, bool) else democratic,
-        'max_deviation': float(np.max(np.abs(M - 1/3))),
-        'all_pairs_democratic': all_democratic,
+        "democratic": (
+            bool(democratic) if not isinstance(democratic, bool) else democratic
+        ),
+        "max_deviation": float(np.max(np.abs(M - 1 / 3))),
+        "all_pairs_democratic": all_democratic,
     }
 
 

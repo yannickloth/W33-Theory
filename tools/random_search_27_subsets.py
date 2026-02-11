@@ -15,8 +15,7 @@ ART = ROOT / "artifacts"
 ART.mkdir(exist_ok=True)
 
 from tools.find_k6_double_sixes_w33_fast import bron_kerbosch_bounded
-from tools.find_schlafli_embedding_in_w33 import (compute_w33_lines,
-                                                  construct_w33_points)
+from tools.find_schlafli_embedding_in_w33 import compute_w33_lines, construct_w33_points
 
 
 def eval_subset(nodes, G):

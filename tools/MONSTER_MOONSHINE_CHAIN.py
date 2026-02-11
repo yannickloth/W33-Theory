@@ -22,10 +22,11 @@ Chain to investigate:
   j-function and modular forms
 """
 
-import numpy as np
-from itertools import product, combinations
 from collections import Counter
-from math import gcd, factorial, sqrt, pi, log
+from itertools import combinations, product
+from math import factorial, gcd, log, pi, sqrt
+
+import numpy as np
 
 print("=" * 70)
 print("THE MONSTER MOONSHINE CHAIN")
@@ -40,32 +41,35 @@ print("\n" + "=" * 70)
 print("PART 1: W33 - THE STARTING POINT")
 print("=" * 70)
 
+
 def build_w33():
     """Build W33 = SRG(40,12,2,4) via symplectic form on GF(3)^4"""
+
     def omega(u, v):
-        return (u[0]*v[1] - u[1]*v[0] + u[2]*v[3] - u[3]*v[2]) % 3
-    
+        return (u[0] * v[1] - u[1] * v[0] + u[2] * v[3] - u[3] * v[2]) % 3
+
     def normalize(p):
         for i, x in enumerate(p):
             if x != 0:
                 inv = pow(x, -1, 3)
                 return tuple((c * inv) % 3 for c in p)
         return p
-    
+
     # All non-zero vectors in GF(3)^4
-    all_vecs = [v for v in product([0,1,2], repeat=4) if v != (0,0,0,0)]
-    
+    all_vecs = [v for v in product([0, 1, 2], repeat=4) if v != (0, 0, 0, 0)]
+
     # Projective points (normalize)
     points = list(set(normalize(v) for v in all_vecs))
-    
+
     # Build adjacency (perpendicular under symplectic form)
     edges = []
     for i, p in enumerate(points):
         for j, q in enumerate(points):
             if i < j and omega(p, q) == 0:
                 edges.append((i, j))
-    
+
     return points, edges
+
 
 vertices, edges = build_w33()
 print(f"W33: {len(vertices)} vertices, {len(edges)} edges")
@@ -95,6 +99,7 @@ print("\n" + "=" * 70)
 print("PART 2: E8 LATTICE - THE BRIDGE")
 print("=" * 70)
 
+
 def generate_e8_roots():
     """Generate all 240 E8 roots"""
     roots = []
@@ -106,14 +111,15 @@ def generate_e8_roots():
                 root[i] = si
                 root[j] = sj
                 roots.append(tuple(root))
-    
+
     # Type 2: (±1/2, ±1/2, ..., ±1/2) with even number of minus signs
     for signs in product([1, -1], repeat=8):
         if signs.count(-1) % 2 == 0:
             root = tuple(s * 0.5 for s in signs)
             roots.append(root)
-    
+
     return roots
+
 
 e8_roots = generate_e8_roots()
 print(f"E8 roots: {len(e8_roots)}")
@@ -137,7 +143,9 @@ print(f"  E8 roots = {e8_roots_count}")
 print(f"  MATCH: {n_edges == e8_roots_count} ✓")
 
 # Weyl group relationship
-print(f"\n|W(E8)| / |W(E6)| = {weyl_e8_order} / {aut_order} = {weyl_e8_order // aut_order}")
+print(
+    f"\n|W(E8)| / |W(E6)| = {weyl_e8_order} / {aut_order} = {weyl_e8_order // aut_order}"
+)
 print(f"  = 13440 = 240 × 56")
 print(f"  = (E8 roots) × (degree in E8 root graph)")
 
@@ -149,7 +157,8 @@ print("\n" + "=" * 70)
 print("PART 3: LEECH LATTICE - THE UNIQUE MIRACLE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Leech lattice Λ₂₄ is the unique 24-dimensional even unimodular
 lattice with no vectors of squared length 2 (no roots!).
 
@@ -159,7 +168,8 @@ Key properties:
   - Kissing number: 196560 (highest in 24D)
   - Automorphism group: Co₀ (Conway group)
   - |Co₀| = 8,315,553,613,086,720,000
-""")
+"""
+)
 
 leech_rank = 24
 leech_minimal_count = 196560
@@ -183,8 +193,12 @@ print(f"  W33 appears THREE times in Leech!")
 print(f"  Total edges: 3 × {n_edges} = {3 * n_edges}")
 
 # Mysterious number check
-print(f"\n  {leech_minimal_count} / {3 * n_edges} = {leech_minimal_count / (3 * n_edges):.4f}")
-print(f"  {leech_minimal_count} / {n_edges} = {leech_minimal_count / n_edges:.4f} = 819")
+print(
+    f"\n  {leech_minimal_count} / {3 * n_edges} = {leech_minimal_count / (3 * n_edges):.4f}"
+)
+print(
+    f"  {leech_minimal_count} / {n_edges} = {leech_minimal_count / n_edges:.4f} = 819"
+)
 print(f"  819 = 9 × 91 = 9 × 7 × 13")
 
 # =============================================================================
@@ -195,7 +209,8 @@ print("\n" + "=" * 70)
 print("PART 4: CONWAY GROUPS - SYMMETRIES OF LEECH")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Conway groups arise from Aut(Λ₂₄):
 
   Co₀ = Aut(Λ₂₄)  (full automorphism group)
@@ -208,7 +223,8 @@ Orders:
   |Co₁| = 4,157,776,806,543,360,000
   |Co₂| = 42,305,421,312,000
   |Co₃| = 495,766,656,000
-""")
+"""
+)
 
 co1_order = co0_order // 2
 co2_order = 42305421312000
@@ -235,7 +251,8 @@ print("\n" + "=" * 70)
 print("PART 5: THE MONSTER - THE ULTIMATE STRUCTURE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Monster group M is the largest sporadic simple group.
 
 Order: |M| = 2⁴⁶ × 3²⁰ × 5⁹ × 7⁶ × 11² × 13³ × 17 × 19 × 23 × 29 × 31 × 41 × 47 × 59 × 71
@@ -245,12 +262,26 @@ The Monster is constructed from the Leech lattice via:
   1. Leech lattice → Conway groups
   2. Conway groups → Baby Monster (via centralizer)
   3. Baby Monster → Monster (via another centralizer)
-""")
+"""
+)
 
 monster_order_approx = 8.08e53
 monster_order_exact = (
-    2**46 * 3**20 * 5**9 * 7**6 * 11**2 * 13**3 * 
-    17 * 19 * 23 * 29 * 31 * 41 * 47 * 59 * 71
+    2**46
+    * 3**20
+    * 5**9
+    * 7**6
+    * 11**2
+    * 13**3
+    * 17
+    * 19
+    * 23
+    * 29
+    * 31
+    * 41
+    * 47
+    * 59
+    * 71
 )
 
 print(f"Monster group:")
@@ -271,20 +302,22 @@ print("\n" + "=" * 70)
 print("PART 6: MONSTROUS MOONSHINE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The j-function is the unique modular function for SL(2,Z):
 
   j(τ) = q⁻¹ + 744 + 196884q + 21493760q² + 864299970q³ + ...
-  
+
 where q = e^(2πiτ)
 
 MOONSHINE CONJECTURE (Conway-Norton, proved by Borcherds):
   The coefficients of j(τ) encode dimensions of Monster representations!
-  
+
   196884 = 196883 + 1 = (smallest Monster rep) + (trivial rep)
   21493760 = 21296876 + 196883 + 1
   etc.
-""")
+"""
+)
 
 # j-function coefficients
 j_coeffs = [1, 744, 196884, 21493760, 864299970]
@@ -304,7 +337,8 @@ print("\n" + "=" * 70)
 print("PART 7: W33's PLACE IN MOONSHINE")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE CHAIN:
 
   W33 (40 vertices, 240 edges)
@@ -324,7 +358,8 @@ THE CHAIN:
     │ McKay-Thompson series
     ↓
   j-function (modular forms)
-""")
+"""
+)
 
 # The key question: is W33 NECESSARY?
 print("\n*** THE DEEP QUESTION ***")
@@ -381,7 +416,8 @@ print("\n" + "=" * 70)
 print("PART 9: THE 196560 CONNECTION")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 Leech lattice minimal vectors: {leech_minimal_count}
 
 Factorization: 196560 = 2⁴ × 3³ × 5 × 7 × 13
@@ -392,9 +428,10 @@ Factorization: 196560 = 2⁴ × 3³ × 5 × 7 × 13
 But also:
   196560 = 240 × 819
          = (E8 roots) × 819
-         
+
 And 819 = 9 × 91 = 9 × 7 × 13 = 3² × 7 × 13
-""")
+"""
+)
 
 print(f"196560 / 240 = {leech_minimal_count // 240}")
 print(f"196560 / 40 = {leech_minimal_count // 40}")
@@ -412,7 +449,8 @@ print("\n" + "=" * 70)
 print("PART 10: SYNTHESIS - WHY W33 IS NECESSARY")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║             THE MONSTER MOONSHINE CHAIN: W33 IS NECESSARY            ║
 ╠══════════════════════════════════════════════════════════════════════╣
@@ -449,13 +487,15 @@ print("""
 ║  Physics is the "representation theory" of this unfolding.           ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("NUMERICAL SUMMARY")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 THE CHAIN OF NECESSITY:
 
   W33: 40 vertices, 240 edges, |Aut| = 51840
@@ -476,7 +516,8 @@ Key ratios:
 
 The number 3 appears throughout:
   • GF(3) base field
-  • 3 copies of E8 in Leech  
+  • 3 copies of E8 in Leech
   • 3 generations of matter
   • 3 = simplest symmetry beyond identity
-""")
+"""
+)

@@ -40,13 +40,14 @@ from w33_homology import (
     compute_rank_exact,
 )
 
-
 # =========================================================================
 # 1. H27 Subgraph Homology
 # =========================================================================
 
 
-def compute_subgraph_homology(vertices: List[int], adj_sets: List[Set[int]], label: str) -> Dict:
+def compute_subgraph_homology(
+    vertices: List[int], adj_sets: List[Set[int]], label: str
+) -> Dict:
     """Compute the clique complex homology of an induced subgraph."""
     n_sub = len(vertices)
     v_map = {v: i for i, v in enumerate(vertices)}
@@ -130,7 +131,9 @@ def compute_spectral_analysis(n: int, adj: List[List[int]]) -> Dict:
 
     return {
         "adjacency_eigenvalues": dict(sorted(ev_groups.items(), reverse=True)),
-        "spectrum_string": " + ".join(f"{int(ev)}^{mult}" for ev, mult in sorted(ev_groups.items(), reverse=True)),
+        "spectrum_string": " + ".join(
+            f"{int(ev)}^{mult}" for ev, mult in sorted(ev_groups.items(), reverse=True)
+        ),
         "ramanujan_bound": float(ramanujan_bound),
         "is_ramanujan": is_ramanujan,
         "fiedler_value": float(round(fiedler, 6)),
@@ -138,7 +141,9 @@ def compute_spectral_analysis(n: int, adj: List[List[int]]) -> Dict:
             "lower": float(cheeger_lower),
             "upper": float(cheeger_upper),
         },
-        "spectral_gap": float(k - max(ev for ev in eigvals_sorted[1:] if round(ev) != k)),
+        "spectral_gap": float(
+            k - max(ev for ev in eigvals_sorted[1:] if round(ev) != k)
+        ),
         "eigenvalue_interpretation": {
             "12_mult_1": "Trivial eigenvalue (connected, k-regular)",
             "2_mult_24": f"24 = dim(Cartan subalgebra of E7) or 24 = |Leech lattice minimal vectors|/196560*... Actually: 24 = number of positive roots of D4 + rank(E6)",
@@ -153,7 +158,9 @@ def compute_spectral_analysis(n: int, adj: List[List[int]]) -> Dict:
 # =========================================================================
 
 
-def compute_h1_basis(n: int, adj: List[List[int]]) -> Tuple[np.ndarray, List[Tuple], List[Tuple]]:
+def compute_h1_basis(
+    n: int, adj: List[List[int]]
+) -> Tuple[np.ndarray, List[Tuple], List[Tuple]]:
     """Compute a basis for H_1(W33) as vectors in C_1 = Z^240.
 
     Returns (basis_matrix, edges, triangles) where basis_matrix has shape (81, 240).
@@ -304,7 +311,9 @@ def analyze_sp43_on_h1(n: int, vertices, adj: List[List[int]]) -> Dict:
 # =========================================================================
 
 
-def analyze_gq_line_graph(n: int, adj: List[List[int]], adj_sets: List[Set[int]]) -> Dict:
+def analyze_gq_line_graph(
+    n: int, adj: List[List[int]], adj_sets: List[Set[int]]
+) -> Dict:
     """Analyze the line graph of GQ(3,3).
 
     Each line is a 4-clique. Two lines are adjacent if they share a point.
@@ -368,7 +377,9 @@ def analyze_gq_line_graph(n: int, adj: List[List[int]], adj_sets: List[Set[int]]
 # =========================================================================
 
 
-def analyze_cycle_decomposition(n: int, adj: List[List[int]], adj_sets: List[Set[int]]) -> Dict:
+def analyze_cycle_decomposition(
+    n: int, adj: List[List[int]], adj_sets: List[Set[int]]
+) -> Dict:
     """Analyze the structure of H_1 under the vertex decomposition.
 
     W33 decomposes as {v0} ∪ H12 ∪ H27. The 81 cycles should
@@ -490,7 +501,9 @@ def main():
     print(f"  IS RAMANUJAN: {spectral['is_ramanujan']}")
     print(f"  Fiedler value (algebraic connectivity): {spectral['fiedler_value']}")
     print(f"  Spectral gap: {spectral['spectral_gap']}")
-    print(f"  Cheeger bounds: [{spectral['cheeger_bounds']['lower']:.2f}, {spectral['cheeger_bounds']['upper']:.2f}]")
+    print(
+        f"  Cheeger bounds: [{spectral['cheeger_bounds']['lower']:.2f}, {spectral['cheeger_bounds']['upper']:.2f}]"
+    )
 
     print(f"\n  Eigenvalue multiplicities and Lie algebra dimensions:")
     for ev, interp in spectral["eigenvalue_interpretation"].items():
@@ -536,7 +549,8 @@ def main():
     h12_b1 = h12["betti_numbers"].get(1, 0)
     core_b1 = core["betti_numbers"].get(1, 0)
 
-    print(f"""
+    print(
+        f"""
   DISCOVERY 1: H27 SUBGRAPH HOMOLOGY
     b_1(H27) = {h27_b1}
     The 27-vertex Heisenberg subgraph has {h27_b1} independent cycles.
@@ -564,7 +578,8 @@ def main():
     Generator traces: {sp43_h1['generator_traces']}
 
   Computation time: {elapsed:.2f}s
-""")
+"""
+    )
 
     # Write artifact
     # Clean up non-serializable data

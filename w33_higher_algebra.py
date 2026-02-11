@@ -27,7 +27,8 @@ print("\n" + "=" * 80)
 print("PART 1: OPERADS - ALGEBRAS OF OPERATIONS")
 print("=" * 80)
 
-print("""
+print(
+    """
 OPERADS: THE ALGEBRA OF ALGEBRA
 ===============================
 
@@ -49,7 +50,8 @@ The W33 operad would have:
   - O(3) encoding GF(3) operations
   - O(4) encoding K4 gauge structure
   - Composition from incidence relations
-""")
+"""
+)
 
 # =============================================================================
 # PART 2: THE W33 OPERAD
@@ -59,7 +61,8 @@ print("\n" + "=" * 80)
 print("PART 2: CONSTRUCTING THE W33 OPERAD")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE W33 OPERAD STRUCTURE
 ========================
 
@@ -80,7 +83,8 @@ Key insight:
   dim(W(2)) = 40 × 40 / 4 = 400 (K4 quotient)
   dim(W(3)) = 40 × 81 = 3240 (point-cycle)
   dim(W(4)) = 90 (one K4 per operation!)
-""")
+"""
+)
 
 # Operad dimensions
 W_operad = {
@@ -104,7 +108,8 @@ print("\n" + "=" * 80)
 print("PART 3: A∞-ALGEBRAS FROM W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 A∞-ALGEBRAS: HOMOTOPY ASSOCIATIVITY
 ===================================
 
@@ -127,7 +132,8 @@ The A∞-relations become:
   ∂(m₄) = m₂(m₃ ⊗ 1) - m₂(1 ⊗ m₃) + ...
 
 In W33: This gives the -1 phase from K4 holonomy!
-""")
+"""
+)
 
 print(f"A∞ operations in W33:")
 print(f"  m₂: GF(3) × K4 product")
@@ -143,7 +149,8 @@ print("\n" + "=" * 80)
 print("PART 4: E∞-ALGEBRAS AND HOMOTOPY COMMUTATIVITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 E∞-ALGEBRAS: HOMOTOPY COMMUTATIVITY
 ===================================
 
@@ -165,7 +172,8 @@ W33 AND E∞:
 
 This explains the 12 gauge bosons:
   Each grade corresponds to one boson type!
-""")
+"""
+)
 
 print(f"E∞ structure:")
 print(f"  ℤ₃ grading from GF(3)")
@@ -181,7 +189,8 @@ print("\n" + "=" * 80)
 print("PART 5: THE BAR CONSTRUCTION AND W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE BAR CONSTRUCTION B(A)
 =========================
 
@@ -207,7 +216,8 @@ The phase factors from K4 give:
 This connects to:
   32 = dim(spinor rep of SO(10))
   32 = number of supersymmetric generators
-""")
+"""
+)
 
 # Bar construction estimate
 bar_dim = 40 * 4 / 5
@@ -223,7 +233,8 @@ print("\n" + "=" * 80)
 print("PART 6: KOSZUL DUALITY FOR W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 KOSZUL DUALITY: ALGEBRA ↔ COALGEBRA
 ====================================
 
@@ -245,7 +256,8 @@ Conjecture:
 
   3240 = 81 × 40 = Steinberg × points
        = total degrees of freedom!
-""")
+"""
+)
 
 print(f"Koszul duality:")
 print(f"  dim(W33) = 40")
@@ -260,7 +272,8 @@ print("\n" + "=" * 80)
 print("PART 7: DERIVED CATEGORIES AND W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 DERIVED CATEGORY D(W33)
 =======================
 
@@ -283,7 +296,8 @@ In W33 terms:
 
 This means:
   D(W33-mod) has 90 generating triangles.
-""")
+"""
+)
 
 print(f"Derived category structure:")
 print(f"  Objects: W33-modules (dimension 40)")
@@ -298,7 +312,8 @@ print("\n" + "=" * 80)
 print("PART 8: HOCHSCHILD COHOMOLOGY OF W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 HH*(W33): DEFORMATIONS AND OBSTRUCTIONS
 =======================================
 
@@ -318,7 +333,8 @@ CONJECTURE:
 
   This would explain:
   dim(E₇) = 133 = 40 + 81 + 12 = HH⁰ + HH¹ + HH²
-""")
+"""
+)
 
 print(f"Hochschild cohomology (conjectured):")
 print(f"  HH⁰(W33) = 10 (center, = Q45)")
@@ -334,7 +350,8 @@ print("\n" + "=" * 80)
 print("PART 9: MOTIVIC STRUCTURE OF W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 MOTIVES AND W33
 ===============
 
@@ -358,7 +375,8 @@ W33 MOTIVE:
 
   This is NEGATIVE! → W33 has cohomological "holes"
   These holes are the K4 subgroups!
-""")
+"""
+)
 
 print(f"Motivic structure:")
 print(f"  Points contribute: +40")
@@ -374,7 +392,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE UNIVERSAL ENVELOPE AS E₇")
 print("=" * 80)
 
-print("""
+print(
+    """
 U(w33) ≅ U(e₇): THE DEEP CONNECTION
 ====================================
 
@@ -400,7 +419,8 @@ The Lie bracket:
   [xᵢ, xⱼ] = Σ cᵢⱼᵏ xₖ
 
 Where structure constants cᵢⱼᵏ come from K4!
-""")
+"""
+)
 
 print(f"E₇ structure from W33:")
 print(f"  dim(e₇) = 133 = 40 + 81 + 12")
@@ -415,7 +435,8 @@ print("\n" + "=" * 80)
 print("PART 11: QUANTUM GROUPS AND W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 QUANTUM DEFORMATION: U_q(w33)
 =============================
 
@@ -436,7 +457,8 @@ CONJECTURE:
 
 This explains why W33 is finite while E₇ is infinite!
 The GF(3) structure forces q³ = 1.
-""")
+"""
+)
 
 q = np.exp(2j * pi / 3)
 print(f"Quantum parameter:")
@@ -452,7 +474,8 @@ print("\n" + "=" * 80)
 print("PART 12: THE MASTER THEOREM OF UNIVERSAL ALGEBRA")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║              THE MASTER THEOREM OF W33 UNIVERSAL ALGEBRA                     ║
@@ -489,7 +512,8 @@ print("""
 ║  This makes W33 the "DNA" of algebraic physics!                             ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # CONCLUSION
@@ -499,7 +523,8 @@ print("\n" + "=" * 80)
 print("CONCLUSION: W33 AS THE UNIVERSAL HIGHER ALGEBRA")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    W33: THE UNIVERSAL HIGHER ALGEBRA                         ║
@@ -538,7 +563,8 @@ print("""
 ║  From these 7 elements, ALL of mathematics emerges.                         ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("W33 = THE UNIVERSAL A∞-ALGEBRA")

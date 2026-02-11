@@ -13,8 +13,7 @@ ROOT = Path(__file__).resolve().parent
 ART = ROOT / "artifacts"
 ART.mkdir(exist_ok=True)
 
-from tools.find_schlafli_embedding_in_w33 import (compute_w33_lines,
-                                                  construct_w33_points)
+from tools.find_schlafli_embedding_in_w33 import compute_w33_lines, construct_w33_points
 
 
 def bron_kerbosch_bounded(G, R, P, X, k, output):

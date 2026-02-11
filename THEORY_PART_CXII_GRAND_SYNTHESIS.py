@@ -48,7 +48,8 @@ def main():
     # =====================================================================
     header("SECTION 1: EXECUTIVE SUMMARY")
 
-    box("""
+    box(
+        """
 THE FUNDAMENTAL CLAIM:
 
 W33 is the discrete skeleton of E8 physics.
@@ -66,7 +67,8 @@ It is a deep mathematical connection rooted in:
 - |Aut(W33)| = |W(E6)| = 51,840
 - F_3 structure --> 3 generations
 - k = 12 --> 12 gauge bosons
-""")
+"""
+    )
 
     # =====================================================================
     # SECTION 2: Summary of Parts CV-CXI
@@ -235,7 +237,8 @@ It is a deep mathematical connection rooted in:
     # =====================================================================
     header("SECTION 6: THE COMPLETE SYMMETRY BREAKING CHAIN")
 
-    print("""
+    print(
+        """
     PLANCK SCALE (~10^19 GeV)
     ========================
            |
@@ -285,7 +288,8 @@ It is a deep mathematical connection rooted in:
            v
     ELECTROWEAK SCALE (~246 GeV)
     ============================
-""")
+"""
+    )
 
     # =====================================================================
     # SECTION 7: The Particle Content
@@ -449,7 +453,8 @@ It is a deep mathematical connection rooted in:
     # =====================================================================
     header("SECTION 12: THE DEEP STRUCTURE")
 
-    print("""
+    print(
+        """
     THE W33 VISION OF REALITY
     =========================
 
@@ -477,7 +482,8 @@ It is a deep mathematical connection rooted in:
     At the deepest level: EVERYTHING IS DISCRETE.
     The discreteness is F_3 = {0, 1, 2}.
     The number 3 is the first nontrivial prime.
-    """)
+    """
+    )
 
     # =====================================================================
     # SECTION 13: Open Questions
@@ -512,7 +518,8 @@ It is a deep mathematical connection rooted in:
     # =====================================================================
     header("SECTION 14: CONCLUSION")
 
-    box("""
+    box(
+        """
 PARTS CV-CXII HAVE ESTABLISHED:
 
 1. W33 is mathematically connected to E8/E6
@@ -537,7 +544,8 @@ PARTS CV-CXII HAVE ESTABLISHED:
 
 W33 THEORY MAY BE THE DISCRETE FOUNDATION
 OF FUNDAMENTAL PHYSICS.
-""")
+"""
+    )
 
     # =====================================================================
     # Save results

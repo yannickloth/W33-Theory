@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import sys
 import time
-from collections import deque, defaultdict
+from collections import defaultdict, deque
 from pathlib import Path
 
 import numpy as np
@@ -104,9 +104,16 @@ def build_all(verbose=True):
         print(f"  Built: {n} vertices, {m} edges, |PSp(4,3)| = {len(visited)}")
 
     return {
-        'n': n, 'vertices': vertices, 'adj': adj, 'edges': edges,
-        'm': m, 'W': W, 'S_proj': S_proj,
-        'visited': visited, 'gen_vperms': gen_vperms, 'gen_signed': gen_signed,
+        "n": n,
+        "vertices": vertices,
+        "adj": adj,
+        "edges": edges,
+        "m": m,
+        "W": W,
+        "S_proj": S_proj,
+        "visited": visited,
+        "gen_vperms": gen_vperms,
+        "gen_signed": gen_signed,
     }
 
 
@@ -116,10 +123,10 @@ def classify_order3_conjugacy(data):
     Two elements g1, g2 are conjugate if there exists h with g2 = h g1 h^{-1}.
     On vertex permutations: g2_v = h_v o g1_v o h_v^{-1}.
     """
-    n = data['n']
-    m = data['m']
-    visited = data['visited']
-    W = data['W']
+    n = data["n"]
+    m = data["m"]
+    visited = data["visited"]
+    W = data["W"]
     b1 = W.shape[1]
 
     id_v = tuple(range(n))
@@ -142,7 +149,7 @@ def classify_order3_conjugacy(data):
     # Use the FULL character on all Hodge sectors.
 
     ar = np.arange(m, dtype=int)
-    S_proj = data['S_proj']
+    S_proj = data["S_proj"]
 
     # For each order-3 element, compute characters on different sectors
     # We'll use the cycle structure on vertices as a conjugacy class identifier
@@ -174,9 +181,11 @@ def classify_order3_conjugacy(data):
     print(f"\n  Refining with full spectral character...")
 
     # Get eigenvectors for all Hodge sectors
-    B2 = boundary_matrix(data.get('simplices', build_clique_complex(n, data['adj']))[2],
-                         build_clique_complex(n, data['adj'])[1]).astype(float)
-    D = build_incidence_matrix(n, data['edges'])
+    B2 = boundary_matrix(
+        data.get("simplices", build_clique_complex(n, data["adj"]))[2],
+        build_clique_complex(n, data["adj"])[1],
+    ).astype(float)
+    D = build_incidence_matrix(n, data["edges"])
     L1 = D.T @ D + B2 @ B2.T
     w, v = np.linalg.eigh(L1)
     idx_sort = np.argsort(w)
@@ -185,7 +194,12 @@ def classify_order3_conjugacy(data):
     tol = 1e-6
     # Get sector projectors
     sectors = {}
-    for ev_target, name in [(0.0, 'harm'), (4.0, 'coex'), (10.0, 'ex10'), (16.0, 'ex16')]:
+    for ev_target, name in [
+        (0.0, "harm"),
+        (4.0, "coex"),
+        (10.0, "ex10"),
+        (16.0, "ex16"),
+    ]:
         sec_idx = np.where(np.abs(w - ev_target) < tol)[0]
         W_sec = v[:, sec_idx]
         sectors[name] = W_sec @ W_sec.T  # projector
@@ -196,7 +210,7 @@ def classify_order3_conjugacy(data):
         cur_es_np = np.asarray(cur_es, dtype=float)
 
         chars = []
-        for name in ['harm', 'coex', 'ex10', 'ex16']:
+        for name in ["harm", "coex", "ex10", "ex16"]:
             P = sectors[name]
             chi = float((P[ar, cur_ep_np] * cur_es_np).sum())
             chars.append(round(chi))
@@ -212,8 +226,8 @@ def classify_order3_conjugacy(data):
 
 def compute_generation_eigenspaces(data, element):
     """Compute the three 27-dim eigenspaces of an order-3 element on H1."""
-    m = data['m']
-    W = data['W']
+    m = data["m"]
+    W = data["W"]
     b1 = W.shape[1]
 
     cur_v, cur_ep, cur_es = element
@@ -229,7 +243,7 @@ def compute_generation_eigenspaces(data, element):
     omega_bar = np.exp(-2j * np.pi / 3)
 
     spaces = {}
-    for label, target in [('1', 1.0), ('w', omega), ('wb', omega_bar)]:
+    for label, target in [("1", 1.0), ("w", omega), ("wb", omega_bar)]:
         idx = [i for i, ev in enumerate(eigenvalues) if abs(ev - target) < 0.1]
         spaces[label] = eigenvectors[:, idx]
 
@@ -245,7 +259,7 @@ def compute_mixing_matrix(spaces1, spaces2):
     This gives the probability that a particle in generation i of basis 1
     appears as generation j in basis 2.
     """
-    labels = ['1', 'w', 'wb']
+    labels = ["1", "w", "wb"]
     M = np.zeros((3, 3))
 
     for i, l1 in enumerate(labels):
@@ -271,10 +285,10 @@ def analyze_mixing_angles(M):
       sin^2(theta13) = P[0,2]
     """
     print(f"\n  Mixing matrix (generation overlap probabilities):")
-    labels = ['Gen 1', 'Gen 2', 'Gen 3']
+    labels = ["Gen 1", "Gen 2", "Gen 3"]
     print(f"           {'  '.join(f'{l:>8s}' for l in labels)}")
     for i, l in enumerate(labels):
-        row = '  '.join(f'{M[i,j]:8.5f}' for j in range(3))
+        row = "  ".join(f"{M[i,j]:8.5f}" for j in range(3))
         print(f"    {l}: {row}")
 
     # Check it's doubly stochastic (rows and columns sum to 1)
@@ -282,14 +296,15 @@ def analyze_mixing_angles(M):
     col_sums = M.sum(axis=0)
     print(f"\n  Row sums: {row_sums}")
     print(f"  Col sums: {col_sums}")
-    is_doubly_stochastic = np.allclose(row_sums, 1.0, atol=0.01) and \
-                           np.allclose(col_sums, 1.0, atol=0.01)
+    is_doubly_stochastic = np.allclose(row_sums, 1.0, atol=0.01) and np.allclose(
+        col_sums, 1.0, atol=0.01
+    )
     print(f"  Doubly stochastic: {is_doubly_stochastic}")
 
     if np.max(M) > 0.99:
         print(f"\n  RESULT: Mixing matrix is (near) identity")
         print(f"  The two Z3 elements give the SAME generation decomposition")
-        return {'trivial': True}
+        return {"trivial": True}
 
     if is_doubly_stochastic and np.min(M) > 0.01:
         # Non-trivial mixing!
@@ -297,12 +312,12 @@ def analyze_mixing_angles(M):
         if M[0, 0] + M[0, 1] > 0:
             sin2_12 = M[0, 1] / (M[0, 0] + M[0, 1])
         else:
-            sin2_12 = float('nan')
+            sin2_12 = float("nan")
 
         if M[1, 1] + M[1, 2] > 0:
             sin2_23 = M[1, 2] / (M[1, 1] + M[1, 2])
         else:
-            sin2_23 = float('nan')
+            sin2_23 = float("nan")
 
         sin2_13 = M[0, 2]
 
@@ -316,20 +331,20 @@ def analyze_mixing_angles(M):
         print(f"    theta_13 = {theta13:.2f} deg (CKM: ~0.2 deg, PMNS: ~8.5 deg)")
 
         # Check for maximal mixing (theta = 45 deg => sin^2 = 0.5)
-        if abs(sin2_12 - 1/3) < 0.05:
+        if abs(sin2_12 - 1 / 3) < 0.05:
             print(f"\n  NOTE: theta_12 gives sin^2 ~ 1/3 (tribimaximal mixing!)")
 
         return {
-            'trivial': False,
-            'sin2_12': float(sin2_12),
-            'sin2_23': float(sin2_23),
-            'sin2_13': float(sin2_13),
-            'theta12': float(theta12),
-            'theta23': float(theta23),
-            'theta13': float(theta13),
+            "trivial": False,
+            "sin2_12": float(sin2_12),
+            "sin2_23": float(sin2_23),
+            "sin2_13": float(sin2_13),
+            "theta12": float(theta12),
+            "theta23": float(theta23),
+            "theta13": float(theta13),
         }
 
-    return {'trivial': True}
+    return {"trivial": True}
 
 
 def main():
@@ -350,7 +365,9 @@ def main():
 
     if len(class_keys) < 2:
         print("  Only one class -- all order-3 elements are spectrally equivalent")
-        print("  Computing mixing between two non-commuting elements from same class...")
+        print(
+            "  Computing mixing between two non-commuting elements from same class..."
+        )
 
         # Pick two elements from the same class
         indices = list(refined_map.values())[0]
@@ -375,7 +392,9 @@ def main():
             rep_indices.append(refined_map[key][0])
         el1 = order3[rep_indices[0]]
         el2 = order3[rep_indices[1]]
-        print(f"\n  Using representatives from classes {class_keys[0]} and {class_keys[1]}")
+        print(
+            f"\n  Using representatives from classes {class_keys[0]} and {class_keys[1]}"
+        )
 
     # Compute generation eigenspaces
     print("\n  Computing generation eigenspaces for element 1...")
@@ -433,10 +452,10 @@ def main():
         # Average the mixing matrices to find the "typical" mixing
         M_avg = np.mean(mixing_results, axis=0)
         print(f"\n  Average mixing matrix:")
-        labels = ['Gen 1', 'Gen 2', 'Gen 3']
+        labels = ["Gen 1", "Gen 2", "Gen 3"]
         print(f"           {'  '.join(f'{l:>8s}' for l in labels)}")
         for i, l in enumerate(labels):
-            row = '  '.join(f'{M_avg[i,j]:8.5f}' for j in range(3))
+            row = "  ".join(f"{M_avg[i,j]:8.5f}" for j in range(3))
             print(f"    {l}: {row}")
 
         # Check individual mixing patterns
@@ -455,14 +474,17 @@ def main():
                 print(f"  All generations mix equally -> tribimaximal pattern")
     else:
         print(f"\n  All mixing matrices are trivial (identity)")
-        print(f"  This means all order-3 elements give the SAME generation decomposition")
+        print(
+            f"  This means all order-3 elements give the SAME generation decomposition"
+        )
         print(f"  (up to relabeling)")
 
     # Final analysis
     print("\n" + "=" * 72)
     print("  PHYSICAL INTERPRETATION")
     print("=" * 72)
-    print(f"""
+    print(
+        f"""
   The 800 order-3 elements of PSp(4,3) all decompose 81 = 27 + 27 + 27.
   Different elements define different "flavor bases" for the three generations.
 
@@ -478,16 +500,17 @@ def main():
     - Mixing depends on the choice of Z3 pair
     - The mixing pattern is constrained by PSp(4,3) symmetry
     - {"Tribimaximal mixing found!" if mixing_results and any(np.allclose(M, np.ones((3,3))/3, atol=0.05) for M in mixing_results) else "Non-trivial mixing structure found" if mixing_results else "Mixing to be determined by physical selection of Z3"}
-""")
+"""
+    )
 
     elapsed = time.time() - t0
     print(f"  Elapsed: {elapsed:.1f}s")
 
     return {
-        'n_order3': len(order3),
-        'n_spectral_classes': len(refined_map),
-        'n_nontrivial_mixings': len(mixing_results) if mixing_results else 0,
-        'elapsed': elapsed,
+        "n_order3": len(order3),
+        "n_spectral_classes": len(refined_map),
+        "n_nontrivial_mixings": len(mixing_results) if mixing_results else 0,
+        "elapsed": elapsed,
     }
 
 

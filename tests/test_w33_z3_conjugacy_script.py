@@ -8,7 +8,10 @@ from pathlib import Path
 
 def test_run_conjugacy_on_latest_candidates(tmp_path):
     # find latest candidates file
-    cand_files = sorted(glob.glob("checks/PART_CVII_z3_candidates_*.json"), key=lambda p: Path(p).stat().st_mtime)
+    cand_files = sorted(
+        glob.glob("checks/PART_CVII_z3_candidates_*.json"),
+        key=lambda p: Path(p).stat().st_mtime,
+    )
     assert cand_files, "No z3 candidates file found in checks/"
     cand_file = cand_files[-1]
 
@@ -22,11 +25,16 @@ def test_run_conjugacy_on_latest_candidates(tmp_path):
         "--log-file",
         str(log_file),
     ]
-    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    proc = subprocess.run(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
     assert proc.returncode == 0, f"Conjugacy script failed: {proc.stderr}"
 
     # check that a new conjugacy JSON was written
-    conj_files = sorted(glob.glob("checks/PART_CVII_z3_conjugacy_*.json"), key=lambda p: Path(p).stat().st_mtime)
+    conj_files = sorted(
+        glob.glob("checks/PART_CVII_z3_conjugacy_*.json"),
+        key=lambda p: Path(p).stat().st_mtime,
+    )
     assert conj_files, "No conjugacy file produced"
     conj = json.loads(open(conj_files[-1], encoding="utf-8").read())
 

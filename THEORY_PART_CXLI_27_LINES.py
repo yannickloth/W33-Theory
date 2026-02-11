@@ -82,7 +82,8 @@ print("\n" + "=" * 70)
 print("THE SCHLÄFLI GRAPH")
 print("=" * 70)
 
-print("""
+print(
+    """
 THEORETICAL BACKGROUND:
 =======================
 
@@ -97,7 +98,8 @@ This graph is ISOMORPHIC to the intersection graph of the
 
 The 27 lines were discovered by Cayley (1849) and Salmon (1849).
 They are one of the most remarkable configurations in geometry!
-""")
+"""
+)
 
 # Build the induced subgraph
 schlafli_adj = [[adj[i][j] for j in non_neighbors] for i in non_neighbors]
@@ -167,7 +169,8 @@ print("\n" + "=" * 70)
 print("THE GEOMETRY OF 27 LINES")
 print("=" * 70)
 
-print("""
+print(
+    """
 FUNDAMENTAL FACTS ABOUT THE 27 LINES:
 =====================================
 
@@ -186,7 +189,8 @@ FUNDAMENTAL FACTS ABOUT THE 27 LINES:
    Order = 51840 = 2⁷ × 3⁴ × 5
 
    THIS IS THE SAME GROUP AS Aut(Sp₄(3))!
-""")
+"""
+)
 
 # =====================================================
 # VERIFY THE DOUBLE-SIX STRUCTURE
@@ -293,7 +297,8 @@ print("\n" + "=" * 70)
 print("CONNECTION TO E₆ ROOT SYSTEM")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE E₆ LATTICE:
 ===============
 
@@ -319,7 +324,8 @@ The 27-dimensional representation decomposes as:
 Each piece has 9 dimensions → 9 + 9 + 9 = 27
 
 THIS MATCHES OUR 4 GROUPS OF 9 SUPERPOSITIONS!
-""")
+"""
+)
 
 # =====================================================
 # MAP WITTING STRUCTURE TO 27 LINES
@@ -360,7 +366,8 @@ print(f"  Group 3: {nn_in_g3}")
 print(f"  Group 4: {nn_in_g4}")
 print(f"  Total: {nn_in_g0 + nn_in_g1 + nn_in_g2 + nn_in_g3 + nn_in_g4}")
 
-print("""
+print(
+    """
 INTERPRETATION:
 ===============
 
@@ -370,7 +377,8 @@ The 27 non-neighbors partition naturally by their structure:
 - 0 from Group 1 (all involve |0⟩, so orthogonal to it)
 
 Wait, let's check that more carefully...
-""")
+"""
+)
 
 # More careful analysis
 print("\nDetailed breakdown:")
@@ -389,7 +397,8 @@ print("\n" + "=" * 70)
 print("PART CXLI COMPLETE")
 print("=" * 70)
 
-print("""
+print(
+    """
 KEY FINDINGS:
 =============
 
@@ -410,4 +419,5 @@ KEY FINDINGS:
    - Main graph: Sp₄(3) (symplectic polar graph)
    - Quantum realization: Witting configuration
    - 27-coclique: Schläfli graph (27 lines)
-""")
+"""
+)

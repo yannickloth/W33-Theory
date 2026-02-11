@@ -11,12 +11,16 @@ import json
 from pathlib import Path
 
 # load e8 module
-spec_e8 = importlib.util.spec_from_file_location("e8", "scripts/e8_embedding_group_theoretic.py")
+spec_e8 = importlib.util.spec_from_file_location(
+    "e8", "scripts/e8_embedding_group_theoretic.py"
+)
 e8 = importlib.util.module_from_spec(spec_e8)
 spec_e8.loader.exec_module(e8)
 
 # load optimize module (for triangle checking)
-spec_opt = importlib.util.spec_from_file_location("opt", "scripts/optimize_bijection_cocycle.py")
+spec_opt = importlib.util.spec_from_file_location(
+    "opt", "scripts/optimize_bijection_cocycle.py"
+)
 opt = importlib.util.module_from_spec(spec_opt)
 spec_opt.loader.exec_module(opt)
 

@@ -39,7 +39,9 @@ def measure_mean_rel(out_json_path: Path):
     return sum(vals) / len(vals)
 
 
-def collect_unique_output_vectors(couplings: List[dict]) -> Tuple[List[Tuple[float, ...]], List[int]]:
+def collect_unique_output_vectors(
+    couplings: List[dict],
+) -> Tuple[List[Tuple[float, ...]], List[int]]:
     uniq = []
     idx_map = []  # maps coupling index -> uniq index or -1
     for c in couplings:
@@ -60,7 +62,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--couplings", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
-    p.add_argument("--root-npy", type=Path, default=Path("artifacts/toe_root_operator_dictionary.npy"))
+    p.add_argument(
+        "--root-npy",
+        type=Path,
+        default=Path("artifacts/toe_root_operator_dictionary.npy"),
+    )
     args = p.parse_args()
 
     couplings = json.loads(args.couplings.read_text(encoding="utf-8"))
@@ -89,8 +95,8 @@ def main():
     n = weights_re.shape[0]
     C = np.zeros((m, n), dtype=float)
     for i in range(m):
-        dif = weights_re - X[i:i+1, :]
-        C[i, :] = np.sum(dif.real ** 2, axis=1)
+        dif = weights_re - X[i : i + 1, :]
+        C[i, :] = np.sum(dif.real**2, axis=1)
 
     if linear_sum_assignment is None:
         print("Warning: scipy not available; performing greedy assignment")

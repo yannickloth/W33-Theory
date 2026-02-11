@@ -51,10 +51,10 @@ from w33_h1_decomposition import (
     transvection_matrix,
 )
 
-
 # =========================================================================
 # Part A: E8 Root System and E6 x SU(3) Branching
 # =========================================================================
+
 
 def generate_e8_roots():
     """Generate all 240 E8 roots (unscaled, norm^2 = 2)."""
@@ -157,6 +157,7 @@ def e6_su3_branching(roots, simple_roots):
 
     # Group roots by SU(3) label
     from collections import Counter
+
     su3_counts = Counter(su3_labels)
     print(f"\n  SU(3) quantum number (n7, n8) distribution:")
     for label in sorted(su3_counts.keys()):
@@ -170,8 +171,9 @@ def e6_su3_branching(roots, simple_roots):
     print(f"\n  Roots with n7=0, n8=0 (E6 roots): {len(e6_roots)}")
 
     # SU(3) roots: only involve alpha_7, alpha_8
-    su3_roots_idx = [i for i, c in enumerate(int_coeffs)
-                     if all(c[j] == 0 for j in range(6))]
+    su3_roots_idx = [
+        i for i, c in enumerate(int_coeffs) if all(c[j] == 0 for j in range(6))
+    ]
     su3_roots = [roots[i] for i in su3_roots_idx]
     print(f"  Roots with n1=...=n6=0 (SU(3) roots): {len(su3_roots)}")
     for i in su3_roots_idx:
@@ -192,7 +194,9 @@ def e6_su3_branching(roots, simple_roots):
             grade_counts = Counter(grades)
             sizes = tuple(sorted(grade_counts.values()))
             if sizes == (78, 81, 81):
-                print(f"    grade = ({a_coeff}*n7 + {b_coeff}*n8) mod 3: {dict(grade_counts)}")
+                print(
+                    f"    grade = ({a_coeff}*n7 + {b_coeff}*n8) mod 3: {dict(grade_counts)}"
+                )
                 best_grading = (a_coeff, b_coeff)
                 break
         if best_grading:
@@ -207,7 +211,9 @@ def e6_su3_branching(roots, simple_roots):
             grade_counts = Counter(grades)
             sizes = tuple(sorted(grade_counts.values()))
             if sizes == (78, 81, 81):
-                print(f"    Found grading with coefficients {coeffs}: {dict(grade_counts)}")
+                print(
+                    f"    Found grading with coefficients {coeffs}: {dict(grade_counts)}"
+                )
                 best_grading = coeffs
                 break
 
@@ -215,7 +221,9 @@ def e6_su3_branching(roots, simple_roots):
         a_coeff, b_coeff = best_grading
         grades = [(a_coeff * c[6] + b_coeff * c[7]) % 3 for c in int_coeffs]
     elif best_grading:
-        grades = [sum(co * la for co, la in zip(best_grading, c)) % 3 for c in int_coeffs]
+        grades = [
+            sum(co * la for co, la in zip(best_grading, c)) % 3 for c in int_coeffs
+        ]
     else:
         print("    No simple linear grading found. Using alternative approach...")
         # Use the known Z3-grading via dot products
@@ -283,7 +291,9 @@ def e6_su3_branching(roots, simple_roots):
                 sub_counts = Counter(sub_grades)
                 sizes = tuple(sorted(sub_counts.values()))
                 if sizes == (27, 27, 27):
-                    print(f"    sub_grade = ({a}*n7 + {b}*n8) mod 3: {dict(sub_counts)}")
+                    print(
+                        f"    sub_grade = ({a}*n7 + {b}*n8) mod 3: {dict(sub_counts)}"
+                    )
                     # This is our generation quantum number!
                     gen_groups = {}
                     for i, sg in enumerate(sub_grades):
@@ -303,6 +313,7 @@ def e6_su3_branching(roots, simple_roots):
 # =========================================================================
 # Part B: W33 Harmonic Space - Z3 Element Search
 # =========================================================================
+
 
 def build_psp43_and_harmonic():
     """Build PSp(4,3) and harmonic basis. Returns all needed data."""
@@ -358,10 +369,20 @@ def build_psp43_and_harmonic():
                 queue.append(new_v)
 
     return {
-        'n': n, 'vertices': vertices, 'adj': adj, 'edges': edges,
-        'simplices': simplices, 'm': m, 'W': W, 'S_proj': S_proj,
-        'eigenvalues': w, 'eigenvectors': v, 'L1': L1,
-        'visited': visited, 'gen_vperms': gen_vperms, 'gen_signed': gen_signed,
+        "n": n,
+        "vertices": vertices,
+        "adj": adj,
+        "edges": edges,
+        "simplices": simplices,
+        "m": m,
+        "W": W,
+        "S_proj": S_proj,
+        "eigenvalues": w,
+        "eigenvectors": v,
+        "L1": L1,
+        "visited": visited,
+        "gen_vperms": gen_vperms,
+        "gen_signed": gen_signed,
     }
 
 
@@ -370,11 +391,11 @@ def find_z3_element(data):
 
     Such an element decomposes 81 = 27 + 27 + 27.
     """
-    n = data['n']
-    m = data['m']
-    W = data['W']
-    S_proj = data['S_proj']
-    visited = data['visited']
+    n = data["n"]
+    m = data["m"]
+    W = data["W"]
+    S_proj = data["S_proj"]
+    visited = data["visited"]
     ar = np.arange(m, dtype=int)
 
     print("\n  Searching for order-3 elements with chi = 0 on H1...")
@@ -393,7 +414,7 @@ def find_z3_element(data):
     for cur_v, (cur_ep, cur_es) in visited.items():
         # Check order: compose vertex perm with itself 3 times
         v2 = tuple(cur_v[i] for i in cur_v)  # g^2
-        v3 = tuple(cur_v[i] for i in v2)      # g^3
+        v3 = tuple(cur_v[i] for i in v2)  # g^3
         if v3 != id_v:
             continue  # not order 3
 
@@ -431,8 +452,8 @@ def decompose_three_generations(data, z3_element):
     Given an order-3 element g with chi(g) = 0, compute R_g on H1
     and diagonalize. Eigenvalues: 1 (x27), omega (x27), omega_bar (x27).
     """
-    m = data['m']
-    W = data['W']
+    m = data["m"]
+    W = data["W"]
     b1 = W.shape[1]
 
     cur_v, cur_ep, cur_es, chi = z3_element
@@ -496,28 +517,29 @@ def decompose_three_generations(data, z3_element):
         print(f"    |<Gen2|Gen3>| = {cross_23:.2e}")
 
         return {
-            'confirmed': True,
-            'dim_1': len(idx_1),
-            'dim_w': len(idx_w),
-            'dim_wb': len(idx_wb),
-            'V1': V1,
-            'Vw': Vw,
-            'Vwb': Vwb,
-            'R_g': R_g,
+            "confirmed": True,
+            "dim_1": len(idx_1),
+            "dim_w": len(idx_w),
+            "dim_wb": len(idx_wb),
+            "V1": V1,
+            "Vw": Vw,
+            "Vwb": Vwb,
+            "R_g": R_g,
         }
     else:
         print(f"\n  NOT a 27+27+27 decomposition")
-        return {'confirmed': False}
+        return {"confirmed": False}
 
 
 # =========================================================================
 # Part C: Spectral Geometry - Heat Kernel & Coupling Constants
 # =========================================================================
 
+
 def spectral_analysis(data):
     """Analyze the spectral geometry of the Hodge Laplacian."""
-    w = data['eigenvalues']
-    m = data['m']
+    w = data["eigenvalues"]
+    m = data["m"]
 
     print("\n" + "=" * 72)
     print("  SPECTRAL GEOMETRY OF HODGE LAPLACIAN L1")
@@ -561,7 +583,7 @@ def spectral_analysis(data):
     # Spectral zeta function zeta(s) = sum_{lambda>0} lambda^{-s}
     print(f"\n  Spectral zeta function zeta(s) = sum_{{lambda>0}} lambda^{{-s}}:")
     for s in [1, 2, 3, 4]:
-        zeta_s = 120 * 4**(-s) + 24 * 10**(-s) + 15 * 16**(-s)
+        zeta_s = 120 * 4 ** (-s) + 24 * 10 ** (-s) + 15 * 16 ** (-s)
         print(f"    zeta({s}) = {zeta_s:.10f}")
 
     # Key ratios that might encode coupling constants
@@ -607,17 +629,18 @@ def spectral_analysis(data):
 # Part D: Triangle-Bracket Analysis
 # =========================================================================
 
+
 def triangle_bracket_analysis(data):
     """Analyze how W33's triangles encode algebraic structure.
 
     Key question: Do the 160 triangles of W33 correspond to
     E8 root addition relations?
     """
-    simplices = data['simplices']
-    edges = data['edges']
-    n = data['n']
-    adj = data['adj']
-    m = data['m']
+    simplices = data["simplices"]
+    edges = data["edges"]
+    n = data["n"]
+    adj = data["adj"]
+    m = data["m"]
 
     triangles = simplices[2]
     tetrahedra = simplices[3]
@@ -655,6 +678,7 @@ def triangle_bracket_analysis(data):
             edge_triangle_count[e] += 1
 
     from collections import Counter
+
     tri_count_dist = Counter(edge_triangle_count)
     print(f"  Distribution of triangles per edge:")
     for k in sorted(tri_count_dist.keys()):
@@ -707,6 +731,7 @@ def triangle_bracket_analysis(data):
                         link_edges.append((i, j))
         # Count connected components
         from collections import defaultdict
+
         link_adj = defaultdict(set)
         for i, j in link_edges:
             link_adj[i].add(j)
@@ -729,19 +754,22 @@ def triangle_bracket_analysis(data):
                     if nb not in visited_link:
                         queue.append(nb)
 
-        print(f"    Vertex {v_idx}: link has {len(link_edges)} edges, {components} components")
+        print(
+            f"    Vertex {v_idx}: link has {len(link_edges)} edges, {components} components"
+        )
         print(f"      -> b0(link) - 1 = {components - 1} generations")
 
     return {
-        'triangles': len(triangles),
-        'tetrahedra': len(tetrahedra),
-        'boundary_rank': int(np.linalg.matrix_rank(B2)),
+        "triangles": len(triangles),
+        "tetrahedra": len(tetrahedra),
+        "boundary_rank": int(np.linalg.matrix_rank(B2)),
     }
 
 
 # =========================================================================
 # Part E: Generation-Protected Topological Invariant
 # =========================================================================
+
 
 def generation_protection(data):
     """Verify that three generations are topologically protected.
@@ -752,9 +780,9 @@ def generation_protection(data):
     This means the three-generation structure cannot be deformed away
     by any continuous change to the geometry.
     """
-    n = data['n']
-    adj = data['adj']
-    simplices = data['simplices']
+    n = data["n"]
+    adj = data["adj"]
+    simplices = data["simplices"]
     triangles = set(map(tuple, simplices[2]))
 
     print("\n" + "=" * 72)
@@ -812,12 +840,13 @@ def generation_protection(data):
         print(f"    continuous deformations of the geometry")
         print(f"    => Three generations are a MATHEMATICAL NECESSITY, not a choice")
 
-    return {'uniform_b0': len(b0_values) == 1, 'b0_value': list(b0_values)[0]}
+    return {"uniform_b0": len(b0_values) == 1, "b0_value": list(b0_values)[0]}
 
 
 # =========================================================================
 # Main
 # =========================================================================
+
 
 def main():
     t0 = time.time()
@@ -844,12 +873,12 @@ def main():
 
     gen_groups = e6_su3_branching(roots, simple)
     if gen_groups is not None:
-        results['e8_three_generations'] = True
+        results["e8_three_generations"] = True
         print(f"\n  E8 RESULT: g1(81) = 27 + 27 + 27 under SU(3)")
         for grade, group in sorted(gen_groups.items()):
             print(f"    Generation {grade}: {len(group)} roots")
     else:
-        results['e8_three_generations'] = False
+        results["e8_three_generations"] = False
         print(f"\n  E8 RESULT: Could not isolate three generations via simple grading")
 
     # Part B: W33 harmonic space analysis
@@ -866,14 +895,14 @@ def main():
     if z3_elements:
         print(f"\n  Using first order-3 element with chi=0...")
         gen_result = decompose_three_generations(data, z3_elements[0])
-        results['w33_three_generations'] = gen_result['confirmed']
+        results["w33_three_generations"] = gen_result["confirmed"]
 
-        if gen_result['confirmed']:
+        if gen_result["confirmed"]:
             # Check how many DISTINCT Z3 subgroups give this decomposition
             print(f"\n  Number of order-3 elements with chi=0: {len(z3_elements)}")
             print(f"  These generate Z3 subgroups that all decompose 81 = 27+27+27")
     else:
-        results['w33_three_generations'] = False
+        results["w33_three_generations"] = False
         print("\n  No order-3 element with chi=0 found.")
         print("  Trying order-3 elements with other character values...")
 
@@ -886,18 +915,19 @@ def main():
 
     # Part D: Triangle-bracket analysis
     tri_result = triangle_bracket_analysis(data)
-    results['triangle_analysis'] = tri_result
+    results["triangle_analysis"] = tri_result
 
     # Part E: Topological protection
     gen_prot = generation_protection(data)
-    results['topological_protection'] = gen_prot
+    results["topological_protection"] = gen_prot
 
     # Final summary
     elapsed = time.time() - t0
     print("\n" + "=" * 72)
     print("  FINAL SUMMARY")
     print("=" * 72)
-    print(f"""
+    print(
+        f"""
   W33 CLIQUE COMPLEX:
     40 vertices, 240 edges, 160 triangles, 40 tetrahedra
 
@@ -924,16 +954,21 @@ def main():
   CHIRALITY: 45_C complex irrep (FS=0) = mathematical origin
 
   Elapsed: {elapsed:.1f}s
-""")
+"""
+    )
 
     # Save results
-    results['elapsed_seconds'] = elapsed
+    results["elapsed_seconds"] = elapsed
     ts = int(time.time())
     out_path = Path.cwd() / "checks" / f"PART_CVII_three_gen_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump({k: v for k, v in results.items()
-                   if not isinstance(v, np.ndarray)}, f, indent=2, default=str)
+        json.dump(
+            {k: v for k, v in results.items() if not isinstance(v, np.ndarray)},
+            f,
+            indent=2,
+            default=str,
+        )
     print(f"  Wrote: {out_path}")
 
     return results

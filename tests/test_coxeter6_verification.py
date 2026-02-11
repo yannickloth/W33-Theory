@@ -14,10 +14,14 @@ import pytest
 # Allow importing from tools/
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 
-from verify_coxeter6_numpy import (E6_SIMPLE_ROOTS, E8_SIMPLE_ROOTS,
-                                   build_coxeter_matrix,
-                                   build_e6_reflection_matrices,
-                                   build_e8_roots, build_w33_from_f3)
+from verify_coxeter6_numpy import (
+    E6_SIMPLE_ROOTS,
+    E8_SIMPLE_ROOTS,
+    build_coxeter_matrix,
+    build_e6_reflection_matrices,
+    build_e8_roots,
+    build_w33_from_f3,
+)
 
 # ── E8 root system ──────────────────────────────────────────────────
 

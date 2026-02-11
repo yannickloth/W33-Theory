@@ -137,7 +137,8 @@ print("\n" + "=" * 70)
 print("THE KEY INSIGHT")
 print("=" * 70)
 
-print("""
+print(
+    """
 For clique complexes, there's a theorem (related to "dismantlability"):
 
 A clique complex X has π₁(X) = F_k for some k if X is
@@ -151,7 +152,8 @@ Specifically, for the symplectic polar space W(3, q):
 
 The number of circles is q^(r-1 choose 2) × ... = 81 for W(3,3).
 This matches our computation!
-""")
+"""
+)
 
 # =============================================================================
 # VERIFY THE WEDGE OF CIRCLES
@@ -169,7 +171,8 @@ print("=" * 70)
 # - π₁(W33) = F₈₁ ✓
 # - H_k(W33) = 0 for k ≥ 2 ✓ (which implies π_k = 0 by Hurewicz for K(π,1))
 
-print("""
+print(
+    """
 W33 ≃ ⋁₈₁ S¹ (bouquet of 81 circles)
 
 This is a complete homotopy classification!
@@ -178,7 +181,8 @@ The Steinberg representation arises as:
   H₁(⋁₈₁ S¹) = Z^81
 
 with the action of O(5,3):C₂ permuting the circles.
-""")
+"""
+)
 
 # =============================================================================
 # THE UNIVERSAL COVER
@@ -187,7 +191,8 @@ print("\n" + "=" * 70)
 print("THE UNIVERSAL COVER OF W33")
 print("=" * 70)
 
-print("""
+print(
+    """
 The universal cover of ⋁₈₁ S¹ is the Cayley graph of F₈₁.
 
 This is an infinite tree where:
@@ -209,7 +214,8 @@ Actually:
   - The automorphism group O(5,3):C₂ acts on W33
   - This lifts to an action on the universal cover
     that commutes with deck transformations
-""")
+"""
+)
 
 # =============================================================================
 # CONNECTION TO BUILDINGS
@@ -218,7 +224,8 @@ print("\n" + "=" * 70)
 print("CONNECTION TO TITS BUILDINGS")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Tits building for PSp(4, 3) is a 1-dimensional simplicial complex
 (a bipartite graph connecting points to lines).
 
@@ -243,7 +250,8 @@ The connection:
 
 Both are different realizations of the same representation-theoretic
 structure: the Steinberg representation of PSp(4,3).
-""")
+"""
+)
 
 # Check building homology
 print("\n" + "=" * 70)
@@ -273,7 +281,8 @@ print("\n" + "=" * 70)
 print("★★★ FINAL SUMMARY ★★★")
 print("=" * 70)
 
-print("""
+print(
+    """
 W33 AND THE BUILDING: TWO FACES OF THE STEINBERG
 
 Both W33 and the Tits Building for PSp(4,3) share:
@@ -290,4 +299,5 @@ But homotopically:
   • W33 ≃ ⋁₈₁ S¹
 
 They are HOMOTOPY EQUIVALENT!
-""")
+"""
+)

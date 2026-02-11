@@ -92,7 +92,9 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--bundle-dir", type=Path, required=True)
     p.add_argument("--analysis-dir", type=Path, required=True)
-    p.add_argument("--targets", type=int, nargs="*", help="N12 vertices to attempt repair")
+    p.add_argument(
+        "--targets", type=int, nargs="*", help="N12 vertices to attempt repair"
+    )
     args = p.parse_args()
 
     bundle = args.bundle_dir
@@ -177,7 +179,9 @@ def main():
             for mat, U in mat_to_U.items():
                 for dx in range(3):
                     for dy in range(3):
-                        Dm = np.linalg.matrix_power(X, dx) @ np.linalg.matrix_power(Z, dy)
+                        Dm = np.linalg.matrix_power(X, dx) @ np.linalg.matrix_power(
+                            Z, dy
+                        )
                         v_im = Dm @ (U @ v_ref)
                         ov = abs(np.vdot(v_cand.conj(), v_im))
                         if ov > max_ov:

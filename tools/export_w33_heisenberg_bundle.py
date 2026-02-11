@@ -15,7 +15,7 @@ import argparse
 import csv
 import math
 import sys
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -100,6 +100,7 @@ def build_f3_cube(N12, H27, triangles, adj_s):
 
 # qutrit Weyl helpers
 
+
 def build_XZ() -> Tuple[np.ndarray, np.ndarray]:
     X = np.zeros((3, 3), dtype=complex)
     for j in range(3):
@@ -114,6 +115,7 @@ def D_op(p: int, q: int, X: np.ndarray, Z: np.ndarray) -> np.ndarray:
 
 
 # line family helpers
+
 
 def point_family_and_intercept(p: Tuple[int, int]) -> Tuple[str, int]:
     x, y = p
@@ -206,7 +208,13 @@ def main():
     # Write N12 CSV
     n12_csv = out / "N12_vertices_as_affine_lines.csv"
     with n12_csv.open("w", encoding="utf-8", newline="") as f:
-        fieldnames = ["N12_vertex", "slope_m", "intercept_b", "phase_points", "H_vertices_in_coset"]
+        fieldnames = [
+            "N12_vertex",
+            "slope_m",
+            "intercept_b",
+            "phase_points",
+            "H_vertices_in_coset",
+        ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for nid in sorted(N12):
@@ -220,15 +228,21 @@ def main():
                     h_neigh.append(v)
             pts_sorted = sorted(list(pts_set))
             fam, intercept = detect_line_family(pts_sorted)
-            slope_val = "inf" if fam == "fam_x" else (0 if fam == "fam_y" else (1 if fam == "fam_m1" else 2))
+            slope_val = (
+                "inf"
+                if fam == "fam_x"
+                else (0 if fam == "fam_y" else (1 if fam == "fam_m1" else 2))
+            )
             pts_field = "; ".join([f"({x},{y})" for x, y in pts_sorted])
-            writer.writerow({
-                "N12_vertex": nid,
-                "slope_m": slope_val,
-                "intercept_b": int(intercept),
-                "phase_points": pts_field,
-                "H_vertices_in_coset": " ".join(str(x) for x in sorted(h_neigh)),
-            })
+            writer.writerow(
+                {
+                    "N12_vertex": nid,
+                    "slope_m": slope_val,
+                    "intercept_b": int(intercept),
+                    "phase_points": pts_field,
+                    "H_vertices_in_coset": " ".join(str(x) for x in sorted(h_neigh)),
+                }
+            )
 
     # Build MUB vectors for each N12 line by diagonalizing the normal operator D(a,b)
     X, Z = build_XZ()
@@ -280,12 +294,14 @@ def main():
                     ph = comp / abs(comp)
                     v = v / ph
                     break
-            writer.writerow({
-                "N12_vertex": nid,
-                "slope": slope_field,
-                "intercept": intercept_field,
-                "state_vector": vec_to_str(v),
-            })
+            writer.writerow(
+                {
+                    "N12_vertex": nid,
+                    "slope": slope_field,
+                    "intercept": intercept_field,
+                    "state_vector": vec_to_str(v),
+                }
+            )
 
     print(f"Wrote {h27_csv}")
     print(f"Wrote {n12_csv}")

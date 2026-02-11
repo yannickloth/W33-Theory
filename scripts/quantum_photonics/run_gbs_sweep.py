@@ -6,10 +6,12 @@ from pathlib import Path
 
 repo = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(repo))
-from scripts.quantum_photonics.run_gbs import (build_interferometer,
-                                               compute_exact_probs_fock,
-                                               kl_between_empirical_and_exact,
-                                               sample_gbs)
+from scripts.quantum_photonics.run_gbs import (
+    build_interferometer,
+    compute_exact_probs_fock,
+    kl_between_empirical_and_exact,
+    sample_gbs,
+)
 
 modes_list = [2, 3, 4]
 squeezings = [0.3, 0.6, 0.9]

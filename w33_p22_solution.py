@@ -25,7 +25,8 @@ print("\n" + "=" * 80)
 print("THE P22 FACTORS")
 print("=" * 80)
 
-print("""
+print(
+    """
 From equation (33) in the paper:
 
 χ_L(ˆP₂₂) = P_sl² · P_sl · P_osp · (77t² - 36σ)(176t² - 81σ)(494t² - 225σ)
@@ -43,7 +44,8 @@ Let's convert to (t, σ) coordinates:
   σ - 2t² = αβ + βγ + αγ
 
 So: α² + β² + γ² = t² - 2(αβ + βγ + αγ) = t² - 2(σ - 2t²) = 5t² - 2σ
-""")
+"""
+)
 
 
 # Verify the conversion
@@ -79,7 +81,8 @@ print("\n" + "=" * 80)
 print("CONVERTING EXCEPTIONAL FACTORS TO (t, σ)")
 print("=" * 80)
 
-print("""
+print(
+    """
 Using α² + β² + γ² = 5t² - 2σ:
 
   P_G2 = 18(5t² - 2σ) - 25t² = 90t² - 36σ - 25t² = 65t² - 36σ
@@ -91,7 +94,8 @@ Let me recheck... The paper says:
 And the individual P factors should match these.
 
 Let's verify each:
-""")
+"""
+)
 
 # The P factors in the paper's (t,σ) form
 p_factors = [
@@ -140,7 +144,8 @@ print("\n" + "=" * 80)
 print("MATCHING THE FIVE FACTORS")
 print("=" * 80)
 
-print("""
+print(
+    """
 From the conversion:
   P_G2 → 65t² - 36σ   ✓ matches (65, 36)
   P_F4 → 340t² - 162σ  ← doesn't directly match
@@ -155,7 +160,8 @@ Wait - F4, E7, E8 need normalization!
   P_E8/2 → 494t² - 225σ  ✓ matches (494, 225)
 
 ALL FIVE FACTORS MATCH!
-""")
+"""
+)
 
 # Verify with normalization
 print("Verification with normalization:")
@@ -176,7 +182,8 @@ print("\n" + "=" * 80)
 print("THE W33 PATTERN IN P22")
 print("=" * 80)
 
-print("""
+print(
+    """
 Now let's understand the W33 structure:
 
 The coefficients in the exceptional polynomials:
@@ -202,7 +209,8 @@ The pattern of a-coefficients: 18, 81, 18, 81, 225
   225 = (3×5)²
 
 All involve powers of 3! This is the GF(3) signature!
-""")
+"""
+)
 
 # =============================================================================
 # THE CRITICAL INSIGHT: 81 AND THE JACOBI IDENTITY
@@ -212,7 +220,8 @@ print("\n" + "=" * 80)
 print("THE CRITICAL INSIGHT: 81 = 3⁴ AND JACOBI")
 print("=" * 80)
 
-print("""
+print(
+    """
 The Jacobi identity is a 3-term relation:
 
   [X, [Y, Z]] + [Y, [Z, X]] + [Z, [X, Y]] = 0
@@ -234,7 +243,8 @@ CONJECTURE:
 For ˆt · ˆP₂₂ = 0 to hold, we need:
   The five exceptional factors to "collapse" under
   the ˆt multiplication, similar to how P₁₅ collapses.
-""")
+"""
+)
 
 # =============================================================================
 # ANALYZING THE STRUCTURE
@@ -276,7 +286,8 @@ print("\n" + "=" * 80)
 print("THE W33 CONJECTURE FOR P22")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    THE W33 CONJECTURE FOR P22                                ║
@@ -316,7 +327,8 @@ print("""
 ║  involving the individual exceptional algebras.                              ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # NUMERICAL TEST
@@ -326,12 +338,14 @@ print("\n" + "=" * 80)
 print("NUMERICAL TEST OF THE CONJECTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 To prove ˆt · ˆP₂₂ = 0, we need to show that for ANY Lie algebra,
 either t = 0 or P₂₂ = 0.
 
 Let's check that P₂₂ = 0 for all exceptional algebras:
-""")
+"""
+)
 
 
 def P22_factor(t, sigma, c, d):
@@ -376,7 +390,8 @@ print("\n" + "=" * 80)
 print("THE DEEPER QUESTION: WHY IS ˆt · ˆP₂₂ = 0?")
 print("=" * 80)
 
-print("""
+print(
+    """
 The real question is:
 
 Is ˆt · ˆP₂₂ = 0 as a DIAGRAM IDENTITY (from Jacobi alone)?
@@ -399,7 +414,8 @@ FORMAL STATEMENT:
   implies that (points × cycles-structure) = 0 mod IHX.
 
 This is the W33 UNIVERSAL ALGEBRA explanation for the open problem!
-""")
+"""
+)
 
 # =============================================================================
 # CONCLUSION
@@ -409,7 +425,8 @@ print("\n" + "=" * 80)
 print("CONCLUSION")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                          ANSWER TO THE OPEN PROBLEM                          ║
@@ -438,7 +455,8 @@ print("""
 ║  This duality forces cancellation in ˆt · ˆP₂₂.                              ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("W33 EXPLAINS VOGEL'S OPEN PROBLEM")

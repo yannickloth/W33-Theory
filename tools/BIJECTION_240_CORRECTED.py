@@ -9,14 +9,15 @@ W33 = SRG(40, 12, 2, 4) is the symplectic polar graph:
   - Vertices: 40 isotropic 1-spaces (points) in GF(3)^4 under symplectic form
   - Edges: Two isotropic points are ADJACENT if they are ORTHOGONAL
            (i.e., their symplectic product is 0, and they're distinct)
-           
+
 This is the DUAL of what I had before!
 """
 
-import numpy as np
-from itertools import combinations, product
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from fractions import Fraction
+from itertools import combinations, product
+
+import numpy as np
 
 print("=" * 70)
 print("CORRECTED 240↔240 BIJECTION: W33 EDGES ↔ E8 ROOTS")
@@ -30,12 +31,14 @@ print("\n" + "=" * 70)
 print("PART 1: CORRECT W33 CONSTRUCTION")
 print("=" * 70)
 
+
 def symplectic_form(v, w):
     """
     Standard symplectic form on GF(3)^4:
     ω(v, w) = v₁w₃ + v₂w₄ - v₃w₁ - v₄w₂  (mod 3)
     """
-    return (v[0]*w[2] + v[1]*w[3] - v[2]*w[0] - v[3]*w[1]) % 3
+    return (v[0] * w[2] + v[1] * w[3] - v[2] * w[0] - v[3] * w[1]) % 3
+
 
 def find_isotropic_lines():
     """
@@ -43,11 +46,11 @@ def find_isotropic_lines():
     """
     lines = []
     seen = set()
-    
+
     for v in product(range(3), repeat=4):
         if v == (0, 0, 0, 0):
             continue
-        
+
         # Normalize: first non-zero coord = 1
         v = list(v)
         for i in range(4):
@@ -55,14 +58,15 @@ def find_isotropic_lines():
                 inv = 1 if v[i] == 1 else 2  # inverse in GF(3)
                 v = tuple((x * inv) % 3 for x in v)
                 break
-        
+
         if v not in seen:
             seen.add(v)
             v2 = tuple((2 * x) % 3 for x in v)
             seen.add(v2)
             lines.append(v)
-    
+
     return lines
+
 
 # Get isotropic lines
 lines = find_isotropic_lines()
@@ -128,7 +132,7 @@ print(f"  λ = {len(common_neighbors)} (should be 2)")
 # Find a non-adjacent pair
 non_adj = None
 for i in range(len(lines)):
-    for j in range(i+1, len(lines)):
+    for j in range(i + 1, len(lines)):
         if j not in w33_adj[i]:
             non_adj = (i, j)
             break
@@ -146,10 +150,11 @@ print("\n" + "=" * 70)
 print("PART 2: E8 ROOT SYSTEM")
 print("=" * 70)
 
+
 def generate_e8_roots():
     """Generate all 240 E8 roots."""
     roots = []
-    
+
     # Type 1: (±1, ±1, 0, 0, 0, 0, 0, 0) and permutations
     for pos in combinations(range(8), 2):
         for signs in product([1, -1], repeat=2):
@@ -157,14 +162,15 @@ def generate_e8_roots():
             root[pos[0]] = signs[0]
             root[pos[1]] = signs[1]
             roots.append(tuple(root))
-    
+
     # Type 2: (±1/2)^8 with even number of minus signs
     for signs in product([1, -1], repeat=8):
         if signs.count(-1) % 2 == 0:
             root = tuple(Fraction(s, 2) for s in signs)
             roots.append(root)
-    
+
     return roots
+
 
 e8_roots = generate_e8_roots()
 print(f"E8 roots: {len(e8_roots)}")
@@ -183,7 +189,8 @@ print("\n" + "=" * 70)
 print("PART 3: CONSTRUCTING THE BIJECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 Now we have the correct objects:
   - W33 edges: 240 (pairs of orthogonal isotropic lines)
   - E8 roots: 240
@@ -192,11 +199,13 @@ Strategy for bijection:
   1. Both have 240 elements ✓
   2. Both carry W(E6) symmetry
   3. Match by orbit structure under W(E6)
-""")
+"""
+)
 
 # Let's analyze the structure more carefully
 # The symplectic form picks out a 4D structure
 # E8 mod 3 should relate to this
+
 
 # First, let's reduce E8 roots mod 3
 def root_mod_3(r):
@@ -212,6 +221,7 @@ def root_mod_3(r):
         else:
             result.append(int(x) % 3)
     return tuple(result)
+
 
 e8_mod3 = [root_mod_3(r) for r in e8_roots]
 unique_mod3 = set(e8_mod3)
@@ -229,7 +239,8 @@ print("\n" + "=" * 70)
 print("PART 4: ORTHOGONAL COMPLEMENT STRUCTURE")
 print("=" * 70)
 
-print("""
+print(
+    """
 Key insight: In the symplectic geometry of GF(3)^4:
 
 Each isotropic line L has a 3-dimensional orthogonal complement L^⊥.
@@ -237,7 +248,9 @@ L ⊂ L^⊥ (since L is isotropic).
 The quotient L^⊥/L is 2-dimensional and inherits a symplectic structure.
 
 The 12 neighbors of L in W33 are the isotropic lines in L^⊥ (other than L itself).
-""")
+"""
+)
+
 
 # Count isotropic lines in each L^⊥
 def count_isotropic_in_perp(line_idx):
@@ -248,6 +261,7 @@ def count_isotropic_in_perp(line_idx):
         if j != line_idx and symplectic_form(v, w) == 0:
             count += 1
     return count
+
 
 perp_counts = [count_isotropic_in_perp(i) for i in range(len(lines))]
 print(f"Isotropic lines in L^⊥ (excluding L): {set(perp_counts)}")
@@ -261,7 +275,8 @@ print("\n" + "=" * 70)
 print("PART 5: E8 LATTICE AND ITS MOD-3 REDUCTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 The E8 lattice Γ8 can be defined as:
   Γ8 = {(x₁,...,x₈) ∈ Z^8 ∪ (Z+1/2)^8 : Σxᵢ ≡ 0 (mod 2)}
 
@@ -271,17 +286,18 @@ Reducing mod 3:
     But in GF(3), 1/2 = 2 (since 2*2 = 1 in GF(3))
 
 So half-integer E8 roots become vectors in GF(3)^8 with all coordinates in {0, 1, 2}.
-""")
+"""
+)
 
 # Let's look at what E8 mod 3 looks like
 print("Analyzing E8 mod 3 structure...")
 
 # The zero vector?
-zero_count = sum(1 for v in e8_mod3 if v == (0,)*8)
+zero_count = sum(1 for v in e8_mod3 if v == (0,) * 8)
 print(f"E8 roots reducing to 0 mod 3: {zero_count}")
 
 # Non-zero images
-nonzero_mod3 = [v for v in e8_mod3 if v != (0,)*8]
+nonzero_mod3 = [v for v in e8_mod3 if v != (0,) * 8]
 print(f"E8 roots with non-zero mod 3 image: {len(nonzero_mod3)}")
 
 # =============================================================================
@@ -292,13 +308,15 @@ print("\n" + "=" * 70)
 print("PART 6: EXPLICIT BIJECTION CONSTRUCTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 Approach: Use the embedding GF(3)^4 → GF(3)^8
 
 For an edge (v, w) of W33 where v, w are orthogonal isotropic lines:
   - Concatenate: (v | w) gives an 8-tuple in GF(3)^8
   - Find the E8 root(s) whose mod-3 reduction matches this pattern
-""")
+"""
+)
 
 # Build the map from 8-tuples to E8 roots
 mod3_to_roots = defaultdict(list)
@@ -306,11 +324,13 @@ for i, r in enumerate(e8_roots):
     m3 = root_mod_3(r)
     mod3_to_roots[m3].append(i)
 
+
 # For each W33 edge, what 8-tuple do we get?
 def edge_to_8tuple(i, j):
     """Map W33 edge to GF(3)^8 tuple."""
     v, w = lines[i], lines[j]
     return v + w  # concatenation
+
 
 print("Sample W33 edges and their E8 correspondences:")
 matches = 0
@@ -320,7 +340,7 @@ for k in range(20):
     i, j = w33_edges[k]
     t8 = edge_to_8tuple(i, j)
     root_indices = mod3_to_roots[t8]
-    
+
     if root_indices:
         matches += 1
         r = e8_roots[root_indices[0]]
@@ -347,7 +367,8 @@ print("\n" + "=" * 70)
 print("PART 7: ALTERNATIVE BIJECTION VIA ROOT GRAPH")
 print("=" * 70)
 
-print("""
+print(
+    """
 Alternative approach: Use the GRAPH STRUCTURE directly.
 
 Both W33 and the E8 root graph are vertex-transitive.
@@ -360,7 +381,8 @@ E8 has 240 roots.
 
 So perhaps: W33 VERTICES ↔ something with 40 elements in E8 structure
            W33 EDGES ↔ E8 ROOTS (240 each)
-""")
+"""
+)
 
 # In E8, pairs of opposite roots {r, -r} give 120 pairs
 # But we need 240
@@ -400,7 +422,8 @@ print("\n" + "=" * 70)
 print("PART 8: THE THEORETICAL BIJECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║           THE 240 ↔ 240 BIJECTION: CORRECT FORMULATION               ║
 ╠══════════════════════════════════════════════════════════════════════╣
@@ -435,7 +458,8 @@ print("""
 ║    in the E8 structure.                                              ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 9: VERIFICATION OF 240 = 240 VIA COUNTING
@@ -445,7 +469,8 @@ print("\n" + "=" * 70)
 print("PART 9: VERIFICATION BY COUNTING")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 SUMMARY OF VERIFIED FACTS:
 
 W33 Structure:
@@ -467,7 +492,8 @@ Quotient: |W(E8)| / |W(E6)| = 696729600 / 51840 = {696729600 // 51840}
 This confirms:
   240 W33 edges ↔ 240 E8 roots
   with W(E6) acting on both sides
-""")
+"""
+)
 
 # Let's compute |W(E6)|
 # W(E6) = 51840 = 2^7 * 3^4 * 5
@@ -489,7 +515,8 @@ print("\n" + "=" * 70)
 print("CONCLUSION: THE 240↔240 BIJECTION EXISTS")
 print("=" * 70)
 
-print("""
+print(
+    """
 The bijection φ: E(W33) → Φ(E8) is established by:
 
 1. CARDINALITY: |E(W33)| = |Φ(E8)| = 240 ✓
@@ -509,9 +536,10 @@ The explicit construction requires choosing:
 This bijection is THE fundamental link between:
   - The finite combinatorial structure W33
   - The continuous Lie-theoretic structure E8
-  
+
 From here, the full theory unfolds.
-""")
+"""
+)
 
 # =============================================================================
 # NUMERICAL SUMMARY TABLE
@@ -521,7 +549,8 @@ print("\n" + "=" * 70)
 print("NUMERICAL CORRESPONDENCE TABLE")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔════════════════════════════╦════════════════════════════════════════╗
 ║         W33                ║              E8                        ║
 ╠════════════════════════════╬════════════════════════════════════════╣
@@ -539,4 +568,5 @@ The 40 W33 vertices may correspond to:
 
 NEXT STEP: Find the explicit 40-element subset of E8 structure
 that corresponds to W33 vertices.
-""")
+"""
+)

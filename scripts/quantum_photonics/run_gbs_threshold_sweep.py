@@ -8,10 +8,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import entropy
 
-from scripts.quantum_photonics.run_gbs import (build_interferometer,
-                                               compute_exact_probs_fock,
-                                               compute_threshold_probs,
-                                               sample_gbs)
+from scripts.quantum_photonics.run_gbs import (
+    build_interferometer,
+    compute_exact_probs_fock,
+    compute_threshold_probs,
+    sample_gbs,
+)
 
 repo = Path(__file__).resolve().parents[2]
 out_json = repo / "bundles" / "v23_toe_finish" / "v23" / "gbs_threshold_sweep.json"

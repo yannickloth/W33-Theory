@@ -1,5 +1,10 @@
 import numpy as np
-from scripts.w33_hodge import compute_hodge_laplacians, compute_h27_inclusion, compute_h1_kernel
+
+from scripts.w33_hodge import (
+    compute_h1_kernel,
+    compute_h27_inclusion,
+    compute_hodge_laplacians,
+)
 
 
 def test_b1_and_decomposition():

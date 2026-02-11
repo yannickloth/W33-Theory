@@ -252,7 +252,8 @@ def analyze_correlation():
     print("SUMMARY & INTERPRETATION")
     print("=" * 70)
 
-    print(f"""
+    print(
+        f"""
 Key Findings:
 
 1. Quantum number distribution is NON-UNIFORM
@@ -273,7 +274,8 @@ Next Steps:
   If correlation is strong: HYPOTHESIS CONFIRMED ✓
   If correlation is weak: Need alternative explanation
   Either way: Provides insight into physics structure
-""")
+"""
+    )
 
     return v23_df, contingency
 

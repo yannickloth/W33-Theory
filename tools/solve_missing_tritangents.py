@@ -62,7 +62,12 @@ def load_existing_planes(tri_json: Path) -> Tuple[List[Tuple[int, int, int]], in
     return sorted(set(known)), missing_count
 
 
-def solve_missing(triads_candidates: List[Tuple[int, int, int]], known_triads: List[Tuple[int, int, int]], missing_count: int, time_limit_s: int = 30):
+def solve_missing(
+    triads_candidates: List[Tuple[int, int, int]],
+    known_triads: List[Tuple[int, int, int]],
+    missing_count: int,
+    time_limit_s: int = 30,
+):
     # Build line counts from known triads
     counts = [0] * 27
     for tri in known_triads:
@@ -70,7 +75,9 @@ def solve_missing(triads_candidates: List[Tuple[int, int, int]], known_triads: L
             counts[l] += 1
     deficits = [10 - c for c in counts]
     if sum(deficits) != missing_count * 3:
-        print(f"Warning: deficits sum {sum(deficits)} != {missing_count*3}; solver may fail")
+        print(
+            f"Warning: deficits sum {sum(deficits)} != {missing_count*3}; solver may fail"
+        )
 
     # Filter candidate triads to those not already known and with valid lines
     candidates = [t for t in triads_candidates if t not in known_triads]
@@ -96,7 +103,9 @@ def solve_missing(triads_candidates: List[Tuple[int, int, int]], known_triads: L
             model.Add(sum(involved) == deficits[l])
         else:
             if deficits[l] != 0:
-                print(f"Line {l} has deficit {deficits[l]} but no candidate triad covers it; unsatisfiable")
+                print(
+                    f"Line {l} has deficit {deficits[l]} but no candidate triad covers it; unsatisfiable"
+                )
                 return None
 
     solver = cp_model.CpSolver()
@@ -120,10 +129,16 @@ def main():
     args = p.parse_args()
 
     bundle = args.bundle_dir
-    tri_dir = args.trihedron_dir if args.trihedron_dir is not None else (ART / "bundles" / bundle.name / "trihedron")
+    tri_dir = (
+        args.trihedron_dir
+        if args.trihedron_dir is not None
+        else (ART / "bundles" / bundle.name / "trihedron")
+    )
     tri_json = tri_dir / "tritangent_planes.json"
     if not tri_json.exists():
-        print("trihedron output not found; run build_trihedron_tritangent_bundle.py first")
+        print(
+            "trihedron output not found; run build_trihedron_tritangent_bundle.py first"
+        )
         return
 
     known_triads, missing_count = load_existing_planes(tri_json)
@@ -132,21 +147,41 @@ def main():
     candidates = read_triads_from_heis()
     print(f"Heisenberg model candidate triads: {len(candidates)}")
 
-    chosen = solve_missing(candidates, known_triads, missing_count, time_limit_s=args.time_limit)
+    chosen = solve_missing(
+        candidates, known_triads, missing_count, time_limit_s=args.time_limit
+    )
     out_dir = ART / "bundles" / bundle.name
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if chosen is None:
-        out = {"status": "no_solution", "known_triads": known_triads, "candidates_considered": candidates}
-        (out_dir / "missing_9_solutions.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
-        (out_dir / "missing_9_report.md").write_text("# Missing 9 solver: no solution found\n", encoding="utf-8")
+        out = {
+            "status": "no_solution",
+            "known_triads": known_triads,
+            "candidates_considered": candidates,
+        }
+        (out_dir / "missing_9_solutions.json").write_text(
+            json.dumps(out, indent=2), encoding="utf-8"
+        )
+        (out_dir / "missing_9_report.md").write_text(
+            "# Missing 9 solver: no solution found\n", encoding="utf-8"
+        )
         print("No solution written; see outputs")
         return
 
-    out = {"status": "ok", "chosen_triads": [list(t) for t in chosen], "missing_count": missing_count}
-    (out_dir / "missing_9_solutions.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
+    out = {
+        "status": "ok",
+        "chosen_triads": [list(t) for t in chosen],
+        "missing_count": missing_count,
+    }
+    (out_dir / "missing_9_solutions.json").write_text(
+        json.dumps(out, indent=2), encoding="utf-8"
+    )
 
-    md = [f"# Missing 9 tritangent planes (bundle={bundle.name})", "", "## Chosen triads:"]
+    md = [
+        f"# Missing 9 tritangent planes (bundle={bundle.name})",
+        "",
+        "## Chosen triads:",
+    ]
     for t in chosen:
         md.append(f"- {list(t)}")
     (out_dir / "missing_9_report.md").write_text("\n".join(md), encoding="utf-8")

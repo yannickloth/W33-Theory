@@ -545,7 +545,8 @@ print("\nGenerated: W33_VERIFICATION_SUMMARY.txt")
 print("\n" + "=" * 70)
 print("PART LXV COMPLETE: SAGEMATH VERIFICATION SUITE GENERATED")
 print("=" * 70)
-print("""
+print(
+    """
 Generated files:
   1. w33_complete_verification.sage - Full W33 verification
   2. w33_sp4_group.sage - Symplectic group analysis
@@ -556,5 +557,6 @@ To run in SageMath:
   sage w33_complete_verification.sage
   sage w33_sp4_group.sage
   sage w33_alpha.sage
-""")
+"""
+)
 print("=" * 70)

@@ -46,7 +46,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
 from w33_h1_decomposition import (
     J_matrix,
     build_incidence_matrix,
@@ -55,10 +56,10 @@ from w33_h1_decomposition import (
     transvection_matrix,
 )
 
-
 # =========================================================================
 # Part 1: Weinberg Angle from SRG Eigenvalues
 # =========================================================================
+
 
 def weinberg_angle_derivation():
     """Derive sin^2(theta_W) = 3/8 from W33 SRG parameters."""
@@ -72,17 +73,17 @@ def weinberg_angle_derivation():
     # Adjacency eigenvalues from SRG formula:
     # x^2 - (lambda - mu)x - (k - mu) = 0
     # x^2 + 2x - 8 = (x+4)(x-2) = 0
-    r = 2    # positive eigenvalue
-    s = -4   # negative eigenvalue
+    r = 2  # positive eigenvalue
+    s = -4  # negative eigenvalue
 
     # Multiplicities from n = 1 + f + g, kn = k + fr + gs
     # f + g = 39, 12 + 2f - 4g = 0 => f = 24, g = 15
-    f = 24   # multiplicity of r
-    g = 15   # multiplicity of s
+    f = 24  # multiplicity of r
+    g = 15  # multiplicity of s
 
     # Hodge eigenvalues in exact sector
-    lam2 = k - r   # = 10
-    lam3 = k - s   # = 16
+    lam2 = k - r  # = 10
+    lam3 = k - s  # = 16
 
     print(f"\n  SRG parameters: n={n}, k={k}, lambda={lam}, mu={mu}")
     print(f"  Adjacency eigenvalues: k={k}, r={r}, s={s}")
@@ -98,7 +99,7 @@ def weinberg_angle_derivation():
     print(f"                   = {sin2_W}")
     print(f"                   = 3/8")
 
-    assert abs(sin2_W - 3/8) < 1e-15, f"Weinberg angle mismatch: {sin2_W}"
+    assert abs(sin2_W - 3 / 8) < 1e-15, f"Weinberg angle mismatch: {sin2_W}"
     print(f"    VERIFIED: sin^2(theta_W) = 3/8 exactly")
 
     # Equivalently from Hodge eigenvalue ratio
@@ -109,7 +110,7 @@ def weinberg_angle_derivation():
     print(f"                   = 1 - {lam2}/{lam3}")
     print(f"                   = 1 - {ratio}")
     print(f"                   = {sin2_W_alt}")
-    assert abs(sin2_W_alt - 3/8) < 1e-15
+    assert abs(sin2_W_alt - 3 / 8) < 1e-15
 
     # UNIQUENESS among GQ(q,q)
     print(f"\n  UNIQUENESS THEOREM:")
@@ -118,8 +119,8 @@ def weinberg_angle_derivation():
     print(f"  {'-'*4}-+-{'-'*20}-+-{'-'*8}")
 
     for q in [2, 3, 4, 5, 7, 8, 9, 11]:
-        val = 2*q / (q+1)**2
-        match = "YES" if abs(val - 3/8) < 1e-15 else "no"
+        val = 2 * q / (q + 1) ** 2
+        match = "YES" if abs(val - 3 / 8) < 1e-15 else "no"
         print(f"  {q:4d} | {val:20.10f} | {match:>8s}")
 
     print(f"\n  Only q = 3 gives sin^2(theta_W) = 3/8.")
@@ -134,15 +135,16 @@ def weinberg_angle_derivation():
     print(f"    Our derivation gives the EXACT GUT-scale value from W33 geometry.")
 
     return {
-        'sin2_theta_W': float(sin2_W),
-        'formula': '(r-s)/(k-s) = 6/16 = 3/8',
-        'unique_to_w33': True,
+        "sin2_theta_W": float(sin2_W),
+        "formula": "(r-s)/(k-s) = 6/16 = 3/8",
+        "unique_to_w33": True,
     }
 
 
 # =========================================================================
 # Part 2: Eigenvalue-Multiplicity Duality
 # =========================================================================
+
 
 def eigenvalue_multiplicity_duality():
     """Prove lambda_i * n_i = 240 for both exact sectors."""
@@ -151,8 +153,8 @@ def eigenvalue_multiplicity_duality():
     print("=" * 72)
 
     # Exact sector eigenvalues and multiplicities
-    lam2, n2 = 10, 24   # SU(5) adjoint dimension!
-    lam3, n3 = 16, 15   # Symmetric tensor rep
+    lam2, n2 = 10, 24  # SU(5) adjoint dimension!
+    lam3, n3 = 16, 15  # Symmetric tensor rep
 
     prod2 = lam2 * n2
     prod3 = lam3 * n3
@@ -198,16 +200,17 @@ def eigenvalue_multiplicity_duality():
     print(f"    gauge coupling unification at the geometric level")
 
     return {
-        'product_exact_10': prod2,
-        'product_exact_16': prod3,
-        'product_coexact': prod1,
-        'spectral_democracy': True,
+        "product_exact_10": prod2,
+        "product_exact_16": prod3,
+        "product_coexact": prod1,
+        "spectral_democracy": True,
     }
 
 
 # =========================================================================
 # Part 3: Full Dirac Operator
 # =========================================================================
+
 
 def build_full_dirac_operator():
     """Build the full Dirac operator on the total chain space."""
@@ -269,20 +272,20 @@ def build_full_dirac_operator():
     # d_1: C_1 -> C_0  =>  D[C_0, C_1] = d_1
     # d_1^T: C_0 -> C_1  =>  D[C_1, C_0] = d_1^T
     r0, c0 = offsets[0], offsets[1]
-    D[r0:r0+dims[0], c0:c0+dims[1]] = d1
-    D[c0:c0+dims[1], r0:r0+dims[0]] = d1.T
+    D[r0 : r0 + dims[0], c0 : c0 + dims[1]] = d1
+    D[c0 : c0 + dims[1], r0 : r0 + dims[0]] = d1.T
 
     # d_2: C_2 -> C_1  =>  D[C_1, C_2] = d_2
     # d_2^T: C_1 -> C_2  =>  D[C_2, C_1] = d_2^T
     r1, c1 = offsets[1], offsets[2]
-    D[r1:r1+dims[1], c1:c1+dims[2]] = d2
-    D[c1:c1+dims[2], r1:r1+dims[1]] = d2.T
+    D[r1 : r1 + dims[1], c1 : c1 + dims[2]] = d2
+    D[c1 : c1 + dims[2], r1 : r1 + dims[1]] = d2.T
 
     # d_3: C_3 -> C_2  =>  D[C_2, C_3] = d_3
     # d_3^T: C_2 -> C_3  =>  D[C_3, C_2] = d_3^T
     r2, c2 = offsets[2], offsets[3]
-    D[r2:r2+dims[2], c2:c2+dims[3]] = d3
-    D[c2:c2+dims[3], r2:r2+dims[2]] = d3.T
+    D[r2 : r2 + dims[2], c2 : c2 + dims[3]] = d3
+    D[c2 : c2 + dims[3], r2 : r2 + dims[2]] = d3.T
 
     print(f"\n  Dirac operator D: {D.shape[0]} x {D.shape[1]}")
     print(f"  D is symmetric: {np.allclose(D, D.T)}")
@@ -303,14 +306,18 @@ def build_full_dirac_operator():
     L3_expected = d3.T @ d3
 
     # Extract blocks from D^2
-    L0_actual = D2[offsets[0]:offsets[0]+dims[0], offsets[0]:offsets[0]+dims[0]]
-    L1_actual = D2[offsets[1]:offsets[1]+dims[1], offsets[1]:offsets[1]+dims[1]]
-    L2_actual = D2[offsets[2]:offsets[2]+dims[2], offsets[2]:offsets[2]+dims[2]]
-    L3_actual = D2[offsets[3]:offsets[3]+dims[3], offsets[3]:offsets[3]+dims[3]]
+    L0_actual = D2[offsets[0] : offsets[0] + dims[0], offsets[0] : offsets[0] + dims[0]]
+    L1_actual = D2[offsets[1] : offsets[1] + dims[1], offsets[1] : offsets[1] + dims[1]]
+    L2_actual = D2[offsets[2] : offsets[2] + dims[2], offsets[2] : offsets[2] + dims[2]]
+    L3_actual = D2[offsets[3] : offsets[3] + dims[3], offsets[3] : offsets[3] + dims[3]]
 
     print(f"    ||L_0(D^2) - d1 d1^T|| = {np.linalg.norm(L0_actual - L0_expected):.2e}")
-    print(f"    ||L_1(D^2) - (d1^T d1 + d2 d2^T)|| = {np.linalg.norm(L1_actual - L1_expected):.2e}")
-    print(f"    ||L_2(D^2) - (d2^T d2 + d3 d3^T)|| = {np.linalg.norm(L2_actual - L2_expected):.2e}")
+    print(
+        f"    ||L_1(D^2) - (d1^T d1 + d2 d2^T)|| = {np.linalg.norm(L1_actual - L1_expected):.2e}"
+    )
+    print(
+        f"    ||L_2(D^2) - (d2^T d2 + d3 d3^T)|| = {np.linalg.norm(L2_actual - L2_expected):.2e}"
+    )
     print(f"    ||L_3(D^2) - d3^T d3|| = {np.linalg.norm(L3_actual - L3_expected):.2e}")
 
     # Check off-diagonal blocks are zero
@@ -318,8 +325,10 @@ def build_full_dirac_operator():
     for i in range(4):
         for j in range(4):
             if i != j:
-                block = D2[offsets[i]:offsets[i]+dims[i], offsets[j]:offsets[j]+dims[j]]
-                off_diag_norm += np.linalg.norm(block)**2
+                block = D2[
+                    offsets[i] : offsets[i] + dims[i], offsets[j] : offsets[j] + dims[j]
+                ]
+                off_diag_norm += np.linalg.norm(block) ** 2
     off_diag_norm = np.sqrt(off_diag_norm)
     print(f"    ||off-diagonal blocks of D^2|| = {off_diag_norm:.2e}")
 
@@ -354,10 +363,12 @@ def build_full_dirac_operator():
     # Individual Laplacian spectra
     print(f"\n  LAPLACIAN SPECTRA ON EACH CHAIN SPACE:")
 
-    for label, Lk, dim_k in [("L_0 (vertices)", L0_expected, dims[0]),
-                              ("L_1 (edges)", L1_expected, dims[1]),
-                              ("L_2 (triangles)", L2_expected, dims[2]),
-                              ("L_3 (tetrahedra)", L3_expected, dims[3])]:
+    for label, Lk, dim_k in [
+        ("L_0 (vertices)", L0_expected, dims[0]),
+        ("L_1 (edges)", L1_expected, dims[1]),
+        ("L_2 (triangles)", L2_expected, dims[2]),
+        ("L_3 (tetrahedra)", L3_expected, dims[3]),
+    ]:
         eigvals_k = np.sort(np.linalg.eigvalsh(Lk))
         spec_k = {}
         for ev in eigvals_k:
@@ -378,10 +389,12 @@ def build_full_dirac_operator():
     print(f"\n  CHIRALITY OPERATOR:")
     gamma = np.zeros(total_dim)
     for k in range(4):
-        sign = (-1)**k
-        gamma[offsets[k]:offsets[k]+dims[k]] = sign
+        sign = (-1) ** k
+        gamma[offsets[k] : offsets[k] + dims[k]] = sign
 
-    print(f"    gamma = (+1)^{dims[0]} + (-1)^{dims[1]} + (+1)^{dims[2]} + (-1)^{dims[3]}")
+    print(
+        f"    gamma = (+1)^{dims[0]} + (-1)^{dims[1]} + (+1)^{dims[2]} + (-1)^{dims[3]}"
+    )
     print(f"    C_even = C_0 + C_2 = R^{dims[0]+dims[2]} = R^{dims[0]+dims[2]}")
     print(f"    C_odd  = C_1 + C_3 = R^{dims[1]+dims[3]} = R^{dims[1]+dims[3]}")
 
@@ -417,21 +430,26 @@ def build_full_dirac_operator():
         paired = pos_mult == neg_mult
         if not paired:
             all_paired = False
-        print(f"    +{pev:.4f} (mult {pos_mult}) <-> -{pev:.4f} (mult {neg_mult}) {'PAIRED' if paired else 'UNPAIRED'}")
+        print(
+            f"    +{pev:.4f} (mult {pos_mult}) <-> -{pev:.4f} (mult {neg_mult}) {'PAIRED' if paired else 'UNPAIRED'}"
+        )
 
     print(f"    All nonzero eigenvalues paired: {all_paired}")
 
     return {
-        'dims': dims,
-        'total_dim': total_dim,
-        'dirac_spectrum': {str(k): v for k, v in dirac_spectrum.items()},
-        'ker_D_dim': zero_mult,
-        'index': -80,
-        'all_paired': all_paired,
-        'D': D,
-        'offsets': offsets,
-        'n': n, 'vertices': vertices, 'adj': adj, 'edges': edges,
-        'simplices': simplices,
+        "dims": dims,
+        "total_dim": total_dim,
+        "dirac_spectrum": {str(k): v for k, v in dirac_spectrum.items()},
+        "ker_D_dim": zero_mult,
+        "index": -80,
+        "all_paired": all_paired,
+        "D": D,
+        "offsets": offsets,
+        "n": n,
+        "vertices": vertices,
+        "adj": adj,
+        "edges": edges,
+        "simplices": simplices,
     }
 
 
@@ -439,17 +457,18 @@ def build_full_dirac_operator():
 # Part 4: PSp(4,3) on Full Chain Space
 # =========================================================================
 
+
 def psp43_full_chain_analysis(dirac_data):
     """Analyze PSp(4,3) representation on all chain spaces."""
     print(f"\n{'='*72}")
     print("  PART 4: PSp(4,3) ON FULL CHAIN SPACE")
     print("=" * 72)
 
-    n = dirac_data['n']
-    vertices = dirac_data['vertices']
-    adj = dirac_data['adj']
-    edges = dirac_data['edges']
-    simplices = dirac_data['simplices']
+    n = dirac_data["n"]
+    vertices = dirac_data["vertices"]
+    adj = dirac_data["adj"]
+    edges = dirac_data["edges"]
+    simplices = dirac_data["simplices"]
     m = len(edges)
 
     triangles = simplices[2]
@@ -504,7 +523,7 @@ def psp43_full_chain_analysis(dirac_data):
         edge_idx[(b, a)] = i
 
     chi_sq_sums = {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0}
-    chi_sq_hodge = {'harm': 0.0, 'coex': 0.0, 'ex10': 0.0, 'ex16': 0.0}
+    chi_sq_hodge = {"harm": 0.0, "coex": 0.0, "ex10": 0.0, "ex16": 0.0}
 
     # Precompute Hodge projectors for edge space
     D_inc = build_incidence_matrix(n, edges)
@@ -554,7 +573,7 @@ def psp43_full_chain_analysis(dirac_data):
 
         # Full edge character
         chi1 = float(np.sum(es_np[ar[ep_np == ar]]))
-        fixed_mask = (ep_np == ar)
+        fixed_mask = ep_np == ar
         chi1 = float(np.sum(es_np[fixed_mask]))
         chi_sq_sums[1] += chi1 * chi1
 
@@ -564,10 +583,10 @@ def psp43_full_chain_analysis(dirac_data):
         chi_ex10 = float((S_ex10[ar, ep_np] * es_np).sum())
         chi_ex16 = float((S_ex16[ar, ep_np] * es_np).sum())
 
-        chi_sq_hodge['harm'] += chi_harm * chi_harm
-        chi_sq_hodge['coex'] += chi_coex * chi_coex
-        chi_sq_hodge['ex10'] += chi_ex10 * chi_ex10
-        chi_sq_hodge['ex16'] += chi_ex16 * chi_ex16
+        chi_sq_hodge["harm"] += chi_harm * chi_harm
+        chi_sq_hodge["coex"] += chi_coex * chi_coex
+        chi_sq_hodge["ex10"] += chi_ex10 * chi_ex10
+        chi_sq_hodge["ex16"] += chi_ex16 * chi_ex16
 
         # Character on C_2: signed triangle permutation
         chi2 = 0
@@ -583,8 +602,10 @@ def psp43_full_chain_analysis(dirac_data):
                 # of the permutation [vp[tri[0]], vp[tri[1]], vp[tri[2]]] -> [tri[0], tri[1], tri[2]]
                 perm = [tri.index(mapped[i]) for i in range(3)]
                 # Count inversions
-                inv = sum(1 for a in range(3) for b in range(a+1, 3) if perm[a] > perm[b])
-                chi2 += (-1)**inv
+                inv = sum(
+                    1 for a in range(3) for b in range(a + 1, 3) if perm[a] > perm[b]
+                )
+                chi2 += (-1) ** inv
         chi_sq_sums[2] += chi2 * chi2
 
         # Character on C_3: signed tetrahedron permutation
@@ -594,19 +615,27 @@ def psp43_full_chain_analysis(dirac_data):
             if new_tet == tet:
                 mapped = [vp[tet[j]] for j in range(4)]
                 perm = [tet.index(mapped[i]) for i in range(4)]
-                inv = sum(1 for a in range(4) for b in range(a+1, 4) if perm[a] > perm[b])
-                chi3 += (-1)**inv
+                inv = sum(
+                    1 for a in range(4) for b in range(a + 1, 4) if perm[a] > perm[b]
+                )
+                chi3 += (-1) ** inv
         chi_sq_sums[3] += chi3 * chi3
 
     # Commutant dimensions
     print(f"\n  COMMUTANT DIMENSIONS (number of irreducible components):")
     for k in range(4):
         comm_dim = chi_sq_sums[k] / group_size
-        print(f"    C_{k} ({dirac_data['dims'][k]}-dim): <|chi|^2> = {comm_dim:.4f} => {int(round(comm_dim))} irrep(s)")
+        print(
+            f"    C_{k} ({dirac_data['dims'][k]}-dim): <|chi|^2> = {comm_dim:.4f} => {int(round(comm_dim))} irrep(s)"
+        )
 
     print(f"\n  HODGE SECTOR DECOMPOSITION (C_1 only):")
-    for label, key in [("Harmonic (81)", 'harm'), ("Co-exact (120)", 'coex'),
-                        ("Exact-10 (24)", 'ex10'), ("Exact-16 (15)", 'ex16')]:
+    for label, key in [
+        ("Harmonic (81)", "harm"),
+        ("Co-exact (120)", "coex"),
+        ("Exact-10 (24)", "ex10"),
+        ("Exact-16 (15)", "ex16"),
+    ]:
         comm = chi_sq_hodge[key] / group_size
         print(f"    {label}: <|chi|^2> = {comm:.4f} => {int(round(comm))} irrep(s)")
 
@@ -624,9 +653,10 @@ def psp43_full_chain_analysis(dirac_data):
     print(f"    C_2 (160 triangles) = {c2_comm} irrep(s)")
 
     return {
-        'commutant_dims': {k: round(chi_sq_sums[k] / group_size) for k in range(4)},
-        'hodge_commutants': {k: round(chi_sq_hodge[k] / group_size)
-                             for k in chi_sq_hodge},
+        "commutant_dims": {k: round(chi_sq_sums[k] / group_size) for k in range(4)},
+        "hodge_commutants": {
+            k: round(chi_sq_hodge[k] / group_size) for k in chi_sq_hodge
+        },
     }
 
 
@@ -634,13 +664,15 @@ def psp43_full_chain_analysis(dirac_data):
 # Part 5: Synthesis
 # =========================================================================
 
+
 def synthesis():
     """Print the complete synthesis of all results."""
     print(f"\n{'='*72}")
     print("  COMPLETE SYNTHESIS: WEINBERG ANGLE + DIRAC OPERATOR")
     print("=" * 72)
 
-    print(f"""
+    print(
+        f"""
   THE W33-E8 CORRESPONDENCE THEOREM (Extended)
   =============================================
 
@@ -694,12 +726,14 @@ def synthesis():
     sin^2(theta_W)(q) = 2q / (q+1)^2
     Only q = 3 gives 3/8, the physically correct value.
     This SELECTS W(3,3) as the unique geometry encoding the Standard Model.
-""")
+"""
+    )
 
 
 # =========================================================================
 # Main
 # =========================================================================
+
 
 def main():
     t0 = time.time()
@@ -708,27 +742,30 @@ def main():
 
     # Part 1: Weinberg angle
     w_result = weinberg_angle_derivation()
-    results['weinberg'] = w_result
+    results["weinberg"] = w_result
 
     # Part 2: Eigenvalue-multiplicity duality
     em_result = eigenvalue_multiplicity_duality()
-    results['spectral_democracy'] = em_result
+    results["spectral_democracy"] = em_result
 
     # Part 3: Dirac operator
     dirac_result = build_full_dirac_operator()
-    results['dirac'] = {k: v for k, v in dirac_result.items()
-                        if not isinstance(v, np.ndarray) and k not in
-                        ('D', 'vertices', 'adj', 'edges', 'simplices', 'offsets')}
+    results["dirac"] = {
+        k: v
+        for k, v in dirac_result.items()
+        if not isinstance(v, np.ndarray)
+        and k not in ("D", "vertices", "adj", "edges", "simplices", "offsets")
+    }
 
     # Part 4: PSp(4,3) on full chain space
     chain_result = psp43_full_chain_analysis(dirac_result)
-    results['chain_decomposition'] = chain_result
+    results["chain_decomposition"] = chain_result
 
     # Part 5: Synthesis
     synthesis()
 
     elapsed = time.time() - t0
-    results['elapsed_seconds'] = elapsed
+    results["elapsed_seconds"] = elapsed
     print(f"  Elapsed: {elapsed:.1f}s")
 
     # Save

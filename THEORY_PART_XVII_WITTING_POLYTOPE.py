@@ -21,7 +21,8 @@ from fractions import Fraction
 
 import numpy as np
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                   THEORY OF EVERYTHING - PART XVII                           ║
 ║                                                                              ║
@@ -29,7 +30,8 @@ print("""
 ║                                                                              ║
 ║     "40 Quantum Cards" ↔ W33's 40 Points ↔ Witting Configuration            ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # THE WITTING POLYTOPE: FUNDAMENTAL DATA
@@ -40,7 +42,8 @@ print("PART 1: THE WITTING POLYTOPE - STRUCTURE")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The Witting Polytope is a 4-dimensional COMPLEX polytope denoted 3{3}3{3}3{3}3.
 It exists in C⁴ (complex 4-space) and projects to CP³ (complex projective 3-space).
 
@@ -59,7 +62,8 @@ FUNDAMENTAL DATA:
   ───────────────────────────────────────────────────────────────────────────
   Symmetry group    155,520  = 3 × |W(E6)| = 3 × 51,840
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 # Key numbers
 WITTING_VERTICES = 240
@@ -84,7 +88,8 @@ print("PART 2: THE 40 DIAMETERS - THE W33 CONNECTION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 CRITICAL INSIGHT FROM VLASOV'S PAPER:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -111,7 +116,8 @@ Which means:
 
 THIS IS THE SAME INCIDENCE STRUCTURE AS W33's POINTS AND LINES!
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 # =============================================================================
 # PENROSE DODECAHEDRON = WITTING POLYTOPE IN CP³
@@ -122,7 +128,8 @@ print("PART 3: THE PENROSE DODECAHEDRON")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 THE "QUANTUM CHAMELEON" (Waegell & Aravind, arXiv:1701.06512):
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -144,7 +151,8 @@ The 40 states come from:
 
 These 40 states form the WITTING CONFIGURATION in CP³.
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 # =============================================================================
 # THE E8 CONNECTION
@@ -155,7 +163,8 @@ print("PART 4: THE E8 ROOT SYSTEM CONNECTION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 THE WITTING POLYTOPE LIVES IN E8:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -179,7 +188,8 @@ This explains why W33 (with 40 points) encodes E8 structure!
 ═════════════════════════════════════════════════════════════════════════════
 
 Numerical checks:
-""")
+"""
+)
 
 # E8 facts
 E8_ROOTS = 240
@@ -211,7 +221,8 @@ print("PART 5: THE 27 - E6 FUNDAMENTAL REPRESENTATION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 EACH WITTING VERTEX HAS 27 NEIGHBORS:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -232,7 +243,8 @@ The E6 → SM decomposition:
 
 This gives exactly the Standard Model fermion content!
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 print("W33 + Witting numerology:")
 print(f"  W33 points × Witting edges/vertex = 40 × 27 = {40 * 27}")
@@ -249,7 +261,8 @@ print("PART 6: QUANTUM CONTEXTUALITY - THE 40 CARDS")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 FROM VLASOV'S "QUANTUM CARDS" PAPER:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -274,7 +287,8 @@ This is EXACTLY the structure of W33!
     • Some arrangement into orthogonal sets
     • Complex incidence relations
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 # =============================================================================
 # THE COMPLETE PICTURE: W33 = WITTING IN CP³
@@ -285,7 +299,8 @@ print("PART 7: THE COMPLETE PICTURE")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                        THE COMPLETE IDENTIFICATION                           ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -306,7 +321,8 @@ print("""
 ║  The "playing cards" analogy in the paper is the KEY INSIGHT!               ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # NUMERICAL SYNTHESIS
@@ -346,7 +362,8 @@ print("ALPHA FROM WITTING STRUCTURE")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 DERIVATION OF α⁻¹ = 137:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -373,7 +390,8 @@ GEOMETRIC INTERPRETATION:
     • 137 = total effective coupling dimension
 
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 alpha_inv = 81 + 56
 print(f"  W33 cycles + E7 rep = {81} + {56} = {alpha_inv}")
@@ -390,7 +408,8 @@ print("WEINBERG ANGLE FROM WITTING STRUCTURE")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 DERIVATION OF sin²θ_W = 40/173:
 ═════════════════════════════════════════════════════════════════════════════
 
@@ -411,7 +430,8 @@ Experimental: 0.23121(4)
 
 AGREEMENT: 0.003% (essentially EXACT!)
 ═════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 sin2_w33 = Fraction(40, 173)
 print(f"  sin²θ_W (W33) = 40/173 = {float(sin2_w33):.6f}")
@@ -428,7 +448,8 @@ print("FINAL SYNTHESIS: W33 IS THE WITTING CONFIGURATION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                            FINAL THEOREM                                     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -455,7 +476,8 @@ describes EXACTLY the quantum foundation of W33!
 The "playing cards" metaphor is not arbitrary - it's the ESSENCE of
 why W33 encodes physics: it's a contextual quantum structure that
 FORCES the Standard Model to emerge!
-""")
+"""
+)
 
 print("=" * 80)
 print("END OF PART XVII: THE WITTING POLYTOPE CONNECTION")

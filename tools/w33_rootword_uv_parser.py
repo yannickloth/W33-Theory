@@ -15,8 +15,7 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
-
+from typing import Dict, List, Optional, Tuple
 
 Int8Vec = Tuple[int, ...]
 
@@ -25,7 +24,9 @@ class W33RootwordParser:
     def __init__(
         self,
         edge_root_json: str | Path = Path("artifacts/edge_to_e8_root_combined.json"),
-        n12_csv: str | Path = Path("analysis/w33_bundle_temp/N12_vertices_as_affine_lines.csv"),
+        n12_csv: str | Path = Path(
+            "analysis/w33_bundle_temp/N12_vertices_as_affine_lines.csv"
+        ),
     ) -> None:
         self.edge_root_json = Path(edge_root_json)
         self.n12_csv = Path(n12_csv)
@@ -82,22 +83,26 @@ class W33RootwordParser:
 
         # populate from raw_map (and also add +-1 offsets to be robust)
         for (a, b), coords in raw_map.items():
-            add_candidate(coords, (a, b), 'raw')
-            add_candidate(tuple(-x for x in coords), (b, a), 'raw')
-            add_candidate(coords, (a + 1, b + 1), 'raw-offset')
-            add_candidate(tuple(-x for x in coords), (b + 1, a + 1), 'raw-offset')
-            add_candidate(coords, (a - 1, b - 1), 'raw-offset')
-            add_candidate(tuple(-x for x in coords), (b - 1, a - 1), 'raw-offset')
+            add_candidate(coords, (a, b), "raw")
+            add_candidate(tuple(-x for x in coords), (b, a), "raw")
+            add_candidate(coords, (a + 1, b + 1), "raw-offset")
+            add_candidate(tuple(-x for x in coords), (b + 1, a + 1), "raw-offset")
+            add_candidate(coords, (a - 1, b - 1), "raw-offset")
+            add_candidate(tuple(-x for x in coords), (b - 1, a - 1), "raw-offset")
 
         # canonical bijection list (prefer this source)
         try:
-            cand_list = json.loads(Path("artifacts/edge_root_bijection_canonical.json").read_text(encoding="utf-8"))
+            cand_list = json.loads(
+                Path("artifacts/edge_root_bijection_canonical.json").read_text(
+                    encoding="utf-8"
+                )
+            )
             for ent in cand_list:
                 a = int(ent["v_i"])
                 b = int(ent["v_j"])
                 coords = tuple(int(x) for x in ent["root_coords"])
-                add_candidate(coords, (a + 1, b + 1), 'canon')
-                add_candidate(tuple(-x for x in coords), (b + 1, a + 1), 'canon')
+                add_candidate(coords, (a + 1, b + 1), "canon")
+                add_candidate(tuple(-x for x in coords), (b + 1, a + 1), "canon")
         except Exception:
             pass
 
@@ -106,20 +111,25 @@ class W33RootwordParser:
             # artifacts/e8_root_to_w33_edge.json contains a 'root_to_edge' mapping keyed by stringified vectors
             e8_root_map_path = Path("artifacts/e8_root_to_w33_edge.json")
             if e8_root_map_path.exists():
-                em = json.loads(e8_root_map_path.read_text(encoding='utf-8'))
-                rtmap = em.get('root_to_edge', {})
+                em = json.loads(e8_root_map_path.read_text(encoding="utf-8"))
+                rtmap = em.get("root_to_edge", {})
                 for k, v in rtmap.items():
                     try:
                         if isinstance(k, str):
-                            if k.strip().startswith('['):
+                            if k.strip().startswith("["):
                                 coords = tuple(int(x) for x in json.loads(k))
                             else:
-                                coords = tuple(int(x.strip()) for x in k.strip('()').split(','))
+                                coords = tuple(
+                                    int(x.strip()) for x in k.strip("()").split(",")
+                                )
                         else:
                             coords = tuple(int(x) for x in k)
-                        a = int(v[0]); b = int(v[1])
-                        add_candidate(coords, (a + 1, b + 1), 'e8root')
-                        add_candidate(tuple(-x for x in coords), (b + 1, a + 1), 'e8root')
+                        a = int(v[0])
+                        b = int(v[1])
+                        add_candidate(coords, (a + 1, b + 1), "e8root")
+                        add_candidate(
+                            tuple(-x for x in coords), (b + 1, a + 1), "e8root"
+                        )
                     except Exception:
                         continue
         except Exception:
@@ -129,12 +139,12 @@ class W33RootwordParser:
             # artifacts/edge_to_e8_root_we6_orbits.json contains float (half-integer) coords; multiply by 2 to get integer vectors
             we6_path = Path("artifacts/edge_to_e8_root_we6_orbits.json")
             if we6_path.exists():
-                we6 = json.loads(we6_path.read_text(encoding='utf-8'))
+                we6 = json.loads(we6_path.read_text(encoding="utf-8"))
                 for k, coords in we6.items():
                     a, b = self._parse_edge_key(k)
                     coords_int = tuple(int(round(float(x) * 2)) for x in coords)
-                    add_candidate(coords_int, (a + 1, b + 1), 'we6')
-                    add_candidate(tuple(-x for x in coords_int), (b + 1, a + 1), 'we6')
+                    add_candidate(coords_int, (a + 1, b + 1), "we6")
+                    add_candidate(tuple(-x for x in coords_int), (b + 1, a + 1), "we6")
         except Exception:
             pass
 
@@ -142,13 +152,15 @@ class W33RootwordParser:
             # artifacts/e8_root_to_edge.json maps string root keys to 0-based edge pairs
             e8r_path = Path("artifacts/e8_root_to_edge.json")
             if e8r_path.exists():
-                e8r = json.loads(e8r_path.read_text(encoding='utf-8'))
+                e8r = json.loads(e8r_path.read_text(encoding="utf-8"))
                 for k, v in e8r.items():
                     try:
-                        coords = tuple(int(x.strip()) for x in k.strip('()').split(','))
+                        coords = tuple(int(x.strip()) for x in k.strip("()").split(","))
                         a, b = int(v[0]), int(v[1])
-                        add_candidate(coords, (a + 1, b + 1), 'e8root_to_edge')
-                        add_candidate(tuple(-x for x in coords), (b + 1, a + 1), 'e8root_to_edge')
+                        add_candidate(coords, (a + 1, b + 1), "e8root_to_edge")
+                        add_candidate(
+                            tuple(-x for x in coords), (b + 1, a + 1), "e8root_to_edge"
+                        )
                     except Exception:
                         continue
         except Exception:
@@ -158,13 +170,13 @@ class W33RootwordParser:
         try:
             archive = Path("artifacts_archive/e8_root_to_w33_edge.json")
             if archive.exists():
-                arc = json.loads(archive.read_text(encoding='utf-8'))
+                arc = json.loads(archive.read_text(encoding="utf-8"))
                 for s, v in arc.items():
-                    coords = tuple(int(x.strip()) for x in s.strip('[]').split(','))
+                    coords = tuple(int(x.strip()) for x in s.strip("[]").split(","))
                     a = int(v[0])
                     b = int(v[1])
-                    add_candidate(coords, (a, b), 'archive')
-                    add_candidate(tuple(-x for x in coords), (b, a), 'archive')
+                    add_candidate(coords, (a, b), "archive")
+                    add_candidate(tuple(-x for x in coords), (b, a), "archive")
         except Exception:
             pass
 
@@ -176,7 +188,7 @@ class W33RootwordParser:
         cleaned: Dict[Tuple[int, ...], List[Tuple[Tuple[int, int], str]]] = {}
         for vec, entries in vec_to_edges.items():
             seen = []
-            for (edge, tag) in entries:
+            for edge, tag in entries:
                 if valid_edge(edge) and (edge, tag) not in seen:
                     seen.append((edge, tag))
             if seen:
@@ -209,7 +221,7 @@ class W33RootwordParser:
         }
         recorded_tags: Dict[Tuple[int, int], str] = {}
         for vec, entries in self.vec_to_edges_map.items():
-            for (edge, tag) in entries:
+            for edge, tag in entries:
                 a, b = edge
                 if not (1 <= a <= 40 and 1 <= b <= 40):
                     continue
@@ -245,9 +257,13 @@ class W33RootwordParser:
                         inner = part[1:-1]
                     else:
                         inner = part
-                    a,b = [int(x.strip()) for x in inner.split(",")]
-                    pp.append((a,b))
-                self.n12_info[nid] = {"slope": slope, "H_vertices": set(hv), "phase_points": pp}
+                    a, b = [int(x.strip()) for x in inner.split(",")]
+                    pp.append((a, b))
+                self.n12_info[nid] = {
+                    "slope": slope,
+                    "H_vertices": set(hv),
+                    "phase_points": pp,
+                }
 
     # ------------------------ core parsing ------------------------
     def _negate_vec(self, v: Int8Vec) -> Int8Vec:
@@ -274,23 +290,23 @@ class W33RootwordParser:
             nrt = self._negate_vec(rt)
             cands = []
             # add direct candidates and candidates from negated vector
-            if hasattr(self, 'vec_to_edges_map'):
+            if hasattr(self, "vec_to_edges_map"):
                 cands.extend(self.vec_to_edges_map.get(rt, []))
                 cands.extend(self.vec_to_edges_map.get(nrt, []))
             # fall back to single-mapping if available (wrap as tagged pair)
-            if not cands and rt in getattr(self, 'vec_to_edge', {}):
+            if not cands and rt in getattr(self, "vec_to_edge", {}):
                 e = self.vec_to_edge[rt]
-                cands.append((e, 'fallback'))
-            if not cands and nrt in getattr(self, 'vec_to_edge', {}):
+                cands.append((e, "fallback"))
+            if not cands and nrt in getattr(self, "vec_to_edge", {}):
                 e = self.vec_to_edge[nrt]
-                cands.append(((e[1], e[0]), 'fallback'))
+                cands.append(((e[1], e[0]), "fallback"))
 
             # Scaled fallbacks: sometimes coordinates are half/doubled in other artifacts
             if not cands:
                 try:
                     scaled_up = tuple(int(round(2 * x)) for x in rt)
                     scaled_up_neg = tuple(-x for x in scaled_up)
-                    if getattr(self, 'vec_to_edges_map', None):
+                    if getattr(self, "vec_to_edges_map", None):
                         cands.extend(self.vec_to_edges_map.get(scaled_up, []))
                         cands.extend(self.vec_to_edges_map.get(scaled_up_neg, []))
                     # try scale down (x/2) if divisible
@@ -335,10 +351,10 @@ class W33RootwordParser:
 
         # choose the solution that maximizes use of canonical-bijection edges (then raw matches), tie-broken by lexicographic canonical cycle
         def canon_count(sol):
-            return sum(1 for (_, tag) in sol if tag == 'canon')
+            return sum(1 for (_, tag) in sol if tag == "canon")
 
         def raw_count(sol):
-            return sum(1 for (_, tag) in sol if tag == 'raw')
+            return sum(1 for (_, tag) in sol if tag == "raw")
 
         best_sol = None
         best_key = None  # tuple (canon_count, raw_count, canonical_cycle)
@@ -356,7 +372,16 @@ class W33RootwordParser:
             ccount = canon_count(sol)
             rcount = raw_count(sol)
             # prefer higher canonical count, then more raw matches, then lexicographically smallest canonical cycle
-            if best_key is None or ccount > best_key[0] or (ccount == best_key[0] and rcount > best_key[1]) or (ccount == best_key[0] and rcount == best_key[1] and can < best_key[2]):
+            if (
+                best_key is None
+                or ccount > best_key[0]
+                or (ccount == best_key[0] and rcount > best_key[1])
+                or (
+                    ccount == best_key[0]
+                    and rcount == best_key[1]
+                    and can < best_key[2]
+                )
+            ):
                 best_key = (ccount, rcount, can)
                 best_sol = sol
 
@@ -455,21 +480,56 @@ class W33RootwordParser:
         small = min(n1, n2)
         other = n2 if small == n1 else n1
         # find earliest cycle vertex index that belongs to the small N12 coset
-        idx_small = next((i for i, cv in enumerate(cycle_vertices) if cv in self.n12_info[small]["H_vertices"]), None)
+        idx_small = next(
+            (
+                i
+                for i, cv in enumerate(cycle_vertices)
+                if cv in self.n12_info[small]["H_vertices"]
+            ),
+            None,
+        )
         if idx_small is None:
             # fallback: choose the first occurrence of any vertex that is in either coset
-            idx_small = next((i for i, cv in enumerate(cycle_vertices) if cv in (self.n12_info[n1]["H_vertices"] | self.n12_info[n2]["H_vertices"])), 0)
+            idx_small = next(
+                (
+                    i
+                    for i, cv in enumerate(cycle_vertices)
+                    if cv
+                    in (
+                        self.n12_info[n1]["H_vertices"]
+                        | self.n12_info[n2]["H_vertices"]
+                    )
+                ),
+                0,
+            )
         # rotate so that vertex is first
         n = len(cycle_vertices)
         rotated = [cycle_vertices[(i + idx_small) % n] for i in range(n)]
 
         # determine canonical u,v order by which coset appears first after rotation
         # find earliest index where any rotated vertex belongs to small or other coset
-        pos_small = next((i for i, cv in enumerate(rotated) if cv in self.n12_info[small]["H_vertices"]), None)
-        pos_other = next((i for i, cv in enumerate(rotated) if cv in self.n12_info[other]["H_vertices"]), None)
+        pos_small = next(
+            (
+                i
+                for i, cv in enumerate(rotated)
+                if cv in self.n12_info[small]["H_vertices"]
+            ),
+            None,
+        )
+        pos_other = next(
+            (
+                i
+                for i, cv in enumerate(rotated)
+                if cv in self.n12_info[other]["H_vertices"]
+            ),
+            None,
+        )
         if pos_small is None or pos_other is None:
             # if one of them didn't appear, break ties by numeric order
-            u_can, v_can = (tuple(self.slope_to_uv[str(self.n12_info[small]["slope"])]), tuple(self.slope_to_uv[str(self.n12_info[other]["slope"])]))
+            u_can, v_can = (
+                tuple(self.slope_to_uv[str(self.n12_info[small]["slope"])]),
+                tuple(self.slope_to_uv[str(self.n12_info[other]["slope"])]),
+            )
         else:
             if pos_small <= pos_other:
                 u_can = tuple(self.slope_to_uv[str(self.n12_info[small]["slope"])])
@@ -482,8 +542,8 @@ class W33RootwordParser:
         k_canonical = (-det_mod3(u_can, v_can)) % 3
 
         # compute basepoint p as intersection of the two N12 line phase-point sets
-        pp1 = set(self.n12_info[n1].get('phase_points', []))
-        pp2 = set(self.n12_info[n2].get('phase_points', []))
+        pp1 = set(self.n12_info[n1].get("phase_points", []))
+        pp2 = set(self.n12_info[n2].get("phase_points", []))
         inter = pp1 & pp2
         p = tuple(next(iter(inter))) if len(inter) == 1 else None
 
@@ -512,7 +572,7 @@ if __name__ == "__main__":
     p = W33RootwordParser()
     if len(sys.argv) > 1:
         path = Path(sys.argv[1])
-        rw = json.loads(path.read_text(encoding='utf-8'))
+        rw = json.loads(path.read_text(encoding="utf-8"))
         print(p.parse(rw))
     else:
         print("W33RootwordParser ready. Use parse(rootword) with a list of 8 roots.")

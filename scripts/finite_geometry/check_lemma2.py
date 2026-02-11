@@ -16,6 +16,7 @@ mod = runpy.run_path(str(repo / "THEORY_PART_CXXV_D5_VERIFICATION.py"))
 build_W33_symplectic = mod["build_W33_symplectic"]
 import io
 import os
+
 # suppress unicode-printing issues on Windows consoles by silencing stdout during build
 import sys
 

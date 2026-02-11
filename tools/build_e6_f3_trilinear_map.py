@@ -30,23 +30,28 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import sys
+
 # ensure project root on sys.path so `src.*` imports work when script is executed directly from tools/
 sys.path.insert(0, str(ROOT))
 
-from src.e6_f3_trilinear import HeisenbergLabel
-from src.e6_f3_trilinear import classify_triad_geometry
-from src.e6_f3_trilinear import ordered_nonzero_entries_count
-from src.e6_f3_trilinear import sign_to_f3_coeff
-from src.e6_f3_trilinear import sorted_u_line_for_triad
-from src.e6_f3_trilinear import triad_key
-from src.e6_f3_trilinear import z_profile_over_u_line
+from src.e6_f3_trilinear import (
+    HeisenbergLabel,
+    classify_triad_geometry,
+    ordered_nonzero_entries_count,
+    sign_to_f3_coeff,
+    sorted_u_line_for_triad,
+    triad_key,
+    z_profile_over_u_line,
+)
 
 
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _extract_signed_triples(cubic: dict[str, Any]) -> list[tuple[tuple[int, int, int], int]]:
+def _extract_signed_triples(
+    cubic: dict[str, Any]
+) -> list[tuple[tuple[int, int, int], int]]:
     sol = cubic.get("solution")
     if isinstance(sol, dict):
         d_triples = sol.get("d_triples")
@@ -90,18 +95,32 @@ def _build_markdown(report: dict[str, Any]) -> str:
     lines: list[str] = []
     lines.append("# E6 F3 trilinear map")
     lines.append("")
-    lines.append("- Nonzero unordered entries: `{}`".format(report["counts"]["nonzero_unordered"]))
-    lines.append("- Nonzero ordered entries: `{}`".format(report["counts"]["nonzero_ordered"]))
+    lines.append(
+        "- Nonzero unordered entries: `{}`".format(
+            report["counts"]["nonzero_unordered"]
+        )
+    )
+    lines.append(
+        "- Nonzero ordered entries: `{}`".format(report["counts"]["nonzero_ordered"])
+    )
     lines.append("- Geometry histogram: `{}`".format(report["counts"]["geometry"]))
     lines.append("- Coeff histogram (F3): `{}`".format(report["counts"]["coeff_f3"]))
     lines.append("")
     lines.append("## Affine line slices")
-    lines.append("- Distinct u-lines: `{}`".format(report["counts"]["distinct_affine_u_lines"]))
-    lines.append("- Per-line triad multiplicities: `{}`".format(report["counts"]["affine_u_line_sizes"]))
+    lines.append(
+        "- Distinct u-lines: `{}`".format(report["counts"]["distinct_affine_u_lines"])
+    )
+    lines.append(
+        "- Per-line triad multiplicities: `{}`".format(
+            report["counts"]["affine_u_line_sizes"]
+        )
+    )
     lines.append("")
     lines.append("## Notes")
     lines.append("- `coeff_f3=1` means +1; `coeff_f3=2` means -1 in F3.")
-    lines.append("- Triads are stored as sorted E6 ids; tensor is symmetric in indices.")
+    lines.append(
+        "- Triads are stored as sorted E6 ids; tensor is symmetric in indices."
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -226,7 +245,9 @@ def main() -> None:
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_json.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+    args.out_json.write_text(
+        json.dumps(report, indent=2, sort_keys=True), encoding="utf-8"
+    )
     args.out_md.write_text(_build_markdown(report), encoding="utf-8")
 
     print(f"Wrote {args.out_json}")

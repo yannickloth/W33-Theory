@@ -7,11 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from src.e6_f3_trilinear import HeisenbergLabel
-from src.e6_f3_trilinear import classify_triad_geometry
-from src.e6_f3_trilinear import ordered_nonzero_entries_count
-from src.e6_f3_trilinear import sign_to_f3_coeff
-from src.e6_f3_trilinear import triad_key
+from src.e6_f3_trilinear import (
+    HeisenbergLabel,
+    classify_triad_geometry,
+    ordered_nonzero_entries_count,
+    sign_to_f3_coeff,
+    triad_key,
+)
 
 
 def test_sign_to_f3_coeff():

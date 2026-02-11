@@ -32,7 +32,8 @@ print("\n" + "=" * 80)
 print("PART 1: THE FOUR NORMED DIVISION ALGEBRAS")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE ONLY NORMED DIVISION ALGEBRAS
 =================================
 
@@ -52,7 +53,8 @@ W33 CONNECTION:
   - |K4| = 4 = dim(ℍ)
   - 8 = dim(𝕆) = 2 × |K4|
   - 15 = dimension before adding base
-""")
+"""
+)
 
 # Division algebra dimensions
 div_algebras = {"ℝ": 1, "ℂ": 2, "ℍ": 4, "𝕆": 8}
@@ -77,7 +79,8 @@ print("\n" + "=" * 80)
 print("PART 2: THE CAYLEY-DICKSON CONSTRUCTION")
 print("=" * 80)
 
-print("""
+print(
+    """
 BUILDING ALGEBRAS BY DOUBLING
 =============================
 
@@ -101,7 +104,8 @@ W33 INSIGHT:
   But 16 also appears in W33:
   40 = 16 + 24 = 2⁴ + 24
   Where 24 = dim(SU(5)) = Leech lattice connections!
-""")
+"""
+)
 
 # Cayley-Dickson sequence
 print(f"Cayley-Dickson algebras:")
@@ -129,7 +133,8 @@ print("\n" + "=" * 80)
 print("PART 3: THE EXCEPTIONAL JORDAN ALGEBRA")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE EXCEPTIONAL JORDAN ALGEBRA J₃(𝕆)
 ====================================
 
@@ -155,7 +160,8 @@ W33 CONNECTION:
 
   What are the extra 13?
   13 = points at infinity in projective space!
-""")
+"""
+)
 
 # Dimensions
 dim_J3O = 27
@@ -174,7 +180,8 @@ print("\n" + "=" * 80)
 print("PART 4: THE FREUDENTHAL-TITS MAGIC SQUARE")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE MAGIC SQUARE OF LIE ALGEBRAS
 ================================
 
@@ -203,7 +210,8 @@ KEY DIMENSIONS IN W33:
   • 133 = dim(E₇) = 40 + 81 + 12 ← W33!
   • 78 = dim(E₆)
   • 248 = dim(E₈) = 2 × 121 + 6 = 2(40+81) + 6
-""")
+"""
+)
 
 # Magic square dimensions
 magic_square = [[3, 8, 21, 52], [8, 16, 35, 78], [21, 35, 66, 133], [52, 78, 133, 248]]
@@ -225,7 +233,8 @@ print("\n" + "=" * 80)
 print("PART 5: TRIALITY AND THE OCTONIONS")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE PRINCIPLE OF TRIALITY
 =========================
 
@@ -250,7 +259,8 @@ W33 CONNECTION:
   24 = dim(SU(5))!
 
   Also: 8 × 3 + 16 = 40 = |W(3,3)|
-""")
+"""
+)
 
 print(f"\nTriality structure:")
 print(f"  8_v ≅ 8_s ≅ 8_c (only in SO(8))")
@@ -265,7 +275,8 @@ print("\n" + "=" * 80)
 print("PART 6: THE UNIVERSAL ALGEBRA CONJECTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    THE UNIVERSAL ALGEBRA CONJECTURE                          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -293,7 +304,8 @@ print("""
 ║     - All exceptional groups appear!                                         ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 7: THE OCTONION MULTIPLICATION TABLE
@@ -303,7 +315,8 @@ print("\n" + "=" * 80)
 print("PART 7: THE OCTONION MULTIPLICATION TABLE")
 print("=" * 80)
 
-print("""
+print(
+    """
 OCTONION STRUCTURE
 ==================
 
@@ -325,7 +338,8 @@ W33 CONNECTION:
   The pattern continues:
     Fano: 7 points (dim 2, base 2)
     W33: 40 points (dim 3, base 3)
-""")
+"""
+)
 
 # Octonion multiplication (Fano plane structure)
 fano_lines = [
@@ -355,7 +369,8 @@ print("\n" + "=" * 80)
 print("PART 8: THE UNIVERSAL GENERATOR")
 print("=" * 80)
 
-print("""
+print(
+    """
 W33 AS THE UNIVERSAL GENERATOR
 ==============================
 
@@ -376,7 +391,8 @@ Level ∞: lim W(n,3) as n→∞
 THE UNIVERSAL PROPERTY:
   For any finite algebra A, there exists a quotient
   W(n,3)/G → A for some n and group G.
-""")
+"""
+)
 
 print(f"\nW-hierarchy algebra generation:")
 levels = [
@@ -397,7 +413,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE 3-4-5 PYTHAGOREAN STRUCTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE PYTHAGOREAN TRIPLE IN W33
 =============================
 
@@ -429,7 +446,8 @@ PROFOUND:
   ANSWER: The exceptional algebra g₂!
 
   dim(G₂) = 14 = 3 + 4 + 7 = 3 + 4 + (3+4)
-""")
+"""
+)
 
 print(f"\nPythagorean structure:")
 print(f"  3² + 4² = 9 + 16 = 25 = 5²")
@@ -452,7 +470,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE UNIVERSAL ALGEBRA FORMULA")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    THE UNIVERSAL ALGEBRA FORMULA                             ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -479,7 +498,8 @@ print("""
 ║     Algebra = GF(3)^matter ⊗ K4^gauge + corrections                          ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # Test the decomposition
 algebras_test = [
@@ -506,7 +526,8 @@ print("\n" + "=" * 80)
 print("PART 11: THE MASTER ALGEBRAIC IDENTITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    T H E   M A S T E R   I D E N T I T Y                     ║
@@ -528,7 +549,8 @@ print("""
 ║    W33 × W33 → All exceptional mathematics                                   ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # E8 decomposition
 print(f"\nE₈ from W33:")
@@ -550,7 +572,8 @@ print("\n" + "=" * 80)
 print("PART 12: THE UNIVERSAL COVER OF ALL ALGEBRA")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE UNIVERSAL ALGEBRAIC STRUCTURE
 =================================
 
@@ -573,7 +596,8 @@ CONSEQUENCES:
   • All of mathematics emerges from {0, 1, 2} × {1, a, b, ab}
   • The "atoms" of algebra are GF(3) and K4
   • Their combination generates EVERYTHING
-""")
+"""
+)
 
 print(f"\nThe atoms of algebra:")
 print(f"  GF(3) = {{0, 1, 2}}")
@@ -589,7 +613,8 @@ print("\n" + "=" * 80)
 print("CONCLUSION: THE UNIVERSAL ALGEBRA")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    W33: THE UNIVERSAL ALGEBRA                                ║
@@ -621,7 +646,8 @@ print("""
 ║  W33 IS THE UNIVERSAL ALGEBRAIC OBJECT.                                      ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("ALL ALGEBRA = GF(3) ⊗ K4 = W(3,3)")

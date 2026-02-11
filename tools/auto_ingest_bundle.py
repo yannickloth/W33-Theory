@@ -29,7 +29,9 @@ ART = ROOT / "artifacts"
 
 def run_cmd(cmd: List[str], cwd: Optional[Path] = None) -> int:
     print("Running:", " ".join(cmd))
-    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=cwd)
+    proc = subprocess.run(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=cwd
+    )
     if proc.stdout:
         print(proc.stdout)
     if proc.stderr:
@@ -67,7 +69,10 @@ def has_cubic_csvs(bundle_dir: Path) -> bool:
     for p in bundle_dir.rglob("*"):
         if p.is_file():
             name = p.name.lower()
-            if any(x in name for x in ["h27", "schlafli", "trihedron", "tritangent", "missing_9"]):
+            if any(
+                x in name
+                for x in ["h27", "schlafli", "trihedron", "tritangent", "missing_9"]
+            ):
                 return True
     return False
 
@@ -93,7 +98,9 @@ def process_bundle(
     coupling_jsons = find_coupling_jsons(bundle_dir)
     if not coupling_jsons:
         report["note"] = "No coupling JSON found in bundle"
-        (out_dir / "ingest_status.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        (out_dir / "ingest_status.json").write_text(
+            json.dumps(report, indent=2), encoding="utf-8"
+        )
         print("No coupling JSON found; nothing to do.")
         return report
 
@@ -103,8 +110,21 @@ def process_bundle(
         out_json = out_dir / f"{short}_backbone_coset_map.json"
         out_md = out_dir / f"{short}_backbone_coset_map.md"
 
-        rc = run_cmd([sys.executable, "tools/toe_backbone_coset_coupling_map.py", "--in-json", str(cj), "--out-json", str(out_json), "--out-md", str(out_md)])
-        report["actions"].append({"step": "initial_decompose", "file": str(cj), "rc": int(rc)})
+        rc = run_cmd(
+            [
+                sys.executable,
+                "tools/toe_backbone_coset_coupling_map.py",
+                "--in-json",
+                str(cj),
+                "--out-json",
+                str(out_json),
+                "--out-md",
+                str(out_md),
+            ]
+        )
+        report["actions"].append(
+            {"step": "initial_decompose", "file": str(cj), "rc": int(rc)}
+        )
 
         mean_rel = measure_mean_rel(out_json)
         report["initial_mean_rel"] = mean_rel
@@ -115,7 +135,9 @@ def process_bundle(
 
         if mean_rel <= threshold:
             report["status"] = "ok"
-            report["note"] = f"mean_rel_resid {mean_rel} <= threshold {threshold}: no repair required"
+            report["note"] = (
+                f"mean_rel_resid {mean_rel} <= threshold {threshold}: no repair required"
+            )
             continue
 
         # Attempt fast repair: if bundle contains e6_basis_export, run toe_root_operator_dictionary with export dir
@@ -129,35 +151,105 @@ def process_bundle(
         if export_dir is not None:
             report["found_export_dir"] = str(export_dir)
             print("Attempting fast repair: regenerating root dict from bundle export")
-            rc2 = run_cmd([sys.executable, "tools/toe_root_operator_dictionary.py", "--export-dir", str(export_dir)])
-            report["actions"].append({"step": "rebuild_root_dict_from_export", "export_dir": str(export_dir), "rc": int(rc2)})
+            rc2 = run_cmd(
+                [
+                    sys.executable,
+                    "tools/toe_root_operator_dictionary.py",
+                    "--export-dir",
+                    str(export_dir),
+                ]
+            )
+            report["actions"].append(
+                {
+                    "step": "rebuild_root_dict_from_export",
+                    "export_dir": str(export_dir),
+                    "rc": int(rc2),
+                }
+            )
             # Re-run decomposition
-            rc3 = run_cmd([sys.executable, "tools/toe_backbone_coset_coupling_map.py", "--in-json", str(cj), "--out-json", str(out_json), "--out-md", str(out_md)])
+            rc3 = run_cmd(
+                [
+                    sys.executable,
+                    "tools/toe_backbone_coset_coupling_map.py",
+                    "--in-json",
+                    str(cj),
+                    "--out-json",
+                    str(out_json),
+                    "--out-md",
+                    str(out_md),
+                ]
+            )
             report["actions"].append({"step": "post_rebuild_decompose", "rc": int(rc3)})
             mean_rel_after = measure_mean_rel(out_json)
             report["mean_rel_after_rebuild"] = mean_rel_after
             print(f"Mean rel_resid after rebuild: {mean_rel_after}")
             if mean_rel_after is not None and mean_rel_after <= threshold:
                 report["status"] = "repaired"
-                report["note"] = f"mean_rel_resid improved to {mean_rel_after} <= threshold"
+                report["note"] = (
+                    f"mean_rel_resid improved to {mean_rel_after} <= threshold"
+                )
                 continue
 
         # If still bad and extended_repair requested, run diagnostic seed sweep (works for v3p52 case)
         if extended_repair and "v3p52" in bundle_name.lower():
             print("Running seed sweep diagnostics (extended repair)")
-            rc4 = run_cmd([sys.executable, "tools/diagnose_v3p52_root_recovery.py", "--seeds", "0", "1", "2", "3", "4", "--export-dir", str(export_dir) if export_dir is not None else ""]) 
+            rc4 = run_cmd(
+                [
+                    sys.executable,
+                    "tools/diagnose_v3p52_root_recovery.py",
+                    "--seeds",
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "--export-dir",
+                    str(export_dir) if export_dir is not None else "",
+                ]
+            )
             report["actions"].append({"step": "diagnose_seed_sweep", "rc": int(rc4)})
             diag = ART / "toe_root_operator_diagnostics_v3p52.json"
             if diag.exists():
                 dj = json.loads(diag.read_text(encoding="utf-8"))
-                best = min((r for r in dj.get("results", []) if r.get("mean_rel_resid") is not None), key=lambda x: float(x["mean_rel_resid"]))
+                best = min(
+                    (
+                        r
+                        for r in dj.get("results", [])
+                        if r.get("mean_rel_resid") is not None
+                    ),
+                    key=lambda x: float(x["mean_rel_resid"]),
+                )
                 report["diagnose_best"] = best
                 # rebuild root dict with best seed
                 seed = int(best["seed"])
-                rc5 = run_cmd([sys.executable, "tools/toe_root_operator_dictionary.py", "--seed", str(seed), "--export-dir", str(export_dir) if export_dir is not None else ""]) 
-                report["actions"].append({"step": "rebuild_with_best_seed", "seed": seed, "rc": int(rc5)})
-                rc6 = run_cmd([sys.executable, "tools/toe_backbone_coset_coupling_map.py", "--in-json", str(cj), "--out-json", str(out_json), "--out-md", str(out_md)])
-                report["actions"].append({"step": "post_seed_rebuild_decompose", "rc": int(rc6)})
+                rc5 = run_cmd(
+                    [
+                        sys.executable,
+                        "tools/toe_root_operator_dictionary.py",
+                        "--seed",
+                        str(seed),
+                        "--export-dir",
+                        str(export_dir) if export_dir is not None else "",
+                    ]
+                )
+                report["actions"].append(
+                    {"step": "rebuild_with_best_seed", "seed": seed, "rc": int(rc5)}
+                )
+                rc6 = run_cmd(
+                    [
+                        sys.executable,
+                        "tools/toe_backbone_coset_coupling_map.py",
+                        "--in-json",
+                        str(cj),
+                        "--out-json",
+                        str(out_json),
+                        "--out-md",
+                        str(out_md),
+                    ]
+                )
+                report["actions"].append(
+                    {"step": "post_seed_rebuild_decompose", "rc": int(rc6)}
+                )
                 mean_rel_after2 = measure_mean_rel(out_json)
                 report["mean_rel_after_seed_rebuild"] = mean_rel_after2
                 print(f"Mean rel_resid after best-seed rebuild: {mean_rel_after2}")
@@ -167,13 +259,41 @@ def process_bundle(
 
         # Try global assignment repair if extended_repair is enabled
         if extended_repair:
-            print("Attempting global assignment repair on output_root vectors (extended_repair)")
+            print(
+                "Attempting global assignment repair on output_root vectors (extended_repair)"
+            )
             fixed_couplings = out_dir / f"{short}_couplings_global_assigned.json"
-            rc_gm = run_cmd([sys.executable, "tools/global_match_repair.py", "--couplings", str(cj), "--out", str(fixed_couplings), "--root-npy", str(ART / "toe_root_operator_dictionary.npy")])
-            report["actions"].append({"step": "global_match", "rc": int(rc_gm), "out": str(fixed_couplings)})
+            rc_gm = run_cmd(
+                [
+                    sys.executable,
+                    "tools/global_match_repair.py",
+                    "--couplings",
+                    str(cj),
+                    "--out",
+                    str(fixed_couplings),
+                    "--root-npy",
+                    str(ART / "toe_root_operator_dictionary.npy"),
+                ]
+            )
+            report["actions"].append(
+                {"step": "global_match", "rc": int(rc_gm), "out": str(fixed_couplings)}
+            )
             # Re-run decomposition using fixed couplings file
-            rc_gm2 = run_cmd([sys.executable, "tools/toe_backbone_coset_coupling_map.py", "--in-json", str(fixed_couplings), "--out-json", str(out_json), "--out-md", str(out_md)])
-            report["actions"].append({"step": "post_global_match_decompose", "rc": int(rc_gm2)})
+            rc_gm2 = run_cmd(
+                [
+                    sys.executable,
+                    "tools/toe_backbone_coset_coupling_map.py",
+                    "--in-json",
+                    str(fixed_couplings),
+                    "--out-json",
+                    str(out_json),
+                    "--out-md",
+                    str(out_md),
+                ]
+            )
+            report["actions"].append(
+                {"step": "post_global_match_decompose", "rc": int(rc_gm2)}
+            )
             mean_rel_after3 = measure_mean_rel(out_json)
             report["mean_rel_after_global_match"] = mean_rel_after3
             print(f"Mean rel_resid after global match: {mean_rel_after3}")
@@ -183,17 +303,28 @@ def process_bundle(
 
         # If still unresolved, mark as needs_manual
         report["status"] = "needs_manual_revision"
-        report["note"] = f"mean_rel_resid {mean_rel} > threshold {threshold} after automatic attempts"
+        report["note"] = (
+            f"mean_rel_resid {mean_rel} > threshold {threshold} after automatic attempts"
+        )
 
     # If bundle contains cubic CSVs, run trihedron tool
     if has_cubic_csvs(bundle_dir):
         tri_out = out_dir / "trihedron"
         tri_out.mkdir(parents=True, exist_ok=True)
-        args = [sys.executable, "tools/build_trihedron_tritangent_bundle.py", "--bundle-dir", str(bundle_dir), "--out-dir", str(tri_out)]
+        args = [
+            sys.executable,
+            "tools/build_trihedron_tritangent_bundle.py",
+            "--bundle-dir",
+            str(bundle_dir),
+            "--out-dir",
+            str(tri_out),
+        ]
         if no_we6:
             args.append("--no-we6")
         rc_tri = run_cmd(args)
-        report["actions"].append({"step": "trihedron_build", "rc": int(rc_tri), "out_dir": str(tri_out)})
+        report["actions"].append(
+            {"step": "trihedron_build", "rc": int(rc_tri), "out_dir": str(tri_out)}
+        )
 
         # If trihedron output contains missing planes, attempt to reconstruct them
         try:
@@ -202,14 +333,29 @@ def process_bundle(
                 tj = json.loads(tri_json.read_text(encoding="utf-8"))
                 missing_flag = any(p.get("missing") for p in tj.get("planes", []))
                 if missing_flag:
-                    print("Detected missing tritangent planes; attempting reconstruct via CP-SAT solver")
-                    rc_solver = run_cmd([sys.executable, "tools/solve_missing_tritangents.py", "--bundle-dir", str(bundle_dir), "--trihedron-dir", str(tri_out)])
-                    report["actions"].append({"step": "solve_missing_tritangents", "rc": int(rc_solver)})
+                    print(
+                        "Detected missing tritangent planes; attempting reconstruct via CP-SAT solver"
+                    )
+                    rc_solver = run_cmd(
+                        [
+                            sys.executable,
+                            "tools/solve_missing_tritangents.py",
+                            "--bundle-dir",
+                            str(bundle_dir),
+                            "--trihedron-dir",
+                            str(tri_out),
+                        ]
+                    )
+                    report["actions"].append(
+                        {"step": "solve_missing_tritangents", "rc": int(rc_solver)}
+                    )
         except Exception as e:
             print("Warning: failed to check/solve missing tritangent planes:", e)
 
     # Write report files
-    (out_dir / "ingest_status.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (out_dir / "ingest_status.json").write_text(
+        json.dumps(report, indent=2), encoding="utf-8"
+    )
     md_lines = [f"# Auto-ingest report: {bundle_name}", ""]
     md_lines.append(f"- initial_mean_rel: `{report.get('initial_mean_rel')}`")
     md_lines.append(f"- status: `{report.get('status')}`")
@@ -222,9 +368,26 @@ def process_bundle(
     repo_reports.mkdir(parents=True, exist_ok=True)
     repo_md = repo_reports / f"{bundle_name}_ingest_report.md"
     repo_status = repo_reports / f"{bundle_name}_ingest_status.json"
-    repo_md_lines = [f"# Auto-ingest summary: {bundle_name}", "", f"- initial_mean_rel: `{report.get('initial_mean_rel')}`", f"- status: `{report.get('status')}`", "", f"- artifact_dir: `{out_dir}`"]
+    repo_md_lines = [
+        f"# Auto-ingest summary: {bundle_name}",
+        "",
+        f"- initial_mean_rel: `{report.get('initial_mean_rel')}`",
+        f"- status: `{report.get('status')}`",
+        "",
+        f"- artifact_dir: `{out_dir}`",
+    ]
     repo_md.write_text("\n".join(repo_md_lines), encoding="utf-8")
-    repo_status.write_text(json.dumps({"bundle": str(bundle_dir), "status": report.get('status'), "initial_mean_rel": report.get('initial_mean_rel')}, indent=2), encoding="utf-8")
+    repo_status.write_text(
+        json.dumps(
+            {
+                "bundle": str(bundle_dir),
+                "status": report.get("status"),
+                "initial_mean_rel": report.get("initial_mean_rel"),
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
     # Commit & push if requested
     if push and not dry_run:
@@ -236,7 +399,9 @@ def process_bundle(
         # Also add any updated toe_root_operator_dictionary files
         run_cmd(["git", "add", str(ART / "toe_root_operator_dictionary.json")])
         run_cmd(["git", "add", str(ART / "toe_root_operator_dictionary.npy")])
-        commit_msg = f"Auto-ingest: processed {bundle_name} (status={report.get('status')})"
+        commit_msg = (
+            f"Auto-ingest: processed {bundle_name} (status={report.get('status')})"
+        )
         rc_commit = run_cmd(["git", "commit", "-m", commit_msg])
         report["git_commit_rc"] = int(rc_commit)
         if rc_commit == 0:
@@ -244,10 +409,23 @@ def process_bundle(
             report["git_push_rc"] = int(rc_push)
             # Try to create PR via gh CLI (best effort)
             try:
-                rc_pr = run_cmd(["gh", "pr", "create", "--title", f"Auto repair: {bundle_name}", "--body", str(out_dir / "ingest_report.md")])
+                rc_pr = run_cmd(
+                    [
+                        "gh",
+                        "pr",
+                        "create",
+                        "--title",
+                        f"Auto repair: {bundle_name}",
+                        "--body",
+                        str(out_dir / "ingest_report.md"),
+                    ]
+                )
                 report["gh_pr_rc"] = int(rc_pr)
             except Exception as e:
-                print("gh CLI not available or failed to create PR; you can create a PR from branch:", branch)
+                print(
+                    "gh CLI not available or failed to create PR; you can create a PR from branch:",
+                    branch,
+                )
                 report["gh_pr_rc"] = None
         else:
             print("No changes to commit, skipping push")

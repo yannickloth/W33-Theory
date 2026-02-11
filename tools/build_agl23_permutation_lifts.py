@@ -18,7 +18,9 @@ from typing import Dict, Tuple
 import numpy as np
 
 
-def mat_mul_mod3(m2: Tuple[int, int, int, int], m1: Tuple[int, int, int, int]) -> Tuple[int, int, int, int]:
+def mat_mul_mod3(
+    m2: Tuple[int, int, int, int], m1: Tuple[int, int, int, int]
+) -> Tuple[int, int, int, int]:
     a2, b2, c2, d2 = m2
     a1, b1, c1, d1 = m1
     a = (a2 * a1 + b2 * c1) % 3
@@ -32,7 +34,9 @@ def load_h27_n12(bundle_dir: Path):
     import csv
 
     hmap = {}
-    with (bundle_dir / "H27_vertices_as_F3_cube_xy_t.csv").open("r", encoding="utf-8") as f:
+    with (bundle_dir / "H27_vertices_as_F3_cube_xy_t.csv").open(
+        "r", encoding="utf-8"
+    ) as f:
         rdr = csv.reader(f)
         hdr = next(rdr)
         for row in rdr:
@@ -45,7 +49,9 @@ def load_h27_n12(bundle_dir: Path):
             hmap[wid] = (x, y, t)
 
     n12 = []
-    with (bundle_dir / "N12_vertices_as_affine_lines.csv").open("r", encoding="utf-8") as f:
+    with (bundle_dir / "N12_vertices_as_affine_lines.csv").open(
+        "r", encoding="utf-8"
+    ) as f:
         rdr = csv.DictReader(f)
         for r in rdr:
             n12.append(int(r["N12_vertex"]))
@@ -53,7 +59,12 @@ def load_h27_n12(bundle_dir: Path):
     return hmap, n12
 
 
-def build_perm40_from_HN(hmap: Dict[int, Tuple[int, int, int]], n12_list: list, perm_H: Dict[str, int], perm_N12: Dict[str, int]):
+def build_perm40_from_HN(
+    hmap: Dict[int, Tuple[int, int, int]],
+    n12_list: list,
+    perm_H: Dict[str, int],
+    perm_N12: Dict[str, int],
+):
     # build full 40-permutation dictionary mapping str->int
     perm = {}
     # list of all 40 vertices: 0, n12_list, and H keys from hmap
@@ -109,7 +120,11 @@ def main():
         permH = g.get("perm_H", {})
         permN = g.get("perm_N12", {})
         perm40 = build_perm40_from_HN(hmap, n12_list, permH, permN)
-        gen_info[name] = {"mat": tuple(g["matrix"]), "perm40": perm40, "unitary": g.get("unitary")}
+        gen_info[name] = {
+            "mat": tuple(g["matrix"]),
+            "perm40": perm40,
+            "unitary": g.get("unitary"),
+        }
 
     # BFS closure on SL(2,3) matrices using S and T generators
     S = gen_info["S"]["mat"]
@@ -132,7 +147,13 @@ def main():
                 new_perm = compose_perm(ginfo["perm40"], perm_base)
                 mat_to_perm[new] = new_perm
                 # compose unitary: Ugen @ U_base
-                Ugen = np.array([[complex(x["re"], x["im"]) for x in row] for row in ginfo["unitary"]], dtype=complex)
+                Ugen = np.array(
+                    [
+                        [complex(x["re"], x["im"]) for x in row]
+                        for row in ginfo["unitary"]
+                    ],
+                    dtype=complex,
+                )
                 mat_to_unitary[new] = Ugen @ mat_to_unitary[base]
                 q.append(new)
 
@@ -144,8 +165,16 @@ def main():
     if not txty_json.exists():
         raise FileNotFoundError(txty_json)
     txj = json.loads(txty_json.read_text(encoding="utf-8"))
-    Tx_perm = [int(txj["Tx"]["perm_40"][str(i)]) for i in range(40)] if isinstance(txj["Tx"]["perm_40"], dict) else txj["Tx"]["perm_40"]
-    Ty_perm = [int(txj["Ty"]["perm_40"][str(i)]) for i in range(40)] if isinstance(txj["Ty"]["perm_40"], dict) else txj["Ty"]["perm_40"]
+    Tx_perm = (
+        [int(txj["Tx"]["perm_40"][str(i)]) for i in range(40)]
+        if isinstance(txj["Tx"]["perm_40"], dict)
+        else txj["Tx"]["perm_40"]
+    )
+    Ty_perm = (
+        [int(txj["Ty"]["perm_40"][str(i)]) for i in range(40)]
+        if isinstance(txj["Ty"]["perm_40"], dict)
+        else txj["Ty"]["perm_40"]
+    )
 
     # build translation powers
     def power_perm(p, k):
@@ -169,12 +198,28 @@ def main():
                 # unitary: D(dx,dy) @ U_mat
                 U_mat = mat_to_unitary[mat]
                 # create serializable unitary
-                U_serial = [[[{"re": float(c.real), "im": float(c.imag)} for c in row] for row in U_mat.tolist()]]
-                entry = {"mat": list(mat), "dx": int(dx), "dy": int(dy), "perm_40": agl_perm}
+                U_serial = [
+                    [
+                        [{"re": float(c.real), "im": float(c.imag)} for c in row]
+                        for row in U_mat.tolist()
+                    ]
+                ]
+                entry = {
+                    "mat": list(mat),
+                    "dx": int(dx),
+                    "dy": int(dy),
+                    "perm_40": agl_perm,
+                }
                 AGL_entries.append(entry)
 
     out_file = out_dir / "AGL23_lifts.json"
-    out_file.write_text(json.dumps({"status": "ok", "entries": AGL_entries, "count": len(AGL_entries)}, indent=2), encoding="utf-8")
+    out_file.write_text(
+        json.dumps(
+            {"status": "ok", "entries": AGL_entries, "count": len(AGL_entries)},
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
     print(f"Wrote {out_file} with {len(AGL_entries)} entries")
 
 

@@ -335,7 +335,8 @@ def main():
         print("\n" + "=" * 70)
         print(" CONCLUSION")
         print("=" * 70)
-        print(f"""
+        print(
+            f"""
   ╔═══════════════════════════════════════════════════════════════════╗
   ║                                                                   ║
   ║   THEOREM: The D₅ root graph with adjacency defined by            ║
@@ -345,13 +346,15 @@ def main():
   ║   with a geometrically meaningful adjacency relation!             ║
   ║                                                                   ║
   ╚═══════════════════════════════════════════════════════════════════╝
-""")
+"""
+        )
     else:
         results["findings"]["correspondence_found"] = False
         print("\n" + "=" * 70)
         print(" CONCLUSION")
         print("=" * 70)
-        print("""
+        print(
+            """
   No simple inner product criterion gives W33.
 
   This means either:
@@ -359,7 +362,8 @@ def main():
   2. The correspondence is numerical coincidence, not structural
 
   Further investigation needed...
-""")
+"""
+        )
 
     # Save results
     with open("PART_CXXV_D5_verification.json", "w") as f:

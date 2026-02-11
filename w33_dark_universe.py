@@ -34,7 +34,8 @@ print("\n" + "=" * 80)
 print("PART 1: THE DARK MATTER PROBLEM")
 print("=" * 80)
 
-print("""
+print(
+    """
 EVIDENCE FOR DARK MATTER
 ========================
 
@@ -67,7 +68,8 @@ WHAT IS IT?
   - Sterile neutrinos
   - Primordial black holes
   - Modified gravity?
-""")
+"""
+)
 
 # Observed fractions
 Omega_DM = 0.27  # Dark matter fraction
@@ -89,7 +91,8 @@ print("\n" + "=" * 80)
 print("PART 2: W33 EXPLANATION FOR DARK MATTER")
 print("=" * 80)
 
-print("""
+print(
+    """
 W33 DARK MATTER HYPOTHESIS
 ==========================
 
@@ -117,7 +120,8 @@ W33 PREDICTION:
   - If 1/6 are "visible" → 15 visible K4s
   - 15 K4s × 8 points = 120 (with overlap)
   - Effective visible points ≈ 6-7
-""")
+"""
+)
 
 # Calculate W33 dark/visible ratio
 n_points = 40
@@ -150,7 +154,8 @@ print("\n" + "=" * 80)
 print("PART 3: DARK MATTER AS TOPOLOGICAL CHARGE")
 print("=" * 80)
 
-print("""
+print(
+    """
 A DEEPER HYPOTHESIS
 ===================
 
@@ -180,7 +185,8 @@ QUANTITATIVE:
 
   Ratio: 81 cycles / 40 points ≈ 2
   But many points are visible, so effective ratio larger!
-""")
+"""
+)
 
 # Calculate mass from cycles vs points
 cycles_per_dark_mass_unit = 81 / (Omega_DM * 100)  # cycles per % of universe
@@ -201,7 +207,8 @@ print("\n" + "=" * 80)
 print("PART 4: DARK ENERGY FROM W33 VACUUM")
 print("=" * 80)
 
-print("""
+print(
+    """
 DARK ENERGY MYSTERY
 ===================
 
@@ -232,7 +239,8 @@ W33 PREDICTION:
 
   If 81 cycles mostly cancel...
   Surviving contribution ∝ imbalance
-""")
+"""
+)
 
 # Model vacuum energy cancellation
 n_cycles = 81
@@ -265,7 +273,8 @@ print("\n" + "=" * 80)
 print("PART 5: THE COSMIC PIE CHART FROM W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 CAN W33 EXPLAIN THE EXACT FRACTIONS?
 =====================================
 
@@ -299,7 +308,8 @@ MAPPING 3: Combined structure
 
   Vacuum (cycles): 81/121 = 67% ≈ Ω_DE!
   Matter (points): 40/121 = 33% ≈ Ω_DM + Ω_b!
-""")
+"""
+)
 
 # Mapping 3 calculation
 total_dof = 40 + 81
@@ -328,7 +338,8 @@ print("\n" + "=" * 80)
 print("PART 6: MATTER-ANTIMATTER ASYMMETRY")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE BARYOGENESIS PROBLEM
 ========================
 
@@ -363,7 +374,8 @@ ESTIMATE:
   Actual asymmetry ~ 10⁻⁹
 
   This requires additional suppression factor.
-""")
+"""
+)
 
 # Calculate expected asymmetry
 n_K4 = 90
@@ -391,7 +403,8 @@ print("\n" + "=" * 80)
 print("PART 7: THE HIERARCHY PROBLEM")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE HIERARCHY PROBLEM
 =====================
 
@@ -425,7 +438,8 @@ W33 SOLUTION?
 
   For 40^N ~ 10^17:
   N = 17 / log10(40) ≈ 17 / 1.6 ≈ 10-11 copies
-""")
+"""
+)
 
 # Calculate required copies
 target_hierarchy = 1e17
@@ -453,7 +467,8 @@ print("\n" + "=" * 80)
 print("PART 8: DARK MATTER DETECTION PREDICTIONS")
 print("=" * 80)
 
-print("""
+print(
+    """
 IF W33 DARK MATTER IS TOPOLOGICAL...
 =====================================
 
@@ -488,7 +503,8 @@ ALTERNATIVE SIGNATURES:
 PREDICTION:
   All direct detection experiments will fail.
   Dark matter will only be seen gravitationally.
-""")
+"""
+)
 
 # Direct detection cross section prediction
 sigma_WIMP_typical = 1e-45  # cm^2, typical WIMP prediction
@@ -507,7 +523,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE DARK SECTOR LAGRANGIAN")
 print("=" * 80)
 
-print("""
+print(
+    """
 FORMAL STRUCTURE
 ================
 
@@ -538,7 +555,8 @@ TOTAL:
   L_total = L_SM + L_dark + L_gravity
 
   This is the complete Theory of Everything!
-""")
+"""
+)
 
 print("\nDark sector structure:")
 print("  81 topological degrees of freedom")
@@ -554,7 +572,8 @@ print("\n" + "=" * 80)
 print("PART 10: SUMMARY - THE DARK UNIVERSE FROM W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                 W33 EXPLANATION OF THE DARK UNIVERSE                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -598,7 +617,8 @@ print("""
 ║  THIS IS NOT A COINCIDENCE!                                                  ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # Final verification
 matter_predicted = 40 / 121

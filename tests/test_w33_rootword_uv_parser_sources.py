@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 from tools.w33_rootword_uv_parser import W33RootwordParser
 
 

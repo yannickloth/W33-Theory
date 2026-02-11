@@ -16,11 +16,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Dict
-import subprocess
-import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SEARCH_ROOT = ROOT / "artifacts" / "more_new_work_extracted"
@@ -54,10 +54,22 @@ def find_coupling_files() -> Dict[str, float]:
     return res
 
 
-def run_auto_ingest(bundle_dir: Path, push: bool = False, extended_repair: bool = False, dry_run: bool = False):
+def run_auto_ingest(
+    bundle_dir: Path,
+    push: bool = False,
+    extended_repair: bool = False,
+    dry_run: bool = False,
+):
     out_dir = ROOT / "artifacts" / "bundles" / bundle_dir.name
     out_dir.mkdir(parents=True, exist_ok=True)
-    cmd = [sys.executable, "tools/auto_ingest_bundle.py", "--bundle-dir", str(bundle_dir), "--out-dir", str(out_dir)]
+    cmd = [
+        sys.executable,
+        "tools/auto_ingest_bundle.py",
+        "--bundle-dir",
+        str(bundle_dir),
+        "--out-dir",
+        str(out_dir),
+    ]
     if push:
         cmd.append("--push")
     if extended_repair:
@@ -65,7 +77,9 @@ def run_auto_ingest(bundle_dir: Path, push: bool = False, extended_repair: bool 
     if dry_run:
         cmd.append("--dry-run")
     print("Triggering auto-ingest for:", bundle_dir)
-    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    proc = subprocess.run(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
     log = {
         "bundle": str(bundle_dir),
         "returncode": proc.returncode,
@@ -99,7 +113,12 @@ def main():
                     # Trigger processing on bundle directory
                     bundle_dir = Path(fpath).parent
                     print("Detected new/updated coupling file:", fpath)
-                    run_auto_ingest(bundle_dir, push=args.push, extended_repair=args.extended_repair, dry_run=args.dry_run)
+                    run_auto_ingest(
+                        bundle_dir,
+                        push=args.push,
+                        extended_repair=args.extended_repair,
+                        dry_run=args.dry_run,
+                    )
                     state[fpath] = mtime
                     save_state(state)
             time.sleep(args.interval)

@@ -97,7 +97,8 @@ def main():
     print(" SECTION 2: THE EXCEPTIONAL ISOMORPHISM")
     print("=" * 70)
 
-    print("""
+    print(
+        """
   THE KEY: There is an exceptional isomorphism of groups!
 
   ╔═══════════════════════════════════════════════════════════════════╗
@@ -118,7 +119,8 @@ def main():
 
   The connection to E₆ is through this GROUP ISOMORPHISM,
   not through any direct correspondence of geometric objects!
-""")
+"""
+    )
 
     # =========================================================================
     # SECTION 3: WHY THE NUMBERS MATCH
@@ -196,7 +198,8 @@ def main():
     print(" SECTION 5: THE REFINED PICTURE")
     print("=" * 70)
 
-    print("""
+    print(
+        """
   ╔═══════════════════════════════════════════════════════════════════╗
   ║                     THE TRUE STRUCTURE                            ║
   ╠═══════════════════════════════════════════════════════════════════╣
@@ -222,7 +225,8 @@ def main():
   ║  connection is through the GROUP, not through geometry!           ║
   ║                                                                   ║
   ╚═══════════════════════════════════════════════════════════════════╝
-""")
+"""
+    )
 
     # =========================================================================
     # SECTION 6: WHAT IS GENUINELY DEEP
@@ -231,7 +235,8 @@ def main():
     print(" SECTION 6: WHAT IS GENUINELY DEEP")
     print("=" * 70)
 
-    print("""
+    print(
+        """
   GENUINE (not coincidental):
 
   1. PSp(4, F₃) ≅ W(E₆)
@@ -265,7 +270,8 @@ def main():
   2. 240 = E₈ root count
      Edge count formula gives 240, E₈ formula gives 240.
      Same number, no known structural reason.
-""")
+"""
+    )
 
     # =========================================================================
     # SECTION 7: THE HONEST CONCLUSION
@@ -274,7 +280,8 @@ def main():
     print(" SECTION 7: THE HONEST CONCLUSION")
     print("=" * 70)
 
-    print("""
+    print(
+        """
   ═══════════════════════════════════════════════════════════════════
   WHAT WE NOW UNDERSTAND:
   ═══════════════════════════════════════════════════════════════════
@@ -307,7 +314,8 @@ def main():
   The investigation continues...
 
   ═══════════════════════════════════════════════════════════════════
-""")
+"""
+    )
 
     return True
 

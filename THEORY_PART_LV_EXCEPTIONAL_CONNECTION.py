@@ -94,7 +94,8 @@ print("\n" + "=" * 70)
 print("SECTION 2: DECODING α⁻¹ = 81 + 56 + 40/1111")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE FORMULA: α⁻¹ = 81 + 56 + 40/1111 = 137.036003600...
 
 Let's identify each term:
@@ -125,7 +126,8 @@ THE DEEP STRUCTURE:
 
 This suggests W33 is the "base" of a tower:
     W33 → E₆ → E₇ → ...?
-""")
+"""
+)
 
 # Verify the arithmetic
 alpha_inv = 81 + 56 + Fraction(40, 1111)
@@ -141,7 +143,8 @@ print("\n" + "=" * 70)
 print("SECTION 3: E₆ ⊂ E₇ BRANCHING RULES")
 print("=" * 70)
 
-print("""
+print(
+    """
 When E₇ breaks down to E₆ × U(1):
 
 The 56 of E₇ decomposes as:
@@ -159,7 +162,8 @@ Connection to W33:
 • Or: 40 = 27 + 12 + 1? (12 is the E₆ dual Coxeter number)
 
 Check: 2 × 27 + 2 × 1 = 56 ✓
-""")
+"""
+)
 
 # E₆ × U(1) decomposition of E₇ representations
 e7_to_e6 = {
@@ -181,7 +185,8 @@ print("\n" + "=" * 70)
 print("SECTION 4: THE MYSTERY OF 1111")
 print("=" * 70)
 
-print("""
+print(
+    """
 1111 = 11 × 101
 
 Both 11 and 101 are prime!
@@ -202,7 +207,8 @@ Could 1111 relate to:
 • Radiative corrections in QFT?
 
 Let's check various decompositions:
-""")
+"""
+)
 
 # Check if 1111 appears anywhere natural
 checks = [
@@ -239,7 +245,8 @@ print("\n" + "=" * 70)
 print("SECTION 5: FREUDENTHAL MAGIC SQUARE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Freudenthal magic square connects exceptional groups
 to normed division algebras (R, C, H, O):
 
@@ -265,7 +272,8 @@ The formula α⁻¹ = 81 + 56 + 40/1111 involves:
 • 40 = W33 (related to F₃, the finite field?)
 
 Could there be a "FINITE FIELD" magic square?
-""")
+"""
+)
 
 # Magic square dimensions
 magic_square = {
@@ -294,7 +302,8 @@ print("\n" + "=" * 70)
 print("SECTION 6: EXCEPTIONAL JORDAN ALGEBRA J₃(O)")
 print("=" * 70)
 
-print("""
+print(
+    """
 The 27-dimensional exceptional Jordan algebra J₃(𝕆):
 • Elements are 3×3 Hermitian matrices over octonions
 • Dimension = 3 real diagonal + 3×8 octonionic off-diagonal = 3 + 24 = 27
@@ -314,7 +323,8 @@ The 13 extra points might be:
 • Fixed points under some action?
 • Boundary terms in physical formula?
 • Related to 13 = rank-2 part of something?
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 7: THE E8 LATTICE AND 240
@@ -324,7 +334,8 @@ print("\n" + "=" * 70)
 print("SECTION 7: E₈ ROOT LATTICE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The E₈ root lattice:
 • 240 roots (shortest non-zero vectors)
 • This is the densest sphere packing in 8D!
@@ -343,7 +354,8 @@ So the number of EDGES in W33 equals the number of E₈ ROOTS!
 This is a deep connection:
     W33 edges ↔ E₈ roots
     W33 vertices (40) ↔ ???
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 8: SYNTHESIZING THE FORMULA
@@ -353,7 +365,8 @@ print("\n" + "=" * 70)
 print("SECTION 8: THE GRAND SYNTHESIS")
 print("=" * 70)
 
-print("""
+print(
+    """
 PUTTING IT ALL TOGETHER:
 
 α⁻¹ = 81 + 56 + 40/1111
@@ -390,7 +403,8 @@ The fine structure constant emerges from:
 1. A 3⁴ = 81 dimensional cohomological structure
 2. An E₇ gauge bundle with 56-dim fundamental
 3. A correction from the W33 counting formula
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 9: PREDICTIONS AND TESTS
@@ -400,7 +414,8 @@ print("\n" + "=" * 70)
 print("SECTION 9: TESTABLE PREDICTIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 If this structure is real, it predicts:
 
 1. RUNNING OF α:
@@ -429,7 +444,8 @@ If this structure is real, it predicts:
    • The "3" in 81 = 3⁴
    • The 3 copies of 27 in 81 = 3×27
    • The 3 in F₃ (finite field with 3 elements)
-""")
+"""
+)
 
 # Test the connection 173 = 133 + 40
 print("\nTesting numerical predictions:")
@@ -447,7 +463,8 @@ print("\n" + "=" * 70)
 print("SECTION 10: THE EMERGING PATTERN")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE MASTER PATTERN EMERGING:
 
 All coupling constants involve EXCEPTIONAL STRUCTURES:
@@ -492,7 +509,8 @@ dim(E₈) = 81 + 56 + 111
 The "111" vs "40/1111" is intriguing!
 40/1111 ≈ 0.036 while 111 is integer.
 111 × 10 + 1 = 1111!
-""")
+"""
+)
 
 # Final numerical checks
 print("\nFinal verifications:")
@@ -509,7 +527,8 @@ print("\n" + "=" * 70)
 print("CONCLUSIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 KEY DISCOVERIES IN PART LV:
 
 1. α⁻¹ = 81 + 56 + 40/1111 encodes EXCEPTIONAL algebra structure
@@ -536,7 +555,8 @@ NEXT STEPS:
 
 This is potentially a breakthrough in understanding
 why α ≈ 1/137 from first principles!
-""")
+"""
+)
 
 # Save to file
 import json

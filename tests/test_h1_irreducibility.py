@@ -8,7 +8,11 @@ def test_h1_commutant_all_transvections():
     over the transvection-generated group reports commutant_dim == 2 — the test asserts that value.
     """
     res = a.main()
-    assert 'all_transvections' in res
-    comm = res['all_transvections']
-    assert comm['commutant_dim'] == 2, f"Expected commutant dim 2, got {comm['commutant_dim']}"
-    assert comm['group_size'] == 25920, f"Expected group size 25920, got {comm['group_size']}"
+    assert "all_transvections" in res
+    comm = res["all_transvections"]
+    assert (
+        comm["commutant_dim"] == 2
+    ), f"Expected commutant dim 2, got {comm['commutant_dim']}"
+    assert (
+        comm["group_size"] == 25920
+    ), f"Expected group size 25920, got {comm['group_size']}"

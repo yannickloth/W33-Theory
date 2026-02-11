@@ -20,9 +20,19 @@ DOCKER_EXE = r"C:\Program Files\Docker\Docker\resources\bin\docker.exe"
 
 
 def run_screenshot(outfile: str) -> int:
-    args = [DOCKER_EXE, "mcp", "tools", "call", "browser_take_screenshot", f"type=png", f"filename={outfile}"]
+    args = [
+        DOCKER_EXE,
+        "mcp",
+        "tools",
+        "call",
+        "browser_take_screenshot",
+        f"type=png",
+        f"filename={outfile}",
+    ]
     try:
-        proc = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+        proc = subprocess.run(
+            args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False
+        )
     except FileNotFoundError:
         print(f"Docker executable not found at {DOCKER_EXE}", file=sys.stderr)
         return 2
@@ -44,7 +54,10 @@ def run_screenshot(outfile: str) -> int:
                 continue
 
     if png_bytes is None:
-        print("Failed to locate PNG bytes in tool output. Full output below:\n", file=sys.stderr)
+        print(
+            "Failed to locate PNG bytes in tool output. Full output below:\n",
+            file=sys.stderr,
+        )
         print(out, file=sys.stderr)
         return 1
 

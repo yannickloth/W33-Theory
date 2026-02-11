@@ -11,9 +11,11 @@ print("perms lengths:", [len(p) for p in perms])
 import sys
 
 sys.path.insert(0, str(repo))
-from src.finite_geometry.veldmap import (load_triangles,
-                                         neighborhoods_from_triangles,
-                                         point_hyperplanes)
+from src.finite_geometry.veldmap import (
+    load_triangles,
+    neighborhoods_from_triangles,
+    point_hyperplanes,
+)
 
 tri = (
     repo

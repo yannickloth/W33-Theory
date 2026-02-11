@@ -73,7 +73,9 @@ def canonical_tuple_to_json(canon):
     return out
 
 
-def randomized_greedy_enumeration(lines, sign_field, mats, target_k, max_samples, seed=0):
+def randomized_greedy_enumeration(
+    lines, sign_field, mats, target_k, max_samples, seed=0
+):
     witnesses, reject_masks_by_witness, full_cover_mask = build_reject_masks(
         lines, sign_field, mats
     )

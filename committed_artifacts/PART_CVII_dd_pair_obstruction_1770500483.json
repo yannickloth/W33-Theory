@@ -20,5 +20,5 @@
     "vars": 9600,
     "triangles": 160
   },
-  "notes": "Delta-shrink produced minimal infeasible pair (edges 37,38) for bijection 'committed_artifacts/PART_CVII_e8_bijection_intermediate_1770491863.json'. This is a small certificate that the two root assignments (22,188) cannot co-exist in any full bijection. Consider adding this pair to forbidden constraints or using it to prune repair/search." 
+  "notes": "Delta-shrink produced minimal infeasible pair (edges 37,38) for bijection 'committed_artifacts/PART_CVII_e8_bijection_intermediate_1770491863.json'. This is a small certificate that the two root assignments (22,188) cannot co-exist in any full bijection. Consider adding this pair to forbidden constraints or using it to prune repair/search."
 }

@@ -217,7 +217,8 @@ print("\n" + "=" * 70)
 print("★ VERIFICATION SUMMARY ★")
 print("=" * 70)
 
-print("""
+print(
+    """
 Pattern confirmed:
 
   W(3, q) has:
@@ -230,4 +231,5 @@ Pattern confirmed:
     • π₁ = F_{q⁴}  (free group!)
 
 This verifies our discovery about W33 generalizes!
-""")
+"""
+)

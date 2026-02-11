@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import json
-import numpy as np
 from collections import defaultdict
+
+import numpy as np
+
 
 # load roots
 def generate_scaled_e8_roots():
@@ -15,6 +17,7 @@ def generate_scaled_e8_roots():
                     v[j] = sj
                     roots.add(tuple(v))
     from itertools import product
+
     for signs in product((-1, 1), repeat=8):
         if sum(1 for s in signs if s < 0) % 2 == 0:
             roots.add(tuple(int(s) for s in signs))
@@ -58,16 +61,17 @@ def build_w33_graph():
                 edges.append((i, j))
     return n, vertices, adj, edges
 
+
 roots = generate_scaled_e8_roots()
 root_map = {i: tuple(roots[i]) for i in range(len(roots))}
 
-s = json.load(open('checks/PART_CVII_e8_embedding_attempt_seed.json'))
-assignment = {str(sd['edge_index']): sd['root_index'] for sd in s.get('seed_edges', [])}
+s = json.load(open("checks/PART_CVII_e8_embedding_attempt_seed.json"))
+assignment = {str(sd["edge_index"]): sd["root_index"] for sd in s.get("seed_edges", [])}
 
 n, vertices, adj, edges = build_w33_graph()
 # map edge pair to index
 edge_index = {edges[i]: i for i in range(len(edges))}
-edge_index.update({(j,i): idx for (i,j), idx in edge_index.items()})
+edge_index.update({(j, i): idx for (i, j), idx in edge_index.items()})
 
 tris = []
 for a in range(n):
@@ -78,26 +82,41 @@ for a in range(n):
             if c <= b:
                 continue
             if a in adj[c]:
-                tri = tuple(sorted((a,b,c)))
+                tri = tuple(sorted((a, b, c)))
                 if tri not in tris:
                     tris.append(tri)
 
 bad = []
-for (a,b,c) in tris:
-    e_ab = edge_index.get((a,b))
-    e_bc = edge_index.get((b,c))
-    e_ac = edge_index.get((a,c))
-    if str(e_ab) not in assignment or str(e_bc) not in assignment or str(e_ac) not in assignment:
+for a, b, c in tris:
+    e_ab = edge_index.get((a, b))
+    e_bc = edge_index.get((b, c))
+    e_ac = edge_index.get((a, c))
+    if (
+        str(e_ab) not in assignment
+        or str(e_bc) not in assignment
+        or str(e_ac) not in assignment
+    ):
         continue
     r_ab = root_map[assignment[str(e_ab)]]
     r_bc = root_map[assignment[str(e_bc)]]
     r_ac = root_map[assignment[str(e_ac)]]
-    lhs = tuple(x+y - z for x,y,z in zip(r_ab, r_bc, r_ac))
+    lhs = tuple(x + y - z for x, y, z in zip(r_ab, r_bc, r_ac))
     if any(v != 0 for v in lhs):
-        bad.append({'tri':(a,b,c), 'edges':(e_ab,e_bc,e_ac), 'lhs':lhs, 'roots':(assignment[str(e_ab)], assignment[str(e_bc)], assignment[str(e_ac)])})
+        bad.append(
+            {
+                "tri": (a, b, c),
+                "edges": (e_ab, e_bc, e_ac),
+                "lhs": lhs,
+                "roots": (
+                    assignment[str(e_ab)],
+                    assignment[str(e_bc)],
+                    assignment[str(e_ac)],
+                ),
+            }
+        )
 
-print('triangles:', len(tris), 'violations:', len(bad))
+print("triangles:", len(tris), "violations:", len(bad))
 if bad:
-    print('Sample violation (up to 10):')
+    print("Sample violation (up to 10):")
     for x in bad[:10]:
         print(x)

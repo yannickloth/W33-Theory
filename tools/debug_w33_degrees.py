@@ -3,8 +3,7 @@ import itertools
 from collections import Counter
 from pathlib import Path
 
-from find_schlafli_embedding_in_w33 import (compute_w33_lines,
-                                            construct_w33_points)
+from find_schlafli_embedding_in_w33 import compute_w33_lines, construct_w33_points
 
 if __name__ == "__main__":
     pts = construct_w33_points()

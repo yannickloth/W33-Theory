@@ -22,9 +22,11 @@ import igraph as ig
 from sympy.combinatorics.perm_groups import PermutationGroup
 from sympy.combinatorics.permutations import Permutation
 
-from src.finite_geometry.veldmap import (load_triangles,
-                                         neighborhoods_from_triangles,
-                                         point_hyperplanes)
+from src.finite_geometry.veldmap import (
+    load_triangles,
+    neighborhoods_from_triangles,
+    point_hyperplanes,
+)
 
 OUT_DIR = Path("bundles/v23_toe_finish/v23")
 OUT_DIR.mkdir(parents=True, exist_ok=True)

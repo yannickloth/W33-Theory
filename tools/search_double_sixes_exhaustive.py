@@ -11,8 +11,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from itertools import combinations
 
-from tools.compute_double_sixes import (build_schlafli_adjacency,
-                                        compute_we6_orbits, construct_e8_roots)
+from tools.compute_double_sixes import (
+    build_schlafli_adjacency,
+    compute_we6_orbits,
+    construct_e8_roots,
+)
 
 # Simple DFS-based bipartite matching for small sizes
 

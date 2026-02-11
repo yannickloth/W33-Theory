@@ -148,7 +148,9 @@ def main():
     h27_degrees = [len(h27_neighbors[v]) for v in H27]
     h27_k = h27_degrees[0]
     print(f"  H27 degree distribution: {Counter(h27_degrees)}")
-    assert all(d == h27_k for d in h27_degrees), f"H27 not regular! degrees: {Counter(h27_degrees)}"
+    assert all(
+        d == h27_k for d in h27_degrees
+    ), f"H27 not regular! degrees: {Counter(h27_degrees)}"
     print(f"  H27 is {h27_k}-regular (induced subgraph)")
 
     # Common-neighbor stats for the induced H27 graph (not SRG; shown for diagnostics)
@@ -167,12 +169,14 @@ def main():
 
     lam_c = Counter(lambda_counts)
     mu_c = Counter(mu_counts)
-    print(f"  H27 induced common-neighbor counts: adjacent={dict(lam_c)}, non-adj={dict(mu_c)}")
+    print(
+        f"  H27 induced common-neighbor counts: adjacent={dict(lam_c)}, non-adj={dict(mu_c)}"
+    )
 
     # Derived Schläfli graph on H27: connect u~v iff they have exactly 3 common neighbors in induced H27
     schlafli = {u: set() for u in H27}
     for i, u in enumerate(H27):
-        for v in H27[i + 1:]:
+        for v in H27[i + 1 :]:
             common = len((adj_s[u] & adj_s[v]) & h27_set)
             if common == 3:
                 schlafli[u].add(v)
@@ -187,7 +191,7 @@ def main():
     sch_mu = []
     for i, u in enumerate(H27):
         Nu = schlafli[u]
-        for v in H27[i + 1:]:
+        for v in H27[i + 1 :]:
             Nv = schlafli[v]
             c = len(Nu & Nv)
             if v in Nu:
@@ -196,10 +200,16 @@ def main():
                 sch_mu.append(c)
     sch_lam_c = Counter(sch_lambda)
     sch_mu_c = Counter(sch_mu)
-    print(f"  Schläfli SRG check: k={sch_k}, adjacent={dict(sch_lam_c)}, non-adj={dict(sch_mu_c)}")
+    print(
+        f"  Schläfli SRG check: k={sch_k}, adjacent={dict(sch_lam_c)}, non-adj={dict(sch_mu_c)}"
+    )
     assert sch_k == 16, f"Unexpected Schläfli degree k={sch_k} (expected 16)"
-    assert set(sch_lam_c.keys()) == {10}, f"Unexpected Schläfli λ distribution: {dict(sch_lam_c)}"
-    assert set(sch_mu_c.keys()) == {8}, f"Unexpected Schläfli μ distribution: {dict(sch_mu_c)}"
+    assert set(sch_lam_c.keys()) == {
+        10
+    }, f"Unexpected Schläfli λ distribution: {dict(sch_lam_c)}"
+    assert set(sch_mu_c.keys()) == {
+        8
+    }, f"Unexpected Schläfli μ distribution: {dict(sch_mu_c)}"
 
     # =====================================================================
     # Part 2: F3^3 cube coordinatization
@@ -254,8 +264,10 @@ def main():
         a, na = adj_by_omega[omega_val]
         total = a + na
         pct = 100 * a / total if total > 0 else 0
-        print(f"    Omega = {omega_val}: {a} adj, {na} non-adj "
-              f"({pct:.1f}% adj, {total} pairs)")
+        print(
+            f"    Omega = {omega_val}: {a} adj, {na} non-adj "
+            f"({pct:.1f}% adj, {total} pairs)"
+        )
 
     print(f"\n  Adjacent pair patterns (dx, dy, dt, Omega):")
     for pat in sorted(adj_patterns.keys()):
@@ -399,7 +411,8 @@ def main():
     print("  SYNTHESIS: HEISENBERG STRUCTURE OF W33")
     print("=" * 72)
 
-    print(f"""
+    print(
+        f"""
   THEOREM (Qutrit Phase Space):
     For EVERY vertex v0 of W33:
     - H27(v0) = F3^3 as an affine space
@@ -418,24 +431,25 @@ def main():
     - Symplectic form = gauge interaction coupling
     - Heisenberg center = family (generation) symmetry
     - W33 = the incidence geometry of qutrit quantum mechanics
-""")
+"""
+    )
 
     elapsed = time.time() - t0
     print(f"  Elapsed: {elapsed:.1f}s")
 
     results = {
-        'v0': v0,
-        'H27_induced_degree': h27_k,
-        'H27_induced_common_neighbors_adjacent': dict(lam_c),
-        'H27_induced_common_neighbors_non_adjacent': dict(mu_c),
-        'Schlafli_srg': {'v': 27, 'k': 16, 'lambda': 10, 'mu': 8},
-        'n_fibers': 9,
-        'n_mub_bases': 4,
-        'n_missing_tritangent': n_missing,
-        'universal_ok': n_ok == n,
-        'omega_adjacency': {k: v[0] for k, v in adj_by_omega.items()},
-        'omega_non_adjacency': {k: v[1] for k, v in adj_by_omega.items()},
-        'elapsed': elapsed,
+        "v0": v0,
+        "H27_induced_degree": h27_k,
+        "H27_induced_common_neighbors_adjacent": dict(lam_c),
+        "H27_induced_common_neighbors_non_adjacent": dict(mu_c),
+        "Schlafli_srg": {"v": 27, "k": 16, "lambda": 10, "mu": 8},
+        "n_fibers": 9,
+        "n_mub_bases": 4,
+        "n_missing_tritangent": n_missing,
+        "universal_ok": n_ok == n,
+        "omega_adjacency": {k: v[0] for k, v in adj_by_omega.items()},
+        "omega_non_adjacency": {k: v[1] for k, v in adj_by_omega.items()},
+        "elapsed": elapsed,
     }
 
     ts = int(time.time())

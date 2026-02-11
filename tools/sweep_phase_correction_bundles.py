@@ -23,7 +23,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_BUNDLE_FILES = (
@@ -67,7 +66,9 @@ def discover_bundle_dirs(search_roots: Iterable[Path]) -> list[Path]:
 
 
 def is_compatible_bundle(bundle_dir: Path) -> tuple[bool, list[str]]:
-    missing = [name for name in REQUIRED_BUNDLE_FILES if not (bundle_dir / name).exists()]
+    missing = [
+        name for name in REQUIRED_BUNDLE_FILES if not (bundle_dir / name).exists()
+    ]
     return (len(missing) == 0, missing)
 
 
@@ -215,7 +216,10 @@ def main() -> int:
     if not search_roots:
         search_roots = [ROOT / p for p in DEFAULT_SEARCH_ROOTS]
 
-    explicit = [p.resolve() if p.is_absolute() else (ROOT / p).resolve() for p in args.bundle_dir]
+    explicit = [
+        p.resolve() if p.is_absolute() else (ROOT / p).resolve()
+        for p in args.bundle_dir
+    ]
     discovered = discover_bundle_dirs(search_roots)
     bundle_dirs = sorted({*explicit, *discovered})
 

@@ -19,7 +19,7 @@ import argparse
 import cmath
 import itertools
 import json
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from math import isclose
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -62,6 +62,7 @@ def load_missing_planes(bundle_dir: Path) -> Dict[Tuple[int, int], List[int]]:
 
 def load_n12(bundle_dir: Path) -> Dict[int, Dict]:
     import csv
+
     path = bundle_dir / "N12_vertices_as_affine_lines.csv"
     if not path.exists():
         raise FileNotFoundError(path)
@@ -83,7 +84,12 @@ def load_n12(bundle_dir: Path) -> Dict[int, Dict]:
                 pts.append((int(x_str), int(y_str)))
             h_neigh_field = r.get("H_vertices_in_coset", "")
             h_neigh = [int(s) for s in h_neigh_field.split() if s.strip()]
-            data[nid] = {"slope": slope_val, "intercept": intercept, "phase_points": pts, "h_neigh": h_neigh}
+            data[nid] = {
+                "slope": slope_val,
+                "intercept": intercept,
+                "phase_points": pts,
+                "h_neigh": h_neigh,
+            }
     return data
 
 
@@ -120,7 +126,9 @@ def all_sl23_matrices() -> List[Tuple[int, int, int, int]]:
     return mats
 
 
-def apply_mat_to_point(mat: Tuple[int, int, int, int], p: Tuple[int, int]) -> Tuple[int, int]:
+def apply_mat_to_point(
+    mat: Tuple[int, int, int, int], p: Tuple[int, int]
+) -> Tuple[int, int]:
     a, b, c, d = mat
     x, y = p
     nx = (a * x + b * y) % 3
@@ -128,7 +136,9 @@ def apply_mat_to_point(mat: Tuple[int, int, int, int], p: Tuple[int, int]) -> Tu
     return (nx, ny)
 
 
-def find_n12_for_line(n12_map: Dict[int, Dict], direction_family: str, intercept_c: int) -> int:
+def find_n12_for_line(
+    n12_map: Dict[int, Dict], direction_family: str, intercept_c: int
+) -> int:
     # slope mapping: fam_y -> slope 0? Reference: in N12 CSV, slope entries are "inf" (x=b), 0 (y=b), 1 (y=x+b), 2 (y=2x+b)
     # direction_family will be one of 'fam_y','fam_x','fam_m1','fam_m2' mapping to slope values
     fam_to_slope = {"fam_y": 0, "fam_x": "inf", "fam_m1": 1, "fam_m2": 2}
@@ -136,7 +146,9 @@ def find_n12_for_line(n12_map: Dict[int, Dict], direction_family: str, intercept
     for nid, d in n12_map.items():
         if d["slope"] == slope and int(d["intercept"]) == int(intercept_c):
             return nid
-    raise RuntimeError(f"No N12 line found for family {direction_family} c={intercept_c}")
+    raise RuntimeError(
+        f"No N12 line found for family {direction_family} c={intercept_c}"
+    )
 
 
 def intercept_for_family(p: Tuple[int, int], fam: str) -> int:
@@ -166,7 +178,9 @@ def family_for_direction(d: Tuple[int, int]) -> str:
     raise RuntimeError("Unknown direction")
 
 
-def bargmann_product(v1: List[complex], v2: List[complex], v3: List[complex], v4: List[complex]) -> complex:
+def bargmann_product(
+    v1: List[complex], v2: List[complex], v3: List[complex], v4: List[complex]
+) -> complex:
     def inner(u, v):
         # <u|v>
         return sum(complex(x).conjugate() * complex(y) for x, y in zip(u, v))
@@ -183,7 +197,7 @@ def find_k_from_omega(prod: complex) -> int:
     best_k = 0
     best_diff = abs(prod - 1.0 + 0j)
     for k in [0, 1, 2]:
-        target = omega ** k
+        target = omega**k
         d = abs(prod - target)
         if d < best_diff:
             best_diff = d
@@ -268,16 +282,33 @@ def main():
                     found = cand_nid
                     break
             if found is None:
-                raise RuntimeError(f"No matching N12 found for mapped phase points {mapped_sorted}")
+                raise RuntimeError(
+                    f"No matching N12 found for mapped phase points {mapped_sorted}"
+                )
             perm_n12[str(nid)] = found
 
-        sp23_out["generators"].append({"name": name, "matrix": list(mat), "perm_points_idx": perm_points_idx, "perm_H": perm_h, "perm_N12": perm_n12})
+        sp23_out["generators"].append(
+            {
+                "name": name,
+                "matrix": list(mat),
+                "perm_points_idx": perm_points_idx,
+                "perm_H": perm_h,
+                "perm_N12": perm_n12,
+            }
+        )
 
     # Save sp23 action
-    (out_dir / "sp23_action_on_H27_and_N12.json").write_text(json.dumps(sp23_out, indent=2), encoding="utf-8")
+    (out_dir / "sp23_action_on_H27_and_N12.json").write_text(
+        json.dumps(sp23_out, indent=2), encoding="utf-8"
+    )
 
     # Now compute parallelogram holonomy vs Bargmann for all p and direction pairs
-    directions = [((1, 0), "fam_y"), ((0, 1), "fam_x"), ((1, 1), "fam_m1"), ((1, 2), "fam_m2")]
+    directions = [
+        ((1, 0), "fam_y"),
+        ((0, 1), "fam_x"),
+        ((1, 1), "fam_m1"),
+        ((1, 2), "fam_m2"),
+    ]
     omega = cmath.exp(2j * cmath.pi / 3.0)
     results = []
     matches = 0
@@ -348,37 +379,53 @@ def main():
                 chosen = candidates[0]
 
             orient_used, prod, k = chosen
-            match = (k == expected_hol)
+            match = k == expected_hol
 
-            results.append({
-                "p": p,
-                "d1": d1,
-                "d2": d2,
-                "expected_hol": expected_hol,
-                "n12s": [n1, n2, n3, n4],
-                "used_orientation": orient_used,
-                "bargmann_phase": [round(prod.real, 6), round(prod.imag, 6)],
-                "bargmann_k": int(k),
-                "match": bool(match),
-            })
+            results.append(
+                {
+                    "p": p,
+                    "d1": d1,
+                    "d2": d2,
+                    "expected_hol": expected_hol,
+                    "n12s": [n1, n2, n3, n4],
+                    "used_orientation": orient_used,
+                    "bargmann_phase": [round(prod.real, 6), round(prod.imag, 6)],
+                    "bargmann_k": int(k),
+                    "match": bool(match),
+                }
+            )
             total += 1
             if match:
                 matches += 1
 
-    outp = {"status": "ok", "total_parallelograms": total, "matches": matches, "match_fraction": matches / total if total else None, "results": results}
-    (out_dir / "parallelogram_holonomy_vs_bargmann.json").write_text(json.dumps(outp, indent=2), encoding="utf-8")
+    outp = {
+        "status": "ok",
+        "total_parallelograms": total,
+        "matches": matches,
+        "match_fraction": matches / total if total else None,
+        "results": results,
+    }
+    (out_dir / "parallelogram_holonomy_vs_bargmann.json").write_text(
+        json.dumps(outp, indent=2), encoding="utf-8"
+    )
 
     md = []
     md.append("# Parallelogram holonomy vs Bargmann comparison")
     md.append("")
     md.append(f"- total parallelograms tested: `{total}`")
-    md.append(f"- matches (bargmann_k == expected_hol): `{matches}` ({outp['match_fraction']:.3f})")
+    md.append(
+        f"- matches (bargmann_k == expected_hol): `{matches}` ({outp['match_fraction']:.3f})"
+    )
     md.append("")
     md.append("## Sample mismatches (up to 20)")
     mismatches = [r for r in results if not r["match"]][:20]
     for r in mismatches:
-        md.append(f"- p={r['p']} d1={r['d1']} d2={r['d2']} expected_hol={r['expected_hol']} bargmann_k={r['bargmann_k']} n12s={r['n12s']}")
-    (out_dir / "parallelogram_holonomy_vs_bargmann.md").write_text("\n".join(md), encoding="utf-8")
+        md.append(
+            f"- p={r['p']} d1={r['d1']} d2={r['d2']} expected_hol={r['expected_hol']} bargmann_k={r['bargmann_k']} n12s={r['n12s']}"
+        )
+    (out_dir / "parallelogram_holonomy_vs_bargmann.md").write_text(
+        "\n".join(md), encoding="utf-8"
+    )
 
     print(f"Wrote {out_dir / 'sp23_action_on_H27_and_N12.json'}")
     print(f"Wrote {out_dir / 'parallelogram_holonomy_vs_bargmann.json'}")

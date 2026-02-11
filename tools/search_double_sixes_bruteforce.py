@@ -7,8 +7,11 @@ from itertools import combinations, permutations
 
 import numpy as np
 
-from tools.compute_double_sixes import (build_schlafli_adjacency,
-                                        compute_we6_orbits, construct_e8_roots)
+from tools.compute_double_sixes import (
+    build_schlafli_adjacency,
+    compute_we6_orbits,
+    construct_e8_roots,
+)
 
 roots = construct_e8_roots()
 we6 = compute_we6_orbits(roots)

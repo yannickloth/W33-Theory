@@ -62,7 +62,11 @@ def load_n12(bundle_dir: Path):
                     continue
                 x_str, y_str = p.split(",")
                 pts.append((int(x_str), int(y_str)))
-            data[nid] = {"slope": slope_val, "intercept": int(intercept), "phase_points": pts}
+            data[nid] = {
+                "slope": slope_val,
+                "intercept": int(intercept),
+                "phase_points": pts,
+            }
     return data
 
 
@@ -114,7 +118,9 @@ def main():
                     found = cand_nid
                     break
             if found is None:
-                raise RuntimeError(f"No N12 match for translation {dx,dy} mapping {pts} -> {mapped_sorted}")
+                raise RuntimeError(
+                    f"No N12 match for translation {dx,dy} mapping {pts} -> {mapped_sorted}"
+                )
             mapping[str(nid)] = int(found)
         return mapping
 
@@ -192,12 +198,22 @@ def main():
 
     # Save JSON
     out = {
-        "Tx": {"perm_H": Tx_H, "perm_N12": Tx_N12, "perm_40": {k: v for k, v in Tx_perm.items()}},
-        "Ty": {"perm_H": Ty_H, "perm_N12": Ty_N12, "perm_40": {k: v for k, v in Ty_perm.items()}},
+        "Tx": {
+            "perm_H": Tx_H,
+            "perm_N12": Tx_N12,
+            "perm_40": {k: v for k, v in Tx_perm.items()},
+        },
+        "Ty": {
+            "perm_H": Ty_H,
+            "perm_N12": Ty_N12,
+            "perm_40": {k: v for k, v in Ty_perm.items()},
+        },
         "Z": {"perm_40": {str(k): int(v) for k, v in Z_int.items()}},
     }
 
-    (out_dir / "W33_Heisenberg_generators_Tx_Ty_Z.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
+    (out_dir / "W33_Heisenberg_generators_Tx_Ty_Z.json").write_text(
+        json.dumps(out, indent=2), encoding="utf-8"
+    )
 
     # Write translation_lifts_canonical.csv
     import csv

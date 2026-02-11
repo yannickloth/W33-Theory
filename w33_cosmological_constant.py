@@ -39,7 +39,8 @@ M_planck = 1.22e19  # GeV
 Lambda_observed = 2.888e-122  # in Planck units (dimensionless)
 Lambda_QFT = 1.0  # QFT predicts O(1) in Planck units
 
-print(f"""
+print(
+    f"""
 THE COSMOLOGICAL CONSTANT PROBLEM
 =================================
 
@@ -61,7 +62,8 @@ The discrepancy:
 
 This is the LARGEST discrepancy between theory and
 experiment in all of physics!
-""")
+"""
+)
 
 # =============================================================================
 # PART 2: SUPERSYMMETRY CANCELLATION (FAILS)
@@ -71,7 +73,8 @@ print("\n" + "=" * 80)
 print("PART 2: WHY SUSY DOESN'T WORK")
 print("=" * 80)
 
-print("""
+print(
+    """
 SUPERSYMMETRY ATTEMPT
 =====================
 
@@ -88,7 +91,8 @@ BUT: SUSY is broken at M_SUSY ~ 1 TeV
 This is STILL 58 orders of magnitude too big!
 
 SUSY helps but doesn't solve the problem.
-""")
+"""
+)
 
 # =============================================================================
 # PART 3: W33 VACUUM STRUCTURE
@@ -110,7 +114,8 @@ Z12_phases = 12
 Z4_part = 4
 Z3_part = 3
 
-print(f"""
+print(
+    f"""
 W33 VACUUM MODES
 ================
 
@@ -135,7 +140,8 @@ Total vacuum configurations:
 
 But wait... this is MUCH smaller than the Planck scale
 cutoff would suggest (which gives ~10^120 states).
-""")
+"""
+)
 
 # =============================================================================
 # PART 4: THE CANCELLATION MECHANISM
@@ -155,7 +161,8 @@ print("=" * 80)
 # But W33 has STRUCTURE!
 # The K4 constraint (Z₄,Z₃) = (2,0) forces correlations
 
-print("""
+print(
+    """
 THE CANCELLATION MECHANISM
 ==========================
 
@@ -178,7 +185,8 @@ Constraint 2: Berry phase = -1 for all K4
 Constraint 3: Z₃ = 0 (color singlet)
   - Only colorless combinations contribute
   - Reduces effective DOF by factor of 3
-""")
+"""
+)
 
 # Compute effective DOF after constraints
 # K4 constraint: 90 components all have same phase
@@ -195,7 +203,8 @@ print(f"Effective modes after K4 constraint: ~{81/90:.2f}")
 # 81 = 3^4 and there are 4 positive roots in C₂
 # Each root contributes independently but they're PAIRED
 
-print("""
+print(
+    """
 DETAILED ANALYSIS
 =================
 
@@ -216,7 +225,8 @@ Under Weyl reflection:
   The contribution E_α maps to -E_α
 
 This gives EXACT CANCELLATION at tree level!
-""")
+"""
+)
 
 # =============================================================================
 # PART 5: COMPUTING THE RESIDUAL
@@ -250,7 +260,8 @@ print(f"Full group suppression: 1/{Sp_size} = {Lambda_full_group:.2e}")
 # This gives Λ ~ 10^-5 in Planck units
 # Better but still ~10^117 too big
 
-print(f"""
+print(
+    f"""
 FIRST ESTIMATE (geometric suppression only):
   Λ ~ 1/(8 × 81) = 1/648 ≈ 1.5 × 10^-3
 
@@ -262,7 +273,8 @@ SECOND ESTIMATE (full group):
   This is 10^117 times too big.
 
 We need MORE suppression...
-""")
+"""
+)
 
 # =============================================================================
 # PART 6: THE EXPONENTIAL SUPPRESSION
@@ -272,7 +284,8 @@ print("\n" + "=" * 80)
 print("PART 6: EXPONENTIAL SUPPRESSION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE KEY INSIGHT: INSTANTON EFFECTS
 ==================================
 
@@ -292,7 +305,8 @@ where S_0 is the minimal action.
 
 The contribution to Λ from sector k:
   Λ_k ~ e^(-|k| × S_0)
-""")
+"""
+)
 
 # For the K4 components, k = 6 (phase -1)
 k_K4 = 6
@@ -310,7 +324,8 @@ print(f"Instanton suppression: e^(-81) = {Lambda_instanton:.2e}")
 # This gives Λ ~ 10^-35 in Planck units
 # Getting closer! But still 10^87 too big
 
-print(f"""
+print(
+    f"""
 INSTANTON SUPPRESSION:
   Each cycle contributes e^(-S_0) ~ e^(-1)
   With 81 independent cycles:
@@ -319,7 +334,8 @@ INSTANTON SUPPRESSION:
   This is 10^87 times too big.
 
 But wait! The K4 constraint means NOT all cycles are independent!
-""")
+"""
+)
 
 # =============================================================================
 # PART 7: THE K4 CORRELATION STRUCTURE
@@ -329,7 +345,8 @@ print("\n" + "=" * 80)
 print("PART 7: K4 CORRELATION STRUCTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE K4 MIRACLE
 ==============
 
@@ -352,7 +369,8 @@ From the K4 structure:
 
 Actual independent constraints: ~12 (one for each Z₁₂ element)
 Effective DOF: 81 - 12 = 69
-""")
+"""
+)
 
 # More careful analysis
 # The 81 cycles generate H₁ = Z^81
@@ -377,7 +395,8 @@ print("\n" + "=" * 80)
 print("PART 8: THE FINAL CALCULATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 PUTTING IT ALL TOGETHER
 =======================
 
@@ -393,7 +412,8 @@ Instanton suppression:
 
 Loop corrections:
   α^n where α ~ 1/137 (fine structure) and n ~ number of loops
-""")
+"""
+)
 
 # The key realization:
 # S_0 should be 2π (the natural unit for phases)
@@ -413,7 +433,8 @@ print(f"Ratio W33/observed: {ratio:.2e}")
 
 # Hmm, still not quite right. Let's try another approach.
 
-print("""
+print(
+    """
 
 ALTERNATIVE APPROACH: THE GOLDILOCKS NUMBER
 ===========================================
@@ -427,7 +448,8 @@ Let's solve: 3^(-n) = 10^-122
   n = 122 × log(10) / log(3)
   n = 122 × 2.303 / 1.099
   n ≈ 256
-""")
+"""
+)
 
 n_required = 122 * np.log(10) / np.log(3)
 print(f"Required exponent: n = {n_required:.1f}")
@@ -435,7 +457,8 @@ print(f"Required exponent: n = {n_required:.1f}")
 # Interesting! 256 = 2^8 = 4^4
 # And 4 is the dimension of our space (C^4)!
 
-print(f"""
+print(
+    f"""
 REMARKABLE:
   256 = 2^8 = 4^4 = (dimension of C^4)^4
 
@@ -455,7 +478,8 @@ What gives 175?
     = 5 × 35 = 5 × 5 × 7
 
 Hmm, not obviously related to W33...
-""")
+"""
+)
 
 # =============================================================================
 # PART 9: THE W(5,3) CONTRIBUTION
@@ -468,7 +492,8 @@ print("=" * 80)
 # W(5,3) has Steinberg dimension 3^9 = 19683
 w53_steinberg = 3**9
 
-print(f"""
+print(
+    f"""
 W(5,3) - THE GRAVITY SECTOR
 ===========================
 
@@ -496,7 +521,8 @@ This could represent two copies of Standard Model
 Total: 81 + 6561 = 6642
 
 Still not 256...
-""")
+"""
+)
 
 # =============================================================================
 # PART 10: THE ANTHROPIC WINDOW
@@ -506,7 +532,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE ANTHROPIC INTERPRETATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE ANTHROPIC WINDOW
 ====================
 
@@ -533,7 +560,8 @@ The geometric mean of the window:
   sqrt(10^-124 × 10^-120) = 10^-122 ✓
 
 This MATCHES the observed value!
-""")
+"""
+)
 
 # Compute geometric mean
 Lambda_min = 1e-124
@@ -551,7 +579,8 @@ print("\n" + "=" * 80)
 print("PART 11: THE FINAL PICTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════╗
 ║               W33 AND THE COSMOLOGICAL CONSTANT                          ║
 ╠══════════════════════════════════════════════════════════════════════════╣
@@ -574,7 +603,8 @@ print("""
 ║    Exact value selected by anthropic principle within W33 window        ║
 ║                                                                          ║
 ╚══════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # BONUS: DARK ENERGY EQUATION OF STATE
@@ -584,7 +614,8 @@ print("\n" + "=" * 80)
 print("BONUS: DARK ENERGY EQUATION OF STATE")
 print("=" * 80)
 
-print("""
+print(
+    """
 DARK ENERGY: w = p/ρ
 ====================
 
@@ -609,7 +640,8 @@ For ε ~ 0.3 (generic):
   w_avg ≈ -1 ± 0.03
 
 THIS MATCHES THE OBSERVED UNCERTAINTY!
-""")
+"""
+)
 
 # Compute expected w deviation
 epsilon = 0.3  # Generic scale
@@ -618,7 +650,8 @@ print(f"W33 predicted deviation: δw ~ {w_deviation:.2f}")
 print(f"Observed: w = -1.03 ± 0.03")
 print(f"Match: YES!")
 
-print("""
+print(
+    """
 
 SUMMARY: W33 COSMOLOGICAL PREDICTIONS
 =====================================
@@ -632,7 +665,8 @@ The cosmological constant problem is AMELIORATED by W33:
   - Not fully solved (still need anthropic input)
   - But constrains Λ to narrow window
   - Explains why we see Λ ~ 10^-122 specifically
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("END OF COSMOLOGICAL ANALYSIS")

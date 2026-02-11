@@ -703,7 +703,9 @@ def _line_product_flag_line_orbit_check(
         "direction": direction,
         "orbit_sizes": orbit_sizes,
         "class_sizes": class_sizes,
-        "class_to_orbit_count": {label: class_to_orbit_count[label] for label in labels},
+        "class_to_orbit_count": {
+            label: class_to_orbit_count[label] for label in labels
+        },
         "orbit_homogeneous_by_flag_class": orbit_homogeneous,
         "qutrit_flag_line_orbit_signature_holds": holds,
         "orbit_rows": orbit_rows,
@@ -1107,6 +1109,7 @@ def _full_sign_obstruction_certificate(
         "stabilizers": stabilizers,
     }
 
+
 def _full_sign_obstruction_distinct_line_certificate(
     lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
     sign_field: dict[
@@ -1126,9 +1129,7 @@ def _full_sign_obstruction_distinct_line_certificate(
     full_cover_mask = data["full_cover_mask"]
     universe_size = data["universe_size"]
 
-    witness_index = {
-        (line, z): wi for wi, (line, z) in enumerate(witnesses)
-    }
+    witness_index = {(line, z): wi for wi, (line, z) in enumerate(witnesses)}
     line_masks = []
     for line in lines:
         line_masks.append(
@@ -1150,7 +1151,9 @@ def _full_sign_obstruction_distinct_line_certificate(
     if universe_size == 0:
         found = True
         best_k = 0
-        best_choice: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]] = []
+        best_choice: list[
+            tuple[tuple[int, int], tuple[int, int], tuple[int, int], int]
+        ] = []
         nodes = 0
     else:
         found = False
@@ -1190,7 +1193,14 @@ def _full_sign_obstruction_distinct_line_certificate(
                     reverse=True,
                 )
                 for z in z_order:
-                    choice.append((ordered_lines[i][0], ordered_lines[i][1], ordered_lines[i][2], z))
+                    choice.append(
+                        (
+                            ordered_lines[i][0],
+                            ordered_lines[i][1],
+                            ordered_lines[i][2],
+                            z,
+                        )
+                    )
                     if dfs(i + 1, chosen + 1, covered | ordered_masks[i][z]):
                         return True
                     choice.pop()
@@ -1224,7 +1234,9 @@ def _full_sign_obstruction_distinct_line_certificate(
         "candidate_space_rule": candidate_space_rule,
         "distinct_line_rule": "at most one witness per affine line (choose z-slice)",
         "min_distinct_line_certificate_found": bool(found),
-        "min_distinct_line_certificate_size": (int(best_k) if best_k is not None else None),
+        "min_distinct_line_certificate_size": (
+            int(best_k) if best_k is not None else None
+        ),
         "min_distinct_line_certificate_witnesses": witness_rows,
         "line_distinctness_gap_vs_unconstrained": gap,
         "search_line_count": len(lines),
@@ -1438,7 +1450,9 @@ def _witness_orbit_stats(witnesses: list[dict]) -> dict:
         out = []
         for witness in wlist:
             mapped_pts = tuple(
-                sorted(_map_point(mat, shift, tuple(p)) for p in witness.get("line", []))
+                sorted(
+                    _map_point(mat, shift, tuple(p)) for p in witness.get("line", [])
+                )
             )
             new_z = int(_map_z(zmap, int(witness.get("z", 0))))
             new_sign = int(witness.get("sign_pm1", 1))

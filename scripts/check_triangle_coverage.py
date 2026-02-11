@@ -4,9 +4,12 @@
 Reports how many triangles have no consistent triple among the top-K candidates per edge.
 """
 from __future__ import annotations
+
 import json
-import numpy as np
 from itertools import product
+
+import numpy as np
+
 
 def generate_scaled_e8_roots() -> list:
     roots = set()
@@ -19,6 +22,7 @@ def generate_scaled_e8_roots() -> list:
                     v[j] = sj
                     roots.add(tuple(v))
     from itertools import product
+
     for signs in product((-1, 1), repeat=8):
         if sum(1 for s in signs if s < 0) % 2 == 0:
             roots.add(tuple(int(s) for s in signs))
@@ -86,10 +90,14 @@ def compute_embedding_matrix():
 
 def load_seed_k(k=30, seed_json=None):
     X, edges = compute_embedding_matrix()
-    A_mat = np.vstack([(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges])
+    A_mat = np.vstack(
+        [(X[i] - X[j]) / (np.linalg.norm(X[i] - X[j]) + 1e-12) for (i, j) in edges]
+    )
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     cost = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
     N_edges = len(A_mat)
@@ -99,9 +107,9 @@ def load_seed_k(k=30, seed_json=None):
     if seed_json:
         try:
             s = json.load(open(seed_json))
-            for sd in s.get('seed_edges', []):
-                eidx = sd.get('edge_index')
-                ridx = sd.get('root_index')
+            for sd in s.get("seed_edges", []):
+                eidx = sd.get("edge_index")
+                ridx = sd.get("root_index")
                 if eidx is not None and ridx is not None:
                     forced[int(eidx)] = int(ridx)
                     if ridx not in candidates[eidx]:
@@ -128,25 +136,25 @@ def enumerate_triangles(n, adj):
     return tris
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     k = 30
-    seed_json = 'checks/PART_CVII_e8_embedding_attempt_seed.json'
+    seed_json = "checks/PART_CVII_e8_embedding_attempt_seed.json"
     candidates, edges = load_seed_k(k=k, seed_json=seed_json)
     n, vertices, adj, _ = build_w33_graph()
     triangles = enumerate_triangles(n, adj)
 
     # map edge pair to index
     edge_index = {edges[i]: i for i in range(len(edges))}
-    edge_index.update({(j,i): idx for (i,j), idx in edge_index.items()})
+    edge_index.update({(j, i): idx for (i, j), idx in edge_index.items()})
 
     roots = generate_scaled_e8_roots()
 
     unsat = 0
     checked = 0
-    for (a,b,c) in triangles:
-        e_ab = edge_index.get((a,b))
-        e_bc = edge_index.get((b,c))
-        e_ac = edge_index.get((a,c))
+    for a, b, c in triangles:
+        e_ab = edge_index.get((a, b))
+        e_bc = edge_index.get((b, c))
+        e_ac = edge_index.get((a, c))
         if e_ab is None or e_bc is None or e_ac is None:
             continue
         checked += 1
@@ -154,7 +162,7 @@ if __name__ == '__main__':
         for r_ab in candidates[e_ab]:
             for r_bc in candidates[e_bc]:
                 # compute r_ac = r_ab + r_bc
-                r_ac = tuple(x+y for x,y in zip(roots[r_ab], roots[r_bc]))
+                r_ac = tuple(x + y for x, y in zip(roots[r_ab], roots[r_bc]))
                 # need r_ac to be one of allowed roots and present in candidates[e_ac]
                 # But our true constraint is r_ab + r_bc - r_ac == 0 => r_ac == r_ab + r_bc
                 for r_ac_idx in candidates[e_ac]:
@@ -167,4 +175,6 @@ if __name__ == '__main__':
                 break
         if not ok:
             unsat += 1
-    print(f"k={k} triangles_checked={checked} unsatisfiable_triangles={unsat} out_of={len(triangles)}")
+    print(
+        f"k={k} triangles_checked={checked} unsatisfiable_triangles={unsat} out_of={len(triangles)}"
+    )

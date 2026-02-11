@@ -24,7 +24,9 @@ import numpy as np
 
 
 def load_adj(path: Path) -> Dict[int, List[int]]:
-    lines = [l.strip() for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    lines = [
+        l.strip() for l in path.read_text(encoding="utf-8").splitlines() if l.strip()
+    ]
     adj = {}
     for i, line in enumerate(lines):
         parts = line.split()
@@ -33,7 +35,13 @@ def load_adj(path: Path) -> Dict[int, List[int]]:
     return adj
 
 
-def bfs_shortest_path(adj: Dict[int, List[int]], a: int, b: int, edge_to_root: Dict[str, List[int]] | None = None, require_roots: bool = False) -> List[int] | None:
+def bfs_shortest_path(
+    adj: Dict[int, List[int]],
+    a: int,
+    b: int,
+    edge_to_root: Dict[str, List[int]] | None = None,
+    require_roots: bool = False,
+) -> List[int] | None:
     """Return a shortest path from a to b. Tie-break by preferring paths with the
     fewest edges missing in the edge_to_root mapping (if provided).
 
@@ -53,7 +61,9 @@ def bfs_shortest_path(adj: Dict[int, List[int]], a: int, b: int, edge_to_root: D
         if node == b:
             return path
         prev = best.get(node)
-        if prev is not None and (prev[0] < dist or (prev[0] == dist and prev[1] <= missing)):
+        if prev is not None and (
+            prev[0] < dist or (prev[0] == dist and prev[1] <= missing)
+        ):
             continue
         best[node] = (dist, missing)
         for n in adj[node]:
@@ -115,8 +125,14 @@ def get_edge_root(edge_to_root: Dict[str, List[int]], a: int, b: int) -> List[in
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--outdir", type=Path, default=Path("analysis/minimal_commutator_cycles"))
-    p.add_argument("--require-root-edges", action="store_true", help="Only traverse edges that have E8 root mappings")
+    p.add_argument(
+        "--outdir", type=Path, default=Path("analysis/minimal_commutator_cycles")
+    )
+    p.add_argument(
+        "--require-root-edges",
+        action="store_true",
+        help="Only traverse edges that have E8 root mappings",
+    )
     args = p.parse_args()
 
     outdir = args.outdir
@@ -124,7 +140,13 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
 
     adj = load_adj(Path("W33_adjacency_matrix.txt"))
-    txj = json.loads((Path("analysis/w33_bundle_temp/analysis/W33_Heisenberg_generators_Tx_Ty_Z.json")).read_text())
+    txj = json.loads(
+        (
+            Path(
+                "analysis/w33_bundle_temp/analysis/W33_Heisenberg_generators_Tx_Ty_Z.json"
+            )
+        ).read_text()
+    )
     tx_perm = {int(k): int(v) for k, v in txj["Tx"]["perm_40"].items()}
     ty_perm = {int(k): int(v) for k, v in txj["Ty"]["perm_40"].items()}
 
@@ -142,10 +164,18 @@ def main():
 
     # H27 reps: pick t=0 vertices from the H27 CSV
     reps = []
-    for r in (Path("analysis/w33_bundle_temp/analysis/H27_vertices_as_F3_cube_xy_t_holonomy_gauge.csv")).read_text().splitlines():
+    for r in (
+        (
+            Path(
+                "analysis/w33_bundle_temp/analysis/H27_vertices_as_F3_cube_xy_t_holonomy_gauge.csv"
+            )
+        )
+        .read_text()
+        .splitlines()
+    ):
         if not r.strip() or r.startswith("w33_vertex"):
             continue
-        parts = r.split(',')
+        parts = r.split(",")
         w = int(parts[0])
         t = int(parts[3])
         if t == 0:
@@ -176,7 +206,9 @@ def main():
             segments = []
             ok = True
             for a, b in ((p0, p1), (p1, p2), (p2, p3), (p3, p4)):
-                sp = bfs_shortest_path(adj, a, b, edge_to_root, require_roots=require_root_edges)
+                sp = bfs_shortest_path(
+                    adj, a, b, edge_to_root, require_roots=require_root_edges
+                )
                 if sp is None:
                     ok = False
                     break
@@ -185,7 +217,9 @@ def main():
                 continue
 
             # closure from p4 back to p0
-            spc = bfs_shortest_path(adj, p4, p0, edge_to_root, require_roots=require_root_edges)
+            spc = bfs_shortest_path(
+                adj, p4, p0, edge_to_root, require_roots=require_root_edges
+            )
             if spc is None:
                 continue
 
@@ -212,9 +246,21 @@ def main():
             if cyc_can in cycles_by_canonical:
                 prev = cycles_by_canonical[cyc_can]
                 if length < prev["length"]:
-                    cycles_by_canonical[cyc_can] = {"length": length, "k": k, "u": (ux, uy), "v": (vx, vy), "representative": cycle_vertices}
+                    cycles_by_canonical[cyc_can] = {
+                        "length": length,
+                        "k": k,
+                        "u": (ux, uy),
+                        "v": (vx, vy),
+                        "representative": cycle_vertices,
+                    }
             else:
-                cycles_by_canonical[cyc_can] = {"length": length, "k": k, "u": (ux, uy), "v": (vx, vy), "representative": cycle_vertices}
+                cycles_by_canonical[cyc_can] = {
+                    "length": length,
+                    "k": k,
+                    "u": (ux, uy),
+                    "v": (vx, vy),
+                    "representative": cycle_vertices,
+                }
 
     # collect cycles and select those with minimal length overall
     all_cycles = []
@@ -233,7 +279,7 @@ def main():
 
     # compute root-word invariants
     rows = []
-    for idx, c in enumerate(sorted(minimal_cycles, key=lambda x: (x['k'], x['cycle']))):
+    for idx, c in enumerate(sorted(minimal_cycles, key=lambda x: (x["k"], x["cycle"]))):
         cyc = c["cycle"]
         k = c["k"]
         # ordered edges
@@ -252,28 +298,50 @@ def main():
             root_sum_mod3 = [int(x % 3) for x in root_sum]
         else:
             root_sum_mod3 = None
-        rows.append({
-            "id": idx,
-            "k": int(k),
-            "cycle_vertices": ",".join(str(x) for x in cyc),
-            "cycle_length": int(c["length"]),
-            "edge_roots_present": all(r is not None for r in roots),
-            "root_sum": root_sum,
-            "root_sum_mod3": root_sum_mod3,
-            "edge_roots": [r for r in roots],
-        })
+        rows.append(
+            {
+                "id": idx,
+                "k": int(k),
+                "cycle_vertices": ",".join(str(x) for x in cyc),
+                "cycle_length": int(c["length"]),
+                "edge_roots_present": all(r is not None for r in roots),
+                "root_sum": root_sum,
+                "root_sum_mod3": root_sum_mod3,
+                "edge_roots": [r for r in roots],
+            }
+        )
 
     # write outputs
-    (outdir / "minimal_holonomy_cycles_ordered_rootwords.json").write_text(json.dumps(rows, indent=2), encoding="utf-8")
+    (outdir / "minimal_holonomy_cycles_ordered_rootwords.json").write_text(
+        json.dumps(rows, indent=2), encoding="utf-8"
+    )
     # CSV summary
     import csv
 
     csvp = outdir / "minimal_holonomy_cycles_ordered_rootwords.csv"
     with csvp.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["id", "k", "cycle_length", "cycle_vertices", "edge_roots_present", "root_sum_mod3"])
+        w.writerow(
+            [
+                "id",
+                "k",
+                "cycle_length",
+                "cycle_vertices",
+                "edge_roots_present",
+                "root_sum_mod3",
+            ]
+        )
         for r in rows:
-            w.writerow([r['id'], r['k'], r['cycle_length'], r['cycle_vertices'], r['edge_roots_present'], json.dumps(r['root_sum_mod3'])])
+            w.writerow(
+                [
+                    r["id"],
+                    r["k"],
+                    r["cycle_length"],
+                    r["cycle_vertices"],
+                    r["edge_roots_present"],
+                    json.dumps(r["root_sum_mod3"]),
+                ]
+            )
 
     print(f"Wrote {outdir}")
 

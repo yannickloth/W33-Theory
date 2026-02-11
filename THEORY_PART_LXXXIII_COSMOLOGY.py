@@ -40,7 +40,8 @@ print("\n" + "=" * 70)
 print("SECTION 1: THE COSMOLOGICAL CONSTANT PROBLEM")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 THE COSMOLOGICAL CONSTANT PROBLEM:
 
 The observed cosmological constant is:
@@ -58,7 +59,8 @@ The ratio is:
 This is the WORST prediction in physics!
 
 CAN W33 HELP?
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 2: DIMENSIONAL ANALYSIS
@@ -69,7 +71,8 @@ print("SECTION 2: THE NUMBER 122")
 print("=" * 70)
 
 # 122 is suspiciously close to W33-related numbers
-print(f"""
+print(
+    f"""
 THE EXPONENT 122:
 
 Can we express 122 from W33?
@@ -89,7 +92,8 @@ DISCOVERY:
   122 = k² - m₂ + λ = 144 - 24 + 2 = 122 ✓
 
   Also: 122 = 3v + λ = 120 + 2 = 122 ✓
-""")
+"""
+)
 
 # Verify
 check1 = k**2 - m2 + λ_graph
@@ -108,7 +112,8 @@ print("=" * 70)
 # The exponent -122 can be written as -(k² - m₂ + λ)
 exponent = -(k**2 - m2 + λ_graph)
 
-print(f"""
+print(
+    f"""
 W33 PREDICTION FOR Λ:
 
 If the exponent is:
@@ -126,7 +131,8 @@ ALTERNATIVE FORMULA:
           = 10^(-122)
 
 The cosmological constant involves the SAME W33 parameters!
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 4: DARK ENERGY DENSITY
@@ -140,7 +146,8 @@ print("=" * 70)
 Omega_DE = 0.685  # dark energy fraction
 Omega_matter = 0.315  # matter fraction
 
-print(f"""
+print(
+    f"""
 DARK ENERGY FRACTION:
 
 Observed:
@@ -167,7 +174,8 @@ Can we get 0.685 from W33?
   W33: (m₂ - μ)/k = (24 - 4)/12 = 20/12 = 1.67 (close)
        m₂/k - μ/m₂ = 24/12 - 4/24 = 2 - 0.167 = 1.83 (closer!)
        (v - k)/k = 28/12 = 2.33 (close!)
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 5: INFLATION
@@ -177,7 +185,8 @@ print("\n" + "=" * 70)
 print("SECTION 5: INFLATION")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 INFLATION:
 
 The universe inflated by a factor of e^N where N ≈ 60 (e-folds).
@@ -202,7 +211,8 @@ be determined by W33:
   Mass: M_inflaton ~ M_GUT/v ~ 10¹⁴ GeV
 
   Slow-roll parameter: ε ~ 1/N² ~ 1/60² ~ 3 × 10⁻⁴
-""")
+"""
+)
 
 N_efolds = v + m2 - μ
 print(f"\nVerification: N = v + m₂ - μ = {N_efolds}")
@@ -222,7 +232,8 @@ t_universe_seconds = t_universe_years * 3.15e7
 
 ratio = t_universe_seconds / t_planck
 
-print(f"""
+print(
+    f"""
 AGE OF THE UNIVERSE:
 
   t_universe ≈ 13.8 billion years ≈ 4.4 × 10¹⁷ seconds
@@ -246,7 +257,8 @@ The age exponent is HALF the cosmological constant exponent!
 
 This makes sense: Λ has dimensions of (length)⁻² = (time)⁻²
 So the time ratio should be √(M_Pl⁴/Λ) ~ 10⁶¹
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 7: HUBBLE CONSTANT
@@ -260,7 +272,8 @@ print("=" * 70)
 H_0_kmsMpc = 67.4  # km/s/Mpc
 H_0_inv_years = 14.4e9  # 1/H_0 in years
 
-print(f"""
+print(
+    f"""
 HUBBLE CONSTANT:
 
   H₀ ≈ 67.4 km/s/Mpc
@@ -291,7 +304,8 @@ THIS MIGHT EXPLAIN THE HUBBLE TENSION!
   H₀(local) = v + m₂ + m₁ + 2λ + μ = 73
 
   The difference involves local (λ, μ) corrections!
-""")
+"""
+)
 
 H_CMB = v + m2 + m1 + λ_graph
 H_local = v + m2 + m1 + 2 * λ_graph + μ
@@ -307,7 +321,8 @@ print("\n" + "=" * 70)
 print("SECTION 8: SPATIAL GEOMETRY")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 SPATIAL CURVATURE:
 
 Observations: Universe is flat to high precision
@@ -328,7 +343,8 @@ might represent the TINY residual curvature!
   Ω_k ∝ (e₁ + e₂ + e₃)/v² = 10/1600 = 0.00625
 
 Actually quite close to the upper bound of |Ω_k| < 0.01!
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 9: ENTROPY AND HOLOGRAPHY
@@ -338,7 +354,8 @@ print("\n" + "=" * 70)
 print("SECTION 9: COSMIC ENTROPY")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 ENTROPY OF THE UNIVERSE:
 
 The entropy of the observable universe is estimated at:
@@ -367,7 +384,8 @@ Wait, 122 again! This is (k² - m₂ + λ)!
 
 The cosmological constant and holographic entropy
 share the same W33 exponent!
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 10: SUMMARY OF COSMOLOGICAL PREDICTIONS
@@ -377,7 +395,8 @@ print("\n" + "=" * 70)
 print("SECTION 10: COSMOLOGICAL PREDICTIONS SUMMARY")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 W33 COSMOLOGICAL PREDICTIONS:
 
 1. COSMOLOGICAL CONSTANT:
@@ -405,7 +424,8 @@ This single combination appears in:
   - Holographic entropy
 
 All of cosmology might flow from this one W33 number!
-""")
+"""
+)
 
 # =============================================================================
 # SAVE RESULTS
@@ -441,7 +461,8 @@ print("\n" + "=" * 70)
 print("PART LXXXIII CONCLUSIONS")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 W33 AND COSMOLOGY!
 
 KEY DISCOVERIES:
@@ -467,4 +488,5 @@ CAVEATS:
 BUT: The appearance of 122 in multiple places is striking!
 
 Results saved to PART_LXXXIII_cosmology.json
-""")
+"""
+)

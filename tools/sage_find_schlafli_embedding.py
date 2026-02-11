@@ -25,11 +25,13 @@ ART.mkdir(exist_ok=True)
 
 # reuse helpers from earlier module (we import by package path)
 sys.path.append(str(ROOT))
-from find_schlafli_embedding_in_w33 import (build_schlafli_adj,
-                                            compute_w33_lines,
-                                            compute_we6_orbits,
-                                            construct_e8_roots,
-                                            construct_w33_points)
+from find_schlafli_embedding_in_w33 import (
+    build_schlafli_adj,
+    compute_w33_lines,
+    compute_we6_orbits,
+    construct_e8_roots,
+    construct_w33_points,
+)
 
 
 def main():

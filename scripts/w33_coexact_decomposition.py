@@ -30,7 +30,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
 from w33_h1_decomposition import (
     J_matrix,
     build_incidence_matrix,
@@ -165,7 +166,9 @@ def main():
             if abs(w_C2[i] - w_C2[current[0]]) < tol_cluster:
                 current.append(i)
             else:
-                clusters.append((float(np.mean(w_C2[current])), len(current), current[:]))
+                clusters.append(
+                    (float(np.mean(w_C2[current])), len(current), current[:])
+                )
                 current = [i]
         clusters.append((float(np.mean(w_C2[current])), len(current), current[:]))
 
@@ -196,13 +199,17 @@ def main():
 
             chi_sq_avg_i = chi_sq_i / group_size
             is_irr = abs(chi_sq_avg_i - 1.0) < 0.1
-            print(f"    Component {ci} (dim {mult}): <|chi|^2> = {chi_sq_avg_i:.6f} {'IRREDUCIBLE' if is_irr else 'REDUCIBLE'}")
-            component_info.append({
-                "dimension": mult,
-                "C2_eigenvalue": float(val),
-                "chi_sq_avg": float(chi_sq_avg_i),
-                "irreducible": bool(is_irr),
-            })
+            print(
+                f"    Component {ci} (dim {mult}): <|chi|^2> = {chi_sq_avg_i:.6f} {'IRREDUCIBLE' if is_irr else 'REDUCIBLE'}"
+            )
+            component_info.append(
+                {
+                    "dimension": mult,
+                    "C2_eigenvalue": float(val),
+                    "chi_sq_avg": float(chi_sq_avg_i),
+                    "irreducible": bool(is_irr),
+                }
+            )
 
         results[name] = {
             "dimension": d,
@@ -225,10 +232,16 @@ def main():
             r = results[name]
             total_components += r["commutant_dim"]
             all_dims.extend(r["components"])
-            status = "IRREDUCIBLE" if r["irreducible"] else f"{r['commutant_dim']} components: {' + '.join(map(str, r['components']))}"
+            status = (
+                "IRREDUCIBLE"
+                if r["irreducible"]
+                else f"{r['commutant_dim']} components: {' + '.join(map(str, r['components']))}"
+            )
             print(f"  {name:15s} (dim {r['dimension']:3d}): {status}")
 
-    print(f"\n  TOTAL: C_1 = 240 = {' + '.join(map(str, sorted(all_dims, reverse=True)))}")
+    print(
+        f"\n  TOTAL: C_1 = 240 = {' + '.join(map(str, sorted(all_dims, reverse=True)))}"
+    )
     print(f"  Number of irreducible components: {total_components}")
 
     # Physical interpretation
@@ -268,7 +281,16 @@ def main():
     out_path = Path.cwd() / "checks" / f"PART_CVII_sector_decomposition_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, default=lambda x: int(x) if isinstance(x, (np.integer,)) else float(x) if isinstance(x, (np.floating,)) else x)
+        json.dump(
+            results,
+            f,
+            indent=2,
+            default=lambda x: (
+                int(x)
+                if isinstance(x, (np.integer,))
+                else float(x) if isinstance(x, (np.floating,)) else x
+            ),
+        )
     print(f"\n  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 

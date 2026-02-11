@@ -51,7 +51,8 @@ print("\n" + "-" * 70)
 print(" SECTION 2: THE TOMOTOPE")
 print("-" * 70)
 
-print("""
+print(
+    """
   The TOMOTOPE is a 4-dimensional polytope with exactly 192 FLAGS.
 
   A FLAG in a polytope is a maximal chain of faces:
@@ -67,7 +68,8 @@ print("""
   - Coxeter groups (W(D4))
   - Polytope geometry (tomotope)
   - Root systems (D4 = SO(8))
-""")
+"""
+)
 
 results["tomotope_flags"] = 192
 results["connection"] = "tomotope_flags = |W(D4)| = 192"
@@ -80,7 +82,8 @@ print(" SECTION 3: THE 24-CELL")
 print("-" * 70)
 
 cell24_symmetry = 1152
-print(f"""
+print(
+    f"""
   The 24-CELL is a regular 4-polytope with:
   - 24 vertices (positions of D4 roots!)
   - 96 edges
@@ -96,7 +99,8 @@ print(f"""
 
   The 24-cell is the ONLY regular 4-polytope that is self-dual.
   Its vertices ARE the 24 roots of D4!
-""")
+"""
+)
 
 print(f"  Verification: {order_d4} × 6 = {order_d4 * 6} ✓")
 results["24cell_symmetry"] = cell24_symmetry
@@ -108,7 +112,8 @@ print("\n" + "-" * 70)
 print(" SECTION 4: DECOMPOSITIONS OF 192")
 print("-" * 70)
 
-print(f"""
+print(
+    f"""
   192 admits remarkable factorizations:
 
   TRIALITY DECOMPOSITION:
@@ -129,7 +134,8 @@ print(f"""
   GENERATION DECOMPOSITION:
     192 = 3 × 64 = 3 × 4³
     Three generations, each with 4³ = 64 states
-""")
+"""
+)
 
 # =========================================================================
 # SECTION 5: Connection to W33
@@ -140,7 +146,8 @@ print("-" * 70)
 
 w_e6 = 51840
 quotient = w_e6 // order_d4
-print(f"""
+print(
+    f"""
   THE W33 HIERARCHY:
 
   |W(D4)| = {order_d4}         (tomotope flags)
@@ -155,11 +162,13 @@ print(f"""
   This says:
     W(E6) = W(D4) × (E6 fund × SO(10) vector)
     51840 = 192 × 270
-""")
+"""
+)
 
 results["quotient"] = quotient
 
-print(f"""
+print(
+    f"""
   W33 EIGENVALUE MULTIPLICITIES:
 
   λ = 12: multiplicity 1   (trivial)
@@ -169,7 +178,8 @@ print(f"""
   The 24-dimensional eigenspace corresponds to D4!
 
   And: 24 × 8 = {24 * 8} = |W(D4)| = tomotope flags!
-""")
+"""
+)
 
 # =========================================================================
 # SECTION 6: Physical Interpretation - Three Generations
@@ -178,7 +188,8 @@ print("\n" + "-" * 70)
 print(" SECTION 6: PHYSICAL INTERPRETATION - THREE GENERATIONS")
 print("-" * 70)
 
-print("""
+print(
+    """
   THE TOMOTOPE EXPLAINS THREE GENERATIONS:
 
   D4 Triality: The D4 Dynkin diagram has S₃ symmetry
@@ -200,7 +211,8 @@ print("""
 
   This is why Nature has EXACTLY 3 generations!
   The number 3 is forced by D4 triality geometry.
-""")
+"""
+)
 
 # =========================================================================
 # SECTION 7: The Complete Hierarchy
@@ -210,7 +222,8 @@ print(" SECTION 7: THE COMPLETE HIERARCHY")
 print("-" * 70)
 
 w_e8 = 696729600
-print(f"""
+print(
+    f"""
   ROOT SYSTEM    |WEYL GROUP|   PHYSICAL ROLE
   ─────────────────────────────────────────────────
   D4             {order_d4:>12}   Triality (3 generations)
@@ -223,7 +236,8 @@ print(f"""
 
   The tomotope (192 flags) sits at the BASE of this hierarchy,
   encoding the fundamental triality that gives rise to generations.
-""")
+"""
+)
 
 results["hierarchy"] = {
     "W_D4": order_d4,
@@ -239,7 +253,8 @@ print("\n" + "=" * 70)
 print(" SUMMARY: THE TOMOTOPE-W33 CONNECTION")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
   ESTABLISHED CONNECTIONS:
 
   1. |W(D4)| = 192 = Tomotope flags ✓
@@ -266,7 +281,8 @@ print(f"""
   W33 → unifying framework
 
   ═══════════════════════════════════════════════════════════════════
-""")
+"""
+)
 
 # Save results
 results["timestamp"] = datetime.now().isoformat()

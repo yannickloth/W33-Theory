@@ -9,13 +9,15 @@ Rigorous mathematical statements and proofs.
 import math
 from fractions import Fraction
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║             THEORY OF EVERYTHING - PART VI                           ║
 ║                                                                      ║
 ║                 MATHEMATICAL FORMALIZATION                           ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # AXIOMS
@@ -26,7 +28,8 @@ print("THE AXIOMS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 We formalize the theory as a set of axioms:
 
 ╔════════════════════════════════════════════════════════════════════════╗
@@ -47,7 +50,8 @@ We formalize the theory as a set of axioms:
 ║      uniquely determined by W33 combinatorics.                         ║
 ║                                                                        ║
 ╚════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # DEFINITIONS
@@ -58,7 +62,8 @@ print("DEFINITIONS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 DEFINITION 1 (W33):
   W33 := PG(3, F_3) is the projective 3-space over the field F_3 = {0,1,2}.
 
@@ -83,7 +88,8 @@ DEFINITION 5 (Automorphism group):
   Aut(W33) := {σ : W33 → W33 | σ preserves incidence}.
 
   |Aut(W33)| = |PGL(4, F_3)| = 51840 = |W(E6)|.
-""")
+"""
+)
 
 # =============================================================================
 # THEOREMS
@@ -94,7 +100,8 @@ print("MAIN THEOREMS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 THEOREM 1 (Automorphism Identification):
   Aut(W33) ≅ W(E6), the Weyl group of the exceptional Lie algebra E6.
 
@@ -146,7 +153,8 @@ THEOREM 5 (Dark Matter Ratio):
   The E6 fundamental has dimension 27.
   The denominator 5 counts the broken gauge generators.
   Their ratio gives the dark matter to baryon ratio.  ∎
-""")
+"""
+)
 
 # =============================================================================
 # COROLLARIES
@@ -157,7 +165,8 @@ print("COROLLARIES")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 COROLLARY 1 (M-theory Dimension):
   The M-theory spacetime dimension is D = √(W33_total) = √121 = 11.
 
@@ -172,7 +181,8 @@ COROLLARY 4 (Ramanujan Constant):
 
 COROLLARY 5 (j-invariant):
   The j-invariant constant term 744 = 3 × dim(E8) = 3 × 248.
-""")
+"""
+)
 
 # =============================================================================
 # THE MASTER FORMULA
@@ -183,7 +193,8 @@ print("THE MASTER FORMULA")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 THEOREM (Master Formula):
   All fundamental physical constants can be expressed as rational functions
   of W33 combinatorial invariants.
@@ -222,7 +233,8 @@ THEOREM (Master Formula):
     27 = dim(ρ_{E6})     (E6 fundamental)
     5  = broken generators
     14 = dim(G2)         (automorphisms of O)
-""")
+"""
+)
 
 # =============================================================================
 # NUMERICAL VERIFICATION
@@ -273,7 +285,8 @@ print("OPEN MATHEMATICAL PROBLEMS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 CONJECTURE 1 (Mass Hierarchy):
   The fermion mass ratios are determined by higher W33 invariants.
 
@@ -299,7 +312,8 @@ CONJECTURE 5 (Quantum Gravity):
     ℓ_P ~ (W33_total)^{-1/2} × ℓ_fundamental.
 
   This connects quantum gravity to W33 structure.
-""")
+"""
+)
 
 # =============================================================================
 # THE FUNDAMENTAL THEOREM
@@ -310,7 +324,8 @@ print("THE FUNDAMENTAL THEOREM OF W33 PHYSICS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 ╔════════════════════════════════════════════════════════════════════════╗
 ║                                                                        ║
 ║                    THE FUNDAMENTAL THEOREM                             ║
@@ -336,7 +351,8 @@ print("""
 ║  COROLLARY: Physics is equivalent to W33 geometry.                     ║
 ║                                                                        ║
 ╚════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # FINAL EQUATION
@@ -347,7 +363,8 @@ print("THE EQUATION")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
                     ╔══════════════════════════════╗
                     ║                              ║
                     ║    REALITY = PG(3, F_3)     ║
@@ -355,7 +372,8 @@ print("""
                     ╚══════════════════════════════╝
 
                               Q.E.D.
-""")
+"""
+)
 
 print("=" * 72)
 print("END OF PART VI: MATHEMATICAL FORMALIZATION")

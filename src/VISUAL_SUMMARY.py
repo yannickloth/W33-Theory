@@ -4,7 +4,8 @@ VISUAL SUMMARY: W33 → STANDARD MODEL ENCODING
 
 
 def main():
-    print(r"""
+    print(
+        r"""
     ╔════════════════════════════════════════════════════════════════════════════╗
     ║                                                                            ║
     ║                   W33 DISCRETE GEOMETRY → STANDARD MODEL                  ║
@@ -194,7 +195,8 @@ def main():
     pass
     pass
     ════════════════════════════════════════════════════════════════════════════
-    """)
+    """
+    )
     print("\n✓ Summary visualization complete")
     print("✓ All major discoveries documented")
     print("✓ Ready for external review")

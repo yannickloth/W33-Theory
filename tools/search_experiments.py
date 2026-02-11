@@ -22,8 +22,7 @@ def triangle_count_for_mapping(mapping: List[int], roots: List[List[int]]):
     R = np.array(roots, dtype=int)
     dotm = R @ R.T
     # Reconstruct adjacency triangles in same manner as local_search
-    from tools.search_equivariant_bijection_hillclimb import \
-        build_adjacency_list
+    from tools.search_equivariant_bijection_hillclimb import build_adjacency_list
 
     _, adj = build_adjacency_list()
     triangles = []

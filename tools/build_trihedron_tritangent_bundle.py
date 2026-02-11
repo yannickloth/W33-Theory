@@ -111,7 +111,9 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
     # heuristic find CSVs
     h27_csv = find_csv(data_dir, ["h27", "vertices", "schlaefli"])
     n12_csv = find_csv(data_dir, ["n12", "steiner", "trihedra", "trihedron"])
-    plane_edges_csv = find_csv(data_dir, ["plane_internal", "internal_tritangent", "edges"])
+    plane_edges_csv = find_csv(
+        data_dir, ["plane_internal", "internal_tritangent", "edges"]
+    )
     missing_csv = find_csv(data_dir, ["missing_9_tritangent", "missing_9", "missing9"])
     partition_csv = find_csv(data_dir, ["plane_point_triangles_partition", "partition"])
 
@@ -131,7 +133,11 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
             label = None
             idx = None
             for k in r:
-                if "label" in k.lower() or "schlafli" in k.lower() or "schlaefli" in k.lower():
+                if (
+                    "label" in k.lower()
+                    or "schlafli" in k.lower()
+                    or "schlaefli" in k.lower()
+                ):
                     label = r[k].strip()
                 if "h27" in k.lower() or "vertex" in k.lower() or "id" == k.lower():
                     try:
@@ -154,7 +160,12 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
                 if "n12" in kl or "trihedron" in kl or "id" == kl or "index" in kl:
                     if r[k].strip():
                         nid = r[k].strip()
-                if "plane" in kl or "tritangent" in kl or "planes" in kl or "triads" in kl:
+                if (
+                    "plane" in kl
+                    or "tritangent" in kl
+                    or "planes" in kl
+                    or "triads" in kl
+                ):
                     planes = canonical_split_list(r[k])
             if nid is None:
                 # try to form id from row order
@@ -176,7 +187,11 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
             # heuristics: find a 'plane' or 'label' field or combine three line labels
             found = False
             for k in r:
-                if "plane" in k.lower() or "tritangent" in k.lower() or "label" in k.lower():
+                if (
+                    "plane" in k.lower()
+                    or "tritangent" in k.lower()
+                    or "label" in k.lower()
+                ):
                     vals = canonical_split_list(r[k])
                     for v in vals:
                         missing_planes.add(v)
@@ -209,14 +224,20 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
     heis_path = ROOT / "artifacts" / "e6_cubic_affine_heisenberg_model.json"
     if not partition_csv and heis_path.exists():
         heis = json.loads(heis_path.read_text(encoding="utf-8"))
-        triads = [tuple(sorted(tri)) for item in heis.get("affine_u_lines", []) for tri in item.get("triads", [])]
+        triads = [
+            tuple(sorted(tri))
+            for item in heis.get("affine_u_lines", [])
+            for tri in item.get("triads", [])
+        ]
         # label triads by index
         for i, tri in enumerate(triads):
             lab = f"T{i:02d}"
             plane_to_lines[lab] = [str(x) for x in tri]
 
     # If N12 data used plane labels that aren't yet in plane_to_lines, keep them but unknown lines
-    all_plane_labels = set(plane_to_lines.keys()) | {p for t in trihedra.values() for p in (t["planes"] or [])}
+    all_plane_labels = set(plane_to_lines.keys()) | {
+        p for t in trihedra.values() for p in (t["planes"] or [])
+    }
 
     # Build bipartite graph
     G = nx.Graph()
@@ -236,7 +257,22 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
     # classify planes by Schläfli labels if available
     def classify_plane_lines(lines: List[str]) -> str:
         # classify by containing patterns E_ / L_ / Q_
-        cats = [None if not l else ("E" if l.upper().startswith("E") else ("L" if l.upper().startswith("L") else ("Q" if l.upper().startswith("Q") else "?"))) for l in lines]
+        cats = [
+            (
+                None
+                if not l
+                else (
+                    "E"
+                    if l.upper().startswith("E")
+                    else (
+                        "L"
+                        if l.upper().startswith("L")
+                        else ("Q" if l.upper().startswith("Q") else "?")
+                    )
+                )
+            )
+            for l in lines
+        ]
         counts = {"E": 0, "L": 0, "Q": 0, "?": 0}
         for c in cats:
             if c in counts:
@@ -256,14 +292,27 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
                 G.nodes[n]["type"] = None
 
     # Save basic outputs
-    out_trihedra = [{"id": tid, "planes": data["planes"]} for tid, data in trihedra.items()]
+    out_trihedra = [
+        {"id": tid, "planes": data["planes"]} for tid, data in trihedra.items()
+    ]
     out_planes = []
     for node, data in G.nodes(data=True):
         if node[0] == "plane":
-            out_planes.append({"id": node[1], "lines": data.get("lines"), "missing": bool(data.get("missing")), "type": data.get("type")})
+            out_planes.append(
+                {
+                    "id": node[1],
+                    "lines": data.get("lines"),
+                    "missing": bool(data.get("missing")),
+                    "type": data.get("type"),
+                }
+            )
 
-    (out_dir / "trihedra.json").write_text(json.dumps({"trihedra": out_trihedra}, indent=2), encoding="utf-8")
-    (out_dir / "tritangent_planes.json").write_text(json.dumps({"planes": out_planes}, indent=2), encoding="utf-8")
+    (out_dir / "trihedra.json").write_text(
+        json.dumps({"trihedra": out_trihedra}, indent=2), encoding="utf-8"
+    )
+    (out_dir / "tritangent_planes.json").write_text(
+        json.dumps({"planes": out_planes}, indent=2), encoding="utf-8"
+    )
 
     # write graph
     nx.write_gml(G, out_dir / "incidence_graph.gml")
@@ -273,18 +322,27 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
     if we6_path.exists() or run_we6:
         # attempt to create if missing
         if not we6_path.exists():
-            print("we6 action missing; attempting to run export_we6_signed_action_on_27.py")
+            print(
+                "we6 action missing; attempting to run export_we6_signed_action_on_27.py"
+            )
             try:
                 import importlib.util
 
-                tool = _load_module(ROOT / "tools" / "export_we6_signed_action_on_27.py", "export_we6_signed_action_on_27")
+                tool = _load_module(
+                    ROOT / "tools" / "export_we6_signed_action_on_27.py",
+                    "export_we6_signed_action_on_27",
+                )
                 tool.main()
             except Exception as e:
                 print("Warning: failed to generate we6 action:", e)
 
         if we6_path.exists():
             act = json.loads(we6_path.read_text(encoding="utf-8"))
-            gens = [g["permutation"] for g in act.get("generators", []) if g.get("permutation")]
+            gens = [
+                g["permutation"]
+                for g in act.get("generators", [])
+                if g.get("permutation")
+            ]
 
             # build triad index list if not built yet (from plane_to_lines mapping)
             # We will try to find mapping from plane labels to triads of 27-ids
@@ -350,8 +408,13 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
             # write orbit results
             outp = {"triad_list_count": len(triad_list)}
             if triad_orbits is not None:
-                outp["triad_orbits_size_counts"] = {str(len(set(tuple(o) for o in orb))): len(orb) for orb in triad_orbits}
-            (out_dir / "trihedron_tritangent_orbits.json").write_text(json.dumps(outp, indent=2), encoding="utf-8")
+                outp["triad_orbits_size_counts"] = {
+                    str(len(set(tuple(o) for o in orb))): len(orb)
+                    for orb in triad_orbits
+                }
+            (out_dir / "trihedron_tritangent_orbits.json").write_text(
+                json.dumps(outp, indent=2), encoding="utf-8"
+            )
 
     # Write a short markdown report
     md = []
@@ -370,8 +433,12 @@ def build_incidence(data_dir: Path, out_dir: Path, run_we6: bool = True) -> None
     for k, v in sorted(types.items()):
         md.append(f"- {k}: `{v}`")
     md.append("")
-    md.append(f"- JSON outputs: `{out_dir}/trihedra.json`, `{out_dir}/tritangent_planes.json`, `{out_dir}/incidence_graph.gml`")
-    (out_dir / "trihedron_tritangent_report.md").write_text("\n".join(md), encoding="utf-8")
+    md.append(
+        f"- JSON outputs: `{out_dir}/trihedra.json`, `{out_dir}/tritangent_planes.json`, `{out_dir}/incidence_graph.gml`"
+    )
+    (out_dir / "trihedron_tritangent_report.md").write_text(
+        "\n".join(md), encoding="utf-8"
+    )
 
     # Package output directory into a zip for easy download
     try:
@@ -392,7 +459,11 @@ def main():
     p.add_argument("--bundle-zip", type=Path, default=None)
     p.add_argument("--bundle-dir", type=Path, default=None)
     p.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
-    p.add_argument("--no-we6", action="store_true", help="Don't attempt to generate/use W(E6) action")
+    p.add_argument(
+        "--no-we6",
+        action="store_true",
+        help="Don't attempt to generate/use W(E6) action",
+    )
     args = p.parse_args()
 
     if args.bundle_zip and args.bundle_zip.exists():
@@ -400,7 +471,9 @@ def main():
     elif args.bundle_dir and args.bundle_dir.exists():
         data_dir = args.bundle_dir
     else:
-        raise RuntimeError("Either --bundle-zip or --bundle-dir must point to existing data")
+        raise RuntimeError(
+            "Either --bundle-zip or --bundle-dir must point to existing data"
+        )
 
     build_incidence(data_dir, args.out_dir, run_we6=not args.no_we6)
 

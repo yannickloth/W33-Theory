@@ -16,10 +16,12 @@ from pathlib import Path
 
 import numpy as np
 
-from src.finite_geometry.veldmap import (gf2_rank_from_generators,
-                                         load_triangles,
-                                         neighborhoods_from_triangles,
-                                         point_hyperplanes)
+from src.finite_geometry.veldmap import (
+    gf2_rank_from_generators,
+    load_triangles,
+    neighborhoods_from_triangles,
+    point_hyperplanes,
+)
 
 OUT_DIR = Path("bundles/v23_toe_finish/v23")
 OUT_JSON = OUT_DIR / "veld_summary_extended.json"

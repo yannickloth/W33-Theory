@@ -57,40 +57,45 @@ def count_tri_satisfied(predicted: dict, roots, edge_entries) -> (int, int):
     edge_to_pair = {}
     for eidx in edge_entries:
         ent = edge_entries[eidx]
-        if ent.get('edge'):
-            pair = tuple(map(int, ent['edge']))
+        if ent.get("edge"):
+            pair = tuple(map(int, ent["edge"]))
         else:
-            pair = (int(ent.get('v_i', 0)), int(ent.get('v_j', 0)))
+            pair = (int(ent.get("v_i", 0)), int(ent.get("v_j", 0)))
         edge_to_pair[int(eidx)] = pair
     pair_to_edge = {tuple(sorted(v)): k for k, v in edge_to_pair.items()}
     nverts = 40
     adj = {i: set() for i in range(nverts)}
-    for (i, j) in edge_to_pair.values():
-        adj[i].add(j); adj[j].add(i)
+    for i, j in edge_to_pair.values():
+        adj[i].add(j)
+        adj[j].add(i)
     triangles = []
     for a in range(nverts):
         for b in sorted(adj[a]):
-            if b <= a: continue
+            if b <= a:
+                continue
             for c in sorted(adj[b]):
-                if c <= b: continue
+                if c <= b:
+                    continue
                 if a in adj[c]:
                     e_ab = pair_to_edge[(a, b)]
                     e_bc = pair_to_edge[(b, c)]
                     e_ac = pair_to_edge[(a, c)]
                     triangles.append((e_ab, e_bc, e_ac))
     tri_ok = 0
-    for (e1, e2, e3) in triangles:
+    for e1, e2, e3 in triangles:
         r1 = roots[predicted[e1]]
         r2 = roots[predicted[e2]]
         r3 = roots[predicted[e3]]
         ok = all(int(r1[i] + r2[i]) == int(r3[i]) for i in range(8))
-        if ok: tri_ok += 1
+        if ok:
+            tri_ok += 1
     return tri_ok, len(triangles)
 
 
 def score_pred(predicted, roots, edge_entries):
     vals = list(predicted.values())
     from collections import Counter
+
     cnt = Counter(vals)
     duplicates = sum(v - 1 for v in cnt.values() if v > 1)
     bij = 1 if duplicates == 0 else 0
@@ -103,7 +108,7 @@ def run_sa_for_base(edge_entries, gens, inv_gens, roots, base_root, budget_sec=6
     # determine n_src
     max_tok = -1
     for ent in edge_entries.values():
-        for tok in ent.get('word', []) or []:
+        for tok in ent.get("word", []) or []:
             if tok >= 0:
                 max_tok = max(max_tok, tok)
             else:
@@ -121,7 +126,9 @@ def run_sa_for_base(edge_entries, gens, inv_gens, roots, base_root, budget_sec=6
 
     # compute initial
     best_pred = apply_sigma_to_words(edge_entries, gens, inv_gens, sigma, base_root)
-    best_score, best_bij, best_tri_ok, best_dup = score_pred(best_pred, roots, edge_entries)
+    best_score, best_bij, best_tri_ok, best_dup = score_pred(
+        best_pred, roots, edge_entries
+    )
     best_sigma = list(sigma)
 
     # current score corresponding to current sigma
@@ -147,7 +154,9 @@ def run_sa_for_base(edge_entries, gens, inv_gens, roots, base_root, budget_sec=6
                 newt = random.choice(unused)
                 old = sigma_new[i]
                 sigma_new[i] = newt
-        pred_new = apply_sigma_to_words(edge_entries, gens, inv_gens, sigma_new, base_root)
+        pred_new = apply_sigma_to_words(
+            edge_entries, gens, inv_gens, sigma_new, base_root
+        )
         score_new, bij2, tri_ok2, dup2 = score_pred(pred_new, roots, edge_entries)
         # acceptance: compare to current sigma score; update best if improved
         if score_new > score_curr:
@@ -165,7 +174,7 @@ def run_sa_for_base(edge_entries, gens, inv_gens, roots, base_root, budget_sec=6
             frac = (time.time() - start) / budget_sec
             T = T0 * (1 - frac) + 1e-6
             delta = score_new - score_curr
-            exponent = delta / (T * 1e3) if T > 0 else -float('inf')
+            exponent = delta / (T * 1e3) if T > 0 else -float("inf")
             # clamp exponent to avoid overflow in math.exp
             if exponent > 700:
                 p = 1.0
@@ -176,45 +185,72 @@ def run_sa_for_base(edge_entries, gens, inv_gens, roots, base_root, budget_sec=6
             if random.random() < p:
                 sigma = sigma_new
                 score_curr = score_new
-    return {'base': base_root, 'best_score': best_score, 'best_bij': int(best_bij), 'best_tri_ok': int(best_tri_ok), 'best_dup': int(best_dup), 'best_sigma': best_sigma, 'best_pred': best_pred}
+    return {
+        "base": base_root,
+        "best_score": best_score,
+        "best_bij": int(best_bij),
+        "best_tri_ok": int(best_tri_ok),
+        "best_dup": int(best_dup),
+        "best_sigma": best_sigma,
+        "best_pred": best_pred,
+    }
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--time-limit', type=float, default=600.0, help='Total time budget in seconds')
-    parser.add_argument('--per-base', type=float, default=None, help='Time budget per base (overrides automatic splitting)')
-    parser.add_argument('--local-repair', action='store_true', help='Run local repair on best seed after search')
-    parser.add_argument('--local-time', type=float, default=120.0, help='Local repair time limit in seconds')
+    parser.add_argument(
+        "--time-limit", type=float, default=600.0, help="Total time budget in seconds"
+    )
+    parser.add_argument(
+        "--per-base",
+        type=float,
+        default=None,
+        help="Time budget per base (overrides automatic splitting)",
+    )
+    parser.add_argument(
+        "--local-repair",
+        action="store_true",
+        help="Run local repair on best seed after search",
+    )
+    parser.add_argument(
+        "--local-time",
+        type=float,
+        default=120.0,
+        help="Local repair time limit in seconds",
+    )
     args = parser.parse_args()
 
-    canonical_path = ROOT / 'artifacts' / 'edge_root_bijection_canonical.json'
+    canonical_path = ROOT / "artifacts" / "edge_root_bijection_canonical.json"
     canonical = load_json(canonical_path)
-    edge_entries = {int(e['edge_index']): e for e in canonical}
+    edge_entries = {int(e["edge_index"]): e for e in canonical}
 
-    gen_map_path = ROOT / 'artifacts' / 'sp43_we6_generator_map_full_we6.json'
+    gen_map_path = ROOT / "artifacts" / "sp43_we6_generator_map_full_we6.json"
     gen_data = load_json(gen_map_path)
-    gens = gen_data.get('generators')
+    gens = gen_data.get("generators")
     inv_gens = [invert_perm(g) for g in gens]
 
     # roots
     import importlib.util as _importlib_util
-    spec = _importlib_util.spec_from_file_location('compute_double_sixes', str(ROOT / 'tools' / 'compute_double_sixes.py'))
+
+    spec = _importlib_util.spec_from_file_location(
+        "compute_double_sixes", str(ROOT / "tools" / "compute_double_sixes.py")
+    )
     cds = _importlib_util.module_from_spec(spec)
     spec.loader.exec_module(cds)
     roots = cds.construct_e8_roots()
 
     # base candidates
-    scan_path = ROOT / 'checks' / 'PART_CVII_coset_base_scan.json'
+    scan_path = ROOT / "checks" / "PART_CVII_coset_base_scan.json"
     bases = []
     if scan_path.exists():
         dd = load_json(scan_path)
-        tops = dd.get('top', [])
-        bases = [t['base_root'] for t in tops[:10]]
+        tops = dd.get("top", [])
+        bases = [t["base_root"] for t in tops[:10]]
     # canonical base
     canonical_base = None
     for ent in edge_entries.values():
-        if not ent.get('word'):
-            canonical_base = int(ent['root_index'])
+        if not ent.get("word"):
+            canonical_base = int(ent["root_index"])
             break
     if canonical_base is not None:
         bases.insert(0, canonical_base)
@@ -235,33 +271,71 @@ def main():
         budget = min(per_base, remain)
         print(f"Searching base {base} with budget {budget:.1f}s")
         res = run_sa_for_base(edge_entries, gens, inv_gens, roots, base, budget)
-        print(f"base {base} -> bij {res['best_bij']} tri_ok {res['best_tri_ok']} dup {res['best_dup']}")
-        if best_overall is None or res['best_score'] > best_overall['best_score']:
+        print(
+            f"base {base} -> bij {res['best_bij']} tri_ok {res['best_tri_ok']} dup {res['best_dup']}"
+        )
+        if best_overall is None or res["best_score"] > best_overall["best_score"]:
             best_overall = res
 
     # write results
-    (ROOT / 'checks' / 'PART_CVII_generator_correspondence_sa.json').write_text(json.dumps(best_overall, indent=2))
+    (ROOT / "checks" / "PART_CVII_generator_correspondence_sa.json").write_text(
+        json.dumps(best_overall, indent=2)
+    )
     # write mapping artifact
-    preds = best_overall['best_pred']
+    preds = best_overall["best_pred"]
     map_list = []
     for eidx in sorted(preds.keys()):
         ent = edge_entries[eidx]
         r = int(preds[eidx])
-        map_list.append({'edge_index': int(eidx), 'edge': ent.get('edge', [int(ent.get('v_i',0)), int(ent.get('v_j',0))]), 'root_index': r})
-    (ROOT / 'artifacts' / 'edge_root_bijection_genmap_sa_best.json').write_text(json.dumps(map_list, indent=2))
-    print('Wrote SA best mapping and summary to checks/PART_CVII_generator_correspondence_sa.json')
+        map_list.append(
+            {
+                "edge_index": int(eidx),
+                "edge": ent.get(
+                    "edge", [int(ent.get("v_i", 0)), int(ent.get("v_j", 0))]
+                ),
+                "root_index": r,
+            }
+        )
+    (ROOT / "artifacts" / "edge_root_bijection_genmap_sa_best.json").write_text(
+        json.dumps(map_list, indent=2)
+    )
+    print(
+        "Wrote SA best mapping and summary to checks/PART_CVII_generator_correspondence_sa.json"
+    )
 
     if args.local_repair:
         # create seed file and run local_repair
-        seed = {'seed_edges': [{'edge_index':int(it['edge_index']),'edge':it['edge'],'root_index':int(it['root_index'])} for it in map_list]}
-        seed_path = ROOT / 'checks' / 'PART_CVII_e8_embedding_genmap_sa_seed.json'
+        seed = {
+            "seed_edges": [
+                {
+                    "edge_index": int(it["edge_index"]),
+                    "edge": it["edge"],
+                    "root_index": int(it["root_index"]),
+                }
+                for it in map_list
+            ]
+        }
+        seed_path = ROOT / "checks" / "PART_CVII_e8_embedding_genmap_sa_seed.json"
         seed_path.write_text(json.dumps(seed, indent=2))
-        print('Wrote seed', seed_path)
+        print("Wrote seed", seed_path)
         import subprocess
-        cmd = ['py','-3','scripts/local_repair_matching.py','--k','30','--time-limit',str(int(args.local_time)),'--seed-json',str(seed_path),'--tries','500000']
-        print('Running local repair:', ' '.join(cmd))
-        subprocess.run(' '.join(cmd), shell=True)
+
+        cmd = [
+            "py",
+            "-3",
+            "scripts/local_repair_matching.py",
+            "--k",
+            "30",
+            "--time-limit",
+            str(int(args.local_time)),
+            "--seed-json",
+            str(seed_path),
+            "--tries",
+            "500000",
+        ]
+        print("Running local repair:", " ".join(cmd))
+        subprocess.run(" ".join(cmd), shell=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -10,12 +10,12 @@ not available or nothing to commit and returns a (success, message) tuple.
 """
 from __future__ import annotations
 
+import json
 import shutil
 import subprocess
-from typing import List, Optional, Tuple
 from datetime import datetime
 from pathlib import Path
-import json
+from typing import List, Optional, Tuple
 
 
 def is_git_repo() -> bool:
@@ -100,7 +100,10 @@ def git_add_commit(
 
         # If nothing to commit, report that explicitly
         status_proc = subprocess.run(
-            ["git", "status", "--porcelain"], check=True, stdout=subprocess.PIPE, text=True
+            ["git", "status", "--porcelain"],
+            check=True,
+            stdout=subprocess.PIPE,
+            text=True,
         )
         if not status_proc.stdout.strip():
             return False, "nothing to commit"
@@ -119,7 +122,12 @@ def git_add_commit(
         if proc.returncode != 0:
             out = (proc.stdout or "") + (proc.stderr or "")
             # If commit still fails due to hooks or unstaged changes, try a normal commit retry
-            if "hook" in out.lower() or "pre-commit" in out.lower() or "rolling back fixes" in out.lower() or "unstaged" in out.lower():
+            if (
+                "hook" in out.lower()
+                or "pre-commit" in out.lower()
+                or "rolling back fixes" in out.lower()
+                or "unstaged" in out.lower()
+            ):
                 try:
                     subprocess.run(["git", "add", "-A"], check=False)
                     proc2 = subprocess.run(
@@ -148,12 +156,22 @@ def git_add_commit(
                     subprocess.run(["git", "fetch", "origin"], check=True)
                     # check if remote branch exists
                     exists_proc = subprocess.run(
-                        ["git", "rev-parse", "--verify", f"origin/{branch}"], check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+                        ["git", "rev-parse", "--verify", f"origin/{branch}"],
+                        check=False,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
                     )
                     if exists_proc.returncode == 0:
                         # check divergence between local HEAD and origin/branch
                         rv = subprocess.run(
-                            ["git", "rev-list", "--left-right", "--count", f"HEAD...origin/{branch}"],
+                            [
+                                "git",
+                                "rev-list",
+                                "--left-right",
+                                "--count",
+                                f"HEAD...origin/{branch}",
+                            ],
                             check=True,
                             stdout=subprocess.PIPE,
                             text=True,
@@ -174,10 +192,24 @@ def git_add_commit(
                             )
                             if rebase_proc.returncode != 0:
                                 # rebase failed; abort and push to a new timestamped branch to avoid overwriting
-                                subprocess.run(["git", "rebase", "--abort"], check=False)
+                                subprocess.run(
+                                    ["git", "rebase", "--abort"], check=False
+                                )
                                 new_branch = f"{branch}-auto-{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}"
-                                subprocess.run(["git", "push", "-u", "origin", f"HEAD:refs/heads/{new_branch}"], check=True)
-                                return True, f"committed; remote {branch} had new commits, pushed to new branch {new_branch}"
+                                subprocess.run(
+                                    [
+                                        "git",
+                                        "push",
+                                        "-u",
+                                        "origin",
+                                        f"HEAD:refs/heads/{new_branch}",
+                                    ],
+                                    check=True,
+                                )
+                                return (
+                                    True,
+                                    f"committed; remote {branch} had new commits, pushed to new branch {new_branch}",
+                                )
                     # otherwise safe to push to the requested branch
                     subprocess.run(["git", "push", "-u", "origin", branch], check=True)
                 else:

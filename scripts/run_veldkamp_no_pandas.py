@@ -4,9 +4,11 @@ import traceback
 from pathlib import Path
 
 try:
-    from src.finite_geometry.veldmap import (neighborhoods_from_triangles,
-                                             point_hyperplanes,
-                                             veldkamp_space_from_generators)
+    from src.finite_geometry.veldmap import (
+        neighborhoods_from_triangles,
+        point_hyperplanes,
+        veldkamp_space_from_generators,
+    )
 
     p = Path("bundles/v23_toe_finish/v23/Q_triangles_with_centers_Z2_S3_fiber6.csv")
     print("CSV exists:", p.exists())

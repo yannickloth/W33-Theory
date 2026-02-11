@@ -55,7 +55,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from w33_homology import build_clique_complex, boundary_matrix, build_w33
+from w33_homology import boundary_matrix, build_clique_complex, build_w33
 
 
 class NumpyEncoder(json.JSONEncoder):
@@ -122,7 +122,7 @@ def main():
     # Standard formulas: eigenvalues are k, r, s where
     # r, s are roots of x^2 - (lambda - mu)x - (k - mu) = 0
     # x^2 - (2-4)x - (12-4) = x^2 + 2x - 8 = (x+4)(x-2) = 0
-    r_eig = 2   # multiplicity f
+    r_eig = 2  # multiplicity f
     s_eig = -4  # multiplicity g
     # Multiplicities: f + g = n - 1 = 39, and k + f*r + g*s = 0
     # 12 + 2f - 4g = 0, f + g = 39
@@ -190,8 +190,8 @@ def main():
 
     # Verify
     exact_ok = (
-        spectrum_L0.get(round(pred_exact_1, 6), 0) == f_mult and
-        spectrum_L0.get(round(pred_exact_2, 6), 0) == g_mult
+        spectrum_L0.get(round(pred_exact_1, 6), 0) == f_mult
+        and spectrum_L0.get(round(pred_exact_2, 6), 0) == g_mult
     )
     print(f"  VERIFIED: {exact_ok}")
 
@@ -215,8 +215,13 @@ def main():
 
     # Single eigenvalue prediction
     pred_coexact = 3 * n_tri / rank_B2  # = 480 / 120 = 4
-    print(f"\n  PREDICTION: single co-exact eigenvalue = trace / rank = {3*n_tri} / {rank_B2} = {pred_coexact}")
-    coexact_ok = len(spectrum_B2tB2) == 1 and abs(list(spectrum_B2tB2.keys())[0] - pred_coexact) < 1e-6
+    print(
+        f"\n  PREDICTION: single co-exact eigenvalue = trace / rank = {3*n_tri} / {rank_B2} = {pred_coexact}"
+    )
+    coexact_ok = (
+        len(spectrum_B2tB2) == 1
+        and abs(list(spectrum_B2tB2.keys())[0] - pred_coexact) < 1e-6
+    )
     print(f"  VERIFIED: {coexact_ok}")
 
     # Why single eigenvalue? Triangle regularity!
@@ -224,11 +229,15 @@ def main():
     B2B2t = B2 @ B2.T  # m x m
     diag_B2B2t = np.diag(B2B2t)
     all_diag_lambda = np.allclose(diag_B2B2t, lambda_param)
-    print(f"\n  Each edge in exactly lambda = {lambda_param} triangles (diag(B2 B2^T) = {lambda_param}): {all_diag_lambda}")
+    print(
+        f"\n  Each edge in exactly lambda = {lambda_param} triangles (diag(B2 B2^T) = {lambda_param}): {all_diag_lambda}"
+    )
 
     # Each triangle in exactly 1 tetrahedron
     # This forces the signed overlap structure of B2 to be maximally uniform
-    print(f"  Each triangle in exactly 1 tetrahedron: {n_tet} tetrahedra, {n_tri} triangles, ratio = {n_tri/n_tet:.0f}")
+    print(
+        f"  Each triangle in exactly 1 tetrahedron: {n_tet} tetrahedra, {n_tri} triangles, ratio = {n_tri/n_tet:.0f}"
+    )
 
     # ================================================================
     # PART 2: Hodge decomposition orthogonality verification
@@ -292,7 +301,8 @@ def main():
     rank_E8 = 8
     roots_E8 = 240
 
-    print(f"""
+    print(
+        f"""
   E8 Lie algebra: dim = {dim_E8} = {rank_E8} + {roots_E8}
                                   = rank + |roots|
 
@@ -312,7 +322,8 @@ def main():
     Harmonic sector ({b1}):         H1(W33) = matter fields (g1 in Z3-grading)
     Co-exact sector ({rank_B2}):    im(B2) = positive roots of E8
     Exact sector ({rank_D}):        im(D^T) = vertex-boundary forms
-""")
+"""
+    )
 
     # Verify: 39 = n - 1 corresponds to what in E8?
     # n - 1 = 39 = dim(im D^T)
@@ -344,7 +355,8 @@ def main():
     print(f"\n{'='*72}")
     print(f"  COMPLETE EIGENVALUE TABLE")
     print(f"{'='*72}")
-    print(f"""
+    print(
+        f"""
   Eigenvalue | Multiplicity | Source              | E8 role
   -----------+--------------+---------------------+-----------------
        0     |      81      | ker(L1) = H1        | Matter (g1)
@@ -355,7 +367,8 @@ def main():
   Total:     |     240      |                     | E8 root system
   + Cartan:  |       8      | rank(E8)            |
   = E8:      |     248      |                     | Complete algebra
-""")
+"""
+    )
 
     elapsed = time.time() - t0
 
@@ -368,10 +381,26 @@ def main():
         },
         "hodge_spectrum": {str(k): v for k, v in sorted(spectrum_L1.items())},
         "derivation": {
-            "harmonic": {"eigenvalue": 0, "multiplicity": b1, "formula": f"|E| - rank(D) - rank(B2) = {m} - {rank_D} - {rank_B2}"},
-            "co_exact": {"eigenvalue": pred_coexact, "multiplicity": rank_B2, "formula": f"3 * n_tri / rank(B2) = {3*n_tri} / {rank_B2}"},
-            "exact_10": {"eigenvalue": pred_exact_1, "multiplicity": f_mult, "formula": f"k - r = {k_reg} - {r_eig}"},
-            "exact_16": {"eigenvalue": pred_exact_2, "multiplicity": g_mult, "formula": f"k - s = {k_reg} - ({s_eig})"},
+            "harmonic": {
+                "eigenvalue": 0,
+                "multiplicity": b1,
+                "formula": f"|E| - rank(D) - rank(B2) = {m} - {rank_D} - {rank_B2}",
+            },
+            "co_exact": {
+                "eigenvalue": pred_coexact,
+                "multiplicity": rank_B2,
+                "formula": f"3 * n_tri / rank(B2) = {3*n_tri} / {rank_B2}",
+            },
+            "exact_10": {
+                "eigenvalue": pred_exact_1,
+                "multiplicity": f_mult,
+                "formula": f"k - r = {k_reg} - {r_eig}",
+            },
+            "exact_16": {
+                "eigenvalue": pred_exact_2,
+                "multiplicity": g_mult,
+                "formula": f"k - s = {k_reg} - ({s_eig})",
+            },
         },
         "e8_reconstruction": {
             "dim_E8": dim_E8,

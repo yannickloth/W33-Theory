@@ -46,6 +46,7 @@ candidates = [
 ]
 
 import os
+
 # run dreadnaut via WSL using the first candidate that exists
 import shlex
 

@@ -27,7 +27,11 @@ def invert_perm(perm: List[int]) -> List[int]:
 
 def build_w33_edges() -> List[Tuple[int, int]]:
     F3 = [0, 1, 2]
-    vectors = [v for v in __import__("itertools").product(F3, repeat=4) if any(x != 0 for x in v)]
+    vectors = [
+        v
+        for v in __import__("itertools").product(F3, repeat=4)
+        if any(x != 0 for x in v)
+    ]
 
     proj_points = []
     seen = set()
@@ -53,39 +57,45 @@ def build_w33_edges() -> List[Tuple[int, int]]:
     return edges
 
 
-def count_tri_satisfied(predicted: dict, roots: List[Tuple[int, ...]], edge_entries: dict) -> Tuple[int, int]:
+def count_tri_satisfied(
+    predicted: dict, roots: List[Tuple[int, ...]], edge_entries: dict
+) -> Tuple[int, int]:
     # build vertex adjacency and pair_to_edge from edge_entries
     edge_to_pair = {}
     for eidx in edge_entries:
         ent = edge_entries[eidx]
-        if ent.get('edge'):
-            pair = tuple(map(int, ent['edge']))
+        if ent.get("edge"):
+            pair = tuple(map(int, ent["edge"]))
         else:
-            pair = (int(ent.get('v_i',0)), int(ent.get('v_j',0)))
+            pair = (int(ent.get("v_i", 0)), int(ent.get("v_j", 0)))
         edge_to_pair[int(eidx)] = pair
     pair_to_edge = {tuple(sorted(v)): k for k, v in edge_to_pair.items()}
     nverts = 40
     adj = {i: set() for i in range(nverts)}
-    for (i, j) in edge_to_pair.values():
-        adj[i].add(j); adj[j].add(i)
+    for i, j in edge_to_pair.values():
+        adj[i].add(j)
+        adj[j].add(i)
     triangles = []
     for a in range(nverts):
         for b in sorted(adj[a]):
-            if b <= a: continue
+            if b <= a:
+                continue
             for c in sorted(adj[b]):
-                if c <= b: continue
+                if c <= b:
+                    continue
                 if a in adj[c]:
                     e_ab = pair_to_edge[(a, b)]
                     e_bc = pair_to_edge[(b, c)]
                     e_ac = pair_to_edge[(a, c)]
                     triangles.append((e_ab, e_bc, e_ac))
     tri_ok = 0
-    for (e1, e2, e3) in triangles:
+    for e1, e2, e3 in triangles:
         r1 = roots[predicted[e1]]
         r2 = roots[predicted[e2]]
         r3 = roots[predicted[e3]]
         ok = all(int(r1[i] + r2[i]) == int(r3[i]) for i in range(8))
-        if ok: tri_ok += 1
+        if ok:
+            tri_ok += 1
     return tri_ok, len(triangles)
 
 
@@ -102,7 +112,10 @@ def main():
     # load E8 roots via compute_double_sixes (if available)
     try:
         import importlib.util as _importlib_util
-        spec = _importlib_util.spec_from_file_location("compute_double_sixes", str(ROOT / "tools" / "compute_double_sixes.py"))
+
+        spec = _importlib_util.spec_from_file_location(
+            "compute_double_sixes", str(ROOT / "tools" / "compute_double_sixes.py")
+        )
         cds = _importlib_util.module_from_spec(spec)
         spec.loader.exec_module(cds)
         roots = cds.construct_e8_roots()
@@ -116,20 +129,33 @@ def main():
     mix_orbs = [oi for oi, sz in enumerate(orbit_sizes) if sz == 27]
     # su3 weight projection (local helper)
     import numpy as _np
+
     SU3_ALPHA = _np.array([1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     SU3_BETA = _np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0])
+
     def su3_weight(r):
         A = _np.stack([SU3_ALPHA, SU3_BETA], axis=1)
         G = A.T @ A
         coeffs = _np.linalg.solve(G, A.T @ _np.array(r))
         # return integer pair as used elsewhere
-        return (int(round(float(_np.dot(r, SU3_ALPHA)))), int(round(float(_np.dot(r, SU3_BETA)))))
+        return (
+            int(round(float(_np.dot(r, SU3_ALPHA)))),
+            int(round(float(_np.dot(r, SU3_BETA)))),
+        )
+
     weights = {oi: su3_weight(roots[orbits[oi][0]]) for oi in mix_orbs}
     weights_3 = {(1, 0), (-1, 1), (0, -1)}
-    color_orbs = sorted([oi for oi in mix_orbs if weights[oi] in weights_3], key=lambda x: weights[x])
+    color_orbs = sorted(
+        [oi for oi in mix_orbs if weights[oi] in weights_3], key=lambda x: weights[x]
+    )
     import argparse
+
     p = argparse.ArgumentParser()
-    p.add_argument('--all-roots', action='store_true', help='scan all 240 root indices instead of only color orbit roots')
+    p.add_argument(
+        "--all-roots",
+        action="store_true",
+        help="scan all 240 root indices instead of only color orbit roots",
+    )
     args = p.parse_args()
     if args.all_roots:
         candidates = list(range(len(roots)))
@@ -155,7 +181,9 @@ def main():
             preds[eidx] = int(p)
         bij = len(set(preds.values())) == len(preds)
         tri_ok, tri_tot = count_tri_satisfied(preds, roots, edge_entries)
-        results.append({"base_root": b, "bijective": bij, "tri_ok": tri_ok, "tri_total": tri_tot})
+        results.append(
+            {"base_root": b, "bijective": bij, "tri_ok": tri_ok, "tri_total": tri_tot}
+        )
 
     results.sort(key=lambda r: r["tri_ok"], reverse=True)
     out = {"candidates_tested": len(results), "top": results[:10]}

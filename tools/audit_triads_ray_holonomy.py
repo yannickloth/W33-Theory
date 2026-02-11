@@ -43,25 +43,35 @@ def main():
     p.add_argument("--triad-csv", type=Path, required=True)
     p.add_argument("--bundle-dir", type=Path, required=True)
     p.add_argument("--mub-phase-csv", type=Path, default=None)
-    p.add_argument("--out-json", type=Path, default=Path("analysis/triad_ray_holonomy_vs_record.json"))
+    p.add_argument(
+        "--out-json",
+        type=Path,
+        default=Path("analysis/triad_ray_holonomy_vs_record.json"),
+    )
     args = p.parse_args()
 
     triad_csv = args.triad_csv
     bundle_dir = args.bundle_dir
-    mub_csv = args.mub_phase_csv if args.mub_phase_csv else bundle_dir / "analysis" / "qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv"
+    mub_csv = (
+        args.mub_phase_csv
+        if args.mub_phase_csv
+        else bundle_dir
+        / "analysis"
+        / "qutrit_MUB_state_vectors_for_N12_vertices_phase_corrected.csv"
+    )
     mub = parse_mub_csv(mub_csv)
 
     # compute k_edge for all unordered pairs among N12 vertices present in 'mub'
-    k_edge: Dict[Tuple[int,int], int] = {}
+    k_edge: Dict[Tuple[int, int], int] = {}
     nids = sorted(mub.keys())
     for i in range(len(nids)):
-        for j in range(i+1, len(nids)):
+        for j in range(i + 1, len(nids)):
             a = nids[i]
             b = nids[j]
             ip = np.vdot(mub[a], mub[b])
             k = quantize_phase(ip)
-            k_edge[(a,b)] = k
-            k_edge[(b,a)] = (-k) % 12  # orientation might flip sign
+            k_edge[(a, b)] = k
+            k_edge[(b, a)] = (-k) % 12  # orientation might flip sign
 
     total = 0
     matches = 0
@@ -75,9 +85,9 @@ def main():
             rec = int(r["hol_mod12"]) if r.get("hol_mod12") else 0
             if (a not in mub) or (b not in mub) or (c not in mub):
                 continue
-            kab = k_edge.get((a,b))
-            kbc = k_edge.get((b,c))
-            kca = k_edge.get((c,a))
+            kab = k_edge.get((a, b))
+            kbc = k_edge.get((b, c))
+            kca = k_edge.get((c, a))
             if kab is None or kbc is None or kca is None:
                 continue
             hol = (kab + kbc + kca) % 12
@@ -85,13 +95,26 @@ def main():
             if hol == rec:
                 matches += 1
             else:
-                mismatches.append({"triad": (a,b,c), "recorded": rec, "computed": int(hol), "kvals": (int(kab), int(kbc), int(kca))})
+                mismatches.append(
+                    {
+                        "triad": (a, b, c),
+                        "recorded": rec,
+                        "computed": int(hol),
+                        "kvals": (int(kab), int(kbc), int(kca)),
+                    }
+                )
 
-    out = {"total_triads": total, "matches": matches, "match_fraction": matches / total if total else None, "mismatches_sample": mismatches[:30]}
+    out = {
+        "total_triads": total,
+        "matches": matches,
+        "match_fraction": matches / total if total else None,
+        "mismatches_sample": mismatches[:30],
+    }
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(f"Wrote {args.out_json}")
     print(json.dumps(out, indent=2))
+
 
 if __name__ == "__main__":
     main()

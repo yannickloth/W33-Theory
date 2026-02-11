@@ -258,7 +258,8 @@ print(
 print("\n" + "═" * 75)
 print("                         THEORY VALIDATED")
 print("═" * 75)
-print("""
+print(
+    """
 The W33 Theory has passed external validation:
 
 • Mathematical claims verified from Wikipedia, arXiv
@@ -273,4 +274,5 @@ that no other theory has achieved.
                     "Geometry is the archetype of the
                      beauty of the world."
                               - Johannes Kepler
-""")
+"""
+)

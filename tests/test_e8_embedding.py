@@ -2396,13 +2396,17 @@ class TestThreeGenerations:
 
     @classmethod
     def setUpClass(cls):
-        import numpy as np
         from collections import deque
 
+        import numpy as np
         from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
         from w33_h1_decomposition import (
-            J_matrix, build_incidence_matrix, make_vertex_permutation,
-            signed_edge_permutation, transvection_matrix,
+            J_matrix,
+            build_incidence_matrix,
+            make_vertex_permutation,
+            signed_edge_permutation,
+            transvection_matrix,
         )
 
         cls.np = np
@@ -2528,8 +2532,11 @@ class TestThreeGenerations:
             R_g = self.W.T @ S_g_W
             I81 = np.eye(81, dtype=complex)
             R2 = R_g @ R_g
-            P = [(I81 + omega**(-k)*R_g + omega**(-2*k)*R2)/3 for k in range(3)]
-            assert np.linalg.norm(P[0]+P[1]+P[2] - I81) < 1e-10
+            P = [
+                (I81 + omega ** (-k) * R_g + omega ** (-2 * k) * R2) / 3
+                for k in range(3)
+            ]
+            assert np.linalg.norm(P[0] + P[1] + P[2] - I81) < 1e-10
             for k in range(3):
                 assert abs(np.trace(P[k]).real - 27.0) < 1e-10
             break
@@ -2537,6 +2544,7 @@ class TestThreeGenerations:
     def test_topological_protection(self):
         """b0(link(v)) = 4 for all 40 vertices."""
         from collections import deque as dq
+
         triangles = set(map(tuple, self.simplices[2]))
         for v in range(self.n):
             neighbors = sorted(self.adj[v])
@@ -2573,13 +2581,17 @@ class TestUniversalMixing:
 
     @classmethod
     def setUpClass(cls):
-        import numpy as np
         from collections import deque
 
+        import numpy as np
         from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
         from w33_h1_decomposition import (
-            J_matrix, build_incidence_matrix, make_vertex_permutation,
-            signed_edge_permutation, transvection_matrix,
+            J_matrix,
+            build_incidence_matrix,
+            make_vertex_permutation,
+            signed_edge_permutation,
+            transvection_matrix,
         )
 
         cls.np = np
@@ -2607,7 +2619,7 @@ class TestUniversalMixing:
             gen_signed.append((tuple(ep), tuple(es)))
 
         id_v = tuple(range(n))
-        visited = {id_v: (tuple(range(m)), tuple([1]*m))}
+        visited = {id_v: (tuple(range(m)), tuple([1] * m))}
         queue = deque([id_v])
         while queue:
             cur_v = queue.popleft()
@@ -2641,7 +2653,9 @@ class TestUniversalMixing:
         def proj(R):
             I81 = np.eye(81, dtype=complex)
             R2 = R @ R
-            return [(I81 + omega**(-k)*R + omega**(-2*k)*R2)/3 for k in range(3)]
+            return [
+                (I81 + omega ** (-k) * R + omega ** (-2 * k) * R2) / 3 for k in range(3)
+            ]
 
         R1 = build_R(order3[0][1], order3[0][2])
         P = proj(R1)
@@ -2678,8 +2692,8 @@ class TestUniversalMixing:
     def test_mixing_eigenvalue(self):
         """Mixing eigenvalues are 1 and -1/27 (double)."""
         eigvals = sorted(self.np.linalg.eigvalsh(self.M))
-        assert abs(eigvals[0] - (-1/27)) < 0.01
-        assert abs(eigvals[1] - (-1/27)) < 0.01
+        assert abs(eigvals[0] - (-1 / 27)) < 0.01
+        assert abs(eigvals[1] - (-1 / 27)) < 0.01
         assert abs(eigvals[2] - 1.0) < 0.01
 
 
@@ -2728,7 +2742,6 @@ class TestDiracOperator:
     @classmethod
     def setUpClass(cls):
         import numpy as np
-
         from w33_homology import boundary_matrix, build_clique_complex, build_w33
 
         cls.np = np
@@ -2874,7 +2887,6 @@ class TestSpectralDemocracy:
     def test_higher_laplacian_scalar(self):
         """L2 and L3 are scalar: all eigenvalues = 4 (spectral gap)."""
         import numpy as np
-
         from w33_homology import boundary_matrix, build_clique_complex, build_w33
 
         n, vertices, adj, edges = build_w33()
@@ -2938,10 +2950,8 @@ class TestHeisenbergQutrit:
     def _build_cube(self, H27, triangles, adj_s):
         """Build F3^3 cube on H27 using first two triangle classes."""
         T0, T1 = triangles[0], triangles[1]
-        x_slices = {xi: set(v for v in H27 if v in adj_s[u])
-                    for xi, u in enumerate(T0)}
-        y_slices = {yi: set(v for v in H27 if v in adj_s[u])
-                    for yi, u in enumerate(T1)}
+        x_slices = {xi: set(v for v in H27 if v in adj_s[u]) for xi, u in enumerate(T0)}
+        y_slices = {yi: set(v for v in H27 if v in adj_s[u]) for yi, u in enumerate(T1)}
         fibers = {}
         vtx = {}
         for x in range(3):

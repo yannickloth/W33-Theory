@@ -27,7 +27,8 @@ print("\n" + "=" * 70)
 print("THEORETICAL FORMULAS")
 print("=" * 70)
 
-print("""
+print(
+    """
 For the symplectic polar space W(2n-1, q):
 
   # points = (q^{2n} - 1) / (q - 1) = q^{2n-1} + q^{2n-2} + ... + q + 1
@@ -60,7 +61,8 @@ For W(3, q) (type C₂):
   q=3: dim = 81 ✓
   q=4: dim = 256
   q=5: dim = 625
-""")
+"""
+)
 
 # =============================================================================
 # COMPUTE W(3, q) FOR SMALL q
@@ -158,7 +160,8 @@ print("\n" + "=" * 70)
 print("HOMOLOGY PREDICTIONS FOR W(3, q)")
 print("=" * 70)
 
-print("""
+print(
+    """
 For W(3, q) (symplectic polar space of rank 2 over GF(q)):
 
   H₁ = Z^{q⁴} (Steinberg representation)
@@ -175,7 +178,8 @@ Predicted values:
   q = 7: dim(H₁) = 2401, π₁ = F₂₄₀₁
 
 The pattern: dim(H₁) = q^{n²} for type C_n
-""")
+"""
+)
 
 # =============================================================================
 # HIGHER RANK: W(5, q) = Sp(6, q)
@@ -184,7 +188,8 @@ print("\n" + "=" * 70)
 print("HIGHER RANK: W(5, q) FROM Sp(6, q)")
 print("=" * 70)
 
-print("""
+print(
+    """
 For W(5, q) (symplectic polar space of rank 3 over GF(q)):
 
   Type: C₃
@@ -200,7 +205,8 @@ The building for Sp(6, q) is 2-dimensional (apartments are hexagons).
 Prediction:
   H₂(W(5,q)) contains the Steinberg representation!
   (Not H₁ - the building dimension shifts the homology degree)
-""")
+"""
+)
 
 # =============================================================================
 # THE PATTERN
@@ -209,7 +215,8 @@ print("\n" + "=" * 70)
 print("★ THE UNIVERSAL PATTERN ★")
 print("=" * 70)
 
-print("""
+print(
+    """
 For symplectic polar space W(2n-1, q) of rank n:
 
   1. Building dimension: n - 1
@@ -234,7 +241,8 @@ The case n = 3 would give:
   - W(5, q) ≃ ⋁_{q⁹} S²  (bouquet of 2-spheres)
   - π₂ would be free abelian of rank q⁹
   - π₁ would be trivial (simply connected!)
-""")
+"""
+)
 
 # =============================================================================
 # TABLE OF W(n, q) SPACES
@@ -243,7 +251,8 @@ print("\n" + "=" * 70)
 print("TABLE: W(2n-1, q) POLAR SPACES")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔═══════════════════════════════════════════════════════════════════════╗
 ║  Space    │ Type │ Building dim │ # Points │ Steinberg dim │ Homotopy ║
 ╠═══════════════════════════════════════════════════════════════════════╣
@@ -258,7 +267,8 @@ Specific values for q = 3:
   W(3, 3): 40 points, dim(St) = 81,   ≃ ⋁₈₁ S¹   ← THIS IS W33!
   W(5, 3): 364 points, dim(St) = 19683, ≃ ⋁₁₉₆₈₃ S²
   W(7, 3): 3280 points, dim(St) = 43046721, ≃ ⋁_{43046721} S³
-""")
+"""
+)
 
 # Let's verify W(1, 3)
 print("\n" + "=" * 70)

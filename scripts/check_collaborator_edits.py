@@ -9,7 +9,7 @@ import json
 import subprocess
 import time
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 def get_recent_commits(n: int = 10) -> List[Dict[str, Any]]:
@@ -37,7 +37,15 @@ def get_recent_commits(n: int = 10) -> List[Dict[str, Any]]:
                 text=True,
             )
             files = [f for f in proc2.stdout.splitlines() if f.strip()]
-            commits.append({"hash": h, "author": author, "date": date, "subject": subject, "files": files})
+            commits.append(
+                {
+                    "hash": h,
+                    "author": author,
+                    "date": date,
+                    "subject": subject,
+                    "files": files,
+                }
+            )
         return commits
     except Exception:
         return []

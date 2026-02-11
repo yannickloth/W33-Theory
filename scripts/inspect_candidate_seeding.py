@@ -13,16 +13,27 @@ from pathlib import Path
 import numpy as np
 
 try:
-    from scripts.solve_e8_embedding_cpsat import compute_embedding_matrix, generate_scaled_e8_roots, build_edge_vectors
+    from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
+        compute_embedding_matrix,
+        generate_scaled_e8_roots,
+    )
 except Exception:
     import sys as _sys
 
     _sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from scripts.solve_e8_embedding_cpsat import compute_embedding_matrix, generate_scaled_e8_roots, build_edge_vectors
+    from scripts.solve_e8_embedding_cpsat import (
+        build_edge_vectors,
+        compute_embedding_matrix,
+        generate_scaled_e8_roots,
+    )
 
 
 def find_latest_candidate():
-    files = sorted(glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"), key=lambda p: Path(p).stat().st_mtime)
+    files = sorted(
+        glob.glob("committed_artifacts/PART_CVII_z3_candidate_*.json"),
+        key=lambda p: Path(p).stat().st_mtime,
+    )
     return Path(files[-1]) if files else None
 
 
@@ -35,13 +46,15 @@ def main():
     cand = Path(args.candidate) if args.candidate else find_latest_candidate()
     if not cand or not cand.exists():
         raise FileNotFoundError("No candidate file found")
-    print('Inspecting candidate:', cand)
+    print("Inspecting candidate:", cand)
 
     X, edges = compute_embedding_matrix()
     A_mat = build_edge_vectors(X, edges)
     roots = generate_scaled_e8_roots()
     roots_arr = np.array(roots, dtype=int)
-    roots_unit = roots_arr.astype(float) / np.linalg.norm(roots_arr.astype(float), axis=1, keepdims=True)
+    roots_unit = roots_arr.astype(float) / np.linalg.norm(
+        roots_arr.astype(float), axis=1, keepdims=True
+    )
 
     dists = np.linalg.norm(A_mat[:, None, :] - roots_unit[None, :, :], axis=2)
     nearest = dists.argmin(axis=1)
@@ -52,18 +65,30 @@ def main():
 
     metrics = []
     for ei in range(dists.shape[0]):
-        metrics.append((ei, int(nearest[ei]), float(nearest_d[ei]), float(second_d[ei]), float(second_d[ei]-nearest_d[ei])))
+        metrics.append(
+            (
+                ei,
+                int(nearest[ei]),
+                float(nearest_d[ei]),
+                float(second_d[ei]),
+                float(second_d[ei] - nearest_d[ei]),
+            )
+        )
 
     metrics.sort(key=lambda t: (t[2], -t[4]))
-    print('Top by smallest nearest distance (best match):')
+    print("Top by smallest nearest distance (best match):")
     for t in metrics[: args.top]:
-        print(f'edge {t[0]:4d}: root {t[1]:3d}, nearest {t[2]:.4f}, second {t[3]:.4f}, gap {t[4]:.4f}')
+        print(
+            f"edge {t[0]:4d}: root {t[1]:3d}, nearest {t[2]:.4f}, second {t[3]:.4f}, gap {t[4]:.4f}"
+        )
 
-    print('\nTop by gap (second-nearest - nearest):')
+    print("\nTop by gap (second-nearest - nearest):")
     metrics_gap = sorted(metrics, key=lambda t: -t[4])
     for t in metrics_gap[: args.top]:
-        print(f'edge {t[0]:4d}: root {t[1]:3d}, nearest {t[2]:.4f}, second {t[3]:.4f}, gap {t[4]:.4f}')
+        print(
+            f"edge {t[0]:4d}: root {t[1]:3d}, nearest {t[2]:.4f}, second {t[3]:.4f}, gap {t[4]:.4f}"
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

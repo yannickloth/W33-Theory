@@ -20,9 +20,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy.stats import entropy
 
-from scripts.quantum_photonics.run_gbs import (build_interferometer,
-                                               compute_threshold_probs,
-                                               sample_gbs)
+from scripts.quantum_photonics.run_gbs import (
+    build_interferometer,
+    compute_threshold_probs,
+    sample_gbs,
+)
 
 repo = Path(__file__).resolve().parents[2]
 out_json = (

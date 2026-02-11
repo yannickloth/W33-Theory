@@ -5,7 +5,9 @@ from pathlib import Path
 
 def test_committed_candidates_have_conjugacy_fields():
     conj_files = sorted(glob.glob("checks/PART_CVII_z3_conjugacy_*.json"))
-    assert conj_files, "No conjugacy file found in checks/; run w33_z3_conjugacy_classes.py"
+    assert (
+        conj_files
+    ), "No conjugacy file found in checks/; run w33_z3_conjugacy_classes.py"
     conj = json.loads(open(conj_files[-1], encoding="utf-8").read())
     conj_map = {int(r["index"]): r for r in conj.get("results", [])}
 

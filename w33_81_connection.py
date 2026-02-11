@@ -154,7 +154,8 @@ print("\n" + "=" * 70)
 print("SCHUBERT CELLS AND THE 81")
 print("=" * 70)
 
-print("""
+print(
+    """
 The 81 apartments through a flag relate to SCHUBERT CELLS!
 
 In building theory, fixing a flag (called a "chamber") gives a
@@ -179,7 +180,8 @@ For C₂ with q=3:
   Sum = 3⁰ + 3¹ + 3¹ + 3² + 3² + 3³ + 3³ + 3⁴
       = 1 + 3 + 3 + 9 + 9 + 27 + 27 + 81
       = 160... wait, that's not 81.
-""")
+"""
+)
 
 # Let me recalculate
 print("Poincaré polynomial for type C₂:")
@@ -208,7 +210,8 @@ print("\n" + "=" * 70)
 print("CONNECTION TO SYLOW 3-SUBGROUP")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 Key facts:
   • |Sylow₃| = 81
   • Apartments through each flag = 81
@@ -220,7 +223,8 @@ Is there a bijection between:
   3. Basis vectors of Steinberg?
 
 Let's investigate the Sylow 3-subgroup structure...
-""")
+"""
+)
 
 # The Sylow 3-subgroup of Sp(4,3) is the unipotent radical U
 # It consists of upper triangular matrices with 1s on diagonal
@@ -281,7 +285,8 @@ print("=" * 70)
 # So we have 4 root groups, each of order 3
 # |U| = 3⁴ = 81 ✓
 
-print("""
+print(
+    """
 The Sylow 3-subgroup U has structure:
 
   U = U_{α₁} × U_{α₂} × U_{α₁+α₂} × U_{2α₁+α₂} (as sets, not groups!)
@@ -293,7 +298,8 @@ The group structure is (ℤ/3)³ ⋊ ℤ/3 (not abelian!)
 
 The 81 elements of U correspond to 81 "directions" in the building,
 and these give the 81 apartments through each flag!
-""")
+"""
+)
 
 # =============================================================================
 # THE EXPLICIT BIJECTION
@@ -302,7 +308,8 @@ print("\n" + "=" * 70)
 print("★ THE EXPLICIT BIJECTION ★")
 print("=" * 70)
 
-print("""
+print(
+    """
 CONJECTURE: There is an explicit bijection:
 
   {Apartments through flag F} ↔ {Elements of Sylow₃ = U}
@@ -317,7 +324,8 @@ This would explain why:
 
 The free group π₁ = F₈₁ has generators corresponding to
 "loops around" each of the 81 directions determined by U!
-""")
+"""
+)
 
 # =============================================================================
 # VERIFY: APARTMENTS FORM A REGULAR ORBIT
@@ -344,10 +352,12 @@ print(f"Match: {len(apartments_through_flag) == 81}")
 
 if len(apartments_through_flag) == 81:
     print("\n★ CONFIRMED: Sylow₃ acts regularly on apartments through each flag! ★")
-    print("""
+    print(
+        """
 This means:
   1. The 81 apartments through a flag are in bijection with Sylow₃
   2. The 81 generators of π₁ correspond to 81 "fundamental directions"
   3. The Steinberg representation on H₁ is the linearization of
      the regular action of Sylow₃ on π₁^{ab}
-""")
+"""
+    )

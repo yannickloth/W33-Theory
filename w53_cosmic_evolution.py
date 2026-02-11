@@ -63,12 +63,14 @@ def w_vacuum_fraction(n, q=3):
     return cycles / (pts + cycles)
 
 
-print("""
+print(
+    """
 THE W(2n-1, 3) HIERARCHY
 ========================
 
 Each level represents a phase of the universe:
-""")
+"""
+)
 
 hierarchy = []
 for n in range(1, 6):
@@ -102,7 +104,8 @@ print("\n" + "=" * 80)
 print("PART 2: COSMIC TIMELINE")
 print("=" * 80)
 
-print("""
+print(
+    """
 HYPOTHESIS: UNIVERSE EVOLVES THROUGH W-HIERARCHY
 ================================================
 
@@ -116,7 +119,8 @@ Today         W(3,3)      68%              Current epoch
 10¹⁰⁰ yr      W(1,3)?     0%?              Heat death?
 
 Each transition is a PHASE TRANSITION in the W-structure!
-""")
+"""
+)
 
 # Calculate transition energies
 E_planck = 1.22e19  # GeV
@@ -144,7 +148,8 @@ print("\n" + "=" * 80)
 print("PART 3: INFLATION FROM W(5,3)")
 print("=" * 80)
 
-print("""
+print(
+    """
 INFLATION = W(5,3) PHASE
 ========================
 
@@ -173,7 +178,8 @@ SLOW ROLL PARAMETERS:
     ε ≈ vacuum_W33 - vacuum_W53 = 0.67 - 0.95 = -0.28
 
   This is related to spectral index!
-""")
+"""
+)
 
 # Calculate inflationary parameters
 vacuum_w53 = hierarchy[2]["vacuum"]
@@ -207,7 +213,8 @@ print("\n" + "=" * 80)
 print("PART 4: N=8 SUPERGRAVITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 N=8 SUPERGRAVITY
 ================
 
@@ -227,7 +234,8 @@ The number 28:
   - Dimension of Λ²(R⁸) = 28
 
 This is NOT a coincidence!
-""")
+"""
+)
 
 # N=8 SUGRA spectrum
 sugra_spectrum = {
@@ -262,7 +270,8 @@ print("\n" + "=" * 80)
 print("PART 5: E₇ AND THE EXCEPTIONAL GROUPS")
 print("=" * 80)
 
-print("""
+print(
+    """
 E₇ IN N=8 SUPERGRAVITY
 ======================
 
@@ -288,7 +297,8 @@ CONNECTION TO W(5,3):
   And 133 = 7 × 19 (E₷ dimension)
 
   Looking for: E₇ structure within Sp(6,3)?
-""")
+"""
+)
 
 # E-series dimensions
 e_dims = {"E₆": 78, "E₇": 133, "E₈": 248}
@@ -333,7 +343,8 @@ print("\n" + "=" * 80)
 print("PART 6: SO(8) TRIALITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 SO(8) AND TRIALITY
 ==================
 
@@ -360,7 +371,8 @@ This means:
   - W(3,3) = "vector-like" structure
   - W(5,3) = W(3,3) + SO(8) gauge structure
   - Triality relates different embeddings
-""")
+"""
+)
 
 # SO(8) dimensions
 so8_reps = {
@@ -395,7 +407,8 @@ print("\n" + "=" * 80)
 print("PART 7: W(5,3) → W(3,3) PHASE TRANSITION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE COSMIC PHASE TRANSITION
 ===========================
 
@@ -417,7 +430,8 @@ ENERGY RELEASED:
     = 27.7% of total energy
 
 This becomes the HOT BIG BANG!
-""")
+"""
+)
 
 # Energy calculation
 energy_fraction_released = vacuum_w53 - vacuum_w33
@@ -446,7 +460,8 @@ print("\n" + "=" * 80)
 print("PART 8: DARK ENERGY EVOLUTION")
 print("=" * 80)
 
-print("""
+print(
+    """
 DARK ENERGY THROUGH COSMIC HISTORY
 ==================================
 
@@ -468,7 +483,8 @@ W-hierarchy prediction:
 
 If transitioning toward W(1,3) over ~10¹⁰⁰ years:
   Δw/Δt ~ 10⁻¹⁰⁰ per year (undetectable!)
-""")
+"""
+)
 
 # W(1,3) vacuum fraction
 vacuum_w13 = hierarchy[0]["vacuum"]
@@ -489,7 +505,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE COMPLETE COSMOLOGICAL PICTURE")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║              COSMIC EVOLUTION THROUGH W-HIERARCHY                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -518,7 +535,8 @@ print("""
 ║  67% = W(3,3) vacuum = observed dark energy                                  ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 10: PREDICTIONS AND TESTS
@@ -528,7 +546,8 @@ print("\n" + "=" * 80)
 print("PART 10: PREDICTIONS AND TESTS")
 print("=" * 80)
 
-print("""
+print(
+    """
 TESTABLE PREDICTIONS
 ====================
 
@@ -557,7 +576,8 @@ TESTABLE PREDICTIONS
    28-fold structure might leave imprint on:
    - CMB anisotropies (statistical properties)
    - Large-scale structure (BAO)
-""")
+"""
+)
 
 # Specific numerical predictions
 print(f"\nNumerical predictions:")
@@ -574,7 +594,8 @@ print("\n" + "=" * 80)
 print("PART 11: THE HIERARCHY PROBLEM SOLUTION")
 print("=" * 80)
 
-print("""
+print(
+    """
 SOLVING THE HIERARCHY PROBLEM
 =============================
 
@@ -599,7 +620,8 @@ W-hierarchy answer:
     28^12 ≈ 2.3 × 10¹⁷ ✓
 
   So: 12 "layers" of W(5,3)/W(3,3) structure!
-""")
+"""
+)
 
 # Calculate hierarchy levels
 target_ratio = 1e17
@@ -627,7 +649,8 @@ print("\n" + "=" * 80)
 print("PART 12: FINAL SYNTHESIS")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE COMPLETE COSMOLOGICAL THEORY
 ================================
 
@@ -673,7 +696,8 @@ And the numbers work:
   - 28 = ratio of adjacent levels = N=8 SUGRA
   - 67% = W(3,3) vacuum = dark energy
   - 28^12 ~ 10^17 = hierarchy ratio
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("THE UNIVERSE IS DESCENDING THE W-HIERARCHY")

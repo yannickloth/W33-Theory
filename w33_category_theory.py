@@ -37,7 +37,8 @@ print("\n" + "=" * 80)
 print("PART 1: WHAT IS A CATEGORY?")
 print("=" * 80)
 
-print("""
+print(
+    """
 CATEGORY THEORY 101
 ===================
 
@@ -60,7 +61,8 @@ Examples:
 WHY CATEGORIES?
   They reveal the STRUCTURE of mathematics itself.
   Same patterns appear in wildly different areas.
-""")
+"""
+)
 
 
 class Category:
@@ -125,7 +127,8 @@ print("\n" + "=" * 80)
 print("PART 2: W33 AS A CATEGORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 W33 IS A CATEGORY
 =================
 
@@ -144,7 +147,8 @@ This makes W33 a GROUPOID:
 Even better: W33 is an ENRICHED category
   - Hom-sets are not just sets, but GROUPS (Z₁₂)
   - The phases give the enrichment
-""")
+"""
+)
 
 
 class W33Category:
@@ -225,7 +229,8 @@ print("\n" + "=" * 80)
 print("PART 3: FUNCTORS AND NATURAL TRANSFORMATIONS")
 print("=" * 80)
 
-print("""
+print(
+    """
 FUNCTORS: MAPS BETWEEN CATEGORIES
 =================================
 
@@ -247,7 +252,8 @@ W33 FUNCTORS:
 PHYSICS CONNECTION:
   Gauge transformations = functors!
   Physical observables = functorial invariants
-""")
+"""
+)
 
 
 class Functor:
@@ -298,7 +304,8 @@ print(f"  Identity: 0 ↦ {Id.apply_object(0)}")
 print(f"  Shift: 0 ↦ {Shift.apply_object(0)}")
 print(f"  Shift: 10 ↦ {Shift.apply_object(10)}")
 
-print("""
+print(
+    """
 
 NATURAL TRANSFORMATIONS
 =======================
@@ -314,7 +321,8 @@ W33 NATURAL TRANSFORMATIONS:
 
   The Z₁₂ phases are exactly the natural
   automorphisms of the identity functor!
-""")
+"""
+)
 
 # =============================================================================
 # PART 4: YONEDA LEMMA - THE DEEPEST THEOREM
@@ -324,7 +332,8 @@ print("\n" + "=" * 80)
 print("PART 4: THE YONEDA LEMMA")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE YONEDA LEMMA
 ================
 
@@ -349,7 +358,8 @@ W33 YONEDA:
   Every point contains information about the whole!
 
   HOLOGRAPHY FROM YONEDA!
-""")
+"""
+)
 
 
 def yoneda_embedding(cat, obj):
@@ -381,7 +391,8 @@ print("\n" + "=" * 80)
 print("PART 5: HIGHER CATEGORIES")
 print("=" * 80)
 
-print("""
+print(
+    """
 HIGHER CATEGORIES
 =================
 
@@ -410,7 +421,8 @@ W33 AS A HIGHER STRUCTURE:
   This explains why it captures both:
   - Gauge theory (1-morphisms)
   - Topological structure (higher morphisms)
-""")
+"""
+)
 
 # Count the "k-morphisms" of W33
 k_morphisms = {
@@ -432,7 +444,8 @@ print("\n" + "=" * 80)
 print("PART 6: TOPOS THEORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 TOPOSES: WHERE LOGIC MEETS GEOMETRY
 ===================================
 
@@ -456,7 +469,8 @@ W33 AND TOPOS:
   - Has "quantum" features (complementarity)
 
   This might be the LOGIC OF PHYSICS!
-""")
+"""
+)
 
 print("\nW33 as a site:")
 print("  Objects: 40 points")
@@ -476,7 +490,8 @@ print("\n" + "=" * 80)
 print("PART 7: HOMOTOPY TYPE THEORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 HOMOTOPY TYPE THEORY (HoTT)
 ===========================
 
@@ -504,7 +519,8 @@ W33 IN HoTT:
 
   The 81 generators of H₁ are
   81 "independent equalities" in W33!
-""")
+"""
+)
 
 print("\nW33 as a type:")
 print("  Inhabitants: 40")
@@ -520,7 +536,8 @@ print("\n" + "=" * 80)
 print("PART 8: UNIVERSAL PROPERTIES")
 print("=" * 80)
 
-print("""
+print(
+    """
 UNIVERSAL PROPERTIES
 ====================
 
@@ -543,7 +560,8 @@ W33 UNIVERSAL PROPERTY?
   - Maps to any larger physical theory
 
   W33 is the SEED from which all physics grows!
-""")
+"""
+)
 
 
 def is_initial(obj, category, test_objects):
@@ -567,7 +585,8 @@ print("\n" + "=" * 80)
 print("PART 9: GROTHENDIECK'S VISION")
 print("=" * 80)
 
-print("""
+print(
+    """
 ALEXANDER GROTHENDIECK (1928-2014)
 ==================================
 
@@ -593,7 +612,8 @@ GROTHENDIECK AND W33:
 
   W33 is a MOTIVE for physics?
   The "universal cohomology theory" of physical law?
-""")
+"""
+)
 
 print("\nGrothendieck-style view of W33:")
 print("  W33 = Spec(?) - The prime spectrum of physics?")
@@ -609,7 +629,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE MATHEMATICS OF EVERYTHING")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                  W33: THE MATHEMATICS OF MATHEMATICS                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -676,7 +697,8 @@ And this nexus IS physics.
 Mathematics doesn't describe reality.
 Mathematics IS reality.
 And W33 is its grammar.
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("END OF CATEGORY THEORY EXPLORATION")

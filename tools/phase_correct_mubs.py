@@ -231,7 +231,9 @@ def main():
 
     ref_points = n12_phase_points.get(ref_nid)
 
-    def apply_mat_to_point(mat: Tuple[int, int, int, int], p: Tuple[int, int]) -> Tuple[int, int]:
+    def apply_mat_to_point(
+        mat: Tuple[int, int, int, int], p: Tuple[int, int]
+    ) -> Tuple[int, int]:
         a, b, c, d = mat
         x, y = p
         return ((a * x + b * y) % 3, (c * x + d * y) % 3)
@@ -251,7 +253,15 @@ def main():
         for m, U_mat in mat_to_U.items():
             for dx in range(3):
                 for dy in range(3):
-                    mapped = tuple(sorted(((apply_mat_to_point(m, p)[0] + dx) % 3, (apply_mat_to_point(m, p)[1] + dy) % 3) for p in ref_points))
+                    mapped = tuple(
+                        sorted(
+                            (
+                                (apply_mat_to_point(m, p)[0] + dx) % 3,
+                                (apply_mat_to_point(m, p)[1] + dy) % 3,
+                            )
+                            for p in ref_points
+                        )
+                    )
                     if mapped == target_pts:
                         Dm = D_operator(dx, dy, X, Z)
                         candidate_U = Dm @ U_mat
