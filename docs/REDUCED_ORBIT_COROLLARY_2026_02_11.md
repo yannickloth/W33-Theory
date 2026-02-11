@@ -9,7 +9,8 @@ law predicts s(L,1) = -1 for L. These conclusions are incompatible, which
 provides a short algebraic contradiction ruling out z=(2,2) for any
 representative invariant under such an involution. The argument is both
 symbolic and machine-checked (see `tools/formal_z22_proof.py` and
-`tests/test_formal_z22_module.py`).
+`tests/test_formal_z22_module.py`), with a Lean skeleton now exposing both
+`zMap_one` and `z22_contradiction_via_zMap` in `proofs/lean/z22_exclusion.lean`.
 
 Global strengthening:
 - closed-form stabilizer scan for `z=(2,2)` gives zero matches in full

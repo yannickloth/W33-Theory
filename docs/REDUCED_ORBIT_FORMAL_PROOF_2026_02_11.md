@@ -117,7 +117,9 @@ fully self-contained symbolic argument we also added `tools/formal_z22_proof.py`
 (and unit test `tests/test_formal_z22_module.py`), which formalizes the short
 `x=0` contradiction in an adapted gauge without referring to the census. A
 Lean 4 skeleton formalization is available at `proofs/lean/z22_exclusion.lean`
-as a starting point for a machine-checked proof.
+as a starting point for a machine-checked proof; it now includes explicit
+`zMap_one` and `z22_contradiction_via_zMap` lemmas for the same fixed-point
+contradiction path.
 
 To tighten the exclusion further, we added
 `tools/prove_z22_no_global_stabilizer.py`, which checks a stronger global
