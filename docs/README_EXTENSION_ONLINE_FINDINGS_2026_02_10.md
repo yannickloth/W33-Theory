@@ -881,8 +881,8 @@ Additional witness-space note:
   - total action size: `2592`.
 - Result:
   - Hessian reps split exactly as
-    - `68` reps with orbit `2592` and stabilizer size `1`,
-    - `11` reps with orbit `1296` and stabilizer size `2`.
+    - `201` reps with orbit `2592` and stabilizer size `1`,
+    - `55` reps with orbit `1296` and stabilizer size `2`.
   - full `AGL` reps are all full-orbit:
     - `7` reps with orbit `2592` and stabilizer size `1`.
 - Nontrivial stabilizers occur only in the Hessian reduced sector and are all
@@ -893,6 +893,22 @@ Additional witness-space note:
   - the reduced/full orbit dichotomy is now quantitatively equivalent to a
     stabilizer dichotomy (`2` vs `1`) inside one explicit finite action.
   - this is a stronger group-theoretic closure than a pattern-level statement.
+
+## Thirty-second-pass raw notes (2026-02-11, AGL(2,3) det=2 involutions)
+
+- New tool: `tools/analyze_agl23_det2_involution_class.py`.
+- This pass isolates the affine involutions with linear determinant `2` (i.e. `-1 mod 3`)
+  inside `AGL(2,3)` and computes their conjugacy structure and centralizers.
+- Result (repo computation):
+  - det=2 involution count: `36`,
+  - conjugacy class count: `1` (one class of size `36`),
+  - centralizer size: `12` with order histogram `{1:1, 2:7, 3:2, 6:2}`.
+- External cross-checks:
+  - GroupNames lists a conjugacy class `2B` of size `36` in `AGL(2,3)` (character table):
+    https://people.maths.bris.ac.uk/~matyd/GroupNames/432/AGL%282%2C3%29.html
+  - The dihedral group of order `12` (symmetries of a hexagon) has element orders
+    `1,2,3,6` with counts matching the histogram above:
+    https://www.cs.uleth.ca/~holzmann/notes/dihedral/dihedral1.html
 
 ## Where each hypothesis is encoded
 
