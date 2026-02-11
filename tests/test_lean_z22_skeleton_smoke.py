@@ -9,8 +9,8 @@ LEAN_FILE = ROOT / "proofs" / "lean" / "z22_exclusion.lean"
 def test_lean_z22_file_ascii_clean() -> None:
     text = LEAN_FILE.read_text(encoding="utf-8")
     assert all(ord(ch) < 128 for ch in text)
-    assert "â" not in text
-    assert "Â" not in text
+    assert "\u00c3\u00a2" not in text
+    assert "\u00c3\u201a" not in text
 
 
 def test_lean_z22_contains_key_lemmas() -> None:
