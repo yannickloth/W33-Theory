@@ -50,4 +50,41 @@ theorem A_diag_in_candidates : GL2F3.A_diag_mat ∈ candidates := by
   -- The checks reduce to the previously proved facts
   simp [GL2F3.A_diag_mat_mul_self, GL2F3.A_diag_mat_det]
 
+/-- Adjugate for a 2×2 matrix: [[a,b],[c,d]]^# = [[d,-b],[-c,a]]. -/
+def adj2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) : Matrix (Fin 2) (Fin 2) (ZMod 3) :=
+  fun i j =>
+    if i = 0 ∧ j = 0 then M 1 1
+    else if i = 0 ∧ j = 1 then -M 0 1
+    else if i = 1 ∧ j = 0 then -M 1 0
+    else M 0 0
+
+/-- Explicit 2×2 inverse formula in F3: inv(M) = det(M) * adj(M).
+    In F3 every nonzero determinant is self-inverse (1^-1 = 1, 2^-1 = 2), so
+    multiplying the adjugate by `M.det` yields the inverse when `M.det ≠ 0`. -/
+def inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) : Matrix (Fin 2) (Fin 2) (ZMod 3) :=
+  (M.det) • (adj2x2 M)
+
+/-- Left inverse property for `inv2x2` on invertible matrices. -/
+theorem left_inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (h : M.det ≠ 0) :
+    M ⬝ inv2x2 M = 1 := by
+  -- Completely decidable for 2×2 matrices over F3; solve by computation.
+  dec_trivial
+
+/-- Right inverse property for `inv2x2` on invertible matrices. -/
+theorem right_inv2x2 (M : Matrix (Fin 2) (Fin 2) (ZMod 3)) (h : M.det ≠ 0) :
+    inv2x2 M ⬝ M = 1 := by
+  dec_trivial
+
+/-- List of invertible matrices (GL(2,3) concrete list). -/
+def invertible_matrices : List (Matrix (Fin 2) (Fin 2) (ZMod 3)) :=
+  all_matrices.filter fun M => M.det ≠ 0
+
+/-- Enumerative conjugacy result: every involution with det = 2 is conjugate to
+    `diag(-1,1)` by some invertible matrix in `GL(2,3)`. The proof is
+    computational (decidable) and checks all finite possibilities. -/
+theorem candidates_conjugate :
+    ∀ M ∈ candidates, ∃ P ∈ invertible_matrices, P ⬝ M ⬝ inv2x2 P = GL2F3.A_diag_mat := by
+  -- Finite, fully decidable search over the small lists; dispatch to computation.
+  dec_trivial
+
 end GL2F3Enumeration
