@@ -58,6 +58,7 @@ def classify_enumeration_payload(payload: dict[str, Any]) -> dict[str, Any]:
         witness_rows = representative.get("canonical_repr", [])
         normalized_rows = [_normalize_witness(row) for row in witness_rows]
         geotype = analyze._classify_certificate_witnesses(normalized_rows)
+        orbit = analyze._witness_orbit_stats(normalized_rows)
         hit_count = _safe_int(representative.get("hit_count", 1), default=1)
         total_weight += hit_count
 
@@ -87,8 +88,11 @@ def classify_enumeration_payload(payload: dict[str, Any]) -> dict[str, Any]:
                 "index": int(index),
                 "hit_count": int(hit_count),
                 "witness_count": int(len(normalized_rows)),
+                "canonical_repr": normalized_rows,
                 "striation_families": line_type_set,
                 "striation_family_count": family_count,
+                "orbit_size": int(orbit.get("orbit_size", 0)),
+                "canonical_orbit_rep": orbit.get("canonical_rep", []),
                 "geotype": {
                     "unique_lines_count": unique_lines,
                     "lines_with_multiple_z_count": multi_z_lines,
