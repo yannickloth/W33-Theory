@@ -997,6 +997,16 @@ def run_feature_hungarian_mapping(weights=None, write_artifact=True):
             for e, r in zip(unassigned_edges, unused):
                 mapping[e] = r
         method_used = "greedy_feature"
+    n_edges = score.shape[0]
+    # final safety: ensure mapping complete by filling any leftover edges with unused roots
+    if len(mapping) < n_edges:
+        all_roots = [tuple(r) for r in build_E8_roots()]
+        used = set(mapping.values())
+        unused = [r for r in all_roots if r not in used]
+        unassigned_edges = [e for e in range(n_edges) if e not in mapping]
+        for e, r in zip(unassigned_edges, unused):
+            mapping[e] = r
+
     # compute adjacency score
     adj_score = compute_adjacency_score(mapping, relation="abs1")
 
@@ -1171,6 +1181,82 @@ def cp_sat_local_refine(mapping_init, cluster_edges, top_k=8, time_limit=10):
 
     local_score = compute_adjacency_score({e: updated[e] for e in cluster_edges})
     return updated, local_score
+
+
+# Simple plotting helpers
+
+
+def plot_feature_embeddings(mapping, score_matrix, meta, out_dir=ARTIFACTS / "figures"):
+    try:
+        import matplotlib.pyplot as plt
+    except Exception:
+        print("matplotlib not available; skipping plotting")
+        return None
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    edge_emb = meta["edge_emb"]
+    root_emb = meta["root_emb"]
+    # project embeddings to 2D via SVD
+    X = np.vstack([edge_emb, root_emb])
+    U, S, Vt = np.linalg.svd(X - X.mean(axis=0), full_matrices=False)
+    coords = (X - X.mean(axis=0)).dot(Vt.T)[:, :2]
+    e_coords = coords[: edge_emb.shape[0]]
+    r_coords = coords[edge_emb.shape[0] :]
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+    ax.scatter(e_coords[:, 0], e_coords[:, 1], c="C0", s=10, label="edges", alpha=0.6)
+    ax.scatter(r_coords[:, 0], r_coords[:, 1], c="C1", s=5, label="roots", alpha=0.6)
+    ax.set_title("Edge vs Root Embeddings (2D PCA)")
+    ax.legend()
+    out = out_dir / "feature_embeddings.png"
+    fig.savefig(out, dpi=150)
+    plt.close(fig)
+    return out
+
+
+def plot_adj_preservation(mapping, meta, out_dir=ARTIFACTS / "figures"):
+    try:
+        import matplotlib.pyplot as plt
+    except Exception:
+        print("matplotlib not available; skipping plotting")
+        return None
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    L_adj = meta["L_adj"]
+    roots = [tuple(r) for r in build_E8_roots()]
+    root_index = {r: i for i, r in enumerate(roots)}
+    R_adj = meta["R_adj"]
+
+    # ensure mapping covers all edges
+    n = len(L_adj)
+    map_idx = {}
+    assigned = set()
+    for e, r in mapping.items():
+        try:
+            map_idx[int(e)] = root_index[tuple(r)]
+            assigned.add(map_idx[int(e)])
+        except Exception:
+            pass
+    unused = [i for i in range(len(roots)) if i not in assigned]
+    for e in range(n):
+        if e not in map_idx:
+            map_idx[e] = unused.pop() if unused else e % len(roots)
+
+    M = np.zeros((n, n), dtype=int)
+    for i in range(n):
+        ri = map_idx[i]
+        for j in L_adj[i]:
+            rj = map_idx[j]
+            if rj in R_adj[ri]:
+                M[i, j] = 1
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.imshow(M, cmap="Greens", interpolation="nearest")
+    ax.set_title("Adjacency-preservation heatmap (edges x edges)")
+    out = out_dir / "adj_preservation_heatmap.png"
+    fig.savefig(out, dpi=150)
+    plt.close(fig)
+    return out
 
 
 # ---- end new helpers ----
