@@ -112,7 +112,10 @@ symbolic fixed-line closure test and the subsequent exhaustive pulled-back
 invariance check described above. The script reports no invariant
 representatives for `z_map=(2,2)` on the canonical Hessian census; the same
 verification is exercised by the smoke test `tests/test_prove_exclude_z22_smoke.py`
-and by the unit-level check `tests/test_formal_proof_z22.py` added here.
+and by the unit-level check `tests/test_formal_proof_z22.py` added here. For a
+fully self-contained symbolic argument we also added `tools/formal_z22_proof.py`
+(and unit test `tests/test_formal_z22_module.py`), which formalizes the short
+`x=0` contradiction in an adapted gauge without referring to the census.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
