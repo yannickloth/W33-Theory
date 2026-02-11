@@ -77,6 +77,18 @@ jobs:
             fi
           fi
 
+      - name: Generate conjugator Lean file and check committed copy
+        working-directory: .
+        run: |
+          set -eux
+          python scripts/generate_conjugators_lean.py
+          # If the generated file differs from the committed copy, fail so maintainers can update
+          if ! git diff --exit-code -- proofs/lean/conjugators_generated.lean; then
+            echo "Generated conjugators differ from committed version. Run: python scripts/generate_conjugators_lean.py && git add proofs/lean/conjugators_generated.lean && git commit -m 'chore(gen): update conjugators_generated.lean' && git push"
+            git --no-pager diff -- proofs/lean/conjugators_generated.lean || true
+            exit 1
+          fi
+
       - name: Sanity-check z22 Lean source
         run: |
           python - <<'PY'
@@ -117,35 +129,60 @@ jobs:
         continue-on-error: true
         run: |
           set -eux
-          IMAGE=ghcr.io/leanprover/lean4:nightly
-          echo "Attempting to pull $IMAGE and run a containerized lake build (with retries)"
           MAX_ATTEMPTS=3
           SLEEP=10
-          attempt=1
-          # Retry docker pull with exponential backoff
-          until docker pull "$IMAGE"; do
-            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
-              echo "docker pull failed after $attempt attempts; continuing"
+          CANDIDATES=()
+          # Prefer pinned toolchain if present
+          if [ -f proofs/lean/lean-toolchain ]; then
+            TC="$(cat proofs/lean/lean-toolchain | tr -d '[:space:]')"
+            echo "Found toolchain pin: $TC"
+            CANDIDATES+=("$TC")
+            if ! echo "$TC" | grep -q '^ghcr.io/'; then
+              CANDIDATES+=("ghcr.io/$TC")
+            fi
+          fi
+          # Known stable public images to try (fallbacks)
+          CANDIDATES+=("ghcr.io/leanprover/lean4:v4.22.0" "ghcr.io/leanprover/lean4:v4.21.1" "ghcr.io/leanprover/lean4:latest" "ghcr.io/leanprover/lean4:nightly")
+          echo "Image candidates: ${CANDIDATES[*]}"
+
+          IMAGE=""
+          for IMG in "${CANDIDATES[@]}"; do
+            attempt=1
+            SLEEP=10
+            echo "Attempting pull for $IMG"
+            until docker pull "$IMG"; do
+              if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+                echo "docker pull failed for $IMG after $attempt attempts; moving to next candidate"
+                break
+              fi
+              echo "docker pull failed for $IMG; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+              sleep $SLEEP
+              attempt=$((attempt+1))
+              SLEEP=$((SLEEP*2))
+            done
+            if docker image inspect "$IMG" >/dev/null 2>&1; then
+              IMAGE="$IMG"
+              echo "Successfully pulled $IMG; using it for containerized build"
               break
             fi
-            echo "docker pull failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
-            sleep $SLEEP
-            attempt=$((attempt+1))
-            SLEEP=$((SLEEP*2))
           done
 
-          attempt=1
-          # Run the containerized lake build with retries
-          until docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "set -e; lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"; do
-            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
-              echo "docker run failed after $attempt attempts; continuing"
-              break
-            fi
-            echo "docker run failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
-            sleep $SLEEP
-            attempt=$((attempt+1))
-            SLEEP=$((SLEEP*2))
-          done
+          if [ -z "$IMAGE" ]; then
+            echo "No container image pulled from candidates; skipping containerized lake build"
+          else
+            attempt=1
+            SLEEP=10
+            until docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "set -e; lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"; do
+              if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+                echo "docker run failed after $attempt attempts; continuing"
+                break
+              fi
+              echo "docker run failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+              sleep $SLEEP
+              attempt=$((attempt+1))
+              SLEEP=$((SLEEP*2))
+            done
+          fi
 
 
       - name: Build proofs with Lake (if available)

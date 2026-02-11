@@ -25,26 +25,49 @@ jobs:
             exit 1
           fi
 
-      - name: Pull Lean container with retries
+      - name: Pull Lean container and run lake build (failing job)
         run: |
           set -eux
-          IMAGE=ghcr.io/leanprover/lean4:nightly
           MAX_ATTEMPTS=3
           SLEEP=10
-          attempt=1
-          until docker pull "$IMAGE"; do
-            if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
-              echo "docker pull failed after $attempt attempts";
-              exit 1
+          CANDIDATES=()
+          # Prefer pinned toolchain if present
+          if [ -f proofs/lean/lean-toolchain ]; then
+            TC="$(cat proofs/lean/lean-toolchain | tr -d '[:space:]')"
+            echo "Found toolchain pin: $TC"
+            CANDIDATES+=("$TC")
+            if ! echo "$TC" | grep -q '^ghcr.io/'; then
+              CANDIDATES+=("ghcr.io/$TC")
             fi
-            echo "docker pull failed; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
-            sleep $SLEEP
-            attempt=$((attempt+1))
-            SLEEP=$((SLEEP*2))
+          fi
+          CANDIDATES+=("ghcr.io/leanprover/lean4:v4.22.0" "ghcr.io/leanprover/lean4:v4.21.1" "ghcr.io/leanprover/lean4:latest" "ghcr.io/leanprover/lean4:nightly")
+          echo "Image candidates: ${CANDIDATES[*]}"
+
+          IMAGE=""
+          for IMG in "${CANDIDATES[@]}"; do
+            attempt=1
+            SLEEP=10
+            echo "Attempting pull for $IMG"
+            until docker pull "$IMG"; do
+              if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
+                echo "docker pull failed for $IMG after $attempt attempts; moving to next candidate"
+                break
+              fi
+              echo "docker pull failed for $IMG; retrying ($attempt/$MAX_ATTEMPTS) in $SLEEP s"
+              sleep $SLEEP
+              attempt=$((attempt+1))
+              SLEEP=$((SLEEP*2))
+            done
+            if docker image inspect "$IMG" >/dev/null 2>&1; then
+              IMAGE="$IMG"
+              echo "Successfully pulled $IMG; using it for verification build"
+              break
+            fi
           done
 
-      - name: Run containerized lake build (failing job)
-        run: |
-          set -eux
-          IMAGE=ghcr.io/leanprover/lean4:nightly
+          if [ -z "$IMAGE" ]; then
+            echo "No container image available from candidates; failing verification job"
+            exit 1
+          fi
+
           docker run --rm -v "${{ github.workspace }}":/workspace -w /workspace/proofs/lean "$IMAGE" /bin/sh -c "set -e; lake --version; lake update; lake exe cache get || echo 'cache missing'; lake build; lake env lean z22_exclusion.lean"
