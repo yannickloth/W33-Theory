@@ -36,8 +36,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-lean4-
 
-      - name: Set up Lean 4
-        uses: leanprover/lean4-action@v0.2.0
+      - name: Install Elan and Lake
+        run: |
+          set -eux
+          # Install elan (Lean toolchain manager) and set up the environment
+          curl -sSfL https://raw.githubusercontent.com/leanprover-community/elan/master/elan-init.sh | sh -s -- -y
+          export PATH="$HOME/.elan/bin:$PATH"
+          # Install the pinned toolchain if present
+          if [ -f lean-toolchain ]; then
+            TC="$(cat lean-toolchain)"
+            elan toolchain install --force "$TC" || true
+            elan default "$TC" || true
+          fi
+          # Ensure lake is available; try to run it via elan if needed
+          if ! command -v lake >/dev/null 2>&1; then
+            echo "lake not found after elan install; attempting to run via elan"
+            if command -v elan >/dev/null 2>&1; then
+              elan run -- lake --version || true
+            fi
+          fi
 
       - name: Sanity-check z22 Lean source
         run: |
