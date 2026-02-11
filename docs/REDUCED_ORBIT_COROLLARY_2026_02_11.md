@@ -21,6 +21,9 @@ Global strengthening:
 - minimal contradiction-core extraction shows nontrivial global cells are
   eliminated by compact cores (size `3` in `AGL/Hessian`) via
   `tools/minimal_global_full_sign_cores.py`.
+- under striation-complete witnesses, those contradiction cores lift to size
+  `4` in nontrivial `AGL/Hessian` cells and to `5` for involution mode at
+  `z=(1,0)` (same tool).
 - minimal positive-certificate extraction for the surviving identity cell
   `z=(1,0)` gives witness size `6` in full `AGL(2,3)` and `5` in `Hessian216`
   via `tools/minimal_global_identity_certificates.py`; this `6` vs `5` split

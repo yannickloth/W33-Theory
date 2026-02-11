@@ -15,10 +15,11 @@ subset of constraints whose conjunction is already impossible (an UNSAT core).
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -34,6 +35,13 @@ Constraint = Tuple[
 
 Z_MAPS: List[Tuple[int, int]] = [(1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
 MODES: List[str] = ["all_agl", "hessian216", "involution_det2"]
+VARIANTS: List[str] = [
+    "unconstrained",
+    "distinct_lines",
+    "striation_complete",
+    "distinct_lines_striation_complete",
+]
+STRIATION_TYPES = {"x", "y", "y=1x", "y=2x"}
 
 
 def _candidate_pool(mode: str) -> List[Tuple[AffineElem, int]]:
@@ -151,6 +159,104 @@ def _minimal_unsat_core_indices(
     return sorted(best)
 
 
+def _line_key(
+    constraint: Constraint,
+) -> Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]:
+    line, _ = constraint
+    return line
+
+
+def _line_type(constraint: Constraint) -> str:
+    line, _ = constraint
+    return str(analyze._line_equation_type(line)[0])
+
+
+def _variant_predicate(
+    constraints: Sequence[Constraint], variant: str
+) -> Callable[[Sequence[int]], bool]:
+    line_keys = [_line_key(c) for c in constraints]
+    line_types = [_line_type(c) for c in constraints]
+
+    if variant == "unconstrained":
+        return lambda _: True
+
+    if variant == "distinct_lines":
+
+        def pred(comb: Sequence[int]) -> bool:
+            seen = set()
+            for j in comb:
+                k = line_keys[j]
+                if k in seen:
+                    return False
+                seen.add(k)
+            return True
+
+        return pred
+
+    if variant == "striation_complete":
+
+        def pred(comb: Sequence[int]) -> bool:
+            return {line_types[j] for j in comb} == STRIATION_TYPES
+
+        return pred
+
+    if variant == "distinct_lines_striation_complete":
+
+        def pred(comb: Sequence[int]) -> bool:
+            seen = set()
+            types = set()
+            for j in comb:
+                k = line_keys[j]
+                if k in seen:
+                    return False
+                seen.add(k)
+                types.add(line_types[j])
+            return types == STRIATION_TYPES
+
+        return pred
+
+    raise ValueError(f"unknown variant: {variant}")
+
+
+def _comb_unsat(
+    comb: Sequence[int], masks: Sequence[int], candidate_count: int
+) -> bool:
+    live = (1 << candidate_count) - 1
+    for j in comb:
+        live &= masks[j]
+        if live == 0:
+            return True
+    return live == 0
+
+
+def _enumerate_min_unsat_variant(
+    masks: Sequence[int],
+    candidate_count: int,
+    predicate: Callable[[Sequence[int]], bool],
+    search_start: int,
+    max_examples: int = 3,
+) -> Dict[str, Any]:
+    idxs = range(len(masks))
+    for k in range(max(1, search_start), len(masks) + 1):
+        count = 0
+        samples: List[List[int]] = []
+        for comb in itertools.combinations(idxs, k):
+            if not predicate(comb):
+                continue
+            if not _comb_unsat(comb, masks, candidate_count):
+                continue
+            count += 1
+            if len(samples) < max_examples:
+                samples.append([int(j) for j in comb])
+        if count > 0:
+            return {
+                "minimal_core_size": int(k),
+                "minimal_core_count": int(count),
+                "sample_constraint_indices": samples,
+            }
+    raise RuntimeError("No UNSAT core found under variant constraints.")
+
+
 def analyze_cell(
     mode: str,
     z_map: Tuple[int, int],
@@ -183,7 +289,18 @@ def analyze_cell(
             "first_witness": witness,
             "minimal_core_size": None,
             "minimal_core": [],
+            "variant_profiles": {},
         }
+
+    variant_profiles: Dict[str, Dict[str, Any]] = {}
+    for variant in VARIANTS:
+        predicate = _variant_predicate(constraints, variant)
+        variant_profiles[variant] = _enumerate_min_unsat_variant(
+            masks=masks,
+            candidate_count=len(candidates),
+            predicate=predicate,
+            search_start=max(1, len(core)),
+        )
 
     return {
         "mode": mode,
@@ -194,6 +311,7 @@ def analyze_cell(
         "first_witness": None,
         "minimal_core_size": int(len(core)),
         "minimal_core": [_constraint_json(constraints[j]) for j in core],
+        "variant_profiles": variant_profiles,
     }
 
 
@@ -230,6 +348,21 @@ def build_report() -> Dict[str, Any]:
         "involution_subset_all_unsat": all(
             matrix["involution_det2"][f"({a},{b})"]["status"] == "unsat"
             for (a, b) in Z_MAPS
+        ),
+        "nontrivial_cells_need_four_striations_in_agl_hessian": all(
+            matrix[mode][f"({a},{b})"]["variant_profiles"]["striation_complete"][
+                "minimal_core_size"
+            ]
+            == 4
+            for mode in ("all_agl", "hessian216")
+            for (a, b) in Z_MAPS
+            if (a, b) != (1, 0)
+        ),
+        "involution_z10_needs_five_with_striation_complete": (
+            matrix["involution_det2"]["(1,0)"]["variant_profiles"][
+                "striation_complete"
+            ]["minimal_core_size"]
+            == 5
         ),
     }
 
@@ -270,6 +403,26 @@ def render_md(payload: Dict[str, Any]) -> str:
 
     lines.append("")
     lines.append(f"- Theorem flags: `{payload['theorem_flags']}`")
+    lines.append("")
+    lines.append("## Variant-Constrained Core Sizes")
+    lines.append("")
+    lines.append(
+        "Mode | Variant | z=(1,0) | z=(1,1) | z=(1,2) | z=(2,0) | z=(2,1) | z=(2,2)"
+    )
+    lines.append("--- | --- | --- | --- | --- | --- | --- | ---")
+    for mode in MODES:
+        for variant in VARIANTS:
+            vals: List[str] = []
+            for z_map in Z_MAPS:
+                key = f"({z_map[0]},{z_map[1]})"
+                cell = payload["matrix"][mode][key]
+                if cell["status"] == "sat":
+                    vals.append("-")
+                else:
+                    vals.append(
+                        str(cell["variant_profiles"][variant]["minimal_core_size"])
+                    )
+            lines.append(f"{mode} | {variant} | " + " | ".join(vals))
     lines.append("")
     lines.append("## Example Minimal Core (all_agl, z=(2,2))")
     lines.append("")

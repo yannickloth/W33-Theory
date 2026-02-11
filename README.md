@@ -20,11 +20,21 @@ Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
 - Latest z-map result: global full-sign census leaves only the identity cell at `z=(1,0)`.
 - New contradiction-core result: nontrivial global `z` cells have small minimal
   unsat cores (size `3` in `AGL/Hessian`, size `4` for involution mode at `z=(1,0)`).
+- Context-complete variant: requiring all 4 line directions lifts these core
+  sizes to `4` (nontrivial `AGL/Hessian`) and `5` (involution at `z=(1,0)`).
 - New identity-certificate result: isolating the surviving global identity cell
   needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
 - This `6 vs 5` gap is stable under distinct-line and striation-complete
   witness constraints.
 - Docs landing page: `docs/INDEX.md`.
+
+## Layperson Guide (Restored)
+
+- If you are new: treat this repo as a living paper plus calculator.
+- Read first: this `README.md`, then `docs/NOVEL_CONNECTIONS_2026_02_10.md`.
+- Think of the workflow as: claim -> script -> artifact -> test.
+- For every major claim in this repo, you can run the script and then run its test.
+- The long-form manuscript remains available at `docs/README_LIVING_PAPER_2026_02_11.md`.
 
 ## Start Here
 

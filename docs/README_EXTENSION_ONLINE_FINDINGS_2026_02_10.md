@@ -515,6 +515,45 @@ Additional witness-space note:
   - the size gap is not a degeneracy artifact; it is robust under geometric
     stress conditions and reflects a genuine candidate-space complexity split.
 
+## Nineteenth-pass raw notes (2026-02-11, constrained-unsat loop)
+
+- We ran the same constraint-stress idea on UNSAT cores (nontrivial global cells):
+  distinct lines vs striation completeness.
+- Result:
+  - unconstrained nontrivial cores in `all_agl/hessian216`: size `3`,
+  - with striation-complete witnesses: size `4`,
+  - involution mode at `z=(1,0)`: `4 -> 5` under striation-complete witnesses.
+- Interpretation:
+  - exclusion remains local and small, but requiring all context directions
+    forces one extra row globally.
+  - together with the positive `6 vs 5` split, this gives a clean dual profile:
+    negative contradiction (3/4/5) vs positive isolation (5/6).
+
+## Twentieth-pass raw notes (2026-02-11, external-structure loop)
+
+- New source scan focus: algebraic structure results that distinguish
+  coarse invariants from full structural equivalence.
+- Relevant signals:
+  - 2026: *Vogel universality and beyond* emphasizes that universal formulas
+    are powerful but do not collapse all structure classes into one
+    parameter-level invariant.
+    URL: `https://arxiv.org/abs/2601.01612`
+  - 2024: *Construction of the Lie algebra weight system kernel via Vogel algebra*
+    provides an explicit kernel-level refinement layer over raw Vogel data.
+    URL: `https://arxiv.org/abs/2411.14417`
+  - 2026: *Jordan decomposition in finite-dimensional Lie algebras over arbitrary fields*
+    highlights decomposition-level structure that survives when coarse spectral
+    data alone is insufficient.
+    URL: `https://arxiv.org/abs/2601.07168`
+  - 2024: *Coadjoint map preserving operators and Jordan-Lie automorphisms*
+    studies structural-preservation maps with Jordan/Lie interplay beyond
+    first-order invariants.
+    URL: `https://arxiv.org/abs/2412.15510`
+- Interpretation for this repo:
+  - our constrained core/certificate results fit the same pattern:
+    coarse exclusion is low-cost, but uniqueness and context-complete
+    certification require extra structural constraints.
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`

@@ -148,6 +148,10 @@ changes affine/Hessian symmetries:
   `tools/minimal_global_full_sign_cores.py` computes exact minimal UNSAT cores
   per global cell; nontrivial `z` cells are ruled out by small cores
   (size `3` in `all_agl/hessian216`, size `4` for involution mode at `z=(1,0)`).
+- constrained contradiction-core profile (`2026-02-11`):
+  under striation-complete witnesses (all four line directions), nontrivial
+  global cells in `all_agl/hessian216` require core size `4` (instead of `3`),
+  and involution mode at `z=(1,0)` requires size `5` (instead of `4`).
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:

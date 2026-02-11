@@ -143,6 +143,9 @@ for each global cell. Nontrivial `z` cells in `AGL(2,3)` and `Hessian216`
 admit compact contradiction cores of size `3`; the involution subset has core
 size `4` at `z=(1,0)` and size `3` elsewhere. This quantifies how many
 line/z constraints are minimally needed to rule out each cell.
+With striation-complete witnesses (covering all four affine line directions),
+these UNSAT bounds shift to `4` for nontrivial `AGL/Hessian` cells and to `5`
+for involution mode at `z=(1,0)`, giving a context-complete rigidity profile.
 
 Complementing those UNSAT witnesses, `tools/minimal_global_identity_certificates.py`
 computes exact positive certificates for the unique surviving global cell
