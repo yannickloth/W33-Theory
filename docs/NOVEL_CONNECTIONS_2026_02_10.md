@@ -128,6 +128,22 @@ changes affine/Hessian symmetries:
   classical-family hits (`7` dims), direct-table hits (`7` dims), and
   arithmetic-only hits (`10` dims). s12 targets remain outside the hit set;
   nearest-hit distances are `54` for `728`, `2` for `486`, and `6` for `242`.
+- integer-parameter divisor locus (`2026-02-11`):
+  `tools/vogel_integer_m_locus.py` rewrites exceptional-line dimension as
+  `D = 30*(m+4) - 122 + 120/(m+4)`, proving that for integer `m != -4`,
+  `D` is integer iff `(m+4)` divides `120`. The positive integer-`m` dimension
+  set is exactly `{8,28,52,78,133,190,248,336,484,603,782,1081,1680,3479}`.
+- global `z=(2,2)` exclusion at full-sign level (`2026-02-11`):
+  `tools/prove_z22_no_global_stabilizer.py` checks closed-form full-sign
+  invariance for `z_map=(2,2)` over all affine candidates and finds no
+  stabilizer: `0/864` matches in full `AGL(2,3)` (including global sign) and
+  `0/216` matches in the `det=2`, order-`2` involution subset.
+- global full-sign `z`-map census (`2026-02-11`):
+  `tools/classify_global_full_sign_stabilizers.py` scans all six affine
+  `z` maps across `{all_agl, hessian216, involution_det2}`.
+  Only two nonzero cells remain:
+  `(all_agl, z=(1,0), count=1)` and `(hessian216, z=(1,0), count=1)`;
+  all other cells are zero.
 - s12 Jacobi-failure pattern check (`2026-02-11`):
   `tools/analyze_s12_jacobi_failure_pattern.py` verifies the six grade-level
   Jacobi failures are exactly the nonzero triples with nonzero mod-3 sum,
@@ -152,6 +168,12 @@ Outputs:
 - `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`
 - `artifacts/vogel_rational_hit_crosswalk_2026_02_11.json`
 - `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
+- `artifacts/vogel_integer_m_locus_2026_02_11.json`
+- `docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md`
+- `artifacts/z22_global_stabilizer_exclusion_2026_02_11.json`
+- `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md`
+- `artifacts/global_full_sign_stabilizer_census_2026_02_11.json`
+- `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md`
 - `artifacts/s12_jacobi_failure_pattern_2026_02_11.json`
 - `docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md`
 - `artifacts/s12_sl27_z3_bridge_2026_02_11.json`
@@ -250,8 +272,8 @@ The `sl_27` bridge check is encoded in
   Link: `https://arxiv.org/abs/2411.14417`
 - Cretu et al., *Vogel universality and differential operators on Jacobi diagrams*, EPJC (2025)
   Link: `https://link.springer.com/article/10.1140/epjc/s10052-025-14406-9`
-- Cretu et al., *Classification Problem for Jacobi identities in Vogel's universality classes*, arXiv:2507.07901 (2025)
-  Link: `https://arxiv.org/abs/2507.07901`
+- Cretu et al., *The Vogel plane, the F4 line, and TQFT at level one*, arXiv:2508.01834 (2025)
+  Link: `https://arxiv.org/abs/2508.01834`
 - Cretu et al., *Classification Problem on Vogel's Plane*, EPJC (2025)
   Link: `https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y`
 - Cretu et al., *On Macdonald deformation of Vogel's universality and LMOV-like formula for exceptional hyperpolynomials*, Phys. Lett. B (2025)

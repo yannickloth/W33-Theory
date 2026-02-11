@@ -35,6 +35,8 @@ See artifacts:
 - `docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`
 - `artifacts/vogel_rational_hit_crosswalk_2026_02_11.json`
 - `docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`
+- `artifacts/vogel_integer_m_locus_2026_02_11.json`
+- `docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md`
 
 ## Closed-form note
 
@@ -67,3 +69,10 @@ Crosswalk classification of this finite set:
 - classical-family hits: `{3,8,28,78,190,1081,1680}`
 - direct-table hits: `{8,14,28,52,78,133,248}`
 - arithmetic-only hits: `{1,47,96,119,287,336,484,603,782,3479}`
+
+Integer-parameter refinement:
+- on the exceptional line, `D(m)=2*(3m+7)*(5m+8)/(m+4)` rewrites as
+  `D = 30*(m+4) - 122 + 120/(m+4)`;
+- therefore for integer `m != -4`, `D` is integer iff `(m+4) | 120`;
+- this yields exact positive integer-`m` dimensions:
+  `{8,28,52,78,133,190,248,336,484,603,782,1081,1680,3479}`.

@@ -112,7 +112,29 @@ symbolic fixed-line closure test and the subsequent exhaustive pulled-back
 invariance check described above. The script reports no invariant
 representatives for `z_map=(2,2)` on the canonical Hessian census; the same
 verification is exercised by the smoke test `tests/test_prove_exclude_z22_smoke.py`
-and by the unit-level check `tests/test_formal_proof_z22.py` added here.
+and by the unit-level check `tests/test_formal_proof_z22.py` added here. For a
+fully self-contained symbolic argument we also added `tools/formal_z22_proof.py`
+(and unit test `tests/test_formal_z22_module.py`), which formalizes the short
+`x=0` contradiction in an adapted gauge without referring to the census. A
+Lean 4 skeleton formalization is available at `proofs/lean/z22_exclusion.lean`
+as a starting point for a machine-checked proof.
+
+To tighten the exclusion further, we added
+`tools/prove_z22_no_global_stabilizer.py`, which checks a stronger global
+statement directly on the closed-form sign law:
+there is no full-sign stabilizer for `z_map=(2,2)` in either (i) all
+`AGL(2,3)` candidates (`864` affine/epsilon combinations) or (ii) the
+`det=2`, order-`2` involution subset (`216` combinations). Both match counts
+are exactly `0`. This is covered by
+`tests/test_prove_z22_no_global_stabilizer_smoke.py` and documented in
+`docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md`.
+
+We also added `tools/classify_global_full_sign_stabilizers.py` for a full
+`z`-map census. It shows that in both `AGL(2,3)` and `Hessian216`, the only
+global full-sign stabilizer cell is `z_map=(1,0)` with exactly one match
+(the trivial symmetry), while the involution subset has zero matches for all
+`z` maps. See `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` and
+`tests/test_classify_global_full_sign_stabilizers_smoke.py`.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:
@@ -122,7 +144,8 @@ For visual diagnostics we produce two small figures (Hessian medium run) via
 
 Both the finite-case script and plotting script have smoke tests added under
 `tests/` (`test_prove_exclude_z22_smoke.py` and
-`test_plot_zmap_involution_profiles_smoke.py`).
+`test_plot_zmap_involution_profiles_smoke.py`). The new global exclusion check
+is covered by `test_prove_z22_no_global_stabilizer_smoke.py`.
 
 This document is a living draft; the finite-case symbolic reduction above is
 now implemented and machine-checked in the test suite. Contributions and

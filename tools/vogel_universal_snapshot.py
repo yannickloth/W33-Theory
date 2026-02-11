@@ -245,8 +245,8 @@ def build_snapshot(
                 "year": 2025,
             },
             {
-                "title": "Classification Problem for Jacobi identities in Vogel's universality classes",
-                "url": "https://arxiv.org/abs/2507.07901",
+                "title": "The Vogel plane, the F4 line, and TQFT at level one",
+                "url": "https://arxiv.org/abs/2508.01834",
                 "year": 2025,
             },
             {
@@ -297,7 +297,8 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
     lines.append(
         "- arithmetic closure and family split docs: "
         "`docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`, "
-        "`docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`"
+        "`docs/VOGEL_RATIONAL_HIT_CROSSWALK_2026_02_11.md`, "
+        "`docs/VOGEL_INTEGER_M_LOCUS_2026_02_11.md`"
     )
     lines.append("")
     s12 = snapshot.get("s12_bridge")

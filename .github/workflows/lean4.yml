@@ -1,0 +1,23 @@
+name: Lean 4 CI
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  lean-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Lean 4
+        uses: leanprover/lean4-action@v0.2.0
+
+      - name: Build proofs with Lake
+        working-directory: proofs/lean
+        run: |
+          lake --version
+          lake update
+          lake build
