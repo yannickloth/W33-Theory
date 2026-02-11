@@ -18,6 +18,10 @@ It now also includes `zMap_fixed_point_unique`,
 `z22_contradiction_of_fixed_point`, and
 `z22_contradiction_of_fixed_point_via_zMap`, so the contradiction is reusable
 from an abstract fixed-point hypothesis and not only from the literal `z=1`.
+The Lean skeleton now also exposes
+`z22_no_fixed_point_stabilizer` and
+`z22_no_fixed_point_stabilizer_via_zMap`, i.e. there exists no `z` fixed by
+`z -> 2*z+2` for which vertical-line product/full signs can agree.
 
 Global strengthening:
 - closed-form stabilizer scan for `z=(2,2)` gives zero matches in full
@@ -49,3 +53,7 @@ Global strengthening:
   nontrivial core motifs in `agl_exact_full` (`0/7`) but positive overlap in
   Hessian datasets (`18/79` exact full, `30/256` exhaustive2), with dominant
   overlap motif `x:(1,1,0)`.
+- orbit-polarization refinement
+  (`tools/classify_core_motif_orbit_polarization.py`) shows the dominant
+  motif `x:(1,1,0)` is a high-precision full-orbit marker in Hessian
+  representatives (`34/36` overlap occurrences at orbit `2592`).

@@ -78,6 +78,12 @@ theorem zMap_fixed_point_unique (z : ZMod 3) (hz : zMap z = z) : z = 1 := by
 @[simp] theorem SLine_vertical_zMap_one : SLine (1 : ZMod 3) 0 0 (zMap 1) = -1 := by
   simp [zMap, SLine]
 
+/-- Explicit full-sign table for the vertical line `x=0` across all `z`. -/
+theorem SLine_vertical_table :
+    And (SLine (1 : ZMod 3) 0 0 0 = -1)
+      (And (SLine (1 : ZMod 3) 0 0 1 = -1) (SLine (1 : ZMod 3) 0 0 2 = 1)) := by
+  simp [SLine]
+
 /-- Core contradiction used to exclude `z=(2,2)`: `+1 != -1`. -/
 theorem z22_contradiction :
     Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 1) := by
@@ -106,5 +112,28 @@ theorem z22_contradiction_of_fixed_point_via_zMap
     Ne (PLine (1 : ZMod 3) 0 0) (SLine (1 : ZMod 3) 0 0 (zMap z)) := by
   have hz1 : z = 1 := zMap_fixed_point_unique z hz
   simpa [hz1] using z22_contradiction_via_zMap
+
+/--
+There is no fixed point of `zMap` for which the vertical-line sign could be
+preserved (`PLine = SLine`), i.e. the exclusion can be stated existentially.
+-/
+theorem z22_no_fixed_point_stabilizer :
+    Not (Exists fun z : ZMod 3 =>
+      zMap z = z /\ PLine (1 : ZMod 3) 0 0 = SLine (1 : ZMod 3) 0 0 z) := by
+  intro h
+  rcases h with Exists.intro z hrest
+  rcases hrest with And.intro hz heq
+  exact (z22_contradiction_of_fixed_point z hz) heq
+
+/--
+Same existential exclusion but written with the explicit `zMap` target.
+-/
+theorem z22_no_fixed_point_stabilizer_via_zMap :
+    Not (Exists fun z : ZMod 3 =>
+      zMap z = z /\ PLine (1 : ZMod 3) 0 0 = SLine (1 : ZMod 3) 0 0 (zMap z)) := by
+  intro h
+  rcases h with Exists.intro z hrest
+  rcases hrest with And.intro hz heq
+  exact (z22_contradiction_of_fixed_point_via_zMap z hz) heq
 
 end Z22Exclusion

@@ -120,6 +120,13 @@ Lean 4 skeleton formalization is available at `proofs/lean/z22_exclusion.lean`
 as a starting point for a machine-checked proof; it now includes explicit
 `zMap_one`, `zMap_fixed_iff`, `zMap_involution`, and
 `z22_contradiction_via_zMap` lemmas for the same fixed-point contradiction path.
+The same Lean file now strengthens this to existential exclusion with
+`z22_no_fixed_point_stabilizer` and
+`z22_no_fixed_point_stabilizer_via_zMap`: no fixed point of `z -> 2*z+2` can
+stabilize the vertical-line sign equation.
+In parallel, `tools/formal_z22_proof.py` now exposes a full `z in {0,1,2}`
+vertical-line sign profile showing the only fixed point is `z=1` and it still
+fails `P(L)=s(L,z)`.
 
 To tighten the exclusion further, we added
 `tools/prove_z22_no_global_stabilizer.py`, which checks a stronger global
@@ -175,6 +182,11 @@ representatives from the census artifacts. The overlap is exactly zero in
 (`18/79` exact full, `30/256` exhaustive2), with dominant overlap motif
 `x:(1,1,0)`. This provides a direct bridge between global-core motifs and
 enumerator-side representative structure.
+
+An additional refinement `tools/classify_core_motif_orbit_polarization.py`
+shows this dominant motif is strongly polarized toward full-orbit Hessian
+representatives: `15/16` in exact full and `19/20` in exhaustive2, i.e.
+combined precision `34/36 = 0.944` for orbit `2592`.
 
 For visual diagnostics we produce two small figures (Hessian medium run) via
 `tools/plot_zmap_involution_profiles.py`:

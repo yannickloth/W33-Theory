@@ -27,4 +27,5 @@ def test_lean_workflow_has_source_sanity_and_direct_typecheck() -> None:
     assert "theorem zMap_involution" in text
     assert "theorem z22_contradiction_via_zMap" in text
     assert "theorem z22_contradiction_of_fixed_point_via_zMap" in text
+    assert "theorem z22_no_fixed_point_stabilizer_via_zMap" in text
     assert "lake env lean z22_exclusion.lean" in text

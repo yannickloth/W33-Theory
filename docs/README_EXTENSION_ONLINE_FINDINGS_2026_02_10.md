@@ -178,6 +178,12 @@ from the layperson narrative.
     finite-field split between coarse obstruction counts and finer motif-level
     overlap signatures.
 
+33. Wikipedia, *Hessian group* (2026-02-11 pass)
+    URL: `https://en.wikipedia.org/wiki/Hessian_group`
+    Raw note: records the Hessian-group order `216` and its extension to a
+    complex reflection group of order `1296`, motivating an explicit check of
+    motif behavior against the repo's `1296` vs `2592` orbit split.
+
 ## Hypothesis chain -> repo checks
 
 H1. Residual subgroup should be an explicit affine-flag stabilizer.
@@ -337,6 +343,14 @@ Status: verified via `tools/link_core_rulebook_to_min_cert_census.py`:
 - overlap is positive in Hessian datasets (`18/79` in exact full,
   `30/256` in exhaustive2);
 - dominant overlap motif is `x:(1,1,0)` in both Hessian datasets.
+
+H19. The dominant overlap motif `x:(1,1,0)` should be polarized toward
+full-orbit (`2592`) representatives in Hessian datasets.
+Status: verified via `tools/classify_core_motif_orbit_polarization.py`:
+- `hessian_exact_full`: `15/16` `x:(1,1,0)` hits are orbit `2592`
+  (precision `0.938`);
+- `hessian_exhaustive2`: `19/20` are orbit `2592` (precision `0.950`);
+- combined Hessian precision: `34/36 = 0.944` for orbit `2592`.
 
 Additional witness-space note:
 - Minimal witness geometry (size `7`) differs between candidate spaces: **Hessian216** = `5` unique lines with one full `z={0,1,2}` line; **AGL(2,3)** = `6` unique lines with one line appearing twice with two `z` values. See `artifacts/e6_f3_trilinear_symmetry_breaking.json` -> `cross_checks.full_sign_obstruction_certificate_geotypes` and `cross_checks.full_sign_obstruction_certificate_orbits` for orbit sizes and canonical representatives.
@@ -671,6 +685,30 @@ Additional witness-space note:
   - Jordan decomposition over arbitrary fields:
     https://arxiv.org/abs/2601.07168
 
+## Twenty-fifth-pass raw notes (2026-02-11, orbit-polarization loop)
+
+- We pushed one step deeper than raw overlap counts and measured orbit-size
+  polarization of core motifs.
+- New analyzer: `tools/classify_core_motif_orbit_polarization.py`.
+- Result:
+  - `agl_exact_full` keeps zero core-motif overlap (`0/7` reps);
+  - in Hessian datasets, dominant motif `x:(1,1,0)` is strongly biased toward
+    full-orbit reps (`2592`): `15/16` exact full and `19/20` exhaustive2.
+- Combined precision for this motif as a `2592` indicator in Hessian data:
+  `34/36 = 0.944`.
+- Interpretation:
+  - nontrivial-core motifs are not only space-selective (AGL vs Hessian), they
+    are also orbit-selective inside Hessian space.
+  - this gives a concrete micro-structure link between global contradiction
+    motifs and reduced-orbit stratification.
+- web prompts checked in this pass:
+  - Hessian group order and 1296-extension context:
+    https://en.wikipedia.org/wiki/Hessian_group
+  - Hesse pencil background for AG(2,3)-like incidence:
+    https://arxiv.org/abs/math/0611590
+  - universality framing reminder for coarse-vs-refined invariants:
+    https://arxiv.org/abs/2601.01612
+
 ## Where each hypothesis is encoded
 
 - Analysis script: `tools/analyze_e6_f3_trilinear_symmetry_breaking.py`
@@ -696,6 +734,8 @@ Additional witness-space note:
 - nontrivial core rulebook tests: `tests/test_nontrivial_core_rulebook_smoke.py`
 - core-rulebook x min-cert census link: `tools/link_core_rulebook_to_min_cert_census.py`
 - core-rulebook x min-cert link tests: `tests/test_link_core_rulebook_to_min_cert_census_smoke.py`
+- core-motif orbit polarization: `tools/classify_core_motif_orbit_polarization.py`
+- core-motif orbit polarization tests: `tests/test_classify_core_motif_orbit_polarization_smoke.py`
 - global positive-identity certificates: `tools/minimal_global_identity_certificates.py`
 - global positive-identity tests: `tests/test_minimal_global_identity_certificates_smoke.py`
 - global dual-profile synthesis: `tools/global_sign_rigidity_dual_profile.py`
@@ -727,11 +767,12 @@ python tools/minimal_global_full_sign_cores.py --out-json artifacts/minimal_glob
 python tools/classify_nontrivial_unsat_core_geometry.py --out-json artifacts/nontrivial_unsat_core_geometry_2026_02_11.json --out-md docs/NONTRIVIAL_UNSAT_CORE_GEOMETRY_2026_02_11.md
 python tools/nontrivial_core_rulebook.py --out-json artifacts/nontrivial_core_rulebook_2026_02_11.json --out-md docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md
 python tools/link_core_rulebook_to_min_cert_census.py --out-json artifacts/core_rulebook_min_cert_link_2026_02_11.json --out-md docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md
+python tools/classify_core_motif_orbit_polarization.py --out-json artifacts/core_motif_orbit_polarization_2026_02_11.json --out-md docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md
 python tools/minimal_global_identity_certificates.py --out-json artifacts/minimal_global_identity_certificates_2026_02_11.json --out-md docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md
 python tools/global_sign_rigidity_dual_profile.py --out-json artifacts/global_sign_rigidity_dual_profile_2026_02_11.json --out-md docs/GLOBAL_SIGN_RIGIDITY_DUAL_PROFILE_2026_02_11.md
 python tools/analyze_s12_jacobi_failure_pattern.py --out-json artifacts/s12_jacobi_failure_pattern_2026_02_11.json --out-md docs/S12_JACOBI_FAILURE_PATTERN_2026_02_11.md
 python tools/analyze_s12_sl27_z3_bridge.py --max-block-size 60 --out-json artifacts/s12_sl27_z3_bridge_2026_02_11.json --out-md docs/S12_SL27_Z3_BRIDGE_2026_02_11.md
-python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
+python -m pytest tests/test_e6_f3_trilinear.py tests/test_e6_f3_trilinear_symmetry_breaking.py tests/test_witness_certificate_classification.py tests/test_enumerate_minimal_certificates_smoke.py tests/test_enumerate_minimal_certificates_exhaustive_smoke.py tests/test_check_min_cert_orbit_involution_rule_smoke.py tests/test_vogel_rational_dimension_theorem_smoke.py tests/test_vogel_rational_hit_crosswalk_smoke.py tests/test_vogel_integer_m_locus_smoke.py tests/test_prove_z22_no_global_stabilizer_smoke.py tests/test_classify_global_full_sign_stabilizers_smoke.py tests/test_minimal_global_full_sign_cores_smoke.py tests/test_classify_nontrivial_unsat_core_geometry_smoke.py tests/test_nontrivial_core_rulebook_smoke.py tests/test_link_core_rulebook_to_min_cert_census_smoke.py tests/test_classify_core_motif_orbit_polarization_smoke.py tests/test_minimal_global_identity_certificates_smoke.py tests/test_global_sign_rigidity_dual_profile_smoke.py -q
 cd proofs/lean
 lake update
 lake build

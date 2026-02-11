@@ -176,6 +176,11 @@ changes affine/Hessian symmetries:
   the census artifacts. Result: overlap is exactly zero in `agl_exact_full`
   (`0/7` reps), but positive in Hessian datasets (`18/79` exact full,
   `30/256` exhaustive2), with dominant overlap motif `x:(1,1,0)`.
+- core-motif orbit polarization (`2026-02-11`):
+  `tools/classify_core_motif_orbit_polarization.py` shows the dominant
+  overlap motif `x:(1,1,0)` is strongly polarized toward full-orbit Hessian
+  representatives: `15/16` (`0.938`) in exact full and `19/20` (`0.950`) in
+  exhaustive2, combined `34/36` (`0.944`) for orbit `2592`.
 - minimal positive-identity certificate census (`2026-02-11`):
   `tools/minimal_global_identity_certificates.py` computes exact minimal
   witness sets that isolate the unique global identity cell `z=(1,0)`:
@@ -223,6 +228,8 @@ Outputs:
 - `docs/NONTRIVIAL_CORE_RULEBOOK_2026_02_11.md`
 - `artifacts/core_rulebook_min_cert_link_2026_02_11.json`
 - `docs/CORE_RULEBOOK_MIN_CERT_LINK_2026_02_11.md`
+- `artifacts/core_motif_orbit_polarization_2026_02_11.json`
+- `docs/CORE_MOTIF_ORBIT_POLARIZATION_2026_02_11.md`
 - `artifacts/minimal_global_identity_certificates_2026_02_11.json`
 - `docs/MINIMAL_GLOBAL_IDENTITY_CERTIFICATES_2026_02_11.md`
 - `artifacts/global_sign_rigidity_dual_profile_2026_02_11.json`
