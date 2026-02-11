@@ -1,35 +1,51 @@
-# Vogel Extended Findings (2026-02-11)
+﻿# Vogel Extended Findings (2026-02-11)
 
 Summary of an extended rational search for Vogel exceptional-line parameter `m` such that
-Vogel universal dimension (alpha=-2, beta=m+4, gamma=2m+4) equals target dimensions.
+Vogel universal dimension (`alpha=-2`, `beta=m+4`, `gamma=2m+4`) equals target dimensions.
 
-Targets checked: 728, 486, 242
-Search method: exact rational-root search of the induced cubic polynomial using rational-root theorem (exact integer coefficients); denominators capped at 500.
+Targets checked: `728`, `486`, `242`.
+Search method: exact rational-root search for the induced cubic condition.
 
-Results:
+## Target results
 
-- 728: no non-degenerate rational exceptional-line `m` found with denominator <= 500 (the only rational root `m=-2` is degenerate and makes Vogel denominator zero, so it is discarded).
-- 486: no non-degenerate rational exceptional-line `m` found with denominator <= 500.
-- 242: no non-degenerate rational exceptional-line `m` found with denominator <= 500.
+- `D=728`: no non-degenerate rational exceptional-line `m`.
+- `D=486`: no non-degenerate rational exceptional-line `m`.
+- `D=242`: no non-degenerate rational exceptional-line `m`.
 
-Interpretation:
+The only universal rational root that appears uniformly in the cubic form is the
+always-degenerate `m=-2`, which is excluded because it zeroes Vogel denominators.
 
-- The earlier observed hit for 728 being `A26 (sl_27)` remains the only classical-family match.
-- The absence of rational exceptional-line hits for 486 and 242 up to reasonably large denominators suggests these dimensions are not realized by Vogel's standard exceptional-line rational parameterization (within the tested rational range). This supports the hypothesis that the s12 dimensions (486,242) lie outside the exceptional-line family and are likely not explained by a simple Vogel rational parameter.
+## Additional sweep (range check)
 
-Scripts / artifacts used:
-- `tools/vogel_rational_cubic_search.py` (rational cubic root finder)
-- `artifacts/vogel_rational_cubic_search_2026_02_11.json` (raw results)
+We also scanned dimensions `D` in `[200,1000]` with denominator cap `500`.
+This larger scan is **not empty**: rational non-degenerate hits occur at
+`D in {248, 287, 336, 484, 603, 782}`.
 
-Next steps:
-- If desired, expand rational search denominator cap further (careful with runtime) or search for algebraic (irrational) solutions via algebraic number field factoring.
-- Cross-check with weight-system kernel constraints (Khudoteplov et al., 2024) and recent Vogel deformation papers (Mironov et al., 2025; Isaev, 2026) for other non-rational universality mechanisms.
+So the correct statement is:
+- s12 dimensions (`728`, `486`, `242`) still have no rational non-degenerate hits,
+- but the broader range does contain isolated rational-hit dimensions.
 
-## Algebraic root analysis (numeric)
+See artifacts:
+- `artifacts/vogel_rational_cubic_search_2026_02_11.json`
+- `artifacts/vogel_rational_sweep.json`
+- `artifacts/vogel_rational_sweep.md`
+- `artifacts/vogel_rational_hit_catalog_2026_02_11.json`
+- `docs/VOGEL_RATIONAL_HIT_CATALOG_2026_02_11.md`
 
-- D = 486: cubic roots (approx) = [16.0673377849, -3.80067111827, -2.0 (degenerate)].
-- D = 242: cubic roots (approx) = [7.79418309566, -3.66084976233, -2.0 (degenerate)].
+## Closed-form note
 
-None of the non-degenerate real roots above are rational with denominator <= 500 (see `artifacts/vogel_rational_cubic_search_2026_02_11.json`). These algebraic roots are natural candidates for algebraic-number-field analysis (minimal polynomials and Galois structure) and could be consistent with refined or deformed Vogel universality mechanisms (e.g., Macdonald/Vogel deformations).
+After factoring the always-degenerate `(m+2)` factor, non-degenerate roots satisfy:
 
-Additional sweep: we performed a broad rational-cubic sweep across `D` in `[200,1000]` with denominator cap `500` and found no non-degenerate rational exceptional-line solutions in this larger range. See `artifacts/vogel_rational_sweep.json` and `artifacts/vogel_rational_sweep.md` for full results and per-dimension detail."}EOF
+`30*m^2 + (118-D)*m + (112-4D) = 0`
+
+so rational non-degenerate roots are controlled by the discriminant
+
+`Delta(D) = D^2 + 244*D + 484`.
+
+For s12 dimensions:
+- `Delta(242)=118096` (not a square)
+- `Delta(486)=355264` (not a square)
+- `Delta(728)=708100` (not a square)
+
+This gives a compact arithmetic obstruction certificate for rational-hit absence
+at the current s12 target dimensions.

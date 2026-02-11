@@ -40,7 +40,7 @@ def find_rational_m_for_dim(D: int, denom_cap: int = 200) -> Dict[str, List[str]
     # Use integer arithmetic
     # Coeffs of (6m+14)*(5m+8)*(4m+8)
     # Multiply out directly
-    # Let’s symbolically expand
+    # Symbolic expansion
     a = 6 * 5 * 4  # coefficient for m^3 from product = 120
     # Compute full expansion
     # (6m+14)*(5m+8)*(4m+8) -> expand
