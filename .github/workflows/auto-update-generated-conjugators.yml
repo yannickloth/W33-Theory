@@ -1,0 +1,46 @@
+name: Auto-update generated conjugators
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # daily at 08:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Generate conjugator file
+        run: |
+          set -eux
+          python scripts/generate_conjugators_lean.py
+
+      - name: Create PR with updated generated file (if any)
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(gen): update conjugators_generated.lean"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          author: "GitHub Actions <actions@github.com>"
+          title: "chore(gen): update generated GL2 conjugators"
+          body: |
+            This PR updates the generated GL(2,3) conjugator witnesses produced by
+            `scripts/generate_conjugators_lean.py`.
+
+            If the generator has changed the output, please review the changes and
+            merge if everything looks good.
+          base: main
+          branch: "chore/gen-update-${{ github.run_id }}"
+          paths:
+            - proofs/lean/conjugators_generated.lean
