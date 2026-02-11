@@ -46,5 +46,18 @@ def test_analyze_agl23_det2_involution_class_cli_smoke(tmp_path: Path) -> None:
     assert fiber["distinct_fixed_lines"] == 12
     assert fiber["uniform_count_is_three"] is True
 
+    refl = inv["reflection_parameterization"]
+    assert refl["axis_line_count"] == 12
+    assert refl["axis_type_histogram"] == {"x": 9, "y": 9, "y=1x": 9, "y=2x": 9}
+    assert refl["fixed_striation_type_histogram"] == {
+        "x": 9,
+        "y": 9,
+        "y=1x": 9,
+        "y=2x": 9,
+    }
+    # 12 axis lines, each with the other 3 directions as fixed striations.
+    assert len(refl["axis_line_to_fixed_striation_types"]) == 12
+    assert all(len(v) == 3 for v in refl["axis_line_to_fixed_striation_types"].values())
+
     text = out_md.read_text(encoding="utf-8")
     assert "AGL(2,3) det=2 Involution Class" in text

@@ -34,6 +34,18 @@ def test_analyze_reduced_rep_stabilizer_census_cli_smoke(tmp_path: Path) -> None
     }
     assert payload["fixed_witness_row_count_histogram"] == {"1": 8, "3": 26, "5": 21}
     assert payload["claim_checks"]["zmap_22_absent"] is True
+    assert payload["claim_checks"]["axis_type_ne_striation_type"] is True
+    assert payload["fixed_striation_type_histogram"] == {
+        "x": 34,
+        "y": 5,
+        "y=1x": 7,
+        "y=2x": 9,
+    }
+    assert (
+        payload["cross_tabs"]["axis_type_vs_fixed_striation_type"]["['y=1x', 'x']"]
+        == 16
+    )
+    assert payload["cross_tabs"]["z_map_vs_fixed_striation_type"]["[[1, 0], 'x']"] == 33
 
     text = out_md.read_text(encoding="utf-8")
     assert "Reduced-Rep Stabilizer Census" in text

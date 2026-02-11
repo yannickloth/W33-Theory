@@ -903,12 +903,31 @@ Additional witness-space note:
   - det=2 involution count: `36`,
   - conjugacy class count: `1` (one class of size `36`),
   - centralizer size: `12` with order histogram `{1:1, 2:7, 3:2, 6:2}`.
+- Structural refinement (repo computation):
+  - each det=2 involution is a finite-plane "reflection":
+    - fixed points form a single affine axis line (3 points),
+    - fixed lines split as `{axis line} ∪ {one full striation}` (1 + 3 = 4 fixed lines),
+    - equivalently: det=2 involutions are parameterized by `(axis line, fixed striation direction)`,
+      giving `12 * 3 = 36` total.
 - External cross-checks:
   - GroupNames lists a conjugacy class `2B` of size `36` in `AGL(2,3)` (character table):
     https://people.maths.bris.ac.uk/~matyd/GroupNames/432/AGL%282%2C3%29.html
   - The dihedral group of order `12` (symmetries of a hexagon) has element orders
     `1,2,3,6` with counts matching the histogram above:
     https://www.cs.uleth.ca/~holzmann/notes/dihedral/dihedral1.html
+
+## Thirty-third-pass raw notes (2026-02-11, reduced-rep stabilizers as reflections)
+
+- Tool update: `tools/analyze_reduced_rep_stabilizer_census.py` now records, for the unique
+  reduced-rep stabilizer involution, both:
+  - the axis-line type (type of fixed-point line),
+  - the fixed-striation type (the direction whose 3 parallel lines are fixed setwise).
+- Result (repo computation on exact Hessian reduced reps, count `55`):
+  - fixed striation type histogram is strongly biased toward `x`:
+    `{'x': 34, 'y': 5, 'y=1x': 7, 'y=2x': 9}`.
+- Interpretation hint:
+  - the vertical/`x=` striation appears to be the dominant "reflection-fixed" direction in the reduced sector,
+    which is consistent with how the short `z22` contradiction singles out a vertical line in an adapted gauge.
 
 ## Where each hypothesis is encoded
 

@@ -13,7 +13,7 @@ import argparse
 import datetime as dt
 import json
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Callable, Iterable, TypeVar
 
@@ -100,6 +100,17 @@ def build_report() -> dict[str, Any]:
     fixed_line_fiber_hist: dict[str, int] = {}
     fixed_line_type_fiber_hist: dict[str, dict[str, int]] = {}
 
+    # Reflection structure: det=-1 affine involutions behave like "reflections":
+    #  - 3 fixed points (an affine axis line),
+    #  - 4 fixed lines (axis line + an entire striation of 3 parallel lines).
+    axis_type_hist = Counter()
+    fixed_striation_type_hist = Counter()
+    axis_type_vs_fixed_striation_type = Counter()
+    axis_line_to_types: dict[str, str] = {}
+    axis_line_to_striations: dict[str, set[str]] = defaultdict(set)
+    axis_line_and_striation_pairs = Counter()
+    reflection_failures: list[dict[str, Any]] = []
+
     if rep is not None:
         centralizer = [g for g in agl if _conjugate(g, rep) == rep]
         cent_hist = Counter(_order(g) for g in centralizer)
@@ -138,6 +149,56 @@ def build_report() -> dict[str, Any]:
             for ltype, counter in sorted(fiber_by_type.items())
         }
 
+        # Reflection parameterization across the full candidate set.
+        for elem in candidates:
+            elem_fps = _fixed_points(elem, points)
+            axis_key = str(elem_fps)
+            try:
+                axis_type = str(analyze._line_equation_type(tuple(elem_fps))[0])
+            except Exception as exc:
+                reflection_failures.append(
+                    {
+                        "affine_elem": [list(elem[0]), list(elem[1])],
+                        "why": f"axis_type_error: {exc}",
+                    }
+                )
+                continue
+            axis_line_to_types[axis_key] = axis_type
+
+            elem_fixed_lines = _fixed_lines(elem, lines)
+            fixed_line_type_hist = Counter(
+                str(analyze._line_equation_type(L)[0]) for L in elem_fixed_lines
+            )
+            striation_types = [
+                t for t, count in fixed_line_type_hist.items() if int(count) == 3
+            ]
+            axis_count = int(fixed_line_type_hist.get(axis_type, 0))
+            if (
+                len(elem_fps) != 3
+                or len(elem_fixed_lines) != 4
+                or axis_count != 1
+                or len(striation_types) != 1
+            ):
+                reflection_failures.append(
+                    {
+                        "affine_elem": [list(elem[0]), list(elem[1])],
+                        "fixed_points_count": int(len(elem_fps)),
+                        "fixed_lines_count": int(len(elem_fixed_lines)),
+                        "fixed_line_type_histogram": {
+                            str(k): int(v)
+                            for k, v in sorted(fixed_line_type_hist.items())
+                        },
+                    }
+                )
+                continue
+
+            fixed_striation_type = str(striation_types[0])
+            axis_type_hist[axis_type] += 1
+            fixed_striation_type_hist[fixed_striation_type] += 1
+            axis_type_vs_fixed_striation_type[(axis_type, fixed_striation_type)] += 1
+            axis_line_to_striations[axis_key].add(fixed_striation_type)
+            axis_line_and_striation_pairs[(axis_key, fixed_striation_type)] += 1
+
     class_size = class_sizes[0] if class_sizes else 0
     centralizer_size = len(centralizer)
     d12_fingerprint = {
@@ -152,6 +213,22 @@ def build_report() -> dict[str, Any]:
     fixed_line_fiber_values = list(fixed_line_fiber_hist.values())
     fixed_line_fiber_is_uniform_three = bool(
         fixed_line_fiber_values and set(fixed_line_fiber_values) == {3}
+    )
+
+    all_line_types = {"x", "y", "y=1x", "y=2x"}
+    axis_line_striation_expected = {
+        axis: sorted(list(all_line_types - {axis_type}))
+        for axis, axis_type in axis_line_to_types.items()
+    }
+    axis_line_striation_observed = {
+        axis: sorted(list(types))
+        for axis, types in sorted(axis_line_to_striations.items())
+    }
+    axis_line_striation_bijection = bool(
+        axis_line_striation_observed
+        and axis_line_striation_observed == axis_line_striation_expected
+        and all(v == 1 for v in axis_line_and_striation_pairs.values())
+        and len(axis_line_and_striation_pairs) == 36
     )
 
     claim_checks = {
@@ -172,6 +249,9 @@ def build_report() -> dict[str, Any]:
             fixed_line_fiber_is_uniform_three
         ),
         "fixed_point_line_count_is_12": bool(len(fixed_line_fiber_hist) == 12),
+        "det2_involutions_reflection_parameterization_holds": bool(
+            not reflection_failures and axis_line_striation_bijection
+        ),
     }
 
     return {
@@ -207,13 +287,30 @@ def build_report() -> dict[str, Any]:
                 "distinct_fixed_lines": int(len(fixed_line_fiber_hist)),
                 "by_line_type": fixed_line_type_fiber_hist,
             },
+            "reflection_parameterization": {
+                "axis_line_count": int(len(axis_line_to_types)),
+                "axis_type_histogram": {
+                    str(k): int(v) for k, v in sorted(axis_type_hist.items())
+                },
+                "fixed_striation_type_histogram": {
+                    str(k): int(v) for k, v in sorted(fixed_striation_type_hist.items())
+                },
+                "axis_type_vs_fixed_striation_type": {
+                    str([k[0], k[1]]): int(v)
+                    for k, v in sorted(axis_type_vs_fixed_striation_type.items())
+                },
+                "axis_line_to_fixed_striation_types": axis_line_striation_observed,
+            },
         },
         "claim_checks": claim_checks,
         "claim": (
             "AGL(2,3) contains exactly 36 det=2 involutions (order 2) forming a single "
             "conjugacy class; a representative has point/line cycle signatures "
             "[1,1,1,2,2,2] and [1,1,1,1,2,2,2,2], fixes 3 points (an affine line) and "
-            "4 affine lines, and has a centralizer with the D12 order fingerprint."
+            "4 affine lines, and has a centralizer with the D12 order fingerprint. "
+            "Moreover, each det=2 involution is uniquely parameterized by its fixed-point "
+            "axis line together with the choice of which of the other three line-directions "
+            "is fixed as an entire striation (axis+striation gives 12*3=36)."
         ),
         "claim_holds": bool(all(claim_checks.values())),
     }
@@ -224,6 +321,7 @@ def render_md(report: dict[str, Any]) -> str:
     rep = inv["representative"]
     cent = inv["centralizer"]
     fiber = inv["fixed_point_line_fiber"]
+    refl = inv["reflection_parameterization"]
 
     lines: list[str] = []
     lines.append("# AGL(2,3) det=2 Involution Class (2026-02-11)")
@@ -254,6 +352,19 @@ def render_md(report: dict[str, Any]) -> str:
     lines.append(f"- distinct fixed lines: `{fiber['distinct_fixed_lines']}`")
     lines.append(f"- uniform fiber size is 3: `{fiber['uniform_count_is_three']}`")
     lines.append(f"- by line type: `{fiber['by_line_type']}`")
+    lines.append("")
+    lines.append("## Reflection Parameterization")
+    lines.append("")
+    lines.append(f"- axis line count: `{refl['axis_line_count']}`")
+    lines.append(f"- axis type histogram: `{refl['axis_type_histogram']}`")
+    lines.append(
+        "- fixed striation type histogram: "
+        f"`{refl['fixed_striation_type_histogram']}`"
+    )
+    lines.append(
+        "- axis type vs fixed striation type: "
+        f"`{refl['axis_type_vs_fixed_striation_type']}`"
+    )
     lines.append("")
     return "\n".join(lines)
 

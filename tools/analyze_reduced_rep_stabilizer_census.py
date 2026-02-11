@@ -103,12 +103,28 @@ def _fixed_point_line_type(
     return str(analyze._line_equation_type(fixed)[0])
 
 
+def _fixed_striation_type(
+    elem: tuple[tuple[int, int, int, int, int], tuple[int, int]],
+    affine_lines: list[tuple[tuple[int, int], tuple[int, int], tuple[int, int]]],
+) -> str:
+    mat, shift = elem
+    fixed_lines = [L for L in affine_lines if analyze._map_line(mat, shift, L) == L]
+    type_hist = Counter(str(analyze._line_equation_type(L)[0]) for L in fixed_lines)
+    striation_types = [t for t, count in type_hist.items() if int(count) == 3]
+    if len(striation_types) != 1:
+        raise RuntimeError(
+            f"Expected exactly one fixed striation type; got histogram {dict(type_hist)}"
+        )
+    return str(striation_types[0])
+
+
 def build_report(in_json: Path) -> dict[str, Any]:
     payload = _load_json(in_json)
     representatives = list(payload.get("representatives", []))
     reduced = [r for r in representatives if int(r.get("orbit_size", 0)) == 1296]
 
     points = [(x, y) for x in range(3) for y in range(3)]
+    affine_lines = list(analyze._all_affine_lines())
     agl = [(m, s) for m in analyze._gl2_3() for s in points]
     agl_involutions = [
         e for e in agl if int(e[0][4]) == 2 and analyze._affine_order(e) == 2
@@ -120,6 +136,10 @@ def build_report(in_json: Path) -> dict[str, Any]:
     unique_lines_hist = Counter()
     full_z_line_hist = Counter()
     fixed_point_line_type_hist = Counter()
+    fixed_striation_type_hist = Counter()
+    axis_type_vs_striation_type = Counter()
+    z_vs_axis_type = Counter()
+    z_vs_striation_type = Counter()
     z_vs_fixed_rows = Counter()
     z_vs_unique_lines = Counter()
     stabilizer_found_count_hist = Counter()
@@ -158,8 +178,13 @@ def build_report(in_json: Path) -> dict[str, Any]:
         unique_lines_hist[unique_lines] += 1
         full_z_line_hist[int(has_full_z_line)] += 1
 
-        fixed_line_type = _fixed_point_line_type(elem)
-        fixed_point_line_type_hist[fixed_line_type] += 1
+        axis_type = _fixed_point_line_type(elem)
+        fixed_striation_type = _fixed_striation_type(elem, affine_lines)
+        fixed_point_line_type_hist[axis_type] += 1
+        fixed_striation_type_hist[fixed_striation_type] += 1
+        axis_type_vs_striation_type[(axis_type, fixed_striation_type)] += 1
+        z_vs_axis_type[(z_map, axis_type)] += 1
+        z_vs_striation_type[(z_map, fixed_striation_type)] += 1
 
         z_vs_fixed_rows[(z_map, int(fixed_rows))] += 1
         z_vs_unique_lines[(z_map, int(unique_lines))] += 1
@@ -176,6 +201,9 @@ def build_report(in_json: Path) -> dict[str, Any]:
         ),
         "fixed_row_counts_are_odd": bool(
             all(int(k) % 2 == 1 for k in fixed_row_hist.keys())
+        ),
+        "axis_type_ne_striation_type": bool(
+            all(k[0] != k[1] for k in axis_type_vs_striation_type.keys())
         ),
     }
 
@@ -207,6 +235,9 @@ def build_report(in_json: Path) -> dict[str, Any]:
         "fixed_point_line_type_histogram": {
             str(k): int(v) for k, v in sorted(fixed_point_line_type_hist.items())
         },
+        "fixed_striation_type_histogram": {
+            str(k): int(v) for k, v in sorted(fixed_striation_type_hist.items())
+        },
         "cross_tabs": {
             "z_map_vs_fixed_witness_rows": {
                 str([list(k[0]), k[1]]): int(v)
@@ -215,6 +246,18 @@ def build_report(in_json: Path) -> dict[str, Any]:
             "z_map_vs_unique_lines_count": {
                 str([list(k[0]), k[1]]): int(v)
                 for k, v in sorted(z_vs_unique_lines.items())
+            },
+            "axis_type_vs_fixed_striation_type": {
+                str([k[0], k[1]]): int(v)
+                for k, v in sorted(axis_type_vs_striation_type.items())
+            },
+            "z_map_vs_axis_type": {
+                str([list(k[0]), k[1]]): int(v)
+                for k, v in sorted(z_vs_axis_type.items())
+            },
+            "z_map_vs_fixed_striation_type": {
+                str([list(k[0]), k[1]]): int(v)
+                for k, v in sorted(z_vs_striation_type.items())
             },
         },
         "stabilizer_affine_distinct_count": int(len(stabilizer_affine_hist)),
@@ -247,6 +290,9 @@ def render_md(report: dict[str, Any]) -> str:
     lines.append(
         f"- fixed-point line type histogram: `{report['fixed_point_line_type_histogram']}`"
     )
+    lines.append(
+        f"- fixed striation type histogram: `{report['fixed_striation_type_histogram']}`"
+    )
     lines.append("")
     lines.append("## Geotype")
     lines.append("")
@@ -267,6 +313,17 @@ def render_md(report: dict[str, Any]) -> str:
     lines.append(
         "- z-map vs unique lines: "
         f"`{report['cross_tabs']['z_map_vs_unique_lines_count']}`"
+    )
+    lines.append(
+        "- axis type vs fixed striation type: "
+        f"`{report['cross_tabs']['axis_type_vs_fixed_striation_type']}`"
+    )
+    lines.append(
+        "- z-map vs axis type: " f"`{report['cross_tabs']['z_map_vs_axis_type']}`"
+    )
+    lines.append(
+        "- z-map vs fixed striation type: "
+        f"`{report['cross_tabs']['z_map_vs_fixed_striation_type']}`"
     )
     lines.append("")
     return "\n".join(lines)
