@@ -354,7 +354,7 @@ def run_graph_embedding_mapping(k=16):
     matched = len(mapping)
     out = ARTIFACTS / "edge_root_mapping_embedding.json"
     with out.open("w", encoding="utf-8") as f:
-        json.dump({"method": method_used, "matched": matched}, f, indent=2)
+        json.dump({"method": method_used, "matched": matched}, f, indent=2, default=str)
 
     print("Embedding mapping matched:", matched)
     return mapping, cost, (s_emb, R_emb, t_emb)
@@ -432,7 +432,7 @@ def run_geometry_mapping(tol=1e-8):
     outp = ARTIFACTS / "edge_root_mapping_geom.json"
     sample = [[int(k), [float(x) for x in v]] for k, v in list(mapping.items())[:20]]
     with outp.open("w", encoding="utf-8") as f:
-        json.dump({"result": result, "sample": sample}, f, indent=2)
+        json.dump({"result": result, "sample": sample}, f, indent=2, default=str)
 
     print("Geometric mapping summary:", result)
     return mapping, candidate_triples, (s, R, t)
@@ -781,7 +781,73 @@ def compute_adjacency_score(mapping, relation="abs1"):
     return score
 
 
-def compute_feature_vectors(k=16):
+def compute_edge_orbit_ids(cache_path=None, force=False):
+    """Compute (and cache) edge orbit ids under Aut(W33).
+
+    Returns (edge_to_orbit list, orbit_size dict)
+    """
+    if cache_path is None:
+        cache_path = ARTIFACTS / "w33_edge_orbits.json"
+    if cache_path.exists() and not force:
+        try:
+            j = json.loads(cache_path.read_text(encoding="utf-8"))
+            edge_to_orbit = [int(j["edge_to_orbit"][str(i)]) for i in range(len(j["edge_to_orbit"]))]
+            orbit_sizes = {int(k): int(v) for k, v in j.get("orbit_sizes", {}).items()}
+            return edge_to_orbit, orbit_sizes
+        except Exception:
+            pass
+
+    # enumerate group and compute orbits (may be slow; results cached)
+    import tools.analyze_balanced_orbit_stabilizer as bal
+
+    pts, adj, edges = bal.build_w33()
+    gens = bal.get_generators(pts)
+    G = bal.enumerate_group(gens)
+
+    edge_index = {edges[i]: i for i in range(len(edges))}
+    # allow reversed tuple mapping
+    for i, (u, v) in enumerate(edges):
+        if (v, u) not in edge_index:
+            edge_index[(v, u)] = i
+
+    n_edges = len(edges)
+    edge_orbit_id = [-1] * n_edges
+    next_orbit = 0
+    for e in range(n_edges):
+        if edge_orbit_id[e] != -1:
+            continue
+        orb = set()
+        u, v = edges[e]
+        for p in G:
+            u2 = p[u]
+            v2 = p[v]
+            idx = edge_index.get((u2, v2))
+            if idx is None:
+                idx = edge_index.get((v2, u2))
+            if idx is None:
+                continue
+            orb.add(idx)
+        for idx in orb:
+            edge_orbit_id[idx] = next_orbit
+        next_orbit += 1
+
+    # compute sizes
+    from collections import Counter
+
+    counts = Counter(edge_orbit_id)
+    orbit_sizes = {int(k): int(v) for k, v in counts.items()}
+
+    # cache
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        json.dump({"edge_to_orbit": {str(i): int(edge_orbit_id[i]) for i in range(len(edge_orbit_id))}, "orbit_sizes": {str(k): int(v) for k, v in orbit_sizes.items()}}, cache_path.open("w", encoding="utf-8"), indent=2)
+    except Exception:
+        pass
+
+    return edge_orbit_id, orbit_sizes
+
+
+def compute_feature_vectors(k=16, use_orbit_features=False):
     """Compute feature vectors for edges and roots.
 
     Returns (edge_feats, root_feats, meta) where meta includes L_adj and other helpers.
@@ -865,17 +931,27 @@ def compute_feature_vectors(k=16):
         tri_count[i] = cnt
 
     # build feature arrays
-    edge_feats = np.hstack(
-        [
-            edge_emb,
-            tri_count.reshape(-1, 1).astype(float),
-            best_geo_dist.reshape(-1, 1),
-            lift_norm.reshape(-1, 1),
-            np.array([len(L_adj[i]) for i in range(n_edges)], dtype=float).reshape(
-                -1, 1
-            ),
-        ]
-    )
+    base_edge_feats = [
+        edge_emb,
+        tri_count.reshape(-1, 1).astype(float),
+        best_geo_dist.reshape(-1, 1),
+        lift_norm.reshape(-1, 1),
+        np.array([len(L_adj[i]) for i in range(n_edges)], dtype=float).reshape(-1, 1),
+    ]
+    # optional orbit-based feature (cached)
+    # use_orbit_features must be passed into this function to enable
+    try:
+        use_orbit = bool(use_orbit_features)
+    except NameError:
+        use_orbit = False
+    if use_orbit:
+        edge_orbit_id, orbit_sizes = compute_edge_orbit_ids()
+        orbit_size_arr = np.array(
+            [orbit_sizes.get(int(edge_orbit_id[i]), 1) for i in range(n_edges)], dtype=float
+        ).reshape(-1, 1)
+        base_edge_feats.append(orbit_size_arr)
+
+    edge_feats = np.hstack(base_edge_feats)
 
     is_integer_root = np.array(
         [all(c == int(c) for c in r) for r in arr_roots], dtype=float
@@ -953,12 +1029,12 @@ def build_score_matrix(edge_feats, root_feats, meta, weights=None):
     return score
 
 
-def run_feature_hungarian_mapping(weights=None, write_artifact=True):
+def run_feature_hungarian_mapping(weights=None, write_artifact=True, use_orbit_features=False):
     """Compute feature-driven score matrix and run Hungarian assignment.
 
     Returns mapping dict edge->root_tuple and stats.
     """
-    edge_feats, root_feats, meta = compute_feature_vectors(k=16)
+    edge_feats, root_feats, meta = compute_feature_vectors(k=16, use_orbit_features=use_orbit_features)
     score = build_score_matrix(edge_feats, root_feats, meta, weights=weights)
 
     try:
@@ -1183,6 +1259,129 @@ def cp_sat_local_refine(mapping_init, cluster_edges, top_k=8, time_limit=10):
     return updated, local_score
 
 
+def cp_sat_local_refine_with_candidates(mapping_init, cluster_edges, candid_roots, time_limit=10):
+    """Refine mapping on a small cluster with OR-Tools CP-SAT using provided candidate roots per edge.
+
+    candid_roots: list of lists of root indices (global E8 root indices) per edge in cluster_edges.
+    """
+    try:
+        from ortools.sat.python import cp_model
+    except Exception:
+        print("OR-Tools not available; skipping CP-SAT local refine (with candidates)")
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    if not cluster_edges:
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    roots = [tuple(r) for r in build_E8_roots()]
+
+    model = cp_model.CpModel()
+    x = {}
+    for i_e, e in enumerate(cluster_edges):
+        for r in candid_roots[i_e]:
+            x[(i_e, r)] = model.NewBoolVar(f"x_e{e}_r{r}")
+        model.Add(sum(x[(i_e, r)] for r in candid_roots[i_e]) == 1)
+
+    # each root used at most once across cluster
+    pool = sorted({r for sub in candid_roots for r in sub})
+    for r in pool:
+        model.Add(
+            sum(x[(i_e, r)] for i_e in range(len(cluster_edges)) if (i_e, r) in x) <= 1
+        )
+
+    # linearize pair products with auxiliary y vars
+    y_vars = []
+    for i in range(len(cluster_edges)):
+        for j in range(i + 1, len(cluster_edges)):
+            ei = cluster_edges[i]
+            ej = cluster_edges[j]
+            for ri in candid_roots[i]:
+                for rj in candid_roots[j]:
+                    v = model.NewBoolVar(f"y_e{ei}_r{ri}_e{ej}_r{rj}")
+                    model.AddBoolAnd([x[(i, ri)], x[(j, rj)]]).OnlyEnforceIf(v)
+                    model.Add(x[(i, ri)] + x[(j, rj)] - 1 >= v)
+                    y_vars.append((v, ri, rj))
+
+    # compute root adjacency info
+    roots_arr = [tuple(r) for r in build_E8_roots()]
+    R_adj = []
+    for i in range(len(roots_arr)):
+        ri = np.array(roots_arr[i], dtype=float)
+        s = set()
+        for j in range(i + 1, len(roots_arr)):
+            rj = np.array(roots_arr[j], dtype=float)
+            ip = int(np.dot(ri, rj))
+            if abs(ip) == 1:
+                s.add(j)
+        R_adj.append(s)
+
+    # objective: maximize sum of y * adj_root_indicator
+    terms = []
+    for v, ri, rj in y_vars:
+        adj_val = 1 if (int(rj) in R_adj[int(ri)]) else 0
+        if adj_val:
+            terms.append(v)
+    if not terms:
+        # nothing to do
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    model.Maximize(sum(terms))
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = float(time_limit)
+    solver.parameters.num_search_workers = 8
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        print("CP-SAT (candidates) found no feasible improvement")
+        return mapping_init, compute_adjacency_score(mapping_init)
+
+    updated = dict(mapping_init)
+    for i_e, e in enumerate(cluster_edges):
+        for r in candid_roots[i_e]:
+            if solver.Value(x[(i_e, r)]) == 1:
+                updated[e] = tuple(np.array(build_E8_roots())[int(r)])
+                break
+
+    local_score = compute_adjacency_score({e: updated[e] for e in cluster_edges})
+    return updated, local_score
+
+
+def select_candidate_roots_by_compatibility(score_matrix, mapping, cluster_edges, meta, top_m=200, top_k=12, adjacency_weight=1.0):
+    """Select candidate E8 root indices per edge emphasizing local adjacency compatibility.
+
+    - score_matrix: edge x root feature score matrix (higher=better)
+    - mapping: current mapping edge -> root_tuple (used for neighbor compatibility checks)
+    - cluster_edges: list of edge indices in the cluster (order preserved)
+    - meta: feature meta dict (must contain 'L_adj' and 'R_adj')
+    Returns: list of lists of root indices (ints), one list per edge in cluster_edges
+    """
+    roots = [tuple(r) for r in build_E8_roots()]
+    root_index = {r: i for i, r in enumerate(roots)}
+    L_adj = meta["L_adj"]
+    R_adj = meta["R_adj"]
+
+    candidate_lists = []
+    for e in cluster_edges:
+        # pick top-m candidates by raw feature score
+        feature_scores = score_matrix[e]
+        idxs = np.argsort(-feature_scores)[:top_m]
+        scored = []
+        for rid in idxs:
+            comp = 0
+            # neighbor-based compatibility: how many neighbors (already mapped) would be adjacent to this root
+            for neigh in L_adj[e]:
+                if neigh in mapping:
+                    neigh_root = mapping[neigh]
+                    neigh_root_idx = root_index.get(tuple(neigh_root))
+                    if neigh_root_idx is not None and neigh_root_idx in R_adj[int(rid)]:
+                        comp += 1
+            combined = float(feature_scores[int(rid)]) + adjacency_weight * comp
+            scored.append((int(rid), combined))
+        scored.sort(key=lambda x: x[1], reverse=True)
+        picked = [rid for rid, _ in scored[:top_k]]
+        candidate_lists.append(picked)
+    return candidate_lists
+
+
 # Simple plotting helpers
 
 
@@ -1276,7 +1475,7 @@ def run_mapping(tol=1e-8):
         "iterated_matched": len(mapping_iter) if mapping_iter else 0,
     }
     with out.open("w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2)
+        json.dump(summary, f, indent=2, default=str)
 
     print("Final summary:", summary)
     return (

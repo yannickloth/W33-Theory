@@ -15,17 +15,15 @@ Resources explored:
 - https://fgmarcelis.wordpress.com/miracle-octad-generator-mog/
 - http://finitegeometry.org/sc/map.html
 - http://finitegeometry.org/sc/15/inscapes.html
-"""
+- https://bendwavy.org/klitzing/explain/gc.htm
+""
 
 print(
     """
-╔══════════════════════════════════════════════════════════════════════════════╗
-║           EXTERNAL RESOURCES SYNTHESIS FOR W33 ↔ E8 BIJECTION               ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+EXTERNAL RESOURCES SYNTHESIS FOR W33 ↔ E8 BIJECTION
 
-═══════════════════════════════════════════════════════════════════════════════
 PART I: KEY STRUCTURAL INSIGHTS FROM FRANS MARCELIS
-═══════════════════════════════════════════════════════════════════════════════
+--------------------------------------------------------------------------
 
 1. E8 ROOT STRUCTURE (fgmarcelis.wordpress.com/e8/)
    ─────────────────────────────────────────────────
@@ -104,6 +102,16 @@ PART II: KEY STRUCTURAL INSIGHTS FROM STEVEN CULLINANE
    • Cremona-Richmond 15₃ configuration
 
    • Symplectic polarity in PG(3,2) underlies all these!
+
+4. GRÜNBAUM-COXETER POLYTOPES (bendwavy.org/klitzing/explain/gc.htm)
+   ────────────────────────────────────────────────────────────────
+   • Abstract/elliptical polytopes, antipodal identifications (hemi‑polytopes),
+     and modular 'mod‑wrap' constructions useful for incidence‑matrix templates.
+   • Provides combinatorial tables (vertex/Petrie counts) and incidence data
+     that can be used to compare polytopal vertex/edge counts (e.g. 40‑vertex
+     Hessian/W33 observations) with finite‑geometry realizations.
+   • Relevance: suggests alternative geometric realizations for W33/Witting
+     configurations via elliptical/projective identifications.
 
 2. SYMPLECTIC STRUCTURE IN PG(3,2)
    ─────────────────────────────────

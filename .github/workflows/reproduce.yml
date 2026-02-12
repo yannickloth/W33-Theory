@@ -1,0 +1,44 @@
+name: Reproduce core artifacts
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Construct W33 ↔ E8 bijection
+        run: python tools/construct_w33_e8_bijection.py
+
+      - name: Generate physics predictions
+        run: python PHYSICS_PREDICTIONS_MASTER.py
+
+      - name: Run quick integration test
+        run: python -m pytest -q tests/test_construct_w33_e8_bijection_artifact.py -q
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: toe-core-artifacts
+          path: |
+            w33_e8_bijection_data.json
+            PHYSICS_PREDICTIONS_MASTER.json
+            artifacts/predictions_report.json
+            artifacts/predictions_report.md

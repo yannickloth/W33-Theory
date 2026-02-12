@@ -21,5 +21,5 @@ OUT = Path("artifacts")
 OUT.mkdir(parents=True, exist_ok=True)
 with (OUT / "refined_mapping_sample.json").open("w", encoding="utf-8") as f:
     sample = list(refined.items())[:50]
-    json.dump({"score": score, "sample": sample}, f, indent=2)
+    json.dump({"score": score, "sample": sample}, f, indent=2, default=str)
 print("Wrote artifacts/refined_mapping_sample.json")
