@@ -19,6 +19,8 @@ from pathlib import Path
 
 import numpy as np
 
+from utils.json_safe import dump_json
+
 # Ensure repo root is in sys.path so top-level modules are importable
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
@@ -354,7 +356,7 @@ def run_graph_embedding_mapping(k=16):
     matched = len(mapping)
     out = ARTIFACTS / "edge_root_mapping_embedding.json"
     with out.open("w", encoding="utf-8") as f:
-        json.dump({"method": method_used, "matched": matched}, f, indent=2)
+        dump_json({"method": method_used, "matched": matched}, f, indent=2)
 
     print("Embedding mapping matched:", matched)
     return mapping, cost, (s_emb, R_emb, t_emb)
@@ -432,7 +434,7 @@ def run_geometry_mapping(tol=1e-8):
     outp = ARTIFACTS / "edge_root_mapping_geom.json"
     sample = [[int(k), [float(x) for x in v]] for k, v in list(mapping.items())[:20]]
     with outp.open("w", encoding="utf-8") as f:
-        json.dump({"result": result, "sample": sample}, f, indent=2)
+        dump_json({"result": result, "sample": sample}, f, indent=2)
 
     print("Geometric mapping summary:", result)
     return mapping, candidate_triples, (s, R, t)
@@ -1094,7 +1096,7 @@ def run_feature_hungarian_mapping(weights=None, write_artifact=True, use_orbit_f
     if write_artifact:
         out = ARTIFACTS / "edge_root_mapping_feature.json"
         with out.open("w", encoding="utf-8") as f:
-            json.dump(
+            dump_json(
                 {"result": result, "sample": list(mapping.items())[:50]}, f, indent=2
             )
 
@@ -1352,7 +1354,7 @@ def run_mapping(tol=1e-8):
         "iterated_matched": len(mapping_iter) if mapping_iter else 0,
     }
     with out.open("w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2)
+        dump_json(summary, f, indent=2)
 
     print("Final summary:", summary)
     return (
