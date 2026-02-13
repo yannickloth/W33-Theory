@@ -253,3 +253,162 @@ def test_mixed_triple_cancelled_by_l3_plus_ce2chain():
         )
         hj = linfty.homotopy_jacobi(xa, ya, za)
         assert max_abs(hj) < 1e-8
+
+    # promote the attached CE2 to a global l4 prototype and verify equivalence
+    linfty.attach_l4_from_ce2(alpha)
+
+    # detach the CE2 and ensure the l4 prototype alone cancels the triple
+    linfty.detach_ce2_alpha()
+
+    total_l4_only = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(total_l4_only) < 1e-10
+
+    # ensure pure sectors remain OK with l4 attached
+    rng = np.random.default_rng(20260212)
+    for _ in range(30):
+        xa = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        ya = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        za = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        hj = linfty.homotopy_jacobi(xa, ya, za)
+        assert max_abs(hj) < 1e-8
+
+    linfty.detach_l4()
+
+
+def test_global_l4_assembled_from_local_alphas():
+    """Assemble a global CE2 -> l4 from local per‑triple solutions and verify
+    it cancels every failing triple recorded by the exhaustive verifier.
+    """
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # load exhaustive artifact (may contain one or more failing triples)
+    import json
+
+    exh = json.loads(
+        open(
+            "artifacts/exhaustive_homotopy_rationalized_l3.json", "r", encoding="utf-8"
+        ).read()
+    )
+
+    # support two artifact shapes: either an explicit `failing_examples` list
+    # or a single `first_fail` entry produced by the exhaustive verifier.
+    g1g1g2 = exh["sectors"].get("g1_g1_g2", {})
+    fails = g1g1g2.get("failing_examples")
+    if not fails:
+        ff = g1g1g2.get("first_fail")
+        fails = [ff] if ff is not None else []
+
+    # If no failing triples were recorded, there is nothing to assemble — pass.
+    if len(fails) == 0:
+        return
+
+    local_alphas = []
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    for ft in fails:
+        a_idx = tuple(ft["a"])
+        b_idx = tuple(ft["b"])
+        c_idx = tuple(ft["c"])
+        x = basis_elem_g1(toe, a_idx)
+        y = basis_elem_g1(toe, b_idx)
+        z = basis_elem_g2(toe, c_idx)
+
+        alpha = linfty.compute_local_ce2_alpha_for_triple(x, y, z)
+        assert alpha is not None
+        local_alphas.append(alpha)
+
+    # assemble global CE2 by summing local alphas pointwise
+    def alpha_global(a, b):
+        acc = toe.E8Z3.zero()
+        for alpha in local_alphas:
+            acc = acc + alpha(a, b)
+        return acc
+
+    # promote to global l4 and verify every recorded failing triple is fixed
+    linfty.attach_l4_from_ce2(alpha_global)
+
+    for ft in fails:
+        a_idx = tuple(ft["a"])
+        b_idx = tuple(ft["b"])
+        c_idx = tuple(ft["c"])
+        x = basis_elem_g1(toe, a_idx)
+        y = basis_elem_g1(toe, b_idx)
+        z = basis_elem_g2(toe, c_idx)
+
+        total = linfty.homotopy_jacobi(x, y, z)
+        assert max_abs(total) < 1e-10
+
+    # sample pure g1 triples don't regress
+    rng = np.random.default_rng(20260212)
+    for _ in range(40):
+        xa = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        ya = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        za = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        hj = linfty.homotopy_jacobi(xa, ya, za)
+        assert max_abs(hj) < 1e-8
+
+    linfty.detach_l4()

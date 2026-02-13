@@ -329,6 +329,55 @@ class LInftyE8Extension:
 
         return alpha
 
+    # --- proper l4 (global) API -------------------------------------------------
+    def attach_l4(self, l4_fn: Callable[[object, object, object, object], object]):
+        """Attach a global 4-bracket `l4(a,b,c,d) -> E8Z3`.
+
+        This registers an l4 callable; by default the L∞ homotopy checks
+        will only use an *explicit coboundary callback* associated with the
+        l4 (see `attach_l4_from_ce2`) so we don't attempt to guess full
+        sign/degree conventions here — the goal is a safe, testable API.
+        """
+        self._l4_fn = l4_fn
+        self._l4_coboundary_on_triple = None
+
+    def detach_l4(self):
+        """Remove any attached l4 bracket and its coboundary helper."""
+        self._l4_fn = None
+        self._l4_coboundary_on_triple = None
+
+    def attach_l4_from_ce2(self, alpha_fn: Callable[[object, object], object] = None):
+        """Promote a CE‑2 cochain to a thin global l4 *prototype*.
+
+        If `alpha_fn` is omitted the method will use any CE2 function
+        previously attached via `attach_ce2_alpha`.  The promotion sets a
+        placeholder `l4` callable and — critically — registers a coboundary
+        callback so `homotopy_jacobi` can include the d(alpha) correction
+        through the usual path.
+        """
+        if alpha_fn is None:
+            if not hasattr(self, "_ce2_alpha") or self._ce2_alpha is None:
+                raise ValueError("No CE2 alpha available to promote to l4")
+            alpha_fn = self._ce2_alpha
+
+        # lightweight l4 wrapper (placeholder implementation)
+        def l4_wrapper(a, b, c, d):
+            return self.tool.E8Z3.zero()
+
+        self._l4_fn = l4_wrapper
+
+        # coboundary callback reproducing d(alpha_fn) on triples
+        def l4_coboundary(x, y, z):
+            term1 = self.br_l2.bracket(x, alpha_fn(y, z))
+            term2 = self.br_l2.bracket(y, alpha_fn(x, z)).scale(-1.0)
+            term3 = self.br_l2.bracket(z, alpha_fn(x, y))
+            term4 = alpha_fn(self.br_l2.bracket(x, y), z).scale(-1.0)
+            term5 = alpha_fn(self.br_l2.bracket(x, z), y)
+            term6 = alpha_fn(self.br_l2.bracket(y, z), x).scale(-1.0)
+            return term1 + term2 + term3 + term4 + term5 + term6
+
+        self._l4_coboundary_on_triple = l4_coboundary
+
     def homotopy_jacobi(self, x, y, z):
         """
         Check the homotopy Jacobi identity:
@@ -345,8 +394,14 @@ class LInftyE8Extension:
 
         # In a proper L∞ structure, these should cancel
         total = j_l2 + l3_contrib
-        # include attached CE-2-cochain coboundary (minimal l4 prototype), if present
-        total = total + self.d_alpha_on_triple(x, y, z)
+        # include any registered l4 coboundary (preferred) otherwise fall back to CE-2 alpha
+        if (
+            hasattr(self, "_l4_coboundary_on_triple")
+            and self._l4_coboundary_on_triple is not None
+        ):
+            total = total + self._l4_coboundary_on_triple(x, y, z)
+        else:
+            total = total + self.d_alpha_on_triple(x, y, z)
         return total
 
 
