@@ -412,3 +412,73 @@ def test_global_l4_assembled_from_local_alphas():
         assert max_abs(hj) < 1e-8
 
     linfty.detach_l4()
+
+
+def test_local_ce2_uv_rationalization_and_l4_callable():
+    """Ensure compute_local_ce2_alpha_for_triple can return/rationalize U/V and
+    that the promoted l4 callable reflects the CE2 data (nonzero where expected).
+    """
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # failing triple
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    # request raw U/V and rationalized forms
+    result = linfty.compute_local_ce2_alpha_for_triple(
+        x, y, z, return_uv=True, rationalize_uv=True, max_den=720
+    )
+    assert result is not None
+    alpha, U_flat, V_flat, U_rats, V_rats = result
+
+    # confirm a rational with small denominator appears (V contains 1/6 in norm)
+    from fractions import Fraction
+
+    # at least one rational entry should be non-None and have small denominator
+    non_none_v = [r for r in V_rats if r is not None]
+    assert len(non_none_v) > 0
+    # ensure the solver found a nontrivial V and the rationalized entries have small denominators
+    import numpy as _np
+
+    assert _np.linalg.norm(V_flat) > 1e-15
+    denom_sizes = [r.denominator for r in non_none_v]
+    assert min(denom_sizes) <= 720
+    assert max(abs(r.numerator) for r in non_none_v) < 10000
+
+    # promote to l4 and confirm the l4 callable is nonzero on a sensible 4-tuple
+    linfty.attach_l4_from_ce2(alpha)
+    # pick a 4-tuple where alpha is nonzero on (x,z) or (y,z)
+    l4_val = linfty._l4_fn(x, y, z, x)
+    assert (
+        max(
+            0.0 if l4_val.e6.size == 0 else float(np.max(np.abs(l4_val.e6))),
+            0.0 if l4_val.sl3.size == 0 else float(np.max(np.abs(l4_val.sl3))),
+            0.0 if l4_val.g1.size == 0 else float(np.max(np.abs(l4_val.g1))),
+            0.0 if l4_val.g2.size == 0 else float(np.max(np.abs(l4_val.g2))),
+        )
+        > 1e-12
+    )
+
+    linfty.detach_l4()
