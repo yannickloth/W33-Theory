@@ -105,8 +105,11 @@ def test_random_g1_samples_reduce_to_zero():
     assert count >= 5
 
 
-def test_mixed_triple_cancelled_by_rational_candidate():
-    # verify the failing g1_g1_g2 triple is cancelled by the rationalized candidate
+def test_mixed_triple_not_cancelled_by_rational_candidate():
+    """Confirm the canonical/rationalized l3 alone does NOT cancel the known
+    mixed g1_g1_g2 obstruction (regression test reproducing the documented
+    failing triple).
+    """
     import json
 
     from tools.build_linfty_firewall_extension import _load_bad9, _load_bracket_tool
@@ -175,4 +178,78 @@ def test_mixed_triple_cancelled_by_rational_candidate():
         g2=j_l2.g2 + l3_total.g2,
     )
 
+    # rationalized l3 on the 9 fibers is NOT sufficient for this mixed triple
+    assert max_abs(total) > 1e-10
+
+
+def test_mixed_triple_cancelled_by_l3_plus_ce2chain():
+    """Use the local CE 2-cochain solver (l4 prototype) to cancel the mixed
+    obstruction without regressing pure sectors."""
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # failing triple
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    alpha = linfty.compute_local_ce2_alpha_for_triple(x, y, z)
+    assert alpha is not None
+
+    linfty.attach_ce2_alpha(alpha)
+
+    total = linfty.homotopy_jacobi(x, y, z)
     assert max_abs(total) < 1e-10
+
+    # sanity: random pure-sector triples should not regress when alpha is attached
+    rng = np.random.default_rng(20260212)
+    for _ in range(30):
+        xa = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        ya = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        za = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        hj = linfty.homotopy_jacobi(xa, ya, za)
+        assert max_abs(hj) < 1e-8

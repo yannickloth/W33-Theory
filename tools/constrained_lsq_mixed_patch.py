@@ -105,9 +105,12 @@ def main(max_delta=0.02, max_den=120):
     # bounded LSQ: minimize ||A_sub · delta + r_uniform|| with -max_delta <= delta <= max_delta
     lb = -np.ones(A_sub.shape[1]) * max_delta
     ub = np.ones(A_sub.shape[1]) * max_delta
-    sol = lsq_linear(
-        A_sub, -r_uniform, bounds=(lb, ub), lsmr_tol="auto", max_iter=10000
-    )
+
+    # convert complex system to a real one (stack real and imag parts)
+    A_real = np.vstack([np.real(A_sub), np.imag(A_sub)])
+    rhs_real = np.concatenate([np.real(-r_uniform), np.imag(-r_uniform)])
+
+    sol = lsq_linear(A_real, rhs_real, bounds=(lb, ub), lsmr_tol="auto", max_iter=10000)
     delta = sol.x
     print("LSQ bounded status:", sol.message)
     print("delta (float):", [float(round(d, 12)) for d in delta])

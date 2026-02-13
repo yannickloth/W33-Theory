@@ -182,15 +182,17 @@ def verify_candidate(
 
 if __name__ == "__main__":
     # parameters to sweep (expanded grid + targeted row‑reduction mode)
-    denoms = [60, 120, 240, 360, 480]
-    support_limits = [1, 2, 3, 4, 5]
-    scale_choices = [100_000, 1_000_000, 2_000_000]
+    denoms = [60, 120, 240, 360, 480, 720, 960]
+    support_limits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # larger integer scaling choices to improve integer-relaxation behavior
+    scale_choices = [100_000, 1_000_000, 2_000_000, 5_000_000]
     # try a few row-reduction trims (None = use all rows; otherwise keep top-k rows by |RHS|)
     row_trims = [None, 40, 80]
-    time_limit = 90.0  # seconds per CP-SAT solve
-    # allow somewhat larger numerators relative to denominator (up from 0.2*D -> 0.4*D)
+    # increase per-solve time budget to allow harder instances to complete
+    time_limit = 240.0  # seconds per CP-SAT solve
+    # allow somewhat larger numerators relative to denominator (up from 0.2*D -> 0.6*D)
     # (this changes the range for `num_i` variables inside the solver)
-    max_num_factor = 0.4
+    max_num_factor = 0.6
 
     toe = _load_toe()
     e6_basis = np.load(

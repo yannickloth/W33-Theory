@@ -345,22 +345,22 @@ def canonical_point(line):
     return min(line)
 
 
-# Tuned canonical representatives (greedy optimization over F3^2 line points)
+# Canonical representatives (SA-refined candidate)
 line_rep = [
-    (0, 2),  # line 0
-    (2, 0),  # line 1
+    (0, 0),  # line 0
+    (1, 0),  # line 1
     (0, 0),  # line 2
-    (0, 0),  # line 3
+    (1, 2),  # line 3
     (2, 2),  # line 4
-    (0, 1),  # line 5
-    (1, 2),  # line 6
-    (1, 0),  # line 7
-    (2, 0),  # line 8
-    (1, 2),  # line 9
+    (1, 1),  # line 5
+    (2, 0),  # line 6
+    (2, 1),  # line 7
+    (1, 1),  # line 8
+    (2, 2),  # line 9
     (1, 2),  # line 10
-    (2, 2),  # line 11
+    (2, 1),  # line 11
 ]
-print("Canonical point for each line (tuned):")
+print("Canonical point for each line (SA candidate):")
 for i, l in enumerate(F3_lines):
     print(f"  Line {i}: rep = {line_rep[i]}")
 
