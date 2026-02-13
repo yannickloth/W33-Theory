@@ -19,6 +19,8 @@ from pathlib import Path
 
 import numpy as np
 
+from utils.json_safe import dump_json
+
 # Ensure repo root is in sys.path so top-level modules are importable
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
@@ -354,7 +356,7 @@ def run_graph_embedding_mapping(k=16):
     matched = len(mapping)
     out = ARTIFACTS / "edge_root_mapping_embedding.json"
     with out.open("w", encoding="utf-8") as f:
-        json.dump({"method": method_used, "matched": matched}, f, indent=2)
+        dump_json({"method": method_used, "matched": matched}, f, indent=2)
 
     print("Embedding mapping matched:", matched)
     return mapping, cost, (s_emb, R_emb, t_emb)
@@ -432,7 +434,7 @@ def run_geometry_mapping(tol=1e-8):
     outp = ARTIFACTS / "edge_root_mapping_geom.json"
     sample = [[int(k), [float(x) for x in v]] for k, v in list(mapping.items())[:20]]
     with outp.open("w", encoding="utf-8") as f:
-        json.dump({"result": result, "sample": sample}, f, indent=2)
+        dump_json({"result": result, "sample": sample}, f, indent=2)
 
     print("Geometric mapping summary:", result)
     return mapping, candidate_triples, (s, R, t)
@@ -781,7 +783,73 @@ def compute_adjacency_score(mapping, relation="abs1"):
     return score
 
 
-def compute_feature_vectors(k=16):
+def compute_edge_orbit_ids(cache_path=None, force=False):
+    """Compute (and cache) edge orbit ids under Aut(W33).
+
+    Returns (edge_to_orbit list, orbit_size dict)
+    """
+    if cache_path is None:
+        cache_path = ARTIFACTS / "w33_edge_orbits.json"
+    if cache_path.exists() and not force:
+        try:
+            j = json.loads(cache_path.read_text(encoding="utf-8"))
+            edge_to_orbit = [int(j["edge_to_orbit"][str(i)]) for i in range(len(j["edge_to_orbit"]))]
+            orbit_sizes = {int(k): int(v) for k, v in j.get("orbit_sizes", {}).items()}
+            return edge_to_orbit, orbit_sizes
+        except Exception:
+            pass
+
+    # enumerate group and compute orbits (may be slow; results cached)
+    import tools.analyze_balanced_orbit_stabilizer as bal
+
+    pts, adj, edges = bal.build_w33()
+    gens = bal.get_generators(pts)
+    G = bal.enumerate_group(gens)
+
+    edge_index = {edges[i]: i for i in range(len(edges))}
+    # allow reversed tuple mapping
+    for i, (u, v) in enumerate(edges):
+        if (v, u) not in edge_index:
+            edge_index[(v, u)] = i
+
+    n_edges = len(edges)
+    edge_orbit_id = [-1] * n_edges
+    next_orbit = 0
+    for e in range(n_edges):
+        if edge_orbit_id[e] != -1:
+            continue
+        orb = set()
+        u, v = edges[e]
+        for p in G:
+            u2 = p[u]
+            v2 = p[v]
+            idx = edge_index.get((u2, v2))
+            if idx is None:
+                idx = edge_index.get((v2, u2))
+            if idx is None:
+                continue
+            orb.add(idx)
+        for idx in orb:
+            edge_orbit_id[idx] = next_orbit
+        next_orbit += 1
+
+    # compute sizes
+    from collections import Counter
+
+    counts = Counter(edge_orbit_id)
+    orbit_sizes = {int(k): int(v) for k, v in counts.items()}
+
+    # cache
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        json.dump({"edge_to_orbit": {str(i): int(edge_orbit_id[i]) for i in range(len(edge_orbit_id))}, "orbit_sizes": {str(k): int(v) for k, v in orbit_sizes.items()}}, cache_path.open("w", encoding="utf-8"), indent=2)
+    except Exception:
+        pass
+
+    return edge_orbit_id, orbit_sizes
+
+
+def compute_feature_vectors(k=16, use_orbit_features=False):
     """Compute feature vectors for edges and roots.
 
     Returns (edge_feats, root_feats, meta) where meta includes L_adj and other helpers.
@@ -865,17 +933,27 @@ def compute_feature_vectors(k=16):
         tri_count[i] = cnt
 
     # build feature arrays
-    edge_feats = np.hstack(
-        [
-            edge_emb,
-            tri_count.reshape(-1, 1).astype(float),
-            best_geo_dist.reshape(-1, 1),
-            lift_norm.reshape(-1, 1),
-            np.array([len(L_adj[i]) for i in range(n_edges)], dtype=float).reshape(
-                -1, 1
-            ),
-        ]
-    )
+    base_edge_feats = [
+        edge_emb,
+        tri_count.reshape(-1, 1).astype(float),
+        best_geo_dist.reshape(-1, 1),
+        lift_norm.reshape(-1, 1),
+        np.array([len(L_adj[i]) for i in range(n_edges)], dtype=float).reshape(-1, 1),
+    ]
+    # optional orbit-based feature (cached)
+    # use_orbit_features must be passed into this function to enable
+    try:
+        use_orbit = bool(use_orbit_features)
+    except NameError:
+        use_orbit = False
+    if use_orbit:
+        edge_orbit_id, orbit_sizes = compute_edge_orbit_ids()
+        orbit_size_arr = np.array(
+            [orbit_sizes.get(int(edge_orbit_id[i]), 1) for i in range(n_edges)], dtype=float
+        ).reshape(-1, 1)
+        base_edge_feats.append(orbit_size_arr)
+
+    edge_feats = np.hstack(base_edge_feats)
 
     is_integer_root = np.array(
         [all(c == int(c) for c in r) for r in arr_roots], dtype=float
@@ -953,12 +1031,12 @@ def build_score_matrix(edge_feats, root_feats, meta, weights=None):
     return score
 
 
-def run_feature_hungarian_mapping(weights=None, write_artifact=True):
+def run_feature_hungarian_mapping(weights=None, write_artifact=True, use_orbit_features=False):
     """Compute feature-driven score matrix and run Hungarian assignment.
 
     Returns mapping dict edge->root_tuple and stats.
     """
-    edge_feats, root_feats, meta = compute_feature_vectors(k=16)
+    edge_feats, root_feats, meta = compute_feature_vectors(k=16, use_orbit_features=use_orbit_features)
     score = build_score_matrix(edge_feats, root_feats, meta, weights=weights)
 
     try:
@@ -1018,7 +1096,7 @@ def run_feature_hungarian_mapping(weights=None, write_artifact=True):
     if write_artifact:
         out = ARTIFACTS / "edge_root_mapping_feature.json"
         with out.open("w", encoding="utf-8") as f:
-            json.dump(
+            dump_json(
                 {"result": result, "sample": list(mapping.items())[:50]}, f, indent=2
             )
 
@@ -1276,7 +1354,7 @@ def run_mapping(tol=1e-8):
         "iterated_matched": len(mapping_iter) if mapping_iter else 0,
     }
     with out.open("w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2)
+        dump_json(summary, f, indent=2)
 
     print("Final summary:", summary)
     return (

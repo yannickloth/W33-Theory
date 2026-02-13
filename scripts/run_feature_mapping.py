@@ -30,10 +30,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--cluster-size", type=int, default=8, help="Max cluster size for CP-SAT"
     )
+    parser.add_argument(
+        "--use-orbit-features",
+        action="store_true",
+        help="Include W33 orbit-based features (cached).",
+    )
     args = parser.parse_args()
 
     mapping, result, score_matrix, meta = run_feature_hungarian_mapping(
-        write_artifact=True
+        write_artifact=True, use_orbit_features=args.use_orbit_features
     )
     print("Feature mapping completed, adj_score=", result.get("adj_score"))
 

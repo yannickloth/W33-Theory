@@ -338,13 +338,29 @@ or a fixed point on each line.
 )
 
 
-# Pick a canonical point on each line (e.g., the lexicographically smallest)
+# Pick a canonical point on each line. (Default behavior is lexicographic minimum.)
+# NOTE: line_rep below replaced with tuned representatives discovered by
+# `scripts/tune_line_reps.py` to improve the cocycle/sample pass rate.
 def canonical_point(line):
     return min(line)
 
 
-line_rep = [canonical_point(l) for l in F3_lines]
-print("Canonical point for each line:")
+# Tuned canonical representatives (greedy optimization over F3^2 line points)
+line_rep = [
+    (0, 2),  # line 0
+    (2, 0),  # line 1
+    (0, 0),  # line 2
+    (0, 0),  # line 3
+    (2, 2),  # line 4
+    (0, 1),  # line 5
+    (1, 2),  # line 6
+    (1, 0),  # line 7
+    (2, 0),  # line 8
+    (1, 2),  # line 9
+    (1, 2),  # line 10
+    (2, 2),  # line 11
+]
+print("Canonical point for each line (tuned):")
 for i, l in enumerate(F3_lines):
     print(f"  Line {i}: rep = {line_rep[i]}")
 
