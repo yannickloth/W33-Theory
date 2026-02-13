@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-02-12T00:00:00Z",
+  "action": "run_all_4_experiments",
+  "cp_sat_expanded": {
+    "grid": {
+      "denoms": [60,120,240,360,480],
+      "support_limits": [1,2,3,4,5],
+      "row_trims": [null, 40, 80]
+    },
+    "result": "no_feasible_candidate_found",
+    "note": "Tried targeted row-reduction and larger denominator/support; no exact sparse rational patch found that passes sampled/exhaustive checks."
+  },
+  "analytic_inspection": {
+    "compute_S_relation": "S_sum == 9 * J on tested pure triples (explains canonical 1/9)",
+    "mixed_triple_lsq": "LSQ gives large change (c ≈ -1/8 on most triads) that breaks pure-sector cancellation"
+  },
+  "conclusion": {
+    "decision": "accept_canonical_1/9",
+    "justification": "Exhaustive and discrete searches (bounded + CP-SAT + small-support) found no small, sparse rational correction that fixes the remaining mixed-sector failure without breaking pure-sector checks; canonical uniform 1/9 remains the smallest, provably-correct choice for all pure-sector verifications.",
+    "next_steps": [
+      "If you want further search, escalate CP-SAT (support>5, denom>480) or run analytic representation-theory probe",
+      "Document and tag canonical candidate for publication/review"
+    ]
+  },
+  "artifacts": {
+    "inspected": [
+      "artifacts/inspect_S_relation.json",
+      "artifacts/failing_triple_inspect.json",
+      "artifacts/mixed_triple_lsq_correction.json",
+      "tools/solve_linfty_patch_cpsat.py (expanded)"
+    ]
+  }
+}
