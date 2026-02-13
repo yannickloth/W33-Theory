@@ -482,3 +482,38 @@ def test_local_ce2_uv_rationalization_and_l4_callable():
     )
 
     linfty.detach_l4()
+
+
+def test_exact_l4_assembled_from_rationalized_ce2():
+    """Run the assemble_exact_l4_from_local_ce2 tool and verify its artifact
+    and numeric consequences (unit-test the exact/rational CE2 → l4 path).
+    """
+    import importlib.util
+    import json
+    from pathlib import Path
+
+    ROOT = Path(__file__).resolve().parents[1]
+
+    spec = importlib.util.spec_from_file_location(
+        "assemble_ce2", ROOT / "tools" / "assemble_exact_l4_from_local_ce2.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    res = mod.main(max_den=720)
+    assert res and "artifact" in res
+
+    art_path = Path(res["artifact"])
+    assert art_path.exists()
+    data = json.loads(art_path.read_text(encoding="utf-8"))
+
+    # artifact should contain at least the failing triple key and rational arrays
+    assert len(data) >= 1
+    first_key = list(data.keys())[0]
+    entry = data[first_key]
+    assert "U_rats" in entry and "V_rats" in entry
+    # denominators should be bounded by the supplied max_den
+    from fractions import Fraction
+
+    rats = [Fraction(s) for s in entry["V_rats"] if s != "0"]
+    assert all(fr.denominator <= 720 for fr in rats)
