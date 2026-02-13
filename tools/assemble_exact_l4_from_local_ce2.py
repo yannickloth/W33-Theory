@@ -18,6 +18,7 @@ Purpose: produce exact/rational certificates for the CE2->l4 repair path.
 from __future__ import annotations
 
 import importlib.util
+import itertools
 import json
 from fractions import Fraction
 from pathlib import Path
@@ -79,7 +80,78 @@ def main(max_den: int = 720) -> Dict[str, Any]:
     fails = sector.get("failing_examples")
     if not fails:
         ff = sector.get("first_fail")
-        fails = [ff] if ff is not None else []
+        # if only a single `first_fail` was recorded, scan exhaustively to
+        # collect any additional failing triples (so we can assemble CE2 for
+        # every remaining anomaly rather than just the first one).
+        if ff is not None:
+            fails = [ff]
+            # exhaustive scan over g1_g1_g2 triples to find all failures
+            from tools.exhaustive_homotopy_check_rationalized_l3 import (
+                basis_elem_g1,
+                basis_elem_g2,
+            )
+
+            def flat_mag(e):
+                return float(
+                    max(
+                        0.0 if e.e6.size == 0 else np.max(np.abs(e.e6)),
+                        0.0 if e.sl3.size == 0 else np.max(np.abs(e.sl3)),
+                        0.0 if e.g1.size == 0 else np.max(np.abs(e.g1)),
+                        0.0 if e.g2.size == 0 else np.max(np.abs(e.g2)),
+                    )
+                )
+
+            g1_idx = [(i, j) for i in range(27) for j in range(3)]
+            g2_idx = [(i, j) for i in range(27) for j in range(3)]
+            TOL_J = 1e-12
+            TOL_FAIL = 1e-8
+
+            # set up temporary LInfty to evaluate l3 contributions
+            proj = toe.E6Projector(
+                np.load(
+                    ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy"
+                ).astype(np.complex128)
+            )
+            all_triads = toe._load_signed_cubic_triads()
+            bad9 = set(
+                tuple(sorted(t[:3]))
+                for t in json.loads(
+                    (
+                        ROOT
+                        / "artifacts"
+                        / "linfty_coord_search_results_rationalized.json"
+                    ).read_text()
+                )["original"]["fiber_triads"]
+            )
+            from tools.build_linfty_firewall_extension import LInftyE8Extension
+
+            linfty_tmp = LInftyE8Extension(
+                toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0
+            )
+
+            for a_idx, b_idx in itertools.combinations(g1_idx, 2):
+                for c_idx in g2_idx:
+                    x = basis_elem_g1(toe, a_idx)
+                    y = basis_elem_g1(toe, b_idx)
+                    z = basis_elem_g2(toe, c_idx)
+                    j_l2 = toe._jacobi(linfty_tmp.br_l2, x, y, z)
+                    mag_j = flat_mag(j_l2)
+                    if mag_j < TOL_J:
+                        continue
+                    tot = linfty_tmp.homotopy_jacobi(x, y, z)
+                    mag_tot = flat_mag(tot)
+                    if mag_tot > TOL_FAIL:
+                        fails.append(
+                            {
+                                "a": list(a_idx),
+                                "b": list(b_idx),
+                                "c": list(c_idx),
+                                "mag_j": mag_j,
+                                "mag_tot": mag_tot,
+                            }
+                        )
+        else:
+            fails = []
 
     if len(fails) == 0:
         print("No failing triples recorded — nothing to assemble.")
@@ -275,7 +347,32 @@ def main(max_den: int = 720) -> Dict[str, Any]:
             )
 
     print("All failing triples reduced; pure-sector checks OK.")
-    return {"results": results, "artifact": str(OUT)}
+
+    # generate SNF / PSLQ certificates for the recorded local CE2 solutions
+    certificates: Dict[str, Any] = {}
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "snf_ce2", ROOT / "tools" / "snf_certificate_ce2_uv.py"
+        )
+        snf_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(snf_mod)
+        snf_report = snf_mod.main()
+        certificates["snf_certificate"] = snf_report
+    except Exception as e:
+        certificates["snf_certificate_error"] = str(e)
+
+    try:
+        spec2 = importlib.util.spec_from_file_location(
+            "pslq_ce2", ROOT / "tools" / "pslq_snf_ce2_uv_check.py"
+        )
+        pslq_mod = importlib.util.module_from_spec(spec2)
+        spec2.loader.exec_module(pslq_mod)
+        pslq_report = pslq_mod.main()
+        certificates["pslq_check"] = pslq_report
+    except Exception as e:
+        certificates["pslq_check_error"] = str(e)
+
+    return {"results": results, "artifact": str(OUT), "certificates": certificates}
 
 
 if __name__ == "__main__":

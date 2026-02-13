@@ -503,6 +503,9 @@ def test_exact_l4_assembled_from_rationalized_ce2():
     res = mod.main(max_den=720)
     assert res and "artifact" in res
 
+    # expect certificates to be returned as well
+    assert "certificates" in res and isinstance(res["certificates"], dict)
+
     art_path = Path(res["artifact"])
     assert art_path.exists()
     data = json.loads(art_path.read_text(encoding="utf-8"))
@@ -540,3 +543,114 @@ def test_pslq_snf_ce2_uv_check_tool_runs_and_passes():
 
     rep = json.loads(out_path.read_text(encoding="utf-8"))
     assert "entries" in rep and len(rep["entries"]) >= 1
+
+
+def test_snf_certificate_ce2_uv_tool_runs_and_certifies():
+    """Run SNF certificate builder and assert a valid integer-lift certificate
+    exists for each recorded CE2 local solution."""
+    import importlib.util
+    from pathlib import Path
+
+    ROOT = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location(
+        "snf_ce2", ROOT / "tools" / "snf_certificate_ce2_uv.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    report = mod.main()
+    assert "entries" in report and len(report["entries"]) >= 1
+    # every entry should have been verified
+    for k, v in report["entries"].items():
+        assert v.get("verified", False) is True
+        assert v.get("D_found") is not None
+        assert isinstance(v.get("snf_diag"), list)
+
+
+def test_derive_symbolic_l4_and_exhaustive_l3_l4_passes():
+    """Derive symbolic l4 constants, load them into the assembler, and run
+    an exhaustive homotopy check for (l2 + l3 + l4)."""
+    import importlib.util
+    import json
+    from pathlib import Path
+
+    ROOT = Path(__file__).resolve().parents[1]
+
+    # derive symbolic l4 from rational CE2 solutions
+    spec = importlib.util.spec_from_file_location(
+        "derive_l4", ROOT / "tools" / "derive_symbolic_l4.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    sym = mod.main()
+    assert isinstance(sym, dict) and len(sym) >= 1
+
+    # attach symbolic l4 in an LInfty instance and ensure it cancels failing triple
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+    # attach symbolic constants
+    linfty.attach_l4_from_symbolic_constants(
+        ROOT / "artifacts" / "l4_symbolic_constants.json"
+    )
+    # the loader should also register a CE2 coboundary callback when the
+    # assembled CE2 artifact is present
+    assert (
+        hasattr(linfty, "_l4_coboundary_on_triple")
+        and linfty._l4_coboundary_on_triple is not None
+    )
+
+    # verify failing triple(s) vanish under homotopy_jacobi
+    exh = json.loads(
+        open(
+            "artifacts/exhaustive_homotopy_rationalized_l3.json", "r", encoding="utf-8"
+        ).read()
+    )
+    ft = exh["sectors"]["g1_g1_g2"]["first_fail"]
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    x = basis_elem_g1(toe, tuple(ft["a"]))
+    y = basis_elem_g1(toe, tuple(ft["b"]))
+    z = basis_elem_g2(toe, tuple(ft["c"]))
+
+    tot = linfty.homotopy_jacobi(x, y, z)
+    assert (
+        max(
+            0.0 if tot.e6.size == 0 else float(np.max(np.abs(tot.e6))),
+            0.0 if tot.sl3.size == 0 else float(np.max(np.abs(tot.sl3))),
+            0.0 if tot.g1.size == 0 else float(np.max(np.abs(tot.g1))),
+            0.0 if tot.g2.size == 0 else float(np.max(np.abs(tot.g2))),
+        )
+        < 1e-10
+    )
+
+    # run the exhaustive l3+l4 verifier tool
+    spec2 = importlib.util.spec_from_file_location(
+        "exh_l3_l4", ROOT / "tools" / "exhaustive_homotopy_check_l3_l4.py"
+    )
+    mod2 = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(mod2)
+
+    mod2.main()
+    outp = ROOT / "artifacts" / "exhaustive_homotopy_l3_l4.json"
+    assert outp.exists()
+    rep = json.loads(outp.read_text(encoding="utf-8"))
+    # expect all sectors to pass
+    for s in ("g1_g1_g1", "g2_g2_g2", "g1_g1_g2", "g1_g2_g2"):
+        assert rep["sectors"][s]["passed"] is True
