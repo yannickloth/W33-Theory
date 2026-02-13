@@ -1,0 +1,178 @@
+import numpy as np
+
+from tools.build_linfty_firewall_extension import LInftyE8Extension, _load_bracket_tool
+
+
+def max_abs(e):
+    return float(
+        max(
+            0.0 if e.e6.size == 0 else np.max(np.abs(e.e6)),
+            0.0 if e.sl3.size == 0 else np.max(np.abs(e.sl3)),
+            0.0 if e.g1.size == 0 else np.max(np.abs(e.g1)),
+            0.0 if e.g2.size == 0 else np.max(np.abs(e.g2)),
+        )
+    )
+
+
+def basis_elem_g1(toe_mod, idx):
+    i, j = idx
+    e = toe_mod.E8Z3.zero()
+    arr = np.zeros((27, 3), dtype=np.complex128)
+    arr[i, j] = 1.0
+    return toe_mod.E8Z3(e6=e.e6, sl3=e.sl3, g1=arr, g2=e.g2)
+
+
+def test_failing_triple_cancelled():
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+
+    # load bad9 from module helper
+    from tools.build_linfty_firewall_extension import _load_bad9
+
+    bad9 = _load_bad9()
+
+    # build L∞ with canonical scale = 1/9 (constructor default in tool)
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # previously failing triple discovered by exhaustive check
+    a_idx = (0, 0)
+    b_idx = (1, 1)
+    c_idx = (21, 2)
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g1(toe, c_idx)
+
+    # homotopy Jacobi should be (numerically) zero for this triple
+    total = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(total) < 1e-12
+
+
+def test_random_g1_samples_reduce_to_zero():
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    from tools.build_linfty_firewall_extension import _load_bad9
+
+    bad9 = _load_bad9()
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    rng = np.random.default_rng(20260212)
+
+    # sample 20 random g1 triples where Jacobi(l2).e6 != 0 and assert homotopy residual==0
+    count = 0
+    for _ in range(200):
+        x = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        y = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        z = toe._random_element(
+            rng,
+            e6_basis,
+            scale0=0,
+            scale1=2,
+            scale2=0,
+            include_g0=False,
+            include_g2=False,
+        )
+        j_l2 = toe._jacobi(linfty.br_l2, x, y, z)
+        if np.max(np.abs(j_l2.e6)) < 1e-12:
+            continue
+        total = linfty.homotopy_jacobi(x, y, z)
+        assert max_abs(total) < 1e-10
+        count += 1
+        if count >= 20:
+            break
+    assert count >= 5
+
+
+def test_mixed_triple_cancelled_by_rational_candidate():
+    # verify the failing g1_g1_g2 triple is cancelled by the rationalized candidate
+    import json
+
+    from tools.build_linfty_firewall_extension import _load_bad9, _load_bracket_tool
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        assemble_l3_total_from_coeffs,
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+
+    # load the rationalized coefficients from artifact
+    data = json.loads(
+        open(
+            "artifacts/linfty_coord_search_results_rationalized.json",
+            "r",
+            encoding="utf-8",
+        ).read()
+    )
+    coeffs = data.get("rationalized_coeffs_float")
+    assert coeffs is not None
+
+    bad9 = _load_bad9()
+
+    br_l2 = toe.E8Z3Bracket(
+        e6_projector=proj,
+        cubic_triads=[t for t in all_triads if tuple(sorted(t[:3])) not in bad9],
+        scale_g1g1=1.0,
+        scale_g2g2=-1.0 / 6.0,
+        scale_e6=1.0,
+        scale_sl3=1.0 / 6.0,
+    )
+
+    fiber_triads = [t for t in all_triads if tuple(sorted(t[:3])) in bad9]
+    br_fibers = [
+        toe.E8Z3Bracket(
+            e6_projector=proj,
+            cubic_triads=[T],
+            scale_g1g1=1.0,
+            scale_g2g2=-1.0 / 6.0,
+            scale_e6=1.0,
+            scale_sl3=1.0 / 6.0,
+        )
+        for T in fiber_triads
+    ]
+
+    # failing triple from exhaustive check
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    j_l2 = toe._jacobi(br_l2, x, y, z)
+    l3_total = assemble_l3_total_from_coeffs(coeffs, br_l2, br_fibers, toe, x, y, z)
+    total = toe.E8Z3(
+        e6=j_l2.e6 + l3_total.e6,
+        sl3=j_l2.sl3 + l3_total.sl3,
+        g1=j_l2.g1 + l3_total.g1,
+        g2=j_l2.g2 + l3_total.g2,
+    )
+
+    assert max_abs(total) < 1e-10
