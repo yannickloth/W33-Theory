@@ -19,20 +19,29 @@ import numpy as np
 from sympy import Matrix, N
 from sympy.matrices.normalforms import smith_normal_form
 
-# pslq import is optional; some sympy builds expose it in different modules
+# pslq import is optional; try sympy first, fall back to mpmath
 try:
     from sympy.ntheory import pslq
 except Exception:
     try:
         from sympy.ntheory.modular import pslq
     except Exception:
-        pslq = None
+        try:
+            import mpmath as _mp
+
+            def pslq(vec):
+                mp_vec = [_mp.mpf(str(float(x))) for x in vec]
+                return _mp.pslq(mp_vec)
+
+        except Exception:
+            pslq = None
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts" / "pslq_snf_mixed_patch_check.json"
 
-D_LIST = [9, 72, 240, 480]
-MAX_DEN = 480
+# extended denominator sweep (added 960, 1920)
+D_LIST = [9, 72, 240, 480, 960, 1920]
+MAX_DEN = 1920
 
 
 def _load_module(path: Path, name: str):
@@ -57,6 +66,7 @@ def main():
         ROOT / "tools" / "exhaustive_homotopy_check_rationalized_l3.py", "exhaustive_hj"
     )
     basis_elem_g1 = exh.basis_elem_g1
+    basis_elem_g2 = exh.basis_elem_g2
 
     data = json.loads(
         (ROOT / "artifacts" / "mixed_triple_lsq_correction.json").read_text()
@@ -118,7 +128,7 @@ def main():
     # basis elements and Jacobi
     x = basis_elem_g1(toe, a_idx)
     y = basis_elem_g1(toe, b_idx)
-    z = basis_elem_g1(toe, c_idx)
+    z = basis_elem_g2(toe, c_idx)
 
     J = toe._jacobi(br_l2, x, y, z)
     Jflat = flatten(J)

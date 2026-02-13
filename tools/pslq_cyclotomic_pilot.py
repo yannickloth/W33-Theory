@@ -23,7 +23,19 @@ from sympy import N
 try:
     from sympy.ntheory import pslq
 except Exception:
-    pslq = None
+    try:
+        from sympy.ntheory.modular import pslq
+    except Exception:
+        try:
+            import mpmath as _mp
+
+            def pslq(vec):
+                # accept sympy/mapped numeric types; convert to mpmath mpf
+                mp_vec = [_mp.mpf(str(float(x))) for x in vec]
+                return _mp.pslq(mp_vec)
+
+        except Exception:
+            pslq = None
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts" / "pslq_cyclotomic_pilot.json"

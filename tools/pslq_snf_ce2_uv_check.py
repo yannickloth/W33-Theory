@@ -33,7 +33,18 @@ MAX_DEN = 720
 try:
     from sympy.ntheory import pslq
 except Exception:
-    pslq = None  # optional
+    try:
+        from sympy.ntheory.modular import pslq
+    except Exception:
+        try:
+            import mpmath as _mp
+
+            def pslq(vec):
+                mp_vec = [_mp.mpf(str(float(x))) for x in vec]
+                return _mp.pslq(mp_vec)
+
+        except Exception:
+            pslq = None  # optional
 
 
 def _load_bracket_tool():
