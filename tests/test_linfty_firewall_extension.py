@@ -517,3 +517,26 @@ def test_exact_l4_assembled_from_rationalized_ce2():
 
     rats = [Fraction(s) for s in entry["V_rats"] if s != "0"]
     assert all(fr.denominator <= 720 for fr in rats)
+
+
+def test_pslq_snf_ce2_uv_check_tool_runs_and_passes():
+    """Run the PSLQ/SNF CE2 U/V verifier and assert it reports OK for all
+    recorded local solutions."""
+    import importlib.util
+    from pathlib import Path
+
+    ROOT = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location(
+        "pslq_ce2", ROOT / "tools" / "pslq_snf_ce2_uv_check.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    report = mod.main()
+    assert report.get("ok", False) is True
+    out_path = ROOT / "artifacts" / "pslq_snf_ce2_uv_check.json"
+    assert out_path.exists()
+    import json
+
+    rep = json.loads(out_path.read_text(encoding="utf-8"))
+    assert "entries" in rep and len(rep["entries"]) >= 1
