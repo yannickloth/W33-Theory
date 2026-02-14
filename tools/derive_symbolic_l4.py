@@ -75,8 +75,10 @@ def main() -> Dict[str, Any]:
         ROOT / "tools" / "exhaustive_homotopy_check_rationalized_l3.py", "exh"
     )
 
-    # build local alpha functions (from rational arrays in artifact)
-    local_alphas = []
+    # build index-based lookup maps for numeric U/V from CE2 artifact
+    # (avoid O(N^2) `allclose` scans by using stored integer indices)
+    U_map: Dict[Tuple[Tuple[int, int], Tuple[int, int]], np.ndarray] = {}
+    V_map: Dict[Tuple[Tuple[int, int], Tuple[int, int]], np.ndarray] = {}
     for k, e in raw.items():
         a = tuple(e["a"])  # (i,j)
         b = tuple(e["b"])
@@ -85,47 +87,53 @@ def main() -> Dict[str, Any]:
         V_rats = e.get("V_rats", [])
         U_fracs = [Fraction(s) if s != "0" else None for s in U_rats]
         V_fracs = [Fraction(s) if s != "0" else None for s in V_rats]
+        U_num = np.array(
+            [float(fr) if fr is not None else 0.0 for fr in U_fracs],
+            dtype=np.complex128,
+        )
+        V_num = np.array(
+            [float(fr) if fr is not None else 0.0 for fr in V_fracs],
+            dtype=np.complex128,
+        )
+        # accumulate numeric flat arrays keyed by index pairs for O(1) lookup later
+        # (multiple local CE2 solutions may share the same (a,c) or (b,c) keys)
+        if (b, c) in U_map:
+            U_map[(b, c)] = U_map[(b, c)] + U_num
+        else:
+            U_map[(b, c)] = U_num
+        if (a, c) in V_map:
+            V_map[(a, c)] = V_map[(a, c)] + V_num
+        else:
+            V_map[(a, c)] = V_num
 
-        def make_alpha(Uf, Vf, a_ref=a, b_ref=b, c_ref=c):
-            def alpha(A, B):
-                # compare by basis-element identity
-                if np.allclose(A.g1, exh.basis_elem_g1(toe, b_ref).g1) and np.allclose(
-                    B.g2, exh.basis_elem_g2(toe, c_ref).g2
-                ):
-                    return flat_to_E8Z3_numeric(
-                        toe, [float(fr) if fr is not None else 0.0 for fr in Uf]
-                    )
-                if np.allclose(A.g1, exh.basis_elem_g1(toe, a_ref).g1) and np.allclose(
-                    B.g2, exh.basis_elem_g2(toe, c_ref).g2
-                ):
-                    return flat_to_E8Z3_numeric(
-                        toe, [float(fr) if fr is not None else 0.0 for fr in Vf]
-                    )
-                # skew-symmetric matches
-                if np.allclose(A.g1, exh.basis_elem_g1(toe, c_ref).g1) and np.allclose(
-                    B.g2, exh.basis_elem_g2(toe, b_ref).g2
-                ):
-                    return flat_to_E8Z3_numeric(
-                        toe, [-(float(fr) if fr is not None else 0.0) for fr in Uf]
-                    )
-                if np.allclose(A.g1, exh.basis_elem_g1(toe, c_ref).g1) and np.allclose(
-                    B.g2, exh.basis_elem_g2(toe, a_ref).g2
-                ):
-                    return flat_to_E8Z3_numeric(
-                        toe, [-(float(fr) if fr is not None else 0.0) for fr in Vf]
-                    )
-                return toe.E8Z3.zero()
-
-            return alpha
-
-        local_alphas.append(make_alpha(U_fracs, V_fracs))
-
-    # assemble global alpha
     def alpha_global(A, B):
+        """Assemble numeric alpha on-the-fly using index lookups (cheap)."""
         acc = toe.E8Z3.zero()
-        for alpha in local_alphas:
-            acc = acc + alpha(A, B)
+        # only g1 x g2 pairs produce CE2 contributions in our artifact
+        if np.any(A.g1) and np.any(B.g2):
+            idxA = tuple(np.argwhere(np.abs(A.g1) > 0.5)[0].tolist())
+            idxB = tuple(np.argwhere(np.abs(B.g2) > 0.5)[0].tolist())
+
+            # U contributions: +U[(idxA,idxB)]  and -U[(idxB,idxA)]
+            Um = U_map.get((idxA, idxB))
+            if Um is not None:
+                acc = acc + flat_to_E8Z3_numeric(toe, Um)
+            Um2 = U_map.get((idxB, idxA))
+            if Um2 is not None:
+                acc = acc - flat_to_E8Z3_numeric(toe, Um2)
+
+            # V contributions: +V[(idxA,idxB)] and -V[(idxB,idxA)]
+            Vm = V_map.get((idxA, idxB))
+            if Vm is not None:
+                acc = acc + flat_to_E8Z3_numeric(toe, Vm)
+            Vm2 = V_map.get((idxB, idxA))
+            if Vm2 is not None:
+                acc = acc - flat_to_E8Z3_numeric(toe, Vm2)
+
         return acc
+
+    # `alpha_global` is implemented above using index-based U_map/V_map lookups
+    # (previous all-pairs summation removed for performance on large CE2 artifacts)
 
     # thin l4 definition (same as attach_l4_from_ce2)
     def l4_fn(a, b, c, d):
@@ -149,13 +157,25 @@ def main() -> Dict[str, Any]:
         z = exh.basis_elem_g2(toe, c)
 
         # compute l4 on (x,y,z,*) for * in {x,y,z}
-        for d_elem, d_label in [(x, "x"), (y, "y"), (z, "z")]:
+        for d_elem in (x, y, z):
             val = l4_fn(x, y, z, d_elem)
             flat = e8_to_flat(val)
             # skip all-zero results
             if np.allclose(flat, 0.0):
                 continue
-            key = f"g1:{a[0]}:{a[1]}|g1:{b[0]}:{b[1]}|g2:{c[0]}:{c[1]}|{d_label}"
+            # construct canonical key for the fourth element (match loader key_for_elem)
+            if np.any(d_elem.g1):
+                idx = np.argwhere(np.abs(d_elem.g1) > 0.5)
+                di, dj = int(idx[0, 0]), int(idx[0, 1])
+                kd = f"g1:{di}:{dj}"
+            elif np.any(d_elem.g2):
+                idx = np.argwhere(np.abs(d_elem.g2) > 0.5)
+                di, dj = int(idx[0, 0]), int(idx[0, 1])
+                kd = f"g2:{di}:{dj}"
+            else:
+                # unsupported sector for symbolic entry
+                continue
+            key = f"g1:{a[0]}:{a[1]}|g1:{b[0]}:{b[1]}|g2:{c[0]}:{c[1]}|{kd}"
             sparse[key] = fracize_array(flat)
 
     OUT.write_text(json.dumps(sparse, indent=2), encoding="utf-8")

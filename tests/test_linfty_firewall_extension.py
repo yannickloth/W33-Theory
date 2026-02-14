@@ -414,6 +414,177 @@ def test_global_l4_assembled_from_local_alphas():
     linfty.detach_l4()
 
 
+def test_ce2_artifact_bracket_y_V_g1_component():
+    """Fast check: for the recorded failing triple, ensure the CE2 artifact's
+    V (flattened array) produces the expected `bracket(y, V).g1[6,1]` value
+    (should match 1/54 as observed in diagnostics)."""
+    import json
+    from fractions import Fraction
+
+    from tools.build_linfty_firewall_extension import _load_bracket_tool
+    from tools.exhaustive_homotopy_check_rationalized_l3 import basis_elem_g1
+
+    toe = _load_bracket_tool()
+    basis_path = "artifacts/e6_27rep_basis_export/E6_basis_78.npy"
+    e6_basis = np.load(basis_path).astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+
+    br = toe.E8Z3Bracket(
+        e6_projector=proj,
+        cubic_triads=toe._load_signed_cubic_triads(),
+        scale_g1g1=1.0,
+        scale_g2g2=-1.0 / 6.0,
+        scale_e6=1.0,
+        scale_sl3=1.0 / 6.0,
+    )
+
+    # failing triple indices
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+
+    # load CE2 artifact and find matching record
+    ce2 = json.loads(
+        open(
+            "artifacts/ce2_rational_local_solutions.json", "r", encoding="utf-8"
+        ).read()
+    )
+    rec = None
+    for k, v in ce2.items():
+        if (
+            tuple(v.get("a")) == a_idx
+            and tuple(v.get("b")) == b_idx
+            and tuple(v.get("c")) == c_idx
+        ):
+            rec = v
+            break
+    assert rec is not None, "CE2 artifact missing record for failing triple"
+
+    V_rats = [Fraction(s) if s != "0" else None for s in rec.get("V_rats", [])]
+    V_num = np.array(
+        [float(fr) if fr is not None else 0.0 for fr in V_rats], dtype=np.complex128
+    )
+    N = 27 * 27
+    e6 = V_num[:N].reshape((27, 27)).astype(np.complex128)
+    off = N
+    sl3 = V_num[off : off + 9].reshape((3, 3)).astype(np.complex128)
+    off += 9
+    g1 = V_num[off : off + 81].reshape((27, 3)).astype(np.complex128)
+    off += 81
+    g2 = V_num[off : off + 81].reshape((27, 3)).astype(np.complex128)
+
+    V_e8 = toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+    y = basis_elem_g1(toe, b_idx)
+    out = br.bracket(y, V_e8)
+
+    # expected numeric contribution (artifact / bracket sign observed in diagnostics)
+    expected = -1.0 / 54.0
+    assert (
+        abs(float(out.g1[6, 1]) - expected) < 1e-12
+    ), f"bracket(y,V).g1[6,1]={out.g1[6,1]} != {expected}"
+
+
+def test_ce2_alpha_and_dalpha_component_consistency():
+    """Verify numeric CE2 alpha and its coboundary for the recorded failing
+    triple; assert exact component values discovered during debugging.
+
+    - alpha(x,z).e6[6,17] should equal +1/27
+    - d_alpha_on_triple(x,y,z).g1[6,1] should equal +1/27
+    - bracket(y, V_from_artifact).g1[6,1] remains -1/54 (sanity)
+    """
+    import json
+    from fractions import Fraction
+
+    import numpy as _np
+
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = _np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        _np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    # compute local CE2 alpha for this triple and inspect components
+    alpha = linfty.compute_local_ce2_alpha_for_triple(x, y, z)
+    assert alpha is not None
+
+    # alpha(x,z).e6 should contain the 1/54 entry at (6,17) (local-solver value)
+    a_e6_val = alpha(x, z).e6[6, 17]
+    assert abs(float(a_e6_val) - 1.0 / 54.0) < 1e-12
+
+    # attach the computed local CE2 alpha so d_alpha_on_triple will use it
+    linfty.attach_ce2_alpha(alpha)
+    try:
+        d_alpha = linfty.d_alpha_on_triple(x, y, z)
+        assert abs(float(d_alpha.g1[6, 1]) - 1.0 / 54.0) < 1e-12
+    finally:
+        linfty.detach_ce2_alpha()
+
+    # sanity: the CE2 artifact bracket(y, V) still reports -1/54 at the same
+    # g1 component (this documents the mismatch we are tracking)
+    ce2 = json.loads(
+        open(
+            "artifacts/ce2_rational_local_solutions.json", "r", encoding="utf-8"
+        ).read()
+    )
+    rec = None
+    for k, v in ce2.items():
+        if (
+            tuple(v.get("a")) == a_idx
+            and tuple(v.get("b")) == b_idx
+            and tuple(v.get("c")) == c_idx
+        ):
+            rec = v
+            break
+    assert rec is not None
+
+    V_rats = [Fraction(s) if s != "0" else None for s in rec.get("V_rats", [])]
+    V_num = _np.array(
+        [float(fr) if fr is not None else 0.0 for fr in V_rats], dtype=_np.complex128
+    )
+    N = 27 * 27
+    e6 = V_num[:N].reshape((27, 27)).astype(_np.complex128)
+    off = N
+    sl3 = V_num[off : off + 9].reshape((3, 3)).astype(_np.complex128)
+    off += 9
+    g1 = V_num[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+    off += 81
+    g2 = V_num[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+
+    V_e8 = toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+    br = toe.E8Z3Bracket(
+        e6_projector=proj,
+        cubic_triads=toe._load_signed_cubic_triads(),
+        scale_g1g1=1.0,
+        scale_g2g2=-1.0 / 6.0,
+        scale_e6=1.0,
+        scale_sl3=1.0 / 6.0,
+    )
+    out = br.bracket(y, V_e8)
+    assert abs(float(out.g1[6, 1]) + 1.0 / 54.0) < 1e-12
+
+
 def test_local_ce2_uv_rationalization_and_l4_callable():
     """Ensure compute_local_ce2_alpha_for_triple can return/rationalize U/V and
     that the promoted l4 callable reflects the CE2 data (nonzero where expected).
@@ -613,17 +784,34 @@ def test_derive_symbolic_l4_and_exhaustive_l3_l4_passes():
         and linfty._l4_coboundary_on_triple is not None
     )
 
-    # verify failing triple(s) vanish under homotopy_jacobi
+    # ensure the CE2 alpha is also registered for d_alpha_on_triple fallback
+    assert hasattr(linfty, "_ce2_alpha") and linfty._ce2_alpha is not None
+
+    # load the exhaustive-l3 artifact + helpers and read the recorded failing triple
     exh = json.loads(
         open(
             "artifacts/exhaustive_homotopy_rationalized_l3.json", "r", encoding="utf-8"
         ).read()
     )
     ft = exh["sectors"]["g1_g1_g2"]["first_fail"]
+
     from tools.exhaustive_homotopy_check_rationalized_l3 import (
         basis_elem_g1,
         basis_elem_g2,
     )
+
+    # the registered CE2 alpha and the coboundary callback should agree
+    d_alpha_val = linfty.d_alpha_on_triple(
+        basis_elem_g1(toe, tuple(ft["a"])),
+        basis_elem_g1(toe, tuple(ft["b"])),
+        basis_elem_g2(toe, tuple(ft["c"])),
+    )
+    l4_cb_val = linfty._l4_coboundary_on_triple(
+        basis_elem_g1(toe, tuple(ft["a"])),
+        basis_elem_g1(toe, tuple(ft["b"])),
+        basis_elem_g2(toe, tuple(ft["c"])),
+    )
+    assert max_abs(d_alpha_val - l4_cb_val) < 1e-10
 
     x = basis_elem_g1(toe, tuple(ft["a"]))
     y = basis_elem_g1(toe, tuple(ft["b"]))
@@ -654,3 +842,54 @@ def test_derive_symbolic_l4_and_exhaustive_l3_l4_passes():
     # expect all sectors to pass
     for s in ("g1_g1_g1", "g2_g2_g2", "g1_g1_g2", "g1_g2_g2"):
         assert rep["sectors"][s]["passed"] is True
+
+
+def test_attach_l4_from_ce2_preserves_existing_coboundary():
+    """Regression: `attach_l4_from_ce2` must not overwrite a previously
+    attached triple-aware coboundary (installed by
+    `attach_l4_from_symbolic_constants`)."""
+    from pathlib import Path
+
+    import numpy as _np
+
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = _np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        _np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # attach symbolic constants (this installs a triple-aware coboundary)
+    linfty.attach_l4_from_symbolic_constants("artifacts/l4_symbolic_constants.json")
+    existing_cb = linfty._l4_coboundary_on_triple
+    assert existing_cb is not None
+
+    # attach an aggregated CE2 -> l4 via attach_l4_from_ce2 (should preserve cb)
+    def dummy_alpha(a, b):
+        return toe.E8Z3.zero()
+
+    linfty.attach_l4_from_ce2(dummy_alpha)
+    assert linfty._l4_coboundary_on_triple is existing_cb
+
+    # ensure homotopy for the recorded failing triple still cancels
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+    tot = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(tot) < 1e-10

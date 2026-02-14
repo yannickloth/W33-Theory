@@ -30,6 +30,28 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--time", type=float, default=300.0, help="CP‑SAT time limit per support (seconds)"
 )
+parser.add_argument(
+    "--max-support-size",
+    type=int,
+    default=4,
+    help="Maximum allowed support size when collecting seeds (default: 4)",
+)
+parser.add_argument(
+    "--include-line-unions",
+    action="store_true",
+    help="Also include unions of two PG(3,2) lines as candidate supports",
+)
+parser.add_argument(
+    "--try-full-coeff",
+    action="store_true",
+    help="If baseline (delta) pass fails for a support, also try a full-coeff CP‑SAT search",
+)
+parser.add_argument(
+    "--sampled-pure-rows",
+    type=int,
+    default=0,
+    help="Number of sampled pure‑sector rows to append to CP‑SAT (split g1/g2). Default 0",
+)
 args = parser.parse_args()
 
 # import hybrid module (we reuse its helpers)
@@ -56,11 +78,29 @@ candidate_supports = set()
 for L in pg32["lines"]:
     pts = L["points"]  # these are Schläfli vertex ids in repo convention
     support = sorted({schlafli_to_bad9[v] for v in pts if v in schlafli_to_bad9})
-    if 1 <= len(support) <= 4:
+    if 1 <= len(support) <= args.max_support_size:
         candidate_supports.add(tuple(support))
 
+# optionally include unions of two PG(3,2) lines to expand candidate supports
+if args.include_line_unions:
+    lines_supports = []
+    for L in pg32["lines"]:
+        pts = L["points"]
+        support = sorted({schlafli_to_bad9[v] for v in pts if v in schlafli_to_bad9})
+        if 1 <= len(support) <= args.max_support_size:
+            lines_supports.append(tuple(support))
+
+    # add pairwise unions (deduplicated) up to max size
+    for i in range(len(lines_supports)):
+        for j in range(i + 1, len(lines_supports)):
+            union = tuple(sorted(set(lines_supports[i]) | set(lines_supports[j])))
+            if 1 <= len(union) <= args.max_support_size:
+                candidate_supports.add(union)
+
 candidate_supports = sorted(candidate_supports)
-print(f"Generated {len(candidate_supports)} seed supports (size<=4)")
+print(
+    f"Generated {len(candidate_supports)} seed supports (size<={args.max_support_size})"
+)
 
 # prepare failing triple (use first failing triple from exhaustive artifact)
 exh = json.loads(
@@ -150,6 +190,141 @@ nz_rows = np.where(np.abs(Jflat) > 1e-12)[0]
 A_sub_full = A_full[nz_rows]
 rhs_full = -Jflat[nz_rows]
 
+
+# optionally append sampled pure-sector rows to raise effective rank
+def _collect_sampled_pure_rows(n_g1: int, n_g2: int):
+    """Return (A_extra, rhs_extra) arrays built from sampled pure-sector triples.
+
+    - n_g1: number of g1_g1_g1 sampled triples
+    - n_g2: number of g2_g2_g2 sampled triples
+    """
+    from numpy.random import default_rng
+
+    rng = default_rng(20260212)
+    e6_basis = np.load(
+        ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy"
+    ).astype(np.complex128)
+    A_rows = []
+    rhs_rows = []
+
+    def _add_sample(triple_type: str):
+        # triple_type in {"g1", "g2"}
+        if triple_type == "g1":
+            xa = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+            ya = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+            za = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+        else:
+            xa = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=0,
+                scale2=2,
+                include_g0=False,
+                include_g1=False,
+            )
+            ya = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=0,
+                scale2=2,
+                include_g0=False,
+                include_g1=False,
+            )
+            za = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=0,
+                scale2=2,
+                include_g0=False,
+                include_g1=False,
+            )
+
+        # build S/J for this triple
+        Scols = []
+        for brf in br_fibers:
+            j1 = brf.bracket(xa, br_l2.bracket(ya, za))
+            j2 = brf.bracket(ya, br_l2.bracket(za, xa))
+            j3 = brf.bracket(za, br_l2.bracket(xa, ya))
+            f1 = br_l2.bracket(brf.bracket(xa, ya), za)
+            f2 = br_l2.bracket(brf.bracket(ya, za), xa)
+            f3 = br_l2.bracket(brf.bracket(za, xa), ya)
+            ff1 = brf.bracket(xa, brf.bracket(ya, za))
+            ff2 = brf.bracket(ya, brf.bracket(za, xa))
+            ff3 = brf.bracket(za, brf.bracket(xa, ya))
+            S = j1 + j2 + j3 + f1 + f2 + f3 + ff1 + ff2 + ff3
+            Scols.append(
+                np.concatenate(
+                    [
+                        S.e6.reshape(-1),
+                        S.sl3.reshape(-1),
+                        S.g1.reshape(-1),
+                        S.g2.reshape(-1),
+                    ]
+                )
+            )
+
+        A_sample = np.array(Scols).T
+        J_sample = flatten(toe._jacobi(br_l2, xa, ya, za))
+        nz = np.where(np.abs(J_sample) > 1e-12)[0]
+        if nz.size == 0:
+            return
+        A_rows.append(A_sample[nz, :])
+        rhs_rows.append(-J_sample[nz])
+
+    for _ in range(n_g1):
+        _add_sample("g1")
+    for _ in range(n_g2):
+        _add_sample("g2")
+
+    if not A_rows:
+        return None, None
+    A_extra = np.vstack(A_rows)
+    rhs_extra = np.concatenate(rhs_rows)
+    return A_extra, rhs_extra
+
+
+# if user requested sampled rows, append them to A_sub_full / rhs_full
+if args.sampled_pure_rows and args.sampled_pure_rows > 0:
+    # default split: half g1 and half g2 (round down)
+    n_total = int(args.sampled_pure_rows)
+    n_g1 = n_total // 2
+    n_g2 = n_total - n_g1
+    A_extra, rhs_extra = _collect_sampled_pure_rows(n_g1, n_g2)
+    if A_extra is not None:
+        # stack new sampled rows under existing reduced rows
+        A_sub_full = np.vstack([A_sub_full, A_extra])
+        rhs_full = np.concatenate([rhs_full, rhs_extra])
+        print(
+            f"Appended sampled pure-sector rows: g1={n_g1}, g2={n_g2} -> +{A_extra.shape[0]} rows"
+        )
+
 # try CP-SAT on candidate supports
 from tools.hybrid_linfty_search import cp_sat_try_for_support
 
@@ -157,12 +332,38 @@ results = []
 for support in candidate_supports:
     support_idx = list(support)
     A_use = A_sub_full[:, support_idx]
+    # search for delta relative to uniform baseline (1/9)
+    baseline_sub = np.ones(len(support_idx)) * (1.0 / 9.0)
     D, scale, nums = cp_sat_try_for_support(
-        A_use, rhs_full, support_idx, hybrid.D_LIST, hybrid.SCALE_CHOICES, args.time
+        A_use,
+        rhs_full,
+        support_idx,
+        hybrid.D_LIST,
+        hybrid.SCALE_CHOICES,
+        args.time,
+        verbose=False,
+        baseline=baseline_sub,
     )
+    mode = "baseline"
+    # if baseline pass failed and user requested, try full‑coeff search (no baseline)
+    if D is None and args.try_full_coeff:
+        D, scale, nums = cp_sat_try_for_support(
+            A_use,
+            rhs_full,
+            support_idx,
+            hybrid.D_LIST,
+            hybrid.SCALE_CHOICES,
+            args.time,
+            verbose=False,
+            baseline=None,
+        )
+        if D is not None:
+            mode = "full-coeff"
+
     rec = {
         "support": support_idx,
         "cp_found": D is not None,
+        "mode": mode,
         "D": D,
         "scale": scale,
         "nums": nums,

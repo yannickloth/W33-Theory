@@ -178,7 +178,12 @@ def main() -> None:
                         acc = acc - V_e8
                 return acc
 
-            linfty.attach_l4_from_ce2(alpha_global)
+            # register the assembled CE2 alpha *without* overwriting the
+            # triple-aware coboundary installed by
+            # `attach_l4_from_symbolic_constants` (avoid losing exact per-triple
+            # CE2 entries).  Use attach_ce2_alpha so `d_alpha_on_triple` can
+            # still prefer the per-triple lookup.
+            linfty.attach_ce2_alpha(alpha_global)
     else:
         # fallback: assemble CE2 local solutions and promote
         asm = _load_module(

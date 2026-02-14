@@ -22,6 +22,7 @@ import json
 import math
 import sys
 import time
+from fractions import Fraction
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -35,14 +36,20 @@ OUT = ROOT / "artifacts" / "hybrid_search_results.json"
 RAT_FILE = ROOT / "artifacts" / "linfty_coord_search_results_rationalized.json"
 EXH_FILE = ROOT / "artifacts" / "exhaustive_homotopy_rationalized_l3.json"
 
-# search parameters (moderate defaults)
-MAX_SUPPORT = 4
-TOP_K = 12
-# expanded D_LIST to include 36 and larger denominators (960,1920) for targeted seeding
-D_LIST = [36, 60, 120, 240, 360, 480, 720, 960, 1920]
-SCALE_CHOICES = [100_000, 500_000, 1_000_000]
-CP_TIME_LIMIT = 60.0  # seconds per CP-SAT solve
-MAX_NUM_FACTOR = 0.6
+# search parameters (deeper defaults for an extended sweep)
+MAX_SUPPORT = 5
+TOP_K = 24
+# expanded D_LIST to include smaller denominators and extra divisors to
+# improve chance of matching rational LSQ solutions.
+D_LIST = [2, 3, 4, 5, 6, 9, 12, 18, 24, 36, 48, 60, 120, 240, 360, 480, 720, 960, 1920]
+# include small scales (for exact integer matches) *and* large scales (for
+# previous behaviour). Small scales help CP‑SAT presolve reason about small
+# denominator systems.
+SCALE_CHOICES = [1, 2, 3, 4, 6, 12, 1000, 10_000, 50_000, 100_000, 500_000, 1_000_000]
+CP_TIME_LIMIT = 300.0  # seconds per CP-SAT solve (longer budget for deeper search)
+# widen numerator bound factor to allow numerators up to 3*D during extended search.
+# This reduces false infeasibility from tight numerator caps and explores larger deltas.
+MAX_NUM_FACTOR = 3.0
 
 try:
     from ortools.sat.python import cp_model
@@ -111,17 +118,116 @@ def lsq_on_support(A, Jflat, support_idx):
 
 
 def cp_sat_try_for_support(
-    A_use, rhs_use, support_idx, D_list, scale_choices, time_limit
+    A_use,
+    rhs_use,
+    support_idx,
+    D_list,
+    scale_choices,
+    time_limit,
+    verbose: bool = False,
+    baseline: np.ndarray | None = None,
 ):
     # A_use: (m x s) real matrix (rows selected where RHS nonzero), rhs_use: real vector
+    # Accept complex-valued inputs but validate/take real part when the imaginary
+    # components are numerically negligible (prevents ComplexWarning when
+    # casting to integer coefficients).
     m, s = A_use.shape
     for D in D_list:
         max_num = int(math.floor(MAX_NUM_FACTOR * D)) if D >= 5 else D
         max_num = max(1, max_num)
-        for scale in scale_choices:
-            # convert to integer coefficients
-            C = np.rint(scale * A_use).astype(np.int64)
-            RHS_int = np.rint(-scale * D * rhs_use).astype(np.int64)
+
+        # compute exact integer scale from rational approximation of matrix entries
+        # so we try a scale that makes `scale*A` and `scale*D*rhs_eff` integral when possible.
+        # fall back to floating scaled rounding for provided scale_choices.
+        A_use_real = A_use
+        rhs_use_real = rhs_use
+        if np.iscomplexobj(A_use):
+            max_im = float(np.max(np.abs(np.imag(A_use))))
+            if max_im > 1e-12:
+                raise ValueError(
+                    f"A_use contains significant imaginary parts (max imag={max_im})"
+                )
+            A_use_real = np.real(A_use)
+        if np.iscomplexobj(rhs_use):
+            max_im = float(np.max(np.abs(np.imag(rhs_use))))
+            if max_im > 1e-12:
+                raise ValueError(
+                    f"rhs_use contains significant imaginary parts (max imag={max_im})"
+                )
+            rhs_use_real = np.real(rhs_use)
+
+        # if baseline provided, compute effective RHS early (used for exact-scaling)
+        rhs_eff = rhs_use_real
+        if baseline is not None:
+            rhs_eff = rhs_use_real - A_use_real.dot(baseline)
+            if verbose:
+                print(
+                    f"Adjusted RHS for baseline; max(abs(rhs_eff))={float(np.max(np.abs(rhs_eff))):.3e}"
+                )
+
+        # attempt to compute a minimal exact integer scale from rational approximations
+        scale_candidates = []
+        try:
+            import math as _math
+            from fractions import Fraction
+
+            max_den = (
+                720  # safe upper bound for denominators we expect in these matrices
+            )
+            # collect nonzero fractions
+            a_fracs = [
+                Fraction(float(val)).limit_denominator(max_den)
+                for val in A_use_real.flatten()
+                if abs(val) > 1e-15
+            ]
+            r_fracs = [
+                Fraction(float(val)).limit_denominator(max_den)
+                for val in rhs_eff.flatten()
+                if abs(val) > 1e-15
+            ]
+
+            def _lcm(u, v):
+                return abs(u * v) // _math.gcd(u, v) if u and v else max(u, v)
+
+            denom_A = 1
+            for f in a_fracs:
+                denom_A = _lcm(denom_A, f.denominator)
+            denom_rhs = 1
+            for f in r_fracs:
+                denom_rhs = _lcm(denom_rhs, f.denominator)
+
+            # scale must be multiple of denom_A and must satisfy scale*D*(rhs_frac) integer
+            # -> scale must be multiple of denom_rhs / gcd(denom_rhs, D)
+            rhs_div = 1
+            if denom_rhs != 0:
+                rhs_div = denom_rhs // _math.gcd(denom_rhs, D)
+
+            if denom_A == 0:
+                exact_scale = rhs_div
+            elif rhs_div == 0:
+                exact_scale = denom_A
+            else:
+                exact_scale = _lcm(denom_A, rhs_div)
+
+            if exact_scale > 0 and exact_scale < 10**9:
+                scale_candidates.append(int(exact_scale))
+        except Exception:
+            # if any of the rationalization steps fail, silently continue with provided scales
+            scale_candidates = []
+
+        # merge exact candidate (if any) with user-provided scale choices
+        seen = set()
+        scales_to_try = []
+        for sc in scale_candidates + list(scale_choices):
+            if sc not in seen and sc > 0:
+                scales_to_try.append(int(sc))
+                seen.add(int(sc))
+
+        for scale in scales_to_try:
+            # convert to integer coefficients using the chosen scale
+            C = np.rint(scale * A_use_real).astype(np.int64)
+
+            RHS_int = np.rint(-scale * D * rhs_eff).astype(np.int64)
 
             # quick impossibility check: rows where all-zero coeffs but RHS != 0
             impossible = False
@@ -130,7 +236,25 @@ def cp_sat_try_for_support(
                     impossible = True
                     break
             if impossible:
+                if verbose:
+                    print(
+                        f"Skip D={D},scale={scale}: row with zero coeffs but RHS != 0"
+                    )
                 continue
+
+            # row-level achievable bound check: each row's RHS must be reachable given
+            # the per-variable numerator bounds (max_num). If any RHS exceeds the
+            # sum_j |C[r, j]| * max_num then the linear system is impossible.
+            if C.size > 0:
+                row_capacity = np.sum(np.abs(C) * max_num, axis=1)
+                rhs_abs = np.abs(RHS_int)
+                if np.any(rhs_abs > row_capacity):
+                    if verbose:
+                        bad_rows = np.where(rhs_abs > row_capacity)[0]
+                        print(
+                            f"Skip D={D},scale={scale}: RHS too large for max_num={max_num} on rows {bad_rows.tolist()} (max rhs={int(rhs_abs.max())}, max capacity={int(row_capacity.max())})"
+                        )
+                    continue
 
             model = cp_model.CpModel()
             vars_num = [
@@ -158,11 +282,28 @@ def cp_sat_try_for_support(
             solver.parameters.max_time_in_seconds = time_limit
             solver.parameters.num_search_workers = 8
             solver.parameters.random_seed = 123456
+            # optional verbose CP‑SAT logging
+            if verbose:
+                # prints solver progress to stdout
+                solver.parameters.log_search_progress = True
 
             status = solver.Solve(model)
             if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
                 nums = [int(solver.Value(v)) for v in vars_num]
-                return D, scale, nums
+                # verify the returned integer solution against the original real system
+                try:
+                    nums_arr = np.array(nums, dtype=float) / float(D)
+                    real_res = float(np.linalg.norm(A_use_real.dot(nums_arr) + rhs_eff))
+                except Exception:
+                    real_res = float("inf")
+                if real_res > 1e-9:
+                    if verbose:
+                        print(
+                            f"Rejecting integer solution for D={D},scale={scale} — real residual={real_res:.3e}"
+                        )
+                    # treat as spurious (due to rounding) and continue searching
+                else:
+                    return D, scale, nums
     return None, None, None
 
 
@@ -391,7 +532,14 @@ def main():
 
             # try CP-SAT on this support
             D, scale, nums = cp_sat_try_for_support(
-                A_subrows, rhs_sub, support_idx, D_LIST, SCALE_CHOICES, CP_TIME_LIMIT
+                A_subrows,
+                rhs_sub,
+                support_idx,
+                D_LIST,
+                SCALE_CHOICES,
+                CP_TIME_LIMIT,
+                verbose=False,
+                baseline=np.ones(len(support_idx)) * (1.0 / 9.0),
             )
             if D is None:
                 srec["cp_found"] = False

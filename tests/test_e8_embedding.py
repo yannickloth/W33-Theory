@@ -3049,6 +3049,524 @@ class TestHeisenbergQutrit:
 
 
 # =========================================================================
+# 26) Two-Qutrit Pauli Commutation Geometry
+# =========================================================================
+
+
+class TestTwoQutritPauli:
+    """Tests that W33 = commutation geometry of 2-qutrit Pauli operators.
+
+    The 40 vertices of W(3,3) are the 40 non-identity traceless 2-qutrit
+    Pauli operators X^a Z^b (x) X^c Z^d. Two operators are adjacent iff
+    they commute, governed by the symplectic form Omega = ab'-ba'+cd'-dc' mod 3.
+    """
+
+    @pytest.fixture(scope="class")
+    def pauli_data(self):
+        import numpy as np
+
+        omega = np.exp(2j * np.pi / 3)
+        X = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]], dtype=complex)  # X|j>=|j+1>
+        Z = np.diag([1, omega, omega**2])
+
+        # Canonical representatives: first nonzero coord = 1 (projective equiv)
+        def canonical(v):
+            for i in range(4):
+                if v[i] % 3 != 0:
+                    inv = 1 if v[i] % 3 == 1 else 2
+                    return tuple((x * inv) % 3 for x in v)
+            return None
+
+        reps = set()
+        for a in range(3):
+            for b in range(3):
+                for c in range(3):
+                    for d in range(3):
+                        if (a, b, c, d) == (0, 0, 0, 0):
+                            continue
+                        cr = canonical((a, b, c, d))
+                        if cr:
+                            reps.add(cr)
+
+        labels = sorted(reps)
+        ops = {}
+        for v in labels:
+            a, b, c, d = v
+            op = np.kron(
+                np.linalg.matrix_power(X, a) @ np.linalg.matrix_power(Z, b),
+                np.linalg.matrix_power(X, c) @ np.linalg.matrix_power(Z, d),
+            )
+            ops[v] = op
+        return labels, ops
+
+    def test_exactly_40_traceless_operators(self, pauli_data):
+        """There are exactly 40 non-identity traceless 2-qutrit Pauli operators."""
+        labels, ops = pauli_data
+        assert len(labels) == 40
+
+    def test_commutation_matches_symplectic_form(self, pauli_data):
+        """Commutation iff symplectic form Omega = 0 mod 3."""
+        import numpy as np
+
+        labels, ops = pauli_data
+        for i in range(len(labels)):
+            for j in range(i + 1, len(labels)):
+                comm = ops[labels[i]] @ ops[labels[j]] - ops[labels[j]] @ ops[labels[i]]
+                mat_commute = np.linalg.norm(comm) < 1e-10
+                a, b, c, d = labels[i]
+                a2, b2, c2, d2 = labels[j]
+                omega_val = (a * b2 - b * a2 + c * d2 - d * c2) % 3
+                symp_commute = omega_val == 0
+                assert mat_commute == symp_commute
+
+    def test_pauli_graph_is_srg_40_12_2_4(self, pauli_data):
+        """Pauli commutation graph has SRG(40,12,2,4) parameters."""
+        labels, ops = pauli_data
+        n = len(labels)
+        # Use symplectic form (already verified matches matrix commutation)
+        adj = [set() for _ in range(n)]
+        for i in range(n):
+            for j in range(i + 1, n):
+                a, b, c, d = labels[i]
+                a2, b2, c2, d2 = labels[j]
+                if (a * b2 - b * a2 + c * d2 - d * c2) % 3 == 0:
+                    adj[i].add(j)
+                    adj[j].add(i)
+        degrees = [len(adj[i]) for i in range(n)]
+        assert all(d == 12 for d in degrees)
+        edges = sum(degrees) // 2
+        assert edges == 240
+
+    def test_isomorphism_is_identity(self, pauli_data):
+        """W33 vertices under F3^4 labeling = Pauli labels (identity isomorphism)."""
+        labels, ops = pauli_data
+        n_w33, vertices, adj_w33, edges = build_w33()
+        adj_s = [set(adj_w33[i]) for i in range(n_w33)]
+
+        label_to_idx = {l: i for i, l in enumerate(labels)}
+
+        # Every W33 edge should be a commuting Pauli pair
+        mismatches = 0
+        for i in range(n_w33):
+            for j in adj_s[i]:
+                if j > i:
+                    u, v = vertices[i], vertices[j]
+                    a, b, c, d = u
+                    a2, b2, c2, d2 = v
+                    if (a * b2 - b * a2 + c * d2 - d * c2) % 3 != 0:
+                        mismatches += 1
+        assert mismatches == 0
+
+    def test_40_lines_from_clique_complex(self, pauli_data):
+        """W33 has exactly 40 lines (tetrahedra / maximal commuting sets)."""
+        from w33_homology import build_clique_complex, build_w33
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        assert len(simplices[3]) == 40  # 40 tetrahedra = 40 lines
+
+
+# =========================================================================
+# 27) Triangle (C2) Decomposition
+# =========================================================================
+
+
+class TestTriangleDecomposition:
+    """Tests for C2(W33) = R^160 decomposition under PSp(4,3).
+
+    C2 decomposes into 4 irreps: 160 = 10 + 30 + 30 + 90.
+    The 90-dim and 10-dim are complex type (FS=0), the two 30-dim are real.
+    """
+
+    def test_c2_dimension_160(self):
+        """C2 has 160 triangles (2-simplices)."""
+        from w33_homology import build_clique_complex, build_w33
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        assert len(simplices[2]) == 160
+
+    def test_c2_four_irreps(self):
+        """C2 decomposes into exactly 4 irreducible components."""
+        import json
+
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "checks",
+        )
+        # Find the triangle decomp artifact
+        found = False
+        for f in os.listdir(path):
+            if "triangle_decomp" in f and f.endswith(".json"):
+                with open(os.path.join(path, f)) as fh:
+                    data = json.load(fh)
+                assert data["n_components"] == 4
+                assert sorted(data["dimensions"]) == [10, 30, 30, 90]
+                found = True
+                break
+        assert found, "Triangle decomposition artifact not found"
+
+    def test_c2_gap_irrep_labels(self):
+        """Map C2 triangles to PSp(4,3) irreps (uses artifact or GAP CLI).
+
+        - If a `triangle_irrep_match` artifact exists in `checks/` we validate it.
+        - Otherwise, attempt to run the matcher via GAP on PATH and validate output.
+        """
+        import json
+        import shutil
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        checks_dir = Path(__file__).resolve().parents[1] / "checks"
+        # look for either libgap-produced or CLI-produced artifact
+        candidates = list(
+            checks_dir.glob("PART_CVII_triangle_irrep_match_gap_cli_*.json")
+        ) + list(checks_dir.glob("PART_CVII_triangle_irrep_match_*.json"))
+        if candidates:
+            path = sorted(candidates)[-1]
+            obj = json.loads(path.read_text(encoding="utf-8"))
+        else:
+            # if GAP is not available, skip the test
+            if shutil.which("gap") is None:
+                pytest.skip(
+                    "No GAP on PATH and no triangle_irrep_match artifact present"
+                )
+            # run the matcher script (will write into checks/)
+            script = (
+                Path(__file__).resolve().parents[1]
+                / "scripts"
+                / "w33_triangle_irrep_match_gap.py"
+            )
+            subprocess.run([sys.executable, str(script)], check=True)
+            candidates = list(
+                checks_dir.glob("PART_CVII_triangle_irrep_match_gap_cli_*.json")
+            ) + list(checks_dir.glob("PART_CVII_triangle_irrep_match_*.json"))
+            assert candidates, "triangle_irrep_match script did not produce an artifact"
+            path = sorted(candidates)[-1]
+            obj = json.loads(path.read_text(encoding="utf-8"))
+
+        # Validate expected decomposition 160 = 10 + 30 + 30 + 90
+        assert obj.get("n_triangles") == 160
+        mults = obj.get("irrep_matches") or []
+        bydeg = {}
+        for m in mults:
+            d = int(m["degree"])
+            bydeg[d] = bydeg.get(d, 0) + int(m["mult"])
+
+        assert bydeg.get(10, 0) == 1
+        assert bydeg.get(30, 0) == 2
+        assert bydeg.get(90, 0) == 1
+
+    def test_c2_betti_number_zero(self):
+        """b2 = dim ker(L2) = 0 (all eigenvalues are the spectral gap 4)."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        d3 = boundary_matrix(simplices[3], simplices[2]).astype(float)
+        L2 = d2.T @ d2 + d3 @ d3.T
+        eigvals = np.linalg.eigvalsh(L2)
+        zero_count = int(np.sum(np.abs(eigvals) < 0.5))
+        assert zero_count == 0
+
+    def test_boundary_ranks(self):
+        """rank(d2) = 120, rank(d3) = 40."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        d3 = boundary_matrix(simplices[3], simplices[2]).astype(float)
+        assert np.linalg.matrix_rank(d2) == 120
+        assert np.linalg.matrix_rank(d3) == 40
+
+
+# =========================================================================
+# 28) Lie Bracket / Abelian Matter Sector
+# =========================================================================
+
+
+class TestLieBracket:
+    """Tests that H1 is an abelian subalgebra: [g1, g1] -> co-exact (120-dim).
+
+    The wedge-coboundary bracket [h1, h2] = d2*(h1 ^ h2) on H1 maps
+    entirely into the 120-dim co-exact eigenspace, with zero projection
+    onto harmonics, exact-10, and exact-16. This proves H1 = g1 is abelian
+    in E8 and the bracket image is EXACTLY the co-exact sector.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        cls.np = np
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        cls.edges = edges
+        cls.triangles = simplices[2]
+
+        d1 = boundary_matrix(simplices[1], simplices[0]).astype(float)
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        cls.d2 = d2
+        m = len(edges)
+
+        # Build edge index
+        idx = {}
+        for i, (u, v) in enumerate(edges):
+            idx[(u, v)] = (i, +1)
+            idx[(v, u)] = (i, -1)
+        cls.edge_idx = idx
+
+        # Hodge Laplacian eigensystem
+        L1 = d1.T @ d1 + d2 @ d2.T
+        eigvals, eigvecs = np.linalg.eigh(L1)
+        cls.eigvals = eigvals
+        cls.eigvecs = eigvecs
+
+        harm_mask = np.abs(eigvals) < 0.5
+        cls.H = eigvecs[:, harm_mask]
+        cls.P_harm = cls.H @ cls.H.T
+        cls.n_harm = int(np.sum(harm_mask))
+
+    @pytest.fixture(autouse=True)
+    def _setup(self):
+        self.__class__.setUpClass()
+
+    def _wedge(self, h1, h2):
+        """Wedge product h1 ^ h2 in C2."""
+        np = self.np
+        result = np.zeros(len(self.triangles))
+        for ti, (v0, v1, v2) in enumerate(self.triangles):
+            e01_idx, e01_s = self.edge_idx[(v0, v1)]
+            e02_idx, e02_s = self.edge_idx[(v0, v2)]
+            e12_idx, e12_s = self.edge_idx[(v1, v2)]
+            h1_01 = e01_s * h1[e01_idx]
+            h1_02 = e02_s * h1[e02_idx]
+            h1_12 = e12_s * h1[e12_idx]
+            h2_01 = e01_s * h2[e01_idx]
+            h2_02 = e02_s * h2[e02_idx]
+            h2_12 = e12_s * h2[e12_idx]
+            result[ti] = (
+                h1_01 * h2_12
+                - h2_01 * h1_12
+                - h1_01 * h2_02
+                + h2_01 * h1_02
+                + h1_02 * h2_12
+                - h2_02 * h1_12
+            )
+        return result
+
+    def _bracket(self, h1, h2):
+        """[h1, h2] = d2 * (h1 ^ h2) in C1."""
+        w = self._wedge(h1, h2)
+        return self.d2 @ w
+
+    def test_bracket_zero_in_harmonics(self):
+        """[g1, g1] projected onto H1 is exactly zero."""
+        np = self.np
+        for i in range(5):
+            for j in range(i + 1, 5):
+                b = self._bracket(self.H[:, i], self.H[:, j])
+                proj = self.P_harm @ b
+                assert np.linalg.norm(proj) < 1e-10, f"[{i},{j}] not zero in H1"
+
+    def test_bracket_lands_in_coexact(self):
+        """[g1, g1] lands entirely in the 120-dim co-exact eigenspace (lambda=4)."""
+        np = self.np
+        coex_mask = np.abs(self.eigvals - 4.0) < 0.5
+        V_coex = self.eigvecs[:, coex_mask]
+        P_coex = V_coex @ V_coex.T
+
+        for i in range(5):
+            for j in range(i + 1, 5):
+                b = self._bracket(self.H[:, i], self.H[:, j])
+                norm_b = np.linalg.norm(b)
+                if norm_b < 1e-12:
+                    continue
+                proj_coex = P_coex @ b
+                assert np.linalg.norm(b - proj_coex) < 1e-10 * norm_b
+
+    def test_bracket_image_rank_120(self):
+        """The image of [H1, H1] -> C1 has rank 120 = dim(co-exact)."""
+        np = self.np
+        images = []
+        for i in range(30):
+            for j in range(i + 1, 30):
+                b = self._bracket(self.H[:, i], self.H[:, j])
+                images.append(b)
+        M = np.column_stack(images)
+        rank = np.linalg.matrix_rank(M, tol=1e-8)
+        assert rank == 120
+
+    def test_bracket_antisymmetric(self):
+        """[h1, h2] = -[h2, h1]."""
+        np = self.np
+        for i in range(5):
+            for j in range(i + 1, 5):
+                b12 = self._bracket(self.H[:, i], self.H[:, j])
+                b21 = self._bracket(self.H[:, j], self.H[:, i])
+                assert np.allclose(b12, -b21, atol=1e-12)
+
+    def test_freudenthal_bracket_matches_wedge_coboundary(self):
+        """Numeric check: E8Z3Bracket.bracket_g1_g1 reproduces wedge->coboundary map.
+
+        Procedure:
+          - map H1 harmonic edge-vectors to `E8Z3.g1` using
+            `artifacts/e8_root_metadata_table.json` (i27,i3 indices),
+          - compute bracket via `bracket_g1_g1` (returns `g2` tensor),
+          - compute geometric bracket `d2*(h1 ^ h2)` and map to `g2`
+            using the same metadata table,
+          - verify the two `g2` tensors agree up to a global scalar.
+        """
+        import importlib.util
+        import json
+        from pathlib import Path
+
+        repo_root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location(
+            "toe_e8",
+            repo_root / "tools" / "toe_e8_z3graded_bracket_jacobi.py",
+        )
+        toe = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = toe
+        spec.loader.exec_module(toe)
+
+        # E6 projector / cubic triads
+        e6_basis = self.np.load(
+            repo_root / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy"
+        ).astype(self.np.complex128)
+        proj = toe.E6Projector(e6_basis)
+        triads = toe._load_signed_cubic_triads()
+        br = toe.E8Z3Bracket(e6_projector=proj, cubic_triads=triads, scale_g1g1=1.0)
+
+        # Load root metadata table for edge -> (grade, i27, i3)
+        meta = json.loads(
+            (repo_root / "artifacts" / "e8_root_metadata_table.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        rows = meta["rows"]
+        edge_to_meta = {tuple(r["edge"]): r for r in rows}
+
+        # Helpers: map an H1 cochain (length m) -> E8Z3.g1 (27x3)
+        def cochain_to_g1(h):
+            G = self.np.zeros((27, 3), dtype=self.np.complex128)
+            for eidx, (u, v) in enumerate(self.__class__.edges):
+                key = (u, v)
+                r = edge_to_meta.get(key)
+                if r is None:
+                    key = (v, u)
+                    r = edge_to_meta.get(key)
+                    sign = -1
+                else:
+                    sign = 1
+                if r is None:
+                    continue
+                if r["grade"] != "g1":
+                    # harmonic cochain should vanish on non-g1 edges
+                    assert abs(h[eidx]) < 1e-12
+                    continue
+                i27 = int(r["i27"])
+                i3 = int(r["i3"])
+                G[i27, i3] += sign * complex(h[eidx])
+            return G
+
+        # Map coboundary C1 vector -> E8Z3.g2 (27x3)
+        def cochain_to_g2(c1):
+            G = self.np.zeros((27, 3), dtype=self.np.complex128)
+            for eidx, (u, v) in enumerate(self.__class__.edges):
+                key = (u, v)
+                r = edge_to_meta.get(key)
+                if r is None:
+                    key = (v, u)
+                    r = edge_to_meta.get(key)
+                    sign = -1
+                else:
+                    sign = 1
+                if r is None:
+                    continue
+                if r["grade"] != "g2":
+                    continue
+                i27 = int(r["i27"])
+                i3 = int(r["i3"])
+                G[i27, i3] += sign * complex(c1[eidx])
+            return G
+
+        # Pick several H1 basis pairs with nonzero bracket image
+        found = 0
+        scalars = []
+        for i in range(10):
+            for j in range(i + 1, 10):
+                h_i = self.__class__.H[:, i]
+                h_j = self.__class__.H[:, j]
+                # Map to g1 tensors
+                X = cochain_to_g1(h_i)
+                Y = cochain_to_g1(h_j)
+                # Tool bracket (27x3) -> g2 tensor
+                tool_g2 = br.bracket_g1_g1(X, Y)
+                tool_norm = self.np.linalg.norm(tool_g2)
+                if tool_norm < 1e-12:
+                    continue
+                # Geometric bracket (unprojected) in C1
+                from w33_homology import build_clique_complex
+
+                # wedge -> coboundary
+                triangles = build_clique_complex(*build_w33()[:2])[2]
+
+                # compute wedge using same function as script
+                def wedge(h1, h2):
+                    res = self.np.zeros(len(triangles))
+                    for ti, (v0, v1, v2) in enumerate(triangles):
+                        e01_idx, e01_s = self.__class__.edge_idx[(v0, v1)]
+                        e02_idx, e02_s = self.__class__.edge_idx[(v0, v2)]
+                        e12_idx, e12_s = self.__class__.edge_idx[(v1, v2)]
+                        h1_01 = e01_s * h1[e01_idx]
+                        h1_02 = e02_s * h1[e02_idx]
+                        h1_12 = e12_s * h1[e12_idx]
+                        h2_01 = e01_s * h2[e01_idx]
+                        h2_02 = e02_s * h2[e02_idx]
+                        h2_12 = e12_s * h2[e12_idx]
+                        res[ti] = (
+                            h1_01 * h2_12
+                            - h2_01 * h1_12
+                            - h1_01 * h2_02
+                            + h2_01 * h1_02
+                            + h1_02 * h2_12
+                            - h2_02 * h1_12
+                        )
+                    return res
+
+                w = wedge(h_i, h_j)
+                cb = self.__class__.d2 @ w
+                geom_g2 = cochain_to_g2(cb)
+                geom_norm = self.np.linalg.norm(geom_g2)
+                if geom_norm < 1e-12:
+                    continue
+                # Find scalar s minimizing ||tool - s * geom||
+                tg = tool_g2.reshape(-1)
+                gg = geom_g2.reshape(-1)
+                s = float((self.np.vdot(tg, gg).real) / (self.np.vdot(gg, gg).real))
+                resid = self.np.linalg.norm(tg - s * gg) / self.np.linalg.norm(tg)
+                assert resid < 1e-10, f"Freudenthal bracket mismatch (resid={resid})"
+                scalars.append(s)
+                found += 1
+                if found >= 6:
+                    break
+            if found >= 6:
+                break
+        assert found >= 1, "No nontrivial bracket pairs found for verification"
+        # Scalars should be consistent across tested pairs
+        vals = self.np.array(scalars)
+        assert self.np.std(vals) / abs(self.np.mean(vals)) < 1e-10
+
+
+# =========================================================================
 # MAIN
 # =========================================================================
 

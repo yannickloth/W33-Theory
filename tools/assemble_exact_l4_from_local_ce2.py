@@ -27,6 +27,10 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+
+# make project root importable when running script directly
+sys.path.insert(0, str(ROOT))
 OUT = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
 
 

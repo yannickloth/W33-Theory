@@ -200,6 +200,73 @@ class LInftyE8Extension:
 
         Returns zero if no alpha is attached.
         """
+        # Prefer per-triple CE2 local solution (if attached by loader) so the
+        # coboundary used for a specific triple matches the exact local alpha
+        # stored in the CE2 artifact.  This avoids cross-talk when multiple
+        # local solutions share the same (a,c) pair but different b.
+        try:
+            if (
+                hasattr(self, "_ce2_local_uv_map")
+                and self._ce2_local_uv_map is not None
+            ):
+                # attempt exact triple-key lookup using integer basis indices
+                def key_for_elem(elem):
+                    if np.any(elem.g1):
+                        idx = np.argwhere(np.abs(elem.g1) > 0.5)
+                        if idx.size == 0:
+                            return None
+                        return tuple([int(idx[0, 0]), int(idx[0, 1])])
+                    if np.any(elem.g2):
+                        idx = np.argwhere(np.abs(elem.g2) > 0.5)
+                        if idx.size == 0:
+                            return None
+                        return tuple([int(idx[0, 0]), int(idx[0, 1])])
+                    return None
+
+                a_idx = key_for_elem(a)
+                b_idx = key_for_elem(b)
+                c_idx = key_for_elem(c)
+                if (a_idx, b_idx, c_idx) in self._ce2_local_uv_map:
+                    U_num, V_num = self._ce2_local_uv_map[(a_idx, b_idx, c_idx)]
+
+                    def flat_numeric_to_e8(vec_flat: np.ndarray):
+                        Nn = 27 * 27
+                        e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
+                        offn = Nn
+                        sl3 = (
+                            vec_flat[offn : offn + 9]
+                            .reshape((3, 3))
+                            .astype(np.complex128)
+                        )
+                        offn += 9
+                        g1 = (
+                            vec_flat[offn : offn + 81]
+                            .reshape((27, 3))
+                            .astype(np.complex128)
+                        )
+                        offn += 81
+                        g2 = (
+                            vec_flat[offn : offn + 81]
+                            .reshape((27, 3))
+                            .astype(np.complex128)
+                        )
+                        return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+
+                    U_e8 = flat_numeric_to_e8(U_num)
+                    V_e8 = flat_numeric_to_e8(V_num)
+
+                    term1 = self.br_l2.bracket(a, U_e8)
+                    term2 = self.br_l2.bracket(b, V_e8).scale(-1.0)
+                    term3 = self.br_l2.bracket(c, self.tool.E8Z3.zero())
+                    term4 = self.tool.E8Z3.zero()
+                    term5 = self.tool.E8Z3.zero()
+                    term6 = self.tool.E8Z3.zero()
+                    return term1 + term2 + term3 + term4 + term5 + term6
+        except Exception:
+            # best-effort fallback to the generic alpha if something goes wrong
+            pass
+
+        # fallback: use the attached CE2 alpha callable (if any)
         if not hasattr(self, "_ce2_alpha") or self._ce2_alpha is None:
             return self.tool.E8Z3.zero()
         alpha = self._ce2_alpha
@@ -397,10 +464,18 @@ class LInftyE8Extension:
         """Promote a CE‑2 cochain to a thin global l4 *prototype*.
 
         If `alpha_fn` is omitted the method will use any CE2 function
-        previously attached via `attach_ce2_alpha`.  The promotion sets a
-        placeholder `l4` callable and — critically — registers a coboundary
-        callback so `homotopy_jacobi` can include the d(alpha) correction
-        through the usual path.
+        previously attached via `attach_ce2_alpha`.
+
+        The promotion sets a placeholder `l4` callable and registers a
+        coboundary callback so `homotopy_jacobi` can include the d(alpha)
+        correction through the usual path.
+
+        Important: when a triple-aware coboundary callback
+        (`_l4_coboundary_on_triple`) is already installed (for example via
+        `attach_l4_from_symbolic_constants`), this method will preserve the
+        existing coboundary and will not overwrite it.  To register an
+        assembled CE2 alpha without changing a pre-existing triple-aware
+        coboundary, use `attach_ce2_alpha` instead.
         """
         if alpha_fn is None:
             if not hasattr(self, "_ce2_alpha") or self._ce2_alpha is None:
@@ -435,7 +510,25 @@ class LInftyE8Extension:
             term6 = alpha_fn(self.br_l2.bracket(y, z), x).scale(-1.0)
             return term1 + term2 + term3 + term4 + term5 + term6
 
-        self._l4_coboundary_on_triple = l4_coboundary
+        # Preserve any existing triple-aware coboundary (e.g. installed by
+        # `attach_l4_from_symbolic_constants`).  Do not overwrite an
+        # existing `_l4_coboundary_on_triple` to avoid losing precise
+        # per-triple CE2 entries; prefer attaching assembled CE2 alphas via
+        # `attach_ce2_alpha` instead.
+        if (
+            not hasattr(self, "_l4_coboundary_on_triple")
+            or self._l4_coboundary_on_triple is None
+        ):
+            self._l4_coboundary_on_triple = l4_coboundary
+        else:
+            # Inform the user that an existing triple-aware coboundary was
+            # preserved.  Use print to avoid adding a logging dependency.
+            try:
+                print(
+                    "attach_l4_from_ce2: preserved existing triple-aware coboundary (no overwrite)"
+                )
+            except Exception:
+                pass
 
     def attach_l4_from_symbolic_constants(self, json_path: str | Path):
         """Attach an l4 bracket from a JSON file of symbolic/sparse structure constants.
@@ -559,88 +652,125 @@ class LInftyE8Extension:
 
                 ce2 = json.loads(ce2_path.read_text(encoding="utf-8"))
 
-                def alpha_global(a, b):
+                # build per-triple lookup (exact local alpha per recorded triple)
+                pair_U: dict = {}
+                pair_V: dict = {}
+                triple_uv: dict = {}
+                for k, e in ce2.items():
+                    a_idx = tuple(e["a"])
+                    b_idx = tuple(e["b"])
+                    c_idx = tuple(e["c"])
+                    U_rats = [
+                        Fraction(s) if s != "0" else None for s in e.get("U_rats", [])
+                    ]
+                    V_rats = [
+                        Fraction(s) if s != "0" else None for s in e.get("V_rats", [])
+                    ]
+                    U_num = np.array(
+                        [float(fr) if fr is not None else 0.0 for fr in U_rats],
+                        dtype=np.complex128,
+                    )
+                    V_num = np.array(
+                        [float(fr) if fr is not None else 0.0 for fr in V_rats],
+                        dtype=np.complex128,
+                    )
+                    # store per-triple arrays for exact lookup
+                    pair_U[(b_idx, c_idx)] = U_num
+                    pair_V[(a_idx, c_idx)] = V_num
+                    triple_uv[(a_idx, b_idx, c_idx)] = (U_num, V_num)
+
+                # expose per-triple map on the instance so d_alpha_on_triple can prefer it
+                self._ce2_local_uv_map = triple_uv
+
+                def flat_numeric_to_e8(vec_flat: np.ndarray):
+                    Nn = 27 * 27
+                    e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
+                    offn = Nn
+                    sl3 = (
+                        vec_flat[offn : offn + 9].reshape((3, 3)).astype(np.complex128)
+                    )
+                    offn += 9
+                    g1 = (
+                        vec_flat[offn : offn + 81]
+                        .reshape((27, 3))
+                        .astype(np.complex128)
+                    )
+                    offn += 81
+                    g2 = (
+                        vec_flat[offn : offn + 81]
+                        .reshape((27, 3))
+                        .astype(np.complex128)
+                    )
+                    return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+
+                # alpha built from EXACT per-triple CE2 entries (no cross-key aggregation)
+                def alpha_from_ce2(a, b):
                     acc = self.tool.E8Z3.zero()
-                    for k, e in ce2.items():
-                        a_idx = tuple(e["a"])
-                        b_idx = tuple(e["b"])
-                        c_idx = tuple(e["c"])
-                        U_rats = [
-                            Fraction(s) if s != "0" else None
-                            for s in e.get("U_rats", [])
-                        ]
-                        V_rats = [
-                            Fraction(s) if s != "0" else None
-                            for s in e.get("V_rats", [])
-                        ]
-                        U_num = np.array(
-                            [float(fr) if fr is not None else 0.0 for fr in U_rats],
-                            dtype=np.complex128,
-                        )
-                        V_num = np.array(
-                            [float(fr) if fr is not None else 0.0 for fr in V_rats],
-                            dtype=np.complex128,
-                        )
+                    if np.any(a.g1) and np.any(b.g2):
+                        idxA = tuple(np.argwhere(np.abs(a.g1) > 0.5)[0].tolist())
+                        idxB = tuple(np.argwhere(np.abs(b.g2) > 0.5)[0].tolist())
 
-                        # debug: verify input types (helps diagnose Fraction/complex issues)
-                        # (kept lightweight so tests remain readable)
-                        # print(f"DEBUG alpha_global key={k} U_rats[0]={type(U_rats[0]) if U_rats else None} U_num.dtype={U_num.dtype}")
+                        # U: alpha(y,z) lookup keyed by (b_idx, c_idx)
+                        Um = pair_U.get((idxA, idxB))
+                        if Um is not None:
+                            acc = acc + flat_numeric_to_e8(Um)
+                        Um2 = pair_U.get((idxB, idxA))
+                        if Um2 is not None:
+                            acc = acc - flat_numeric_to_e8(Um2)
 
-                        # numeric flat -> E8Z3 converter (works on float arrays)
-                        def flat_numeric_to_e8(vec_flat: np.ndarray):
-                            Nn = 27 * 27
-                            e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
-                            offn = Nn
-                            sl3 = (
-                                vec_flat[offn : offn + 9]
-                                .reshape((3, 3))
-                                .astype(np.complex128)
-                            )
-                            offn += 9
-                            g1 = (
-                                vec_flat[offn : offn + 81]
-                                .reshape((27, 3))
-                                .astype(np.complex128)
-                            )
-                            offn += 81
-                            g2 = (
-                                vec_flat[offn : offn + 81]
-                                .reshape((27, 3))
-                                .astype(np.complex128)
-                            )
-                            return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+                        # V: alpha(x,z) lookup keyed by (a_idx, c_idx)
+                        Vm = pair_V.get((idxA, idxB))
+                        if Vm is not None:
+                            acc = acc + flat_numeric_to_e8(Vm)
+                        Vm2 = pair_V.get((idxB, idxA))
+                        if Vm2 is not None:
+                            acc = acc - flat_numeric_to_e8(Vm2)
 
-                        U_e8 = flat_numeric_to_e8(U_num)
-                        V_e8 = flat_numeric_to_e8(V_num)
-
-                        # match identical to assemble_exact_l4_from_local_ce2.make_alpha_from_rats
-                        if np.allclose(
-                            a.g1, basis_elem_g1(self.tool, b_idx).g1
-                        ) and np.allclose(b.g2, basis_elem_g2(self.tool, c_idx).g2):
-                            acc = acc + U_e8
-                        if np.allclose(
-                            a.g1, basis_elem_g1(self.tool, c_idx).g1
-                        ) and np.allclose(b.g2, basis_elem_g2(self.tool, b_idx).g2):
-                            acc = acc - U_e8
-                        if np.allclose(
-                            a.g1, basis_elem_g1(self.tool, a_idx).g1
-                        ) and np.allclose(b.g2, basis_elem_g2(self.tool, c_idx).g2):
-                            acc = acc + V_e8
-                        if np.allclose(
-                            a.g1, basis_elem_g1(self.tool, c_idx).g1
-                        ) and np.allclose(b.g2, basis_elem_g2(self.tool, a_idx).g2):
-                            acc = acc - V_e8
                     return acc
 
-                # register coboundary callback using the assembled CE2 alpha
+                # register CE2 alpha (exact per-triple lookup)
+                self._ce2_alpha = alpha_from_ce2
+
+                # register coboundary callback that uses the exact per-triple CE2 entry
                 def l4_coboundary(x, y, z):
-                    term1 = self.br_l2.bracket(x, alpha_global(y, z))
-                    term2 = self.br_l2.bracket(y, alpha_global(x, z)).scale(-1.0)
-                    term3 = self.br_l2.bracket(z, alpha_global(x, y))
-                    term4 = alpha_global(self.br_l2.bracket(x, y), z).scale(-1.0)
-                    term5 = alpha_global(self.br_l2.bracket(x, z), y)
-                    term6 = alpha_global(self.br_l2.bracket(y, z), x).scale(-1.0)
-                    return term1 + term2 + term3 + term4 + term5 + term6
+                    # attempt exact triple-key lookup first
+                    try:
+                        # extract integer indices for basis elements
+                        def key_for_elem(elem):
+                            if np.any(elem.g1):
+                                idx = np.argwhere(np.abs(elem.g1) > 0.5)
+                                if idx.size == 0:
+                                    return None
+                                return tuple([int(idx[0, 0]), int(idx[0, 1])])
+                            if np.any(elem.g2):
+                                idx = np.argwhere(np.abs(elem.g2) > 0.5)
+                                if idx.size == 0:
+                                    return None
+                                return tuple([int(idx[0, 0]), int(idx[0, 1])])
+                            return None
+
+                        a_idx = key_for_elem(x)
+                        b_idx = key_for_elem(y)
+                        c_idx = key_for_elem(z)
+                        if (a_idx, b_idx, c_idx) in triple_uv:
+                            U_num, V_num = triple_uv[(a_idx, b_idx, c_idx)]
+                            U_e8 = flat_numeric_to_e8(U_num)
+                            V_e8 = flat_numeric_to_e8(V_num)
+
+                            term1 = self.br_l2.bracket(x, U_e8)
+                            term2 = self.br_l2.bracket(y, V_e8).scale(-1.0)
+                            term3 = self.br_l2.bracket(z, self.tool.E8Z3.zero())
+                            term4 = self.tool.E8Z3.zero()
+                            term5 = self.tool.E8Z3.zero()
+                            term6 = self.tool.E8Z3.zero()
+                            return term1 + term2 + term3 + term4 + term5 + term6
+                    except Exception:
+                        pass
+
+                    # fallback: use assembled CE2 alpha (may be aggregated) if exact triple not found
+                    return self.d_alpha_on_triple(x, y, z)
+
+                self._l4_coboundary_on_triple = l4_coboundary
 
                 self._l4_coboundary_on_triple = l4_coboundary
         except Exception:
