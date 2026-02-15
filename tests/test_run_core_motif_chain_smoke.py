@@ -3,10 +3,13 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import pytest
 from pathlib import Path
 
 
 def test_run_core_motif_chain_smoke(tmp_path: Path) -> None:
+    if not Path("artifacts/nontrivial_core_rulebook_2026_02_11.json").exists():
+        pytest.skip("Missing artifacts/nontrivial_core_rulebook_2026_02_11.json (integration-only)")
     out_dir = tmp_path / "artifacts"
     docs_dir = tmp_path / "docs"
     cmd = [
