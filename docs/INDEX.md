@@ -19,6 +19,10 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 | Contributor | `CONTRIBUTING.md` | Local workflow, tests, and contribution standards |
 | Formalization contributor | `proofs/lean/README.md` | Lean 4 setup and current proof skeleton |
 
+## Outreach & announcements
+
+- Release announcement: `docs/outreach/pillar-45-qec.md` — Pillar‑45 (GF(3) QEC + MLUT) release and DOI
+
 ## Core Research Tracks
 
 | Track | Key Docs | Main Scripts | Tests |
