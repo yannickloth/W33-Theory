@@ -2,8 +2,8 @@
 
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
-[![Tests](https://img.shields.io/badge/tests-213%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-43%20proved-blue)]()
+[![Tests](https://img.shields.io/badge/tests-244%20passed-brightgreen)]()
+[![Pillars](https://img.shields.io/badge/pillars-50%20proved-blue)]()
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
@@ -114,6 +114,23 @@ Each pillar is a proved theorem with an accompanying test. Click any pillar to s
 | 42 | [CKM matrix](scripts/w33_ckm_matrix.py) | Unitary, quasi-democratic, V[0,0] = 25/81 |
 | 43 | [Graviton spectrum](scripts/w33_graviton.py) | 39 + 120 + 81 = 240 = \|Roots(E8)\| |
 
+### Information &amp; Quantum (Pillars 44&ndash;47)
+
+| # | Theorem | Key result |
+|---|---------|------------|
+| 44 | [Information theory](scripts/w33_information_theory.py) | Lov&aacute;sz &theta; = 10, independence &alpha; = 7 |
+| 45 | [Quantum error correction](scripts/w33_quantum_error_correction.py) | GF(3) code, distance &ge; 3, MLUT decoder |
+| 46 | [Holography](scripts/w33_holography.py) | Discrete RT area law on graph bipartitions |
+| 47 | [Higgs &amp; PMNS](scripts/w33_ckm_from_vev.py) | VEV selection &rarr; leptonic mixing matrix |
+
+### Cross-Domain Synthesis (Pillars 48&ndash;50)
+
+| # | Theorem | Key result |
+|---|---------|------------|
+| 48 | [Entropic gravity](scripts/w33_entropic_gravity.py) | S<sub>BH</sub> = 240/4 = 60; area law; Verlinde force from &Delta;=4 |
+| 49 | [Universal structure](scripts/w33_universal_structure.py) | Ramanujan + diameter 2 + unique SRG + E8 kissing number |
+| 50 | [Computational substrate](scripts/w33_cellular_automaton.py) | 4 conserved charges; spectral clock; physics IS computation |
+
 ---
 
 ## Key Predictions
@@ -145,7 +162,7 @@ pip install numpy sympy pytest
 python -m pytest tests/test_e8_embedding.py -q
 ```
 
-213 tests across 52 test classes, covering every pillar.
+244 tests across 55+ test classes, covering every pillar.
 
 ### Run individual pillar verifications
 

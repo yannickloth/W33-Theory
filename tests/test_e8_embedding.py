@@ -6428,6 +6428,185 @@ class TestHiggsPMNS:
         assert s13 < s12 and s13 < s23
 
 
+# -------------------------------------------------------------------------
+# Pillar 48: Entropic gravity & information bounds
+# -------------------------------------------------------------------------
+
+
+class TestEntropicGravity:
+    """Entropic gravity, Bekenstein bound, area law (Pillar 48)."""
+
+    @pytest.fixture(scope="class")
+    def entropic_data(self):
+        from w33_homology import build_clique_complex, build_w33
+
+        from scripts.w33_entropic_gravity import (
+            compute_bekenstein_and_channel,
+            compute_entanglement_entropy,
+            compute_entropic_force,
+            compute_hodge_entropy,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        hodge = compute_hodge_entropy(simplices, edges)
+        bek = compute_bekenstein_and_channel(adj, n, edges)
+        force = compute_entropic_force(simplices)
+        ent = compute_entanglement_entropy(adj, n, edges)
+        return {
+            "hodge": hodge,
+            "bek": bek,
+            "force": force,
+            "ent": ent,
+        }
+
+    def test_hodge_multiplicities(self, entropic_data):
+        m = entropic_data["hodge"]["hodge_multiplicities"]
+        assert m[0] == 81
+        assert m[4] == 120
+        assert m[10] == 24
+        assert m[16] == 15
+
+    def test_bekenstein_entropy(self, entropic_data):
+        bek = entropic_data["bek"]
+        assert bek["area_edges"] == 240
+        assert abs(bek["bekenstein_entropy"] - 60.0) < 1e-10
+        assert bek["diameter"] == 2
+
+    def test_spectral_gap_force(self, entropic_data):
+        force = entropic_data["force"]
+        assert abs(force["spectral_gap"] - 4.0) < 1e-10
+        assert abs(force["total_energy_TrL1"] - 960.0) < 1e-6
+        assert force["entropic_force"] > 0
+
+    def test_area_law(self, entropic_data):
+        ent = entropic_data["ent"]
+        # S/Cut ratio should be roughly constant for mid-sized subsets
+        import numpy as _np
+
+        mid = [r for r in ent if 3 <= r["subset_size"] <= 17]
+        ratios = [r["entropy_per_cut"] for r in mid]
+        cov = float(_np.std(ratios) / _np.mean(ratios))
+        assert cov < 0.5  # reasonably stable
+
+
+# -------------------------------------------------------------------------
+# Pillar 49: Universal information structure
+# -------------------------------------------------------------------------
+
+
+class TestUniversalStructure:
+    """Expansion, network, coding, self-organization (Pillar 49)."""
+
+    @pytest.fixture(scope="class")
+    def structure_data(self):
+        from w33_homology import build_clique_complex, build_w33
+
+        from scripts.w33_universal_structure import (
+            analyze_coding_theory,
+            analyze_expansion_properties,
+            analyze_information_processing,
+            analyze_network_properties,
+            analyze_self_organization,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        return {
+            "exp": analyze_expansion_properties(adj, n),
+            "net": analyze_network_properties(adj, n, edges),
+            "code": analyze_coding_theory(adj, n, simplices),
+            "org": analyze_self_organization(adj, n, simplices),
+            "info": analyze_information_processing(adj, n, simplices),
+        }
+
+    def test_ramanujan_and_expansion(self, structure_data):
+        exp = structure_data["exp"]
+        assert bool(exp["is_ramanujan"]) is True
+        assert abs(exp["lambda_2"] - 2.0) < 1e-10
+        assert abs(exp["spectral_gap_adjacency"] - 10.0) < 1e-10
+        assert exp["cheeger_lower_bound"] >= 5.0 - 1e-10
+
+    def test_network_diameter_and_connectivity(self, structure_data):
+        net = structure_data["net"]
+        assert net["diameter"] == 2
+        assert net["vertex_connectivity"] == 12
+        assert abs(net["betweenness_uniformity_cov"]) < 1e-10  # perfectly uniform
+
+    def test_coding_theory_ranks(self, structure_data):
+        code = structure_data["code"]
+        assert code["rank_adj_gf3"] == 39  # nullity 1 over GF(3)
+        assert code["e8_kissing_number"] == 240
+
+    def test_self_organization_uniqueness(self, structure_data):
+        org = structure_data["org"]
+        assert org["is_unique_srg"] is True
+        assert org["srg_parameters"] == (40, 12, 2, 4)
+        assert org["euler_characteristic"] == -80
+        assert org["ternary_structures"]["h1_dim_is_3_power"] is True
+
+
+# -------------------------------------------------------------------------
+# Pillar 50: Computational substrate / cellular automaton
+# -------------------------------------------------------------------------
+
+
+class TestComputationalSubstrate:
+    """Heat kernel, conservation laws, spectral clock (Pillar 50)."""
+
+    @pytest.fixture(scope="class")
+    def compute_data(self):
+        from w33_homology import build_clique_complex, build_w33
+
+        from scripts.w33_cellular_automaton import (
+            conservation_laws,
+            hodge_heat_evolution,
+            spectral_clock,
+            ternary_cellular_automaton,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        heat, evals = hodge_heat_evolution(simplices, [0.01, 0.25, 1.0, 10.0])
+        cons = conservation_laws(adj, n, simplices)
+        clock = spectral_clock(simplices)
+        ca = ternary_cellular_automaton(adj, n, "totalistic", 50)
+        return {
+            "heat": heat,
+            "cons": cons,
+            "clock": clock,
+            "ca": ca,
+        }
+
+    def test_heat_kernel_convergence(self, compute_data):
+        heat = compute_data["heat"]
+        # At t=10, harmonic fraction should be ~1.0
+        assert heat[-1]["harmonic_fraction"] > 0.9999
+        # At t=0.01, all modes contribute
+        assert heat[0]["harmonic_fraction"] < 0.5
+        # Trace at t=inf should be 81 (number of harmonic modes)
+        assert abs(heat[-1]["trace_Z"] - 81.0) < 0.01
+
+    def test_conservation_laws(self, compute_data):
+        cons = compute_data["cons"]
+        assert cons["n_conserved_charges"] == 4
+        assert cons["conservation_verified"] is True
+        # Check multiplicities
+        assert cons["eigenspaces"][0]["multiplicity"] == 81
+        assert cons["eigenspaces"][4]["multiplicity"] == 120
+
+    def test_spectral_clock(self, compute_data):
+        clock = compute_data["clock"]
+        assert abs(clock["spectral_gap"] - 4.0) < 1e-10
+        assert abs(clock["ops_per_decoherence"] - 4.0) < 1e-10
+
+    def test_ca_deterministic(self, compute_data):
+        ca = compute_data["ca"]
+        # Totalistic rule should be deterministic: same seed -> same result
+        assert ca["rule_type"] == "totalistic"
+        assert isinstance(ca["final_state_counts"], dict)
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
