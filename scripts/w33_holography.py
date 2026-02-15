@@ -65,9 +65,17 @@ def analyze_w33_holography(trials: int = 500):
     # compute minimal-cut for a few small region sizes
     min_cuts = {s: brute_force_min_cut_for_size(adj, s) for s in [1, 2, 3, 4]}
 
+    # entropy-like diagnostics (use log(1 + boundary) as proxy entropy)
+    entropy_stats = []
+    for size, mean_b, std_b in stats:
+        mean_s = float(np.log1p(mean_b))
+        std_s = float(std_b / (1.0 + mean_b) if mean_b > 0 else 0.0)
+        entropy_stats.append((int(size), mean_s, std_s))
+
     results = {
         "n": n,
         "sample_boundary_stats": stats,
+        "entropy_stats": entropy_stats,
         "min_cuts_small_sizes": min_cuts,
         "elapsed_seconds": time.time() - t0,
     }

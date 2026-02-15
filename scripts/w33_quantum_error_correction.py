@@ -77,6 +77,74 @@ def code_min_distance_from_basis(basis: np.ndarray) -> int:
     return int(min_w) if min_w <= basis.shape[1] else 0
 
 
+def gf3_nullspace_basis(A: np.ndarray) -> np.ndarray:
+    """Return a basis for the nullspace of A over GF(3).
+
+    A has shape (r, n). Result is array (bs, n) whose rows span {x: A x = 0 (mod 3)}.
+    """
+    M = (A % 3).astype(int).copy()
+    r, n = M.shape
+    row = 0
+    pivot_cols = []
+    for col in range(n):
+        if row >= r:
+            break
+        sel = None
+        for i in range(row, r):
+            if M[i, col] % 3 != 0:
+                sel = i
+                break
+        if sel is None:
+            continue
+        if sel != row:
+            M[[row, sel], :] = M[[sel, row], :]
+        inv = pow(int(M[row, col]), -1, 3)
+        M[row, :] = (M[row, :] * inv) % 3
+        for i in range(r):
+            if i != row and M[i, col] % 3 != 0:
+                M[i, :] = (M[i, :] - M[i, col] * M[row, :]) % 3
+        pivot_cols.append(col)
+        row += 1
+    free_cols = [c for c in range(n) if c not in pivot_cols]
+    basis = []
+    for fc in free_cols:
+        v = np.zeros(n, dtype=int)
+        v[fc] = 1
+        for i, pcol in enumerate(pivot_cols):
+            v[pcol] = (-M[i, fc]) % 3
+        basis.append(v)
+    if not basis:
+        return np.zeros((0, n), dtype=int)
+    return np.array(basis, dtype=int)
+
+
+def build_css_from_basis(basis: np.ndarray):
+    """Construct simple CSS stabilizer checks from a ternary linear-basis.
+
+    Hx = basis (row-space checks), Hz = GF(3)-nullspace(Hx). Returns (Hx, Hz).
+    Guarantees Hx @ Hz.T = 0 (mod 3).
+    """
+    Hx = basis.copy() % 3
+    Hz = gf3_nullspace_basis(Hx)
+    return Hx, Hz
+
+
+def single_error_detectable_by_checks(H: np.ndarray) -> int:
+    """Count single-symbol (1 or 2) errors detected by parity checks H.
+    Returns the number of distinct single-position errors detected.
+    """
+    n = H.shape[1]
+    detected = 0
+    for i in range(n):
+        for val in (1, 2):
+            e = np.zeros(n, dtype=int)
+            e[i] = val
+            s = (H @ e) % 3
+            if np.any(s != 0):
+                detected += 1
+    return detected
+
+
 def analyze_w33_qec() -> dict:
     t0 = time.time()
     n, vertices, adj, edges = build_w33()
@@ -91,10 +159,20 @@ def analyze_w33_qec() -> dict:
     basis_dim = basis.shape[0]
     min_dist = code_min_distance_from_basis(basis)
 
+    Hx, Hz = build_css_from_basis(basis)
+    commute_ok = bool(((Hx @ Hz.T) % 3 == 0).all())
+    single_detect = int(
+        single_error_detectable_by_checks(Hx) + single_error_detectable_by_checks(Hz)
+    )
+
     results = {
         "basis_dim": int(basis_dim),
         "code_length": int(M.shape[1]),
         "min_distance": int(min_dist),
+        "css_Hx_rows": int(Hx.shape[0]),
+        "css_Hz_rows": int(Hz.shape[0]),
+        "css_commute_ok": bool(commute_ok),
+        "single_error_detection_count": int(single_detect),
         "elapsed_seconds": time.time() - t0,
     }
 

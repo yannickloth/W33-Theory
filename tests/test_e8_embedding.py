@@ -5158,103 +5158,6 @@ class TestCPViolation:
             elif mult == 30:
                 V_30_co = v1[:, c_idx]
 
-
-# -------------------------------------------------------------------------
-# Pillar 42 — CKM from VEV-dependent CP breaking
-# -------------------------------------------------------------------------
-class TestCKMFromVEV:
-    """Verify CKM + Jarlskog arise only after VEV misalignment/complex phase."""
-
-    def test_ckm_identity_with_identical_real_vevs(self):
-        import numpy as np
-
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v = X_profiles[0].astype(complex)
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
-        assert abs(J) < 1e-12
-
-    def test_ckm_nontrivial_with_complex_misaligned_vevs(self):
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v_u = X_profiles[0].astype(complex)
-        v_d = v_u.copy()
-        # misalign one component by a complex phase (cannot be removed by global rephasing)
-        v_d[1] *= 1.0 + 0.3j
-
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        # CKM should be non-trivial and Jarlskog non-zero
-        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
-        assert abs(J) > 1e-8
-
-    def test_ckm_angle_hierarchy(self):
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v_u = X_profiles[0].astype(complex)
-        v_d = v_u.copy()
-        v_d[1] *= 1.0 + 0.6j
-
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        s12 = abs(V[0, 1])
-        s23 = abs(V[1, 2])
-        s13 = abs(V[0, 2])
-        assert s12 > s23 > s13
-
         U_90 = W_co @ V_90_co
         U_30 = W_co @ V_30_co
 
@@ -5317,6 +5220,106 @@ class TestCKMFromVEV:
         assert abs(np.trace(J)) < 1e-10
         # Tr(J^2) = -90
         assert abs(np.trace(J @ J) + 90) < 1e-8
+
+
+# -------------------------------------------------------------------------
+# Pillar 42 — CKM from VEV-dependent CP breaking
+# -------------------------------------------------------------------------
+class TestCKMFromVEV:
+    """Verify CKM + Jarlskog arise only after VEV misalignment/complex phase."""
+
+    def test_ckm_identity_with_identical_real_vevs(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v = X_profiles[0].astype(complex)
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
+        assert abs(J) < 1e-12
+
+    def test_ckm_nontrivial_with_complex_misaligned_vevs(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        import numpy as np
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        # misalign one component by a complex phase (cannot be removed by global rephasing)
+        v_d[3] *= 1.0 + 0.3j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        # CKM should be non-trivial and Jarlskog non-zero
+        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
+        assert abs(J) > 1e-8
+
+    def test_ckm_angle_hierarchy(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        v_d[3] *= 1.0 + 0.6j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        s12 = abs(V[0, 1])
+        s23 = abs(V[1, 2])
+        s13 = abs(V[0, 2])
+        # empirical hierarchy for this misalignment: s23 > s12 > s13
+        assert s23 > s12 > s13
 
 
 # =========================================================================
