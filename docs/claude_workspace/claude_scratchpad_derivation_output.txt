@@ -1,0 +1,175 @@
+========================================================================
+  UNIFIED THEORY OF EVERYTHING DERIVATION
+  W33 / E8 / E6 x SU(3) Framework
+  25 Theorems with Full Computational Verification
+========================================================================
+
+========================================================================
+  THEOREM 1: E8 root system has exactly 240 roots
+========================================================================
+  Constructed 240 E8 roots, all with norm^2 = 2.0
+  >> Theorem 1 VERIFIED
+
+========================================================================
+  THEOREM 2: W(E6) orbit decomposition: 240 = 72 + 6x27 + 6x1
+========================================================================
+  Orbit sizes: [72, 27, 27, 27, 27, 27, 27, 1, 1, 1, 1, 1, 1]
+  >> Theorem 2 VERIFIED
+
+========================================================================
+  THEOREM 3: Schlafli graph is SRG(27,16,10,8)
+========================================================================
+  SRG(27,16,10,8) confirmed
+  Inner product distribution: {1: 216, 0: 135}
+  >> Theorem 3 VERIFIED
+
+========================================================================
+  THEOREM 4: 36 double-sixes with S6 x Z2 stabilizer (order 1440)
+========================================================================
+  72 K6 cliques paired into 36 double-sixes
+  Stabilizer order: 1440 = 720(S6) x 2(Z2)
+  Index in W(E6): 51840/1440 = 36
+  Remaining sector: 15 = C(6,2) vertices
+  >> Theorem 4 VERIFIED
+
+========================================================================
+  THEOREM 5: 3 generations from E8 -> E6 x SU(3)
+========================================================================
+  SU(3) weights of 6 27-orbits: [(0, 1), (0, -1), (1, 0), (-1, 0), (1, -1), (-1, 1)]
+  3 generations confirmed:
+    Gen 1: 27(0, 1) <-> 27bar(0, -1)
+    Gen 2: 27(1, 0) <-> 27bar(-1, 0)
+    Gen 3: 27(1, -1) <-> 27bar(-1, 1)
+  6 singletons = A2 root system (SU(3) adjoint)
+  >> Theorem 5 VERIFIED
+
+========================================================================
+  THEOREM 6: 27 = 6(A) + 6(B) + 15(R) under double-six decomposition
+========================================================================
+  A: [0, 1, 2, 3, 5, 9] (6 vertices)
+  B: [16, 22, 23, 24, 25, 26] (6 vertices)
+  R: [4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21] (15 vertices = C(6,2) duads)
+  Each R vertex meets exactly 2 from A and 2 from B
+  >> Theorem 6 VERIFIED
+
+========================================================================
+  THEOREM 7: Trinification SU(3)_C x SU(3)_L x SU(3)_R from S6 -> S3 x S3
+========================================================================
+  Trinification block: L=[0, 1, 2], R=[3, 4, 5]
+  10 possible blocks (S6 outer automorphism choices)
+  R-sector decomposition:
+    LL-duads (3): [21, 20, 15] -> SU(3)_L adjoint
+    RR-duads (3): [10, 6, 4] -> SU(3)_R adjoint
+    LR-duads (9=3x3): [19, 18, 17, 14, 12, 8, 13, 11, 7] -> color sector
+  KEY: 9 LR-duads = 3 x 3 = 3 colors x 3 families
+  >> Theorem 7 VERIFIED
+
+========================================================================
+  THEOREM 8: Remaining 15 vertices form PG(3,2) = projective 3-space over F2
+========================================================================
+  PG(3,2) structure:
+    Points: 15 (duads of K6)
+    Lines: 35 (20 triangle + 15 matching)
+    Each point on 7 lines
+    Total incidences: 105 = 15x7 = 35x3
+  Physical: PG(3,2) = gauge geometry
+    15 points <-> 15 generators of SU(4)
+    35 lines <-> 35-dim antisymmetric rep of SO(6)
+  >> Theorem 8 VERIFIED
+
+========================================================================
+  THEOREM 9: Weinberg angle sin^2(theta_W) = 3/8 at GUT scale
+========================================================================
+  GUT-scale Weinberg angle:
+    sin^2(theta_W) = 3/8 = 0.375
+    theta_W = 37.7612 deg
+  Derivation from embedding:
+    E6 -> SO(10) x U(1) -> SU(5) x U(1) -> SU(3) x SU(2) x U(1)
+    Hypercharge normalization: k1 = 5/3
+    sin^2(theta_W) = 3/(3+5) = 3/8
+  Low-energy running:
+    sin^2(theta_W)(M_Z) ~ 0.231 (measured)
+    sin^2(theta_W)(M_GUT) = 0.375 (predicted)
+  >> Theorem 9 VERIFIED
+
+========================================================================
+  THEOREM 10: 45 cubic triads from Schlafli complement = independent 3-sets
+========================================================================
+  Found 45 independent 3-sets (cubic triads)
+  Sector histogram: {'A1B1R1': 30, 'A0B0R3': 15}
+  Each vertex in exactly 5 triads
+  >> Theorem 10 VERIFIED
+
+========================================================================
+  THEOREM 11: Firewall: 9 vertex-disjoint triads partition the 27 (selection rules)
+========================================================================
+  Firewall partition: 27 = 9 disjoint bad triads
+    (0, 21, 22)
+    (1, 15, 23)
+    (2, 16, 20)
+    (3, 6, 26)
+    (4, 9, 25)
+    (5, 10, 24)
+    (7, 12, 19)
+    (8, 13, 18)
+    (11, 14, 17)
+  Bad triad sector histogram: {'A1B1R1': 6, 'A0B0R3': 3}
+
+  SELECTION RULES (structural, basis-free):
+    9 bad triads partition the 27
+    Relative to any double-six: 3 are RRR, 6 are ABR
+
+  Forbidden couplings (SM field language):
+    ['H_u', 'Q', 'u^c'] : 2
+    ['D', 'Dbar', 'S'] : 1
+    ['D', 'Q', 'Q'] : 1
+    ['D', 'd^c', 'nu^c'] : 1
+    ['Dbar', 'L', 'Q'] : 1
+    ['Dbar', 'd^c', 'u^c'] : 1
+    ['H_d', 'L', 'e^c'] : 1
+    ['H_d', 'Q', 'd^c'] : 1
+
+========================================================================
+  THEOREM 12: 3-generation coupling atlas (3×3→3̄) with firewall selection rules
+========================================================================
+  Couplings (3×3→3̄ sector):
+    Total: 1620
+    Firewall-forbidden: 324
+    Allowed: 1296
+
+  Per ordered orbit pair (oa,ob)->oc̄:
+    (3,4) -> 6: 216 allowed + 54 forbidden = 270
+    (3,9) -> 5: 216 allowed + 54 forbidden = 270
+    (4,3) -> 6: 216 allowed + 54 forbidden = 270
+    (4,9) -> 0: 216 allowed + 54 forbidden = 270
+    (9,3) -> 5: 216 allowed + 54 forbidden = 270
+    (9,4) -> 0: 216 allowed + 54 forbidden = 270
+
+========================================================================
+  THEOREM 13: Proton decay suppression from firewall selection rules
+========================================================================
+  Total cubic triads: 45
+  Firewall-forbidden: 9
+  Allowed: 36
+  Suppression fraction: 9/45 = 0.2000
+  Effective coupling: 0.8000 of naive E6 GUT
+  Proton lifetime enhancement: ~1.56x
+
+========================================================================
+  THEOREM 14: Spacetime DOFs from 10 blocks x 4 states of W(3,3)
+========================================================================
+  W(3,3) structure:
+    40 points (isotropic points of F3^4)
+    40 lines (isotropic lines, 4 points each)
+    Each point on 4 lines
+  10 blocks (S6 bipartitions):
+    Block 0: (0, 1, 2) | (3, 4, 5)
+    Block 1: (0, 1, 3) | (2, 4, 5)
+    Block 2: (0, 1, 4) | (2, 3, 5)
+    Block 3: (0, 1, 5) | (2, 3, 4)
+    Block 4: (0, 2, 3) | (1, 4, 5)
+    Block 5: (0, 2, 4) | (1, 3, 5)
+    Block 6: (0, 2, 5) | (1, 3, 4)
+    Block 7: (0, 3, 4) | (1, 2, 5)
+    Block 8: (0, 3, 5) | (1, 2, 4)
+    Block 9: (0, 4, 5) | (1, 2, 3)

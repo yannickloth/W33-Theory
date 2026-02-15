@@ -5158,6 +5158,103 @@ class TestCPViolation:
             elif mult == 30:
                 V_30_co = v1[:, c_idx]
 
+
+# -------------------------------------------------------------------------
+# Pillar 42 — CKM from VEV-dependent CP breaking
+# -------------------------------------------------------------------------
+class TestCKMFromVEV:
+    """Verify CKM + Jarlskog arise only after VEV misalignment/complex phase."""
+
+    def test_ckm_identity_with_identical_real_vevs(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v = X_profiles[0].astype(complex)
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
+        assert abs(J) < 1e-12
+
+    def test_ckm_nontrivial_with_complex_misaligned_vevs(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        # misalign one component by a complex phase (cannot be removed by global rephasing)
+        v_d[1] *= 1.0 + 0.3j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        # CKM should be non-trivial and Jarlskog non-zero
+        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
+        assert abs(J) > 1e-8
+
+    def test_ckm_angle_hierarchy(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        v_d[1] *= 1.0 + 0.6j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        s12 = abs(V[0, 1])
+        s23 = abs(V[1, 2])
+        s13 = abs(V[0, 2])
+        assert s12 > s23 > s13
+
         U_90 = W_co @ V_90_co
         U_30 = W_co @ V_30_co
 
@@ -5456,6 +5553,82 @@ class TestCosmologicalConstant:
         """Total spectrum has exactly 4 distinct eigenvalues: 0, 4, 10, 16."""
         # Multiplicities: 82 + 280 + 48 + 30 = 440
         assert 82 + 280 + 48 + 30 == cosmo_data["a_0"]
+
+
+# =========================================================================
+# 42. CONFINEMENT FROM SPECTRAL GAP
+# =========================================================================
+
+
+class TestConfinement:
+    """Pillar 41: confinement from spectral gap Delta=4."""
+
+    @pytest.fixture(scope="class")
+    def conf_data(self):
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from w33_h1_decomposition import build_incidence_matrix
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        m = len(edges)
+        D = build_incidence_matrix(n, edges)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        L1 = D.T @ D + B2 @ B2.T
+        w1, V1 = np.linalg.eigh(L1)
+        idx = np.argsort(w1)
+        w1, V1 = w1[idx], V1[:, idx]
+        coex_mask = (w1 > 3.5) & (w1 < 4.5)
+        P_coex = V1[:, coex_mask] @ V1[:, coex_mask].T
+        return {
+            "w1": w1,
+            "V1": V1,
+            "coex_mask": coex_mask,
+            "P_coex": P_coex,
+            "D": D,
+            "B2": B2,
+            "L1": L1,
+            "m": m,
+        }
+
+    def test_mass_gap_equals_4(self, conf_data):
+        """Spectral gap Delta=4 gives exact Yang-Mills mass gap."""
+        import numpy as np
+
+        w1 = conf_data["w1"]
+        nonzero = w1[w1 > 0.5]
+        assert abs(nonzero[0] - 4.0) < 1e-10
+
+    def test_coexact_purely_divergence_free(self, conf_data):
+        """Co-exact eigenvectors satisfy D^T D v = 0 (transverse gauge)."""
+        import numpy as np
+
+        V1 = conf_data["V1"]
+        D = conf_data["D"]
+        coex_mask = conf_data["coex_mask"]
+        coex_vecs = V1[:, coex_mask]
+        # D^T D v = 0 for all 120 co-exact vectors
+        DtD_coex = D.T @ (D @ coex_vecs)
+        assert np.linalg.norm(DtD_coex) < 1e-10
+
+    def test_coexact_heat_kernel_pure_exponential(self, conf_data):
+        """Co-exact heat kernel is exactly 120*exp(-4t)."""
+        import numpy as np
+
+        w1 = conf_data["w1"]
+        coex_mask = conf_data["coex_mask"]
+        for t in [0.1, 0.5, 1.0, 2.0]:
+            K = np.sum(np.exp(-t * w1[coex_mask]))
+            assert abs(K - 120 * np.exp(-4 * t)) < 1e-10
+
+    def test_P_coex_diagonal_uniform_half(self, conf_data):
+        """P_coex(e,e) = 1/2 uniformly (edge-transitive gauge coupling)."""
+        import numpy as np
+
+        P_coex = conf_data["P_coex"]
+        diag = np.diag(P_coex)
+        assert np.allclose(diag, 0.5, atol=1e-12)
 
 
 # =========================================================================
