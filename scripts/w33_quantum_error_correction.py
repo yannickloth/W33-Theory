@@ -292,6 +292,192 @@ def decode_message(received: np.ndarray, basis: np.ndarray):
     return msg, corrected % 3, True
 
 
+# ------------------------------------------------------------------
+# Table-driven MLUT decoder (multi-error up to t = floor((d-1)/2))
+# ------------------------------------------------------------------
+
+
+def build_mlut_table(basis: np.ndarray, max_weight: int | None = None):
+    """Build syndrome -> correction table for all error patterns up to weight t.
+
+    If `max_weight` is None the function computes the code minimum distance
+    (via `code_min_distance_from_basis`) and sets t = (d-1)//2. Returns (table, t)
+    where `table` maps syndrome tuples to correction vectors (dtype int).
+    """
+    basis = np.asarray(basis, dtype=int) % 3
+    if basis.size == 0:
+        return ({tuple(): np.zeros(0, dtype=int)}, 0)
+    n = basis.shape[1]
+
+    # determine t
+    if max_weight is None:
+        d = code_min_distance_from_basis(basis)
+        t = (d - 1) // 2 if d > 0 else 0
+    else:
+        t = int(max_weight)
+
+    H = gf3_nullspace_basis(basis)
+    if H.shape[0] == 0:
+        # trivial parity-check (all-zero syndrome)
+        return ({tuple([0] * 0): np.zeros(n, dtype=int)}, t)
+
+    from itertools import combinations, product
+
+    table: dict = {}
+    # include zero syndrome -> zero correction
+    zero_s = tuple([0] * H.shape[0])
+    table[zero_s] = np.zeros(n, dtype=int)
+
+    for w in range(1, max(1, t + 1)):
+        for pos_comb in combinations(range(n), w):
+            for vals in product((1, 2), repeat=w):
+                e = np.zeros(n, dtype=int)
+                for p, v in zip(pos_comb, vals):
+                    e[p] = int(v)
+                s = tuple((H @ e) % 3)
+                cur = table.get(s)
+                # prefer smaller-weight correction, tie-break lexicographically
+                if (
+                    cur is None
+                    or (int(np.count_nonzero(cur)) > w)
+                    or (
+                        int(np.count_nonzero(cur)) == w
+                        and tuple(e.tolist()) < tuple(cur.tolist())
+                    )
+                ):
+                    table[s] = e.copy()
+    return table, t
+
+
+def decode_via_mlut(
+    received: np.ndarray, basis: np.ndarray, mlut=None, max_weight: int | None = None
+):
+    """Decode using a precomputed MLUT (syndrome -> correction).
+    If `mlut` is None the function builds it (up to `max_weight` or the
+    code's correction radius). Falls back to `decode_message` when the
+    syndrome is not in the MLUT.
+
+    Returns (msg_coeffs, corrected_cw, ok).
+    """
+    recv = (np.asarray(received, dtype=int) % 3).copy()
+    basis = (np.asarray(basis, dtype=int) % 3).copy()
+
+    if basis.shape[0] == 0:
+        return decode_message(recv, basis)
+
+    if mlut is None:
+        mlut, _ = build_mlut_table(basis, max_weight=max_weight)
+    elif isinstance(mlut, tuple):
+        # accept (table, t) pair
+        mlut = mlut[0]
+
+    H = gf3_nullspace_basis(basis)
+    if H.shape[0] == 0:
+        return decode_message(recv, basis)
+
+    s = tuple((H @ recv) % 3)
+    if s in mlut:
+        e = mlut[s]
+        corrected = (recv - e) % 3
+        msg = solve_for_message_from_codeword(basis, corrected)
+        if msg is None:
+            return None, recv, False
+        return msg, corrected, True
+
+    # fallback to single-error syndrome decoder
+    return decode_message(recv, basis)
+
+
+def build_approx_mlut_table(
+    basis: np.ndarray, max_weight: int | None = None, max_entries: int = 10000, rng=None
+):
+    """Approximate MLUT builder that samples error patterns up to weight `max_weight`.
+
+    - If the exhaustive number of patterns up to `max_weight` is small, the
+      function will build the exact MLUT (delegates to build_mlut_table).
+    - Otherwise it performs randomized sampling until `max_entries` entries
+      are collected or a sampling budget is exhausted.
+
+    Returns (table, t, coverage_fraction)."""
+    basis = np.asarray(basis, dtype=int) % 3
+    if basis.size == 0:
+        return ({tuple([0] * 0): np.zeros(0, dtype=int)}, 0, 1.0)
+
+    n = basis.shape[1]
+    if max_weight is None:
+        d = code_min_distance_from_basis(basis)
+        t = (d - 1) // 2 if d > 0 else 0
+    else:
+        t = int(max_weight)
+
+    H = gf3_nullspace_basis(basis)
+    if H.shape[0] == 0:
+        return ({tuple([0] * 0): np.zeros(n, dtype=int)}, t, 1.0)
+
+    # quick combinatoric count of possible error patterns up to weight t
+    from math import comb
+
+    total_possible = 0
+    for w in range(1, max(1, t + 1)):
+        total_possible += comb(n, w) * (2**w)
+
+    # If small enough, build exact table
+    if total_possible <= max_entries:
+        table, t_exact = build_mlut_table(basis, max_weight=t)
+        coverage = len(table) / (3 ** H.shape[0])
+        return table, t_exact, coverage
+
+    # randomized sampling build
+    if rng is None:
+        rng = np.random.default_rng(0)
+
+    from itertools import combinations, product
+
+    table = {}
+    zero_s = tuple([0] * H.shape[0])
+    table[zero_s] = np.zeros(n, dtype=int)
+
+    # sampling loop
+    attempts = 0
+    max_attempts = max_entries * 50
+    while len(table) < max_entries and attempts < max_attempts:
+        attempts += 1
+        # pick random weight uniformly in [1, t]
+        w = rng.integers(1, t + 1) if t >= 1 else 1
+        pos = tuple(rng.choice(n, size=w, replace=False).tolist())
+        vals = tuple(int(x) for x in rng.integers(1, 3, size=w))
+        e = np.zeros(n, dtype=int)
+        for p, v in zip(pos, vals):
+            e[p] = v
+        s = tuple((H @ e) % 3)
+        if s not in table:
+            table[s] = e.copy()
+
+    coverage = len(table) / float(3 ** H.shape[0])
+    return table, t, coverage
+
+
+def mlut_coverage_stats(mlut: dict, basis: np.ndarray) -> dict:
+    """Return coverage statistics for a MLUT: fraction of syndromes covered,
+    distribution of correction weights and table size."""
+    if not mlut:
+        return {"coverage_fraction": 0.0, "table_size": 0, "weight_hist": {}}
+    basis = np.asarray(basis, dtype=int) % 3
+    H = gf3_nullspace_basis(basis)
+    total_syndromes = 3 ** H.shape[0]
+    table_size = len(mlut)
+    weight_counts = {}
+    for e in mlut.values():
+        w = int(np.count_nonzero(e))
+        weight_counts[w] = weight_counts.get(w, 0) + 1
+    return {
+        "coverage_fraction": float(table_size) / float(total_syndromes),
+        "table_size": table_size,
+        "weight_hist": weight_counts,
+        "total_syndromes": total_syndromes,
+    }
+
+
 def analyze_w33_qec() -> dict:
     t0 = time.time()
     n, vertices, adj, edges = build_w33()

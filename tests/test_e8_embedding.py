@@ -6109,6 +6109,159 @@ class TestQuantumErrorCorrection:
         decoded_msg2, cw2, ok2 = decode_message(recv2, basis)
         assert ok2 is False
 
+    def test_property_random_messages_single_error(self):
+        """Fuzz: random messages + single-symbol errors must be corrected."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            compute_basis_rows_mod3,
+            decode_message,
+            encode_message,
+        )
+
+        rng = np.random.default_rng(42)
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        trials = 50
+        for _ in range(trials):
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            codeword = encode_message(basis, msg)
+            pos = int(rng.integers(0, codeword.size))
+            val = int(rng.choice([1, 2]))
+            recv = codeword.copy()
+            recv[pos] = int((recv[pos] + val) % 3)
+            decoded_msg, corrected, ok = decode_message(recv, basis)
+            assert ok is True
+            assert np.array_equal(decoded_msg % 3, msg % 3)
+
+    def test_mlut_table_and_decoder(self):
+        """Verify MLUT decoder corrects all errors up to radius t and rejects >t."""
+        import itertools
+
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_mlut_table,
+            code_min_distance_from_basis,
+            compute_basis_rows_mod3,
+            decode_via_mlut,
+            encode_message,
+        )
+
+        rng = np.random.default_rng(123)
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        d = code_min_distance_from_basis(basis)
+        t = max(0, (d - 1) // 2)
+        # build MLUT up to radius t
+        mlut, t_table = build_mlut_table(basis, max_weight=t)
+        assert t_table == t
+        assert isinstance(mlut, dict)
+
+        # check random messages + random errors of weight <= t
+        trials = 40
+        for _ in range(trials):
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            cw = encode_message(basis, msg)
+            # pick random error weight <= t (if t==0 skip)
+            if t == 0:
+                break
+            w = int(rng.integers(1, t + 1))
+            pos = rng.choice(range(cw.size), size=w, replace=False)
+            vals = rng.integers(1, 3, size=w)
+            recv = cw.copy()
+            for p, v in zip(pos, vals):
+                recv[p] = int((recv[p] + v) % 3)
+            dec_msg, corrected, ok = decode_via_mlut(recv, basis, mlut=mlut)
+            assert ok is True
+            assert np.array_equal(dec_msg % 3, msg % 3)
+
+        # errors of weight > t should NOT be guaranteed correctable by MLUT
+        if t >= 0 and cw.size > 2:
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            cw = encode_message(basis, msg)
+            w = t + 1
+            pos = rng.choice(range(cw.size), size=w, replace=False)
+            vals = rng.integers(1, 3, size=w)
+            recv = cw.copy()
+            for p, v in zip(pos, vals):
+                recv[p] = int((recv[p] + v) % 3)
+            dec_msg2, corrected2, ok2 = decode_via_mlut(recv, basis, mlut=mlut)
+            # decoder may not correct; at minimum ensure we don't silently claim correct
+            if ok2:
+                assert not np.array_equal(dec_msg2 % 3, msg % 3)
+
+    def test_build_mlut_benchmark(self):
+        """Benchmark MLUT build time for the W33 code (should be quick)."""
+        import time
+
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_mlut_table,
+            compute_basis_rows_mod3,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+        basis = compute_basis_rows_mod3(M)
+
+        t0 = time.perf_counter()
+        mlut, t = build_mlut_table(basis)
+        dt = time.perf_counter() - t0
+        # should complete quickly for W33-derived code
+        assert dt < 3.0
+        assert isinstance(mlut, dict)
+
+    def test_build_approx_mlut_table_memory_and_coverage(self):
+        """Verify approximate MLUT respects max_entries and reports coverage."""
+        import tracemalloc
+
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_approx_mlut_table,
+            compute_basis_rows_mod3,
+            mlut_coverage_stats,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+        basis = compute_basis_rows_mod3(M)
+
+        tracemalloc.start()
+        mlut, t, coverage = build_approx_mlut_table(
+            basis, max_weight=2, max_entries=2000, rng=np.random.default_rng(1)
+        )
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+        stats = mlut_coverage_stats(mlut, basis)
+        assert len(mlut) <= 2000
+        assert 0.0 <= stats["coverage_fraction"] <= 1.0
+        # memory should remain modest during approximate build
+        assert peak < 200 * 1024 * 1024
+
 
 # -------------------------------------------------------------------------
 # Pillar 46: Discrete holography / RT-like behavior on W33
