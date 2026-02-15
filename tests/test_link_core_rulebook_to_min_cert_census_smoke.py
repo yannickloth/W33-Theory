@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import pytest
 from pathlib import Path
 
 from tools.link_core_rulebook_to_min_cert_census import build_report
@@ -27,6 +28,8 @@ def test_build_report_flags_and_counts() -> None:
 
 
 def test_cli_smoke(tmp_path: Path) -> None:
+    if not Path("artifacts/nontrivial_core_rulebook_2026_02_11.json").exists():
+        pytest.skip("Missing artifacts/nontrivial_core_rulebook_2026_02_11.json (integration-only)")
     out_json = tmp_path / "core_rulebook_link.json"
     out_md = tmp_path / "core_rulebook_link.md"
     cmd = [
