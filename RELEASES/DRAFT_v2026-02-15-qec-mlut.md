@@ -19,7 +19,8 @@ Assets
 - Demo notebook (executed) attached to the release (after publishing)
 - Example outputs: `checks/PART_CXV_qec_*.json`
 
-Post-release next steps
+
+- Zenodo DOI: https://doi.org/10.5281/zenodo.18652825
 - Publish to Zenodo (automated)
   - The GitHub Actions workflow `release_to_zenodo` automatically creates and publishes a Zenodo deposition when this GitHub Release is published (requires the `ZENODO_TOKEN` repo secret). The Zenodo DOI will be inserted automatically into the release notes and repository README by CI.
 - Draft blog post & social announcement (included in `outreach/`)
