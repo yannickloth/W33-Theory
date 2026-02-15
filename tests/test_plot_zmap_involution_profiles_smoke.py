@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import subprocess
 import sys
-import pytest
 from pathlib import Path
+
+import pytest
 
 
 def test_plot_zmap_involution_profiles_smoke(tmp_path: Path) -> None:
