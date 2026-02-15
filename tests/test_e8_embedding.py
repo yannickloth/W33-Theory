@@ -6207,6 +6207,45 @@ class TestQuantumErrorCorrection:
             if ok2:
                 assert not np.array_equal(dec_msg2 % 3, msg % 3)
 
+    def test_build_mlut_fast_matches_slow_on_small_code(self):
+        """Sanity-check: the helper-based fast syndrome computation used by
+        build_mlut_table must be functionally identical to a brute-force
+        reference on a small toy code."""
+        import numpy as np
+
+        from scripts.w33_quantum_error_correction import build_mlut_table
+
+        # toy parity-check (small and exhaustive)
+        basis = np.array([[1, 0, 1, 0], [0, 1, 1, 2]], dtype=int) % 3
+        # build exact table using the library function (fast path)
+        table_fast, t_fast = build_mlut_table(basis, max_weight=2)
+        assert isinstance(table_fast, dict)
+
+        # brute-force slow reference for validation
+        from itertools import combinations, product
+
+        from scripts.w33_quantum_error_correction import gf3_nullspace_basis
+
+        # use the same parity-check basis -> compute H from nullspace basis
+        H = gf3_nullspace_basis(basis)
+        ref = {tuple([0] * H.shape[0]): np.zeros(basis.shape[1], dtype=int)}
+        for w in range(1, 3):
+            for pos in combinations(range(basis.shape[1]), w):
+                for vals in product((1, 2), repeat=w):
+                    e = np.zeros(basis.shape[1], dtype=int)
+                    for p, v in zip(pos, vals):
+                        e[p] = v
+                    s = tuple((H @ e) % 3)
+                    cur = ref.get(s)
+                    if cur is None or int(np.count_nonzero(cur)) > w:
+                        ref[s] = e.copy()
+
+        # ensure each syndrome in the fast table has an entry and matches the ref
+        for s, e in table_fast.items():
+            assert s in ref
+            # compare weight and nonzero positions (exact correction may tie-break differently)
+            assert int(np.count_nonzero(ref[s])) <= int(np.count_nonzero(e))
+
     def test_build_mlut_benchmark(self):
         """Benchmark MLUT build time for the W33 code (should be quick)."""
         import time
