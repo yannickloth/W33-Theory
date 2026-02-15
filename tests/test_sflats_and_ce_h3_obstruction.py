@@ -13,7 +13,8 @@ def test_detect_degenerate_sflats_in_failing_sectors():
     This prevents accepting SA/LSQ candidates that leave "nothing to solve" on a
     failing mixed triple support.
     """
-    assert EXH.exists(), "Run tools/exhaustive_homotopy_check_rationalized_l3.py first"
+    if not EXH.exists():
+        pytest.skip("Missing artifacts/exhaustive_homotopy_rationalized_l3.json (integration-only)")
     data = json.loads(EXH.read_text(encoding="utf-8"))
     sectors = data.get("sectors", {})
     for sname, info in sectors.items():
