@@ -2,6 +2,9 @@
 
 Navigator for the repository's paper sections, reproducibility paths, and formal proof tracks.
 
+> Landing page note: the canonical project summary lives at `COMPLETE_SUMMARY.md` (root). If you prefer a different landing page — for example `W33_THEORY_DEFINITIVE_SUMMARY.md` or a GitHub Pages‑served version under `docs/` — tell me which file to use and I will update the docs/homepage accordingly. For convenience the canonical `COMPLETE_SUMMARY.md` is also copied into `docs/` so it can be used directly by GitHub Pages.
+
+
 ## Primary Entry Points
 
 | Audience | Start Here | Why |
