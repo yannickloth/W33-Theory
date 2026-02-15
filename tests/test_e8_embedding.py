@@ -5632,6 +5632,161 @@ class TestConfinement:
 
 
 # =========================================================================
+# Pillar 43 — Graviton / spin-2 (K4 pairing → Q45)
+# =========================================================================
+
+
+class TestGraviton:
+    """Pillar 43: graviton polarizations and K4 dual-pair structure."""
+
+    def test_ninety_k4_components(self):
+        """W33 has exactly 90 K4 components (outer quads with 4-center common neigh)."""
+        n, vertices, adj, edges = build_w33()
+        # build collinearity from adjacency
+        col = [set(adj[i]) for i in range(n)]
+        noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
+
+        k4_list = []
+        for a in range(n):
+            for b in noncol[a]:
+                if b <= a:
+                    continue
+                for c in noncol[a] & noncol[b]:
+                    if c <= b:
+                        continue
+                    for d in noncol[a] & noncol[b] & noncol[c]:
+                        if d <= c:
+                            continue
+                        common = col[a] & col[b] & col[c] & col[d]
+                        if len(common) == 4:
+                            k4_list.append(
+                                (tuple(sorted([a, b, c, d])), tuple(sorted(common)))
+                            )
+
+        assert len(k4_list) == 90
+
+    def test_fortyfive_dual_pairs(self):
+        """The 90 K4s form 45 fixed-point-free dual pairs (outer <-> center)."""
+        n, vertices, adj, edges = build_w33()
+        col = [set(adj[i]) for i in range(n)]
+        noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
+
+        k4_list = []
+        for a in range(n):
+            for b in noncol[a]:
+                if b <= a:
+                    continue
+                for c in noncol[a] & noncol[b]:
+                    if c <= b:
+                        continue
+                    for d in noncol[a] & noncol[b] & noncol[c]:
+                        if d <= c:
+                            continue
+                        common = col[a] & col[b] & col[c] & col[d]
+                        if len(common) == 4:
+                            k4_list.append(
+                                {
+                                    "outer": tuple(sorted([a, b, c, d])),
+                                    "center": tuple(sorted(common)),
+                                }
+                            )
+
+        outer_to_idx = {k4["outer"]: i for i, k4 in enumerate(k4_list)}
+        pairs = []
+        seen = set()
+        for i, k4 in enumerate(k4_list):
+            if i in seen:
+                continue
+            j = outer_to_idx.get(k4["center"])
+            assert j is not None
+            assert i != j
+            # symmetry
+            assert k4_list[j]["center"] == k4["outer"]
+            pairs.append((i, j))
+            seen.add(i)
+            seen.add(j)
+
+        assert len(pairs) == 45
+
+    def test_graviton_polarization_count(self):
+        """Counting: 90 K4 components / 45 Q45 vertices = 2 polarizations."""
+        n, vertices, adj, edges = build_w33()
+        col = [set(adj[i]) for i in range(n)]
+        noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
+
+        k4_list = []
+        for a in range(n):
+            for b in noncol[a]:
+                if b <= a:
+                    continue
+                for c in noncol[a] & noncol[b]:
+                    if c <= b:
+                        continue
+                    for d in noncol[a] & noncol[b] & noncol[c]:
+                        if d <= c:
+                            continue
+                        common = col[a] & col[b] & col[c] & col[d]
+                        if len(common) == 4:
+                            k4_list.append(
+                                (tuple(sorted([a, b, c, d])), tuple(sorted(common)))
+                            )
+
+        # pair count (same approach as above)
+        outer_to_idx = {k4[0]: i for i, k4 in enumerate(k4_list)}
+        pairs = set()
+        seen = set()
+        for i, (outer, center) in enumerate(k4_list):
+            if i in seen:
+                continue
+            j = outer_to_idx.get(center)
+            pairs.add(tuple(sorted((i, j))))
+            seen.add(i)
+            seen.add(j)
+
+        assert len(k4_list) // len(pairs) == 2
+
+    def test_pair_signatures_unique(self):
+        """The 45 pair signatures are unique → bijection to Q45 vertices."""
+        n, vertices, adj, edges = build_w33()
+        col = [set(adj[i]) for i in range(n)]
+        noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
+
+        k4_list = []
+        for a in range(n):
+            for b in noncol[a]:
+                if b <= a:
+                    continue
+                for c in noncol[a] & noncol[b]:
+                    if c <= b:
+                        continue
+                    for d in noncol[a] & noncol[b] & noncol[c]:
+                        if d <= c:
+                            continue
+                        common = col[a] & col[b] & col[c] & col[d]
+                        if len(common) == 4:
+                            k4_list.append(
+                                {
+                                    "outer": tuple(sorted([a, b, c, d])),
+                                    "center": tuple(sorted(common)),
+                                }
+                            )
+
+        outer_to_idx = {k4["outer"]: i for i, k4 in enumerate(k4_list)}
+        sigs = []
+        seen = set()
+        for i, k4 in enumerate(k4_list):
+            if i in seen:
+                continue
+            j = outer_to_idx.get(k4["center"])
+            sig = tuple(sorted([k4["outer"], k4_list[j]["outer"]]))
+            sigs.append(sig)
+            seen.add(i)
+            seen.add(j)
+
+        assert len(set(sigs)) == 45
+
+
+# =========================================================================
 # MAIN
 # =========================================================================
 
