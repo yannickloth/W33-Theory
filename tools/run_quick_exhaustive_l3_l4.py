@@ -32,10 +32,14 @@ toe = importlib.util.module_from_spec(spec_toe)
 spec_toe.loader.exec_module(toe)
 
 # setup projector / linfty
-e6_basis = np.load(ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy").astype(np.complex128)
+e6_basis = np.load(
+    ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy"
+).astype(np.complex128)
 proj = toe.E6Projector(e6_basis)
 all_triads = toe._load_signed_cubic_triads()
-rat = json.loads((ROOT / "artifacts" / "linfty_coord_search_results_rationalized.json").read_text())
+rat = json.loads(
+    (ROOT / "artifacts" / "linfty_coord_search_results_rationalized.json").read_text()
+)
 bad9 = set(tuple(sorted(t)) for t in rat["original"]["fiber_triads"])
 linfty = build.LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
 
@@ -75,18 +79,32 @@ if ce2p.exists():
             c_idx = tuple(e["c"])
             U_rats = [Fraction(s) if s != "0" else None for s in e.get("U_rats", [])]
             V_rats = [Fraction(s) if s != "0" else None for s in e.get("V_rats", [])]
-            U_num = np.array([float(fr) if fr is not None else 0.0 for fr in U_rats], dtype=np.complex128)
-            V_num = np.array([float(fr) if fr is not None else 0.0 for fr in V_rats], dtype=np.complex128)
+            U_num = np.array(
+                [float(fr) if fr is not None else 0.0 for fr in U_rats],
+                dtype=np.complex128,
+            )
+            V_num = np.array(
+                [float(fr) if fr is not None else 0.0 for fr in V_rats],
+                dtype=np.complex128,
+            )
             U_e8 = flat_to_e8(U_num)
             V_e8 = flat_to_e8(V_num)
 
-            if np.allclose(a.g1, basis_elem_g1(toe, b_idx).g1) and np.allclose(b.g2, basis_elem_g2(toe, c_idx).g2):
+            if np.allclose(a.g1, basis_elem_g1(toe, b_idx).g1) and np.allclose(
+                b.g2, basis_elem_g2(toe, c_idx).g2
+            ):
                 acc = acc + U_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(b.g2, basis_elem_g2(toe, b_idx).g2):
+            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
+                b.g2, basis_elem_g2(toe, b_idx).g2
+            ):
                 acc = acc - U_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, a_idx).g1) and np.allclose(b.g2, basis_elem_g2(toe, c_idx).g2):
+            if np.allclose(a.g1, basis_elem_g1(toe, a_idx).g1) and np.allclose(
+                b.g2, basis_elem_g2(toe, c_idx).g2
+            ):
                 acc = acc + V_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(b.g2, basis_elem_g2(toe, a_idx).g2):
+            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
+                b.g2, basis_elem_g2(toe, a_idx).g2
+            ):
                 acc = acc - V_e8
         return acc
 
@@ -105,6 +123,7 @@ TOL_FAIL = 1e-8
 
 out: Dict[str, Dict] = {}
 
+
 # evaluator
 def eval_triple(x, y, z):
     hj = linfty.homotopy_jacobi(x, y, z)
@@ -116,6 +135,7 @@ def eval_triple(x, y, z):
             np.max(np.abs(hj.g2)) if hj.g2.size else 0.0,
         )
     )
+
 
 # run sectors
 g1_idx = make_g1_basis(toe)
@@ -144,9 +164,21 @@ for a_idx, b_idx, c_idx in __import__("itertools").combinations(g1_idx, 3):
     mag_tot = eval_triple(x, y, z)
     max_total = max(max_total, mag_tot)
     if mag_tot > TOL_FAIL:
-        first_fail = {"a": a_idx, "b": b_idx, "c": c_idx, "mag_j": mag_j, "mag_tot": mag_tot}
+        first_fail = {
+            "a": a_idx,
+            "b": b_idx,
+            "c": c_idx,
+            "mag_j": mag_j,
+            "mag_tot": mag_tot,
+        }
         break
-out["g1_g1_g1"] = {"passed": first_fail is None, "tested": tested, "first_fail": first_fail, "max_j": max_j, "max_total": max_total}
+out["g1_g1_g1"] = {
+    "passed": first_fail is None,
+    "tested": tested,
+    "first_fail": first_fail,
+    "max_j": max_j,
+    "max_total": max_total,
+}
 
 # g2_g2_g2
 tested = 0
@@ -171,9 +203,21 @@ for a_idx, b_idx, c_idx in __import__("itertools").combinations(g2_idx, 3):
     mag_tot = eval_triple(x, y, z)
     max_total = max(max_total, mag_tot)
     if mag_tot > TOL_FAIL:
-        first_fail = {"a": a_idx, "b": b_idx, "c": c_idx, "mag_j": mag_j, "mag_tot": mag_tot}
+        first_fail = {
+            "a": a_idx,
+            "b": b_idx,
+            "c": c_idx,
+            "mag_j": mag_j,
+            "mag_tot": mag_tot,
+        }
         break
-out["g2_g2_g2"] = {"passed": first_fail is None, "tested": tested, "first_fail": first_fail, "max_j": max_j, "max_total": max_total}
+out["g2_g2_g2"] = {
+    "passed": first_fail is None,
+    "tested": tested,
+    "first_fail": first_fail,
+    "max_j": max_j,
+    "max_total": max_total,
+}
 
 # g1_g1_g2
 tested = 0
@@ -199,11 +243,23 @@ for a_idx, b_idx in __import__("itertools").combinations(g1_idx, 2):
         mag_tot = eval_triple(x, y, z)
         max_total = max(max_total, mag_tot)
         if mag_tot > TOL_FAIL:
-            first_fail = {"a": a_idx, "b": b_idx, "c": c_idx, "mag_j": mag_j, "mag_tot": mag_tot}
+            first_fail = {
+                "a": a_idx,
+                "b": b_idx,
+                "c": c_idx,
+                "mag_j": mag_j,
+                "mag_tot": mag_tot,
+            }
             break
     if first_fail:
         break
-out["g1_g1_g2"] = {"passed": first_fail is None, "tested": tested, "first_fail": first_fail, "max_j": max_j, "max_total": max_total}
+out["g1_g1_g2"] = {
+    "passed": first_fail is None,
+    "tested": tested,
+    "first_fail": first_fail,
+    "max_j": max_j,
+    "max_total": max_total,
+}
 
 # g1_g2_g2
 tested = 0
@@ -229,14 +285,26 @@ for a_idx in g1_idx:
         mag_tot = eval_triple(x, y, z)
         max_total = max(max_total, mag_tot)
         if mag_tot > TOL_FAIL:
-            first_fail = {"a": a_idx, "b": b_idx, "c": c_idx, "mag_j": mag_j, "mag_tot": mag_tot}
+            first_fail = {
+                "a": a_idx,
+                "b": b_idx,
+                "c": c_idx,
+                "mag_j": mag_j,
+                "mag_tot": mag_tot,
+            }
             break
     if first_fail:
         break
-out["g1_g2_g2"] = {"passed": first_fail is None, "tested": tested, "first_fail": first_fail, "max_j": max_j, "max_total": max_total}
+out["g1_g2_g2"] = {
+    "passed": first_fail is None,
+    "tested": tested,
+    "first_fail": first_fail,
+    "max_j": max_j,
+    "max_total": max_total,
+}
 
 # persist
-open(ROOT / 'artifacts' / 'exhaustive_homotopy_l3_l4.json','w',encoding='utf-8').write(json.dumps({'candidate_coeffs': [float(1/9.0)], 'sectors': out}, indent=2))
+open(
+    ROOT / "artifacts" / "exhaustive_homotopy_l3_l4.json", "w", encoding="utf-8"
+).write(json.dumps({"candidate_coeffs": [float(1 / 9.0)], "sectors": out}, indent=2))
 print(json.dumps(out, indent=2))
-
-``` (truncated) -
