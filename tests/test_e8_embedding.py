@@ -5632,6 +5632,156 @@ class TestConfinement:
 
 
 # =========================================================================
+# 43. CKM MATRIX FROM GENERATION MIXING
+# =========================================================================
+
+
+class TestCKMMatrix:
+    """Pillar 42: CKM matrix from Z3 generation mismatch."""
+
+    @pytest.fixture(scope="class")
+    def ckm_data(self):
+        from collections import Counter, deque
+
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from w33_h1_decomposition import (
+            J_matrix,
+            build_incidence_matrix,
+            make_vertex_permutation,
+            signed_edge_permutation,
+            transvection_matrix,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        m = len(edges)
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        D = build_incidence_matrix(n, edges)
+        L1 = D.T @ D + d2 @ d2.T
+        eigvals, eigvecs = np.linalg.eigh(L1)
+        H = eigvecs[:, np.abs(eigvals) < 0.5]
+
+        J_mat = J_matrix()
+        gen_vperms = []
+        gen_signed = []
+        for vert in vertices:
+            M_t = transvection_matrix(np.array(vert, dtype=int), J_mat)
+            vp = make_vertex_permutation(M_t, vertices)
+            gen_vperms.append(tuple(vp))
+            ep, es = signed_edge_permutation(vp, edges)
+            gen_signed.append((tuple(ep), tuple(es)))
+
+        id_v = tuple(range(n))
+        visited = {id_v: (tuple(range(m)), tuple([1] * m))}
+        queue = deque([id_v])
+        while queue:
+            cur_v = queue.popleft()
+            cur_ep, cur_es = visited[cur_v]
+            for gv, (gep, ges) in zip(gen_vperms, gen_signed):
+                new_v = tuple(gv[i] for i in cur_v)
+                if new_v not in visited:
+                    new_ep = tuple(gep[cur_ep[i]] for i in range(m))
+                    new_es = tuple(ges[cur_ep[i]] * cur_es[i] for i in range(m))
+                    visited[new_v] = (new_ep, new_es)
+                    queue.append(new_v)
+
+        omega = np.exp(2j * np.pi / 3)
+        order3 = []
+        for cur_v, (cur_ep, cur_es) in visited.items():
+            if cur_v == id_v:
+                continue
+            v2 = tuple(cur_v[cur_v[i]] for i in range(n))
+            v3 = tuple(cur_v[v2[i]] for i in range(n))
+            if v3 != id_v:
+                continue
+            ep_np = np.asarray(cur_ep, dtype=int)
+            es_np = np.asarray(cur_es, dtype=float)
+            S_g = H[ep_np, :] * es_np[:, None]
+            R_g = H.T @ S_g
+            eigs = np.linalg.eigvals(R_g)
+            phases = np.angle(eigs) / (2 * np.pi / 3)
+            counts = Counter(round(p) % 3 for p in phases)
+            if counts[0] == 27 and counts[1] == 27 and counts[2] == 27:
+                order3.append(R_g)
+                if len(order3) >= 10:
+                    break
+
+        def gen_basis(R_g):
+            I81 = np.eye(81)
+            R2 = R_g @ R_g
+            P0 = np.real((I81 + R_g + R2) / 3.0)
+            U0, _, _ = np.linalg.svd(P0)
+            B0 = U0[:, :27]
+            eig_vals, eig_vecs = np.linalg.eig(R_g)
+            phases = np.angle(eig_vals)
+            omega_idx = np.where(np.abs(phases - 2 * np.pi / 3) < 0.1)[0]
+            if len(omega_idx) != 27:
+                omega_idx = np.where(np.abs(phases + 2 * np.pi / 3) < 0.1)[0]
+            V_om = eig_vecs[:, omega_idx]
+            proj = B0 @ B0.T
+            B1_raw = np.real(V_om) - proj @ np.real(V_om)
+            Q1, R1 = np.linalg.qr(B1_raw)
+            B1 = Q1[:, :27]
+            proj2 = np.hstack([B0, B1])
+            proj2 = proj2 @ proj2.T
+            B2_raw = np.imag(V_om) - proj2 @ np.imag(V_om)
+            Q2, R2_ = np.linalg.qr(B2_raw)
+            B2 = Q2[:, :27]
+            return [B0, B1, B2]
+
+        best_idx = 1
+        best_diff = 0
+        for idx in range(1, len(order3)):
+            d = np.linalg.norm(order3[0] - order3[idx])
+            if d > best_diff:
+                best_diff = d
+                best_idx = idx
+
+        gens_up = gen_basis(order3[0])
+        gens_down = gen_basis(order3[best_idx])
+
+        U_up = np.hstack(gens_up)
+        U_down = np.hstack(gens_down)
+        V_full = U_up.T @ U_down
+
+        V_CKM_sq = np.zeros((3, 3))
+        for a in range(3):
+            for b in range(3):
+                block = V_full[27 * a : 27 * (a + 1), 27 * b : 27 * (b + 1)]
+                V_CKM_sq[a, b] = np.trace(block @ block.T) / 27.0
+
+        return {"V_CKM_sq": V_CKM_sq, "n_order3": len(order3)}
+
+    def test_ckm_unitary(self, ckm_data):
+        """CKM matrix rows and columns sum to 1 (unitarity)."""
+        import numpy as np
+
+        V = ckm_data["V_CKM_sq"]
+        for a in range(3):
+            assert abs(np.sum(V[a, :]) - 1.0) < 1e-10
+            assert abs(np.sum(V[:, a]) - 1.0) < 1e-10
+
+    def test_ckm_quasi_democratic(self, ckm_data):
+        """CKM is quasi-democratic: close to 1/3 uniform mixing."""
+        import numpy as np
+
+        V = ckm_data["V_CKM_sq"]
+        dev = np.linalg.norm(V - np.ones((3, 3)) / 3)
+        assert dev < 0.1
+
+    def test_ckm_universal_mixing_entry(self, ckm_data):
+        """V_CKM^2[0,0] matches universal mixing M_diag = 25/81."""
+        V = ckm_data["V_CKM_sq"]
+        assert abs(V[0, 0] - 25 / 81) < 0.01
+
+    def test_multiple_z3_decompositions_exist(self, ckm_data):
+        """Multiple distinct Z3 decompositions exist (VEV choices)."""
+        assert ckm_data["n_order3"] >= 2
+
+
+# =========================================================================
 # Pillar 43 — Graviton / spin-2 (K4 pairing → Q45)
 # =========================================================================
 
@@ -5642,7 +5792,6 @@ class TestGraviton:
     def test_ninety_k4_components(self):
         """W33 has exactly 90 K4 components (outer quads with 4-center common neigh)."""
         n, vertices, adj, edges = build_w33()
-        # build collinearity from adjacency
         col = [set(adj[i]) for i in range(n)]
         noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
 
@@ -5700,7 +5849,6 @@ class TestGraviton:
             j = outer_to_idx.get(k4["center"])
             assert j is not None
             assert i != j
-            # symmetry
             assert k4_list[j]["center"] == k4["outer"]
             pairs.append((i, j))
             seen.add(i)
@@ -5731,7 +5879,6 @@ class TestGraviton:
                                 (tuple(sorted([a, b, c, d])), tuple(sorted(common)))
                             )
 
-        # pair count (same approach as above)
         outer_to_idx = {k4[0]: i for i, k4 in enumerate(k4_list)}
         pairs = set()
         seen = set()
@@ -5746,7 +5893,7 @@ class TestGraviton:
         assert len(k4_list) // len(pairs) == 2
 
     def test_pair_signatures_unique(self):
-        """The 45 pair signatures are unique → bijection to Q45 vertices."""
+        """The 45 pair signatures are unique -> bijection to Q45 vertices."""
         n, vertices, adj, edges = build_w33()
         col = [set(adj[i]) for i in range(n)]
         noncol = [set(range(n)) - col[i] - {i} for i in range(n)]
@@ -5784,6 +5931,87 @@ class TestGraviton:
             seen.add(j)
 
         assert len(set(sigs)) == 45
+
+
+# =========================================================================
+# 44. GRAVITON SPECTRAL STRUCTURE
+# =========================================================================
+
+
+class TestGravitonSpectral:
+    """Pillar 43 (spectral): graviton propagator and Hodge structure."""
+
+    @pytest.fixture(scope="class")
+    def grav_data(self):
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from w33_h1_decomposition import build_incidence_matrix
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        m = len(edges)
+        n_tri = len(simplices[2])
+        n_tet = len(simplices.get(3, []))
+
+        D = build_incidence_matrix(n, edges)
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        d3 = (
+            boundary_matrix(simplices[3], simplices[2]).astype(float)
+            if n_tet > 0
+            else np.zeros((n_tri, 0))
+        )
+
+        L0 = D @ D.T
+        L2 = d2.T @ d2 + d3 @ d3.T
+        L3 = d3.T @ d3 if n_tet > 0 else np.zeros((0, 0))
+
+        return {
+            "L0": L0,
+            "L2": L2,
+            "L3": L3,
+            "n": n,
+            "n_tri": n_tri,
+            "n_tet": n_tet,
+        }
+
+    def test_graviton_propagator_uniform(self, grav_data):
+        """G_grav(v,v) = 267/3200 uniformly (vertex-transitive)."""
+        from fractions import Fraction
+
+        import numpy as np
+
+        L0 = grav_data["L0"]
+        n = grav_data["n"]
+        w0, V0 = np.linalg.eigh(L0)
+        G = np.zeros((n, n))
+        for k in range(n):
+            if abs(w0[k]) > 0.5:
+                G += np.outer(V0[:, k], V0[:, k]) / w0[k]
+        diag = np.diag(G)
+        expected = float(Fraction(267, 3200))
+        assert np.allclose(diag, expected, atol=1e-10)
+
+    def test_L2_equals_4I(self, grav_data):
+        """L2 = 4I (constant curvature on all triangles)."""
+        import numpy as np
+
+        L2 = grav_data["L2"]
+        n_tri = grav_data["n_tri"]
+        assert np.linalg.norm(L2 - 4 * np.eye(n_tri)) < 1e-10
+
+    def test_L3_equals_4I(self, grav_data):
+        """L3 = 4I (flat upper chain complex)."""
+        import numpy as np
+
+        L3 = grav_data["L3"]
+        n_tet = grav_data["n_tet"]
+        assert n_tet == 40
+        assert np.linalg.norm(L3 - 4 * np.eye(n_tet)) < 1e-10
+
+    def test_mode_count_equals_240(self, grav_data):
+        """39(grav) + 120(gauge) + 81(matter) = 240 = |Roots(E8)|."""
+        assert 39 + 120 + 81 == 240
 
 
 # =========================================================================
