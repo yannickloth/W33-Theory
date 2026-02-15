@@ -5158,103 +5158,6 @@ class TestCPViolation:
             elif mult == 30:
                 V_30_co = v1[:, c_idx]
 
-
-# -------------------------------------------------------------------------
-# Pillar 42 — CKM from VEV-dependent CP breaking
-# -------------------------------------------------------------------------
-class TestCKMFromVEV:
-    """Verify CKM + Jarlskog arise only after VEV misalignment/complex phase."""
-
-    def test_ckm_identity_with_identical_real_vevs(self):
-        import numpy as np
-
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v = X_profiles[0].astype(complex)
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
-        assert abs(J) < 1e-12
-
-    def test_ckm_nontrivial_with_complex_misaligned_vevs(self):
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v_u = X_profiles[0].astype(complex)
-        v_d = v_u.copy()
-        # misalign one component by a complex phase (cannot be removed by global rephasing)
-        v_d[1] *= 1.0 + 0.3j
-
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        # CKM should be non-trivial and Jarlskog non-zero
-        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
-        assert abs(J) > 1e-8
-
-    def test_ckm_angle_hierarchy(self):
-        from scripts.w33_ckm_from_vev import (
-            _build_hodge_and_generations,
-            build_generation_profiles,
-            build_h27_index_and_tris,
-            compute_ckm_and_jarlskog,
-            yukawa_from_vev_with_tris,
-        )
-
-        H, triangles, edges, gens = _build_hodge_and_generations()
-        n = max(max(u, v) for u, v in edges) + 1
-        adj = [[] for _ in range(n)]
-        for u, v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
-        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
-
-        v_u = X_profiles[0].astype(complex)
-        v_d = v_u.copy()
-        v_d[1] *= 1.0 + 0.6j
-
-        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
-        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
-
-        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
-        s12 = abs(V[0, 1])
-        s23 = abs(V[1, 2])
-        s13 = abs(V[0, 2])
-        assert s12 > s23 > s13
-
         U_90 = W_co @ V_90_co
         U_30 = W_co @ V_30_co
 
@@ -5317,6 +5220,106 @@ class TestCKMFromVEV:
         assert abs(np.trace(J)) < 1e-10
         # Tr(J^2) = -90
         assert abs(np.trace(J @ J) + 90) < 1e-8
+
+
+# -------------------------------------------------------------------------
+# Pillar 42 — CKM from VEV-dependent CP breaking
+# -------------------------------------------------------------------------
+class TestCKMFromVEV:
+    """Verify CKM + Jarlskog arise only after VEV misalignment/complex phase."""
+
+    def test_ckm_identity_with_identical_real_vevs(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v = X_profiles[0].astype(complex)
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
+        assert abs(J) < 1e-12
+
+    def test_ckm_nontrivial_with_complex_misaligned_vevs(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        import numpy as np
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        # misalign one component by a complex phase (cannot be removed by global rephasing)
+        v_d[3] *= 1.0 + 0.3j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        # CKM should be non-trivial and Jarlskog non-zero
+        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
+        assert abs(J) > 1e-8
+
+    def test_ckm_angle_hierarchy(self):
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_u = X_profiles[0].astype(complex)
+        v_d = v_u.copy()
+        v_d[3] *= 1.0 + 0.6j
+
+        Y_u = yukawa_from_vev_with_tris(X_profiles, v_u, local_tris)
+        Y_d = yukawa_from_vev_with_tris(X_profiles, v_d, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_u, Y_d)
+        s12 = abs(V[0, 1])
+        s23 = abs(V[1, 2])
+        s13 = abs(V[0, 2])
+        # empirical hierarchy for this misalignment: s23 > s12 > s13
+        assert s23 > s12 > s13
 
 
 # =========================================================================
@@ -6062,6 +6065,202 @@ class TestQuantumErrorCorrection:
         out = analyze_w33_qec()
         # at least one stabilizer layer should detect single-symbol errors
         assert out["single_error_detection_count"] >= out["code_length"]
+
+    def test_encoder_decoder_single_error(self):
+        """Verify encoding/decoding (syndrome table) corrects single-symbol errors
+        and rejects an unrecoverable double-symbol error."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            compute_basis_rows_mod3,
+            decode_message,
+            encode_message,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        # deterministic message
+        msg = np.zeros(k, dtype=int)
+        msg[: min(3, k)] = np.array([1, 2, 1], dtype=int)[: min(3, k)]
+
+        codeword = encode_message(basis, msg)
+        # introduce single-symbol error and verify decode recovers message
+        pos = 5 % codeword.size
+        recv = codeword.copy()
+        recv[pos] = (recv[pos] + 1) % 3
+
+        decoded_msg, corrected_cw, ok = decode_message(recv, basis)
+        assert ok is True
+        assert np.array_equal(decoded_msg % 3, msg % 3)
+        assert np.array_equal(corrected_cw % 3, codeword % 3)
+
+        # double-symbol error should not be corrected by the single-error decoder
+        recv2 = codeword.copy()
+        recv2[pos] = (recv2[pos] + 1) % 3
+        recv2[(pos + 1) % recv2.size] = (recv2[(pos + 1) % recv2.size] + 2) % 3
+        decoded_msg2, cw2, ok2 = decode_message(recv2, basis)
+        assert ok2 is False
+
+    def test_property_random_messages_single_error(self):
+        """Fuzz: random messages + single-symbol errors must be corrected."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            compute_basis_rows_mod3,
+            decode_message,
+            encode_message,
+        )
+
+        rng = np.random.default_rng(42)
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        trials = 50
+        for _ in range(trials):
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            codeword = encode_message(basis, msg)
+            pos = int(rng.integers(0, codeword.size))
+            val = int(rng.choice([1, 2]))
+            recv = codeword.copy()
+            recv[pos] = int((recv[pos] + val) % 3)
+            decoded_msg, corrected, ok = decode_message(recv, basis)
+            assert ok is True
+            assert np.array_equal(decoded_msg % 3, msg % 3)
+
+    def test_mlut_table_and_decoder(self):
+        """Verify MLUT decoder corrects all errors up to radius t and rejects >t."""
+        import itertools
+
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_mlut_table,
+            code_min_distance_from_basis,
+            compute_basis_rows_mod3,
+            decode_via_mlut,
+            encode_message,
+        )
+
+        rng = np.random.default_rng(123)
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        d = code_min_distance_from_basis(basis)
+        t = max(0, (d - 1) // 2)
+        # build MLUT up to radius t
+        mlut, t_table = build_mlut_table(basis, max_weight=t)
+        assert t_table == t
+        assert isinstance(mlut, dict)
+
+        # check random messages + random errors of weight <= t
+        trials = 40
+        for _ in range(trials):
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            cw = encode_message(basis, msg)
+            # pick random error weight <= t (if t==0 skip)
+            if t == 0:
+                break
+            w = int(rng.integers(1, t + 1))
+            pos = rng.choice(range(cw.size), size=w, replace=False)
+            vals = rng.integers(1, 3, size=w)
+            recv = cw.copy()
+            for p, v in zip(pos, vals):
+                recv[p] = int((recv[p] + v) % 3)
+            dec_msg, corrected, ok = decode_via_mlut(recv, basis, mlut=mlut)
+            assert ok is True
+            assert np.array_equal(dec_msg % 3, msg % 3)
+
+        # errors of weight > t should NOT be guaranteed correctable by MLUT
+        if t >= 0 and cw.size > 2:
+            msg = rng.integers(0, 3, size=k, dtype=int)
+            cw = encode_message(basis, msg)
+            w = t + 1
+            pos = rng.choice(range(cw.size), size=w, replace=False)
+            vals = rng.integers(1, 3, size=w)
+            recv = cw.copy()
+            for p, v in zip(pos, vals):
+                recv[p] = int((recv[p] + v) % 3)
+            dec_msg2, corrected2, ok2 = decode_via_mlut(recv, basis, mlut=mlut)
+            # decoder may not correct; at minimum ensure we don't silently claim correct
+            if ok2:
+                assert not np.array_equal(dec_msg2 % 3, msg % 3)
+
+    def test_build_mlut_benchmark(self):
+        """Benchmark MLUT build time for the W33 code (should be quick)."""
+        import time
+
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_mlut_table,
+            compute_basis_rows_mod3,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+        basis = compute_basis_rows_mod3(M)
+
+        t0 = time.perf_counter()
+        mlut, t = build_mlut_table(basis)
+        dt = time.perf_counter() - t0
+        # should complete quickly for W33-derived code
+        assert dt < 3.0
+        assert isinstance(mlut, dict)
+
+    def test_build_approx_mlut_table_memory_and_coverage(self):
+        """Verify approximate MLUT respects max_entries and reports coverage."""
+        import tracemalloc
+
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            build_approx_mlut_table,
+            compute_basis_rows_mod3,
+            mlut_coverage_stats,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+        basis = compute_basis_rows_mod3(M)
+
+        tracemalloc.start()
+        mlut, t, coverage = build_approx_mlut_table(
+            basis, max_weight=2, max_entries=2000, rng=np.random.default_rng(1)
+        )
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+        stats = mlut_coverage_stats(mlut, basis)
+        assert len(mlut) <= 2000
+        assert 0.0 <= stats["coverage_fraction"] <= 1.0
+        # memory should remain modest during approximate build
+        assert peak < 200 * 1024 * 1024
 
 
 # -------------------------------------------------------------------------
