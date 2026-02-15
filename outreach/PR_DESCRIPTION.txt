@@ -1,0 +1,4 @@
+Title: chore(outreach): add press release, blog post and release draft for Pillar-45 (QEC + MLUT)
+
+Body:
+Adds outreach materials and a release draft for Pillar‑45 so maintainers can publish the release and announce the new QEC/MLUT primitives. After merge: create GitHub Release with tag `v2026-02-15-qec-mlut`, attach the executed notebook, and optionally publish a Zenodo DOI. See `outreach/announce_checklist.md` for next steps.
