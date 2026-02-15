@@ -1240,6 +1240,7 @@ CYCLOTOMIC BRIDGE:
 - Verification digest:
   - `python3 tools/build_verification_digest.py`
   - Outputs `artifacts/verification_digest.md` and `artifacts/verification_digest.json`.
+  - Claude derivation summary (provenance): `docs/claude_workspace/claude_derivation_summary.md`
 - Running tests locally:
   - **Windows:** `scripts\run_local_tests.bat` or `.venv_test\Scripts\python -m pytest tests/ -q`
   - **Unix/macOS:** `./scripts/generate_summary.sh` or `.venv_test/bin/python -m pytest tests/ -q`
