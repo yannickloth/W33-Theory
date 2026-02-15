@@ -7,6 +7,9 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
+[![Release: Pillar-45 draft](https://img.shields.io/badge/release-Pillar--45%20(QEC)-blue)](https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-15-qec-mlut)
+
+> Draft release: `v2026-02-15-qec-mlut` — Pillar‑45 (GF(3) QEC + MLUT). See PR #82 and join the discussion at Issue #83.
 
 ---
 

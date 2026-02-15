@@ -20,8 +20,8 @@ Assets
 - Example outputs: `checks/PART_CXV_qec_*.json`
 
 Post-release next steps
-- Publish to Zenodo (create DOI)
-  - If the GitHub→Zenodo webhook does not create a DOI, a manual deposition script is available: `scripts/manual_zenodo_deposit.sh` (bash) or `scripts/manual_zenodo_deposit.py` (Python). See `README.md` for a short how‑to.
+- Publish to Zenodo (automated)
+  - The GitHub Actions workflow `release_to_zenodo` automatically creates and publishes a Zenodo deposition when this GitHub Release is published (requires the `ZENODO_TOKEN` repo secret). The Zenodo DOI will be inserted automatically into the release notes and repository README by CI.
 - Draft blog post & social announcement (included in `outreach/`)
 - Solicit benchmarks from the community (issue/discussion)
 
