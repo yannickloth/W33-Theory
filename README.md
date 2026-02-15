@@ -2,8 +2,8 @@
 
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
-[![Tests](https://img.shields.io/badge/tests-244%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-50%20proved-blue)]()
+[![Tests](https://img.shields.io/badge/tests-254%20passed-brightgreen)]()
+[![Pillars](https://img.shields.io/badge/pillars-53%20proved-blue)]()
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
@@ -131,6 +131,14 @@ Each pillar is a proved theorem with an accompanying test. Click any pillar to s
 | 49 | [Universal structure](scripts/w33_universal_structure.py) | Ramanujan + diameter 2 + unique SRG + E8 kissing number |
 | 50 | [Computational substrate](scripts/w33_cellular_automaton.py) | 4 conserved charges; spectral clock; physics IS computation |
 
+### Deep Mathematics (Pillars 51&ndash;53)
+
+| # | Theorem | Key result |
+|---|---------|------------|
+| 51 | [Spectral zeta](scripts/w33_spectral_zeta.py) | &zeta;(0)=159, &zeta;(-1)=960=Tr(L<sub>1</sub>), P(&infin;)=81/240 |
+| 52 | [RG flow](scripts/w33_spectral_zeta.py) | UV&rarr;IR: g<sub>matter</sub> 0.34&rarr;1.0; critical exponents 4,10,16 |
+| 53 | [Modular forms](scripts/w33_spectral_zeta.py) | Z = 81+120q+24q<sup>5/2</sup>+15q<sup>4</sup>; T-transform invariant |
+
 ---
 
 ## Key Predictions
@@ -162,7 +170,7 @@ pip install numpy sympy pytest
 python -m pytest tests/test_e8_embedding.py -q
 ```
 
-244 tests across 55+ test classes, covering every pillar.
+254 tests across 58 test classes, covering every pillar.
 
 ### Run individual pillar verifications
 

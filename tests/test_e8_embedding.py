@@ -6607,6 +6607,131 @@ class TestComputationalSubstrate:
         assert isinstance(ca["final_state_counts"], dict)
 
 
+# -------------------------------------------------------------------------
+# Pillar 51: Spectral zeta function
+# -------------------------------------------------------------------------
+
+
+class TestSpectralZeta:
+    """Spectral zeta function and analytic torsion (Pillar 51)."""
+
+    @pytest.fixture(scope="class")
+    def zeta_data(self):
+        from scripts.w33_spectral_zeta import (
+            analyze_zeta_special_values,
+            compute_hodge_spectrum,
+            compute_spectral_dimension,
+        )
+
+        evals, mults, L1, simplices, n, adj, edges = compute_hodge_spectrum()
+        special = analyze_zeta_special_values(evals, mults)
+        t_vals = [0.01, 0.1, 1.0, 10.0, 100.0]
+        sd = compute_spectral_dimension(evals, t_vals)
+        return {"special": special, "mults": mults, "sd": sd}
+
+    def test_zeta_special_values(self, zeta_data):
+        s = zeta_data["special"]
+        assert abs(s["zeta_0"] - 159) < 1e-10
+        assert abs(s["zeta_neg1"] - 960) < 1e-6
+        # zeta(1) = 120/4 + 24/10 + 15/16
+        zeta1_exact = 120 / 4 + 24 / 10 + 15 / 16
+        assert abs(s["zeta_1"] - zeta1_exact) < 1e-10
+
+    def test_trace_consistency(self, zeta_data):
+        s = zeta_data["special"]
+        assert abs(s["zeta_neg1"] - s["trace_L1_check"]) < 1e-6
+
+    def test_spectral_dimension_flow(self, zeta_data):
+        sd = zeta_data["sd"]
+        # IR return probability should be 81/240 = 0.3375
+        ir = [r for r in sd if r["t"] >= 10.0]
+        assert len(ir) > 0
+        assert abs(ir[0]["return_prob"] - 81 / 240) < 0.01
+
+
+# -------------------------------------------------------------------------
+# Pillar 52: RG flow
+# -------------------------------------------------------------------------
+
+
+class TestRGFlow:
+    """Renormalization group flow and fixed points (Pillar 52)."""
+
+    @pytest.fixture(scope="class")
+    def rg_data(self):
+        from scripts.w33_spectral_zeta import (
+            compute_hodge_spectrum,
+            compute_rg_flow,
+            find_fixed_points,
+        )
+
+        evals, mults, L1, simplices, n, adj, edges = compute_hodge_spectrum()
+        rg = compute_rg_flow(mults, [0.01, 0.1, 1.0, 10.0, 100.0])
+        fp = find_fixed_points(mults)
+        return {"rg": rg, "fp": fp, "mults": mults}
+
+    def test_uv_fixed_point(self, rg_data):
+        fp = rg_data["fp"]
+        # UV: g_0 = 81/240 = 0.3375
+        assert abs(fp["uv_fixed_point"][0] - 81 / 240) < 1e-10
+
+    def test_ir_fixed_point(self, rg_data):
+        fp = rg_data["fp"]
+        assert fp["ir_fixed_point"][0] == 1.0
+        assert fp["ir_fixed_point"][4] == 0.0
+
+    def test_rg_flow_direction(self, rg_data):
+        rg = rg_data["rg"]
+        # g_0 should increase from UV to IR
+        g0_first = rg[0]["couplings"][0]
+        g0_last = rg[-1]["couplings"][0]
+        assert g0_last > g0_first
+
+    def test_critical_exponents(self, rg_data):
+        fp = rg_data["fp"]
+        assert fp["critical_exponents"] == [4, 10, 16]
+        assert fp["relevant_operators"] == 3
+
+
+# -------------------------------------------------------------------------
+# Pillar 53: Modular forms / partition function
+# -------------------------------------------------------------------------
+
+
+class TestModularForms:
+    """Partition function and modular properties (Pillar 53)."""
+
+    @pytest.fixture(scope="class")
+    def modular_data(self):
+        from scripts.w33_spectral_zeta import (
+            check_modular_properties,
+            compute_hodge_spectrum,
+            compute_theta_series,
+        )
+
+        evals, mults, L1, simplices, n, adj, edges = compute_hodge_spectrum()
+        theta = compute_theta_series(mults)
+        mod = check_modular_properties(mults)
+        return {"theta": theta, "mod": mod, "mults": mults}
+
+    def test_theta_coefficients_sum_to_240(self, modular_data):
+        theta = modular_data["theta"]
+        total = sum(theta.values())
+        assert total == 240
+
+    def test_theta_coefficients(self, modular_data):
+        theta = modular_data["theta"]
+        assert theta[0.0] == 81
+        assert theta[1.0] == 120
+        assert theta[2.5] == 24
+        assert theta[4.0] == 15
+
+    def test_t_transform_invariance(self, modular_data):
+        mod = modular_data["mod"]
+        for d in mod["t_transform_diffs"]:
+            assert d["relative_diff"] < 1e-10
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
