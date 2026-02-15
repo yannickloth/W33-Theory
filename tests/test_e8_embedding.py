@@ -6045,9 +6045,23 @@ class TestQuantumErrorCorrection:
         from scripts.w33_quantum_error_correction import analyze_w33_qec
 
         out = analyze_w33_qec()
-        # sanity checks: nonzero basis dimension and small min distance >= 3
+        # sanity checks: nonzero basis dimension and reasonable minimum distance
         assert out["basis_dim"] > 0
         assert out["min_distance"] >= 3
+
+    def test_css_stabilizer_commutation(self):
+        from scripts.w33_quantum_error_correction import analyze_w33_qec
+
+        out = analyze_w33_qec()
+        assert out["css_commute_ok"] is True
+        assert out["css_Hx_rows"] > 0 and out["css_Hz_rows"] > 0
+
+    def test_single_qutrit_error_detectable(self):
+        from scripts.w33_quantum_error_correction import analyze_w33_qec
+
+        out = analyze_w33_qec()
+        # at least one stabilizer layer should detect single-symbol errors
+        assert out["single_error_detection_count"] >= out["code_length"]
 
 
 # -------------------------------------------------------------------------
@@ -6076,6 +6090,104 @@ class TestHolography:
                 s8 = mean_b
                 break
         assert s8 is None or (s8 / 8.0) < (s1 / 1.0)
+
+
+class TestHiggsPMNS:
+    """Pillar 47 — Higgs VEV selection & PMNS mixing (leptons)."""
+
+    def test_pmns_identity_with_identical_real_vevs(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_e = X_profiles[0].astype(complex)
+        v_n = v_e.copy()
+
+        Y_e = yukawa_from_vev_with_tris(X_profiles, v_e, local_tris)
+        Y_n = yukawa_from_vev_with_tris(X_profiles, v_n, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_e, Y_n)
+        assert np.allclose(np.abs(V), np.eye(3), atol=1e-8)
+        assert abs(J) < 1e-12
+
+    def test_pmns_nontrivial_with_complex_misaligned_vevs(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_e = X_profiles[0].astype(complex)
+        v_n = v_e.copy()
+        v_n[3] *= 1.0 + 0.6j
+
+        Y_e = yukawa_from_vev_with_tris(X_profiles, v_e, local_tris)
+        Y_n = yukawa_from_vev_with_tris(X_profiles, v_n, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_e, Y_n)
+        assert not np.allclose(np.abs(V), np.eye(3), atol=1e-3)
+        assert abs(J) > 1e-8
+
+    def test_pmns_angle_hierarchy(self):
+        import numpy as np
+
+        from scripts.w33_ckm_from_vev import (
+            _build_hodge_and_generations,
+            build_generation_profiles,
+            build_h27_index_and_tris,
+            compute_ckm_and_jarlskog,
+            yukawa_from_vev_with_tris,
+        )
+
+        H, triangles, edges, gens = _build_hodge_and_generations()
+        n = max(max(u, v) for u, v in edges) + 1
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        H27, local_tris = build_h27_index_and_tris(adj, v0=0)
+        _, _, X_profiles = build_generation_profiles(H, edges, gens, v0=0)
+
+        v_e = X_profiles[0].astype(complex)
+        v_n = v_e.copy()
+        v_n[3] *= 1.0 + 0.6j
+
+        Y_e = yukawa_from_vev_with_tris(X_profiles, v_e, local_tris)
+        Y_n = yukawa_from_vev_with_tris(X_profiles, v_n, local_tris)
+
+        V, J = compute_ckm_and_jarlskog(Y_e, Y_n)
+        s12 = abs(V[0, 1])
+        s23 = abs(V[1, 2])
+        s13 = abs(V[0, 2])
+        assert s13 < s12 and s13 < s23
 
 
 # =========================================================================
