@@ -6066,6 +6066,49 @@ class TestQuantumErrorCorrection:
         # at least one stabilizer layer should detect single-symbol errors
         assert out["single_error_detection_count"] >= out["code_length"]
 
+    def test_encoder_decoder_single_error(self):
+        """Verify encoding/decoding (syndrome table) corrects single-symbol errors
+        and rejects an unrecoverable double-symbol error."""
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from scripts.w33_quantum_error_correction import (
+            compute_basis_rows_mod3,
+            decode_message,
+            encode_message,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        B2 = boundary_matrix(simplices[2], simplices[1]).astype(int)
+        M = B2.T
+
+        basis = compute_basis_rows_mod3(M)
+        k = basis.shape[0]
+        assert k > 0
+
+        # deterministic message
+        msg = np.zeros(k, dtype=int)
+        msg[: min(3, k)] = np.array([1, 2, 1], dtype=int)[: min(3, k)]
+
+        codeword = encode_message(basis, msg)
+        # introduce single-symbol error and verify decode recovers message
+        pos = 5 % codeword.size
+        recv = codeword.copy()
+        recv[pos] = (recv[pos] + 1) % 3
+
+        decoded_msg, corrected_cw, ok = decode_message(recv, basis)
+        assert ok is True
+        assert np.array_equal(decoded_msg % 3, msg % 3)
+        assert np.array_equal(corrected_cw % 3, codeword % 3)
+
+        # double-symbol error should not be corrected by the single-error decoder
+        recv2 = codeword.copy()
+        recv2[pos] = (recv2[pos] + 1) % 3
+        recv2[(pos + 1) % recv2.size] = (recv2[(pos + 1) % recv2.size] + 2) % 3
+        decoded_msg2, cw2, ok2 = decode_message(recv2, basis)
+        assert ok2 is False
+
 
 # -------------------------------------------------------------------------
 # Pillar 46: Discrete holography / RT-like behavior on W33
