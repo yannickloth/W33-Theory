@@ -6014,6 +6014,70 @@ class TestGravitonSpectral:
         assert 39 + 120 + 81 == 240
 
 
+# -------------------------------------------------------------------------
+# Pillar 44: Information theory (Lovász theta / Shannon bounds)
+# -------------------------------------------------------------------------
+
+
+class TestInformationTheory:
+    """Information-theory diagnostics for W33 (Pillar 44)."""
+
+    def test_lovasz_theta_and_independence(self):
+        from scripts.w33_information_theory import analyze_w33_information
+
+        out = analyze_w33_information()
+        # computed values for W33 (SRG(40,12,2,-4))
+        # independence number (maximum coclique) is 7 for this graph
+        assert out["independence_number"] == 7
+        assert abs(out["lovasz_theta"] - 10.0) < 1e-12
+        assert out["independence_number"] <= out["lovasz_theta"]
+
+
+# -------------------------------------------------------------------------
+# Pillar 45: Quantum error-correction primitives from W33
+# -------------------------------------------------------------------------
+
+
+class TestQuantumErrorCorrection:
+    """Ternary code and stabilizer-building primitives (Pillar 45)."""
+
+    def test_ternary_code_basis_and_distance(self):
+        from scripts.w33_quantum_error_correction import analyze_w33_qec
+
+        out = analyze_w33_qec()
+        # sanity checks: nonzero basis dimension and small min distance >= 3
+        assert out["basis_dim"] > 0
+        assert out["min_distance"] >= 3
+
+
+# -------------------------------------------------------------------------
+# Pillar 46: Discrete holography / RT-like behavior on W33
+# -------------------------------------------------------------------------
+
+
+class TestHolography:
+    """Area-law / minimal-cut diagnostics for W33 (Pillar 46)."""
+
+    def test_vertex_boundary_and_area_law(self):
+        from scripts.w33_holography import analyze_w33_holography
+
+        out = analyze_w33_holography(trials=200)
+        # single-vertex boundary should equal degree = 12
+        min_cuts = out["min_cuts_small_sizes"]
+        # function returns dict keys as ints -> accept either
+        v1 = min_cuts.get(1, min_cuts.get("1")) if isinstance(min_cuts, dict) else None
+        assert v1 == 12
+        # area-law sanity: mean boundary for moderate subset sizes grows sublinearly
+        stats = out["sample_boundary_stats"]
+        s1 = stats[0][1]
+        s8 = None
+        for size, mean_b, _ in stats:
+            if size == 8:
+                s8 = mean_b
+                break
+        assert s8 is None or (s8 / 8.0) < (s1 / 1.0)
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
