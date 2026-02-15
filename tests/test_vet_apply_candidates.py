@@ -24,6 +24,9 @@ def test_generate_vetting_csv_and_dry_apply():
     gen = generate_vetting_csv(MISSING_JSON, VET_CSV)
     assert VET_CSV.exists()
     assert gen["rows"] > 0
+    # skip if combined map artifact not present
+    if not COMBINED_MAP.exists():
+        pytest.skip("Missing artifacts/edge_to_e8_root_combined.json (integration-only)")
     # try dry-run apply
     res = apply_candidates_from_csv(
         VET_CSV, combined_map_path=COMBINED_MAP, dry_run=True
