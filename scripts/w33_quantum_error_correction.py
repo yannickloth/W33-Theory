@@ -297,6 +297,18 @@ def decode_message(received: np.ndarray, basis: np.ndarray):
 # ------------------------------------------------------------------
 
 
+def _compute_error_syndrome(H: np.ndarray, pos_comb: tuple, vals: tuple) -> tuple:
+    """Compute syndrome for an error specified by positions and values
+    without building the full error vector (faster for small weights).
+    Returns syndrome as a tuple of ints."""
+    if len(pos_comb) == 0:
+        return tuple([0] * H.shape[0])
+    cols = H[:, list(pos_comb)]  # shape (r, w)
+    v = np.array(vals, dtype=int) % 3
+    s = (cols @ v) % 3
+    return tuple(int(x) for x in s.tolist())
+
+
 def build_mlut_table(basis: np.ndarray, max_weight: int | None = None):
     """Build syndrome -> correction table for all error patterns up to weight t.
 
@@ -328,13 +340,15 @@ def build_mlut_table(basis: np.ndarray, max_weight: int | None = None):
     zero_s = tuple([0] * H.shape[0])
     table[zero_s] = np.zeros(n, dtype=int)
 
+    # enumerate error patterns up to weight t
     for w in range(1, max(1, t + 1)):
         for pos_comb in combinations(range(n), w):
             for vals in product((1, 2), repeat=w):
+                s = _compute_error_syndrome(H, pos_comb, vals)
+                # build correction vector for storage and comparisons
                 e = np.zeros(n, dtype=int)
                 for p, v in zip(pos_comb, vals):
                     e[p] = int(v)
-                s = tuple((H @ e) % 3)
                 cur = table.get(s)
                 # prefer smaller-weight correction, tie-break lexicographically
                 if (
