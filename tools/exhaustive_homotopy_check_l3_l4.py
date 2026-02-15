@@ -12,6 +12,7 @@ import importlib.util
 import itertools
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Tuple
 
@@ -72,6 +73,25 @@ def basis_elem_g2(toe_mod, idx: Tuple[int, int]):
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Exhaustive homotopy L3/L4 check")
+    parser.add_argument(
+        "--workers",
+        "-w",
+        type=int,
+        default=1,
+        help="number of worker threads for jacobi screening",
+    )
+    parser.add_argument(
+        "--skip-assemble",
+        action="store_true",
+        help="skip running CE2 assembly (faster local smoke)",
+    )
+    args = parser.parse_args()
+    nworkers = int(args.workers)
+    skip_assemble = bool(args.skip_assemble)
+
     data = json.loads(IN.read_text(encoding="utf-8"))
     coeffs = data.get("rationalized_coeffs_float") or data.get("original", {}).get(
         "coeffs"
@@ -108,7 +128,12 @@ def main() -> None:
         asm = _load_module(
             ROOT / "tools" / "assemble_exact_l4_from_local_ce2.py", "asmce2"
         )
-        asm.main()
+        if not skip_assemble:
+            asm.main()
+        else:
+            print(
+                "Skipping CE2 assembly (use --skip-assemble to bypass heavy assembly)"
+            )
 
         linfty.attach_l4_from_symbolic_constants(symp)
 
@@ -184,6 +209,42 @@ def main() -> None:
             # CE2 entries).  Use attach_ce2_alpha so `d_alpha_on_triple` can
             # still prefer the per-triple lookup.
             linfty.attach_ce2_alpha(alpha_global)
+
+            # --- SANITY CHECK: ensure the recorded l3-failing triple is
+            # cancelled by the attached l4 / CE2 alpha (avoid stale failures)
+            try:
+                exh_r3 = json.loads(
+                    (
+                        ROOT / "artifacts" / "exhaustive_homotopy_rationalized_l3.json"
+                    ).read_text()
+                )
+                ft = exh_r3.get("sectors", {}).get("g1_g1_g2", {}).get("first_fail")
+                if ft:
+                    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+                        basis_elem_g1,
+                        basis_elem_g2,
+                    )
+
+                    xa = basis_elem_g1(toe, tuple(ft["a"]))
+                    ya = basis_elem_g1(toe, tuple(ft["b"]))
+                    za = basis_elem_g2(toe, tuple(ft["c"]))
+                    hj = linfty.homotopy_jacobi(xa, ya, za)
+                    mag = float(
+                        max(
+                            np.max(np.abs(hj.e6)) if hj.e6.size else 0.0,
+                            np.max(np.abs(hj.sl3)) if hj.sl3.size else 0.0,
+                            np.max(np.abs(hj.g1)) if hj.g1.size else 0.0,
+                            np.max(np.abs(hj.g2)) if hj.g2.size else 0.0,
+                        )
+                    )
+                    if mag > TOL_FAIL:
+                        print(
+                            "Sanity check: recorded l3-failing triple not cancelled by attached l4/CE2 (mag=",
+                            mag,
+                            ") — continuing but artifact may be stale",
+                        )
+            except Exception as _err:
+                print("Sanity-check: could not validate recorded l3 failure:", _err)
     else:
         # fallback: assemble CE2 local solutions and promote
         asm = _load_module(
@@ -280,35 +341,75 @@ def main() -> None:
 
     bad9 = _load_bad9()
 
-    for a_idx, b_idx, c_idx in itertools.combinations(g1_idx, 3):
-        x = basis_elem_g1(toe, a_idx)
-        y = basis_elem_g1(toe, b_idx)
-        z = basis_elem_g1(toe, c_idx)
-        j_l2 = toe._jacobi(linfty.br_l2, x, y, z)
-        mag_j = flat_mag(j_l2)
-        tested += 1
-        max_j = max(max_j, mag_j)
-        if mag_j < TOL_J:
-            continue
-        mag_tot = eval_triple(x, y, z)
-        max_total = max(max_total, mag_tot)
-        if mag_tot > TOL_FAIL:
-            out["sectors"]["g1_g1_g1"] = {
-                "passed": False,
-                "tested": tested,
-                "first_fail": {
-                    "a": a_idx,
-                    "b": b_idx,
-                    "c": c_idx,
-                    "mag_j": mag_j,
-                    "mag_tot": mag_tot,
-                },
-                "max_j": max_j,
-                "max_total": max_total,
-            }
-            OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
-            print("Failure in g1_g1_g1", a_idx, b_idx, c_idx, mag_tot)
-            return
+    triples = list(itertools.combinations(g1_idx, 3))
+    if nworkers <= 1:
+        for a_idx, b_idx, c_idx in triples:
+            x = basis_elem_g1(toe, a_idx)
+            y = basis_elem_g1(toe, b_idx)
+            z = basis_elem_g1(toe, c_idx)
+            j_l2 = toe._jacobi(linfty.br_l2, x, y, z)
+            mag_j = flat_mag(j_l2)
+            tested += 1
+            max_j = max(max_j, mag_j)
+            if mag_j < TOL_J:
+                continue
+            mag_tot = eval_triple(x, y, z)
+            max_total = max(max_total, mag_tot)
+            if mag_tot > TOL_FAIL:
+                out["sectors"]["g1_g1_g1"] = {
+                    "passed": False,
+                    "tested": tested,
+                    "first_fail": {
+                        "a": a_idx,
+                        "b": b_idx,
+                        "c": c_idx,
+                        "mag_j": mag_j,
+                        "mag_tot": mag_tot,
+                    },
+                    "max_j": max_j,
+                    "max_total": max_total,
+                }
+                OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                print("Failure in g1_g1_g1", a_idx, b_idx, c_idx, mag_tot)
+                return
+    else:
+
+        def _mag_j_for_triple(triple):
+            a_idx, b_idx, c_idx = triple
+            x = basis_elem_g1(toe, a_idx)
+            y = basis_elem_g1(toe, b_idx)
+            z = basis_elem_g1(toe, c_idx)
+            return flat_mag(toe._jacobi(linfty.br_l2, x, y, z))
+
+        with ThreadPoolExecutor(max_workers=nworkers) as ex:
+            for triple, mag_j in zip(triples, ex.map(_mag_j_for_triple, triples)):
+                a_idx, b_idx, c_idx = triple
+                tested += 1
+                max_j = max(max_j, mag_j)
+                if mag_j < TOL_J:
+                    continue
+                x = basis_elem_g1(toe, a_idx)
+                y = basis_elem_g1(toe, b_idx)
+                z = basis_elem_g1(toe, c_idx)
+                mag_tot = eval_triple(x, y, z)
+                max_total = max(max_total, mag_tot)
+                if mag_tot > TOL_FAIL:
+                    out["sectors"]["g1_g1_g1"] = {
+                        "passed": False,
+                        "tested": tested,
+                        "first_fail": {
+                            "a": a_idx,
+                            "b": b_idx,
+                            "c": c_idx,
+                            "mag_j": mag_j,
+                            "mag_tot": mag_tot,
+                        },
+                        "max_j": max_j,
+                        "max_total": max_total,
+                    }
+                    OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                    print("Failure in g1_g1_g1", a_idx, b_idx, c_idx, mag_tot)
+                    return
 
     out["sectors"]["g1_g1_g1"] = {
         "passed": True,
@@ -321,35 +422,75 @@ def main() -> None:
     tested = 0
     max_j = 0.0
     max_total = 0.0
-    for a_idx, b_idx, c_idx in itertools.combinations(g2_idx, 3):
-        x = basis_elem_g2(toe, a_idx)
-        y = basis_elem_g2(toe, b_idx)
-        z = basis_elem_g2(toe, c_idx)
-        j_l2 = toe._jacobi(linfty.br_l2, x, y, z)
-        mag_j = flat_mag(j_l2)
-        tested += 1
-        max_j = max(max_j, mag_j)
-        if mag_j < TOL_J:
-            continue
-        mag_tot = eval_triple(x, y, z)
-        max_total = max(max_total, mag_tot)
-        if mag_tot > TOL_FAIL:
-            out["sectors"]["g2_g2_g2"] = {
-                "passed": False,
-                "tested": tested,
-                "first_fail": {
-                    "a": a_idx,
-                    "b": b_idx,
-                    "c": c_idx,
-                    "mag_j": mag_j,
-                    "mag_tot": mag_tot,
-                },
-                "max_j": max_j,
-                "max_total": max_total,
-            }
-            OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
-            print("Failure in g2_g2_g2", a_idx, b_idx, c_idx, mag_tot)
-            return
+    triples = list(itertools.combinations(g2_idx, 3))
+    if nworkers <= 1:
+        for a_idx, b_idx, c_idx in triples:
+            x = basis_elem_g2(toe, a_idx)
+            y = basis_elem_g2(toe, b_idx)
+            z = basis_elem_g2(toe, c_idx)
+            j_l2 = toe._jacobi(linfty.br_l2, x, y, z)
+            mag_j = flat_mag(j_l2)
+            tested += 1
+            max_j = max(max_j, mag_j)
+            if mag_j < TOL_J:
+                continue
+            mag_tot = eval_triple(x, y, z)
+            max_total = max(max_total, mag_tot)
+            if mag_tot > TOL_FAIL:
+                out["sectors"]["g2_g2_g2"] = {
+                    "passed": False,
+                    "tested": tested,
+                    "first_fail": {
+                        "a": a_idx,
+                        "b": b_idx,
+                        "c": c_idx,
+                        "mag_j": mag_j,
+                        "mag_tot": mag_tot,
+                    },
+                    "max_j": max_j,
+                    "max_total": max_total,
+                }
+                OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                print("Failure in g2_g2_g2", a_idx, b_idx, c_idx, mag_tot)
+                return
+    else:
+
+        def _mag_j_for_triple_g2(triple):
+            a_idx, b_idx, c_idx = triple
+            x = basis_elem_g2(toe, a_idx)
+            y = basis_elem_g2(toe, b_idx)
+            z = basis_elem_g2(toe, c_idx)
+            return flat_mag(toe._jacobi(linfty.br_l2, x, y, z))
+
+        with ThreadPoolExecutor(max_workers=nworkers) as ex:
+            for triple, mag_j in zip(triples, ex.map(_mag_j_for_triple_g2, triples)):
+                a_idx, b_idx, c_idx = triple
+                tested += 1
+                max_j = max(max_j, mag_j)
+                if mag_j < TOL_J:
+                    continue
+                x = basis_elem_g2(toe, a_idx)
+                y = basis_elem_g2(toe, b_idx)
+                z = basis_elem_g2(toe, c_idx)
+                mag_tot = eval_triple(x, y, z)
+                max_total = max(max_total, mag_tot)
+                if mag_tot > TOL_FAIL:
+                    out["sectors"]["g2_g2_g2"] = {
+                        "passed": False,
+                        "tested": tested,
+                        "first_fail": {
+                            "a": a_idx,
+                            "b": b_idx,
+                            "c": c_idx,
+                            "mag_j": mag_j,
+                            "mag_tot": mag_tot,
+                        },
+                        "max_j": max_j,
+                        "max_total": max_total,
+                    }
+                    OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                    print("Failure in g2_g2_g2", a_idx, b_idx, c_idx, mag_tot)
+                    return
 
     out["sectors"]["g2_g2_g2"] = {
         "passed": True,
@@ -362,8 +503,13 @@ def main() -> None:
     tested = 0
     max_j = 0.0
     max_total = 0.0
-    for a_idx, b_idx in itertools.combinations(g1_idx, 2):
-        for c_idx in g2_idx:
+    triples = [
+        (a_idx, b_idx, c_idx)
+        for a_idx, b_idx in itertools.combinations(g1_idx, 2)
+        for c_idx in g2_idx
+    ]
+    if nworkers <= 1:
+        for a_idx, b_idx, c_idx in triples:
             x = basis_elem_g1(toe, a_idx)
             y = basis_elem_g1(toe, b_idx)
             z = basis_elem_g2(toe, c_idx)
@@ -392,6 +538,46 @@ def main() -> None:
                 OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
                 print("Failure in g1_g1_g2", a_idx, b_idx, c_idx, mag_tot)
                 return
+    else:
+
+        def _mag_j_for_triple_g1g1g2(triple):
+            a_idx, b_idx, c_idx = triple
+            x = basis_elem_g1(toe, a_idx)
+            y = basis_elem_g1(toe, b_idx)
+            z = basis_elem_g2(toe, c_idx)
+            return flat_mag(toe._jacobi(linfty.br_l2, x, y, z))
+
+        with ThreadPoolExecutor(max_workers=nworkers) as ex:
+            for triple, mag_j in zip(
+                triples, ex.map(_mag_j_for_triple_g1g1g2, triples)
+            ):
+                a_idx, b_idx, c_idx = triple
+                tested += 1
+                max_j = max(max_j, mag_j)
+                if mag_j < TOL_J:
+                    continue
+                x = basis_elem_g1(toe, a_idx)
+                y = basis_elem_g1(toe, b_idx)
+                z = basis_elem_g2(toe, c_idx)
+                mag_tot = eval_triple(x, y, z)
+                max_total = max(max_total, mag_tot)
+                if mag_tot > TOL_FAIL:
+                    out["sectors"]["g1_g1_g2"] = {
+                        "passed": False,
+                        "tested": tested,
+                        "first_fail": {
+                            "a": a_idx,
+                            "b": b_idx,
+                            "c": c_idx,
+                            "mag_j": mag_j,
+                            "mag_tot": mag_tot,
+                        },
+                        "max_j": max_j,
+                        "max_total": max_total,
+                    }
+                    OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                    print("Failure in g1_g1_g2", a_idx, b_idx, c_idx, mag_tot)
+                    return
 
     out["sectors"]["g1_g1_g2"] = {
         "passed": True,
@@ -404,8 +590,13 @@ def main() -> None:
     tested = 0
     max_j = 0.0
     max_total = 0.0
-    for a_idx in g1_idx:
-        for b_idx, c_idx in itertools.combinations(g2_idx, 2):
+    triples = [
+        (a_idx, b_idx, c_idx)
+        for a_idx in g1_idx
+        for b_idx, c_idx in itertools.combinations(g2_idx, 2)
+    ]
+    if nworkers <= 1:
+        for a_idx, b_idx, c_idx in triples:
             x = basis_elem_g1(toe, a_idx)
             y = basis_elem_g2(toe, b_idx)
             z = basis_elem_g2(toe, c_idx)
@@ -434,6 +625,46 @@ def main() -> None:
                 OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
                 print("Failure in g1_g2_g2", a_idx, b_idx, c_idx, mag_tot)
                 return
+    else:
+
+        def _mag_j_for_triple_g1g2g2(triple):
+            a_idx, b_idx, c_idx = triple
+            x = basis_elem_g1(toe, a_idx)
+            y = basis_elem_g2(toe, b_idx)
+            z = basis_elem_g2(toe, c_idx)
+            return flat_mag(toe._jacobi(linfty.br_l2, x, y, z))
+
+        with ThreadPoolExecutor(max_workers=nworkers) as ex:
+            for triple, mag_j in zip(
+                triples, ex.map(_mag_j_for_triple_g1g2g2, triples)
+            ):
+                a_idx, b_idx, c_idx = triple
+                tested += 1
+                max_j = max(max_j, mag_j)
+                if mag_j < TOL_J:
+                    continue
+                x = basis_elem_g1(toe, a_idx)
+                y = basis_elem_g2(toe, b_idx)
+                z = basis_elem_g2(toe, c_idx)
+                mag_tot = eval_triple(x, y, z)
+                max_total = max(max_total, mag_tot)
+                if mag_tot > TOL_FAIL:
+                    out["sectors"]["g1_g2_g2"] = {
+                        "passed": False,
+                        "tested": tested,
+                        "first_fail": {
+                            "a": a_idx,
+                            "b": b_idx,
+                            "c": c_idx,
+                            "mag_j": mag_j,
+                            "mag_tot": mag_tot,
+                        },
+                        "max_j": max_j,
+                        "max_total": max_total,
+                    }
+                    OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+                    print("Failure in g1_g2_g2", a_idx, b_idx, c_idx, mag_tot)
+                    return
 
     out["sectors"]["g1_g2_g2"] = {
         "passed": True,

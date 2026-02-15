@@ -1,83 +1,39 @@
-# W33 Theory of Everything
+# claude_workspace
 
-Living paper and executable research code for deriving structural Standard Model features from the finite geometry `W(3,3)` (point graph `W33`).
+Helper scripts and utilities for running verification and collection.
 
-![W33 social preview banner](docs/assets/w33-social-preview.png)
+## Running tests locally 🧪
 
-[![pytest](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pytest.yml)
-[![sage-verification](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/sage-verification.yml)
-[![Lean 4 CI](https://github.com/wilcompute/W33-Theory/actions/workflows/lean4.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/lean4.yml)
-[![Pillar21 Smoke](https://github.com/wilcompute/W33-Theory/actions/workflows/pillar21-smoke.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions/workflows/pillar21-smoke.yml)
+- Create the virtual environment (Windows PowerShell):
 
-Canonical definitions and naming conventions live in `STANDARDIZATION.md`.
+  ```powershell
+  python -m venv .venv
+  .\.venv\Scripts\python.exe -m pip install --upgrade pip
+  .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+  ```
 
-## Executive Snapshot
+- Run tests without changing PowerShell execution policy (Windows):
 
-- Focus: finite-geometry to exceptional-Lie correspondence (`W(3,3)` / `W33` to `E6`, `E7`, `E8`) with reproducible scripts and tests.
-- Research format: paper narrative in Markdown plus claim-to-script-to-test traceability.
-- Current status (2026-02-11): 73 theorem-level results tracked, 120+ computational tests, 50+ quantitative predictions.
-- Scope note: "verified" in this repository means computationally verified within the stated model and code path.
-- Latest z-map result: global full-sign census leaves only the identity cell at `z=(1,0)`.
-- New contradiction-core result: nontrivial global `z` cells have small minimal
-  unsat cores (size `3` in `AGL/Hessian`, size `4` for involution mode at `z=(1,0)`).
-- Context-complete variant: requiring all 4 line directions lifts these core
-  sizes to `4` (nontrivial `AGL/Hessian`) and `5` (involution at `z=(1,0)`).
-- New geometric core classification: every nontrivial size-`3` global UNSAT
-  core in `AGL/Hessian` is exactly one full affine parallel class triplet.
-- New rulebook compression: nontrivial core families reduce to low-complexity
-  coordinate rules, with a unique non-cartesian family at `z=(1,1)` in `x`.
-- New orbit-polarization link: core motif `x:(1,1,0)` is a high-precision
-  marker for full-orbit (`2592`) Hessian representatives (`34/36`, precision `0.944`),
-  while core-motif overlap is zero in exact full `AGL` reps (`0/7`).
-- New enrichment statistics: motif `x:(1,1,0)` shows significant enrichment
-  toward orbit `2592` (hypergeometric `p <= 0.05`), while motif `x:(2,2,1)`
-  is pure `1296` in Hessian-combined overlap support (`0/2` at `2592`).
-- New enrichment check: in combined Hessian datasets, `x:(1,1,0)` is
-  statistically enriched for orbit `2592` (one-sided hypergeometric
-  `p=0.01355`, lift `1.176`); `x:(2,2,1)` is pure orbit `1296` on its support.
-- New anchor-channel classifier: using motif anchors
-  (`full: x:(1,1,0)`, `reduced: x:(2,2,1)`), an abstaining rule reaches
-  `36/38 = 0.947` precision when it fires on combined Hessian reps.
-- New Vogel-resonance bridge: nearest Vogel-hit gaps for
-  `(242,486,728)` match `(Jacobi failures=6, nonzero grades=2, 2*checked triples=54)`,
-  and min-cert orbit sizes factor as `81*{16,32}` where `81=9^2` from the
-  `sl_27` equal-block bridge.
-- New `GL(2,3)` bridge: all det-`2` involutions are conjugate to `diag(-1,1)`,
-  and each induces the same affine-graph cycle profile on `AG(2,3)`:
-  points `[1,1,1,2,2,2]`, lines `[1,1,1,1,2,2,2,2]`.
-- New `AGL(2,3)` det-`2` involution class: exactly `36` elements, one conjugacy class,
-  and a `D12`-structured centralizer of order `12` (dihedral order histogram
-  `{1:1, 2:7, 3:2, 6:2}`).
-- New orbit-stabilizer bridge: exact min-cert reps now split as pure
-  orbit-stabilizer law under the `2592`-element action
-  (`AGL(2,3)` x affine-`z`): Hessian has `201` full-orbit reps (`2592`, stab `1`)
-  and `55` reduced-orbit reps (`1296`, stab `2`), while full `AGL` has only
-  full orbits (`7`, all stab `1`).
-- New reduced-rep stabilizer census: all `55` reduced-orbit reps have exactly one
-  nontrivial order-`2` stabilizer in the restricted search (`36` det-`2` affine
-  involutions x `4` order-`2` `z`-maps); observed z-maps exclude `(2,2)` and fixed
-  witness-row counts are always odd (`{1,3,5}`).
-- New identity-certificate result: isolating the surviving global identity cell
-  needs `6` constraints in full `AGL(2,3)` but only `5` in `Hessian216`.
-- This `6 vs 5` gap is stable under distinct-line and striation-complete
-  witness constraints.
-- Docs landing page: `docs/INDEX.md`.
+  ```cmd
+  cd claude_workspace
+  scripts\run_local_tests.bat
+  # or, to run all tests:
+  scripts\run_all_tests.bat
+  ```
 
-## Layperson Guide (Restored)
+- Or on PowerShell you can run for the session only:
 
-- Start here first: `docs/LAYPERSON_TEXTBOOK_GUIDE.md` (beginner textbook path, no physics prerequisites).
-- If you are new: treat this repo as a living paper plus calculator.
-- Think of the workflow as: claim -> script -> artifact -> test.
-- For every major claim in this repo, you can run the script and then run its test.
-- The long-form manuscript remains available at `docs/README_LIVING_PAPER_2026_02_11.md`.
+  ```powershell
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  . .\.venv\Scripts\Activate.ps1
+  pytest -q
+  ```
 
-## Start Here
+## Notes
 
-| Goal | Read | Run | Test |
-|---|---|---|---|
-| Understand the top-level correspondence | `README.md` (this page) + `docs/NOVEL_CONNECTIONS_2026_02_10.md` | `python scripts/w33_e8_correspondence_theorem.py` | `python -m pytest tests/test_e8_embedding.py -q` |
-| Reproduce homology and spectrum claims | `docs/STATUS_AND_GAPS.md` | `python scripts/w33_homology.py` and `python scripts/w33_hodge.py` | `python -m pytest tests/test_w33_hodge.py -q` |
-| Reproduce the qutrit/Heisenberg bridge | `reports/auto_ingest/W33_Heisenberg_action_bundle_20260209_v1_analysis_report.md` | `python scripts/w33_heisenberg_qutrit.py` | `python -m pytest tests/test_heisenberg_qutrit_structure.py -q` |
+- CI runs `sage-verification` workflow which produces `SUMMARY_RESULTS.json` and `NUMERIC_COMPARISONS.json` as artifacts. These files are validated by tests using JSON Schemas in `schemas/`.
+| Reproduce W33 = 2‑qutrit Pauli geometry | `QUANTUM_INFORMATION_EXTENSION.md` | `python scripts/w33_two_qutrit_pauli.py` | `python -m pytest tests/test_e8_embedding.py::TestTwoQutritPauli -q` |
+| Reproduce [g1,g1] → co-exact 120 (Lie bracket) | `scripts/w33_lie_bracket.py` | `python scripts/w33_lie_bracket.py` | `python -m pytest tests/test_e8_embedding.py::TestLieBracket -q` |
 | Reproduce the E6/F3 trilinear pipeline | `docs/NOVEL_CONNECTIONS_2026_02_10.md` + `docs/REDUCED_ORBIT_THEOREM_2026_02_10.md` | `python tools/build_e6_f3_trilinear_map.py` then `python tools/analyze_e6_f3_trilinear_symmetry_breaking.py` | `python -m pytest tests/test_e6_f3_trilinear.py tests/test_check_min_cert_orbit_involution_rule_smoke.py -q` |
 | Reproduce the `z=(2,2)` global exclusion | `docs/Z22_GLOBAL_STABILIZER_EXCLUSION_2026_02_11.md` | `python tools/prove_z22_no_global_stabilizer.py` | `python -m pytest tests/test_prove_z22_no_global_stabilizer_smoke.py -q` |
 | Reproduce the full global `z`-map census | `docs/GLOBAL_FULL_SIGN_STABILIZER_CENSUS_2026_02_11.md` | `python tools/classify_global_full_sign_stabilizers.py` | `python -m pytest tests/test_classify_global_full_sign_stabilizers_smoke.py -q` |

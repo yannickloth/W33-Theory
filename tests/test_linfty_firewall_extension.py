@@ -299,6 +299,196 @@ def test_mixed_triple_cancelled_by_l3_plus_ce2chain():
     linfty.detach_l4()
 
 
+def test_mixed_triple_cancelled_by_manual_lsq_candidate_3_1():
+    """Targeted regression: compute numeric LSQ U/V for the recorded mixed
+    failing triple (0,0),(17,1),(3,1), attach the resulting CE2 alpha and
+    verify the homotopy Jacobi is (numerically) zero without regressing
+    pure-sector checks.
+    """
+    import numpy as _np
+
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        assemble_l3_total_from_coeffs,
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = _np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        _np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    # build linfty helper
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # failing triple (numeric LSQ will be computed below)
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 1)
+
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    # prepare br_l2 and br_fibers for l3 contribution
+    br_l2 = toe.E8Z3Bracket(
+        e6_projector=proj,
+        cubic_triads=[t for t in all_triads if tuple(sorted(t[:3])) not in bad9],
+        scale_g1g1=1.0,
+        scale_g2g2=-1.0 / 6.0,
+        scale_e6=1.0,
+        scale_sl3=1.0 / 6.0,
+    )
+    br_fibers = [
+        toe.E8Z3Bracket(
+            e6_projector=proj,
+            cubic_triads=[T],
+            scale_g1g1=1.0,
+            scale_g2g2=-1.0 / 6.0,
+            scale_e6=1.0,
+            scale_sl3=1.0 / 6.0,
+        )
+        for T in [t for t in all_triads if tuple(sorted(t[:3])) in bad9]
+    ]
+
+    # target RHS = -(J + l3)
+    J = toe._jacobi(br_l2, x, y, z)
+    l3_total = assemble_l3_total_from_coeffs(
+        _np.array(
+            [
+                float(v)
+                for v in __import__("json").loads(
+                    open(
+                        "artifacts/linfty_coord_search_results_rationalized.json"
+                    ).read()
+                )["rationalized_coeffs_float"]
+            ]
+        ),
+        br_l2,
+        br_fibers,
+        toe,
+        x,
+        y,
+        z,
+    )
+
+    # flatten helpers
+    def flatten(e):
+        return _np.concatenate(
+            [e.e6.reshape(-1), e.sl3.reshape(-1), e.g1.reshape(-1), e.g2.reshape(-1)]
+        )
+
+    def flat_to_E8Z3(vec):
+        N = 27 * 27
+        e6 = vec[:N].reshape((27, 27)).astype(_np.complex128)
+        off = N
+        sl3 = vec[off : off + 9].reshape((3, 3)).astype(_np.complex128)
+        off += 9
+        g1 = vec[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+        off += 81
+        g2 = vec[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+        return toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+
+    Jflat = flatten(J)
+    l3flat = flatten(l3_total)
+    target = -(Jflat + l3flat)
+
+    # build linear action matrix (same as compute_local_ce2_alpha_for_triple)
+    Nflat = target.size
+    eye = _np.eye(Nflat, dtype=_np.complex128)
+    A_cols = []
+    B_cols = []
+    for i in range(Nflat):
+        vec = eye[:, i]
+        # convert flat vec -> E8Z3
+        N = 27 * 27
+        e6 = vec[:N].reshape((27, 27)).astype(_np.complex128)
+        off = N
+        sl3 = vec[off : off + 9].reshape((3, 3)).astype(_np.complex128)
+        off += 9
+        g1 = vec[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+        off += 81
+        g2 = vec[off : off + 81].reshape((27, 3)).astype(_np.complex128)
+        E = toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+        A_cols.append(flatten(br_l2.bracket(x, E)))
+        B_cols.append(-flatten(br_l2.bracket(y, E)))
+
+    A = _np.column_stack(A_cols)
+    B = _np.column_stack(B_cols)
+    M = _np.hstack([A, B])
+
+    M_real = _np.vstack([_np.real(M), _np.imag(M)])
+    rhs = _np.concatenate([_np.real(target), _np.imag(target)])
+
+    sol, *_ = _np.linalg.lstsq(M_real, rhs, rcond=None)
+    u = sol[:Nflat]
+    v = sol[Nflat:]
+
+    # build alpha from numeric U/V and attach
+    U_e8 = flat_to_E8Z3(u)
+    V_e8 = flat_to_E8Z3(v)
+
+    def alpha_num(a, b):
+        # alpha(y,z) = U
+        if _np.allclose(a.g1, y.g1) and _np.allclose(b.g1, z.g1):
+            return U_e8
+        if _np.allclose(a.g1, z.g1) and _np.allclose(b.g1, y.g1):
+            return U_e8.scale(-1.0)
+        if _np.allclose(a.g1, x.g1) and _np.allclose(b.g1, z.g1):
+            return V_e8
+        if _np.allclose(a.g1, z.g1) and _np.allclose(b.g1, x.g1):
+            return V_e8.scale(-1.0)
+        return toe.E8Z3.zero()
+
+    linfty.attach_ce2_alpha(alpha_num)
+    try:
+        tot = linfty.homotopy_jacobi(x, y, z)
+        assert float(_np.max(_np.abs(tot.g1))) < 1e-8
+
+        # sanity: pure-sector random samples should not regress
+        rng = _np.random.default_rng(20260212)
+        for _ in range(20):
+            xa = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+            ya = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+            za = toe._random_element(
+                rng,
+                e6_basis,
+                scale0=0,
+                scale1=2,
+                scale2=0,
+                include_g0=False,
+                include_g2=False,
+            )
+            hj = linfty.homotopy_jacobi(xa, ya, za)
+            assert float(_np.max(_np.abs(hj.g1))) < 1e-6
+    finally:
+        linfty.detach_ce2_alpha()
+
+
 def test_global_l4_assembled_from_local_alphas():
     """Assemble a global CE2 -> l4 from local per‑triple solutions and verify
     it cancels every failing triple recorded by the exhaustive verifier.

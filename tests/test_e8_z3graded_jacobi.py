@@ -67,6 +67,18 @@ def test_e8_z3graded_bracket_satisfies_jacobi():
             include_g1=False,
         )
 
+    def rand_g0():
+        return tool._random_element(
+            rng,
+            e6_basis,
+            scale0=2,
+            scale1=0,
+            scale2=0,
+            include_g0=True,
+            include_g1=False,
+            include_g2=False,
+        )
+
     def rand_all():
         return tool._random_element(
             rng,
@@ -80,6 +92,7 @@ def test_e8_z3graded_bracket_satisfies_jacobi():
         )
 
     cases = [
+        ("g0_g0_g0", (rand_g0, rand_g0, rand_g0)),
         ("g1_g1_g1", (rand_g1, rand_g1, rand_g1)),
         ("g2_g2_g2", (rand_g2, rand_g2, rand_g2)),
         ("g1_g1_g2", (rand_g1, rand_g1, rand_g2)),

@@ -173,8 +173,12 @@ def _e6_ad_mats(basis78: np.ndarray, h6: np.ndarray) -> np.ndarray:
         raise RuntimeError("E6 basis Gram not full rank")
     gram_inv = np.linalg.inv(gram)
 
+    # flattened basis for BLAS-backed projections (faster than einsum in loops)
+    basis78_flat = basis78.reshape(78, -1)
+
     def coords(M: np.ndarray) -> np.ndarray:
-        b = np.einsum("aij,ji->a", basis78, M)
+        M_flat = M.T.ravel()
+        b = basis78_flat @ M_flat
         return gram_inv @ b
 
     ad = np.zeros((6, 78, 78), dtype=np.complex128)
@@ -218,7 +222,8 @@ def _solve_e6_root_vector(
     if mx == 0.0:
         raise RuntimeError("Degenerate null vector")
     x = x / mx
-    X = np.tensordot(x, basis78, axes=(0, 0))
+    X_flat = x @ basis78.reshape(78, -1)
+    X = X_flat.reshape(27, 27)
     return X
 
 

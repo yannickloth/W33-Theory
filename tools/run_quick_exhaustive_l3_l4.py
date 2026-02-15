@@ -239,4 +239,4 @@ out["g1_g2_g2"] = {"passed": first_fail is None, "tested": tested, "first_fail":
 open(ROOT / 'artifacts' / 'exhaustive_homotopy_l3_l4.json','w',encoding='utf-8').write(json.dumps({'candidate_coeffs': [float(1/9.0)], 'sectors': out}, indent=2))
 print(json.dumps(out, indent=2))
 
-``` (truncated) —
+``` (truncated) -
