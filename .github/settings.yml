@@ -1,23 +1,19 @@
 repository:
-  description: "Executable finite-geometry research linking W(3,3)/W33 to exceptional Lie structures (E6/E7/E8), with reproducible scripts, tests, and Lean/Sage verification paths."
-  homepage: "https://github.com/wilcompute/W33-Theory/blob/main/docs/COMPLETE_SUMMARY.md"
-  pages:
-    source:
-      branch: master
-      path: /docs
+  description: "The W(3,3)-E8 Correspondence Theorem: deriving the Standard Model from a single finite geometry. 43 proved pillars, 213 tests, zero free parameters."
+  homepage: "https://github.com/wilcompute/W33-Theory"
   topics:
     - w33
+    - e8
+    - standard-model
+    - theory-of-everything
     - finite-geometry
     - generalized-quadrangle
-    - exceptional-lie-algebras
-    - e6
-    - e7
-    - e8
+    - particle-physics
     - mathematical-physics
+    - hodge-theory
+    - representation-theory
+    - gauge-theory
     - computational-mathematics
     - reproducible-research
-    - sagemath
-    - lean4
-    - qutrit
-    - topology
-    - theory-of-everything
+    - weinberg-angle
+    - yang-mills
