@@ -1,8 +1,11 @@
 import os
+
 import pytest
 
 
-@pytest.mark.skipif(os.environ.get("RUN_LONG_TESTS") != "1", reason="long tests disabled")
+@pytest.mark.skipif(
+    os.environ.get("RUN_LONG_TESTS") != "1", reason="long tests disabled"
+)
 def test_edge_orbit_census_smoke():
     from scripts.edge_to_e8_mapping import compute_edge_orbit_ids
 

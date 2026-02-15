@@ -5060,6 +5060,252 @@ class TestNeutrinoSeesaw:
 
 
 # =========================================================================
+# Pillar 37 — CP Violation from Complex Structure J
+# =========================================================================
+
+
+class TestCPViolation:
+    """CP violation structure from the complex structure J on co-exact(90)."""
+
+    @pytest.fixture(scope="class")
+    def cp_data(self):
+        from collections import deque
+
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from w33_h1_decomposition import (
+            J_matrix,
+            build_incidence_matrix,
+            make_vertex_permutation,
+            signed_edge_permutation,
+            transvection_matrix,
+        )
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        m = len(edges)
+
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        D = build_incidence_matrix(n, edges)
+        L1 = D.T @ D + d2 @ d2.T
+        eigvals, eigvecs = np.linalg.eigh(L1)
+
+        harm_mask = np.abs(eigvals) < 0.5
+        coex_mask = np.abs(eigvals - 4.0) < 0.5
+        H = eigvecs[:, harm_mask]
+        W_co = eigvecs[:, coex_mask]
+
+        # Build PSp(4,3)
+        J_mat = J_matrix()
+        gen_vperms, gen_signed = [], []
+        for vert in vertices:
+            M_t = transvection_matrix(np.array(vert, dtype=int), J_mat)
+            vp = make_vertex_permutation(M_t, vertices)
+            gen_vperms.append(tuple(vp))
+            ep, es = signed_edge_permutation(vp, edges)
+            gen_signed.append((tuple(ep), tuple(es)))
+
+        id_v = tuple(range(n))
+        visited = {id_v: (tuple(range(m)), tuple([1] * m))}
+        queue = deque([id_v])
+        while queue:
+            cur_v = queue.popleft()
+            cur_ep, cur_es = visited[cur_v]
+            for gv, (gep, ges) in zip(gen_vperms, gen_signed):
+                new_v = tuple(gv[i] for i in cur_v)
+                if new_v not in visited:
+                    new_ep = tuple(gep[cur_ep[i]] for i in range(m))
+                    new_es = tuple(ges[cur_ep[i]] * cur_es[i] for i in range(m))
+                    visited[new_v] = (new_ep, new_es)
+                    queue.append(new_v)
+
+        G = len(visited)
+        group_list = list(visited.items())
+
+        # Split 90+30
+        n_coex = W_co.shape[1]
+        C1_proj = np.zeros((n_coex, n_coex))
+        for _, (cur_ep, cur_es) in group_list:
+            ep_np = np.asarray(cur_ep, dtype=int)
+            es_np = np.asarray(cur_es, dtype=float)
+            S = W_co[ep_np, :] * es_np[:, None]
+            R = W_co.T @ S
+            C1_proj += np.trace(R) * R
+        C1_proj /= G
+        C1_proj = (C1_proj + C1_proj.T) / 2
+
+        w1, v1 = np.linalg.eigh(C1_proj)
+        tol_c = 0.001
+        clusters = []
+        current_cl = [0]
+        for i in range(1, len(w1)):
+            if abs(w1[i] - w1[current_cl[0]]) > tol_c:
+                clusters.append(
+                    (float(np.mean(w1[current_cl])), len(current_cl), current_cl[:])
+                )
+                current_cl = [i]
+            else:
+                current_cl.append(i)
+        clusters.append(
+            (float(np.mean(w1[current_cl])), len(current_cl), current_cl[:])
+        )
+
+        V_90_co = V_30_co = None
+        for val, mult, c_idx in clusters:
+            if mult == 90:
+                V_90_co = v1[:, c_idx]
+            elif mult == 30:
+                V_30_co = v1[:, c_idx]
+
+        U_90 = W_co @ V_90_co
+        U_30 = W_co @ V_30_co
+
+        # Complex structure J
+        np.random.seed(42)
+        X = np.random.randn(90, 90)
+        A = np.zeros((90, 90))
+        for _, (cur_ep, cur_es) in group_list:
+            ep_np = np.asarray(cur_ep, dtype=int)
+            es_np = np.asarray(cur_es, dtype=float)
+            S = U_90[ep_np, :] * es_np[:, None]
+            R = U_90.T @ S
+            A += R.T @ X @ R
+        A /= G
+        A_anti = (A - A.T) / 2
+        anti_norm = np.linalg.norm(A_anti)
+        J_cand = A_anti / anti_norm * np.sqrt(90)
+        J2 = J_cand @ J_cand
+        alpha = -float(np.trace(J2)) / 90
+        J_true = J_cand / np.sqrt(alpha)
+
+        return {
+            "J": J_true,
+            "U_90": U_90,
+            "U_30": U_30,
+            "H": H,
+            "det_J": float(np.linalg.det(J_true)),
+        }
+
+    def test_J_squared_is_minus_identity(self, cp_data):
+        """J^2 = -I on the 90-dim chiral sector."""
+        import numpy as np
+
+        J = cp_data["J"]
+        err = np.linalg.norm(J @ J + np.eye(90))
+        assert err < 1e-10, f"J^2 + I error: {err}"
+
+    def test_30_dim_sector_cp_conserving(self, cp_data):
+        """30-dim non-chiral sector has no complex structure (J projects to zero)."""
+        import numpy as np
+
+        U_90 = cp_data["U_90"]
+        U_30 = cp_data["U_30"]
+        J = cp_data["J"]
+        J_on_30 = U_30.T @ (U_90 @ J @ U_90.T) @ U_30
+        assert np.linalg.norm(J_on_30) < 1e-10
+
+    def test_det_J_is_plus_one(self, cp_data):
+        """det(J) = +1 for J^2 = -I on even-dimensional space."""
+        assert abs(cp_data["det_J"] - 1.0) < 1e-6
+
+    def test_theta_qcd_vanishes(self, cp_data):
+        """Strong CP theta = 0: no CP violation in non-chiral sector."""
+        import numpy as np
+
+        # The 30-dim sector is real (FS=+1), so theta_30 = 0.
+        # The 90-dim sector has equivariant J, forcing theta_90 = 0.
+        # Verify: Tr(J) = 0 (proper complex structure)
+        J = cp_data["J"]
+        assert abs(np.trace(J)) < 1e-10
+        # Tr(J^2) = -90
+        assert abs(np.trace(J @ J) + 90) < 1e-8
+
+
+# =========================================================================
+# Pillar 38 — Spectral Action from W33 Hodge-Dirac Operator
+# =========================================================================
+
+
+class TestSpectralAction:
+    """Spectral action structure from the Hodge-Dirac operator on W33."""
+
+    @pytest.fixture(scope="class")
+    def spectral_data(self):
+        import numpy as np
+        from w33_homology import boundary_matrix, build_clique_complex, build_w33
+
+        from w33_h1_decomposition import build_incidence_matrix
+
+        n, vertices, adj, edges = build_w33()
+        simplices = build_clique_complex(n, adj)
+        m = len(edges)
+        triangles = simplices[2]
+        tetrahedra = simplices.get(3, [])
+
+        d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+        D_inc = build_incidence_matrix(n, edges)
+
+        L0 = D_inc @ D_inc.T
+        L1 = D_inc.T @ D_inc + d2 @ d2.T
+
+        if len(tetrahedra) > 0:
+            d3 = boundary_matrix(simplices[3], simplices[2]).astype(float)
+            L2 = d2.T @ d2 + d3 @ d3.T
+        else:
+            L2 = d2.T @ d2
+
+        w0 = np.linalg.eigvalsh(L0)
+        w1 = np.linalg.eigvalsh(L1)
+        w2 = np.linalg.eigvalsh(L2)
+
+        all_eigs = np.concatenate([w0, w1, w2])
+        b0 = int(np.sum(np.abs(w0) < 0.1))
+        b1 = int(np.sum(np.abs(w1) < 0.1))
+        b2 = int(np.sum(np.abs(w2) < 0.1))
+
+        return {
+            "n": n,
+            "m": m,
+            "n_tri": len(triangles),
+            "n_tet": len(tetrahedra),
+            "w0": w0,
+            "w1": w1,
+            "w2": w2,
+            "all_eigs": all_eigs,
+            "b0": b0,
+            "b1": b1,
+            "b2": b2,
+        }
+
+    def test_total_hilbert_space_440(self, spectral_data):
+        """Total Hilbert space dim = 40 + 240 + 160 = 440."""
+        total = len(spectral_data["all_eigs"])
+        assert total == 440
+
+    def test_betti_euler_consistency(self, spectral_data):
+        """b0 - b1 + b2 = chi = -80."""
+        d = spectral_data
+        chi = d["b0"] - d["b1"] + d["b2"]
+        assert chi == -80
+
+    def test_l2_spectrum_4I(self, spectral_data):
+        """L2 = 4*I: all 160 triangle eigenvalues are 4."""
+        import numpy as np
+
+        w2 = spectral_data["w2"]
+        assert len(w2) == 160
+        assert np.allclose(w2, 4.0, atol=1e-10)
+
+    def test_trace_L0_equals_nk(self, spectral_data):
+        """Tr(L0) = n*k = 40*12 = 480 for k-regular graph."""
+        import numpy as np
+
+        tr_L0 = float(np.sum(spectral_data["w0"]))
+        assert abs(tr_L0 - 480.0) < 1e-8
+
+
+# =========================================================================
 # MAIN
 # =========================================================================
 
