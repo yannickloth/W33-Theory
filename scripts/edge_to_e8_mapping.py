@@ -793,7 +793,9 @@ def compute_edge_orbit_ids(cache_path=None, force=False):
     if cache_path.exists() and not force:
         try:
             j = json.loads(cache_path.read_text(encoding="utf-8"))
-            edge_to_orbit = [int(j["edge_to_orbit"][str(i)]) for i in range(len(j["edge_to_orbit"]))]
+            edge_to_orbit = [
+                int(j["edge_to_orbit"][str(i)]) for i in range(len(j["edge_to_orbit"]))
+            ]
             orbit_sizes = {int(k): int(v) for k, v in j.get("orbit_sizes", {}).items()}
             return edge_to_orbit, orbit_sizes
         except Exception:
@@ -842,7 +844,16 @@ def compute_edge_orbit_ids(cache_path=None, force=False):
     # cache
     try:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        json.dump({"edge_to_orbit": {str(i): int(edge_orbit_id[i]) for i in range(len(edge_orbit_id))}, "orbit_sizes": {str(k): int(v) for k, v in orbit_sizes.items()}}, cache_path.open("w", encoding="utf-8"), indent=2)
+        json.dump(
+            {
+                "edge_to_orbit": {
+                    str(i): int(edge_orbit_id[i]) for i in range(len(edge_orbit_id))
+                },
+                "orbit_sizes": {str(k): int(v) for k, v in orbit_sizes.items()},
+            },
+            cache_path.open("w", encoding="utf-8"),
+            indent=2,
+        )
     except Exception:
         pass
 
@@ -949,7 +960,8 @@ def compute_feature_vectors(k=16, use_orbit_features=False):
     if use_orbit:
         edge_orbit_id, orbit_sizes = compute_edge_orbit_ids()
         orbit_size_arr = np.array(
-            [orbit_sizes.get(int(edge_orbit_id[i]), 1) for i in range(n_edges)], dtype=float
+            [orbit_sizes.get(int(edge_orbit_id[i]), 1) for i in range(n_edges)],
+            dtype=float,
         ).reshape(-1, 1)
         base_edge_feats.append(orbit_size_arr)
 
@@ -1031,12 +1043,16 @@ def build_score_matrix(edge_feats, root_feats, meta, weights=None):
     return score
 
 
-def run_feature_hungarian_mapping(weights=None, write_artifact=True, use_orbit_features=False):
+def run_feature_hungarian_mapping(
+    weights=None, write_artifact=True, use_orbit_features=False
+):
     """Compute feature-driven score matrix and run Hungarian assignment.
 
     Returns mapping dict edge->root_tuple and stats.
     """
-    edge_feats, root_feats, meta = compute_feature_vectors(k=16, use_orbit_features=use_orbit_features)
+    edge_feats, root_feats, meta = compute_feature_vectors(
+        k=16, use_orbit_features=use_orbit_features
+    )
     score = build_score_matrix(edge_feats, root_feats, meta, weights=weights)
 
     try:

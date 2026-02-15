@@ -182,15 +182,17 @@ def verify_candidate(
 
 if __name__ == "__main__":
     # parameters to sweep (expanded grid + targeted row‑reduction mode)
-    denoms = [60, 120, 240, 360, 480]
-    support_limits = [1, 2, 3, 4, 5]
-    scale_choices = [100_000, 1_000_000, 2_000_000]
+    denoms = [60, 120, 240, 360, 480, 720, 960]
+    support_limits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # larger integer scaling choices to improve integer-relaxation behavior
+    scale_choices = [100_000, 1_000_000, 2_000_000, 5_000_000]
     # try a few row-reduction trims (None = use all rows; otherwise keep top-k rows by |RHS|)
     row_trims = [None, 40, 80]
-    time_limit = 90.0  # seconds per CP-SAT solve
-    # allow somewhat larger numerators relative to denominator (up from 0.2*D -> 0.4*D)
+    # increase per-solve time budget to allow harder instances to complete
+    time_limit = 240.0  # seconds per CP-SAT solve
+    # allow somewhat larger numerators relative to denominator (up from 0.2*D -> 0.6*D)
     # (this changes the range for `num_i` variables inside the solver)
-    max_num_factor = 0.4
+    max_num_factor = 0.6
 
     toe = _load_toe()
     e6_basis = np.load(
@@ -262,78 +264,80 @@ if __name__ == "__main__":
     r_uniform = (A_sub @ np.array([1.0 / 9.0] * A_sub.shape[1])) + Jflat[nz]
     r_realstack = np.concatenate([np.real(r_uniform), np.imag(r_uniform)])
 
+    # Prefer ortools from the project virtualenv; fall back to auto-install helper
+try:
+    from ortools.sat.python import cp_model  # type: ignore
+except Exception:
     cp_model = _try_import_ortools()
 
-    found = False
-    best_solution = None
+found = False
+best_solution = None
 
-    for D in denoms:
-        for support_limit in support_limits:
-            for scale in scale_choices:
-                for row_trim in row_trims:
-                    rt_str = f"rows≤{row_trim}" if row_trim is not None else "rows=all"
-                    print(
-                        f"CP-SAT attempt: denom={D} support≤{support_limit} scale={scale} {rt_str}"
-                    )
+for D in denoms:
+    for support_limit in support_limits:
+        for scale in scale_choices:
+            for row_trim in row_trims:
+                rt_str = f"rows≤{row_trim}" if row_trim is not None else "rows=all"
+                print(
+                    f"CP-SAT attempt: denom={D} support≤{support_limit} scale={scale} {rt_str}"
+                )
 
-                # build integer matrix C = round(scale * A_realstack)
-                C = np.rint(scale * A_realstack).astype(np.int64)
-                RHS = np.rint(-scale * D * r_realstack).astype(np.int64)
+            # build integer matrix C = round(scale * A_realstack)
+            C = np.rint(scale * A_realstack).astype(np.int64)
+            RHS = np.rint(-scale * D * r_realstack).astype(np.int64)
 
-                # quick numeric diagnostic: check gcd of row coefficients to trim rows
-                # (skip rows where all C[:,i] are zero and RHS==0)
-                useful_rows = [
-                    i
-                    for i in range(C.shape[0])
-                    if not (np.all(C[i, :] == 0) and RHS[i] == 0)
-                ]
-                C_use = C[useful_rows, :]
-                RHS_use = RHS[useful_rows]
+            # quick numeric diagnostic: check gcd of row coefficients to trim rows
+            # (skip rows where all C[:,i] are zero and RHS==0)
+            useful_rows = [
+                i
+                for i in range(C.shape[0])
+                if not (np.all(C[i, :] == 0) and RHS[i] == 0)
+            ]
+            C_use = C[useful_rows, :]
+            RHS_use = RHS[useful_rows]
 
-                # optional row‑reduction (targeted CP‑SAT): keep only top-|RHS| rows
-                if row_trim is not None and row_trim > 0 and row_trim < C_use.shape[0]:
-                    ord_idx = np.argsort(-np.abs(RHS_use))
-                    keep = ord_idx[:row_trim]
-                    C_use = C_use[keep, :]
-                    RHS_use = RHS_use[keep]
-                    # remap useful_rows for debugging prints later
-                    useful_rows = [useful_rows[i] for i in keep.tolist()]
+            # optional row‑reduction (targeted CP‑SAT): keep only top-|RHS| rows
+            if row_trim is not None and row_trim > 0 and row_trim < C_use.shape[0]:
+                ord_idx = np.argsort(-np.abs(RHS_use))
+                keep = ord_idx[:row_trim]
+                C_use = C_use[keep, :]
+                RHS_use = RHS_use[keep]
+                # remap useful_rows for debugging prints later
+                useful_rows = [useful_rows[i] for i in keep.tolist()]
 
-                model = cp_model.CpModel()
-                num_vars = []
-                s_vars = []
-                abs_vars = []
-                max_num = int(math.floor(max_num_factor * D)) if D >= 5 else D
-                max_num = max(1, max_num)
+            model = cp_model.CpModel()
+            num_vars = []
+            s_vars = []
+            abs_vars = []
+            max_num = int(math.floor(max_num_factor * D)) if D >= 5 else D
+            max_num = max(1, max_num)
 
-                for i in range(C_use.shape[1]):
-                    v = model.NewIntVar(-max_num, max_num, f"num_{i}")
-                    bvar = model.NewBoolVar(f"s_{i}")
-                    av = model.NewIntVar(0, max_num, f"abs_{i}")
-                    # linking: if s_i == 0 then num_i == 0
-                    model.Add(v <= max_num * bvar)
-                    model.Add(v >= -max_num * bvar)
-                    # absolute
-                    model.AddAbsEquality(av, v)
-                    num_vars.append(v)
-                    s_vars.append(bvar)
-                    abs_vars.append(av)
+            for i in range(C_use.shape[1]):
+                v = model.NewIntVar(-max_num, max_num, f"num_{i}")
+                bvar = model.NewBoolVar(f"s_{i}")
+                av = model.NewIntVar(0, max_num, f"abs_{i}")
+                # linking: if s_i == 0 then num_i == 0
+                model.Add(v <= max_num * bvar)
+                model.Add(v >= -max_num * bvar)
+                # absolute
+                model.AddAbsEquality(av, v)
+                num_vars.append(v)
+                s_vars.append(bvar)
+                abs_vars.append(av)
 
-                # linear equality constraints: sum_j C[row, i] * num_i == RHS[row]
-                for ridx in range(C_use.shape[0]):
-                    row_coeffs = C_use[ridx, :].tolist()
-                    if all(ci == 0 for ci in row_coeffs):
-                        # require RHS_use[ridx] == 0
-                        if RHS_use[ridx] != 0:
-                            # impossible under this scaling, mark infeasible
-                            model.Add(
-                                RHS_use[ridx] == RHS_use[ridx] + 1
-                            )  # unsat trivial
-                        continue
-                    model.Add(
-                        sum(row_coeffs[i] * num_vars[i] for i in range(len(num_vars)))
-                        == int(RHS_use[ridx])
-                    )
+            # linear equality constraints: sum_j C[row, i] * num_i == RHS[row]
+            for ridx in range(C_use.shape[0]):
+                row_coeffs = C_use[ridx, :].tolist()
+                if all(ci == 0 for ci in row_coeffs):
+                    # require RHS_use[ridx] == 0
+                    if RHS_use[ridx] != 0:
+                        # impossible under this scaling, mark infeasible
+                        model.Add(RHS_use[ridx] == RHS_use[ridx] + 1)  # unsat trivial
+                    continue
+                model.Add(
+                    sum(row_coeffs[i] * num_vars[i] for i in range(len(num_vars)))
+                    == int(RHS_use[ridx])
+                )
 
                 # support limit
                 model.Add(sum(s_vars) <= support_limit)

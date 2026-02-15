@@ -126,10 +126,11 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     keys = np.array([list(r.key) for r in roots_sorted], dtype=np.int64)
     weights = np.array([r.weight for r in roots_sorted], dtype=np.complex128)
-    mats = np.array(
-        [np.tensordot(r.eigvec, basis, axes=([0], [0])) for r in roots_sorted],
-        dtype=np.complex128,
-    )
+    # BLAS-backed construction of root operator matrices (faster than per-item tensordot)
+    basis_flat = basis.reshape(78, -1)
+    eigvecs_mat = np.vstack([r.eigvec for r in roots_sorted]).astype(np.complex128)
+    mats = (eigvecs_mat @ basis_flat).reshape(len(roots_sorted), 27, 27)
+    mats = mats.astype(np.complex128)
     norms = np.array([float(np.linalg.norm(m)) for m in mats], dtype=np.float64)
 
     # Determine a positive half using the same positivity rule as the normalizer.

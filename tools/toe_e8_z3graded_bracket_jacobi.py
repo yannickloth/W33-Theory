@@ -129,6 +129,8 @@ class E6Projector:
         if basis78.shape != (78, 27, 27):
             raise ValueError(f"Expected (78,27,27); got {basis78.shape}")
         self.basis = basis78.astype(np.complex128)
+        # flattened view for faster projections (78 x 729)
+        self._basis_flat = self.basis.reshape(78, -1)
 
         # Gram_{ab} = Tr(B_a B_b) = sum_{i,j} B_a[i,j] * B_b[j,i]
         gram = np.einsum("aij,bji->ab", self.basis, self.basis)
@@ -143,10 +145,13 @@ class E6Projector:
     def project(self, M: np.ndarray) -> np.ndarray:
         if M.shape != (27, 27):
             raise ValueError(f"Expected (27,27); got {M.shape}")
-        # b_a = Tr(B_a M)
-        b = np.einsum("aij,ji->a", self.basis, M)
+        # Use flattened basis + BLAS-backed dot products for speed:
+        # b_a = Σ_{i,j} basis[a,i,j] * M[j,i]  == basis_flat @ M.T.ravel()
+        M_flat = M.T.ravel()
+        b = self._basis_flat @ M_flat
         c = self.gram_inv @ b
-        return np.tensordot(c, self.basis, axes=(0, 0))
+        out_flat = c @ self._basis_flat
+        return out_flat.reshape(27, 27)
 
 
 class E8Z3Bracket:
@@ -162,6 +167,13 @@ class E8Z3Bracket:
     ):
         self._proj_e6 = e6_projector
         self._triads = list(cubic_triads)
+        # precompute triad index arrays and complex signs for vectorized cubic_sym
+        triads_arr = np.array(self._triads, dtype=int)
+        self._triad_a = triads_arr[:, 0]
+        self._triad_b = triads_arr[:, 1]
+        self._triad_c = triads_arr[:, 2]
+        # keep signs as complex128 (allows non-integer scaling if needed)
+        self._triad_sign = triads_arr[:, 3].astype(np.complex128)
         self.scale_g1g1 = float(scale_g1g1)
         self.scale_g2g2 = float(scale_g2g2)
         self.scale_e6 = float(scale_e6)
@@ -169,19 +181,26 @@ class E8Z3Bracket:
 
     def cubic_sym(self, u: np.ndarray, v: np.ndarray, *, scale: float) -> np.ndarray:
         """
-        Symmetric bilinear map S^2(27) -> 27* induced by the 45-term cubic.
-        In coordinates: (u,v) ↦ w with w_a = Σ_{b,c} d_{a b c} u_b v_c, with d symmetric.
+        Vectorized symmetric bilinear map S^2(27) -> 27* induced by the cubic triads.
+        Replaces the Python triad loop with NumPy indexing and accumulation for speed.
         """
         if u.shape != (27,) or v.shape != (27,):
             raise ValueError("Expected u,v shape (27,)")
+        a = self._triad_a
+        b = self._triad_b
+        c = self._triad_c
+        s = self._triad_sign * float(scale)
+
+        # vectorized contributions for each triad
+        contrib_a = s * (u[b] * v[c] + u[c] * v[b])
+        contrib_b = s * (u[a] * v[c] + u[c] * v[a])
+        contrib_c = s * (u[a] * v[b] + u[b] * v[a])
+
         out = np.zeros(27, dtype=np.complex128)
-        for i, j, k, s in self._triads:
-            ss = complex(s) * float(scale)
-            ui, uj, uk = u[i], u[j], u[k]
-            vi, vj, vk = v[i], v[j], v[k]
-            out[i] += ss * (uj * vk + uk * vj)
-            out[j] += ss * (ui * vk + uk * vi)
-            out[k] += ss * (ui * vj + uj * vi)
+        # accumulate contributions (handles repeated indices safely)
+        np.add.at(out, a, contrib_a)
+        np.add.at(out, b, contrib_b)
+        np.add.at(out, c, contrib_c)
         return out
 
     def bracket_g1_g1(self, X: np.ndarray, Y: np.ndarray) -> np.ndarray:
