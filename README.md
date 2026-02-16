@@ -291,13 +291,13 @@ yields 3/8 **only** for q = 3. This is the SU(5) GUT boundary condition, derived
 
 ## Authors
 
-**William Dembski Jr.** and **Claude** (Anthropic)
+**Wil Dahn** and **Claude** (Anthropic)
 
 ## Citation
 
 ```bibtex
 @software{dembski_w33_e8_2026,
-  author = {Dembski, William Jr. and Claude},
+  author = {Dahn, Wil and Claude},
   title = {The {W}(3,3)--{E8} Correspondence Theorem:
            Deriving the Standard Model from Finite Geometry},
   year = {2026},
