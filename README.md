@@ -3,7 +3,7 @@
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
 [![Tests](https://img.shields.io/badge/tests-254%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-53%20proved-blue)]()
+[![Pillars](https://img.shields.io/badge/pillars-56%20proved-blue)]()
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
@@ -32,7 +32,7 @@ Every claim is backed by executable Python code. Every number is reproducible fr
 
 ---
 
-## The 43 Pillars
+## The 56 Pillars
 
 Each pillar is a proved theorem with an accompanying test. Click any pillar to see the verification script.
 
@@ -184,7 +184,7 @@ python scripts/w33_confinement.py
 # Verify anomaly cancellation
 python scripts/w33_anomaly_cancellation.py
 
-# Verify all 43 pillars in one shot
+# Verify all 56 pillars in one shot
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
