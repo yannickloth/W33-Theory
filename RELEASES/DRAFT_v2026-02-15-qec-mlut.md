@@ -2,35 +2,37 @@ Release: Pillar-45 — GF(3) QEC primitives + MLUT decoder (draft)
 
 Tag: v2026-02-15-qec-mlut (suggested)
 
-Summary
-- This release formalizes Pillar‑45: GF(3) qutrit QEC primitives derived from the W(3,3) finite geometry and integrated into the W33→E8 codebase. It adds encoder/decoder implementations, MLUT (exact and approximate) decoders, coverage statistics, unit/property/benchmark tests, CI notebook execution, and performance micro‑optimizations.
+**Correction notice (2026-02-15):** The published GitHub Release body previously displayed character-encoding (mojibake). The canonical, corrected release notes are maintained in `docs/outreach/pillar-45-qec.md`; the README badge points there. The Release on GitHub is being refreshed to match this canonical text and preserve DOI/assets.
 
-Notable changes (high level)
-- scripts/w33_quantum_error_correction.py — new public API for GF(3) encode/decode and MLUT utilities
-- notebooks/w33_qec_demo.ipynb — executed demo and visualization
-- tests/test_e8_embedding.py — added comprehensive QEC test coverage
-- .github/workflows/qec.yml — CI workflow to run QEC tests, execute the demo notebook, and run an MLUT benchmark
+Overview
+- This release introduces reproducible GF(3) (qutrit) quantum‑error‑correction primitives derived from the W(3,3) finite geometry. It provides encoder/decoder implementations, exact and approximate MLUT (table‑lookup) decoders, coverage analytics, a fully executed demo notebook, deterministic tests, and CI-driven benchmarks.
 
-How to verify
-- Run the targeted QEC tests: `pytest -q tests/test_e8_embedding.py::TestQuantumErrorCorrection`
-- Execute demo: `jupyter nbconvert --to notebook --execute --inplace notebooks/w33_qec_demo.ipynb`
+What’s included
+- `scripts/w33_quantum_error_correction.py` — GF(3) encoder/decoder API, syndrome helpers, MLUT builders (exact + approximate), coverage/statistics helpers.
+- `notebooks/w33_qec_demo.ipynb` — executed demonstration showing encode/decode, MLUT construction and coverage visualizations.
+- `tests/test_e8_embedding.py` — deterministic unit & property tests for QEC primitives (seeded RNGs where applicable).
+- `.github/workflows/qec.yml` — CI workflow that runs the demo notebook, targeted QEC tests, and MLUT micro‑benchmarks.
 
-Assets
-- Demo notebook (executed) attached to the release (after publishing)
-- Example outputs: `checks/PART_CXV_qec_*.json`
+Why this matters
+- Connects the W(3,3) finite geometry to practical qutrit QEC tools and provides a small, reproducible codebase for experimentation and benchmarking.
 
+Verify (quick)
+- Run unit tests: `pytest -q tests/test_e8_embedding.py::TestQuantumErrorCorrection`
+- Execute demo notebook: `jupyter nbconvert --to notebook --execute --inplace notebooks/w33_qec_demo.ipynb`
+- Run the MLUT benchmark via CI (see Actions → QEC CI badge).
 
-- Zenodo DOI: https://doi.org/10.5281/zenodo.18652825
-- Publish to Zenodo (automated)
-  - The GitHub Actions workflow `release_to_zenodo` automatically creates and publishes a Zenodo deposition when this GitHub Release is published (requires the `ZENODO_TOKEN` repo secret). The Zenodo DOI will be inserted automatically into the release notes and repository README by CI.
-- Draft blog post & social announcement (included in `outreach/`)
-- Solicit benchmarks from the community (issue/discussion)
+DOI & publishing
+- Zenodo DOI: [10.5281/zenodo.18652825](https://doi.org/10.5281/zenodo.18652825)
+- Automated Zenodo deposition is triggered by the `release_to_zenodo` workflow when this GitHub Release is published (requires `ZENODO_TOKEN`).
+
+Changelog (high level)
+- Add: GF(3) encoder/decoder, syndrome + MLUT decoders
+- Add: approximate MLUT sampler, coverage analytics
+- Add: demo notebook, deterministic tests, CI workflow
+- Perf: fast‑syndrome helper and MLUT optimizations
 
 Contributors
-- Wilj D. (author), + reviewers
+- Wilj D. (author), reviewers & contributors
 
-Changelog (brief)
-- Add: GF(3) encoder/decoder, syndrome & MLUT decoders
-- Add: approximate MLUT sampler + coverage stats
-- Add: notebook, unit/property tests, CI
-- Perf: fast‑syndrome helper and MLUT optimizations
+Notes
+- This is a draft release; please review the demo and tests and open issues/PRs for corrections or follow‑ups.
