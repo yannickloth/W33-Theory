@@ -6732,6 +6732,148 @@ class TestModularForms:
             assert d["relative_diff"] < 1e-10
 
 
+# -------------------------------------------------------------------------
+# Pillar 54: Category theory / topos structure
+# -------------------------------------------------------------------------
+
+
+class TestCategoryTopos:
+    """Incidence category, sheaf cohomology, functor structure (Pillar 54)."""
+
+    @pytest.fixture(scope="class")
+    def category_data(self):
+        from scripts.w33_category_topos import analyze_category_topos
+
+        data = analyze_category_topos()
+        return data
+
+    def test_incidence_category(self, category_data):
+        inc = category_data["incidence"]
+        assert inc["n_points"] == 40
+        assert inc["n_lines"] == 40
+        assert inc["is_self_dual"] is True
+        assert inc["points_per_line"] == 4
+        assert inc["lines_per_point"] == 4
+
+    def test_nerve_and_euler(self, category_data):
+        nerve = category_data["nerve"]
+        assert nerve["nerve_dimensions"][0] == 40
+        assert nerve["euler_characteristic"] == -80
+
+    def test_subobject_classifier(self, category_data):
+        omega = category_data["subobject"]
+        assert omega["lines_per_point"] == 4
+        assert omega["z3_gives_three_generations"] is True
+        assert omega["gq_collinearity"] == 1
+
+    def test_sheaf_cohomology(self, category_data):
+        sheaf = category_data["sheaf"]
+        assert sheaf["h0"] == 1
+        assert sheaf["h1_equals_81"] is True
+        assert sheaf["poincare_duality"] is True
+
+    def test_functor_and_naturality(self, category_data):
+        func = category_data["functor"]
+        nat = category_data["natural"]
+        assert func["generations_per_vertex"] == 3
+        assert func["local_gen_total"] == 120
+        assert func["gauge_redundancy"] == 39
+        assert func["redundancy_equals_exact"] is True
+        assert nat["bose_mesner_dimension"] == 3
+        assert nat["aut_group_order"] == 51840
+
+
+# -------------------------------------------------------------------------
+# Pillar 55: Biological information / ternary codes
+# -------------------------------------------------------------------------
+
+
+class TestBiologicalInformation:
+    """GF(3) codes, spectral error correction, folding landscape (Pillar 55)."""
+
+    @pytest.fixture(scope="class")
+    def bio_data(self):
+        from scripts.w33_biological_code import analyze_biological_code
+
+        data = analyze_biological_code()
+        return data
+
+    def test_gf3_hamming(self, bio_data):
+        ham = bio_data["hamming"]
+        assert ham["alphabet_size"] == 3
+        assert ham["codeword_count"] == 81
+        assert ham["distribution_matches"] is True
+
+    def test_codon_parallel(self, bio_data):
+        gen = bio_data["genetic"]
+        assert gen["genetic_codons"] == 64
+        assert gen["w33_modes"] == 81
+        assert gen["w33_generations"] == 3
+
+    def test_spectral_error_correction(self, bio_data):
+        sec = bio_data["spectral_code"]
+        assert sec["code_length_n"] == 240
+        assert sec["code_dimension_k"] == 81
+        assert sec["code_distance_d"] == 4
+
+    def test_folding_landscape(self, bio_data):
+        fold = bio_data["folding"]
+        assert fold["n_folded"] == 81
+        assert fold["n_unfolded"] == 159
+        assert abs(fold["funnel_depth"] - 4.0) < 1e-10
+        assert fold["folding_temperature"] is not None
+
+    def test_neural_ternary(self, bio_data):
+        neural = bio_data["neural"]
+        assert neural["n_neurons"] == 40
+        assert neural["connections_per_neuron"] == 12
+        assert neural["n_memories"] == 81
+
+
+# -------------------------------------------------------------------------
+# Pillar 56: Cryptographic lattice / E8 & Leech
+# -------------------------------------------------------------------------
+
+
+class TestCryptographicLattice:
+    """E8 roots, SVP hardness, Hodge projection as hash (Pillar 56)."""
+
+    @pytest.fixture(scope="class")
+    def crypto_data(self):
+        from scripts.w33_cryptographic_lattice import analyze_cryptographic_lattice
+
+        data = analyze_cryptographic_lattice()
+        return data
+
+    def test_e8_roots_and_cartan(self, crypto_data):
+        e8 = crypto_data["e8"]
+        assert e8["n_roots"] == 240
+        assert e8["all_norm_sq_2"] is True
+        assert e8["kissing_number"] == 240
+        assert e8["is_unimodular"] is True
+        assert e8["cartan_determinant"] == 1
+
+    def test_svp_and_hash(self, crypto_data):
+        svp = crypto_data["svp"]
+        hf = crypto_data["hash"]
+        assert svp["hermite_constant_e8"] == 2.0
+        assert svp["spectral_shortest_vector"] == 4
+        assert hf["output_dimension"] == 81
+        assert hf["kernel_dimension"] == 159
+        assert abs(hf["min_collision_norm"] - 2.0) < 1e-10
+        assert abs(hf["avalanche_fraction"] - 81 / 240) < 1e-10
+
+    def test_group_and_leech(self, crypto_data):
+        grp = crypto_data["group"]
+        leech = crypto_data["leech"]
+        assert grp["order"] == 51840
+        assert grp["faithful_rep_dim"] == 81
+        assert leech["e8_roots"] == 240
+        assert leech["leech_kissing"] == 196560
+        assert leech["ratio"] == 273
+        assert leech["n_copies"] == 3
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
