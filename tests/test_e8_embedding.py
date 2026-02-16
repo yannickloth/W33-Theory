@@ -6874,6 +6874,42 @@ class TestCryptographicLattice:
         assert leech["n_copies"] == 3
 
 
+# -------------------------------------------------------------------------
+# Pillar 57: Leech lattice, Monster numerology, Moonshine observables
+# -------------------------------------------------------------------------
+
+
+class TestLeechMonster:
+    """Numerology linking E8^3, the Leech lattice, and Monster rep dims."""
+
+    @pytest.fixture(scope="class")
+    def lm_data(self):
+        from scripts.w33_leech_monster import analyze_leech_monster
+
+        return analyze_leech_monster()
+
+    def test_e8_and_leech_counts(self, lm_data):
+        assert lm_data["e8_roots"] == 240
+        assert lm_data["e8_cubed_roots"] == 720
+        assert lm_data["leech_kissing"] == 196560
+        assert lm_data["ratio"] == 273
+
+    def test_monster_near_miss(self, lm_data):
+        # Smallest nontrivial Monster rep = 196883 (McKay/Thompson)
+        assert lm_data["monster_min_rep"] == 196883
+        assert lm_data["monster_diff"] == 323
+
+    def test_j_series_relation(self, lm_data):
+        # Klein j single-coefficient comparison vs Leech kissing number
+        assert lm_data["j1"] == 196884
+        assert lm_data["j_minus_leech"] == 324
+
+    def test_symmetry_orders(self, lm_data):
+        assert lm_data["psp_cubed_order"] == 51840**3
+        assert lm_data["co0_order"] == 8315553613086720000
+        assert lm_data["excess_symmetry_factor"] > 1.0
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
