@@ -170,7 +170,7 @@ pip install numpy sympy pytest
 python -m pytest tests/test_e8_embedding.py -q
 ```
 
-254 tests across 58 test classes, covering every pillar.
+267 tests across 62 test classes, covering every pillar.
 
 ### Run individual pillar verifications
 
