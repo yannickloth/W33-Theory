@@ -707,24 +707,29 @@ class LInftyE8Extension:
                 def alpha_from_ce2(a, b):
                     acc = self.tool.E8Z3.zero()
                     if np.any(a.g1) and np.any(b.g2):
-                        idxA = tuple(np.argwhere(np.abs(a.g1) > 0.5)[0].tolist())
-                        idxB = tuple(np.argwhere(np.abs(b.g2) > 0.5)[0].tolist())
+                        # look for a clear basis-index match (require magnitude > 0.5)
+                        idxA_cand = np.argwhere(np.abs(a.g1) > 0.5)
+                        idxB_cand = np.argwhere(np.abs(b.g2) > 0.5)
+                        if idxA_cand.size > 0 and idxB_cand.size > 0:
+                            idxA = tuple(idxA_cand[0].tolist())
+                            idxB = tuple(idxB_cand[0].tolist())
 
-                        # U: alpha(y,z) lookup keyed by (b_idx, c_idx)
-                        Um = pair_U.get((idxA, idxB))
-                        if Um is not None:
-                            acc = acc + flat_numeric_to_e8(Um)
-                        Um2 = pair_U.get((idxB, idxA))
-                        if Um2 is not None:
-                            acc = acc - flat_numeric_to_e8(Um2)
+                            # U: alpha(y,z) lookup keyed by (b_idx, c_idx)
+                            Um = pair_U.get((idxA, idxB))
+                            if Um is not None:
+                                acc = acc + flat_numeric_to_e8(Um)
+                            Um2 = pair_U.get((idxB, idxA))
+                            if Um2 is not None:
+                                acc = acc - flat_numeric_to_e8(Um2)
 
-                        # V: alpha(x,z) lookup keyed by (a_idx, c_idx)
-                        Vm = pair_V.get((idxA, idxB))
-                        if Vm is not None:
-                            acc = acc + flat_numeric_to_e8(Vm)
-                        Vm2 = pair_V.get((idxB, idxA))
-                        if Vm2 is not None:
-                            acc = acc - flat_numeric_to_e8(Vm2)
+                            # V: alpha(x,z) lookup keyed by (a_idx, c_idx)
+                            Vm = pair_V.get((idxA, idxB))
+                            if Vm is not None:
+                                acc = acc + flat_numeric_to_e8(Vm)
+                            Vm2 = pair_V.get((idxB, idxA))
+                            if Vm2 is not None:
+                                acc = acc - flat_numeric_to_e8(Vm2)
+                        # otherwise leave `acc` as zero (no exact per-triple entry matched)
 
                     return acc
 
