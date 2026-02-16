@@ -17,9 +17,24 @@ from __future__ import annotations
 import ast
 import shutil
 import subprocess
+import sys
+from functools import lru_cache
+from math import comb
+from pathlib import Path
 from typing import Dict
 
-from scripts.w33_cryptographic_lattice import analyze_leech_connection
+# Ensure we can import sibling modules from scripts/ when executed as a file.
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from w33_cryptographic_lattice import analyze_leech_connection
+from w33_homology import (
+    boundary_matrix,
+    build_clique_complex,
+    build_w33,
+    compute_homology,
+)
 
 
 def _load_monster_irreps_via_gap() -> list | None:
@@ -397,6 +412,138 @@ def plot_mckay_series(
     return {"csv": str(csv_path), "png": out_png}
 
 
+@lru_cache(maxsize=1)
+def compute_w33_monster_invariants() -> dict:
+    """Compute W(3,3) invariants used in the Monster correction identities."""
+    import numpy as np
+
+    n, _vertices, adj, _edges = build_w33()
+    simplices = build_clique_complex(n, adj)
+    hom = compute_homology(simplices)
+
+    n_vertices = len(simplices.get(0, []))
+    n_lines = len(simplices.get(3, []))  # K4 cliques correspond to GQ lines
+    b1 = int(hom["betti_numbers"].get(1, 0))
+
+    # Hodge L1 = d1^T d1 + d2 d2^T on 1-chains (edges)
+    d1 = boundary_matrix(simplices[1], simplices[0]).astype(float)
+    d2 = boundary_matrix(simplices[2], simplices[1]).astype(float)
+    L1 = d1.T @ d1 + d2 @ d2.T
+    evals = np.linalg.eigvalsh(L1)
+    tol = 1e-8
+    nonzero = [float(x) for x in evals if abs(float(x)) > tol]
+    spectral_gap = min(nonzero) if nonzero else 0.0
+
+    return {
+        "n_vertices": int(n_vertices),
+        "n_lines": int(n_lines),
+        "n_incidence_objects": int(n_vertices + n_lines),
+        "b1": int(b1),
+        "spectral_gap_L1": float(spectral_gap),
+    }
+
+
+def verify_borcherds_denominator_identity(
+    max_p_degree: int = 2, max_q_degree: int = 2
+) -> dict:
+    """Verify a low-order truncation of Borcherds' Monster Lie algebra identity.
+
+    Denominator identity (Borcherds 1992), with J(τ)=j(τ)-744 and
+    J(q)=∑_{n=-1}^∞ c(n) q^n (c(-1)=1, c(0)=0):
+
+        p^{-1} ∏_{m>0, n∈ℤ} (1 - p^m q^n)^{c(mn)} = J(p) - J(q).
+
+    This function verifies equality of the truncated Laurent series in p and q
+    for p-degree ≤ max_p_degree and q-degree ≤ max_q_degree.
+    """
+    if max_p_degree < 0 or max_q_degree < 0:
+        raise ValueError("max_p_degree and max_q_degree must be non-negative")
+
+    # We need one extra q-degree because the unique negative-q factor (1 - p q^{-1})
+    # can shift a q^{N+1} term down to q^N.
+    max_p_intermediate = max_p_degree + 1
+    max_q_intermediate = max_q_degree + 1
+    max_coeff = max_p_intermediate * max_q_intermediate
+
+    # c(n) are the coefficients of J(q)=j(q)-744 (same positive coefficients as j)
+    j_pos = j_coeffs(max_coeff)
+    c = {-1: 1, 0: 0}
+    for i, v in enumerate(j_pos, start=1):
+        c[i] = int(v)
+
+    def series_mul(a: dict, b: dict, max_p: int, max_q: int, min_q: int) -> dict:
+        out: dict[tuple[int, int], int] = {}
+        for (pa, qa), ca in a.items():
+            for (pb, qb), cb in b.items():
+                p = pa + pb
+                q = qa + qb
+                if p > max_p or q > max_q or q < min_q:
+                    continue
+                out[(p, q)] = out.get((p, q), 0) + int(ca) * int(cb)
+        return {k: v for k, v in out.items() if v != 0}
+
+    def binomial_factor_series(m: int, n: int, e: int, max_p: int, max_q: int) -> dict:
+        # (1 - x)^e = Σ_k (-1)^k C(e,k) x^k, with x = p^m q^n
+        k_max = min(max_p // m, max_q // n)
+        out = {(0, 0): 1}
+        for k in range(1, k_max + 1):
+            out[(m * k, n * k)] = ((-1) ** k) * comb(e, k)
+        return out
+
+    # Build positive (nonnegative-q) part first, allowing one extra q-degree.
+    prod: dict[tuple[int, int], int] = {(0, 0): 1}
+    for m in range(1, max_p_intermediate + 1):
+        for n in range(1, max_q_intermediate + 1):
+            e = int(c.get(m * n, 0))
+            if e == 0:
+                continue
+            f = binomial_factor_series(m, n, e, max_p_intermediate, max_q_intermediate)
+            prod = series_mul(prod, f, max_p_intermediate, max_q_intermediate, min_q=0)
+
+    # Multiply the unique negative-q factor (1 - p q^{-1}) and truncate q to max_q_degree.
+    prod = series_mul(
+        prod,
+        {(0, 0): 1, (1, -1): -1},
+        max_p_intermediate,
+        max_q_degree,
+        min_q=-1,
+    )
+
+    # Apply the p^{-1} prefactor (shift p-degree by -1).
+    lhs = {(p - 1, q): int(v) for (p, q), v in prod.items() if (p - 1) <= max_p_degree}
+
+    # RHS series: J(p) - J(q), with no mixed terms.
+    rhs: dict[tuple[int, int], int] = {(-1, 0): 1, (0, -1): -1}
+    for k in range(1, max(max_p_degree, max_q_degree) + 1):
+        ck = int(c.get(k, 0))
+        if k <= max_p_degree:
+            rhs[(k, 0)] = rhs.get((k, 0), 0) + ck
+        if k <= max_q_degree:
+            rhs[(0, k)] = rhs.get((0, k), 0) - ck
+
+    keys = set(lhs) | set(rhs)
+    mismatches = {}
+    max_abs_mixed = 0
+    for key in keys:
+        lv = lhs.get(key, 0)
+        rv = rhs.get(key, 0)
+        if lv != rv:
+            mismatches[key] = {"lhs": lv, "rhs": rv}
+        p, q = key
+        if p != 0 and q != 0:
+            max_abs_mixed = max(max_abs_mixed, abs(lv - rv))
+
+    return {
+        "max_p_degree": int(max_p_degree),
+        "max_q_degree": int(max_q_degree),
+        "verified": len(mismatches) == 0,
+        "n_mismatches": int(len(mismatches)),
+        "max_abs_mixed_coefficient_error": int(max_abs_mixed),
+        "mismatches": mismatches,
+    }
+
+
+@lru_cache(maxsize=1)
 def analyze_leech_monster() -> Dict:
     """Compute Leech/Monster numerology derived from W(3,3)/E8 data.
 
@@ -549,6 +696,36 @@ def analyze_leech_monster() -> Dict:
     j1 = j_list[0]
     j_minus_leech = j1 - leech_kissing
 
+    # Derive the "Monster correction" from intrinsic W(3,3) invariants.
+    w33_inv = compute_w33_monster_invariants()
+    w33_objects = int(w33_inv["n_incidence_objects"])  # 40 points + 40 lines
+    w33_b1 = int(w33_inv["b1"])  # dim H1(W33)
+    w33_gap = float(w33_inv["spectral_gap_L1"])  # L1 spectral gap (Δ)
+
+    monster_diff_from_w33 = w33_objects + 3 * w33_b1
+    j_minus_leech_from_w33 = int(round(w33_gap)) * w33_b1
+
+    # Canonical values (computed, not hard-coded)
+    assert w33_objects == 80, f"Expected 40 points + 40 lines = 80, got {w33_objects}"
+    assert w33_b1 == 81, f"Expected b1=81, got {w33_b1}"
+    assert abs(w33_gap - 4.0) < 1e-8, f"Expected spectral gap 4, got {w33_gap}"
+
+    # Monster/Leech identities
+    assert (
+        monster_diff == monster_diff_from_w33
+    ), f"Monster correction mismatch: {monster_diff} vs {monster_diff_from_w33}"
+    assert (
+        j_minus_leech == j_minus_leech_from_w33
+    ), f"j-Leech mismatch: {j_minus_leech} vs {j_minus_leech_from_w33}"
+    assert j1 - monster_min_rep == 1, "McKay observation failed: 196884 != 1 + 196883"
+
+    # Borcherds denominator identity (Monster Lie algebra) — low-order check
+    borcherds = verify_borcherds_denominator_identity(max_p_degree=2, max_q_degree=2)
+    assert borcherds["verified"] is True, (
+        "Borcherds denominator identity failed (truncated check): "
+        f"{borcherds['n_mismatches']} mismatches"
+    )
+
     return {
         "e8_roots": e8_roots,
         "e8_cubed_roots": e8_cubed_roots,
@@ -568,6 +745,10 @@ def analyze_leech_monster() -> Dict:
         "monster_irreps_full": monster_irreps_full,
         "monster_irreps_available": monster_irreps_available,
         "j_decompositions_full": j_decompositions_full,
+        "w33_invariants_for_monster": w33_inv,
+        "monster_diff_from_w33": monster_diff_from_w33,
+        "j_minus_leech_from_w33": j_minus_leech_from_w33,
+        "borcherds_denominator_identity": borcherds,
         "interpretation": interpretation,
     }
 
@@ -581,4 +762,21 @@ if __name__ == "__main__":
     print("- Ratio (Leech/E8^3):", out["ratio"])
     print("- Monster smallest nontrivial rep:", out["monster_min_rep"])
     print("- Difference (Monster - Leech):", out["monster_diff"])
+    w33 = out["w33_invariants_for_monster"]
+    print(
+        "- W33 invariants: objects=%d, b1=%d, gap=%.1f"
+        % (w33["n_incidence_objects"], w33["b1"], w33["spectral_gap_L1"])
+    )
+    print(
+        "- 323 = objects + 3·b1 = %d + 3·%d" % (w33["n_incidence_objects"], w33["b1"])
+    )
+    print("- 324 = Δ·b1 =", out["j_minus_leech_from_w33"])
+    print(
+        "- Borcherds denominator (p≤%d,q≤%d): verified=%s"
+        % (
+            out["borcherds_denominator_identity"]["max_p_degree"],
+            out["borcherds_denominator_identity"]["max_q_degree"],
+            out["borcherds_denominator_identity"]["verified"],
+        )
+    )
     print("- Interpretation:", out["interpretation"])

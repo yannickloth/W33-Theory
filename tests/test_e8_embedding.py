@@ -6901,12 +6901,26 @@ class TestLeechMonster:
         assert lm_data["monster_min_rep"] == 196883
         assert lm_data["monster_diff"] == 323
 
+        # W(3,3) explanation of the 323 "correction":
+        # 323 = (points+lines)=80 + 3·b1 = 80 + 3·81
+        w33 = lm_data["w33_invariants_for_monster"]
+        assert w33["n_incidence_objects"] == 80
+        assert w33["b1"] == 81
+        assert math.isclose(float(w33["spectral_gap_L1"]), 4.0, rel_tol=0, abs_tol=1e-8)
+        assert lm_data["monster_diff_from_w33"] == lm_data["monster_diff"]
+
     def test_j_series_relation(self, lm_data):
         # Klein j basic checks (expanded)
         assert lm_data["j1"] == 196884
         # verify second coefficient too
         assert lm_data["j_coeffs"][1] == 21493760
         assert lm_data["j_minus_leech"] == 324
+        assert lm_data["j_minus_leech_from_w33"] == 324
+
+        # Borcherds (Monster Lie algebra) denominator identity — truncated check
+        borch = lm_data["borcherds_denominator_identity"]
+        assert borch["verified"] is True
+        assert borch["n_mismatches"] == 0
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
