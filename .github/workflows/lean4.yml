@@ -36,38 +36,67 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-lean4-
 
-      - name: Install Elan and Lake
+      - name: Cache Elan toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            ~/.cache/elan
+          key: ${{ runner.os }}-elan-${{ hashFiles('proofs/lean/lean-toolchain') }}
+          restore-keys: |
+            ${{ runner.os }}-elan-
+
+      - name: Install Elan and Lake (with retries)
         run: |
           set -eux
           # Install elan (Lean toolchain manager) and set up the environment
           if ! command -v elan >/dev/null 2>&1; then
-            echo "Installing elan (try primary URL)"
-            if curl -sSfL https://raw.githubusercontent.com/leanprover-community/elan/master/elan-init.sh -o elan-init.sh; then
-              sh elan-init.sh -y || true
-            elif curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-init.sh -o elan-init.sh; then
-              sh elan-init.sh -y || true
+            echo "Installing elan (with retry)"
+            ATTEMPTS=4
+            for i in $(seq 1 $ATTEMPTS); do
+              # try primary URL first, fallback to GitHub releases URL
+              if curl -sSfL https://raw.githubusercontent.com/leanprover-community/elan/master/elan-init.sh -o elan-init.sh || curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-init.sh -o elan-init.sh; then
+                if sh elan-init.sh -y; then
+                  echo "elan installed successfully"
+                  break
+                else
+                  echo "elan install script failed (attempt $i/$ATTEMPTS)"
+                fi
+              else
+                echo "elan installer download failed (attempt $i/$ATTEMPTS)"
+              fi
+              if [ "$i" -lt "$ATTEMPTS" ]; then
+                sleep $((i * 5))
+              fi
+            done
+            if [ -d "$HOME/.elan/bin" ]; then
+              export PATH="$HOME/.elan/bin:$PATH"
+              # Make elan available to subsequent steps
+              echo "$HOME/.elan/bin" >> $GITHUB_PATH
             else
-              echo "elan installer not found at known URLs; continuing without elan"
+              echo "elan not installed after $ATTEMPTS attempts; continuing without elan"
             fi
-            export PATH="$HOME/.elan/bin:$PATH"
-            # Make elan available to subsequent steps
-            echo "$HOME/.elan/bin" >> $GITHUB_PATH
           else
             echo "elan already present"
           fi
 
-          # Install the pinned toolchain if present
+          # Install the pinned toolchain if present (retry the elan toolchain install)
           if [ -f lean-toolchain ]; then
             TC="$(cat lean-toolchain)"
             if command -v elan >/dev/null 2>&1; then
-              elan toolchain install --force "$TC" || true
-              elan default "$TC" || true
+              for j in 1 2 3; do
+                if elan toolchain install --force "$TC" && elan default "$TC"; then
+                  break
+                fi
+                echo "elan toolchain install attempt $j failed; retrying in $((j*5))s"
+                sleep $((j * 5))
+              done || true
             else
               echo "elan not available; cannot install pinned toolchain $TC"
             fi
           fi
 
-          # Ensure lake is available; try to run it via elan if needed
+          # Ensure lake is available; try to run it via elan if needed (with graceful fallback)
           if ! command -v lake >/dev/null 2>&1; then
             echo "lake not found after elan install; attempting to run via elan"
             if command -v elan >/dev/null 2>&1; then
