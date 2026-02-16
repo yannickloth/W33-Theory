@@ -7037,6 +7037,84 @@ class TestLeechMonster:
         assert "png" in out
 
 
+# -------------------------------------------------------------------------
+# Pillars 58–60: p-Adic AdS/CFT, String Worldsheet, Topological TQFT
+# -------------------------------------------------------------------------
+
+
+class TestPAdicAdsCft:
+    """Pillar 58: 3-adic holography diagnostics from W(3,3)."""
+
+    def test_padic_ads_cft_core_invariants(self):
+        import w33_padic_ads_cft as padic
+
+        bt = padic.analyze_bruhat_tits_tree()
+        assert bt["p"] == 3
+        assert bt["valency"] == 4
+        assert bt["valency_match"] is True
+        assert bt["simplicial_b1"] == 81
+
+        cd = padic.analyze_conformal_dimensions()
+        assert cd["unitarity_satisfied"] is True
+        assert math.isclose(float(cd["h_matter"]), 1.0, rel_tol=0, abs_tol=1e-12)
+        assert cd["conformal_dimensions"][4]["multiplicity"] == 120
+
+
+class TestStringWorldsheetModularity:
+    """Pillar 59: modular partition function and Z3 orbifold structure."""
+
+    def test_worldsheet_modularity_core_invariants(self):
+        import w33_string_worldsheet as ws
+
+        sp = ws.analyze_spectral_partition()
+        assert sp["Z_total"] == 240
+        assert sp["Z_ground"] == 81
+
+        theta = ws.analyze_e8_theta()
+        assert theta["theta_equals_E4"] is True
+        assert theta["weight_equals_gap"] is True
+
+        orb = ws.analyze_z3_orbifold()
+        assert orb["orbifold_consistent"] is True
+        assert orb["n_fixed_points"] == 3
+        assert orb["h1_total"] == 81
+
+
+class TestW33TQFT:
+    """Pillar 60: TQFT from clique homology + Bose–Mesner Frobenius algebra."""
+
+    def test_tqft_invariants(self):
+        import w33_tqft as tqft
+
+        res = tqft.analyze_tqft()
+
+        # clique complex / homology invariants
+        assert res["simplices"][0] == 40
+        assert res["simplices"][1] == 240
+        assert res["simplices"][2] == 160
+        assert res["simplices"][3] == 40
+        assert res["euler_characteristic"] == -80
+        assert res["betti_numbers"][1] == 81
+        assert res["betti_numbers"][2] == 0
+
+        # Bose–Mesner closure (SRG relations)
+        closed = res["bose_mesner"]["srg_closed"]
+        assert all(bool(v) for v in closed.values())
+
+        # Frobenius / 2D TQFT invariants
+        ft = res["frobenius_tqft"]
+        assert ft["Z_S2"] == 40
+        assert math.isclose(float(ft["Z_T2"]), 3.0, rel_tol=0, abs_tol=1e-12)
+
+        # State-sum counts determined by b1
+        ss = res["state_sum"]
+        assert ss["b1_mod_2"]["b1"] == 81
+        assert ss["b1_mod_3"]["b1"] == 81
+        assert ss["Z_GF2"] == pow(2, 81)
+        assert ss["Z_GF3"] == pow(3, 81)
+        assert res["partition_function"] == 240
+
+
 # =========================================================================
 # MAIN
 # =========================================================================
