@@ -16,7 +16,7 @@ Changelog (high level)
 - Added `scripts/w33_padic_ads_cft.py` — p‑adic holography diagnostics, conformal dimension table, Green's function comparison, MERA interpretation.
 - Added `scripts/w33_string_worldsheet.py` — modular partition function checks, E8 theta verification, Z3 orbifold sectoring and Hagedorn analysis.
 - Added `scripts/w33_tqft.py` — Bose–Mesner / Frobenius algebra extraction, simple state‑sum counts (GF(2)/GF(3)), Dijkgraaf–Witten evaluations for simple manifolds.
-- Tests: added deterministic unit tests for Pillars 58–60 (`tests/test_w33_padic_ads_cft.py`, `tests/test_w33_string_worldsheet.py`, `tests/test_w33_tqft.py`).
+- Tests: added canonical smoke tests for Pillars 58–60 to `tests/test_e8_embedding.py` (3 new test methods), bringing the canonical suite to 280 tests.
 - Docs & metadata: README, RELEASES and `CITATION.cff` already reflect the 60 pillars; this draft provides release notes for CI/Zenodo publishing.
 
 Verification
@@ -24,10 +24,11 @@ Verification
 Run the pillar verifications locally or via CI:
 
 ```bash
-# quick unit checks
-python -m pytest tests/test_w33_padic_ads_cft.py -q
-python -m pytest tests/test_w33_string_worldsheet.py -q
-python -m pytest tests/test_w33_tqft.py -q
+# quick checks (Pillars 58–60 only)
+python -m pytest tests/test_e8_embedding.py -k "PAdic or Worldsheet or TQFT" -q
+
+# canonical suite (recommended)
+python -m pytest tests/test_e8_embedding.py -q
 
 # run full suite (long-running)
 python -m pytest -q

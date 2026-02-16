@@ -34,6 +34,7 @@ artifacts/
 sage-part-jsons*
 SUMMARY_RESULTS.json
 NUMERIC_COMPARISONS.json
+outputs/
 
 # Generated output files from CI/CD and Sage verification
 PART_*.json
