@@ -1,0 +1,64 @@
+name: Scheduled MLUT & Entropic Benchmarks
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # daily at 04:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  long-mlut-benchmark:
+    runs-on: ubuntu-latest
+    name: Long MLUT benchmark
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run MLUT long benchmark
+        run: |
+          pytest -q tests/test_e8_embedding.py::TestQuantumErrorCorrection::test_build_mlut_benchmark -q
+
+      - name: Upload MLUT benchmark artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlut-long-logs
+          path: ./**/PART_CXV_qec_*.json
+
+  entropic-benchmark:
+    runs-on: ubuntu-latest
+    name: Entropic gravity benchmark
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run entropic analysis
+        run: |
+          python -c "import json; from scripts.w33_entropic_gravity import analyze_entropic_gravity; print(json.dumps(analyze_entropic_gravity(), indent=2))"
+
+      - name: Upload entropic report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: entropic-report
+          path: |
+            **/entropic_report_*.json || true

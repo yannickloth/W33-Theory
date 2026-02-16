@@ -26,6 +26,11 @@
   "access_right": "open",
   "related_identifiers": [
     {
+      "identifier": "https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-15-qec-mlut",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
       "identifier": "https://github.com/wilcompute/W33-Theory",
       "relation": "isSupplementTo",
       "scheme": "url"
