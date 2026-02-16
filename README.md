@@ -3,7 +3,7 @@
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
 [![Tests](https://img.shields.io/badge/tests-277%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-57%20proved-blue)]()
+[![Pillars](https://img.shields.io/badge/pillars-60%20proved-blue)]()
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
@@ -32,7 +32,7 @@ Every claim is backed by executable Python code. Every number is reproducible fr
 
 ---
 
-## The 57 Pillars
+## The 60 Pillars
 
 Each pillar is a proved theorem with an accompanying test. Click any pillar to see the verification script.
 
@@ -148,6 +148,14 @@ Each pillar is a proved theorem with an accompanying test. Click any pillar to s
 | 56 | [Cryptographic lattice](scripts/w33_cryptographic_lattice.py) | E8 unimodular &amp; self-dual; Hodge hash R<sup>240</sup>&rarr;R<sup>81</sup>; Leech = E8<sup>3</sup>/glue, kissing 196560/720=273=3&times;(81+10) |
 | 57 | [Leech/Monster/Moonshine](scripts/w33_leech_monster.py) | j(q) coefficients decompose into Monster irreps; 196884=1+196883; full 194-irrep ATLAS data; E8<sup>3</sup>&theta; series |
 
+### New Physics & Geometry (Pillars 58–60)
+
+| # | Theorem | Key result |
+|---|---------|------------|
+| 58 | [p-Adic AdS/CFT](scripts/w33_padic_ads_cft.py) | W(3,3) as a finite quotient of the Bruhat-Tits tree; 3-adic holography; spectral gap sets AdS mass; boundary matter = 81, bulk gauge = 120 |
+| 59 | [String Worldsheet & Modular Invariance](scripts/w33_string_worldsheet.py) | Modular-invariant partition function; E8 theta series; Z3 orbifold; worldsheet CFT from W(3,3) |
+| 60 | [Topological Quantum Field Theory](scripts/w33_tqft.py) | TQFT from W(3,3) cohomology; state space H^1=81; partition function Z=240; bracket encodes fusion/topology |
+
 ---
 
 ## Key Predictions
@@ -179,7 +187,7 @@ pip install numpy sympy pytest
 python -m pytest tests/test_e8_embedding.py -q
 ```
 
-277 tests across 65+ test classes, covering every pillar.
+280 tests across 65+ test classes, covering every pillar.
 
 ### Run individual pillar verifications
 
@@ -193,7 +201,7 @@ python scripts/w33_confinement.py
 # Verify anomaly cancellation
 python scripts/w33_anomaly_cancellation.py
 
-# Verify all 57 pillars in one shot
+# Verify all 60 pillars in one shot
 python -m pytest tests/test_e8_embedding.py -v
 ```
 
