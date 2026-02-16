@@ -2,12 +2,12 @@
 
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
-[![Tests](https://img.shields.io/badge/tests-254%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-56%20proved-blue)]()
+[![Tests](https://img.shields.io/badge/tests-277%20passed-brightgreen)]()
+[![Pillars](https://img.shields.io/badge/pillars-57%20proved-blue)]()
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
 [![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
-[![Release: Pillar-45 draft](https://img.shields.io/badge/release-Pillar--45%20(QEC)-blue)](https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-15-qec-mlut — Zenodo: https://doi.org/10.5281/zenodo.18652825)
+[![Release: Pillar-45 draft](https://img.shields.io/badge/release-Pillar--45%20(QEC)-blue)](docs/outreach/pillar-45-qec.md) [Zenodo DOI](https://doi.org/10.5281/zenodo.18652825)
 
 > Draft release: `v2026-02-15-qec-mlut — Zenodo: https://doi.org/10.5281/zenodo.18652825` — Pillar‑45 (GF(3) QEC + MLUT). See PR #82 and join the discussion at Issue #83.
 
@@ -32,7 +32,7 @@ Every claim is backed by executable Python code. Every number is reproducible fr
 
 ---
 
-## The 56 Pillars
+## The 57 Pillars
 
 Each pillar is a proved theorem with an accompanying test. Click any pillar to see the verification script.
 
@@ -139,6 +139,15 @@ Each pillar is a proved theorem with an accompanying test. Click any pillar to s
 | 52 | [RG flow](scripts/w33_spectral_zeta.py) | UV&rarr;IR: g<sub>matter</sub> 0.34&rarr;1.0; critical exponents 4,10,16 |
 | 53 | [Modular forms](scripts/w33_spectral_zeta.py) | Z = 81+120q+24q<sup>5/2</sup>+15q<sup>4</sup>; T-transform invariant |
 
+### Category Theory &amp; Cross-Domain (Pillars 54&ndash;57)
+
+| # | Theorem | Key result |
+|---|---------|------------|
+| 54 | [Category/topos](scripts/w33_category_topos.py) | W33 incidence category: 80 objects, 240 morphisms; nerve=clique complex; 3 generations = functor F(v)=Z<sup>3</sup>; gauge = 120&minus;81 = 39 |
+| 55 | [Biological information](scripts/w33_biological_code.py) | GF(3)<sup>4</sup>=81 ternary code; spectral code [240,81,4]; neural: 40 ternary neurons store 81 memories; protein folding = RG flow |
+| 56 | [Cryptographic lattice](scripts/w33_cryptographic_lattice.py) | E8 unimodular &amp; self-dual; Hodge hash R<sup>240</sup>&rarr;R<sup>81</sup>; Leech = E8<sup>3</sup>/glue, kissing 196560/720=273=3&times;(81+10) |
+| 57 | [Leech/Monster/Moonshine](scripts/w33_leech_monster.py) | j(q) coefficients decompose into Monster irreps; 196884=1+196883; full 194-irrep ATLAS data; E8<sup>3</sup>&theta; series |
+
 ---
 
 ## Key Predictions
@@ -170,7 +179,7 @@ pip install numpy sympy pytest
 python -m pytest tests/test_e8_embedding.py -q
 ```
 
-267 tests across 62 test classes, covering every pillar.
+277 tests across 65+ test classes, covering every pillar.
 
 ### Run individual pillar verifications
 
@@ -184,7 +193,7 @@ python scripts/w33_confinement.py
 # Verify anomaly cancellation
 python scripts/w33_anomaly_cancellation.py
 
-# Verify all 56 pillars in one shot
+# Verify all 57 pillars in one shot
 python -m pytest tests/test_e8_embedding.py -v
 ```
 

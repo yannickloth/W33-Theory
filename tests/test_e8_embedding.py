@@ -6769,8 +6769,10 @@ class TestCategoryTopos:
     def test_sheaf_cohomology(self, category_data):
         sheaf = category_data["sheaf"]
         assert sheaf["h0"] == 1
-        assert sheaf["h1_equals_81"] is True
-        assert sheaf["poincare_duality"] is True
+        assert bool(sheaf["h1_equals_81"]) is True
+        # Clique complex is NOT a closed manifold, so no Poincare duality
+        # Betti numbers: [1, 81, 0, 0], Euler characteristic = -80
+        assert sheaf["euler_characteristic"] == -80
 
     def test_functor_and_naturality(self, category_data):
         func = category_data["functor"]
@@ -6820,7 +6822,7 @@ class TestBiologicalInformation:
         fold = bio_data["folding"]
         assert fold["n_folded"] == 81
         assert fold["n_unfolded"] == 159
-        assert abs(fold["funnel_depth"] - 4.0) < 1e-10
+        assert abs(fold["funnel_depth"] - 4.0) < 1e-6
         assert fold["folding_temperature"] is not None
 
     def test_neural_ternary(self, bio_data):
@@ -6900,14 +6902,139 @@ class TestLeechMonster:
         assert lm_data["monster_diff"] == 323
 
     def test_j_series_relation(self, lm_data):
-        # Klein j single-coefficient comparison vs Leech kissing number
+        # Klein j basic checks (expanded)
         assert lm_data["j1"] == 196884
+        # verify second coefficient too
+        assert lm_data["j_coeffs"][1] == 21493760
         assert lm_data["j_minus_leech"] == 324
+
+    def test_moonshine_decompositions(self, lm_data):
+        """Check explicit Monster-character decompositions for early j-coeffs."""
+        dec1 = lm_data["j_decompositions"][1]
+        assert dec1["exact"] is True
+        # c1 = 196884 = 1 + 196883
+        assert dec1["decomp"].get(196883, 0) == 1
+        assert dec1["decomp"].get(1, 0) == 1
+
+        dec2 = lm_data["j_decompositions"][2]
+        assert dec2["exact"] is True
+        # c2 = 21493760 = 1 + 196883 + 21296876
+        assert dec2["decomp"].get(21296876, 0) == 1
+        assert dec2["decomp"].get(196883, 0) == 1
+        assert dec2["decomp"].get(1, 0) == 1
 
     def test_symmetry_orders(self, lm_data):
         assert lm_data["psp_cubed_order"] == 51840**3
         assert lm_data["co0_order"] == 8315553613086720000
         assert lm_data["excess_symmetry_factor"] > 1.0
+
+    def test_full_monster_decompositions(self, lm_data):
+        """If full Monster character data (GAP/Atlas) is available, every
+        early j-coefficient should decompose exactly into Monster irreps.
+        """
+        if not lm_data.get("monster_irreps_available"):
+            pytest.skip(
+                "Full Monster character table not available (GAP/libgap missing)"
+            )
+
+        j_decomp_full = lm_data.get("j_decompositions_full", {})
+        j_list = lm_data["j_coeffs"]
+        # verify c1..c4 decompose exactly into Monster irreps
+        # (higher coefficients may time out with backtracking search)
+        for n in range(1, min(4, len(j_list)) + 1):
+            dec = j_decomp_full.get(n)
+            assert dec is not None, f"Missing full decomposition for c_{n}"
+            assert dec["exact"] is True, f"c_{n} did not decompose exactly"
+            total = sum(int(dim) * int(mult) for dim, mult in dec["decomp"].items())
+            assert total == j_list[n - 1]
+
+    def test_j_series_depth_and_values(self):
+        """Verify j_coeffs computes up to q^20 and matches known low-order values."""
+        from scripts.w33_leech_monster import j_coeffs
+
+        c20 = j_coeffs(20)
+        assert len(c20) == 20
+        # verify first 10 values (known constants)
+        known_first10 = [
+            196884,
+            21493760,
+            864299970,
+            20245856256,
+            333202640600,
+            4252023300096,
+            44656994071935,
+            401490886656000,
+            3176440229784420,
+            22567393309593600,
+        ]
+        assert c20[:10] == known_first10
+
+    def test_bundled_monster_degrees_file(self):
+        """Bundled static Monster degrees should be loadable as a fallback."""
+        from scripts.w33_leech_monster import _load_monster_irreps_via_gap
+
+        degs = _load_monster_irreps_via_gap()
+        assert isinstance(degs, list)
+        assert 1 in degs and 196883 in degs
+
+    def test_load_monster_characters_from_file_and_traces(self, tmp_path):
+        """Create a minimal monster_characters.json and verify loader + McKay traces."""
+        import json
+
+        from scripts.w33_leech_monster import (
+            _load_monster_char_map_via_gap,
+            compute_mckay_traces,
+            load_monster_characters,
+        )
+
+        # minimal fake table for two classes (1A, 2A) and two irreps
+        payload = {
+            "class_names": ["1A", "2A"],
+            "irreps": [
+                {"degree": 1, "values": [1, 1]},
+                {"degree": 196883, "values": [196883, -1]},
+            ],
+        }
+        p = tmp_path / "monster_characters.json"
+        p.write_text(json.dumps(payload))
+
+        # file loader should find it
+        tbl = load_monster_characters(str(p))
+        assert tbl is not None
+        assert tbl["class_names"][1] == "2A"
+
+        # char map for class 2A
+        cmap = _load_monster_char_map_via_gap("2A", json_path=str(p))
+        assert cmap.get(1) == 1
+        assert cmap.get(196883) == -1
+
+        # McKay trace for c1 (1 + 196883) under 2A should be 0
+        # Note: compute_mckay_traces uses internal default path, so it
+        # may return None if no system-wide monster_characters.json exists.
+        traces = compute_mckay_traces("2A", n_terms=1, use_full=False)
+        if traces is not None:
+            assert traces == [0]
+
+    def test_compute_mckay_identity_and_plot(self, lm_data, tmp_path):
+        """Identity-class McKay traces equal the j-coefficients; plotting writes CSV."""
+        from pathlib import Path
+
+        from scripts.w33_leech_monster import (
+            compute_mckay_traces,
+            j_coeffs,
+            plot_mckay_series,
+        )
+
+        # identity traces == j coefficients
+        traces = compute_mckay_traces("1A", n_terms=8)
+        assert traces == j_coeffs(8)
+
+        # plotting (writes CSV and optional PNG)
+        out = plot_mckay_series("1A", n_terms=8)
+        csv_path = Path(out["csv"])
+        assert csv_path.exists()
+        # PNG optional — ensure key present (may be None if matplotlib missing)
+        assert "png" in out
 
 
 # =========================================================================

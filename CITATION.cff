@@ -21,10 +21,10 @@ keywords:
   - "particle physics"
 abstract: >-
   Complete derivation of the Standard Model from the W(3,3)
-  generalized quadrangle and E8 Lie algebra. 56 proved pillars
+  generalized quadrangle and E8 Lie algebra. 57 proved pillars
   establish that the 240 edges of W(3,3) biject to the 240 roots
   of E8, the first homology H₁ = Z⁸¹ carries an irreducible
   representation matching matter content, the Hodge spectrum
   0⁸¹+4¹²⁰+10²⁴+16¹⁵ encodes gauge structure, and the Weinberg
   angle sin²θ_W = 3/8 emerges uniquely from GQ(3,3). All results
-  verified by 267 automated tests with zero free parameters.
+  verified by 277 automated tests with zero free parameters.
