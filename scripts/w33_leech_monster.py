@@ -685,6 +685,118 @@ def verify_fricke_prime_replicability(
     }
 
 
+def monster_order_factorization() -> dict[int, int]:
+    """Prime factorization of |M| (Monster) as {prime: exponent}."""
+    return {
+        2: 46,
+        3: 20,
+        5: 9,
+        7: 6,
+        11: 2,
+        13: 3,
+        17: 1,
+        19: 1,
+        23: 1,
+        29: 1,
+        31: 1,
+        41: 1,
+        47: 1,
+        59: 1,
+        71: 1,
+    }
+
+
+def monster_order() -> int:
+    n = 1
+    for p, e in monster_order_factorization().items():
+        n *= int(p) ** int(e)
+    return n
+
+
+def monster_prime_divisors() -> list[int]:
+    return sorted(int(p) for p in monster_order_factorization().keys())
+
+
+def class_number_negative_discriminant(D: int) -> int:
+    """Class number h(D) for a negative discriminant D via reduced forms."""
+    import math
+
+    if D >= 0 or D % 4 not in (0, 1):
+        raise ValueError("D must be a negative discriminant (0 or 1 mod 4)")
+
+    h = 0
+    limit = int(math.sqrt(abs(D) / 3)) + 2
+    for a in range(1, limit + 1):
+        for b in range(-a, a + 1):
+            disc = b * b - D
+            if disc % (4 * a) != 0:
+                continue
+            c = disc // (4 * a)
+            if a > c or abs(b) > a:
+                continue
+            if (abs(b) == a or a == c) and b < 0:
+                continue
+            if b * b - 4 * a * c != D:
+                continue
+            h += 1
+    return h
+
+
+def genus_x0_prime(p: int) -> int:
+    """Genus g(X0(p)) for prime p >= 2."""
+    if p < 2:
+        raise ValueError("p must be >= 2")
+    if p in (2, 3, 5, 7, 13):
+        return 0
+
+    mu = p + 1
+    cusps = 2
+    e2 = 2 if p % 4 == 1 else 0
+    e3 = 2 if p % 3 == 1 else 0
+    g = 1 + mu / 12 - e2 / 4 - e3 / 3 - cusps / 2
+    return int(round(g))
+
+
+def ogg_primes_via_genus(max_p: int = 100) -> dict[str, object]:
+    """Compute primes p<=max_p with genus(X0(p)^+) == 0 via class numbers.
+
+    For odd primes p>3:
+      g(X0(p)^+) = g(X0(p)) + 1 - h(-4p)/2.
+    """
+    import math
+
+    def is_prime(n: int) -> bool:
+        if n < 2:
+            return False
+        if n % 2 == 0:
+            return n == 2
+        r = int(math.isqrt(n))
+        f = 3
+        while f <= r:
+            if n % f == 0:
+                return False
+            f += 2
+        return True
+
+    ogg: list[int] = []
+    details: dict[int, dict[str, int | float]] = {}
+    for p in range(2, max_p + 1):
+        if not is_prime(p):
+            continue
+        if p in (2, 3):
+            ogg.append(p)
+            details[p] = {"g_x0": 0, "h_minus4p": 0, "g_x0_plus": 0.0}
+            continue
+        g = genus_x0_prime(p)
+        h = class_number_negative_discriminant(-4 * p)
+        g_plus = g + 1 - h / 2
+        details[p] = {"g_x0": g, "h_minus4p": h, "g_x0_plus": float(g_plus)}
+        if abs(g_plus) < 1e-12:
+            ogg.append(p)
+
+    return {"max_p": max_p, "primes": ogg, "details": details}
+
+
 def compute_mckay_traces(
     class_name: str = "1A",
     n_terms: int = 8,
@@ -1098,6 +1210,10 @@ def analyze_leech_monster() -> Dict:
         f"{borcherds['n_mismatches']} mismatches"
     )
 
+    ogg = ogg_primes_via_genus(max_p=100)
+    monster_primes = monster_prime_divisors()
+    assert ogg["primes"] == monster_primes, "Ogg primes != primes dividing |Monster|"
+
     return {
         "e8_roots": e8_roots,
         "e8_cubed_roots": e8_cubed_roots,
@@ -1121,6 +1237,10 @@ def analyze_leech_monster() -> Dict:
         "monster_diff_from_w33": monster_diff_from_w33,
         "j_minus_leech_from_w33": j_minus_leech_from_w33,
         "borcherds_denominator_identity": borcherds,
+        "ogg_primes": ogg["primes"],
+        "ogg_primes_details": ogg["details"],
+        "monster_order": monster_order(),
+        "monster_order_primes": monster_primes,
         "interpretation": interpretation,
     }
 
@@ -1151,4 +1271,5 @@ if __name__ == "__main__":
             out["borcherds_denominator_identity"]["verified"],
         )
     )
+    print("- Ogg primes (genus-zero X0(p)^+):", out["ogg_primes"])
     print("- Interpretation:", out["interpretation"])

@@ -6983,6 +6983,7 @@ class TestLeechMonster:
         assert lm_data["psp_cubed_order"] == 51840**3
         assert lm_data["co0_order"] == 8315553613086720000
         assert lm_data["excess_symmetry_factor"] > 1.0
+        assert lm_data["ogg_primes"] == lm_data["monster_order_primes"]
 
     def test_full_monster_decompositions(self, lm_data):
         """If full Monster character data (GAP/Atlas) is available, every
