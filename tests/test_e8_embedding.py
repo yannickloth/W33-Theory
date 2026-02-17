@@ -6916,6 +6916,17 @@ class TestLeechMonster:
         digits = sp.get("digits", {})
         assert isinstance(digits, dict) and digits.get("M") == 54
 
+        from scripts.w33_leech_monster import analyze_s12_golay_sl27_bridge
+
+        s12_bridge = analyze_s12_golay_sl27_bridge(jordan_sample_limit=120)
+        assert s12_bridge.get("available") is True
+        assert s12_bridge["dims"]["grade1"] == 243
+        assert s12_bridge["w33"]["grade1_equals_3b1"] is True
+        assert set(s12_bridge["jacobi_failures"]["mixed_sectors"]) == {
+            "g1_g1_g2",
+            "g1_g2_g2",
+        }
+
     def test_j_series_relation(self, lm_data):
         # Klein j basic checks (expanded)
         assert lm_data["j1"] == 196884
@@ -6931,6 +6942,7 @@ class TestLeechMonster:
 
         # Moonshine replicability checks for Fricke prime McKay-Thompson series.
         from scripts.w33_leech_monster import (
+            analyze_monster_moonshine_power_closure,
             infer_monster_head_character_values,
             mckay_thompson_series,
             verify_9a_cubing_relation,
@@ -7189,6 +7201,17 @@ class TestLeechMonster:
             max_q_exp=12,
         )
         assert rep10a10["verified"] is True
+
+        closure = analyze_monster_moonshine_power_closure(
+            max_q_exp=12, classes=["8A", "10A"]
+        )
+        assert closure["power_maps"]["square"]["8A"] == "4C"
+        assert closure["power_maps"]["square"]["10A"] == "5A"
+        assert closure["power_maps"]["fifth"]["10A"] == "2A"
+        assert any(
+            chk.get("class_name") == "10A" and chk.get("verified") is True
+            for chk in closure["replicability"]["composite_checks"]
+        )
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""

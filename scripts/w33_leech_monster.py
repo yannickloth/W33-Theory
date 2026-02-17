@@ -29,6 +29,10 @@ from typing import Dict
 SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
+# Also allow importing top-level `tools.*` modules when running `python scripts/...`.
+ROOT_DIR = SCRIPTS_DIR.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.append(str(ROOT_DIR))
 
 from w33_cryptographic_lattice import analyze_leech_connection
 from w33_homology import (
@@ -1313,6 +1317,116 @@ def verify_j_via_rogers_ramanujan(max_q_exp: int = 12) -> dict[str, object]:
     }
 
 
+def analyze_s12_golay_sl27_bridge(jordan_sample_limit: int = 200) -> dict[str, object]:
+    """Bridge the ternary Golay `s12` model to our Z3-graded algebra story.
+
+    Key computed facts:
+    - Ternary Golay code has |C|=3^6=729 codewords; removing zero gives 728=27^2-1.
+    - The `s12` grade split is (242,243,243), which matches the block-cyclic Z3
+      grading of sl_27 with 27=9+9+9.
+    - The six Jacobi grade failures are exactly the mixed sectors (1,1,2) and
+      (2,2,1) up to permutation, aligning with the E8 Z3-graded "mixed" sectors.
+    """
+    import math
+
+    try:
+        import tools.s12_universal_algebra as s12  # type: ignore[import-not-found]
+    except Exception as e:  # pragma: no cover
+        return {
+            "available": False,
+            "reason": f"failed to import tools.s12_universal_algebra: {e}",
+        }
+
+    report = s12.build_s12_universal_report(
+        jordan_sample_limit=int(jordan_sample_limit)
+    )
+    dims = dict(report.get("algebra_dimensions", {}))
+    laws = dict(report.get("universal_grade_laws", {}))
+
+    code_size = int(report.get("code_size", 0))
+    total_nonzero = int(dims.get("total_nonzero", 0))
+    g0 = int(dims.get("grade0", 0))
+    g1 = int(dims.get("grade1", 0))
+    g2 = int(dims.get("grade2", 0))
+
+    # sl_n inversion: total_nonzero = n^2 - 1.
+    n2 = total_nonzero + 1
+    n = int(math.isqrt(n2)) if n2 > 0 else 0
+    sl_n_matches = bool(n > 0 and n * n == n2 and total_nonzero == n * n - 1)
+
+    # Equal-block sl_(3r) family (r,r,r): g0=3r^2-1, g1=g2=3r^2.
+    r = int(n // 3) if (n % 3 == 0 and n > 0) else None
+    equal_block_matches = False
+    if r is not None:
+        equal_block_matches = bool(g0 == 3 * r * r - 1 and g1 == 3 * r * r and g2 == g1)
+
+    # W(3,3) / TOE alignment: 243 = 3 * b1 where b1=81 from the clique complex.
+    w33 = compute_w33_monster_invariants()
+    b1 = int(w33.get("b1", 0))
+    grade1_equals_3b1 = bool(g1 == 3 * b1 and g2 == 3 * b1)
+
+    # Grade-level Jacobi failure pattern.
+    raw_failures = list(laws.get("jacobi_failures", []))
+    failures = {
+        tuple(int(v) for v in row.get("grades", []))
+        for row in raw_failures
+        if isinstance(row, dict)
+    }
+    predicted = {
+        (1, 1, 2),
+        (1, 2, 1),
+        (2, 1, 1),
+        (1, 2, 2),
+        (2, 1, 2),
+        (2, 2, 1),
+    }
+    jacobi_failure_pattern_matches = failures == predicted
+
+    # Map failures to the two mixed Z3 sector names used elsewhere in the repo.
+    mixed_sectors: set[str] = set()
+    for a, b, c in failures:
+        c1 = (int(a) == 1) + (int(b) == 1) + (int(c) == 1)
+        c2 = (int(a) == 2) + (int(b) == 2) + (int(c) == 2)
+        if c1 == 2 and c2 == 1:
+            mixed_sectors.add("g1_g1_g2")
+        elif c2 == 2 and c1 == 1:
+            mixed_sectors.add("g1_g2_g2")
+
+    # Canonical sanity checks (computed, not hard-coded).
+    assert code_size == 729, f"Expected |Golay_12(F3)|=3^6=729, got {code_size}"
+    assert sl_n_matches and n == 27, f"Expected 728 = 27^2 - 1, got n={n}"
+    assert equal_block_matches and r == 9, f"Expected 27=9+9+9 grading, got r={r}"
+    assert (
+        grade1_equals_3b1 and b1 == 81
+    ), f"Expected 243 = 3*b1 with b1=81, got b1={b1}"
+    assert jacobi_failure_pattern_matches, "Unexpected s12 Jacobi failure pattern"
+
+    return {
+        "available": True,
+        "code_size": code_size,
+        "dims": {
+            "total_nonzero": total_nonzero,
+            "grade0": g0,
+            "grade1": g1,
+            "grade2": g2,
+        },
+        "sl_n": {"n": n, "matches": sl_n_matches},
+        "equal_block_sl3r": {"r": r, "matches": equal_block_matches},
+        "w33": {"b1": b1, "grade1_equals_3b1": grade1_equals_3b1},
+        "jacobi_failures": {
+            "count": int(laws.get("jacobi_failure_count", len(failures))),
+            "triples": [list(t) for t in sorted(failures)],
+            "pattern_matches": jacobi_failure_pattern_matches,
+            "mixed_sectors": sorted(mixed_sectors),
+        },
+        "note": (
+            "s12 is a Golay-derived Z3-graded Jordan-Lie model whose only grade-level "
+            "Jacobi obstructions are the mixed sectors (g1,g1,g2)/(g1,g2,g2), "
+            "matching the mixed-sector focus of the E8 Z3-graded firewall/L∞ work."
+        ),
+    }
+
+
 def _laurent_mul(
     a: dict[int, int], b: dict[int, int], min_exp: int, max_exp: int
 ) -> dict[int, int]:
@@ -2038,6 +2152,219 @@ def verify_square_power_relation(
         ),
         "target_mismatches": target_mismatches,
         "candidates": cand_results,
+    }
+
+
+def analyze_monster_moonshine_power_closure(
+    max_q_exp: int = 24,
+    classes: list[str] | None = None,
+) -> dict[str, object]:
+    """Infer and verify a q-series power-map closure on supported classes.
+
+    This is a *purely q-series* (replicability) computation that does not assume
+    ATLAS power maps. It:
+      - infers g^2 (m=2) for supported classes (where the target class exists),
+      - infers g^3 and g^5 via prime replicability (when targets exist),
+      - verifies composite divisor-sum replicability for m in {4,6,8,9,10}
+        whenever all required power-map targets are available,
+      - checks the basic closure identity (g^2)^2 = g^4 when both sides exist.
+    """
+    if max_q_exp < 6:
+        raise ValueError("max_q_exp must be >= 6 for meaningful closure checks")
+
+    def _order(name: str) -> int:
+        s = name.strip().upper()
+        if s in ("1A", "ID", "IDENTITY"):
+            return 1
+        digits = ""
+        for ch in s:
+            if ch.isdigit():
+                digits += ch
+            else:
+                break
+        return int(digits) if digits else 0
+
+    supported_seed = [
+        "1A",
+        "2A",
+        "2B",
+        "3A",
+        "3B",
+        "3C",
+        "4A",
+        "4B",
+        "4C",
+        "4D",
+        "5A",
+        "5B",
+        "6A",
+        "6B",
+        "6C",
+        "6D",
+        "6E",
+        "7A",
+        "7B",
+        "8A",
+        "8A'",
+        "8B",
+        "8E",
+        "9A",
+        "10A",
+        "10B",
+        "10C",
+        "10D",
+        "10E",
+        "11A",
+        "13A",
+        "13B",
+    ]
+
+    supported_all = [
+        c for c in supported_seed if mckay_thompson_series(c, max_q_exp=2) is not None
+    ]
+
+    by_order: dict[int, list[str]] = {}
+    for c in supported_all:
+        by_order.setdefault(_order(c), []).append(c)
+    for k in list(by_order.keys()):
+        by_order[k] = sorted(by_order[k])
+
+    if classes is None:
+        targets = list(supported_all)
+    else:
+        wanted = {str(x).upper() for x in classes}
+        targets = [c for c in supported_all if c.upper() in wanted]
+
+    def _cand_for_order(o: int) -> tuple[str, ...]:
+        if o <= 0:
+            return ()
+        if o == 1:
+            return ("1A",)
+        return tuple(by_order.get(o, []))
+
+    squares: dict[str, str] = {}
+    cubes: dict[str, str] = {}
+    fifths: dict[str, str] = {}
+
+    square_results: dict[str, dict[str, object]] = {}
+    cube_results: dict[str, dict[str, object]] = {}
+    fifth_results: dict[str, dict[str, object]] = {}
+
+    for g in targets:
+        og = _order(g)
+        if og <= 1:
+            continue
+
+        # g^2 has order og/gcd(og,2)
+        o2 = og // 2 if (og % 2 == 0) else og
+        cand2 = _cand_for_order(o2)
+        if cand2:
+            res2 = verify_square_power_relation(
+                g, max_q_exp=max_q_exp, candidates=cand2
+            )
+            square_results[g] = res2
+            if res2.get("inferred_power_class"):
+                squares[g] = str(res2["inferred_power_class"])
+
+        # prime m=3: g^3 has order og/gcd(og,3)
+        o3 = og // 3 if (og % 3 == 0) else og
+        cand3 = _cand_for_order(o3)
+        if cand3:
+            try:
+                res3 = verify_power_relation(
+                    g, m=3, max_q_exp=max_q_exp, candidates=cand3
+                )
+                cube_results[g] = res3
+                if res3.get("inferred_power_class"):
+                    cubes[g] = str(res3["inferred_power_class"])
+            except Exception:
+                pass
+
+        # prime m=5: g^5 has order og/gcd(og,5)
+        o5 = og // 5 if (og % 5 == 0) else og
+        cand5 = _cand_for_order(o5)
+        if cand5:
+            try:
+                res5 = verify_power_relation(
+                    g, m=5, max_q_exp=max_q_exp, candidates=cand5
+                )
+                fifth_results[g] = res5
+                if res5.get("inferred_power_class"):
+                    fifths[g] = str(res5["inferred_power_class"])
+            except Exception:
+                pass
+
+    # g^4 from squares when possible (g^4 = (g^2)^2).
+    fourths: dict[str, str] = {}
+    for g, g2 in squares.items():
+        g4 = squares.get(g2)
+        if g4:
+            fourths[g] = g4
+
+    composite_checks: list[dict[str, object]] = []
+    composite_ms = (4, 6, 8, 9, 10)
+    for g in targets:
+        og = _order(g)
+        if og not in composite_ms:
+            continue
+        m = og
+        power_map: dict[int, str] = {}
+        for a in range(2, m + 1):
+            if m % a != 0:
+                continue
+            if a == m:
+                power_map[a] = "1A"
+            elif a == 2 and g in squares:
+                power_map[a] = squares[g]
+            elif a == 3 and g in cubes:
+                power_map[a] = cubes[g]
+            elif a == 4:
+                if m == 4:
+                    power_map[a] = "1A"
+                elif g in fourths:
+                    power_map[a] = fourths[g]
+            elif a == 5 and g in fifths:
+                power_map[a] = fifths[g]
+            elif a in (6, 8, 9, 10):
+                power_map[a] = "1A"
+
+        required = [a for a in range(2, m + 1) if m % a == 0]
+        if all(a in power_map for a in required):
+            chk = verify_replicability_relation(
+                g, m=m, power_map=power_map, max_q_exp=min(12, max_q_exp)
+            )
+            chk["power_map"] = dict(power_map)
+            composite_checks.append(chk)
+
+    closure: dict[str, dict[str, object]] = {}
+    for g, g2 in squares.items():
+        g4 = squares.get(g2)
+        if not g4:
+            continue
+        closure[g] = {
+            "g2": g2,
+            "g4": g4,
+            "order": _order(g),
+            "order_g2": _order(g2),
+            "order_g4": _order(g4),
+        }
+
+    return {
+        "supported_classes": supported_all,
+        "target_classes": targets,
+        "power_maps": {
+            "square": squares,
+            "cube": cubes,
+            "fifth": fifths,
+            "fourth_from_square": fourths,
+        },
+        "replicability": {
+            "square_results": square_results,
+            "cube_results": cube_results,
+            "fifth_results": fifth_results,
+            "composite_checks": composite_checks,
+        },
+        "closure": closure,
     }
 
 
