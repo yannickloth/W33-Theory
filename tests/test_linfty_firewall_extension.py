@@ -313,7 +313,6 @@ def test_mixed_triple_cancelled_by_manual_lsq_candidate_3_1():
         _load_bracket_tool,
     )
     from tools.exhaustive_homotopy_check_rationalized_l3 import (
-        assemble_l3_total_from_coeffs,
         basis_elem_g1,
         basis_elem_g2,
     )
@@ -338,47 +337,13 @@ def test_mixed_triple_cancelled_by_manual_lsq_candidate_3_1():
     y = basis_elem_g1(toe, b_idx)
     z = basis_elem_g2(toe, c_idx)
 
-    # prepare br_l2 and br_fibers for l3 contribution
-    br_l2 = toe.E8Z3Bracket(
-        e6_projector=proj,
-        cubic_triads=[t for t in all_triads if tuple(sorted(t[:3])) not in bad9],
-        scale_g1g1=1.0,
-        scale_g2g2=-1.0 / 6.0,
-        scale_e6=1.0,
-        scale_sl3=1.0 / 6.0,
-    )
-    br_fibers = [
-        toe.E8Z3Bracket(
-            e6_projector=proj,
-            cubic_triads=[T],
-            scale_g1g1=1.0,
-            scale_g2g2=-1.0 / 6.0,
-            scale_e6=1.0,
-            scale_sl3=1.0 / 6.0,
-        )
-        for T in [t for t in all_triads if tuple(sorted(t[:3])) in bad9]
-    ]
+    # Use the same brackets as `linfty.homotopy_jacobi` so the LSQ candidate
+    # targets the actual residual that will be checked below.
+    br_l2 = linfty.br_l2
 
-    # target RHS = -(J + l3)
+    # target RHS = -(J + l3) where l3 is the canonical fiber-supported term
     J = toe._jacobi(br_l2, x, y, z)
-    l3_total = assemble_l3_total_from_coeffs(
-        _np.array(
-            [
-                float(v)
-                for v in __import__("json").loads(
-                    open(
-                        "artifacts/linfty_coord_search_results_rationalized.json"
-                    ).read()
-                )["rationalized_coeffs_float"]
-            ]
-        ),
-        br_l2,
-        br_fibers,
-        toe,
-        x,
-        y,
-        z,
-    )
+    l3_total = linfty.l3(x, y, z)
 
     # flatten helpers
     def flatten(e):
@@ -438,13 +403,33 @@ def test_mixed_triple_cancelled_by_manual_lsq_candidate_3_1():
 
     def alpha_num(a, b):
         # alpha(y,z) = U
-        if _np.allclose(a.g1, y.g1) and _np.allclose(b.g1, z.g1):
+        if (
+            _np.allclose(a.g1, y.g1)
+            and _np.allclose(a.g2, y.g2)
+            and _np.allclose(b.g1, z.g1)
+            and _np.allclose(b.g2, z.g2)
+        ):
             return U_e8
-        if _np.allclose(a.g1, z.g1) and _np.allclose(b.g1, y.g1):
+        if (
+            _np.allclose(a.g1, z.g1)
+            and _np.allclose(a.g2, z.g2)
+            and _np.allclose(b.g1, y.g1)
+            and _np.allclose(b.g2, y.g2)
+        ):
             return U_e8.scale(-1.0)
-        if _np.allclose(a.g1, x.g1) and _np.allclose(b.g1, z.g1):
+        if (
+            _np.allclose(a.g1, x.g1)
+            and _np.allclose(a.g2, x.g2)
+            and _np.allclose(b.g1, z.g1)
+            and _np.allclose(b.g2, z.g2)
+        ):
             return V_e8
-        if _np.allclose(a.g1, z.g1) and _np.allclose(b.g1, x.g1):
+        if (
+            _np.allclose(a.g1, z.g1)
+            and _np.allclose(a.g2, z.g2)
+            and _np.allclose(b.g1, x.g1)
+            and _np.allclose(b.g2, x.g2)
+        ):
             return V_e8.scale(-1.0)
         return toe.E8Z3.zero()
 
