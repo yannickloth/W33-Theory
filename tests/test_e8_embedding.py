@@ -7213,6 +7213,17 @@ class TestLeechMonster:
             for chk in closure["replicability"]["composite_checks"]
         )
 
+        # Offline ATLAS snapshot (QMUL) power-map sanity checks.
+        from scripts.w33_leech_monster import load_monster_atlas_ccls
+
+        atlas = load_monster_atlas_ccls()
+        assert atlas is not None and int(atlas.get("n_classes", 0)) == 194
+        ccls = atlas["classes"]
+        assert ccls["8A"]["powers"]["2"] == ["4C"]
+        assert ccls["8A"]["powers"]["4"] == ["2B"]
+        assert ccls["10A"]["powers"]["2"] == ["5A"]
+        assert ccls["10A"]["powers"]["5"] == ["2A"]
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
