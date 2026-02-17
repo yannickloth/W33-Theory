@@ -3236,7 +3236,11 @@ def analyze_leech_monster() -> Dict:
     interpretation = (
         "E8^3 provides 720 root vectors; the Leech kissing number 196560 "
         "is 273×720. The smallest Monster rep (196883) is close (difference=323), "
-        "suggesting deep but nontrivial connections (Moonshine numerology)."
+        "suggesting deep but nontrivial connections (Moonshine numerology). "
+        "ATLAS standard generators for M refine this: for a∈2A and b∈3B, "
+        "Pr(|ab|=29)=1632586752/111045174695, and the class-algebra structure "
+        "constant satisfies n_{2A,3B}^{29A}=|C_M(29A)|=87 (so there are exactly "
+        "|M| pairs (a,b) with ab in 29A)."
     )
 
     # modular/j comparisons
