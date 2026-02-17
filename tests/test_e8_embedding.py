@@ -7324,6 +7324,7 @@ class TestLeechMonster:
         from fractions import Fraction
 
         from scripts.w33_leech_monster import (
+            analyze_monster_2a3b_class_algebra_partial_distribution,
             analyze_monster_atlas_standard_generator_pipeline,
             analyze_rogers_ramanujan_j_invariant,
         )
@@ -7356,6 +7357,24 @@ class TestLeechMonster:
             20245856256,
             333202640600,
         ]
+
+        dist = analyze_monster_2a3b_class_algebra_partial_distribution()
+        assert dist.get("available") is True
+        cls = dist.get("classes", {})
+        assert isinstance(cls, dict)
+        assert cls.get("1A", {}).get("probability", {}).get("numerator") == 0
+        assert cls.get("2A", {}).get("probability", {}).get("numerator") == 0
+
+        p3 = cls.get("3B", {}).get("probability", {})
+        assert isinstance(p3, dict)
+        assert (p3.get("numerator"), p3.get("denominator")) == (2187, 12214969216450)
+        n3 = cls.get("3B", {}).get("structure_constant_per_element")
+        assert n3 == 17410007160
+        fac3 = cls.get("3B", {}).get("structure_constant_factorization")
+        assert fac3 == {2: 3, 3: 14, 5: 1, 7: 1, 13: 1}
+
+        n29 = cls.get("29A", {}).get("structure_constant_per_element")
+        assert n29 == 87
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""

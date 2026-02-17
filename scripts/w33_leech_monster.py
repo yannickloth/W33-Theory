@@ -2323,6 +2323,110 @@ def analyze_monster_atlas_standard_generator_pipeline(
     }
 
 
+def analyze_monster_2a3b_class_algebra_partial_distribution(
+    charcols_json_path: str | None = None,
+    atlas_json_path: str | None = None,
+) -> dict[str, object]:
+    """Compute a partial class-algebra distribution for products a·b with a∈2A, b∈3B.
+
+    Using the bundled CTblLib-derived integer character columns for {2A,3B,29A},
+    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A} exactly, plus the associated
+    per-element structure constants n_{2A,3B}^C.
+
+    This is a concrete "Monster algebra" observable: it converts character data
+    into integer class-algebra constants and exact rational probabilities.
+    """
+    from fractions import Fraction
+
+    cols = load_monster_ctbllib_charcols(charcols_json_path)
+    if cols is None:
+        return {"available": False}
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+
+    try:
+        classes = atlas["classes"]
+        monster_ord = int(classes["1A"]["centralizer_order"])
+        cent_2a = int(classes["2A"]["centralizer_order"])
+        cent_3b = int(classes["3B"]["centralizer_order"])
+        cent_29a = int(classes["29A"]["centralizer_order"])
+    except Exception:
+        return {"available": False}
+
+    irreps = cols.get("irreps", [])
+    if not isinstance(irreps, list) or len(irreps) != 194:
+        return {"available": False}
+
+    cent = {"1A": monster_ord, "2A": cent_2a, "3B": cent_3b, "29A": cent_29a}
+    size = {k: monster_ord // v for k, v in cent.items()}
+    size_a = size["2A"]
+    size_b = size["3B"]
+
+    def _sum_for(C: str) -> Fraction:
+        s = Fraction(0, 1)
+        for row in irreps:
+            if not isinstance(row, dict):
+                raise ValueError("invalid irrep row")
+            deg = int(row["deg"])
+            a = int(row["2A"])
+            b = int(row["3B"])
+            if C == "1A":
+                c = deg
+            else:
+                c = int(row[C])
+            s += Fraction(a * b * c, deg)
+        return s
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    def factorint(n: int) -> dict[int, int]:
+        nn = int(n)
+        out: dict[int, int] = {}
+        d = 2
+        while d * d <= nn:
+            while nn % d == 0:
+                out[d] = out.get(d, 0) + 1
+                nn //= d
+            d = 3 if d == 2 else d + 2
+        if nn > 1:
+            out[nn] = out.get(nn, 0) + 1
+        return out
+
+    out: dict[str, object] = {"available": True, "classes": {}}
+    classes_out: dict[str, object] = {}
+    mass = Fraction(0, 1)
+    p_by_class: dict[str, Fraction] = {}
+    for C in ["1A", "2A", "3B", "29A"]:
+        s = _sum_for(C)
+        p = s * Fraction(1, cent[C])
+        n = p * size_a * size_b / size[C]
+        assert n.denominator == 1, f"Non-integer n_2A,3B^{C}: {n}"
+        classes_out[C] = {
+            "class_algebra_sum": _fraction_payload(s),
+            "probability": _fraction_payload(p),
+            "structure_constant_per_element": int(n.numerator),
+            "structure_constant_factorization": factorint(int(n.numerator)),
+        }
+        p_by_class[C] = p
+        mass += p
+
+    # Sanity identities implied by character orthogonality / class algebra.
+    assert p_by_class["1A"] == 0
+    assert p_by_class["2A"] == 0
+
+    out["classes"] = classes_out
+    out["partial_mass"] = _fraction_payload(mass)
+    out["remaining_mass"] = _fraction_payload(Fraction(1, 1) - mass)
+    return out
+
+
 def analyze_monster_atlas_probability_landscape(
     atlas_json_path: str | None = None,
     *,
@@ -3698,6 +3802,7 @@ def analyze_leech_monster() -> Dict:
         analyze_monster_standard_generator_step3_order29_from_character_table()
     )
     atlas_pipeline = analyze_monster_atlas_standard_generator_pipeline()
+    atlas_2a3b = analyze_monster_2a3b_class_algebra_partial_distribution()
 
     rr_j = analyze_rogers_ramanujan_j_invariant(n_terms=5)
     assert rr_j.get("available") is True and rr_j.get("verified") is True, (
@@ -3738,6 +3843,7 @@ def analyze_leech_monster() -> Dict:
         "atlas_powering_probabilities": atlas_powering_probabilities,
         "atlas_standard_generators_step3": atlas_step3,
         "atlas_standard_generators_pipeline": atlas_pipeline,
+        "atlas_2A3B_class_algebra_partial": atlas_2a3b,
         "rogers_ramanujan_j": rr_j,
         "interpretation": interpretation,
     }
@@ -3837,6 +3943,17 @@ if __name__ == "__main__":
                 "- ATLAS standard generators: Pr(2A·3B has order 29) = %s (E[trials]=%.3f)"
                 % (prob.get("value"), float(step3.get("expected_trials", 0.0))),
             )
+    dist = out.get("atlas_2A3B_class_algebra_partial", {})
+    if isinstance(dist, dict) and dist.get("available") is True:
+        cls = dist.get("classes", {})
+        if isinstance(cls, dict):
+            p3 = cls.get("3B", {}).get("probability", {})
+            n3 = cls.get("3B", {}).get("structure_constant_per_element")
+            if isinstance(p3, dict) and n3 is not None:
+                print(
+                    "- Class algebra: Pr(2AÂ·3B âˆˆ 3B) = %s (n=%s)"
+                    % (p3.get("value"), n3),
+                )
     pipe = out.get("atlas_standard_generators_pipeline", {})
     if isinstance(pipe, dict) and pipe.get("available") is True:
         strat = pipe.get("strategy_resample_both", {})
