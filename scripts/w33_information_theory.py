@@ -103,7 +103,7 @@ def analyze_w33_information():
     out_dir.mkdir(exist_ok=True)
     fname = out_dir / f"PART_CXIV_information_theory_{int(time.time())}.json"
     with open(fname, "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(results, f, indent=2, default=str)
 
     return results
 

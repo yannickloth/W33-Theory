@@ -79,7 +79,7 @@ def main():
     out_dir.mkdir(exist_ok=True)
     fname = out_dir / f"PART_CXVII_higgs_pmns_{int(time.time())}.json"
     with open(fname, "w") as f:
-        json.dump(out, f, indent=2)
+        json.dump(out, f, indent=2, default=str)
     print(f"Wrote: {fname}")
     return out
 

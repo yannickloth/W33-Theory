@@ -540,7 +540,7 @@ def main():
     out.mkdir(exist_ok=True)
     fname = out / f"PART_CVII_lie_bracket_{int(time.time())}.json"
     with open(fname, "w") as f:
-        json.dump(results, f, indent=2, cls=NumpyEncoder)
+        json.dump(results, f, indent=2, cls=NumpyEncoder, default=str)
     print(f"\n  Wrote: {fname}")
     print(f"  Elapsed: {time.time()-t0:.1f}s")
 
