@@ -6935,6 +6935,8 @@ class TestLeechMonster:
             mckay_thompson_series,
             verify_9a_cubing_relation,
             verify_fricke_prime_replicability,
+            verify_j_via_rogers_ramanujan,
+            verify_replicability_relation,
             verify_rogers_ramanujan_5b_identity,
             verify_square_power_relation,
         )
@@ -6956,6 +6958,9 @@ class TestLeechMonster:
 
         rr = verify_rogers_ramanujan_5b_identity(max_q_exp=12)
         assert rr["verified"] is True
+
+        jrr = verify_j_via_rogers_ramanujan(max_q_exp=12)
+        assert jrr["verified"] is True
 
         t4a = mckay_thompson_series("4A", max_q_exp=4)
         assert t4a is not None
@@ -7169,6 +7174,22 @@ class TestLeechMonster:
         assert sq10a["verified"] is True
         assert sq10a["inferred_power_class"] == "5A"
 
+        rep8a4 = verify_replicability_relation(
+            "8A",
+            m=4,
+            power_map={2: "4C", 4: "2B"},
+            max_q_exp=12,
+        )
+        assert rep8a4["verified"] is True
+
+        rep10a10 = verify_replicability_relation(
+            "10A",
+            m=10,
+            power_map={2: "5A", 5: "2A", 10: "1A"},
+            max_q_exp=12,
+        )
+        assert rep10a10["verified"] is True
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
@@ -7233,11 +7254,16 @@ class TestLeechMonster:
 
     def test_bundled_monster_degrees_file(self):
         """Bundled static Monster degrees should be loadable as a fallback."""
-        from scripts.w33_leech_monster import _load_monster_irreps_via_gap
+        from scripts.w33_leech_monster import (
+            _load_monster_irreps_via_gap,
+            monster_order,
+        )
 
         degs = _load_monster_irreps_via_gap()
         assert isinstance(degs, list)
+        assert len(degs) == 194
         assert 1 in degs and 196883 in degs
+        assert sum(int(d) ** 2 for d in degs) == monster_order()
 
     def test_load_monster_characters_from_file_and_traces(self, tmp_path):
         """Create a minimal monster_characters.json and verify loader + McKay traces."""

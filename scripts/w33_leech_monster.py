@@ -1219,6 +1219,100 @@ def verify_rogers_ramanujan_5b_identity(max_q_exp: int = 12) -> dict[str, object
     }
 
 
+def j_series_via_rogers_ramanujan_r5(max_q_exp: int = 12) -> dict[int, int]:
+    """Compute the Klein j-invariant series using Rogers–Ramanujan data.
+
+    Wikipedia gives the rational function identity relating the Klein j-invariant
+    and the Rogers–Ramanujan continued fraction R(q):
+
+      j(τ) = - (r^20 - 228 r^15 + 494 r^10 + 228 r^5 + 1)^3
+             / ( r^5 (r^10 + 11 r^5 - 1)^5 )
+
+    with r = R(q). Setting t = r^5 = R(q)^5 turns this into:
+
+      j(τ) = - (t^4 - 228 t^3 + 494 t^2 + 228 t + 1)^3 / ( t (t^2 + 11 t - 1)^5 )
+           =   (t^4 - 228 t^3 + 494 t^2 + 228 t + 1)^3 / ( t (1 - 11 t - t^2)^5 ).
+
+    Since t(q) = q + O(q^2), this produces the Laurent expansion:
+      j(τ) = q^{-1} + 744 + Σ_{n>=1} c(n) q^n.
+    """
+    if max_q_exp < 0:
+        raise ValueError("max_q_exp must be non-negative")
+
+    # We need coefficients through q^{max_q_exp} after dividing by t(q), which
+    # introduces a q^{-1} shift. Compute ordinary series through degree max_q_exp+1.
+    deg = max_q_exp + 1
+    t = rogers_ramanujan_r5_series(max_q_exp=deg + 1)  # need t[deg+1] for U
+    t_trunc = t[: deg + 1]
+
+    t2 = _qpoly_mul(t_trunc, t_trunc, deg)
+    t3 = _qpoly_mul(t2, t_trunc, deg)
+    t4 = _qpoly_mul(t2, t2, deg)
+
+    # P(t) = t^4 - 228 t^3 + 494 t^2 + 228 t + 1
+    P = [0] * (deg + 1)
+    P[0] = 1
+    for k in range(0, deg + 1):
+        P[k] += 228 * int(t_trunc[k])
+        P[k] += 494 * int(t2[k])
+        P[k] -= 228 * int(t3[k])
+        P[k] += int(t4[k])
+
+    num = _qpoly_pow(P, 3, deg)
+
+    # W(t) = (1 - 11 t - t^2)^5
+    W = [0] * (deg + 1)
+    W[0] = 1
+    for k in range(0, deg + 1):
+        W[k] -= 11 * int(t_trunc[k])
+        W[k] -= int(t2[k])
+
+    W5 = _qpoly_pow(W, 5, deg)
+    invW5 = _qpoly_inv(W5, deg)
+
+    # A(q) = num / W5
+    A = _qpoly_mul(num, invW5, deg)
+
+    # Divide by t(q): t = q * U with U(0)=1 => 1/t = q^{-1} * U^{-1}.
+    U = [int(t[k + 1]) for k in range(deg + 1)]
+    U[0] = 1
+    invU = _qpoly_inv(U, deg)
+
+    AU = _qpoly_mul(A, invU, deg)
+
+    out: dict[int, int] = {-1: int(AU[0])}
+    for n in range(0, max_q_exp + 1):
+        out[n] = int(AU[n + 1])
+    return out
+
+
+def verify_j_via_rogers_ramanujan(max_q_exp: int = 12) -> dict[str, object]:
+    """Verify j(τ) reconstruction from t(q)=R(q)^5 via the Wikipedia identity."""
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    j_rr = j_series_via_rogers_ramanujan_r5(max_q_exp=max_q_exp)
+    j_ref = j_coeffs(max_q_exp)
+
+    mismatches: list[tuple[int, int, int]] = []
+    if int(j_rr.get(-1, 0)) != 1:
+        mismatches.append((-1, int(j_rr.get(-1, 0)), 1))
+    if int(j_rr.get(0, 0)) != 744:
+        mismatches.append((0, int(j_rr.get(0, 0)), 744))
+    for n in range(1, max_q_exp + 1):
+        lv = int(j_rr.get(n, 0))
+        rv = int(j_ref[n - 1])
+        if lv != rv:
+            mismatches.append((n, lv, rv))
+
+    return {
+        "max_q_exp": max_q_exp,
+        "verified": len(mismatches) == 0,
+        "n_mismatches": len(mismatches),
+        "mismatches": mismatches[:10],
+    }
+
+
 def _laurent_mul(
     a: dict[int, int], b: dict[int, int], min_exp: int, max_exp: int
 ) -> dict[int, int]:
