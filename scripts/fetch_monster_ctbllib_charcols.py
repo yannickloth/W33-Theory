@@ -9,6 +9,7 @@ offline, deterministic tests and analyses:
   - 2A
   - 3B
   - 29A
+  - 41A
 
 The resulting file is written to `data/monster_ctbllib_charcols.json`.
 
@@ -197,11 +198,22 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         raise ValueError(f"unexpected 29A candidates: {idx29_candidates}")
     idx29 = 97
 
+    pm41 = ast.literal_eval(pow_items[40].replace("\n", " "))
+    if not isinstance(pm41, list) or len(pm41) != 194:
+        raise ValueError("unexpected powermap(41)")
+
+    idx41_candidates = [
+        i + 1 for i, (c, p) in enumerate(zip(centralizers, pm41)) if c == 41 and p == 1
+    ]
+    if idx41_candidates != [127]:
+        raise ValueError(f"unexpected 41A candidates: {idx41_candidates}")
+    idx41 = 127
+
     rows = _split_top_level_list_items(args[3])
     if len(rows) != 194:
         raise ValueError(f"expected 194 irreps, got {len(rows)}")
 
-    cols_needed = [1, 2, 5, idx29]
+    cols_needed = [1, 2, 5, idx29, idx41]
     extracted = [_extract_cols(r, cols_needed) for r in rows]
 
     # Expand GALOIS rows: for these columns (orders 2,3,29), values are integers,
@@ -220,6 +232,7 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "2A": int(d[2]),
                 "3B": int(d[5]),
                 "29A": int(d[idx29]),
+                "41A": int(d[idx41]),
             }
         )
 
@@ -235,6 +248,7 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
             "2A": {"ctbllib_index": 2},
             "3B": {"ctbllib_index": 5},
             "29A": {"ctbllib_index": idx29},
+            "41A": {"ctbllib_index": idx41},
         },
         "n_irreps": len(irreps),
         "irreps": irreps,

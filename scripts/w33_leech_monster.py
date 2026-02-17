@@ -2329,8 +2329,8 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
 ) -> dict[str, object]:
     """Compute a partial class-algebra distribution for products a·b with a∈2A, b∈3B.
 
-    Using the bundled CTblLib-derived integer character columns for {2A,3B,29A},
-    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A} exactly, plus the associated
+    Using the bundled CTblLib-derived integer character columns for {2A,3B,29A,41A},
+    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A,41A} exactly, plus the associated
     per-element structure constants n_{2A,3B}^C.
 
     This is a concrete "Monster algebra" observable: it converts character data
@@ -2351,6 +2351,7 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
         cent_2a = int(classes["2A"]["centralizer_order"])
         cent_3b = int(classes["3B"]["centralizer_order"])
         cent_29a = int(classes["29A"]["centralizer_order"])
+        cent_41a = int(classes["41A"]["centralizer_order"])
     except Exception:
         return {"available": False}
 
@@ -2358,7 +2359,13 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     if not isinstance(irreps, list) or len(irreps) != 194:
         return {"available": False}
 
-    cent = {"1A": monster_ord, "2A": cent_2a, "3B": cent_3b, "29A": cent_29a}
+    cent = {
+        "1A": monster_ord,
+        "2A": cent_2a,
+        "3B": cent_3b,
+        "29A": cent_29a,
+        "41A": cent_41a,
+    }
     size = {k: monster_ord // v for k, v in cent.items()}
     size_a = size["2A"]
     size_b = size["3B"]
@@ -2403,7 +2410,7 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     classes_out: dict[str, object] = {}
     mass = Fraction(0, 1)
     p_by_class: dict[str, Fraction] = {}
-    for C in ["1A", "2A", "3B", "29A"]:
+    for C in ["1A", "2A", "3B", "29A", "41A"]:
         s = _sum_for(C)
         p = s * Fraction(1, cent[C])
         n = p * size_a * size_b / size[C]
@@ -3953,6 +3960,13 @@ if __name__ == "__main__":
                 print(
                     "- Class algebra: Pr(2AÂ·3B âˆˆ 3B) = %s (n=%s)"
                     % (p3.get("value"), n3),
+                )
+            p41 = cls.get("41A", {}).get("probability", {})
+            n41 = cls.get("41A", {}).get("structure_constant_per_element")
+            if isinstance(p41, dict) and n41 is not None:
+                print(
+                    "- Class algebra: Pr(2AÂ·3B âˆˆ 41A) = %s (n=%s)"
+                    % (p41.get("value"), n41),
                 )
     pipe = out.get("atlas_standard_generators_pipeline", {})
     if isinstance(pipe, dict) and pipe.get("available") is True:
