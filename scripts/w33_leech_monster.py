@@ -2428,6 +2428,15 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     assert p_by_class["1A"] == 0
     assert p_by_class["2A"] == 0
 
+    # Two striking "centralizer-multiple" identities (empirical, from CTblLib):
+    #   n_{2A,3B}^{29A} = |C(29A)| = 87
+    #   n_{2A,3B}^{41A} = 2·|C(41A)| = 82
+    n29 = int(classes_out["29A"]["structure_constant_per_element"])
+    n41 = int(classes_out["41A"]["structure_constant_per_element"])
+    assert n29 == cent_29a
+    assert n41 == 2 * cent_41a
+    assert p_by_class["41A"] == 2 * p_by_class["29A"]
+
     out["classes"] = classes_out
     out["partial_mass"] = _fraction_payload(mass)
     out["remaining_mass"] = _fraction_payload(Fraction(1, 1) - mass)
