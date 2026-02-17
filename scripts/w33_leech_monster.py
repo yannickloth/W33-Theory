@@ -15,12 +15,13 @@ Usage:
 from __future__ import annotations
 
 import ast
+import json
 import shutil
 import subprocess
 import sys
 from fractions import Fraction
 from functools import lru_cache
-from math import comb
+from math import comb, log2, log10
 from pathlib import Path
 from typing import Dict
 
@@ -781,6 +782,82 @@ def monster_order() -> int:
     return n
 
 
+def load_sporadic_group_orders(
+    json_path: str | None = None,
+) -> dict[str, dict[int, int]] | None:
+    """Load sporadic group order factorizations (including Tits group) from JSON.
+
+    The JSON format is a mapping {group_name: {prime: exponent}} with primes as strings.
+    """
+    path = (
+        Path(json_path)
+        if json_path is not None
+        else (SCRIPTS_DIR.parent / "data" / "sporadic_group_orders.json")
+    )
+    if not path.exists():
+        return None
+
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    out: dict[str, dict[int, int]] = {}
+    for name, fac in raw.items():
+        out[str(name)] = {int(p): int(e) for p, e in fac.items()}
+    return out
+
+
+def analyze_sporadic_group_magnitudes(
+    json_path: str | None = None,
+) -> dict[str, object]:
+    """Summarize sporadic group *orders* and prime signatures.
+
+    The main output is logarithmic (base 10 and base 2) to avoid constructing huge ints.
+    """
+    facs = load_sporadic_group_orders(json_path=json_path)
+    if facs is None:
+        return {
+            "available": False,
+            "reason": "sporadic_group_orders.json missing",
+        }
+
+    logs10: dict[str, float] = {}
+    logs2: dict[str, float] = {}
+    digits: dict[str, int] = {}
+    bits: dict[str, int] = {}
+
+    all_primes: set[int] = set()
+    for name, fac in facs.items():
+        all_primes |= set(fac.keys())
+        l10 = sum(int(e) * log10(int(p)) for p, e in fac.items())
+        l2 = sum(int(e) * log2(int(p)) for p, e in fac.items())
+        logs10[name] = float(l10)
+        logs2[name] = float(l2)
+        digits[name] = int(l10) + 1 if l10 > 0 else 1
+        bits[name] = int(l2) + 1 if l2 > 0 else 1
+
+    monster_primes = set(monster_prime_divisors())
+    extra_primes_union = sorted(all_primes - monster_primes)
+    groups_with_extra_primes = sorted(
+        [g for g, fac in facs.items() if (set(fac.keys()) - monster_primes)]
+    )
+
+    ranked = sorted(logs10.items(), key=lambda kv: kv[1], reverse=True)
+    top5 = [g for g, _ in ranked[:5]]
+
+    return {
+        "available": True,
+        "n_groups": len(facs),
+        "factorizations": facs,
+        "log10_order": logs10,
+        "log2_order": logs2,
+        "digits": digits,
+        "bits": bits,
+        "primes_union": sorted(all_primes),
+        "monster_primes": sorted(monster_primes),
+        "extra_primes_union": extra_primes_union,
+        "groups_with_extra_primes": groups_with_extra_primes,
+        "top5_by_order": top5,
+    }
+
+
 def monster_prime_divisors() -> list[int]:
     return sorted(int(p) for p in monster_order_factorization().keys())
 
@@ -1386,6 +1463,12 @@ def analyze_leech_monster() -> Dict:
     monster_primes = monster_prime_divisors()
     assert ogg["primes"] == monster_primes, "Ogg primes != primes dividing |Monster|"
 
+    sporadic = analyze_sporadic_group_magnitudes()
+    if sporadic.get("available") is True:
+        facs = sporadic.get("factorizations", {})
+        if isinstance(facs, dict) and "M" in facs:
+            assert facs["M"] == monster_order_factorization()
+
     return {
         "e8_roots": e8_roots,
         "e8_cubed_roots": e8_cubed_roots,
@@ -1413,6 +1496,7 @@ def analyze_leech_monster() -> Dict:
         "ogg_primes_details": ogg["details"],
         "monster_order": monster_order(),
         "monster_order_primes": monster_primes,
+        "sporadic_magnitudes": sporadic,
         "interpretation": interpretation,
     }
 
@@ -1444,4 +1528,17 @@ if __name__ == "__main__":
         )
     )
     print("- Ogg primes (genus-zero X0(p)^+):", out["ogg_primes"])
+    sp = out.get("sporadic_magnitudes", {})
+    if isinstance(sp, dict) and sp.get("available") is True:
+        print("- Sporadic prime union:", sp.get("primes_union"))
+        print("- Extra primes beyond Monster:", sp.get("extra_primes_union"))
+        print("- Extra-prime groups:", sp.get("groups_with_extra_primes"))
+        top = sp.get("top5_by_order", [])
+        if isinstance(top, list) and top:
+            digits = sp.get("digits", {})
+            if isinstance(digits, dict):
+                print(
+                    "- Largest sporadics (decimal digits):",
+                    [(g, digits.get(g)) for g in top],
+                )
     print("- Interpretation:", out["interpretation"])

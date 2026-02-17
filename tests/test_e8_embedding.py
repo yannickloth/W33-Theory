@@ -6909,6 +6909,13 @@ class TestLeechMonster:
         assert math.isclose(float(w33["spectral_gap_L1"]), 4.0, rel_tol=0, abs_tol=1e-8)
         assert lm_data["monster_diff_from_w33"] == lm_data["monster_diff"]
 
+        sp = lm_data.get("sporadic_magnitudes", {})
+        assert isinstance(sp, dict) and sp.get("available") is True
+        assert sp.get("extra_primes_union") == [37, 43, 67]
+        assert set(sp.get("groups_with_extra_primes", [])) == {"J4", "Ly"}
+        digits = sp.get("digits", {})
+        assert isinstance(digits, dict) and digits.get("M") == 54
+
     def test_j_series_relation(self, lm_data):
         # Klein j basic checks (expanded)
         assert lm_data["j1"] == 196884
