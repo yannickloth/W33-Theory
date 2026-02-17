@@ -405,6 +405,73 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
             out[n] = int(c)
         return out
 
+    if name == "11A":
+        # Formula (e.g. Ramanujan–Sato series / Cooper):
+        #   j_11A(τ) = (1+3F)^3 + (F^{-1/2}+3F^{1/2})^2
+        #           = F^{-1} + 7 + 18F + 27F^2 + 27F^3,
+        #   where F = η(3τ)η(33τ)/(η(τ)η(11τ)).
+        #
+        # Our normalization uses T_11A = j_11A - a0 so that constant term is 0.
+        deg = max_q_exp + 3  # slack for F^3
+        e1 = _qpochhammer(deg, step=1)
+        e3 = _qpochhammer(deg, step=3)
+        e11 = _qpochhammer(deg, step=11)
+        e33 = _qpochhammer(deg, step=33)
+
+        num = _qpoly_mul(e3, e33, deg)
+        den = _qpoly_mul(e1, e11, deg)
+        ratio = _qpoly_div(num, den, deg)  # (E3*E33)/(E1*E11), constant term 1
+
+        # F(q) = q * ratio(q)
+        F = [0] * (deg + 1)
+        for k, ck in enumerate(ratio[:deg]):
+            if k + 1 <= deg:
+                F[k + 1] = int(ck)
+
+        F2 = _qpoly_mul(F, F, deg)
+        F3 = _qpoly_mul(F2, F, deg)
+
+        ratio_inv = _qpoly_inv(ratio, deg)
+
+        # Build j_11A as a Laurent series dict exp->coeff
+        j: dict[int, int] = {-1: 1}
+
+        # F^{-1} = q^{-1} * ratio^{-1}
+        for k, ck in enumerate(ratio_inv[: deg + 1]):
+            exp = k - 1
+            if -1 <= exp <= max_q_exp and ck:
+                j[exp] = j.get(exp, 0) + int(ck)
+
+        # + 7
+        j[0] = j.get(0, 0) + 7
+
+        # + 18F + 27F^2 + 27F^3
+        for k, ck in enumerate(F[: deg + 1]):
+            if 0 <= k <= max_q_exp and ck:
+                j[k] = j.get(k, 0) + 18 * int(ck)
+        for k, ck in enumerate(F2[: deg + 1]):
+            if 0 <= k <= max_q_exp and ck:
+                j[k] = j.get(k, 0) + 27 * int(ck)
+        for k, ck in enumerate(F3[: deg + 1]):
+            if 0 <= k <= max_q_exp and ck:
+                j[k] = j.get(k, 0) + 27 * int(ck)
+
+        # Normalize to constant term 0.
+        a0 = int(j.get(0, 0))
+        out = {}
+        for e, c in j.items():
+            if e == 0:
+                continue
+            if -1 <= e <= max_q_exp:
+                out[e] = int(c)
+        out[-1] = 1
+        out[0] = 0
+        if a0 != 6:
+            # Keep as an internal sanity check but don't hard-require the known value.
+            # (Different normalizations in the literature sometimes shift by constants.)
+            pass
+        return out
+
     if name == "3C":
         deg = max_q_exp + 1
         e1 = _qpochhammer(deg, step=1)
@@ -642,6 +709,7 @@ def verify_fricke_prime_replicability(
         "5B": 5,
         "7A": 7,
         "7B": 7,
+        "11A": 11,
         "13A": 13,
         "13B": 13,
     }

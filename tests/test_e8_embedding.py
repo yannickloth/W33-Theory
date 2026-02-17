@@ -6954,6 +6954,13 @@ class TestLeechMonster:
         assert t3c.get(1) == 0
         assert t3c.get(2) == 248
 
+        t11a = mckay_thompson_series("11A", max_q_exp=6)
+        assert t11a is not None
+        assert t11a.get(1) == 17
+        assert t11a.get(2) == 46
+        assert t11a.get(3) == 116
+        assert t11a.get(4) == 252
+
         rep2 = verify_fricke_prime_replicability("2A", max_q_exp=10)
         assert rep2["verified"] is True
         rep3 = verify_fricke_prime_replicability("3A", max_q_exp=10)
@@ -6965,6 +6972,9 @@ class TestLeechMonster:
         assert rep3b["verified"] is True
         rep3c = verify_fricke_prime_replicability("3C", max_q_exp=10)
         assert rep3c["verified"] is True
+
+        rep11a = verify_fricke_prime_replicability("11A", max_q_exp=11)
+        assert rep11a["verified"] is True
 
         chi2a = infer_monster_head_character_values("2A", max_n=2)
         assert chi2a is not None
