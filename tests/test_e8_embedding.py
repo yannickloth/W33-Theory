@@ -6926,6 +6926,7 @@ class TestLeechMonster:
         from scripts.w33_leech_monster import (
             infer_monster_head_character_values,
             mckay_thompson_series,
+            verify_9a_cubing_relation,
             verify_fricke_prime_replicability,
         )
 
@@ -6974,6 +6975,10 @@ class TestLeechMonster:
         assert chi3c is not None
         assert chi3c[196883] == -1
         assert chi3c[21296876] == 248
+
+        cube = verify_9a_cubing_relation(max_q_exp=12)
+        assert cube["verified"] is True
+        assert cube["inferred_power_class"] == "3B"
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""

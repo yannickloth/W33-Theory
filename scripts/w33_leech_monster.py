@@ -851,6 +851,56 @@ def infer_monster_head_character_values(
     return chis
 
 
+def verify_9a_cubing_relation(max_q_exp: int = 12) -> dict[str, object]:
+    """Verify a composite-order replicability relation for class 9A:
+
+        Phi_3(T_9A) = sum_{b=0..2} T_9A((tau+b)/3) + T_3B(3 tau),
+
+    which implies the power-map identification (9A)^3 = 3B at the level of
+    McKay-Thompson series.
+    """
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    f9 = mckay_thompson_series("9A", max_q_exp=3 * max_q_exp)
+    if f9 is None:
+        raise RuntimeError("9A series unavailable")
+
+    faber = faber_polynomial_series(f9, m=3, max_q_exp=max_q_exp)
+    lhs: dict[int, int] = dict(faber["series"])  # type: ignore[assignment]
+
+    rhs_dec: dict[int, int] = {}
+    for n in range(1, max_q_exp + 1):
+        rhs_dec[n] = 3 * int(f9.get(3 * n, 0))
+
+    remainder: dict[int, int] = {}
+    for e in set(lhs.keys()) | set(rhs_dec.keys()):
+        remainder[e] = int(lhs.get(e, 0)) - int(rhs_dec.get(e, 0))
+    remainder = {e: v for e, v in remainder.items() if v != 0}
+
+    f3b = mckay_thompson_series("3B", max_q_exp=max_q_exp // 3)
+    if f3b is None:
+        raise RuntimeError("3B series unavailable")
+    expected: dict[int, int] = {-3: 1}
+    for n in range(1, max_q_exp // 3 + 1):
+        expected[3 * n] = int(f3b.get(n, 0))
+
+    mismatches: list[tuple[int, int, int]] = []
+    for e in [-3] + [3 * n for n in range(1, max_q_exp // 3 + 1)]:
+        lv = int(remainder.get(e, 0))
+        rv = int(expected.get(e, 0))
+        if lv != rv:
+            mismatches.append((e, lv, rv))
+
+    return {
+        "max_q_exp": max_q_exp,
+        "verified": len(mismatches) == 0,
+        "n_mismatches": len(mismatches),
+        "mismatches": mismatches[:10],
+        "inferred_power_class": "3B",
+    }
+
+
 def compute_mckay_traces(
     class_name: str = "1A",
     n_terms: int = 8,
