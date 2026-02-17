@@ -1749,6 +1749,36 @@ def load_monster_atlas_ccls(json_path: str | None = None) -> dict | None:
     return payload
 
 
+def load_monster_ctbllib_charcols(json_path: str | None = None) -> dict | None:
+    """Load a bundled CTblLib-derived subset of Monster character values.
+
+    The full Monster character table is large. For the ATLAS standard-generator
+    pipeline we only need a few integer columns (1A, 2A, 3B, 29A).
+
+    The bundled file is generated from CTblLib's `ctomonst.tbl` (table "M").
+    """
+    import json
+    from pathlib import Path
+
+    path = (
+        Path(json_path)
+        if json_path is not None
+        else (SCRIPTS_DIR.parent / "data" / "monster_ctbllib_charcols.json")
+    )
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if not isinstance(payload, dict) or "irreps" not in payload:
+        return None
+    irreps = payload.get("irreps")
+    if not isinstance(irreps, list) or len(irreps) < 10:
+        return None
+    return payload
+
+
 def _atlas_power_targets(
     atlas: dict | None, class_name: str, exponent: int
 ) -> list[str] | None:
@@ -1888,6 +1918,87 @@ def analyze_monster_atlas_generator_search_probabilities(
             "to_2A": "56542883129/363405814200",
             "to_3B": "3164/59049",
         },
+    }
+
+
+def analyze_monster_standard_generator_step3_order29_from_character_table(
+    charcols_json_path: str | None = None,
+    atlas_json_path: str | None = None,
+) -> dict[str, object]:
+    """Compute Pr[ab has order 29] for a∈2A, b∈3B via class algebra.
+
+    This is the *third* step in the ATLAS standard-generator pipeline for M:
+      choose conjugates a of x in 2A and b of y in 3B such that |ab| = 29.
+
+    Using class algebra, for conjugacy classes A,B,C:
+      Pr[xy ∈ C] = (|C|/|G|) * Σ_χ χ(A)χ(B)χ(C^{-1})/χ(1).
+
+    For the Monster, 2A/3B/29A character values are integers, so we can compute
+    this probability *exactly* (no cyclotomic arithmetic required).
+    """
+    from fractions import Fraction
+
+    cols = load_monster_ctbllib_charcols(charcols_json_path)
+    if cols is None:
+        return {"available": False}
+
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+
+    try:
+        cent_29a = int(atlas["classes"]["29A"]["centralizer_order"])
+    except Exception:
+        return {"available": False}
+    assert cent_29a == 87, f"Expected |C_M(29A)|=87, got {cent_29a}"
+
+    irreps = cols.get("irreps", [])
+    if not isinstance(irreps, list) or len(irreps) != 194:
+        return {"available": False}
+
+    s = Fraction(0, 1)
+    for row in irreps:
+        if not isinstance(row, dict):
+            return {"available": False}
+        deg = int(row["deg"])
+        s += Fraction(int(row["2A"]) * int(row["3B"]) * int(row["29A"]), deg)
+
+    p = s * Fraction(1, cent_29a)  # |29A|/|M| = 1/|C_M(29A)|
+    expected = Fraction(1632586752, 111045174695)
+    assert p == expected, f"Step-3 probability mismatch: {p} vs {expected}"
+
+    def factorint(n: int) -> dict[int, int]:
+        nn = int(n)
+        out: dict[int, int] = {}
+        d = 2
+        while d * d <= nn:
+            while nn % d == 0:
+                out[d] = out.get(d, 0) + 1
+                nn //= d
+            d = 3 if d == 2 else d + 2
+        if nn > 1:
+            out[nn] = out.get(nn, 0) + 1
+        return out
+
+    num = int(p.numerator)
+    den = int(p.denominator)
+    return {
+        "available": True,
+        "probability": {
+            "numerator": num,
+            "denominator": den,
+            "value": str(p),
+            "float": float(p),
+        },
+        "expected_trials": float(1 / float(p)),
+        "class_algebra_sum": {
+            "numerator": int(s.numerator),
+            "denominator": int(s.denominator),
+            "value": str(s),
+        },
+        "factorization": {"numerator": factorint(num), "denominator": factorint(den)},
+        "atlas_expected": str(expected),
+        "ctbllib_charcols_available": True,
     }
 
 
@@ -3258,6 +3369,9 @@ def analyze_leech_monster() -> Dict:
     atlas_generator_search = analyze_monster_atlas_generator_search_probabilities()
     atlas_probability_landscape = analyze_monster_atlas_probability_landscape()
     atlas_powering_probabilities = analyze_monster_atlas_powering_probabilities()
+    atlas_step3 = (
+        analyze_monster_standard_generator_step3_order29_from_character_table()
+    )
 
     return {
         "e8_roots": e8_roots,
@@ -3290,6 +3404,7 @@ def analyze_leech_monster() -> Dict:
         "atlas_generator_search": atlas_generator_search,
         "atlas_probability_landscape": atlas_probability_landscape,
         "atlas_powering_probabilities": atlas_powering_probabilities,
+        "atlas_standard_generators_step3": atlas_step3,
         "interpretation": interpretation,
     }
 
@@ -3379,5 +3494,13 @@ if __name__ == "__main__":
                     mc.get("classes"),
                     mcp.get("value") if isinstance(mcp, dict) else None,
                 ),
+            )
+    step3 = out.get("atlas_standard_generators_step3", {})
+    if isinstance(step3, dict) and step3.get("available") is True:
+        prob = step3.get("probability", {})
+        if isinstance(prob, dict):
+            print(
+                "- ATLAS standard generators: Pr(2A·3B has order 29) = %s (E[trials]=%.3f)"
+                % (prob.get("value"), float(step3.get("expected_trials", 0.0))),
             )
     print("- Interpretation:", out["interpretation"])

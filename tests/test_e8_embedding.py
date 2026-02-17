@@ -7301,6 +7301,23 @@ class TestLeechMonster:
         assert (p13a.get("numerator"), p13a.get("denominator")) == (23, 432)
         assert (p13b.get("numerator"), p13b.get("denominator")) == (23, 312)
 
+        from scripts.w33_leech_monster import (
+            analyze_monster_standard_generator_step3_order29_from_character_table,
+        )
+
+        step3 = analyze_monster_standard_generator_step3_order29_from_character_table()
+        assert step3.get("available") is True
+        p29 = step3.get("probability", {})
+        assert isinstance(p29, dict)
+        assert (p29.get("numerator"), p29.get("denominator")) == (
+            1632586752,
+            111045174695,
+        )
+        fac = step3.get("factorization", {})
+        assert isinstance(fac, dict)
+        assert fac.get("numerator") == {2: 10, 3: 13}
+        assert fac.get("denominator") == {5: 1, 7: 3, 13: 1, 29: 1, 41: 1, 59: 1, 71: 1}
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
