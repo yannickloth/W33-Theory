@@ -7264,6 +7264,43 @@ class TestLeechMonster:
         assert to_3b.get("denominator_is_pure_power_of_3") is True
         assert to_3b.get("denominator_3_adic_valuation") == 10
 
+        from scripts.w33_leech_monster import (
+            analyze_monster_atlas_powering_probabilities,
+            analyze_monster_atlas_probability_landscape,
+        )
+
+        land = analyze_monster_atlas_probability_landscape(top_k=5)
+        assert land.get("available") is True
+        mc = land.get("min_centralizer", {})
+        assert isinstance(mc, dict)
+        assert mc.get("centralizer_order") == 41
+        assert mc.get("classes") == ["41A"]
+        mcp = mc.get("max_class_probability", {})
+        assert isinstance(mcp, dict)
+        assert (mcp.get("numerator"), mcp.get("denominator")) == (1, 41)
+
+        top_orders = land.get("top_orders", [])
+        assert isinstance(top_orders, list) and top_orders
+        o0 = top_orders[0]
+        assert isinstance(o0, dict)
+        assert o0.get("order") == 60
+        p0 = o0.get("p", {})
+        assert isinstance(p0, dict)
+        assert (p0.get("numerator"), p0.get("denominator")) == (41, 720)
+        p29 = land.get("order_probability_29", {})
+        assert isinstance(p29, dict)
+        assert (p29.get("numerator"), p29.get("denominator")) == (1, 87)
+
+        powp = analyze_monster_atlas_powering_probabilities()
+        assert powp.get("available") is True
+        powering = powp.get("powering", {})
+        assert isinstance(powering, dict)
+        p13a = powering.get("13", {}).get("13A", {}).get("probability", {})
+        p13b = powering.get("13", {}).get("13B", {}).get("probability", {})
+        assert isinstance(p13a, dict) and isinstance(p13b, dict)
+        assert (p13a.get("numerator"), p13a.get("denominator")) == (23, 432)
+        assert (p13b.get("numerator"), p13b.get("denominator")) == (23, 312)
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]

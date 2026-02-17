@@ -1891,6 +1891,225 @@ def analyze_monster_atlas_generator_search_probabilities(
     }
 
 
+def analyze_monster_atlas_probability_landscape(
+    atlas_json_path: str | None = None,
+    *,
+    top_k: int = 10,
+) -> dict[str, object]:
+    """Summarize the Monster's conjugacy-class probability landscape.
+
+    With class probabilities p(C)=|C|/|M|=1/|C_M(g)|, the ATLAS centralizers give
+    exact (rational) probabilities for:
+      - element orders,
+      - rare-event rates (e.g., involutions),
+      - entropy / expected order diagnostics.
+    """
+    import math
+    from collections import defaultdict
+    from fractions import Fraction
+
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+    classes = atlas.get("classes", {})
+    if not isinstance(classes, dict) or not classes:
+        return {"available": False}
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    def _is_prime(n: int) -> bool:
+        if n < 2:
+            return False
+        if n % 2 == 0:
+            return n == 2
+        f = 3
+        while f * f <= n:
+            if n % f == 0:
+                return False
+            f += 2
+        return True
+
+    class_prob: dict[str, Fraction] = {}
+    order_prob: dict[int, Fraction] = defaultdict(lambda: Fraction(0, 1))
+    min_cent: int | None = None
+    min_cent_classes: list[str] = []
+
+    prob_sum = Fraction(0, 1)
+    expected_order = Fraction(0, 1)
+    prime_order_mass = Fraction(0, 1)
+    involution_mass = Fraction(0, 1)
+
+    for name, info in classes.items():
+        if not isinstance(info, dict):
+            continue
+        try:
+            cent = int(info["centralizer_order"])
+            order = int(info["order"])
+        except Exception:
+            continue
+        p = Fraction(1, cent)
+        nm = str(name).upper()
+        class_prob[nm] = p
+        order_prob[order] += p
+        prob_sum += p
+        expected_order += p * order
+        if _is_prime(order):
+            prime_order_mass += p
+        if order == 2:
+            involution_mass += p
+        if min_cent is None or cent < min_cent:
+            min_cent = cent
+            min_cent_classes = [nm]
+        elif cent == min_cent:
+            min_cent_classes.append(nm)
+
+    assert prob_sum == 1, f"Invalid ATLAS centralizers: sum={prob_sum}"
+    assert min_cent is not None
+
+    top_classes = sorted(class_prob.items(), key=lambda kv: kv[1], reverse=True)[
+        : int(top_k)
+    ]
+    top_orders = sorted(order_prob.items(), key=lambda kv: kv[1], reverse=True)[
+        : int(top_k)
+    ]
+
+    # Shannon entropy diagnostics (float; not intended for strict asserts).
+    def _entropy_bits(probs: list[Fraction]) -> float:
+        h = 0.0
+        for pp in probs:
+            x = float(pp)
+            if x > 0:
+                h -= x * math.log2(x)
+        return h
+
+    h_class = _entropy_bits(list(class_prob.values()))
+    h_order = _entropy_bits(list(order_prob.values()))
+
+    # Useful for standard-generator heuristics: order-29 rate vs ATLAS step-3.
+    p29 = order_prob.get(29, Fraction(0, 1))
+
+    return {
+        "available": True,
+        "source_url": atlas.get("source_url"),
+        "n_classes": int(atlas.get("n_classes", len(classes))),
+        "probabilities_sum_to_1": True,
+        "min_centralizer": {
+            "centralizer_order": int(min_cent),
+            "classes": sorted(set(min_cent_classes)),
+            "max_class_probability": _fraction_payload(Fraction(1, int(min_cent))),
+        },
+        "top_classes": [
+            {
+                "class_name": c,
+                "order": int(classes[c]["order"]),
+                "p": _fraction_payload(p),
+            }
+            for c, p in top_classes
+            if c in classes and isinstance(classes[c], dict)
+        ],
+        "top_orders": [
+            {"order": int(o), "p": _fraction_payload(p)} for o, p in top_orders
+        ],
+        "order_probability_29": _fraction_payload(p29),
+        "expected_order": _fraction_payload(expected_order),
+        "prime_order_mass": _fraction_payload(prime_order_mass),
+        "involution_mass": _fraction_payload(involution_mass),
+        "entropy_bits": {"by_class": float(h_class), "by_order": float(h_order)},
+    }
+
+
+def analyze_monster_atlas_powering_probabilities(
+    atlas_json_path: str | None = None,
+) -> dict[str, object]:
+    """Compute exact powering-to-target probabilities from ATLAS power maps.
+
+    For each divisor d and target class T of order d, we estimate:
+      Pr[g^{ord(g)/d} ∈ T]
+    by summing 1/|C_M(g)| over classes whose ATLAS "Power up" entry maps the
+    exponent ord(g)/d to T. This is exact given the bundled ATLAS snapshot.
+    """
+    from fractions import Fraction
+
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+    classes = atlas.get("classes", {})
+    if not isinstance(classes, dict) or not classes:
+        return {"available": False}
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    def _power_to(target_class: str, d: int) -> dict[str, object]:
+        target = str(target_class).upper()
+        dd = int(d)
+        selected: list[str] = []
+        p = Fraction(0, 1)
+        for name, info in classes.items():
+            if not isinstance(info, dict):
+                continue
+            try:
+                order = int(info["order"])
+                cent = int(info["centralizer_order"])
+            except Exception:
+                continue
+            if order % dd != 0:
+                continue
+            exp = order // dd
+            targets = _atlas_power_targets(atlas, str(name), exp) or []
+            if target in targets:
+                selected.append(str(name).upper())
+                p += Fraction(1, cent)
+        selected = sorted(set(selected))
+        return {
+            "divisor": dd,
+            "target_class": target,
+            "n_selected_classes": len(selected),
+            "selected_classes": selected,
+            "probability": _fraction_payload(p),
+            "expected_trials": _fraction_payload(Fraction(1, 1) / p),
+        }
+
+    # Targets aligned with the repo's offline McKay–Thompson support.
+    targets_by_divisor: dict[int, list[str]] = {
+        2: ["2A", "2B"],
+        3: ["3A", "3B"],
+        5: ["5A", "5B"],
+        7: ["7A", "7B"],
+        11: ["11A"],
+        13: ["13A", "13B"],
+    }
+
+    powering: dict[str, dict[str, object]] = {}
+    for d, targets in targets_by_divisor.items():
+        dd = str(int(d))
+        powering[dd] = {}
+        for t in targets:
+            powering[dd][t] = _power_to(t, d)
+
+    # Include the ATLAS-v2 restricted generator-search steps (2A, 3B) for reference.
+    restricted = analyze_monster_atlas_generator_search_probabilities(atlas_json_path)
+
+    return {
+        "available": True,
+        "source_url": atlas.get("source_url"),
+        "n_classes": int(atlas.get("n_classes", len(classes))),
+        "powering": powering,
+        "restricted_generator_search": restricted,
+    }
+
+
 def monster_prime_divisors() -> list[int]:
     return sorted(int(p) for p in monster_order_factorization().keys())
 
@@ -3037,6 +3256,8 @@ def analyze_leech_monster() -> Dict:
             assert facs["M"] == monster_order_factorization()
 
     atlas_generator_search = analyze_monster_atlas_generator_search_probabilities()
+    atlas_probability_landscape = analyze_monster_atlas_probability_landscape()
+    atlas_powering_probabilities = analyze_monster_atlas_powering_probabilities()
 
     return {
         "e8_roots": e8_roots,
@@ -3067,6 +3288,8 @@ def analyze_leech_monster() -> Dict:
         "monster_order_primes": monster_primes,
         "sporadic_magnitudes": sporadic,
         "atlas_generator_search": atlas_generator_search,
+        "atlas_probability_landscape": atlas_probability_landscape,
+        "atlas_powering_probabilities": atlas_powering_probabilities,
         "interpretation": interpretation,
     }
 
@@ -3132,4 +3355,29 @@ if __name__ == "__main__":
                     "- ATLAS generator search: Pr(·→3B) = %s (E[trials]=%.3f, v3=%s)"
                     % (p3b.get("value"), float(e3b.get("float", 0.0)), v3),
                 )
+    apl = out.get("atlas_probability_landscape", {})
+    if isinstance(apl, dict) and apl.get("available") is True:
+        top_orders = apl.get("top_orders", [])
+        if isinstance(top_orders, list) and top_orders:
+            o0 = top_orders[0]
+            if isinstance(o0, dict):
+                p0 = o0.get("p", {})
+                print(
+                    "- ATLAS order landscape: most common order=%s (Pr=%s)"
+                    % (
+                        o0.get("order"),
+                        p0.get("value") if isinstance(p0, dict) else None,
+                    ),
+                )
+        mc = apl.get("min_centralizer", {})
+        if isinstance(mc, dict):
+            mcp = mc.get("max_class_probability", {})
+            print(
+                "- ATLAS class landscape: min |C(g)|=%s at %s (Pr=%s)"
+                % (
+                    mc.get("centralizer_order"),
+                    mc.get("classes"),
+                    mcp.get("value") if isinstance(mcp, dict) else None,
+                ),
+            )
     print("- Interpretation:", out["interpretation"])
