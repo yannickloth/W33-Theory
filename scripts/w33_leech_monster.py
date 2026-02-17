@@ -389,9 +389,11 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
     """Return a McKay-Thompson series T_g(q)=q^-1 + sum_{n>=1} a_n q^n.
 
     Offline (no GAP) support is implemented for a subset of prime-order classes
-    expressible as eta-quotients:
+    expressible as eta-quotients, plus a small number of composite-order
+    classes appearing in classical eta-product formulas:
       - Fricke primes (pA): 2A, 3A, 5A, 7A, 13A
       - Non-Fricke primes (pB): 2B, 3B, 5B, 7B, 13B
+      - Composite: 4A, 4C, 9A, 11A, 3C
 
     Identity class 1A returns J(q)=j(q)-744.
     """
@@ -405,6 +407,58 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
         for n, c in enumerate(coeffs, start=1):
             out[n] = int(c)
         return out
+
+    if name == "4C":
+        # Ramanujan–Sato / Moonshine:
+        #   j_4C(τ) = (η(τ)/η(4τ))^8 = q^{-1} - 8 + 20 q - 62 q^3 + ...
+        # Normalize to constant term 0 => T_4C = j_4C + 8.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e4 = _qpochhammer(deg, step=4)
+        ratio = _qpoly_div(e1, e4, deg)
+        ratio_pow = _qpoly_pow(ratio, 8, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 8
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "4A":
+        # Ramanujan–Sato / Moonshine:
+        #   j_4A(τ) = (η(2τ)^2/(η(τ)η(4τ)))^{24}
+        #          = q^{-1} + 24 + 276 q + 2048 q^2 + ...
+        # Normalize to constant term 0 => T_4A = j_4A - 24.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        num = _qpoly_mul(e2, e2, deg)
+        den = _qpoly_mul(e1, e4, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 24, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 24
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
 
     if name == "11A":
         # Formula (e.g. Ramanujan–Sato series / Cooper):
@@ -1043,6 +1097,90 @@ def verify_9a_cubing_relation(max_q_exp: int = 12) -> dict[str, object]:
         "n_mismatches": len(mismatches),
         "mismatches": mismatches[:10],
         "inferred_power_class": "3B",
+    }
+
+
+def verify_square_power_relation(
+    class_name: str,
+    expected_square_class: str | None = None,
+    max_q_exp: int = 20,
+    candidates: tuple[str, ...] = ("2A", "2B"),
+) -> dict[str, object]:
+    """Verify the m=2 replicability identity to infer/confirm g^2.
+
+    For m=2:
+      Phi_2(T_g)(τ) = T_g(τ/2) + T_g((τ+1)/2) + T_{g^2}(2τ).
+
+    The decimation sum picks out even coefficients:
+      T_g(τ/2) + T_g((τ+1)/2) = 2 * sum_{n>=1} a_{2n} q^n.
+    """
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    name = class_name.upper()
+    f = mckay_thompson_series(name, max_q_exp=2 * max_q_exp)
+    if f is None:
+        raise RuntimeError(f"Series unavailable for class {class_name}")
+
+    faber = faber_polynomial_series(f, m=2, max_q_exp=max_q_exp)
+    lhs: dict[int, int] = dict(faber["series"])  # type: ignore[assignment]
+
+    rhs_dec: dict[int, int] = {}
+    for n in range(1, max_q_exp + 1):
+        rhs_dec[n] = 2 * int(f.get(2 * n, 0))
+
+    remainder: dict[int, int] = {}
+    for e in set(lhs.keys()) | set(rhs_dec.keys()):
+        remainder[e] = int(lhs.get(e, 0)) - int(rhs_dec.get(e, 0))
+    remainder = {e: v for e, v in remainder.items() if v != 0}
+
+    cand_results: dict[str, dict[str, object]] = {}
+    for cand in candidates:
+        g2 = mckay_thompson_series(cand, max_q_exp=max_q_exp)
+        if g2 is None:
+            continue
+
+        expected: dict[int, int] = {}
+        for e, c in g2.items():
+            ee = 2 * int(e)
+            if ee <= max_q_exp:
+                expected[ee] = int(c)
+
+        mismatches: list[tuple[int, int, int]] = []
+        for e in [-2] + [2 * n for n in range(1, max_q_exp // 2 + 1)]:
+            lv = int(remainder.get(e, 0))
+            rv = int(expected.get(e, 0))
+            if lv != rv:
+                mismatches.append((e, lv, rv))
+
+        cand_results[cand] = {
+            "n_mismatches": len(mismatches),
+            "mismatches": mismatches[:10],
+        }
+
+    inferred = None
+    if cand_results:
+        inferred = min(cand_results.items(), key=lambda kv: int(kv[1]["n_mismatches"]))[
+            0
+        ]
+
+    target = expected_square_class.upper() if expected_square_class else inferred
+    verified = False
+    target_mismatches: list[tuple[int, int, int]] = []
+    if target and target in cand_results:
+        verified = int(cand_results[target]["n_mismatches"]) == 0
+        target_mismatches = list(cand_results[target]["mismatches"])  # type: ignore[list-item]
+
+    return {
+        "class_name": name,
+        "max_q_exp": max_q_exp,
+        "verified": verified,
+        "inferred_power_class": inferred,
+        "expected_power_class": (
+            expected_square_class.upper() if expected_square_class else None
+        ),
+        "target_mismatches": target_mismatches,
+        "candidates": cand_results,
     }
 
 

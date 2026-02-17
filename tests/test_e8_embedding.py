@@ -6935,6 +6935,7 @@ class TestLeechMonster:
             mckay_thompson_series,
             verify_9a_cubing_relation,
             verify_fricke_prime_replicability,
+            verify_square_power_relation,
         )
 
         t2a = mckay_thompson_series("2A", max_q_exp=3)
@@ -6951,6 +6952,21 @@ class TestLeechMonster:
         assert t2b is not None
         assert t2b.get(1) == 276
         assert t2b.get(2) == -2048
+
+        t4a = mckay_thompson_series("4A", max_q_exp=4)
+        assert t4a is not None
+        assert t4a.get(1) == 276
+        assert t4a.get(2) == 2048
+        assert t4a.get(3) == 11202
+        assert t4a.get(4) == 49152
+
+        t4c = mckay_thompson_series("4C", max_q_exp=7)
+        assert t4c is not None
+        assert t4c.get(1) == 20
+        assert t4c.get(2, 0) == 0
+        assert t4c.get(3) == -62
+        assert t4c.get(5) == 216
+        assert t4c.get(7) == -641
 
         t3b = mckay_thompson_series("3B", max_q_exp=3)
         assert t3b is not None
@@ -6996,6 +7012,12 @@ class TestLeechMonster:
         cube = verify_9a_cubing_relation(max_q_exp=12)
         assert cube["verified"] is True
         assert cube["inferred_power_class"] == "3B"
+
+        sq4a = verify_square_power_relation(
+            "4A", expected_square_class="2B", max_q_exp=24
+        )
+        assert sq4a["verified"] is True
+        assert sq4a["inferred_power_class"] == "2B"
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
