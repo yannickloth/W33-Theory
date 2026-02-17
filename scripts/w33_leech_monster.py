@@ -385,6 +385,24 @@ def _qpochhammer(max_deg: int, step: int = 1) -> list[int]:
     return poly
 
 
+def _qpochhammer_arith(max_deg: int, step: int, offset: int) -> list[int]:
+    """Compute prod_{k>=0} (1 - q^{offset + k*step}) to max_deg.
+
+    This is a shifted q-Pochhammer (q^offset; q^step)_∞ truncated to max_deg.
+    """
+    if step <= 0:
+        raise ValueError("step must be positive")
+    if offset <= 0:
+        raise ValueError("offset must be positive")
+    poly = [1] + [0] * max_deg
+    power = offset
+    while power <= max_deg:
+        for n in range(max_deg, power - 1, -1):
+            poly[n] -= poly[n - power]
+        power += step
+    return poly
+
+
 def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int] | None:
     """Return a McKay-Thompson series T_g(q)=q^-1 + sum_{n>=1} a_n q^n.
 
@@ -393,7 +411,7 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
     classes appearing in classical eta-product formulas:
       - Fricke primes (pA): 2A, 3A, 5A, 7A, 13A
       - Non-Fricke primes (pB): 2B, 3B, 5B, 7B, 13B
-      - Composite: 4A, 4C, 6A–6E, 9A, 11A, 3C
+      - Composite: 4A–4D, 6A–6E, 8A/8A'/8B/8E, 9A, 10A–10E, 11A, 3C
 
     Identity class 1A returns J(q)=j(q)-744.
     """
@@ -453,6 +471,59 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
                 series[exp] = series.get(exp, 0) + int(ck)
 
         series[0] = series.get(0, 0) - 24
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "4B":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_4B(τ) = (η(2τ)/η(4τ))^{12} + 2^6 (η(4τ)/η(2τ))^{12}
+        #          = q^{-1} + 52 q + 834 q^3 + ...
+        # Constant term is 0 in this normalization.
+        deg = max_q_exp + 1
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        ratio = _qpoly_div(e2, e4, deg)
+        r0 = _qpoly_pow(ratio, 12, deg)
+        r0_inv = _qpoly_inv(r0, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(r0):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        for k, ck in enumerate(r0_inv):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(64 * ck)
+
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "4D":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_4D(τ) = (η(2τ)/η(4τ))^{12} = q^{-1} - 12 q + 66 q^3 + ...
+        # Constant term is 0 in this normalization.
+        deg = max_q_exp + 1
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        ratio = _qpoly_div(e2, e4, deg)
+        r0 = _qpoly_pow(ratio, 12, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(r0):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
         if series.get(0, 0) != 0:
             raise AssertionError(
                 f"Expected constant term 0 for {name}, got {series.get(0)}"
@@ -611,6 +682,277 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
 
         # Normalize to constant term 0 (expected constant is 10).
         series[0] = series.get(0, 0) - 10
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name in ("8A'", "8APRIME", "8A-PRIME"):
+        # Alias for the "8A'" hauptmodul in the literature.
+        name = "8A'"
+
+    if name == "8A":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_8A(τ) = (η(2τ)η(4τ)/(η(τ)η(8τ)))^{8}
+        #          = q^{-1} + 8 + 36 q + 128 q^2 + ...
+        # Normalize to constant term 0 => T_8A = j_8A - 8.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        e8 = _qpochhammer(deg, step=8)
+        num = _qpoly_mul(e2, e4, deg)
+        den = _qpoly_mul(e1, e8, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 8, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 8
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "8A'":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_8A'(τ) = (η(τ)η(4τ)^2/(η(2τ)^2 η(8τ)))^{8}
+        #           = q^{-1} - 8 + 36 q - 128 q^2 + ...
+        # Normalize to constant term 0 => T_8A' = j_8A' + 8.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        e8 = _qpochhammer(deg, step=8)
+        e4_2 = _qpoly_mul(e4, e4, deg)
+        e2_2 = _qpoly_mul(e2, e2, deg)
+        num = _qpoly_mul(e1, e4_2, deg)
+        den = _qpoly_mul(e2_2, e8, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 8, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 8
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "8B":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_8B(τ) = (η(4τ)^2/(η(2τ)η(8τ)))^{12}
+        #          = q^{-1} + 12 q + 66 q^3 + ...
+        # Constant term is 0 in this normalization.
+        deg = max_q_exp + 1
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        e8 = _qpochhammer(deg, step=8)
+        e4_2 = _qpoly_mul(e4, e4, deg)
+        den = _qpoly_mul(e2, e8, deg)
+        ratio = _qpoly_div(e4_2, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 12, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "8E":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_8E(τ) = (η(4τ)^3/(η(2τ)η(8τ)^2))^{4}
+        #          = q^{-1} + 4 q + 2 q^3 - 8 q^5 + ...
+        # Constant term is 0 in this normalization.
+        deg = max_q_exp + 1
+        e2 = _qpochhammer(deg, step=2)
+        e4 = _qpochhammer(deg, step=4)
+        e8 = _qpochhammer(deg, step=8)
+        e4_3 = _qpoly_pow(e4, 3, deg)
+        e8_2 = _qpoly_mul(e8, e8, deg)
+        den = _qpoly_mul(e2, e8_2, deg)
+        ratio = _qpoly_div(e4_3, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 4, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "10B":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_10B(τ) = (η(τ)η(5τ)/(η(2τ)η(10τ)))^{4}
+        #           = q^{-1} - 4 + 6 q - 8 q^2 + ...
+        # Normalize to constant term 0 => T_10B = j_10B + 4.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e5 = _qpochhammer(deg, step=5)
+        e10 = _qpochhammer(deg, step=10)
+        num = _qpoly_mul(e1, e5, deg)
+        den = _qpoly_mul(e2, e10, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 4, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 4
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "10C":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_10C(τ) = (η(τ)η(2τ)/(η(5τ)η(10τ)))^{2}
+        #           = q^{-1} - 2 - 3 q + 6 q^2 + ...
+        # Normalize to constant term 0 => T_10C = j_10C + 2.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e5 = _qpochhammer(deg, step=5)
+        e10 = _qpochhammer(deg, step=10)
+        num = _qpoly_mul(e1, e2, deg)
+        den = _qpoly_mul(e5, e10, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 2, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 2
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "10D":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_10D(τ) = (η(2τ)η(5τ)/(η(τ)η(10τ)))^{6}
+        #           = q^{-1} + 6 + 21 q + 62 q^2 + ...
+        # Normalize to constant term 0 => T_10D = j_10D - 6.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e5 = _qpochhammer(deg, step=5)
+        e10 = _qpochhammer(deg, step=10)
+        num = _qpoly_mul(e2, e5, deg)
+        den = _qpoly_mul(e1, e10, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 6, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 6
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "10E":
+        # (Ramanujan–Sato / Moonshine)
+        #   j_10E(τ) = η(2τ)η(5τ)^5/(η(τ)η(10τ)^5)
+        #           = q^{-1} + 1 + q + 2 q^2 + ...
+        # Normalize to constant term 0 => T_10E = j_10E - 1.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e5 = _qpochhammer(deg, step=5)
+        e10 = _qpochhammer(deg, step=10)
+        e5_5 = _qpoly_pow(e5, 5, deg)
+        e10_5 = _qpoly_pow(e10, 5, deg)
+        num = _qpoly_mul(e2, e5_5, deg)
+        den = _qpoly_mul(e1, e10_5, deg)
+        ratio = _qpoly_div(num, den, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 1
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "10A":
+        # (Ramanujan–Sato / Moonshine) near-square identity:
+        #   j_10A = (sqrt(j_10D) - 1/sqrt(j_10D))^2 = j_10D + 1/j_10D - 2.
+        #
+        # Normalize to constant term 0 => T_10A = j_10A - 4.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e5 = _qpochhammer(deg, step=5)
+        e10 = _qpochhammer(deg, step=10)
+        num = _qpoly_mul(e2, e5, deg)
+        den = _qpoly_mul(e1, e10, deg)
+        ratio = _qpoly_div(num, den, deg)
+        r0 = _qpoly_pow(ratio, 6, deg)
+        r0_inv = _qpoly_inv(r0, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(r0):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        for k, ck in enumerate(r0_inv):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 2
+
+        series[0] = series.get(0, 0) - 4
         if series.get(0, 0) != 0:
             raise AssertionError(
                 f"Expected constant term 0 for {name}, got {series.get(0)}"
@@ -789,6 +1131,92 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
 
     series.setdefault(-1, 1)
     return series
+
+
+def rogers_ramanujan_r5_series(max_q_exp: int) -> list[int]:
+    """Compute r5(q)=R(q)^5 as a q-series through q^{max_q_exp}.
+
+    Using the product formula (Wikipedia):
+      R(q) = q^{1/5} * ( (q;q^5)_∞ (q^4;q^5)_∞ ) / ( (q^2;q^5)_∞ (q^3;q^5)_∞ )
+
+    Hence:
+      r5(q) = R(q)^5 = q * ( (q;q^5)_∞ (q^4;q^5)_∞ / ( (q^2;q^5)_∞ (q^3;q^5)_∞ ) )^5.
+    """
+    if max_q_exp < 0:
+        raise ValueError("max_q_exp must be non-negative")
+    deg = max_q_exp
+    a1 = _qpochhammer_arith(deg, step=5, offset=1)  # (q;q^5)_∞
+    a4 = _qpochhammer_arith(deg, step=5, offset=4)  # (q^4;q^5)_∞
+    a2 = _qpochhammer_arith(deg, step=5, offset=2)  # (q^2;q^5)_∞
+    a3 = _qpochhammer_arith(deg, step=5, offset=3)  # (q^3;q^5)_∞
+    num = _qpoly_mul(a1, a4, deg)
+    den = _qpoly_mul(a2, a3, deg)
+    ratio = _qpoly_div(num, den, deg)  # constant 1
+    ratio5 = _qpoly_pow(ratio, 5, deg)
+
+    r5 = [0] * (deg + 1)
+    # multiply by q: shift by 1
+    for k, ck in enumerate(ratio5[:deg]):
+        if k + 1 <= deg:
+            r5[k + 1] = int(ck)
+    return r5
+
+
+def verify_rogers_ramanujan_5b_identity(max_q_exp: int = 12) -> dict[str, object]:
+    """Verify the Rogers–Ramanujan identity behind the 5B Hauptmodul.
+
+    Wikipedia states:
+      1/R(q)^5 - R(q)^5 = (η(τ)/η(5τ))^6 + 11.
+
+    With our q=e^{2πiτ} convention, (η(τ)/η(5τ))^6 has leading q^{-1}, and the
+    Monster normalization for 5B is:
+      T_5B(q) = 1/R(q)^5 - 5 - R(q)^5.
+    """
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    t5b = mckay_thompson_series("5B", max_q_exp=max_q_exp)
+    if t5b is None:
+        raise RuntimeError("5B series unavailable")
+
+    # We need a small amount of slack because 1/r5 involves U^{-1} and
+    # coefficient exponents shift by -1. To validate through q^{max_q_exp},
+    # compute r5 through q^{max_q_exp+2} and invert U through degree max_q_exp+1.
+    r5 = rogers_ramanujan_r5_series(max_q_exp=max_q_exp + 2)
+
+    # r5(q) = q * U(q) with U(0)=1, so 1/r5 = q^{-1} * U(q)^{-1}.
+    U = [r5[k + 1] for k in range(max_q_exp + 2)]
+    U[0] = 1
+    invU = _qpoly_inv(U, max_q_exp + 1)
+
+    expr: dict[int, int] = {}
+    # 1/r5
+    for k, ck in enumerate(invU[: max_q_exp + 2]):
+        exp = -1 + k
+        if -1 <= exp <= max_q_exp and ck:
+            expr[exp] = expr.get(exp, 0) + int(ck)
+    # -5 constant
+    expr[0] = expr.get(0, 0) - 5
+    # - r5
+    for exp in range(1, max_q_exp + 1):
+        ck = int(r5[exp])
+        if ck:
+            expr[exp] = expr.get(exp, 0) - ck
+
+    mismatches: list[tuple[int, int, int]] = []
+    for e in [-1, 0] + list(range(1, max_q_exp + 1)):
+        lv = int(expr.get(e, 0))
+        rv = int(t5b.get(e, 0))
+        if lv != rv:
+            mismatches.append((e, lv, rv))
+
+    return {
+        "max_q_exp": max_q_exp,
+        "verified": len(mismatches) == 0,
+        "n_mismatches": len(mismatches),
+        "mismatches": mismatches[:10],
+        "r5_first_coeffs": r5[: min(len(r5), 8)],
+    }
 
 
 def _laurent_mul(
@@ -1255,6 +1683,183 @@ def verify_9a_cubing_relation(max_q_exp: int = 12) -> dict[str, object]:
         "n_mismatches": len(mismatches),
         "mismatches": mismatches[:10],
         "inferred_power_class": "3B",
+    }
+
+
+def verify_power_relation(
+    class_name: str,
+    m: int,
+    expected_power_class: str | None = None,
+    max_q_exp: int = 20,
+    candidates: tuple[str, ...] = (),
+) -> dict[str, object]:
+    """Verify (or infer) the g^m power-map using *prime* replicability.
+
+    For prime m:
+      Phi_m(T_g)(τ) = sum_{b=0..m-1} T_g((τ+b)/m) + T_{g^m}(m τ).
+
+    The decimation sum selects exponents divisible by m:
+      sum_{b=0..m-1} T_g((τ+b)/m) = m * sum_{n>=1} a_{m n} q^n.
+    """
+
+    def _is_prime(n: int) -> bool:
+        if n < 2:
+            return False
+        if n % 2 == 0:
+            return n == 2
+        f = 3
+        while f * f <= n:
+            if n % f == 0:
+                return False
+            f += 2
+        return True
+
+    if m <= 1:
+        raise ValueError("m must be >= 2")
+    if not _is_prime(m):
+        raise ValueError("verify_power_relation currently supports prime m only")
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    name = class_name.upper()
+    f = mckay_thompson_series(name, max_q_exp=m * max_q_exp)
+    if f is None:
+        raise RuntimeError(f"Series unavailable for class {class_name}")
+
+    faber = faber_polynomial_series(f, m=m, max_q_exp=max_q_exp)
+    lhs: dict[int, int] = dict(faber["series"])  # type: ignore[assignment]
+
+    rhs_dec: dict[int, int] = {}
+    for n in range(1, max_q_exp + 1):
+        rhs_dec[n] = m * int(f.get(m * n, 0))
+
+    remainder: dict[int, int] = {}
+    for e in set(lhs.keys()) | set(rhs_dec.keys()):
+        remainder[e] = int(lhs.get(e, 0)) - int(rhs_dec.get(e, 0))
+    remainder = {e: v for e, v in remainder.items() if v != 0}
+
+    cand_results: dict[str, dict[str, object]] = {}
+    for cand in candidates:
+        fm = mckay_thompson_series(cand, max_q_exp=max_q_exp // m + 2)
+        if fm is None:
+            continue
+
+        expected: dict[int, int] = {-m: 1}
+        for n in range(1, max_q_exp // m + 1):
+            expected[m * n] = int(fm.get(n, 0))
+
+        mismatches: list[tuple[int, int, int]] = []
+        exps = [-m] + [m * n for n in range(1, max_q_exp // m + 1)]
+        for e in exps:
+            lv = int(remainder.get(e, 0))
+            rv = int(expected.get(e, 0))
+            if lv != rv:
+                mismatches.append((e, lv, rv))
+
+        cand_results[cand.upper()] = {
+            "n_mismatches": len(mismatches),
+            "mismatches": mismatches[:10],
+        }
+
+    inferred = None
+    if cand_results:
+        inferred = min(cand_results.items(), key=lambda kv: int(kv[1]["n_mismatches"]))[
+            0
+        ]
+
+    target = expected_power_class.upper() if expected_power_class else inferred
+    verified = False
+    target_mismatches: list[tuple[int, int, int]] = []
+    if target and target in cand_results:
+        verified = int(cand_results[target]["n_mismatches"]) == 0
+        target_mismatches = list(cand_results[target]["mismatches"])  # type: ignore[list-item]
+
+    return {
+        "class_name": name,
+        "m": m,
+        "max_q_exp": max_q_exp,
+        "verified": verified,
+        "inferred_power_class": inferred,
+        "expected_power_class": (
+            expected_power_class.upper() if expected_power_class else None
+        ),
+        "target_mismatches": target_mismatches,
+        "candidates": cand_results,
+    }
+
+
+def verify_replicability_relation(
+    class_name: str,
+    m: int,
+    power_map: dict[int, str],
+    max_q_exp: int = 20,
+) -> dict[str, object]:
+    """Verify the Conway–Norton replicability identity for general m.
+
+    Uses the divisor-sum form:
+      Phi_m(T_g)(τ) = sum_{ad=m} sum_{b=0..d-1} T_{g^a}((a τ + b)/d).
+
+    This requires a power-map lookup for each divisor a of m (a>1) present in the
+    sum. Provide `power_map` as {a: class_name_for_g^a}. The identity class is "1A".
+    """
+    if m <= 0:
+        raise ValueError("m must be positive")
+    if max_q_exp < 1:
+        raise ValueError("max_q_exp must be >= 1")
+
+    name = class_name.upper()
+    f = mckay_thompson_series(name, max_q_exp=m * max_q_exp)
+    if f is None:
+        raise RuntimeError(f"Series unavailable for class {class_name}")
+
+    faber = faber_polynomial_series(f, m=m, max_q_exp=max_q_exp)
+    lhs: dict[int, int] = dict(faber["series"])  # type: ignore[assignment]
+
+    rhs: dict[int, int] = {}
+
+    for a in range(1, m + 1):
+        if m % a != 0:
+            continue
+        d = m // a
+        if a == 1:
+            h_name = name
+        else:
+            h_name = power_map.get(a)
+            if not h_name:
+                raise ValueError(f"Missing power-map entry for a={a} in m={m}")
+            h_name = h_name.upper()
+
+        max_needed = d * (max_q_exp // a)
+        h = mckay_thompson_series(h_name, max_q_exp=max_needed)
+        if h is None:
+            raise RuntimeError(f"Series unavailable for power-map class {h_name}")
+
+        # d=1 contributes the negative power q^{-a} from the leading q^{-1}.
+        if d == 1:
+            rhs[-a] = rhs.get(-a, 0) + 1
+
+        for k in range(1, max_q_exp // a + 1):
+            n = d * k
+            coef = int(h.get(n, 0))
+            if coef == 0:
+                continue
+            exp = a * k
+            rhs[exp] = rhs.get(exp, 0) + d * coef
+
+    mismatches: list[tuple[int, int, int]] = []
+    for e in [-m] + list(range(1, max_q_exp + 1)):
+        lv = int(lhs.get(e, 0))
+        rv = int(rhs.get(e, 0))
+        if lv != rv:
+            mismatches.append((e, lv, rv))
+
+    return {
+        "class_name": name,
+        "m": m,
+        "max_q_exp": max_q_exp,
+        "verified": len(mismatches) == 0,
+        "n_mismatches": len(mismatches),
+        "mismatches": mismatches[:10],
     }
 
 

@@ -6935,6 +6935,7 @@ class TestLeechMonster:
             mckay_thompson_series,
             verify_9a_cubing_relation,
             verify_fricke_prime_replicability,
+            verify_rogers_ramanujan_5b_identity,
             verify_square_power_relation,
         )
 
@@ -6953,6 +6954,9 @@ class TestLeechMonster:
         assert t2b.get(1) == 276
         assert t2b.get(2) == -2048
 
+        rr = verify_rogers_ramanujan_5b_identity(max_q_exp=12)
+        assert rr["verified"] is True
+
         t4a = mckay_thompson_series("4A", max_q_exp=4)
         assert t4a is not None
         assert t4a.get(1) == 276
@@ -6967,6 +6971,22 @@ class TestLeechMonster:
         assert t4c.get(3) == -62
         assert t4c.get(5) == 216
         assert t4c.get(7) == -641
+
+        t4b = mckay_thompson_series("4B", max_q_exp=7)
+        assert t4b is not None
+        assert t4b.get(1) == 52
+        assert t4b.get(2, 0) == 0
+        assert t4b.get(3) == 834
+        assert t4b.get(5) == 4760
+        assert t4b.get(7) == 24703
+
+        t4d = mckay_thompson_series("4D", max_q_exp=9)
+        assert t4d is not None
+        assert t4d.get(1) == -12
+        assert t4d.get(2, 0) == 0
+        assert t4d.get(3) == 66
+        assert t4d.get(5) == -232
+        assert t4d.get(7) == 639
 
         t6a = mckay_thompson_series("6A", max_q_exp=4)
         assert t6a is not None
@@ -7006,6 +7026,77 @@ class TestLeechMonster:
                 - t6c.get(n, 0)
                 - t6d.get(n, 0)
                 + 2 * t6e.get(n, 0)
+                == 0
+            )
+
+        t8a = mckay_thompson_series("8A", max_q_exp=6)
+        assert t8a is not None
+        assert t8a.get(1) == 36
+        assert t8a.get(2) == 128
+        assert t8a.get(3) == 386
+        assert t8a.get(4) == 1024
+
+        t8ap = mckay_thompson_series("8A'", max_q_exp=6)
+        assert t8ap is not None
+        assert t8ap.get(1) == 36
+        assert t8ap.get(2) == -128
+        assert t8ap.get(3) == 386
+        assert t8ap.get(4) == -1024
+
+        t8b = mckay_thompson_series("8B", max_q_exp=7)
+        assert t8b is not None
+        assert t8b.get(1) == 12
+        assert t8b.get(2, 0) == 0
+        assert t8b.get(3) == 66
+        assert t8b.get(5) == 232
+        assert t8b.get(7) == 639
+
+        t8e = mckay_thompson_series("8E", max_q_exp=9)
+        assert t8e is not None
+        assert t8e.get(1) == 4
+        assert t8e.get(2, 0) == 0
+        assert t8e.get(3) == 2
+        assert t8e.get(5) == -8
+        assert t8e.get(7) == -1
+
+        t10a = mckay_thompson_series("10A", max_q_exp=6)
+        assert t10a is not None
+        assert t10a.get(1) == 22
+        assert t10a.get(2) == 56
+        assert t10a.get(3) == 177
+        assert t10a.get(4) == 352
+
+        t10b = mckay_thompson_series("10B", max_q_exp=6)
+        assert t10b is not None
+        assert t10b.get(1) == 6
+        assert t10b.get(2) == -8
+        assert t10b.get(3) == 17
+
+        t10c = mckay_thompson_series("10C", max_q_exp=6)
+        assert t10c is not None
+        assert t10c.get(1) == -3
+        assert t10c.get(2) == 6
+        assert t10c.get(3) == 2
+
+        t10d = mckay_thompson_series("10D", max_q_exp=6)
+        assert t10d is not None
+        assert t10d.get(1) == 21
+        assert t10d.get(2) == 62
+        assert t10d.get(3) == 162
+
+        t10e = mckay_thompson_series("10E", max_q_exp=6)
+        assert t10e is not None
+        assert t10e.get(1) == 1
+        assert t10e.get(2) == 2
+        assert t10e.get(3) == 2
+
+        for n in range(1, 6):
+            assert (
+                t10a.get(n, 0)
+                - t10b.get(n, 0)
+                - t10c.get(n, 0)
+                - t10d.get(n, 0)
+                + 2 * t10e.get(n, 0)
                 == 0
             )
 
@@ -7059,6 +7150,24 @@ class TestLeechMonster:
         )
         assert sq4a["verified"] is True
         assert sq4a["inferred_power_class"] == "2B"
+
+        sq8a = verify_square_power_relation(
+            "8A",
+            expected_square_class="4C",
+            max_q_exp=24,
+            candidates=("4A", "4B", "4C", "4D"),
+        )
+        assert sq8a["verified"] is True
+        assert sq8a["inferred_power_class"] == "4C"
+
+        sq10a = verify_square_power_relation(
+            "10A",
+            expected_square_class="5A",
+            max_q_exp=24,
+            candidates=("5A", "5B"),
+        )
+        assert sq10a["verified"] is True
+        assert sq10a["inferred_power_class"] == "5A"
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
