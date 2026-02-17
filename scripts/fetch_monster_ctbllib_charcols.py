@@ -10,12 +10,12 @@ offline, deterministic tests and analyses:
   - 3B
   - 29A
   - 41A
-  - 31A (trace only)
-  - 47A (trace only)
-  - 59A (trace only)
-  - 71A (trace only)
+  - 31A, 31B (trace only)
+  - 47A, 47B (trace only)
+  - 59A, 59B (trace only)
+  - 71A, 71B (trace only)
   - 5A, 5B, 7A, 7B, 11A, 13A, 13B, 17A, 19A (integers)
-  - 23A (trace only)
+  - 23A, 23B (trace only)
 
 The resulting file is written to `data/monster_ctbllib_charcols.json`.
 
@@ -295,22 +295,22 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
     idx31_candidates = _prime_class_candidates(centralizer=186, prime=31)
     if idx31_candidates != [105, 106]:
         raise ValueError(f"unexpected 31A candidates: {idx31_candidates}")
-    idx31 = idx31_candidates[0]
+    idx31a, idx31b = idx31_candidates
 
     idx47_candidates = _prime_class_candidates(centralizer=94, prime=47)
     if idx47_candidates != [139, 140]:
         raise ValueError(f"unexpected 47A candidates: {idx47_candidates}")
-    idx47 = idx47_candidates[0]
+    idx47a, idx47b = idx47_candidates
 
     idx59_candidates = _prime_class_candidates(centralizer=59, prime=59)
     if idx59_candidates != [152, 153]:
         raise ValueError(f"unexpected 59A candidates: {idx59_candidates}")
-    idx59 = idx59_candidates[0]
+    idx59a, idx59b = idx59_candidates
 
     idx71_candidates = _prime_class_candidates(centralizer=71, prime=71)
     if idx71_candidates != [169, 170]:
         raise ValueError(f"unexpected 71A candidates: {idx71_candidates}")
-    idx71 = idx71_candidates[0]
+    idx71a, idx71b = idx71_candidates
 
     idx5a = _prime_class_candidates(centralizer=1365154560000000, prime=5)
     if idx5a != [11]:
@@ -360,7 +360,7 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
     idx23_candidates = _prime_class_candidates(centralizer=552, prime=23)
     if idx23_candidates != [76, 77]:
         raise ValueError(f"unexpected 23A candidates: {idx23_candidates}")
-    idx23 = idx23_candidates[0]
+    idx23a, idx23b = idx23_candidates
 
     rows = _split_top_level_list_items(args[3])
     if len(rows) != 194:
@@ -372,10 +372,14 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         5,
         idx29,
         idx41,
-        idx31,
-        idx47,
-        idx59,
-        idx71,
+        idx31a,
+        idx31b,
+        idx47a,
+        idx47b,
+        idx59a,
+        idx59b,
+        idx71a,
+        idx71b,
         idx5a,
         idx5b,
         idx7a,
@@ -385,7 +389,8 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         idx13b,
         idx17a,
         idx19a,
-        idx23,
+        idx23a,
+        idx23b,
     ]
     extracted = [_extract_cols(r, cols_needed) for r in rows]
 
@@ -406,10 +411,14 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "3B": int(d[5]),
                 "29A": int(d[idx29]),
                 "41A": int(d[idx41]),
-                "31A_trace": _prime_cyclotomic_trace(d[idx31], p=31),
-                "47A_trace": _prime_cyclotomic_trace(d[idx47], p=47),
-                "59A_trace": _prime_cyclotomic_trace(d[idx59], p=59),
-                "71A_trace": _prime_cyclotomic_trace(d[idx71], p=71),
+                "31A_trace": _prime_cyclotomic_trace(d[idx31a], p=31),
+                "31B_trace": _prime_cyclotomic_trace(d[idx31b], p=31),
+                "47A_trace": _prime_cyclotomic_trace(d[idx47a], p=47),
+                "47B_trace": _prime_cyclotomic_trace(d[idx47b], p=47),
+                "59A_trace": _prime_cyclotomic_trace(d[idx59a], p=59),
+                "59B_trace": _prime_cyclotomic_trace(d[idx59b], p=59),
+                "71A_trace": _prime_cyclotomic_trace(d[idx71a], p=71),
+                "71B_trace": _prime_cyclotomic_trace(d[idx71b], p=71),
                 "5A": int(d[idx5a]),
                 "5B": int(d[idx5b]),
                 "7A": int(d[idx7a]),
@@ -419,7 +428,8 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "13B": int(d[idx13b]),
                 "17A": int(d[idx17a]),
                 "19A": int(d[idx19a]),
-                "23A_trace": _prime_cyclotomic_trace(d[idx23], p=23),
+                "23A_trace": _prime_cyclotomic_trace(d[idx23a], p=23),
+                "23B_trace": _prime_cyclotomic_trace(d[idx23b], p=23),
             }
         )
 
@@ -447,11 +457,16 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
             "41A": {"ctbllib_index": idx41},
         },
         "trace_classes": {
-            "23A": {"ctbllib_index": idx23, "prime": 23},
-            "31A": {"ctbllib_index": idx31, "prime": 31},
-            "47A": {"ctbllib_index": idx47, "prime": 47},
-            "59A": {"ctbllib_index": idx59, "prime": 59},
-            "71A": {"ctbllib_index": idx71, "prime": 71},
+            "23A": {"ctbllib_index": idx23a, "prime": 23},
+            "23B": {"ctbllib_index": idx23b, "prime": 23},
+            "31A": {"ctbllib_index": idx31a, "prime": 31},
+            "31B": {"ctbllib_index": idx31b, "prime": 31},
+            "47A": {"ctbllib_index": idx47a, "prime": 47},
+            "47B": {"ctbllib_index": idx47b, "prime": 47},
+            "59A": {"ctbllib_index": idx59a, "prime": 59},
+            "59B": {"ctbllib_index": idx59b, "prime": 59},
+            "71A": {"ctbllib_index": idx71a, "prime": 71},
+            "71B": {"ctbllib_index": idx71b, "prime": 71},
         },
         "n_irreps": len(irreps),
         "irreps": irreps,
