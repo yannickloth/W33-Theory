@@ -7,7 +7,10 @@ offline, deterministic tests and analyses:
 
   - 1A (degree)
   - 2A
+  - 2B
+  - 3A
   - 3B
+  - 3C
   - 29A
   - 41A
   - 31A, 31B (trace only)
@@ -369,7 +372,10 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
     cols_needed = [
         1,
         2,
+        3,
+        4,
         5,
+        6,
         idx29,
         idx41,
         idx31a,
@@ -408,7 +414,10 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "index": i,
                 "deg": int(d[1]),
                 "2A": int(d[2]),
+                "2B": int(d[3]),
+                "3A": int(d[4]),
                 "3B": int(d[5]),
+                "3C": int(d[6]),
                 "29A": int(d[idx29]),
                 "41A": int(d[idx41]),
                 "31A_trace": _prime_cyclotomic_trace(d[idx31a], p=31),
@@ -443,7 +452,10 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         "classes": {
             "1A": {"ctbllib_index": 1},
             "2A": {"ctbllib_index": 2},
+            "2B": {"ctbllib_index": 3},
+            "3A": {"ctbllib_index": 4},
             "3B": {"ctbllib_index": 5},
+            "3C": {"ctbllib_index": 6},
             "5A": {"ctbllib_index": idx5a},
             "5B": {"ctbllib_index": idx5b},
             "7A": {"ctbllib_index": idx7a},

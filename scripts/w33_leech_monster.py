@@ -2558,6 +2558,198 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     return out
 
 
+def analyze_monster_2x3_ogg_prime_triangle_support(
+    charcols_json_path: str | None = None,
+    atlas_json_path: str | None = None,
+) -> dict[str, object]:
+    """Scan (2X,3Y) products for Ogg-prime triangle-group support.
+
+    For a in 2A or 2B and b in 3A/3B/3C, any nonzero probability
+
+        Pr[(ab) ∈ pA]  (or pB)
+
+    certifies the existence of a homomorphism from the triangle group
+    Δ(2,3,p)=<x,y | x^2=y^3=(xy)^p=1> into the Monster with (x,y) landing in
+    those conjugacy classes.
+
+    Output is computed purely from bundled CTblLib-derived character columns and
+    ATLAS centralizers; results are exact rationals + integer structure
+    constants.
+    """
+    from fractions import Fraction
+
+    cols = load_monster_ctbllib_charcols(charcols_json_path)
+    if cols is None:
+        return {"available": False}
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+
+    try:
+        classes = atlas["classes"]
+        monster_ord = int(classes["1A"]["centralizer_order"])
+    except Exception:
+        return {"available": False}
+
+    irreps = cols.get("irreps", [])
+    if not isinstance(irreps, list) or len(irreps) != 194:
+        return {"available": False}
+
+    trace_meta = cols.get("trace_classes", {})
+    if not isinstance(trace_meta, dict):
+        return {"available": False}
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    def factorint(n: int) -> dict[int, int]:
+        nn = int(n)
+        out: dict[int, int] = {}
+        d = 2
+        while d * d <= nn:
+            while nn % d == 0:
+                out[d] = out.get(d, 0) + 1
+                nn //= d
+            d = 3 if d == 2 else d + 2
+        if nn > 1:
+            out[nn] = out.get(nn, 0) + 1
+        return out
+
+    a_classes = ["2A", "2B"]
+    b_classes = ["3A", "3B", "3C"]
+
+    # Ogg prime classes (we include both A/B variants when present).
+    value_targets = [
+        "5A",
+        "5B",
+        "7A",
+        "7B",
+        "11A",
+        "13A",
+        "13B",
+        "17A",
+        "19A",
+        "29A",
+        "41A",
+    ]
+    trace_targets = [
+        "23A",
+        "23B",
+        "31A",
+        "31B",
+        "47A",
+        "47B",
+        "59A",
+        "59B",
+        "71A",
+        "71B",
+    ]
+
+    # Centralizers/sizes for every class we will touch.
+    needed = sorted(set(a_classes + b_classes + value_targets + trace_targets))
+    try:
+        cent = {k: int(classes[k]["centralizer_order"]) for k in needed}
+    except Exception:
+        return {"available": False}
+    size = {k: monster_ord // v for k, v in cent.items()}
+
+    def _sum_value(*, a_cls: str, b_cls: str, C: str) -> Fraction:
+        s = Fraction(0, 1)
+        for row in irreps:
+            if not isinstance(row, dict):
+                raise ValueError("invalid irrep row")
+            deg = int(row["deg"])
+            a = int(row[a_cls])
+            b = int(row[b_cls])
+            c = deg if C == "1A" else int(row[C])
+            s += Fraction(a * b * c, deg)
+        return s
+
+    def _sum_trace(*, a_cls: str, b_cls: str, C: str) -> tuple[int, Fraction]:
+        meta = trace_meta.get(C, {})
+        if not isinstance(meta, dict) or "prime" not in meta:
+            raise ValueError(f"missing trace metadata for class {C}")
+        prime = int(meta["prime"])
+        key = f"{C}_trace"
+        tr_s = Fraction(0, 1)
+        for row in irreps:
+            deg = int(row["deg"])
+            a = int(row[a_cls])
+            b = int(row[b_cls])
+            tr = int(row[key])
+            tr_s += Fraction(a * b * tr, deg)
+        return prime, tr_s
+
+    pairs_out: dict[str, object] = {}
+    for a_cls in a_classes:
+        for b_cls in b_classes:
+            pair_key = f"{a_cls}×{b_cls}"
+            size_a = size[a_cls]
+            size_b = size[b_cls]
+
+            classes_out: dict[str, object] = {}
+            support_classes: list[str] = []
+            support_primes: set[int] = set()
+
+            for C in value_targets:
+                s = _sum_value(a_cls=a_cls, b_cls=b_cls, C=C)
+                p = s * Fraction(1, cent[C])
+                n = p * size_a * size_b / size[C]
+                assert n.denominator == 1, f"Non-integer n_{{{a_cls},{b_cls}}}^{C}: {n}"
+                if p != 0:
+                    support_classes.append(C)
+                    support_primes.add(int(classes[C]["order"]))
+                classes_out[C] = {
+                    "mode": "value",
+                    "class_algebra_sum": _fraction_payload(s),
+                    "probability": _fraction_payload(p),
+                    "structure_constant_per_element": int(n.numerator),
+                    "structure_constant_factorization": factorint(int(n.numerator)),
+                }
+
+            for C in trace_targets:
+                prime, tr_s = _sum_trace(a_cls=a_cls, b_cls=b_cls, C=C)
+                s = tr_s / (prime - 1)
+                p = s * Fraction(1, cent[C])
+                n = p * size_a * size_b / size[C]
+                assert n.denominator == 1, f"Non-integer n_{{{a_cls},{b_cls}}}^{C}: {n}"
+                if p != 0:
+                    support_classes.append(C)
+                    support_primes.add(int(classes[C]["order"]))
+                classes_out[C] = {
+                    "mode": "trace",
+                    "prime": int(prime),
+                    "class_algebra_trace_sum": _fraction_payload(tr_s),
+                    "class_algebra_sum": _fraction_payload(s),
+                    "probability": _fraction_payload(p),
+                    "structure_constant_per_element": int(n.numerator),
+                    "structure_constant_factorization": factorint(int(n.numerator)),
+                }
+
+            pairs_out[pair_key] = {
+                "a_class": a_cls,
+                "b_class": b_cls,
+                "support_primes": sorted(support_primes),
+                "support_classes": support_classes,
+                "classes": classes_out,
+            }
+
+    return {
+        "available": True,
+        "pairs": pairs_out,
+        "ogg_primes": ogg_primes_via_genus(max_p=100).get("primes"),
+        "targets": {
+            "value": value_targets,
+            "trace": trace_targets,
+        },
+    }
+
+
 def analyze_monster_atlas_probability_landscape(
     atlas_json_path: str | None = None,
     *,
