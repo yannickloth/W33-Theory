@@ -6922,6 +6922,27 @@ class TestLeechMonster:
         assert borch["verified"] is True
         assert borch["n_mismatches"] == 0
 
+        # Moonshine replicability checks for Fricke prime McKay-Thompson series.
+        from scripts.w33_leech_monster import (
+            mckay_thompson_series,
+            verify_fricke_prime_replicability,
+        )
+
+        t2a = mckay_thompson_series("2A", max_q_exp=3)
+        assert t2a is not None
+        assert t2a.get(1) == 4372
+        assert t2a.get(2) == 96256
+
+        t3a = mckay_thompson_series("3A", max_q_exp=3)
+        assert t3a is not None
+        assert t3a.get(1) == 783
+        assert t3a.get(2) == 8672
+
+        rep2 = verify_fricke_prime_replicability("2A", max_q_exp=10)
+        assert rep2["verified"] is True
+        rep3 = verify_fricke_prime_replicability("3A", max_q_exp=10)
+        assert rep3["verified"] is True
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
@@ -7023,11 +7044,8 @@ class TestLeechMonster:
         assert cmap.get(196883) == -1
 
         # McKay trace for c1 (1 + 196883) under 2A should be 0
-        # Note: compute_mckay_traces uses internal default path, so it
-        # may return None if no system-wide monster_characters.json exists.
-        traces = compute_mckay_traces("2A", n_terms=1, use_full=False)
-        if traces is not None:
-            assert traces == [0]
+        traces = compute_mckay_traces("2A", n_terms=1, use_full=False, json_path=str(p))
+        assert traces == [0]
 
     def test_compute_mckay_identity_and_plot(self, lm_data, tmp_path):
         """Identity-class McKay traces equal the j-coefficients; plotting writes CSV."""

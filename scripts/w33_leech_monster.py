@@ -18,6 +18,7 @@ import ast
 import shutil
 import subprocess
 import sys
+from fractions import Fraction
 from functools import lru_cache
 from math import comb
 from pathlib import Path
@@ -321,19 +322,320 @@ def _load_monster_char_map_via_gap(
     return {int(d): int(v) for d, v in zip(degrees, values)}
 
 
+def _qpoly_mul(a: list[int], b: list[int], max_deg: int) -> list[int]:
+    out = [0] * (max_deg + 1)
+    for i, ai in enumerate(a[: max_deg + 1]):
+        if ai == 0:
+            continue
+        max_j = max_deg - i
+        for j, bj in enumerate(b[: max_j + 1]):
+            if bj == 0:
+                continue
+            out[i + j] += ai * bj
+    return out
+
+
+def _qpoly_pow(base: list[int], exp: int, max_deg: int) -> list[int]:
+    if exp < 0:
+        raise ValueError("exp must be non-negative")
+    result = [0] * (max_deg + 1)
+    result[0] = 1
+    cur = base[: max_deg + 1] + [0] * max(0, (max_deg + 1) - len(base))
+    e = exp
+    while e:
+        if e & 1:
+            result = _qpoly_mul(result, cur, max_deg)
+        e >>= 1
+        if e:
+            cur = _qpoly_mul(cur, cur, max_deg)
+    return result
+
+
+def _qpoly_inv(den: list[int], max_deg: int) -> list[int]:
+    """Inverse of a power series with den[0] == 1, truncated to max_deg."""
+    if not den or den[0] != 1:
+        raise ValueError("series inverse requires den[0] == 1")
+    out = [0] * (max_deg + 1)
+    out[0] = 1
+    for n in range(1, max_deg + 1):
+        s = 0
+        for k in range(1, n + 1):
+            if k < len(den):
+                s += den[k] * out[n - k]
+        out[n] = -s
+    return out
+
+
+def _qpoly_div(num: list[int], den: list[int], max_deg: int) -> list[int]:
+    inv = _qpoly_inv(den, max_deg)
+    num_pad = num[: max_deg + 1] + [0] * max(0, (max_deg + 1) - len(num))
+    return _qpoly_mul(num_pad, inv, max_deg)
+
+
+def _qpochhammer(max_deg: int, step: int = 1) -> list[int]:
+    """Compute (q^step; q^step)_inf = prod_{k>=1} (1 - q^{k*step}) to max_deg."""
+    if step <= 0:
+        raise ValueError("step must be positive")
+    poly = [1] + [0] * max_deg
+    for k in range(1, (max_deg // step) + 1):
+        power = k * step
+        for n in range(max_deg, power - 1, -1):
+            poly[n] -= poly[n - power]
+    return poly
+
+
+def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int] | None:
+    """Return a McKay-Thompson series T_g(q)=q^-1 + sum_{n>=1} a_n q^n.
+
+    Offline (no GAP) support is implemented for Fricke prime classes:
+      2A, 3A, 5A, 7A, 13A.
+
+    Identity class 1A returns J(q)=j(q)-744.
+    """
+    name = class_name.upper()
+    if max_q_exp < 0:
+        raise ValueError("max_q_exp must be non-negative")
+
+    if name in ("1A", "ID", "IDENTITY"):
+        coeffs = j_coeffs(max_q_exp)
+        out = {-1: 1, 0: 0}
+        for n, c in enumerate(coeffs, start=1):
+            out[n] = int(c)
+        return out
+
+    fricke_prime = {"2A": 2, "3A": 3, "5A": 5, "7A": 7, "13A": 13}
+    p = fricke_prime.get(name)
+    if p is None:
+        return None
+
+    # Fricke prime Hauptmodul:
+    #   T_pA(tau) = (eta/eta(p))^{24/(p-1)}
+    #            + p^{12/(p-1)} (eta(p)/eta)^{24/(p-1)}
+    #            + 24/(p-1)
+    a = 24 // (p - 1)
+    scale = p ** (12 // (p - 1))
+    const = 24 // (p - 1)
+
+    # Need one extra degree because term1 is q^-1 * (1 + O(q)).
+    deg = max_q_exp + 1
+    e = _qpochhammer(deg, step=1)  # (q;q)_inf
+    ep = _qpochhammer(deg, step=p)  # (q^p;q^p)_inf
+    ratio = _qpoly_div(e, ep, deg)  # E(q)/E(q^p)
+
+    ratio_pow = _qpoly_pow(ratio, a, deg)
+    ratio_inv_pow = _qpoly_pow(_qpoly_inv(ratio, deg), a, deg)
+
+    series: dict[int, int] = {}
+    # term1: q^-1 * ratio_pow
+    for k, ck in enumerate(ratio_pow):
+        exp = -1 + k
+        if -1 <= exp <= max_q_exp and ck:
+            series[exp] = series.get(exp, 0) + int(ck)
+
+    # term2: scale * q^+1 * ratio_inv_pow
+    for k, ck in enumerate(ratio_inv_pow):
+        exp = 1 + k
+        if -1 <= exp <= max_q_exp and ck:
+            series[exp] = series.get(exp, 0) + int(scale * ck)
+
+    # constant shift
+    series[0] = series.get(0, 0) + int(const)
+    if series.get(0, 0) != 0:
+        raise AssertionError(
+            f"Expected constant term 0 for {name}, got {series.get(0)}"
+        )
+
+    series.setdefault(-1, 1)
+    return series
+
+
+def _laurent_mul(
+    a: dict[int, int], b: dict[int, int], min_exp: int, max_exp: int
+) -> dict[int, int]:
+    out: dict[int, int] = {}
+    for ea, ca in a.items():
+        for eb, cb in b.items():
+            e = ea + eb
+            if e < min_exp or e > max_exp:
+                continue
+            out[e] = out.get(e, 0) + ca * cb
+    return {e: c for e, c in out.items() if c != 0}
+
+
+def _laurent_pow(
+    f: dict[int, int], k: int, min_exp: int, max_exp: int
+) -> dict[int, int]:
+    if k < 0:
+        raise ValueError("k must be non-negative")
+    if k == 0:
+        return {0: 1}
+    out = dict(f)
+    for _ in range(1, k):
+        out = _laurent_mul(out, f, min_exp=min_exp, max_exp=max_exp)
+    return out
+
+
+def _solve_linear_system_fraction(
+    A: list[list[Fraction]], b: list[Fraction]
+) -> list[Fraction]:
+    n = len(b)
+    if n == 0:
+        return []
+    M = [row[:] + [b_i] for row, b_i in zip(A, b)]
+    for col in range(n):
+        pivot = None
+        for r in range(col, n):
+            if M[r][col] != 0:
+                pivot = r
+                break
+        if pivot is None:
+            raise ValueError("singular system in Faber polynomial solve")
+        if pivot != col:
+            M[col], M[pivot] = M[pivot], M[col]
+
+        pv = M[col][col]
+        for j in range(col, n + 1):
+            M[col][j] /= pv
+        for r in range(n):
+            if r == col:
+                continue
+            factor = M[r][col]
+            if factor == 0:
+                continue
+            for j in range(col, n + 1):
+                M[r][j] -= factor * M[col][j]
+    return [M[i][n] for i in range(n)]
+
+
+def faber_polynomial_series(
+    f: dict[int, int], m: int, max_q_exp: int
+) -> dict[str, object]:
+    """Compute the Faber polynomial Phi_m for a q^-1 + O(q) series f.
+
+    Returns:
+      - coeffs: [c0,...,c_{m-1}] where Phi_m(x)=x^m + sum_{k=0..m-1} c_k x^k
+      - series: Laurent coefficients of Phi_m(f(q)) up to q^{max_q_exp}
+    """
+    if m <= 0:
+        raise ValueError("m must be positive")
+    if max_q_exp < 0:
+        raise ValueError("max_q_exp must be non-negative")
+
+    min_exp = -m
+    exps = list(range(-m + 1, 1))  # -m+1,...,0
+    # When solving cancellations up to q^0, we must retain enough positive degrees
+    # during intermediate products; otherwise sequential truncation can drop
+    # contributions (order-dependent). The worst-case needed exponent is m-1.
+    solve_max_exp = max(m - 1, 0)
+    powers = [
+        _laurent_pow(f, k, min_exp=min_exp, max_exp=solve_max_exp) for k in range(m)
+    ]
+    f_m = _laurent_pow(f, m, min_exp=min_exp, max_exp=solve_max_exp)
+
+    A = [[Fraction(powers[k].get(e, 0)) for k in range(m)] for e in exps]
+    b = [Fraction(-f_m.get(e, 0)) for e in exps]
+    coeffs = _solve_linear_system_fraction(A, b)
+
+    # To compute coefficients up to q^N in a sequential product, we need slack
+    # up to N+(m-1), since intermediate terms can later combine with q^-1 factors.
+    build_max_exp = max_q_exp + (m - 1)
+    series = _laurent_pow(f, m, min_exp=min_exp, max_exp=build_max_exp)
+    for k, ck in enumerate(coeffs):
+        if ck == 0:
+            continue
+        term = _laurent_pow(f, k, min_exp=min_exp, max_exp=build_max_exp)
+        for e, v in term.items():
+            series[e] = series.get(e, 0) + int(ck * v)
+
+    for e in range(-m + 1, 1):
+        if series.get(e, 0) != 0:
+            raise AssertionError(f"Faber cancellation failed at q^{e}: {series.get(e)}")
+    if series.get(-m, 0) != 1:
+        raise AssertionError("Faber normalization failed (q^-m coefficient)")
+
+    # Return only coefficients through max_q_exp (but compute with slack above).
+    series = {e: c for e, c in series.items() if e <= max_q_exp}
+
+    coeffs_int: list[int] = []
+    for c in coeffs:
+        if c.denominator != 1:
+            raise AssertionError("non-integer Faber coefficient encountered")
+        coeffs_int.append(int(c.numerator))
+
+    return {"m": m, "coeffs": coeffs_int, "series": series}
+
+
+def verify_fricke_prime_replicability(
+    class_name: str, max_q_exp: int = 10
+) -> dict[str, object]:
+    """Verify the m=p replicability identity for Fricke prime classes pA."""
+    name = class_name.upper()
+    p_map = {"2A": 2, "3A": 3, "5A": 5, "7A": 7, "13A": 13}
+    p = p_map.get(name)
+    if p is None:
+        raise ValueError(f"Unsupported class for replicability: {class_name}")
+
+    f = mckay_thompson_series(name, max_q_exp=p * max_q_exp)
+    if f is None:
+        raise RuntimeError(f"Series unavailable for class {class_name}")
+
+    faber = faber_polynomial_series(f, m=p, max_q_exp=max_q_exp)
+    lhs: dict[int, int] = dict(faber["series"])  # type: ignore[assignment]
+
+    rhs: dict[int, int] = {-p: 1}
+    for n in range(1, max_q_exp + 1):
+        rhs[n] = rhs.get(n, 0) + p * int(f.get(p * n, 0))
+
+    j_needed = max_q_exp // p
+    jpos = j_coeffs(j_needed)
+    for n, c in enumerate(jpos, start=1):
+        exp = p * n
+        if exp <= max_q_exp:
+            rhs[exp] = rhs.get(exp, 0) + int(c)
+
+    mismatches: list[tuple[int, int, int]] = []
+    for e in [-p] + list(range(1, max_q_exp + 1)):
+        lv = int(lhs.get(e, 0))
+        rv = int(rhs.get(e, 0))
+        if lv != rv:
+            mismatches.append((e, lv, rv))
+
+    return {
+        "class_name": name,
+        "p": p,
+        "max_q_exp": max_q_exp,
+        "verified": len(mismatches) == 0,
+        "n_mismatches": len(mismatches),
+        "mismatches": mismatches[:10],
+        "faber_coeffs": faber["coeffs"],
+    }
+
+
 def compute_mckay_traces(
-    class_name: str = "1A", n_terms: int = 8, use_full: bool = True
+    class_name: str = "1A",
+    n_terms: int = 8,
+    use_full: bool = True,
+    json_path: str | None = None,
 ):
     """Compute McKay–Thompson traces Tr(g | V_n) for `class_name` up to `n_terms`.
 
     - If `class_name` == '1A' (identity) this returns the standard j‑coefficients.
     - If a full Monster character table is available (GAP or bundled), it will be
       used to compute traces from the irrep multiplicities in `V_n`.
-    - Otherwise, returns None.
+    - Otherwise, falls back to eta-quotient series for a few Fricke prime classes.
     """
     # identity: trivial shortcut
     if class_name.upper() in ("1A", "ID", "IDENTITY"):
         return j_coeffs(n_terms)
+
+    # Try to obtain character values for the requested class (JSON/libgap/GAP).
+    char_map = _load_monster_char_map_via_gap(class_name, json_path=json_path)
+    if char_map is None:
+        # Offline fallback (eta-quotients) for a handful of Fricke prime classes.
+        series = mckay_thompson_series(class_name, max_q_exp=n_terms)
+        if series is not None:
+            return [int(series.get(n, 0)) for n in range(1, n_terms + 1)]
+        return None
 
     # obtain decomposition data
     data = analyze_leech_monster()
@@ -346,11 +648,7 @@ def compute_mckay_traces(
     else:
         decomps = data["j_decompositions"]
 
-    # try to obtain character values for the requested class
-    char_map = _load_monster_char_map_via_gap(class_name)
-    if char_map is None:
-        # no GAP/libgap — user can provide a char_map programmatically
-        return None
+    # character values already loaded above (JSON/libgap/GAP)
 
     traces = []
     for n in range(1, min(n_terms, len(data["j_coeffs"])) + 1):
