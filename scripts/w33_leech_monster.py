@@ -216,6 +216,198 @@ def j_coeffs(n_terms: int = 6):
 # ----------------------------- McKay / Thompson -----------------------------
 
 
+def analyze_rogers_ramanujan_j_invariant(*, n_terms: int = 8) -> dict[str, object]:
+    """Verify the classical Rogers–Ramanujan continued fraction identity for j(τ).
+
+    Let R(q) be the Rogers–Ramanujan continued fraction and set u(q) = R(q)^5.
+    A classical identity expresses the Klein j-invariant as a rational function:
+
+        j(τ) = - (u^4 - 228 u^3 + 494 u^2 + 228 u + 1)^3 / (u (u^2 + 11 u - 1)^5)
+
+    Since u(q) = q + O(q^2), the right-hand side has Laurent expansion:
+        j(τ) = q^{-1} + 744 + 196884 q + ...
+
+    This routine computes u(q) via the product formula for R(q) and checks the
+    identity to the requested order, fully deterministically and offline.
+    """
+    from fractions import Fraction
+
+    if n_terms < 1:
+        raise ValueError("n_terms must be >= 1")
+
+    # We verify q^{-1}, q^0, and q^1..q^n_terms.
+    N = int(n_terms) + 6  # slack for series arithmetic in rational functions
+
+    def _as_frac_series(xs: list[int]) -> list[Fraction]:
+        return [Fraction(int(x), 1) for x in xs]
+
+    def _series_add(a: list[Fraction], b: list[Fraction], n: int) -> list[Fraction]:
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            if i < len(a):
+                out[i] += a[i]
+            if i < len(b):
+                out[i] += b[i]
+        return out
+
+    def _series_scale(a: list[Fraction], c: Fraction, n: int) -> list[Fraction]:
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        for i in range(min(len(a), n + 1)):
+            out[i] = a[i] * c
+        return out
+
+    def _series_shift(a: list[Fraction], k: int, n: int) -> list[Fraction]:
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        for i in range(min(len(a), n + 1 - k)):
+            out[i + k] = a[i]
+        return out
+
+    def _series_mul(a: list[Fraction], b: list[Fraction], n: int) -> list[Fraction]:
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        for i in range(min(len(a), n + 1)):
+            ai = a[i]
+            if ai == 0:
+                continue
+            max_j = min(len(b) - 1, n - i)
+            for j in range(max_j + 1):
+                bj = b[j]
+                if bj != 0:
+                    out[i + j] += ai * bj
+        return out
+
+    def _series_pow(a: list[Fraction], e: int, n: int) -> list[Fraction]:
+        if e < 0:
+            raise ValueError("negative powers not supported")
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        out[0] = Fraction(1, 1)
+        base = a[:]
+        exp = int(e)
+        while exp:
+            if exp & 1:
+                out = _series_mul(out, base, n)
+            exp >>= 1
+            if exp:
+                base = _series_mul(base, base, n)
+        return out
+
+    def _series_inv(a: list[Fraction], n: int) -> list[Fraction]:
+        if not a or a[0] == 0:
+            raise ValueError("series must have nonzero constant term")
+        a0 = a[0]
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        out[0] = Fraction(1, 1) / a0
+        for k in range(1, n + 1):
+            s = Fraction(0, 1)
+            for i in range(1, k + 1):
+                if i < len(a):
+                    s += a[i] * out[k - i]
+            out[k] = -s / a0
+        return out
+
+    def _series_div(a: list[Fraction], b: list[Fraction], n: int) -> list[Fraction]:
+        return _series_mul(a, _series_inv(b, n), n)
+
+    # Product factors for (q^k; q^5)_∞ truncated to degree N:
+    #   Π_{n>=0} (1 - q^{k + 5n})
+    def _pochhammer_step5(k: int, n: int) -> list[Fraction]:
+        out = [Fraction(0, 1) for _ in range(n + 1)]
+        out[0] = Fraction(1, 1)
+        exp = int(k)
+        while exp <= n:
+            fac = [Fraction(0, 1) for _ in range(n + 1)]
+            fac[0] = Fraction(1, 1)
+            fac[exp] = Fraction(-1, 1)
+            out = _series_mul(out, fac, n)
+            exp += 5
+        return out
+
+    # u(q) = R(q)^5 = q * ( ( (q; q^5)_∞ (q^4; q^5)_∞ ) / ( (q^2; q^5)_∞ (q^3; q^5)_∞ ) )^5
+    num = _series_mul(_pochhammer_step5(1, N), _pochhammer_step5(4, N), N)
+    den = _series_mul(_pochhammer_step5(2, N), _pochhammer_step5(3, N), N)
+    P = _series_div(num, den, N)
+    P5 = _series_pow(P, 5, N)
+    u = _series_shift(P5, 1, N)  # multiply by q
+
+    # Sanity: u(q) starts with q + O(q^2)
+    assert u[0] == 0 and u[1] == 1, f"Unexpected u(q) leading terms: {u[:3]}"
+
+    u2 = _series_mul(u, u, N)
+    u3 = _series_mul(u2, u, N)
+    u4 = _series_mul(u2, u2, N)
+
+    # A(u) = u^4 - 228 u^3 + 494 u^2 + 228 u + 1
+    A = _series_add(
+        _series_add(
+            _series_add(
+                _series_add(
+                    _series_scale(u4, Fraction(1), N),
+                    _series_scale(u3, Fraction(-228), N),
+                    N,
+                ),
+                _series_scale(u2, Fraction(494), N),
+                N,
+            ),
+            _series_scale(u, Fraction(228), N),
+            N,
+        ),
+        [Fraction(1, 1)],
+        N,
+    )
+
+    # B(u) = u^2 + 11 u - 1
+    B = _series_add(
+        _series_add(u2, _series_scale(u, Fraction(11), N), N), [Fraction(-1, 1)], N
+    )
+
+    A3 = _series_pow(A, 3, N)
+    B5 = _series_pow(B, 5, N)
+    C = _series_scale(_series_div(A3, B5, N), Fraction(-1, 1), N)  # -A^3/B^5
+
+    # 1/u as Laurent: u(q) = q * u1(q) with u1(0)=1.
+    u1 = u[1:]  # length N, represents u/q
+    inv_u1 = _series_inv(u1, N)  # power series
+    J = _series_mul(C, inv_u1, N)  # this corresponds to q * j(q)
+
+    # Extract Laurent coefficients: j = q^{-1}*J
+    q_minus1 = J[0]
+    q0 = J[1]
+    coeffs = [J[n + 1] for n in range(1, n_terms + 1)]
+
+    # Reference values for comparison.
+    ref = j_coeffs(n_terms)
+    ok = True
+    if q_minus1 != 1 or q0 != 744:
+        ok = False
+    for got, exp in zip(coeffs, ref):
+        if got != exp:
+            ok = False
+            break
+
+    # Ensure integrality of computed coefficients.
+    def _to_int(fr: Fraction) -> int:
+        if fr.denominator != 1:
+            raise AssertionError(f"Non-integral coefficient: {fr}")
+        return int(fr.numerator)
+
+    out_coeffs = [_to_int(x) for x in coeffs]
+    return {
+        "available": True,
+        "verified": ok,
+        "n_terms_verified": int(n_terms),
+        "u_series": [_to_int(x) for x in u[: min(N + 1, n_terms + 3)]],
+        "j_from_rogers_ramanujan": {
+            "q^-1": _to_int(q_minus1),
+            "q^0": _to_int(q0),
+            "coeffs": out_coeffs,
+        },
+        "j_reference": {"coeffs": [int(x) for x in ref]},
+        "identity": {
+            "u": "u(q)=R(q)^5",
+            "j": "-(u^4 - 228 u^3 + 494 u^2 + 228 u + 1)^3 / (u (u^2 + 11 u - 1)^5)",
+        },
+    }
+
+
 def load_monster_characters(json_path: str | None = None) -> dict | None:
     """Load full Monster character table from JSON file (if present).
 
@@ -2040,6 +2232,97 @@ def analyze_monster_standard_generator_step3_order29_from_character_table(
     }
 
 
+def analyze_monster_atlas_standard_generator_pipeline(
+    atlas_json_path: str | None = None,
+    charcols_json_path: str | None = None,
+) -> dict[str, object]:
+    """Combine ATLAS step-1/2 with class-algebra step-3 into one pipeline model.
+
+    Steps:
+      1. Draw random g and map to a∈2A (ATLAS powering rule).
+      2. Draw random h and map to b∈3B (ATLAS powering rule).
+      3. Accept if |ab| = 29 (class algebra / character table).
+
+    Returns exact rational probabilities and expected counts under a simple
+    "resample a and b each attempt" strategy, plus a naive "single-shot pair"
+    strategy for comparison.
+    """
+    from fractions import Fraction
+
+    gs = analyze_monster_atlas_generator_search_probabilities(atlas_json_path)
+    if not isinstance(gs, dict) or gs.get("available") is not True:
+        return {"available": False}
+    gsd = gs.get("generator_search", {})
+    if not isinstance(gsd, dict):
+        return {"available": False}
+
+    to_2a = gsd.get("to_2A", {})
+    to_3b = gsd.get("to_3B", {})
+    if not isinstance(to_2a, dict) or not isinstance(to_3b, dict):
+        return {"available": False}
+
+    p2 = to_2a.get("probability", {})
+    p3 = to_3b.get("probability", {})
+    if not isinstance(p2, dict) or not isinstance(p3, dict):
+        return {"available": False}
+    p_to_2a = Fraction(int(p2["numerator"]), int(p2["denominator"]))
+    p_to_3b = Fraction(int(p3["numerator"]), int(p3["denominator"]))
+
+    step3 = analyze_monster_standard_generator_step3_order29_from_character_table(
+        charcols_json_path=charcols_json_path,
+        atlas_json_path=atlas_json_path,
+    )
+    if not isinstance(step3, dict) or step3.get("available") is not True:
+        return {"available": False}
+    p29 = step3.get("probability", {})
+    if not isinstance(p29, dict):
+        return {"available": False}
+    p_order29_given_2a3b = Fraction(int(p29["numerator"]), int(p29["denominator"]))
+
+    # Strategy A: generate a∈2A (mean 1/p2 draws) and b∈3B (mean 1/p3 draws),
+    # then test |ab|; resample both on failure.
+    expected_draws_per_ab_attempt = (Fraction(1, 1) / p_to_2a) + (
+        Fraction(1, 1) / p_to_3b
+    )
+    expected_ab_attempts = Fraction(1, 1) / p_order29_given_2a3b
+    expected_draws_total = expected_draws_per_ab_attempt * expected_ab_attempts
+
+    # Strategy B: "single-shot": draw one g,h per trial and accept only if both
+    # map to required classes and |ab|=29. (Less efficient; included for context.)
+    p_single_shot = p_to_2a * p_to_3b * p_order29_given_2a3b
+    expected_trials_single_shot = Fraction(1, 1) / p_single_shot
+    expected_draws_single_shot = 2 * expected_trials_single_shot
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    return {
+        "available": True,
+        "p_to_2A": _fraction_payload(p_to_2a),
+        "p_to_3B": _fraction_payload(p_to_3b),
+        "p_order29_given_2A_3B": _fraction_payload(p_order29_given_2a3b),
+        "strategy_resample_both": {
+            "expected_draws_per_ab_attempt": _fraction_payload(
+                expected_draws_per_ab_attempt
+            ),
+            "expected_ab_attempts": _fraction_payload(expected_ab_attempts),
+            "expected_random_draws_total": _fraction_payload(expected_draws_total),
+        },
+        "strategy_single_shot_pair": {
+            "p_success_per_pair": _fraction_payload(p_single_shot),
+            "expected_trials_pairs": _fraction_payload(expected_trials_single_shot),
+            "expected_random_draws_total": _fraction_payload(
+                expected_draws_single_shot
+            ),
+        },
+    }
+
+
 def analyze_monster_atlas_probability_landscape(
     atlas_json_path: str | None = None,
     *,
@@ -3414,6 +3697,13 @@ def analyze_leech_monster() -> Dict:
     atlas_step3 = (
         analyze_monster_standard_generator_step3_order29_from_character_table()
     )
+    atlas_pipeline = analyze_monster_atlas_standard_generator_pipeline()
+
+    rr_j = analyze_rogers_ramanujan_j_invariant(n_terms=5)
+    assert rr_j.get("available") is True and rr_j.get("verified") is True, (
+        "Rogers–Ramanujan j-invariant identity check failed: "
+        f"{rr_j.get('j_from_rogers_ramanujan')}"
+    )
 
     return {
         "e8_roots": e8_roots,
@@ -3447,6 +3737,8 @@ def analyze_leech_monster() -> Dict:
         "atlas_probability_landscape": atlas_probability_landscape,
         "atlas_powering_probabilities": atlas_powering_probabilities,
         "atlas_standard_generators_step3": atlas_step3,
+        "atlas_standard_generators_pipeline": atlas_pipeline,
+        "rogers_ramanujan_j": rr_j,
         "interpretation": interpretation,
     }
 
@@ -3545,4 +3837,20 @@ if __name__ == "__main__":
                 "- ATLAS standard generators: Pr(2A·3B has order 29) = %s (E[trials]=%.3f)"
                 % (prob.get("value"), float(step3.get("expected_trials", 0.0))),
             )
+    pipe = out.get("atlas_standard_generators_pipeline", {})
+    if isinstance(pipe, dict) and pipe.get("available") is True:
+        strat = pipe.get("strategy_resample_both", {})
+        if isinstance(strat, dict):
+            erd = strat.get("expected_random_draws_total", {})
+            if isinstance(erd, dict):
+                print(
+                    "- ATLAS pipeline (resample both): E[random draws] = %s (~%.1f)"
+                    % (erd.get("value"), float(erd.get("float", 0.0))),
+                )
+    rr = out.get("rogers_ramanujan_j", {})
+    if isinstance(rr, dict) and rr.get("available") is True:
+        print(
+            "- Rogersâ€“Ramanujan: j(u=R^5) identity verified to q^%d: %s"
+            % (rr.get("n_terms_verified"), rr.get("verified")),
+        )
     print("- Interpretation:", out["interpretation"])

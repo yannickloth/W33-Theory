@@ -7321,6 +7321,42 @@ class TestLeechMonster:
         assert fac.get("numerator") == {2: 10, 3: 13}
         assert fac.get("denominator") == {5: 1, 7: 3, 13: 1, 29: 1, 41: 1, 59: 1, 71: 1}
 
+        from fractions import Fraction
+
+        from scripts.w33_leech_monster import (
+            analyze_monster_atlas_standard_generator_pipeline,
+            analyze_rogers_ramanujan_j_invariant,
+        )
+
+        pipe = analyze_monster_atlas_standard_generator_pipeline()
+        assert pipe.get("available") is True
+        strat = pipe.get("strategy_resample_both", {})
+        assert isinstance(strat, dict)
+        erd = strat.get("expected_random_draws_total", {})
+        assert isinstance(erd, dict)
+        expected = (
+            Fraction(1, 1) / Fraction(56542883129, 363405814200)
+            + Fraction(1, 1) / Fraction(3164, 59049)
+        ) / Fraction(1632586752, 111045174695)
+        assert (erd.get("numerator"), erd.get("denominator")) == (
+            expected.numerator,
+            expected.denominator,
+        )
+
+        rr = analyze_rogers_ramanujan_j_invariant(n_terms=5)
+        assert rr.get("available") is True
+        assert rr.get("verified") is True
+        jrr = rr.get("j_from_rogers_ramanujan", {})
+        assert isinstance(jrr, dict)
+        assert jrr.get("q^-1") == 1 and jrr.get("q^0") == 744
+        assert jrr.get("coeffs") == [
+            196884,
+            21493760,
+            864299970,
+            20245856256,
+            333202640600,
+        ]
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
