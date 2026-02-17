@@ -797,6 +797,60 @@ def ogg_primes_via_genus(max_p: int = 100) -> dict[str, object]:
     return {"max_p": max_p, "primes": ogg, "details": details}
 
 
+def infer_monster_head_character_values(
+    class_name: str, max_n: int = 3
+) -> dict[int, int] | None:
+    """Infer a small subset of Monster character values from moonshine 'head'
+    decompositions V_n for n<=max_n, assuming early coefficients introduce at
+    most one new irrep at each step.
+    """
+    if max_n < 1:
+        raise ValueError("max_n must be >= 1")
+
+    series = mckay_thompson_series(class_name, max_q_exp=max_n)
+    if series is None:
+        return None
+
+    data = analyze_leech_monster()
+    decomps = data.get("j_decompositions", {})
+
+    chis: dict[int, int] = {1: 1}
+    for n in range(1, max_n + 1):
+        info = decomps.get(n)
+        if not info or not info.get("exact"):
+            break
+        dec = info.get("decomp", {})
+        unknown = [int(d) for d in dec.keys() if int(d) not in chis]
+        known_sum = sum(
+            int(mult) * int(chis[int(deg)])
+            for deg, mult in dec.items()
+            if int(deg) in chis
+        )
+        trace_n = int(series.get(n, 0))
+
+        if len(unknown) == 0:
+            if trace_n != known_sum:
+                raise AssertionError(
+                    f"Trace mismatch at n={n} for {class_name}: {trace_n} != {known_sum}"
+                )
+            continue
+        if len(unknown) != 1:
+            break
+
+        deg = unknown[0]
+        mult = int(dec.get(deg, 0))
+        if mult == 0:
+            break
+        rhs = trace_n - known_sum
+        if rhs % mult != 0:
+            raise AssertionError(
+                f"Non-integer character inference for {class_name} at n={n}"
+            )
+        chis[deg] = rhs // mult
+
+    return chis
+
+
 def compute_mckay_traces(
     class_name: str = "1A",
     n_terms: int = 8,

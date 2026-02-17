@@ -6924,6 +6924,7 @@ class TestLeechMonster:
 
         # Moonshine replicability checks for Fricke prime McKay-Thompson series.
         from scripts.w33_leech_monster import (
+            infer_monster_head_character_values,
             mckay_thompson_series,
             verify_fricke_prime_replicability,
         )
@@ -6963,6 +6964,16 @@ class TestLeechMonster:
         assert rep3b["verified"] is True
         rep3c = verify_fricke_prime_replicability("3C", max_q_exp=10)
         assert rep3c["verified"] is True
+
+        chi2a = infer_monster_head_character_values("2A", max_n=2)
+        assert chi2a is not None
+        assert chi2a[196883] == 4371
+        assert chi2a[21296876] == 91884
+
+        chi3c = infer_monster_head_character_values("3C", max_n=2)
+        assert chi3c is not None
+        assert chi3c[196883] == -1
+        assert chi3c[21296876] == 248
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
