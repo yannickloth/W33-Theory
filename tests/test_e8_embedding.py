@@ -7224,6 +7224,46 @@ class TestLeechMonster:
         assert ccls["10A"]["powers"]["2"] == ["5A"]
         assert ccls["10A"]["powers"]["5"] == ["2A"]
 
+        from scripts.w33_leech_monster import (
+            analyze_monster_atlas_generator_search_probabilities,
+        )
+
+        prob = analyze_monster_atlas_generator_search_probabilities()
+        assert prob.get("available") is True
+        gs = prob.get("generator_search", {})
+        assert isinstance(gs, dict)
+
+        to_2a = gs.get("to_2A", {})
+        assert isinstance(to_2a, dict)
+        p2a = to_2a.get("probability", {})
+        assert isinstance(p2a, dict)
+        assert (p2a.get("numerator"), p2a.get("denominator")) == (
+            56542883129,
+            363405814200,
+        )
+        assert set(to_2a.get("selected_classes", [])) == {
+            "104A",
+            "104B",
+            "110A",
+            "34A",
+            "38A",
+            "50A",
+            "54A",
+            "62A",
+            "62B",
+            "68A",
+            "94A",
+            "94B",
+        }
+
+        to_3b = gs.get("to_3B", {})
+        assert isinstance(to_3b, dict)
+        p3b = to_3b.get("probability", {})
+        assert isinstance(p3b, dict)
+        assert (p3b.get("numerator"), p3b.get("denominator")) == (3164, 59049)
+        assert to_3b.get("denominator_is_pure_power_of_3") is True
+        assert to_3b.get("denominator_3_adic_valuation") == 10
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]

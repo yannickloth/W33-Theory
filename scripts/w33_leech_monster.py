@@ -1773,6 +1773,124 @@ def _atlas_power_targets(
         return None
 
 
+def analyze_monster_atlas_generator_search_probabilities(
+    atlas_json_path: str | None = None,
+) -> dict[str, object]:
+    """Exact random-element probabilities derived from ATLAS centralizers + power maps.
+
+    This is a concrete probability ↔ group theory bridge:
+      Pr[g lies in conjugacy class C] = |C|/|G| = 1/|C_G(g)|.
+
+    Using the bundled ATLAS snapshot (QMUL), we can reproduce standard-generator
+    search-step probabilities exactly as rational numbers.
+    """
+    from fractions import Fraction
+
+    atlas = load_monster_atlas_ccls(atlas_json_path)
+    if atlas is None:
+        return {"available": False}
+
+    classes = atlas.get("classes", {})
+    if not isinstance(classes, dict) or not classes:
+        return {"available": False}
+
+    def _fraction_payload(fr: Fraction) -> dict[str, object]:
+        return {
+            "numerator": int(fr.numerator),
+            "denominator": int(fr.denominator),
+            "value": str(fr),
+            "float": float(fr),
+        }
+
+    # Sanity: the conjugacy classes partition the group, so Σ_C 1/|C_G(g)| = 1.
+    prob_sum = Fraction(0, 1)
+    for info in classes.values():
+        if not isinstance(info, dict):
+            continue
+        try:
+            prob_sum += Fraction(1, int(info["centralizer_order"]))
+        except Exception:
+            continue
+    assert prob_sum == 1, f"Invalid ATLAS centralizers: sum={prob_sum}"
+
+    def _prob_for_orders(
+        *,
+        orders: set[int],
+        exponent_from_order,
+        target_class: str,
+    ) -> dict[str, object]:
+        target = target_class.upper()
+        selected: list[str] = []
+        p = Fraction(0, 1)
+        for name, info in classes.items():
+            if not isinstance(info, dict):
+                continue
+            try:
+                order = int(info["order"])
+                centralizer = int(info["centralizer_order"])
+            except Exception:
+                continue
+            if order not in orders:
+                continue
+            exp = int(exponent_from_order(order))
+            targets = _atlas_power_targets(atlas, str(name), exp) or []
+            if target in targets:
+                selected.append(str(name).upper())
+                p += Fraction(1, centralizer)
+        selected = sorted(set(selected))
+        return {
+            "orders": sorted(int(x) for x in orders),
+            "exponent_rule": "order->exponent(order)",
+            "target_class": target,
+            "selected_classes": selected,
+            "probability": _fraction_payload(p),
+            "expected_trials": _fraction_payload(Fraction(1, 1) / p),
+        }
+
+    # ATLAS (v2) standard-generator selection steps:
+    # - Involution 2A from even orders by raising to order/2.
+    # - 3B from orders divisible by 3 by raising to order/3.
+    prob_2a = _prob_for_orders(
+        orders={34, 38, 50, 54, 62, 68, 94, 104, 110},
+        exponent_from_order=lambda n: n // 2,
+        target_class="2A",
+    )
+    prob_3b = _prob_for_orders(
+        orders={9, 18, 27, 36, 45, 54},
+        exponent_from_order=lambda n: n // 3,
+        target_class="3B",
+    )
+
+    def _v_p(n: int, p: int) -> int:
+        e = 0
+        while n and (n % p == 0):
+            n //= p
+            e += 1
+        return e
+
+    den_3b = int(prob_3b["probability"]["denominator"])
+    v3 = _v_p(den_3b, 3)
+
+    return {
+        "available": True,
+        "source_url": atlas.get("source_url"),
+        "n_classes": int(atlas.get("n_classes", len(classes))),
+        "probabilities_sum_to_1": True,
+        "generator_search": {
+            "to_2A": prob_2a,
+            "to_3B": {
+                **prob_3b,
+                "denominator_is_pure_power_of_3": den_3b == (3**v3),
+                "denominator_3_adic_valuation": v3,
+            },
+        },
+        "atlas_v2_expected": {
+            "to_2A": "56542883129/363405814200",
+            "to_3B": "3164/59049",
+        },
+    }
+
+
 def monster_prime_divisors() -> list[int]:
     return sorted(int(p) for p in monster_order_factorization().keys())
 
@@ -2918,6 +3036,8 @@ def analyze_leech_monster() -> Dict:
         if isinstance(facs, dict) and "M" in facs:
             assert facs["M"] == monster_order_factorization()
 
+    atlas_generator_search = analyze_monster_atlas_generator_search_probabilities()
+
     return {
         "e8_roots": e8_roots,
         "e8_cubed_roots": e8_cubed_roots,
@@ -2946,6 +3066,7 @@ def analyze_leech_monster() -> Dict:
         "monster_order": monster_order(),
         "monster_order_primes": monster_primes,
         "sporadic_magnitudes": sporadic,
+        "atlas_generator_search": atlas_generator_search,
         "interpretation": interpretation,
     }
 
@@ -2989,5 +3110,26 @@ if __name__ == "__main__":
                 print(
                     "- Largest sporadics (decimal digits):",
                     [(g, digits.get(g)) for g in top],
+                )
+    ags = out.get("atlas_generator_search", {})
+    if isinstance(ags, dict) and ags.get("available") is True:
+        gs = ags.get("generator_search", {})
+        if isinstance(gs, dict):
+            to_2a = gs.get("to_2A", {})
+            to_3b = gs.get("to_3B", {})
+            if isinstance(to_2a, dict):
+                p2a = to_2a.get("probability", {})
+                e2a = to_2a.get("expected_trials", {})
+                print(
+                    "- ATLAS generator search: Pr(·→2A) = %s (E[trials]=%.3f)"
+                    % (p2a.get("value"), float(e2a.get("float", 0.0))),
+                )
+            if isinstance(to_3b, dict):
+                p3b = to_3b.get("probability", {})
+                e3b = to_3b.get("expected_trials", {})
+                v3 = to_3b.get("denominator_3_adic_valuation")
+                print(
+                    "- ATLAS generator search: Pr(·→3B) = %s (E[trials]=%.3f, v3=%s)"
+                    % (p3b.get("value"), float(e3b.get("float", 0.0)), v3),
                 )
     print("- Interpretation:", out["interpretation"])
