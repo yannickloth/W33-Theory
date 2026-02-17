@@ -2329,9 +2329,12 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
 ) -> dict[str, object]:
     """Compute a partial class-algebra distribution for products a·b with a∈2A, b∈3B.
 
-    Using the bundled CTblLib-derived integer character columns for {2A,3B,29A,41A},
-    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A,41A} exactly, plus the associated
-    per-element structure constants n_{2A,3B}^C.
+    Using the bundled CTblLib-derived character data:
+      - integer columns for {2A,3B,29A,41A}
+      - prime-cyclotomic *trace* columns for {31A,47A,59A,71A}
+
+    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A,41A,31A,47A,59A,71A} exactly,
+    plus the associated per-element structure constants n_{2A,3B}^C.
 
     This is a concrete "Monster algebra" observable: it converts character data
     into integer class-algebra constants and exact rational probabilities.
@@ -2352,6 +2355,10 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
         cent_3b = int(classes["3B"]["centralizer_order"])
         cent_29a = int(classes["29A"]["centralizer_order"])
         cent_41a = int(classes["41A"]["centralizer_order"])
+        cent_31a = int(classes["31A"]["centralizer_order"])
+        cent_47a = int(classes["47A"]["centralizer_order"])
+        cent_59a = int(classes["59A"]["centralizer_order"])
+        cent_71a = int(classes["71A"]["centralizer_order"])
     except Exception:
         return {"available": False}
 
@@ -2365,6 +2372,10 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
         "3B": cent_3b,
         "29A": cent_29a,
         "41A": cent_41a,
+        "31A": cent_31a,
+        "47A": cent_47a,
+        "59A": cent_59a,
+        "71A": cent_71a,
     }
     size = {k: monster_ord // v for k, v in cent.items()}
     size_a = size["2A"]
@@ -2406,16 +2417,54 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
             out[nn] = out.get(nn, 0) + 1
         return out
 
+    trace_meta = cols.get("trace_classes", {})
+
     out: dict[str, object] = {"available": True, "classes": {}}
     classes_out: dict[str, object] = {}
     mass = Fraction(0, 1)
     p_by_class: dict[str, Fraction] = {}
-    for C in ["1A", "2A", "3B", "29A", "41A"]:
+
+    value_classes = ["1A", "2A", "3B", "29A", "41A"]
+    trace_classes = ["31A", "47A", "59A", "71A"]
+
+    for C in value_classes:
         s = _sum_for(C)
         p = s * Fraction(1, cent[C])
         n = p * size_a * size_b / size[C]
         assert n.denominator == 1, f"Non-integer n_2A,3B^{C}: {n}"
         classes_out[C] = {
+            "mode": "value",
+            "class_algebra_sum": _fraction_payload(s),
+            "probability": _fraction_payload(p),
+            "structure_constant_per_element": int(n.numerator),
+            "structure_constant_factorization": factorint(int(n.numerator)),
+        }
+        p_by_class[C] = p
+        mass += p
+
+    for C in trace_classes:
+        meta = trace_meta.get(C, {})
+        if not isinstance(meta, dict) or "prime" not in meta:
+            return {"available": False}
+        prime = int(meta["prime"])
+        key = f"{C}_trace"
+
+        tr_s = Fraction(0, 1)
+        for row in irreps:
+            deg = int(row["deg"])
+            a = int(row["2A"])
+            b = int(row["3B"])
+            tr = int(row[key])
+            tr_s += Fraction(a * b * tr, deg)
+
+        s = tr_s / (prime - 1)
+        p = s * Fraction(1, cent[C])
+        n = p * size_a * size_b / size[C]
+        assert n.denominator == 1, f"Non-integer n_2A,3B^{C}: {n}"
+        classes_out[C] = {
+            "mode": "trace",
+            "prime": prime,
+            "class_algebra_trace_sum": _fraction_payload(tr_s),
             "class_algebra_sum": _fraction_payload(s),
             "probability": _fraction_payload(p),
             "structure_constant_per_element": int(n.numerator),
@@ -2436,6 +2485,15 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     assert n29 == cent_29a
     assert n41 == 2 * cent_41a
     assert p_by_class["41A"] == 2 * p_by_class["29A"]
+
+    # Prime-order class behavior for Ogg primes (via cyclotomic traces).
+    assert p_by_class["47A"] == 0
+    assert p_by_class["59A"] == 0
+    assert p_by_class["71A"] == p_by_class["29A"]
+    assert int(classes_out["71A"]["structure_constant_per_element"]) == cent_71a
+
+    # 31A: n_{2A,3B}^{31A} = C(31,2) = 465
+    assert int(classes_out["31A"]["structure_constant_per_element"]) == 465
 
     out["classes"] = classes_out
     out["partial_mass"] = _fraction_payload(mass)
@@ -3977,6 +4035,27 @@ if __name__ == "__main__":
                     "- Class algebra: Pr(2AÂ·3B âˆˆ 41A) = %s (n=%s)"
                     % (p41.get("value"), n41),
                 )
+            p31 = cls.get("31A", {}).get("probability", {})
+            n31 = cls.get("31A", {}).get("structure_constant_per_element")
+            if isinstance(p31, dict) and n31 is not None:
+                print(
+                    "- Class algebra: Pr(2AÂ·3B âˆˆ 31A) = %s (n=%s)"
+                    % (p31.get("value"), n31),
+                )
+            p71 = cls.get("71A", {}).get("probability", {})
+            n71 = cls.get("71A", {}).get("structure_constant_per_element")
+            if isinstance(p71, dict) and n71 is not None:
+                print(
+                    "- Class algebra: Pr(2AÂ·3B âˆˆ 71A) = %s (n=%s)"
+                    % (p71.get("value"), n71),
+                )
+            p47 = cls.get("47A", {}).get("probability", {})
+            p59 = cls.get("59A", {}).get("probability", {})
+            if isinstance(p47, dict) and isinstance(p59, dict):
+                if p47.get("numerator") == 0 and p59.get("numerator") == 0:
+                    print(
+                        "- Class algebra: Pr(2AÂ·3B âˆˆ 47A) = 0; Pr(... âˆˆ 59A) = 0"
+                    )
     pipe = out.get("atlas_standard_generators_pipeline", {})
     if isinstance(pipe, dict) and pipe.get("available") is True:
         strat = pipe.get("strategy_resample_both", {})

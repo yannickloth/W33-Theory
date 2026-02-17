@@ -10,6 +10,10 @@ offline, deterministic tests and analyses:
   - 3B
   - 29A
   - 41A
+  - 31A (trace only)
+  - 47A (trace only)
+  - 59A (trace only)
+  - 71A (trace only)
 
 The resulting file is written to `data/monster_ctbllib_charcols.json`.
 
@@ -177,6 +181,73 @@ def _extract_cols(row_str: str, cols: list[int]) -> dict:
     return out
 
 
+def _prime_cyclotomic_trace(token: str, *, p: int) -> int:
+    """Compute Tr_{Q(zeta_p)/Q}(token) for a prime p cyclotomic expression.
+
+    Supported token grammar (as produced by CTblLib for many prime-order columns):
+      - integers (e.g. '0', '1', '-2')
+      - sums of terms like 'E(p)', 'E(p)^k', 'c*E(p)^k' with integer c
+
+    For prime p:
+      Tr(1) = p-1
+      Tr(zeta_p^k) = -1 for k not divisible by p
+    """
+    import re
+
+    tok = str(token).strip()
+    if tok == "0":
+        return 0
+    tok = tok.replace("\n", "").replace(" ", "")
+    if not tok:
+        raise ValueError("empty token")
+
+    # Split into signed terms at top level.
+    if tok[0] not in "+-":
+        tok = "+" + tok
+
+    term_re = re.compile(r"(?:(\d+)\*)?E\((\d+)\)\^?(\d+)?$")
+    parts: list[tuple[int, str]] = []
+    i = 0
+    while i < len(tok):
+        sign = 1
+        if tok[i] == "+":
+            sign = 1
+        elif tok[i] == "-":
+            sign = -1
+        else:
+            raise ValueError(f"unexpected sign at {i}: {tok[i]!r}")
+        i += 1
+        j = i
+        while j < len(tok) and tok[j] not in "+-":
+            j += 1
+        parts.append((sign, tok[i:j]))
+        i = j
+
+    const = 0
+    nonzero = 0
+    for sign, body in parts:
+        if not body:
+            continue
+        if re.fullmatch(r"\d+", body):
+            const += sign * int(body)
+            continue
+        m = term_re.fullmatch(body)
+        if not m:
+            raise ValueError(f"cannot parse term {body!r} from {tok!r}")
+        coeff = int(m.group(1) or "1")
+        pp = int(m.group(2))
+        exp = int(m.group(3) or "1")
+        if pp != int(p):
+            raise ValueError(f"unexpected E({pp}) in token for p={p}")
+        if exp % p == 0:
+            const += sign * coeff
+        else:
+            nonzero += sign * coeff
+
+    # Trace: (p-1)*const + (-1)*nonzero
+    return (p - 1) * const - nonzero
+
+
 def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]:
     txt = ctomonst_tbl.read_text(encoding="utf-8", errors="ignore")
     args = _parse_mot_args(txt, "M")
@@ -209,11 +280,41 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         raise ValueError(f"unexpected 41A candidates: {idx41_candidates}")
     idx41 = 127
 
+    def _prime_class_candidates(*, centralizer: int, prime: int) -> list[int]:
+        pm = ast.literal_eval(pow_items[prime - 1].replace("\n", " "))
+        if not isinstance(pm, list) or len(pm) != 194:
+            raise ValueError(f"unexpected powermap({prime})")
+        return [
+            i + 1
+            for i, (c, pwr) in enumerate(zip(centralizers, pm))
+            if int(c) == int(centralizer) and int(pwr) == 1
+        ]
+
+    idx31_candidates = _prime_class_candidates(centralizer=186, prime=31)
+    if idx31_candidates != [105, 106]:
+        raise ValueError(f"unexpected 31A candidates: {idx31_candidates}")
+    idx31 = idx31_candidates[0]
+
+    idx47_candidates = _prime_class_candidates(centralizer=94, prime=47)
+    if idx47_candidates != [139, 140]:
+        raise ValueError(f"unexpected 47A candidates: {idx47_candidates}")
+    idx47 = idx47_candidates[0]
+
+    idx59_candidates = _prime_class_candidates(centralizer=59, prime=59)
+    if idx59_candidates != [152, 153]:
+        raise ValueError(f"unexpected 59A candidates: {idx59_candidates}")
+    idx59 = idx59_candidates[0]
+
+    idx71_candidates = _prime_class_candidates(centralizer=71, prime=71)
+    if idx71_candidates != [169, 170]:
+        raise ValueError(f"unexpected 71A candidates: {idx71_candidates}")
+    idx71 = idx71_candidates[0]
+
     rows = _split_top_level_list_items(args[3])
     if len(rows) != 194:
         raise ValueError(f"expected 194 irreps, got {len(rows)}")
 
-    cols_needed = [1, 2, 5, idx29, idx41]
+    cols_needed = [1, 2, 5, idx29, idx41, idx31, idx47, idx59, idx71]
     extracted = [_extract_cols(r, cols_needed) for r in rows]
 
     # Expand GALOIS rows: for these columns (orders 2,3,29), values are integers,
@@ -233,6 +334,10 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "3B": int(d[5]),
                 "29A": int(d[idx29]),
                 "41A": int(d[idx41]),
+                "31A_trace": _prime_cyclotomic_trace(d[idx31], p=31),
+                "47A_trace": _prime_cyclotomic_trace(d[idx47], p=47),
+                "59A_trace": _prime_cyclotomic_trace(d[idx59], p=59),
+                "71A_trace": _prime_cyclotomic_trace(d[idx71], p=71),
             }
         )
 
@@ -249,6 +354,12 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
             "3B": {"ctbllib_index": 5},
             "29A": {"ctbllib_index": idx29},
             "41A": {"ctbllib_index": idx41},
+        },
+        "trace_classes": {
+            "31A": {"ctbllib_index": idx31, "prime": 31},
+            "47A": {"ctbllib_index": idx47, "prime": 47},
+            "59A": {"ctbllib_index": idx59, "prime": 59},
+            "71A": {"ctbllib_index": idx71, "prime": 71},
         },
         "n_irreps": len(irreps),
         "irreps": irreps,

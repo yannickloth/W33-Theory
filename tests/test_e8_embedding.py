@@ -7387,6 +7387,36 @@ class TestLeechMonster:
         fac41 = cls.get("41A", {}).get("structure_constant_factorization")
         assert fac41 == {2: 1, 41: 1}
 
+        p31 = cls.get("31A", {}).get("probability", {})
+        assert isinstance(p31, dict)
+        assert (p31.get("numerator"), p31.get("denominator")) == (
+            816293376,
+            22209034939,
+        )
+        n31 = cls.get("31A", {}).get("structure_constant_per_element")
+        assert n31 == 465
+        fac31 = cls.get("31A", {}).get("structure_constant_factorization")
+        assert fac31 == {3: 1, 5: 1, 31: 1}
+
+        p47 = cls.get("47A", {}).get("probability", {})
+        assert isinstance(p47, dict)
+        assert p47.get("numerator") == 0
+        assert cls.get("47A", {}).get("structure_constant_per_element") == 0
+
+        p59 = cls.get("59A", {}).get("probability", {})
+        assert isinstance(p59, dict)
+        assert p59.get("numerator") == 0
+        assert cls.get("59A", {}).get("structure_constant_per_element") == 0
+
+        p71 = cls.get("71A", {}).get("probability", {})
+        assert isinstance(p71, dict)
+        assert (p71.get("numerator"), p71.get("denominator")) == (
+            1632586752,
+            111045174695,
+        )
+        n71 = cls.get("71A", {}).get("structure_constant_per_element")
+        assert n71 == 71
+
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
         dec1 = lm_data["j_decompositions"][1]
