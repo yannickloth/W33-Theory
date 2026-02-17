@@ -7,10 +7,11 @@ computational companion to the recent literature on Vogel's universal Lie
 algebra formalism and the classification of Jacobi identities.
 
 Key references (open access / arXiv):
-  - A. Isaev, "Vogel universality and beyond", arXiv:2601.01612 (2026).
   - A. Morozov, A. Sleptsov, "Vogel’s universality and the classification
     problem for Jacobi identities", Eur. Phys. J. C 85, 1233 (2025).
     DOI: 10.1140/epjc/s10052-025-14943-y
+    See eqs. (27)–(29) for χ(x1), χ(x3), χ(x5) and the (α,β,γ)↔(t,σ,ω) map.
+  - A. Isaev et al., "Vogel universality and beyond", arXiv:2601.01612 (2026).
   - L. Bishler, A. Mironov, "Refined Vogel universality and Macdonald
     dimensions", arXiv:2504.13831 (2025).
   - L. Bishler, A. Mironov, A. Morozov, "Macdonald deformation of the Vogel
@@ -134,7 +135,7 @@ def dim_adj(alpha, beta, gamma):
 def vogel_t_sigma_omega(alpha, beta, gamma):
     """Compute (t, σ, ω) in Isaev/Morozov notation from (α,β,γ).
 
-    Using the relations (see Isaev 2026, arXiv:2601.01612, eq. (29)):
+    Using the relations (Morozov–Sleptsov 2025, EPJC, eq. (29)):
       t = α + β + γ
       αβ + βγ + γα = σ - 2 t^2
       αβγ = ω - t σ
@@ -151,20 +152,20 @@ def vogel_t_sigma_omega(alpha, beta, gamma):
 
 
 def vogel_chi_x1(t):
-    """Universal character χ(x1) for the split Casimir operator (Isaev 2026, eq. (27))."""
+    """Universal character χ(x1) for the split Casimir operator (Morozov–Sleptsov 2025, eq. (27))."""
     tt = Fraction(t)
     return 2 * tt
 
 
 def vogel_chi_x3(t, omega):
-    """Universal character χ(x3) for the split Casimir operator (Isaev 2026, eq. (28))."""
+    """Universal character χ(x3) for the split Casimir operator (Morozov–Sleptsov 2025, eq. (28))."""
     tt = Fraction(t)
     ww = Fraction(omega)
     return 4 * tt**3 - Fraction(3, 2) * ww
 
 
 def vogel_chi_x5(t, sigma, omega):
-    """Universal character χ(x5) for the split Casimir operator (Isaev 2026, eq. (28))."""
+    """Universal character χ(x5) for the split Casimir operator (Morozov–Sleptsov 2025, eq. (28))."""
     tt = Fraction(t)
     ss = Fraction(sigma)
     ww = Fraction(omega)
@@ -306,7 +307,7 @@ def main() -> dict[str, object]:
     inv = v.get("invariants", {})
     if isinstance(inv, dict) and "E8" in inv:
         e8 = inv["E8"]
-        print("\n§5. Isaev t,σ,ω invariants (universal split-Casimir characters)")
+        print("\n§5. Universal t,σ,ω invariants (split-Casimir characters)")
         print(
             "  E8: t=%s, σ=%s, ω=%s" % (e8.get("t"), e8.get("sigma"), e8.get("omega"))
         )
