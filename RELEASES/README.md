@@ -7,3 +7,4 @@ After merge:
 Files:
 - DRAFT_v2026-02-15-qec-mlut.md — release notes and verification instructions.
 - DRAFT_v2026-02-16-pillars-54-56.md — release notes and verification instructions.
+- DRAFT_v2026-02-16-pillars-58-60.md — release notes and verification instructions (p‑adic AdS/CFT, string worldsheet, TQFT).

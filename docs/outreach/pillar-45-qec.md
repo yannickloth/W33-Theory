@@ -2,6 +2,8 @@
 
 **DOI:** https://doi.org/10.5281/zenodo.18652825
 
+> Release correction — updated 2026-02-15: the published GitHub Release body for tag `v2026-02-15-qec-mlut` previously displayed encoding errors. This document contains the canonical, corrected release notes and has been linked from the README. If you see garbled text on the GitHub Release page, please consult these notes.
+
 ## TL;DR
 
 Pillar‑45 adds a complete, reproducible GF(3) qutrit quantum‑error‑correction toolchain to the W33→E8 repository: encoder/decoder, syndrome & MLUT decoders, approximate MLUT sampling, deterministic tests, and an executed demo notebook.

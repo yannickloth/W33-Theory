@@ -655,7 +655,7 @@ def main():
     out_path = Path.cwd() / "checks" / f"PART_CVII_neutrino_seesaw_{ts}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+        json.dump(result, f, indent=2, default=str)
     print(f"  Wrote: {out_path}")
     print(f"  Elapsed: {elapsed:.1f}s")
 

@@ -320,7 +320,7 @@ def main():
         )
         out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(out, f, indent=2)
+            json.dump(out, f, indent=2, default=str)
 
         print(f"Wrote: {out_path}")
         print("=== Done (GAP CLI path) ===")
@@ -413,7 +413,7 @@ def main():
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+        json.dump(out, f, indent=2, default=str)
 
     print(f"Wrote: {out_path}")
     print("=== Done ===")

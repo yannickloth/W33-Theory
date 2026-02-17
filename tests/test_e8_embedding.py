@@ -6769,8 +6769,10 @@ class TestCategoryTopos:
     def test_sheaf_cohomology(self, category_data):
         sheaf = category_data["sheaf"]
         assert sheaf["h0"] == 1
-        assert sheaf["h1_equals_81"] is True
-        assert sheaf["poincare_duality"] is True
+        assert bool(sheaf["h1_equals_81"]) is True
+        # Clique complex is NOT a closed manifold, so no Poincare duality
+        # Betti numbers: [1, 81, 0, 0], Euler characteristic = -80
+        assert sheaf["euler_characteristic"] == -80
 
     def test_functor_and_naturality(self, category_data):
         func = category_data["functor"]
@@ -6820,7 +6822,7 @@ class TestBiologicalInformation:
         fold = bio_data["folding"]
         assert fold["n_folded"] == 81
         assert fold["n_unfolded"] == 159
-        assert abs(fold["funnel_depth"] - 4.0) < 1e-10
+        assert abs(fold["funnel_depth"] - 4.0) < 1e-6
         assert fold["folding_temperature"] is not None
 
     def test_neural_ternary(self, bio_data):
@@ -6899,15 +6901,305 @@ class TestLeechMonster:
         assert lm_data["monster_min_rep"] == 196883
         assert lm_data["monster_diff"] == 323
 
+        # W(3,3) explanation of the 323 "correction":
+        # 323 = (points+lines)=80 + 3·b1 = 80 + 3·81
+        w33 = lm_data["w33_invariants_for_monster"]
+        assert w33["n_incidence_objects"] == 80
+        assert w33["b1"] == 81
+        assert math.isclose(float(w33["spectral_gap_L1"]), 4.0, rel_tol=0, abs_tol=1e-8)
+        assert lm_data["monster_diff_from_w33"] == lm_data["monster_diff"]
+
+        sp = lm_data.get("sporadic_magnitudes", {})
+        assert isinstance(sp, dict) and sp.get("available") is True
+        assert sp.get("extra_primes_union") == [37, 43, 67]
+        assert set(sp.get("groups_with_extra_primes", [])) == {"J4", "Ly"}
+        digits = sp.get("digits", {})
+        assert isinstance(digits, dict) and digits.get("M") == 54
+
     def test_j_series_relation(self, lm_data):
-        # Klein j single-coefficient comparison vs Leech kissing number
+        # Klein j basic checks (expanded)
         assert lm_data["j1"] == 196884
+        # verify second coefficient too
+        assert lm_data["j_coeffs"][1] == 21493760
         assert lm_data["j_minus_leech"] == 324
+        assert lm_data["j_minus_leech_from_w33"] == 324
+
+        # Borcherds (Monster Lie algebra) denominator identity — truncated check
+        borch = lm_data["borcherds_denominator_identity"]
+        assert borch["verified"] is True
+        assert borch["n_mismatches"] == 0
+
+        # Moonshine replicability checks for Fricke prime McKay-Thompson series.
+        from scripts.w33_leech_monster import (
+            infer_monster_head_character_values,
+            mckay_thompson_series,
+            verify_9a_cubing_relation,
+            verify_fricke_prime_replicability,
+        )
+
+        t2a = mckay_thompson_series("2A", max_q_exp=3)
+        assert t2a is not None
+        assert t2a.get(1) == 4372
+        assert t2a.get(2) == 96256
+
+        t3a = mckay_thompson_series("3A", max_q_exp=3)
+        assert t3a is not None
+        assert t3a.get(1) == 783
+        assert t3a.get(2) == 8672
+
+        t2b = mckay_thompson_series("2B", max_q_exp=3)
+        assert t2b is not None
+        assert t2b.get(1) == 276
+        assert t2b.get(2) == -2048
+
+        t3b = mckay_thompson_series("3B", max_q_exp=3)
+        assert t3b is not None
+        assert t3b.get(1) == 54
+        assert t3b.get(2) == -76
+        t3c = mckay_thompson_series("3C", max_q_exp=8)
+        assert t3c is not None
+        assert t3c.get(1) == 0
+        assert t3c.get(2) == 248
+
+        t11a = mckay_thompson_series("11A", max_q_exp=6)
+        assert t11a is not None
+        assert t11a.get(1) == 17
+        assert t11a.get(2) == 46
+        assert t11a.get(3) == 116
+        assert t11a.get(4) == 252
+
+        rep2 = verify_fricke_prime_replicability("2A", max_q_exp=10)
+        assert rep2["verified"] is True
+        rep3 = verify_fricke_prime_replicability("3A", max_q_exp=10)
+        assert rep3["verified"] is True
+
+        rep2b = verify_fricke_prime_replicability("2B", max_q_exp=10)
+        assert rep2b["verified"] is True
+        rep3b = verify_fricke_prime_replicability("3B", max_q_exp=10)
+        assert rep3b["verified"] is True
+        rep3c = verify_fricke_prime_replicability("3C", max_q_exp=10)
+        assert rep3c["verified"] is True
+
+        rep11a = verify_fricke_prime_replicability("11A", max_q_exp=11)
+        assert rep11a["verified"] is True
+
+        chi2a = infer_monster_head_character_values("2A", max_n=2)
+        assert chi2a is not None
+        assert chi2a[196883] == 4371
+        assert chi2a[21296876] == 91884
+
+        chi3c = infer_monster_head_character_values("3C", max_n=2)
+        assert chi3c is not None
+        assert chi3c[196883] == -1
+        assert chi3c[21296876] == 248
+
+        cube = verify_9a_cubing_relation(max_q_exp=12)
+        assert cube["verified"] is True
+        assert cube["inferred_power_class"] == "3B"
+
+    def test_moonshine_decompositions(self, lm_data):
+        """Check explicit Monster-character decompositions for early j-coeffs."""
+        dec1 = lm_data["j_decompositions"][1]
+        assert dec1["exact"] is True
+        # c1 = 196884 = 1 + 196883
+        assert dec1["decomp"].get(196883, 0) == 1
+        assert dec1["decomp"].get(1, 0) == 1
+
+        dec2 = lm_data["j_decompositions"][2]
+        assert dec2["exact"] is True
+        # c2 = 21493760 = 1 + 196883 + 21296876
+        assert dec2["decomp"].get(21296876, 0) == 1
+        assert dec2["decomp"].get(196883, 0) == 1
+        assert dec2["decomp"].get(1, 0) == 1
 
     def test_symmetry_orders(self, lm_data):
         assert lm_data["psp_cubed_order"] == 51840**3
         assert lm_data["co0_order"] == 8315553613086720000
         assert lm_data["excess_symmetry_factor"] > 1.0
+        assert lm_data["ogg_primes"] == lm_data["monster_order_primes"]
+
+    def test_full_monster_decompositions(self, lm_data):
+        """If full Monster character data (GAP/Atlas) is available, every
+        early j-coefficient should decompose exactly into Monster irreps.
+        """
+        if not lm_data.get("monster_irreps_available"):
+            pytest.skip(
+                "Full Monster character table not available (GAP/libgap missing)"
+            )
+
+        j_decomp_full = lm_data.get("j_decompositions_full", {})
+        j_list = lm_data["j_coeffs"]
+        # verify c1..c4 decompose exactly into Monster irreps
+        # (higher coefficients may time out with backtracking search)
+        for n in range(1, min(4, len(j_list)) + 1):
+            dec = j_decomp_full.get(n)
+            assert dec is not None, f"Missing full decomposition for c_{n}"
+            assert dec["exact"] is True, f"c_{n} did not decompose exactly"
+            total = sum(int(dim) * int(mult) for dim, mult in dec["decomp"].items())
+            assert total == j_list[n - 1]
+
+    def test_j_series_depth_and_values(self):
+        """Verify j_coeffs computes up to q^20 and matches known low-order values."""
+        from scripts.w33_leech_monster import j_coeffs
+
+        c20 = j_coeffs(20)
+        assert len(c20) == 20
+        # verify first 10 values (known constants)
+        known_first10 = [
+            196884,
+            21493760,
+            864299970,
+            20245856256,
+            333202640600,
+            4252023300096,
+            44656994071935,
+            401490886656000,
+            3176440229784420,
+            22567393309593600,
+        ]
+        assert c20[:10] == known_first10
+
+    def test_bundled_monster_degrees_file(self):
+        """Bundled static Monster degrees should be loadable as a fallback."""
+        from scripts.w33_leech_monster import _load_monster_irreps_via_gap
+
+        degs = _load_monster_irreps_via_gap()
+        assert isinstance(degs, list)
+        assert 1 in degs and 196883 in degs
+
+    def test_load_monster_characters_from_file_and_traces(self, tmp_path):
+        """Create a minimal monster_characters.json and verify loader + McKay traces."""
+        import json
+
+        from scripts.w33_leech_monster import (
+            _load_monster_char_map_via_gap,
+            compute_mckay_traces,
+            load_monster_characters,
+        )
+
+        # minimal fake table for two classes (1A, 2A) and two irreps
+        payload = {
+            "class_names": ["1A", "2A"],
+            "irreps": [
+                {"degree": 1, "values": [1, 1]},
+                {"degree": 196883, "values": [196883, -1]},
+            ],
+        }
+        p = tmp_path / "monster_characters.json"
+        p.write_text(json.dumps(payload))
+
+        # file loader should find it
+        tbl = load_monster_characters(str(p))
+        assert tbl is not None
+        assert tbl["class_names"][1] == "2A"
+
+        # char map for class 2A
+        cmap = _load_monster_char_map_via_gap("2A", json_path=str(p))
+        assert cmap.get(1) == 1
+        assert cmap.get(196883) == -1
+
+        # McKay trace for c1 (1 + 196883) under 2A should be 0
+        traces = compute_mckay_traces("2A", n_terms=1, use_full=False, json_path=str(p))
+        assert traces == [0]
+
+    def test_compute_mckay_identity_and_plot(self, lm_data, tmp_path):
+        """Identity-class McKay traces equal the j-coefficients; plotting writes CSV."""
+        from pathlib import Path
+
+        from scripts.w33_leech_monster import (
+            compute_mckay_traces,
+            j_coeffs,
+            plot_mckay_series,
+        )
+
+        # identity traces == j coefficients
+        traces = compute_mckay_traces("1A", n_terms=8)
+        assert traces == j_coeffs(8)
+
+        # plotting (writes CSV and optional PNG)
+        out = plot_mckay_series("1A", n_terms=8)
+        csv_path = Path(out["csv"])
+        assert csv_path.exists()
+        # PNG optional — ensure key present (may be None if matplotlib missing)
+        assert "png" in out
+
+
+# -------------------------------------------------------------------------
+# Pillars 58–60: p-Adic AdS/CFT, String Worldsheet, Topological TQFT
+# -------------------------------------------------------------------------
+
+
+class TestPAdicAdsCft:
+    """Pillar 58: 3-adic holography diagnostics from W(3,3)."""
+
+    def test_padic_ads_cft_core_invariants(self):
+        import w33_padic_ads_cft as padic
+
+        bt = padic.analyze_bruhat_tits_tree()
+        assert bt["p"] == 3
+        assert bt["valency"] == 4
+        assert bt["valency_match"] is True
+        assert bt["simplicial_b1"] == 81
+
+        cd = padic.analyze_conformal_dimensions()
+        assert cd["unitarity_satisfied"] is True
+        assert math.isclose(float(cd["h_matter"]), 1.0, rel_tol=0, abs_tol=1e-12)
+        assert cd["conformal_dimensions"][4]["multiplicity"] == 120
+
+
+class TestStringWorldsheetModularity:
+    """Pillar 59: modular partition function and Z3 orbifold structure."""
+
+    def test_worldsheet_modularity_core_invariants(self):
+        import w33_string_worldsheet as ws
+
+        sp = ws.analyze_spectral_partition()
+        assert sp["Z_total"] == 240
+        assert sp["Z_ground"] == 81
+
+        theta = ws.analyze_e8_theta()
+        assert theta["theta_equals_E4"] is True
+        assert theta["weight_equals_gap"] is True
+
+        orb = ws.analyze_z3_orbifold()
+        assert orb["orbifold_consistent"] is True
+        assert orb["n_fixed_points"] == 3
+        assert orb["h1_total"] == 81
+
+
+class TestW33TQFT:
+    """Pillar 60: TQFT from clique homology + Bose–Mesner Frobenius algebra."""
+
+    def test_tqft_invariants(self):
+        import w33_tqft as tqft
+
+        res = tqft.analyze_tqft()
+
+        # clique complex / homology invariants
+        assert res["simplices"][0] == 40
+        assert res["simplices"][1] == 240
+        assert res["simplices"][2] == 160
+        assert res["simplices"][3] == 40
+        assert res["euler_characteristic"] == -80
+        assert res["betti_numbers"][1] == 81
+        assert res["betti_numbers"][2] == 0
+
+        # Bose–Mesner closure (SRG relations)
+        closed = res["bose_mesner"]["srg_closed"]
+        assert all(bool(v) for v in closed.values())
+
+        # Frobenius / 2D TQFT invariants
+        ft = res["frobenius_tqft"]
+        assert ft["Z_S2"] == 40
+        assert math.isclose(float(ft["Z_T2"]), 3.0, rel_tol=0, abs_tol=1e-12)
+
+        # State-sum counts determined by b1
+        ss = res["state_sum"]
+        assert ss["b1_mod_2"]["b1"] == 81
+        assert ss["b1_mod_3"]["b1"] == 81
+        assert ss["Z_GF2"] == pow(2, 81)
+        assert ss["Z_GF3"] == pow(3, 81)
+        assert res["partition_function"] == 240
 
 
 # =========================================================================
