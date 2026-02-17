@@ -3,6 +3,12 @@ W33 AND VOGEL'S UNIVERSALITY
 ============================
 Analyzing the connection between W(3,3) and Vogel's universal Lie algebra theory.
 
+NOTE (2026-02-17):
+This is a legacy exploratory notebook-style script. For a compact, import-safe
+implementation with corrected exceptional-locus coefficients from
+Morozov–Sleptsov (EPJC 2025, DOI: 10.1140/epjc/s10052-025-14943-y), use:
+  - scripts/w33_vogel_universality.py
+
 Key insight from the paper:
 - All simple Lie algebras are parameterized by THREE parameters (α, β, γ)
 - Jacobi identities alone give rise to divisor P15
