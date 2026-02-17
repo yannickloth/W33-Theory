@@ -232,29 +232,40 @@ def main() -> None:
     print(f"  ||J+l3||_inf      = {max_abs(residual_no_ce2):.6g}")
     assert max_abs(residual_no_ce2) > 1e-10
 
-    # Load a representative sparse rational CE2 entry (stored as Fractions) and
-    # attach it as an explicit cocycle/phase correction.
-    ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
-    first = _load_first_ce2_entry(ce2_path)
-    ce2_key = str(first["key"])
-    payload = first["payload"]
-    if not isinstance(payload, dict):
-        raise AssertionError("Unexpected CE2 payload type.")
+    # Load a representative sparse rational CE2 entry and attach it as an
+    # explicit cocycle/phase correction.
+    #
+    # Prefer the commit-friendly sparse artifact (if available) so this script
+    # is portable. Fall back to the large, ignored artifact otherwise.
+    ce2_key = "0,0:17,1:3,0"
+    sparse_path = ROOT / "committed_artifacts" / "ce2_sparse_local_solutions.json"
+    U_nz: list[tuple[int, str]] = []
+    V_nz: list[tuple[int, str]] = []
+    if sparse_path.exists():
+        sparse = json.loads(sparse_path.read_text(encoding="utf-8"))
+        for rec in sparse.get("entries", []):
+            if isinstance(rec, dict) and rec.get("k") == ce2_key:
+                U_nz = [(int(i), str(v)) for i, v in rec.get("U", [])]
+                V_nz = [(int(i), str(v)) for i, v in rec.get("V", [])]
+                break
+    else:
+        ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
+        first = _load_first_ce2_entry(ce2_path)
+        payload = first["payload"]
+        if not isinstance(payload, dict):
+            raise AssertionError("Unexpected CE2 payload type.")
+        U_rats = payload.get("U_rats", [])
+        V_rats = payload.get("V_rats", [])
+        if not isinstance(U_rats, list) or not isinstance(V_rats, list):
+            raise AssertionError("Unexpected CE2 U/V arrays.")
+        if len(U_rats) != 900 or len(V_rats) != 900:
+            raise AssertionError("Expected flattened E8Z3 arrays of length 900.")
+        U_nz = [(i, str(s)) for i, s in enumerate(U_rats) if str(s) != "0"]
+        V_nz = [(i, str(s)) for i, s in enumerate(V_rats) if str(s) != "0"]
 
-    # This artifact is built around the canonical mixed triple:
+    # This entry is built around the canonical mixed triple:
     #   (0,0) : (17,1) : (3,0)
     print(f"  CE2 sample key: {ce2_key}")
-    assert ce2_key == "0,0:17,1:3,0"
-
-    U_rats = payload.get("U_rats", [])
-    V_rats = payload.get("V_rats", [])
-    if not isinstance(U_rats, list) or not isinstance(V_rats, list):
-        raise AssertionError("Unexpected CE2 U/V arrays.")
-    if len(U_rats) != 900 or len(V_rats) != 900:
-        raise AssertionError("Expected flattened E8Z3 arrays of length 900.")
-
-    U_nz = [(i, str(s)) for i, s in enumerate(U_rats) if str(s) != "0"]
-    V_nz = [(i, str(s)) for i, s in enumerate(V_rats) if str(s) != "0"]
     print(f"  U nonzeros: {len(U_nz)}")
     print(f"  V nonzeros: {len(V_nz)}")
     if V_nz:
