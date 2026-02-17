@@ -7313,6 +7313,9 @@ class TestLeechMonster:
             1632586752,
             111045174695,
         )
+        assert step3.get("class_multiplication_coefficient") == 87
+        cf = step3.get("centralizer_formula", {})
+        assert isinstance(cf, dict) and cf.get("holds") is True
         fac = step3.get("factorization", {})
         assert isinstance(fac, dict)
         assert fac.get("numerator") == {2: 10, 3: 13}

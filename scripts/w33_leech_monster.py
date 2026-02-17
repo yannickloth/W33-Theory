@@ -1947,7 +1947,11 @@ def analyze_monster_standard_generator_step3_order29_from_character_table(
         return {"available": False}
 
     try:
-        cent_29a = int(atlas["classes"]["29A"]["centralizer_order"])
+        classes = atlas["classes"]
+        monster_ord = int(classes["1A"]["centralizer_order"])
+        cent_2a = int(classes["2A"]["centralizer_order"])
+        cent_3b = int(classes["3B"]["centralizer_order"])
+        cent_29a = int(classes["29A"]["centralizer_order"])
     except Exception:
         return {"available": False}
     assert cent_29a == 87, f"Expected |C_M(29A)|=87, got {cent_29a}"
@@ -1963,9 +1967,27 @@ def analyze_monster_standard_generator_step3_order29_from_character_table(
         deg = int(row["deg"])
         s += Fraction(int(row["2A"]) * int(row["3B"]) * int(row["29A"]), deg)
 
-    p = s * Fraction(1, cent_29a)  # |29A|/|M| = 1/|C_M(29A)|
+    # |29A|/|M| = 1/|C_M(29A)| for ordinary conjugacy classes.
+    p = s * Fraction(1, cent_29a)
     expected = Fraction(1632586752, 111045174695)
     assert p == expected, f"Step-3 probability mismatch: {p} vs {expected}"
+
+    # Derived class-multiplication coefficient and pair counts.
+    size_2a = monster_ord // cent_2a
+    size_3b = monster_ord // cent_3b
+    size_29a = monster_ord // cent_29a
+    total_pairs = size_2a * size_3b
+    n_pairs_in_29a = int(total_pairs * p)
+    assert n_pairs_in_29a == monster_ord, (
+        "Unexpected pair count: expected exactly |M| pairs (a,b) with ab in 29A, "
+        f"got {n_pairs_in_29a}"
+    )
+    mult_coeff = n_pairs_in_29a // size_29a
+    assert mult_coeff == cent_29a, (
+        "Unexpected class multiplication coefficient: "
+        f"expected {cent_29a}, got {mult_coeff}"
+    )
+    centralizer_formula_holds = p == Fraction(cent_2a * cent_3b, monster_ord)
 
     def factorint(n: int) -> dict[int, int]:
         nn = int(n)
@@ -1991,6 +2013,22 @@ def analyze_monster_standard_generator_step3_order29_from_character_table(
             "float": float(p),
         },
         "expected_trials": float(1 / float(p)),
+        "centralizers": {
+            "monster_order": monster_ord,
+            "2A": cent_2a,
+            "3B": cent_3b,
+            "29A": cent_29a,
+        },
+        "class_sizes": {"2A": size_2a, "3B": size_3b, "29A": size_29a},
+        "pair_counts": {
+            "total_pairs_2A_x_3B": total_pairs,
+            "pairs_with_product_in_29A": n_pairs_in_29a,
+        },
+        "class_multiplication_coefficient": mult_coeff,
+        "centralizer_formula": {
+            "holds": centralizer_formula_holds,
+            "value": str(Fraction(cent_2a * cent_3b, monster_ord)),
+        },
         "class_algebra_sum": {
             "numerator": int(s.numerator),
             "denominator": int(s.denominator),
