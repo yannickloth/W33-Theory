@@ -6968,6 +6968,47 @@ class TestLeechMonster:
         assert t4c.get(5) == 216
         assert t4c.get(7) == -641
 
+        t6a = mckay_thompson_series("6A", max_q_exp=4)
+        assert t6a is not None
+        assert t6a.get(1) == 79
+        assert t6a.get(2) == 352
+        assert t6a.get(3) == 1431
+        assert t6a.get(4) == 4160
+
+        t6b = mckay_thompson_series("6B", max_q_exp=4)
+        assert t6b is not None
+        assert t6b.get(1) == 78
+        assert t6b.get(2) == 364
+        assert t6b.get(3) == 1365
+
+        t6c = mckay_thompson_series("6C", max_q_exp=4)
+        assert t6c is not None
+        assert t6c.get(1) == 15
+        assert t6c.get(2) == -32
+        assert t6c.get(3) == 87
+
+        t6d = mckay_thompson_series("6D", max_q_exp=4)
+        assert t6d is not None
+        assert t6d.get(1) == -2
+        assert t6d.get(2) == 28
+        assert t6d.get(3) == -27
+
+        t6e = mckay_thompson_series("6E", max_q_exp=4)
+        assert t6e is not None
+        assert t6e.get(1) == 6
+        assert t6e.get(2) == 4
+        assert t6e.get(3) == -3
+
+        for n in range(1, 5):
+            assert (
+                t6a.get(n, 0)
+                - t6b.get(n, 0)
+                - t6c.get(n, 0)
+                - t6d.get(n, 0)
+                + 2 * t6e.get(n, 0)
+                == 0
+            )
+
         t3b = mckay_thompson_series("3B", max_q_exp=3)
         assert t3b is not None
         assert t3b.get(1) == 54

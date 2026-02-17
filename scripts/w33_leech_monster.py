@@ -393,7 +393,7 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
     classes appearing in classical eta-product formulas:
       - Fricke primes (pA): 2A, 3A, 5A, 7A, 13A
       - Non-Fricke primes (pB): 2B, 3B, 5B, 7B, 13B
-      - Composite: 4A, 4C, 9A, 11A, 3C
+      - Composite: 4A, 4C, 6A–6E, 9A, 11A, 3C
 
     Identity class 1A returns J(q)=j(q)-744.
     """
@@ -453,6 +453,164 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
                 series[exp] = series.get(exp, 0) + int(ck)
 
         series[0] = series.get(0, 0) - 24
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "6B":
+        # Ramanujan–Sato / Moonshine:
+        #   j_6B(τ) = (η(2τ)η(3τ)/(η(τ)η(6τ)))^{12}
+        #          = q^{-1} + 12 + 78 q + 364 q^2 + ...
+        # Normalize to constant term 0 => T_6B = j_6B - 12.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e3 = _qpochhammer(deg, step=3)
+        e6 = _qpochhammer(deg, step=6)
+        num = _qpoly_mul(e2, e3, deg)
+        den = _qpoly_mul(e1, e6, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 12, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 12
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "6C":
+        # Ramanujan–Sato / Moonshine:
+        #   j_6C(τ) = (η(τ)η(3τ)/(η(2τ)η(6τ)))^{6}
+        #          = q^{-1} - 6 + 15 q - 32 q^2 + ...
+        # Normalize to constant term 0 => T_6C = j_6C + 6.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e3 = _qpochhammer(deg, step=3)
+        e6 = _qpochhammer(deg, step=6)
+        num = _qpoly_mul(e1, e3, deg)
+        den = _qpoly_mul(e2, e6, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 6, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 6
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "6D":
+        # Ramanujan–Sato / Moonshine:
+        #   j_6D(τ) = (η(τ)η(2τ)/(η(3τ)η(6τ)))^{4}
+        #          = q^{-1} - 4 - 2 q + 28 q^2 + ...
+        # Normalize to constant term 0 => T_6D = j_6D + 4.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e3 = _qpochhammer(deg, step=3)
+        e6 = _qpochhammer(deg, step=6)
+        num = _qpoly_mul(e1, e2, deg)
+        den = _qpoly_mul(e3, e6, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 4, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) + 4
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "6E":
+        # Ramanujan–Sato / Moonshine:
+        #   j_6E(τ) = (η(2τ)η(3τ)^3/(η(τ)η(6τ)^3))^{3}
+        #          = q^{-1} + 3 + 6 q + 4 q^2 + ...
+        # Normalize to constant term 0 => T_6E = j_6E - 3.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e3 = _qpochhammer(deg, step=3)
+        e6 = _qpochhammer(deg, step=6)
+        e3_3 = _qpoly_pow(e3, 3, deg)
+        e6_3 = _qpoly_pow(e6, 3, deg)
+        num = _qpoly_mul(e2, e3_3, deg)
+        den = _qpoly_mul(e1, e6_3, deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio_pow = _qpoly_pow(ratio, 3, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio_pow):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        series[0] = series.get(0, 0) - 3
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "6A":
+        # Ramanujan–Sato / Moonshine "near-square" identity:
+        #   j_6A = (sqrt(j_6B) - 1/sqrt(j_6B))^2 = j_6B + 1/j_6B - 2
+        # and j_6B = q^{-1} * R(q) with R(0)=1, so 1/j_6B = q * R(q)^{-1}.
+        #
+        # Normalize to constant term 0 => T_6A = j_6A - 10.
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e3 = _qpochhammer(deg, step=3)
+        e6 = _qpochhammer(deg, step=6)
+        num = _qpoly_mul(e2, e3, deg)
+        den = _qpoly_mul(e1, e6, deg)
+        ratio = _qpoly_div(num, den, deg)
+        r = _qpoly_pow(ratio, 12, deg)  # R(q) above
+        r_inv = _qpoly_inv(r, deg)
+
+        series: dict[int, int] = {}
+        # j_6B = q^{-1} R(q)
+        for k, ck in enumerate(r):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        # + 1/j_6B = q * R(q)^{-1}
+        for k, ck in enumerate(r_inv):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        # - 2
+        series[0] = series.get(0, 0) - 2
+
+        # Normalize to constant term 0 (expected constant is 10).
+        series[0] = series.get(0, 0) - 10
         if series.get(0, 0) != 0:
             raise AssertionError(
                 f"Expected constant term 0 for {name}, got {series.get(0)}"
