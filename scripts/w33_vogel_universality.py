@@ -7,6 +7,7 @@ computational companion to the recent literature on Vogel's universal Lie
 algebra formalism and the classification of Jacobi identities.
 
 Key references (open access / arXiv):
+  - A. Isaev, "Vogel universality and beyond", arXiv:2601.01612 (2026).
   - A. Morozov, A. Sleptsov, "Vogel’s universality and the classification
     problem for Jacobi identities", Eur. Phys. J. C 85, 1233 (2025).
     DOI: 10.1140/epjc/s10052-025-14943-y
@@ -130,6 +131,46 @@ def dim_adj(alpha, beta, gamma):
     return (alpha - 2 * t) * (beta - 2 * t) * (gamma - 2 * t) / (alpha * beta * gamma)
 
 
+def vogel_t_sigma_omega(alpha, beta, gamma):
+    """Compute (t, σ, ω) in Isaev/Morozov notation from (α,β,γ).
+
+    Using the relations (see Isaev 2026, arXiv:2601.01612, eq. (29)):
+      t = α + β + γ
+      αβ + βγ + γα = σ - 2 t^2
+      αβγ = ω - t σ
+    """
+    a = Fraction(alpha)
+    b = Fraction(beta)
+    c = Fraction(gamma)
+    t = a + b + c
+    s2 = a * b + b * c + c * a
+    s3 = a * b * c
+    sigma = s2 + 2 * t * t
+    omega = s3 + t * sigma
+    return t, sigma, omega
+
+
+def vogel_chi_x1(t):
+    """Universal character χ(x1) for the split Casimir operator (Isaev 2026, eq. (27))."""
+    tt = Fraction(t)
+    return 2 * tt
+
+
+def vogel_chi_x3(t, omega):
+    """Universal character χ(x3) for the split Casimir operator (Isaev 2026, eq. (28))."""
+    tt = Fraction(t)
+    ww = Fraction(omega)
+    return 4 * tt**3 - Fraction(3, 2) * ww
+
+
+def vogel_chi_x5(t, sigma, omega):
+    """Universal character χ(x5) for the split Casimir operator (Isaev 2026, eq. (28))."""
+    tt = Fraction(t)
+    ss = Fraction(sigma)
+    ww = Fraction(omega)
+    return 12 * tt**5 - Fraction(17, 2) * tt**2 * ww + Fraction(3, 2) * ss * ww
+
+
 def vogel_parameters() -> dict[str, tuple[object, object, object]]:
     """Minimal Vogel parameter table (common normalization)."""
     return {
@@ -149,6 +190,7 @@ def analyze_vogel_universality() -> dict[str, object]:
     dims = {}
     loci = {}
     refined = {}
+    invariants = {}
 
     for name, (a, b, c) in params.items():
         dims[name] = float(dim_adj(a, b, c)) if name != "G2" else int(dim_adj(a, b, c))
@@ -166,6 +208,15 @@ def analyze_vogel_universality() -> dict[str, object]:
             "P_E7": P_E7(a, b, c),
             "P_E8": P_E8(a, b, c),
             "P_Lie_refined": P_Lie_refined(a, b, c),
+        }
+        t, sigma, omega = vogel_t_sigma_omega(a, b, c)
+        invariants[name] = {
+            "t": t,
+            "sigma": sigma,
+            "omega": omega,
+            "chi_x1": vogel_chi_x1(t),
+            "chi_x3": vogel_chi_x3(t, omega),
+            "chi_x5": vogel_chi_x5(t, sigma, omega),
         }
 
         # sanity: adjoint dims
@@ -186,9 +237,16 @@ def analyze_vogel_universality() -> dict[str, object]:
     simplices = build_clique_complex(n, adj)
     hom = compute_homology(simplices)
     b1 = int(hom["betti_numbers"][1])
+    edge_count = int(len(edges))
+    w33_gap = 4  # proven earlier: spectral gap Δ(L1)=4
 
     # "81" is a key coefficient in (13) for F4 and E7.
     vogel_coeff_81 = {"F4": 81, "E7": 81}
+
+    # E8 dual Coxeter h^∨=t=30 ⇒ χ(x1)=2t=60 matches |E(W33)|/Δ = 240/4.
+    e8_chi_x1 = int(invariants["E8"]["chi_x1"])
+    assert edge_count == 240
+    assert e8_chi_x1 == edge_count // w33_gap
 
     return {
         "vogel": {
@@ -197,13 +255,19 @@ def analyze_vogel_universality() -> dict[str, object]:
             "expected_dims": dims_expected,
             "loci": loci,
             "refined": refined,
+            "invariants": {
+                k: {kk: str(vv) for kk, vv in inv.items()}
+                for k, inv in invariants.items()
+            },
             "coeff_81_algebras": sorted(vogel_coeff_81.keys()),
         },
         "w33": {
             "n_vertices": n,
-            "n_edges": len(edges),
+            "n_edges": edge_count,
             "b1": b1,
             "b1_equals_81": b1 == 81,
+            "spectral_gap_L1": w33_gap,
+            "bh_entropy_edges_over_gap": edge_count // w33_gap,
         },
     }
 
@@ -238,6 +302,23 @@ def main() -> dict[str, object]:
     print(f"  b1(W33) = {w['b1']}  (expected 81)")
     print(f"  81 appears as coefficient in (13) for: {v['coeff_81_algebras']}")
     assert w["b1_equals_81"] is True
+
+    inv = v.get("invariants", {})
+    if isinstance(inv, dict) and "E8" in inv:
+        e8 = inv["E8"]
+        print("\n§5. Isaev t,σ,ω invariants (universal split-Casimir characters)")
+        print(
+            "  E8: t=%s, σ=%s, ω=%s" % (e8.get("t"), e8.get("sigma"), e8.get("omega"))
+        )
+        print(
+            "  χ(x1)=2t=%s  (matches |E(W33)|/Δ = %d/%d = %d)"
+            % (
+                e8.get("chi_x1"),
+                w["n_edges"],
+                w["spectral_gap_L1"],
+                w["bh_entropy_edges_over_gap"],
+            )
+        )
 
     print("\nALL CHECKS PASSED ✓")
     return out
