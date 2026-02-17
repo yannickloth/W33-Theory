@@ -7365,6 +7365,12 @@ class TestLeechMonster:
         assert cls.get("1A", {}).get("probability", {}).get("numerator") == 0
         assert cls.get("2A", {}).get("probability", {}).get("numerator") == 0
 
+        for nm in ["5A", "5B", "7A", "7B", "13B"]:
+            pp = cls.get(nm, {}).get("probability", {})
+            assert isinstance(pp, dict)
+            assert pp.get("numerator") == 0
+            assert cls.get(nm, {}).get("structure_constant_per_element") == 0
+
         p3 = cls.get("3B", {}).get("probability", {})
         assert isinstance(p3, dict)
         assert (p3.get("numerator"), p3.get("denominator")) == (2187, 12214969216450)
@@ -7373,8 +7379,53 @@ class TestLeechMonster:
         fac3 = cls.get("3B", {}).get("structure_constant_factorization")
         assert fac3 == {2: 3, 3: 14, 5: 1, 7: 1, 13: 1}
 
+        p11 = cls.get("11A", {}).get("probability", {})
+        assert isinstance(p11, dict)
+        assert (p11.get("numerator"), p11.get("denominator")) == (
+            136048896,
+            6107484608225,
+        )
+        n11 = cls.get("11A", {}).get("structure_constant_per_element")
+        assert n11 == 1584
+
+        p13a = cls.get("13A", {}).get("probability", {})
+        assert isinstance(p13a, dict)
+        assert (p13a.get("numerator"), p13a.get("denominator")) == (
+            45349632,
+            111045174695,
+        )
+        n13a = cls.get("13A", {}).get("structure_constant_per_element")
+        assert n13a == 2028
+
+        p17 = cls.get("17A", {}).get("probability", {})
+        assert isinstance(p17, dict)
+        assert (p17.get("numerator"), p17.get("denominator")) == (
+            136048896,
+            111045174695,
+        )
+        n17 = cls.get("17A", {}).get("structure_constant_per_element")
+        assert n17 == 238
+
+        p19 = cls.get("19A", {}).get("probability", {})
+        assert isinstance(p19, dict)
+        assert (p19.get("numerator"), p19.get("denominator")) == (
+            6530347008,
+            555225873475,
+        )
+        n19 = cls.get("19A", {}).get("structure_constant_per_element")
+        assert n19 == 912
+
         n29 = cls.get("29A", {}).get("structure_constant_per_element")
         assert n29 == 87
+
+        p23 = cls.get("23A", {}).get("probability", {})
+        assert isinstance(p23, dict)
+        assert (p23.get("numerator"), p23.get("denominator")) == (
+            272097792,
+            111045174695,
+        )
+        n23 = cls.get("23A", {}).get("structure_constant_per_element")
+        assert n23 == 92
 
         p41 = cls.get("41A", {}).get("probability", {})
         assert isinstance(p41, dict)

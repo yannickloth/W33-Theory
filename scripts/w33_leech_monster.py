@@ -2330,11 +2330,11 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     """Compute a partial class-algebra distribution for products a·b with a∈2A, b∈3B.
 
     Using the bundled CTblLib-derived character data:
-      - integer columns for {2A,3B,29A,41A}
-      - prime-cyclotomic *trace* columns for {31A,47A,59A,71A}
+      - integer columns for {2A,3B,5A,5B,7A,7B,11A,13A,13B,17A,19A,29A,41A}
+      - prime-cyclotomic *trace* columns for {23A,31A,47A,59A,71A}
 
-    we can compute Pr[ab ∈ C] for C in {1A,2A,3B,29A,41A,31A,47A,59A,71A} exactly,
-    plus the associated per-element structure constants n_{2A,3B}^C.
+    we can compute Pr[ab ∈ C] for these classes exactly, plus the associated per-element
+    structure constants n_{2A,3B}^C.
 
     This is a concrete "Monster algebra" observable: it converts character data
     into integer class-algebra constants and exact rational probabilities.
@@ -2359,6 +2359,16 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
         cent_47a = int(classes["47A"]["centralizer_order"])
         cent_59a = int(classes["59A"]["centralizer_order"])
         cent_71a = int(classes["71A"]["centralizer_order"])
+        cent_5a = int(classes["5A"]["centralizer_order"])
+        cent_5b = int(classes["5B"]["centralizer_order"])
+        cent_7a = int(classes["7A"]["centralizer_order"])
+        cent_7b = int(classes["7B"]["centralizer_order"])
+        cent_11a = int(classes["11A"]["centralizer_order"])
+        cent_13a = int(classes["13A"]["centralizer_order"])
+        cent_13b = int(classes["13B"]["centralizer_order"])
+        cent_17a = int(classes["17A"]["centralizer_order"])
+        cent_19a = int(classes["19A"]["centralizer_order"])
+        cent_23a = int(classes["23A"]["centralizer_order"])
     except Exception:
         return {"available": False}
 
@@ -2370,6 +2380,16 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
         "1A": monster_ord,
         "2A": cent_2a,
         "3B": cent_3b,
+        "5A": cent_5a,
+        "5B": cent_5b,
+        "7A": cent_7a,
+        "7B": cent_7b,
+        "11A": cent_11a,
+        "13A": cent_13a,
+        "13B": cent_13b,
+        "17A": cent_17a,
+        "19A": cent_19a,
+        "23A": cent_23a,
         "29A": cent_29a,
         "41A": cent_41a,
         "31A": cent_31a,
@@ -2424,8 +2444,23 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
     mass = Fraction(0, 1)
     p_by_class: dict[str, Fraction] = {}
 
-    value_classes = ["1A", "2A", "3B", "29A", "41A"]
-    trace_classes = ["31A", "47A", "59A", "71A"]
+    value_classes = [
+        "1A",
+        "2A",
+        "3B",
+        "5A",
+        "5B",
+        "7A",
+        "7B",
+        "11A",
+        "13A",
+        "13B",
+        "17A",
+        "19A",
+        "29A",
+        "41A",
+    ]
+    trace_classes = ["23A", "31A", "47A", "59A", "71A"]
 
     for C in value_classes:
         s = _sum_for(C)
@@ -2494,6 +2529,28 @@ def analyze_monster_2a3b_class_algebra_partial_distribution(
 
     # 31A: n_{2A,3B}^{31A} = C(31,2) = 465
     assert int(classes_out["31A"]["structure_constant_per_element"]) == 465
+
+    # Additional Ogg-prime behavior for 2A·3B (integers + trace).
+    assert p_by_class["5A"] == 0
+    assert p_by_class["5B"] == 0
+    assert p_by_class["7A"] == 0
+    assert p_by_class["7B"] == 0
+    assert p_by_class["13B"] == 0
+
+    assert p_by_class["11A"] == Fraction(136048896, 6107484608225)
+    assert int(classes_out["11A"]["structure_constant_per_element"]) == 1584
+
+    assert p_by_class["13A"] == Fraction(45349632, 111045174695)
+    assert int(classes_out["13A"]["structure_constant_per_element"]) == 2028
+
+    assert p_by_class["17A"] == Fraction(136048896, 111045174695)
+    assert int(classes_out["17A"]["structure_constant_per_element"]) == 238
+
+    assert p_by_class["19A"] == Fraction(6530347008, 555225873475)
+    assert int(classes_out["19A"]["structure_constant_per_element"]) == 912
+
+    assert p_by_class["23A"] == Fraction(272097792, 111045174695)
+    assert int(classes_out["23A"]["structure_constant_per_element"]) == 92
 
     out["classes"] = classes_out
     out["partial_mass"] = _fraction_payload(mass)

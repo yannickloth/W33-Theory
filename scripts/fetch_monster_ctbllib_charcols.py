@@ -14,6 +14,8 @@ offline, deterministic tests and analyses:
   - 47A (trace only)
   - 59A (trace only)
   - 71A (trace only)
+  - 5A, 5B, 7A, 7B, 11A, 13A, 13B, 17A, 19A (integers)
+  - 23A (trace only)
 
 The resulting file is written to `data/monster_ctbllib_charcols.json`.
 
@@ -310,11 +312,81 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
         raise ValueError(f"unexpected 71A candidates: {idx71_candidates}")
     idx71 = idx71_candidates[0]
 
+    idx5a = _prime_class_candidates(centralizer=1365154560000000, prime=5)
+    if idx5a != [11]:
+        raise ValueError(f"unexpected 5A candidates: {idx5a}")
+    idx5a = idx5a[0]
+
+    idx5b = _prime_class_candidates(centralizer=94500000000, prime=5)
+    if idx5b != [12]:
+        raise ValueError(f"unexpected 5B candidates: {idx5b}")
+    idx5b = idx5b[0]
+
+    idx7a = _prime_class_candidates(centralizer=28212710400, prime=7)
+    if idx7a != [19]:
+        raise ValueError(f"unexpected 7A candidates: {idx7a}")
+    idx7a = idx7a[0]
+
+    idx7b = _prime_class_candidates(centralizer=84707280, prime=7)
+    if idx7b != [20]:
+        raise ValueError(f"unexpected 7B candidates: {idx7b}")
+    idx7b = idx7b[0]
+
+    idx11a = _prime_class_candidates(centralizer=1045440, prime=11)
+    if idx11a != [34]:
+        raise ValueError(f"unexpected 11A candidates: {idx11a}")
+    idx11a = idx11a[0]
+
+    idx13a = _prime_class_candidates(centralizer=73008, prime=13)
+    if idx13a != [45]:
+        raise ValueError(f"unexpected 13A candidates: {idx13a}")
+    idx13a = idx13a[0]
+
+    idx13b = _prime_class_candidates(centralizer=52728, prime=13)
+    if idx13b != [46]:
+        raise ValueError(f"unexpected 13B candidates: {idx13b}")
+    idx13b = idx13b[0]
+
+    idx17a = _prime_class_candidates(centralizer=2856, prime=17)
+    if idx17a != [57]:
+        raise ValueError(f"unexpected 17A candidates: {idx17a}")
+    idx17a = idx17a[0]
+
+    idx19a = _prime_class_candidates(centralizer=1140, prime=19)
+    if idx19a != [63]:
+        raise ValueError(f"unexpected 19A candidates: {idx19a}")
+    idx19a = idx19a[0]
+
+    idx23_candidates = _prime_class_candidates(centralizer=552, prime=23)
+    if idx23_candidates != [76, 77]:
+        raise ValueError(f"unexpected 23A candidates: {idx23_candidates}")
+    idx23 = idx23_candidates[0]
+
     rows = _split_top_level_list_items(args[3])
     if len(rows) != 194:
         raise ValueError(f"expected 194 irreps, got {len(rows)}")
 
-    cols_needed = [1, 2, 5, idx29, idx41, idx31, idx47, idx59, idx71]
+    cols_needed = [
+        1,
+        2,
+        5,
+        idx29,
+        idx41,
+        idx31,
+        idx47,
+        idx59,
+        idx71,
+        idx5a,
+        idx5b,
+        idx7a,
+        idx7b,
+        idx11a,
+        idx13a,
+        idx13b,
+        idx17a,
+        idx19a,
+        idx23,
+    ]
     extracted = [_extract_cols(r, cols_needed) for r in rows]
 
     # Expand GALOIS rows: for these columns (orders 2,3,29), values are integers,
@@ -338,6 +410,16 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
                 "47A_trace": _prime_cyclotomic_trace(d[idx47], p=47),
                 "59A_trace": _prime_cyclotomic_trace(d[idx59], p=59),
                 "71A_trace": _prime_cyclotomic_trace(d[idx71], p=71),
+                "5A": int(d[idx5a]),
+                "5B": int(d[idx5b]),
+                "7A": int(d[idx7a]),
+                "7B": int(d[idx7b]),
+                "11A": int(d[idx11a]),
+                "13A": int(d[idx13a]),
+                "13B": int(d[idx13b]),
+                "17A": int(d[idx17a]),
+                "19A": int(d[idx19a]),
+                "23A_trace": _prime_cyclotomic_trace(d[idx23], p=23),
             }
         )
 
@@ -352,10 +434,20 @@ def build_monster_charcols_from_ctbllib(ctomonst_tbl: Path) -> dict[str, object]
             "1A": {"ctbllib_index": 1},
             "2A": {"ctbllib_index": 2},
             "3B": {"ctbllib_index": 5},
+            "5A": {"ctbllib_index": idx5a},
+            "5B": {"ctbllib_index": idx5b},
+            "7A": {"ctbllib_index": idx7a},
+            "7B": {"ctbllib_index": idx7b},
+            "11A": {"ctbllib_index": idx11a},
+            "13A": {"ctbllib_index": idx13a},
+            "13B": {"ctbllib_index": idx13b},
+            "17A": {"ctbllib_index": idx17a},
+            "19A": {"ctbllib_index": idx19a},
             "29A": {"ctbllib_index": idx29},
             "41A": {"ctbllib_index": idx41},
         },
         "trace_classes": {
+            "23A": {"ctbllib_index": idx23, "prime": 23},
             "31A": {"ctbllib_index": idx31, "prime": 31},
             "47A": {"ctbllib_index": idx47, "prime": 47},
             "59A": {"ctbllib_index": idx59, "prime": 59},
