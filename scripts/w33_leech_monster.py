@@ -405,6 +405,60 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
             out[n] = int(c)
         return out
 
+    if name == "3C":
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e3 = _qpochhammer(deg, step=3)
+        e9 = _qpochhammer(deg, step=9)
+        num = _qpoly_mul(e3, e3, deg)
+        den = _qpoly_mul(e1, e9, deg)
+        ratio = _qpoly_div(num, den, deg)
+
+        r0 = _qpoly_pow(ratio, 6, deg)
+        r0_inv = _qpoly_inv(r0, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(r0):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+
+        for k, ck in enumerate(r0_inv):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(-27 * ck)
+
+        series[0] = series.get(0, 0) - 6
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
+    if name == "9A":
+        deg = max_q_exp + 1
+        e1 = _qpochhammer(deg, step=1)
+        e3 = _qpochhammer(deg, step=3)
+        e9 = _qpochhammer(deg, step=9)
+        num = _qpoly_mul(e3, e3, deg)
+        den = _qpoly_mul(e1, e9, deg)
+        ratio = _qpoly_div(num, den, deg)
+        r0 = _qpoly_pow(ratio, 6, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(r0):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 6
+        if series.get(0, 0) != 0:
+            raise AssertionError(
+                f"Expected constant term 0 for {name}, got {series.get(0)}"
+            )
+        series.setdefault(-1, 1)
+        return series
+
     fricke_prime = {"2A": 2, "3A": 3, "5A": 5, "7A": 7, "13A": 13}
     non_fricke_prime = {"2B": 2, "3B": 3, "5B": 5, "7B": 7, "13B": 13}
     if name in fricke_prime:
@@ -583,6 +637,7 @@ def verify_fricke_prime_replicability(
         "2B": 2,
         "3A": 3,
         "3B": 3,
+        "3C": 3,
         "5A": 5,
         "5B": 5,
         "7A": 7,
