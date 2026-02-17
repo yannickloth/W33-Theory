@@ -387,8 +387,10 @@ def _qpochhammer(max_deg: int, step: int = 1) -> list[int]:
 def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int] | None:
     """Return a McKay-Thompson series T_g(q)=q^-1 + sum_{n>=1} a_n q^n.
 
-    Offline (no GAP) support is implemented for Fricke prime classes:
-      2A, 3A, 5A, 7A, 13A.
+    Offline (no GAP) support is implemented for a subset of prime-order classes
+    expressible as eta-quotients:
+      - Fricke primes (pA): 2A, 3A, 5A, 7A, 13A
+      - Non-Fricke primes (pB): 2B, 3B, 5B, 7B, 13B
 
     Identity class 1A returns J(q)=j(q)-744.
     """
@@ -404,14 +406,20 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
         return out
 
     fricke_prime = {"2A": 2, "3A": 3, "5A": 5, "7A": 7, "13A": 13}
-    p = fricke_prime.get(name)
+    non_fricke_prime = {"2B": 2, "3B": 3, "5B": 5, "7B": 7, "13B": 13}
+    if name in fricke_prime:
+        p = fricke_prime[name]
+        use_fricke = True
+    elif name in non_fricke_prime:
+        p = non_fricke_prime[name]
+        use_fricke = False
+    else:
+        p = None
+        use_fricke = False
     if p is None:
         return None
 
-    # Fricke prime Hauptmodul:
-    #   T_pA(tau) = (eta/eta(p))^{24/(p-1)}
-    #            + p^{12/(p-1)} (eta(p)/eta)^{24/(p-1)}
-    #            + 24/(p-1)
+    # Prime-order Hauptmodul via eta-quotients.
     a = 24 // (p - 1)
     scale = p ** (12 // (p - 1))
     const = 24 // (p - 1)
@@ -423,7 +431,6 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
     ratio = _qpoly_div(e, ep, deg)  # E(q)/E(q^p)
 
     ratio_pow = _qpoly_pow(ratio, a, deg)
-    ratio_inv_pow = _qpoly_pow(_qpoly_inv(ratio, deg), a, deg)
 
     series: dict[int, int] = {}
     # term1: q^-1 * ratio_pow
@@ -432,11 +439,12 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
         if -1 <= exp <= max_q_exp and ck:
             series[exp] = series.get(exp, 0) + int(ck)
 
-    # term2: scale * q^+1 * ratio_inv_pow
-    for k, ck in enumerate(ratio_inv_pow):
-        exp = 1 + k
-        if -1 <= exp <= max_q_exp and ck:
-            series[exp] = series.get(exp, 0) + int(scale * ck)
+    if use_fricke:
+        ratio_inv_pow = _qpoly_pow(_qpoly_inv(ratio, deg), a, deg)
+        for k, ck in enumerate(ratio_inv_pow):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(scale * ck)
 
     # constant shift
     series[0] = series.get(0, 0) + int(const)
@@ -568,9 +576,20 @@ def faber_polynomial_series(
 def verify_fricke_prime_replicability(
     class_name: str, max_q_exp: int = 10
 ) -> dict[str, object]:
-    """Verify the m=p replicability identity for Fricke prime classes pA."""
+    """Verify the m=p replicability identity for supported prime-order classes."""
     name = class_name.upper()
-    p_map = {"2A": 2, "3A": 3, "5A": 5, "7A": 7, "13A": 13}
+    p_map = {
+        "2A": 2,
+        "2B": 2,
+        "3A": 3,
+        "3B": 3,
+        "5A": 5,
+        "5B": 5,
+        "7A": 7,
+        "7B": 7,
+        "13A": 13,
+        "13B": 13,
+    }
     p = p_map.get(name)
     if p is None:
         raise ValueError(f"Unsupported class for replicability: {class_name}")
@@ -622,7 +641,7 @@ def compute_mckay_traces(
     - If `class_name` == '1A' (identity) this returns the standard j‑coefficients.
     - If a full Monster character table is available (GAP or bundled), it will be
       used to compute traces from the irrep multiplicities in `V_n`.
-    - Otherwise, falls back to eta-quotient series for a few Fricke prime classes.
+    - Otherwise, falls back to eta-quotient series for some prime-order classes.
     """
     # identity: trivial shortcut
     if class_name.upper() in ("1A", "ID", "IDENTITY"):

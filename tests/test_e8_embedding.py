@@ -6938,10 +6938,25 @@ class TestLeechMonster:
         assert t3a.get(1) == 783
         assert t3a.get(2) == 8672
 
+        t2b = mckay_thompson_series("2B", max_q_exp=3)
+        assert t2b is not None
+        assert t2b.get(1) == 276
+        assert t2b.get(2) == -2048
+
+        t3b = mckay_thompson_series("3B", max_q_exp=3)
+        assert t3b is not None
+        assert t3b.get(1) == 54
+        assert t3b.get(2) == -76
+
         rep2 = verify_fricke_prime_replicability("2A", max_q_exp=10)
         assert rep2["verified"] is True
         rep3 = verify_fricke_prime_replicability("3A", max_q_exp=10)
         assert rep3["verified"] is True
+
+        rep2b = verify_fricke_prime_replicability("2B", max_q_exp=10)
+        assert rep2b["verified"] is True
+        rep3b = verify_fricke_prime_replicability("3B", max_q_exp=10)
+        assert rep3b["verified"] is True
 
     def test_moonshine_decompositions(self, lm_data):
         """Check explicit Monster-character decompositions for early j-coeffs."""
