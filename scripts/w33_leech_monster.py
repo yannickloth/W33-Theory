@@ -599,6 +599,68 @@ def _qpochhammer_arith(max_deg: int, step: int, offset: int) -> list[int]:
     return poly
 
 
+def _qpoly_compose_q_power(poly: list[int], p: int, max_deg: int) -> list[int]:
+    """Return poly(q^p) truncated to max_deg (poly is a power series in q)."""
+    if p <= 0:
+        raise ValueError("p must be positive")
+    out = [0] * (max_deg + 1)
+    for n, cn in enumerate(poly[: max_deg + 1]):
+        exp = n * p
+        if exp > max_deg:
+            break
+        if cn:
+            out[exp] = int(cn)
+    return out
+
+
+def _rogers_ramanujan_GH(max_deg: int) -> tuple[list[int], list[int]]:
+    """Rogers-Ramanujan functions G,H as power series to max_deg.
+
+    Conventions (Euler products; no fractional q-shifts):
+      G(q) = 1 / ((q; q^5)_inf (q^4; q^5)_inf)
+      H(q) = 1 / ((q^2; q^5)_inf (q^3; q^5)_inf)
+    """
+    a = _qpochhammer_arith(max_deg, step=5, offset=1)
+    b = _qpochhammer_arith(max_deg, step=5, offset=4)
+    c = _qpochhammer_arith(max_deg, step=5, offset=2)
+    d = _qpochhammer_arith(max_deg, step=5, offset=3)
+    G_den = _qpoly_mul(a, b, max_deg)
+    H_den = _qpoly_mul(c, d, max_deg)
+    return _qpoly_inv(G_den, max_deg), _qpoly_inv(H_den, max_deg)
+
+
+def _ramanujan_phi(max_deg: int, *, step: int = 1) -> list[int]:
+    """Ramanujan/Jacobi phi(q)=sum_{n in Z} q^{n^2} as a power series."""
+    if step <= 0:
+        raise ValueError("step must be positive")
+    out = [0] * (max_deg + 1)
+    out[0] = 1
+    n = 1
+    while True:
+        exp = step * n * n
+        if exp > max_deg:
+            break
+        out[exp] += 2
+        n += 1
+    return out
+
+
+def _ramanujan_psi(max_deg: int, *, step: int = 1) -> list[int]:
+    """Ramanujan psi(q)=sum_{n>=0} q^{n(n+1)/2} as a power series."""
+    if step <= 0:
+        raise ValueError("step must be positive")
+    out = [0] * (max_deg + 1)
+    out[0] = 1
+    n = 1
+    while True:
+        exp = step * (n * (n + 1) // 2)
+        if exp > max_deg:
+            break
+        out[exp] += 1
+        n += 1
+    return out
+
+
 def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int] | None:
     """Return a McKay-Thompson series T_g(q)=q^-1 + sum_{n>=1} a_n q^n.
 
@@ -621,6 +683,270 @@ def mckay_thompson_series(class_name: str, max_q_exp: int = 8) -> dict[int, int]
         for n, c in enumerate(coeffs, start=1):
             out[n] = int(c)
         return out
+
+    # --- Ogg-prime McKay-Thompson series beyond p<=13 (offline, deterministic) ---
+    #
+    # Conventions:
+    # - We compute holomorphic q-series using Euler products and then apply the
+    #   required q^{-1} shift so the result is normalized as q^{-1}+O(q).
+    # - Coefficients are verified against OEIS b-files in local development.
+
+    if name == "17A":
+        # OEIS A058530:
+        #   T_17A(q) = -2 + q^{-1} * ((psi(q^2) phi(q^17) - q^4 phi(q) psi(q^34))
+        #                            /(f(-q) f(-q^17)))^2
+        deg = max_q_exp + 1
+        phi1 = _ramanujan_phi(deg, step=1)
+        phi17 = _ramanujan_phi(deg, step=17)
+        psi2 = _ramanujan_psi(deg, step=2)
+        psi34 = _ramanujan_psi(deg, step=34)
+        num1 = _qpoly_mul(psi2, phi17, deg)
+        num2 = _qpoly_mul(phi1, psi34, deg)
+        num2s = [0] * (deg + 1)
+        for i, ci in enumerate(num2):
+            if ci and i + 4 <= deg:
+                num2s[i + 4] += int(ci)
+        num = [int(a) - int(b) for a, b in zip(num1, num2s)]
+        den = _qpoly_mul(_qpochhammer(deg, step=1), _qpochhammer(deg, step=17), deg)
+        ratio = _qpoly_div(num, den, deg)
+        ratio2 = _qpoly_pow(ratio, 2, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(ratio2):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 2
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name == "19A":
+        # OEIS A058549:
+        #   T_19A(q) = -3 + q^{-1} * (G(q)G(q^19) + q^4 H(q)H(q^19))^3
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 19, deg)
+        Hp = _qpoly_compose_q_power(H, 19, deg)
+        t1 = _qpoly_mul(G, Gp, deg)
+        t2 = _qpoly_mul(H, Hp, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 4 <= deg:
+                t2s[i + 4] += int(ci)
+        expr = [int(a) + int(b) for a, b in zip(t1, t2s)]
+        expr3 = _qpoly_pow(expr, 3, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(expr3):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 3
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name in ("23A", "23B"):
+        # OEIS A058570:
+        #   The prime-order Monster classes 23A and 23B share the same
+        #   McKay–Thompson series (often denoted 23AB in moonshine tables).
+        #
+        #   F = eta(q)eta(q^23)/(eta(q^2)eta(q^46))   (Euler product "eta")
+        #   T_23AB(q) = (F+1)(F^2+4)/F^2, with the implicit q^{-1} shift from F.
+        #
+        # Write F = q^{-1} P with P(0)=1, where P is the Euler-product ratio.
+        # Then:
+        #   T = q^{-1} P + 1 + 4 q P^{-1} + 4 q^2 P^{-2}
+        deg = max_q_exp + 2
+        e1 = _qpochhammer(deg, step=1)
+        e2 = _qpochhammer(deg, step=2)
+        e23 = _qpochhammer(deg, step=23)
+        e46 = _qpochhammer(deg, step=46)
+        P = _qpoly_div(_qpoly_mul(e1, e23, deg), _qpoly_mul(e2, e46, deg), deg)
+        Pinv = _qpoly_inv(P, deg)
+        P2inv = _qpoly_inv(_qpoly_mul(P, P, deg), deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(P):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) + 1
+        for k, ck in enumerate(Pinv):
+            exp = 1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(4 * ck)
+        for k, ck in enumerate(P2inv):
+            exp = 2 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(4 * ck)
+
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name == "29A":
+        # OEIS A058611:
+        #   T_29A(q) = -2 + q^{-1} * (G(q)G(q^29) + q^6 H(q)H(q^29))^2
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 29, deg)
+        Hp = _qpoly_compose_q_power(H, 29, deg)
+        t1 = _qpoly_mul(G, Gp, deg)
+        t2 = _qpoly_mul(H, Hp, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 6 <= deg:
+                t2s[i + 6] += int(ci)
+        expr = [int(a) + int(b) for a, b in zip(t1, t2s)]
+        expr2 = _qpoly_pow(expr, 2, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(expr2):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 2
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name in ("31A", "31B"):
+        # OEIS A058628:
+        #   T_31A(q) = q^{-1} * (G(q^31)H(q) - q^6 H(q^31)G(q))^3
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 31, deg)
+        Hp = _qpoly_compose_q_power(H, 31, deg)
+        t1 = _qpoly_mul(Gp, H, deg)
+        t2 = _qpoly_mul(Hp, G, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 6 <= deg:
+                t2s[i + 6] += int(ci)
+        expr = [int(a) - int(b) for a, b in zip(t1, t2s)]
+        expr3 = _qpoly_pow(expr, 3, deg)
+        series: dict[int, int] = {}
+        for k, ck in enumerate(expr3):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name == "41A":
+        # OEIS A058670:
+        #   T_41A(q) = q^{-1} * (G(q^41)H(q) - q^8 H(q^41)G(q))^2
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 41, deg)
+        Hp = _qpoly_compose_q_power(H, 41, deg)
+        t1 = _qpoly_mul(Gp, H, deg)
+        t2 = _qpoly_mul(Hp, G, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 8 <= deg:
+                t2s[i + 8] += int(ci)
+        expr = [int(a) - int(b) for a, b in zip(t1, t2s)]
+        expr2 = _qpoly_pow(expr, 2, deg)
+        series: dict[int, int] = {}
+        for k, ck in enumerate(expr2):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name in ("47A", "47B"):
+        # OEIS A058690:
+        #   T_47A(q) = q^{-2} * (Theta_Q1(q) - Theta_Q2(q)) / (2 * eta(q) eta(q^47))
+        # with Q1(n,m)=n^2+n*m+12 m^2, Q2(n,m)=2 n^2+n*m+6 m^2, eta Euler product.
+        from math import isqrt
+
+        deg = max_q_exp + 2
+
+        def theta_Q(max_deg: int, a: int, b: int, c: int) -> list[int]:
+            out = [0] * (max_deg + 1)
+            n_max = isqrt(max_deg // max(1, a)) + 4
+            m_max = isqrt(max_deg // max(1, c)) + 4
+            for n in range(-n_max, n_max + 1):
+                for m in range(-m_max, m_max + 1):
+                    qv = int(a) * n * n + int(b) * n * m + int(c) * m * m
+                    if 0 <= qv <= max_deg:
+                        out[qv] += 1
+            return out
+
+        th1 = theta_Q(deg, 1, 1, 12)
+        th2 = theta_Q(deg, 2, 1, 6)
+        num = [int(a) - int(b) for a, b in zip(th1, th2)]
+        den = _qpoly_mul(_qpochhammer(deg, step=1), _qpochhammer(deg, step=47), deg)
+        quot = _qpoly_div(num, den, deg)
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(quot):
+            if ck == 0:
+                continue
+            if ck % 2 != 0:
+                raise AssertionError(f"Unexpected odd theta/eta coefficient at q^{k}")
+            exp = -2 + k
+            if -1 <= exp <= max_q_exp:
+                series[exp] = series.get(exp, 0) + int(ck // 2)
+
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name in ("59A", "59B"):
+        # OEIS A058724:
+        #   T_59A(q) = -1 + (G(q^59)G(q) + q^12 H(q^59)H(q)) / q
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 59, deg)
+        Hp = _qpoly_compose_q_power(H, 59, deg)
+        t1 = _qpoly_mul(Gp, G, deg)
+        t2 = _qpoly_mul(Hp, H, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 12 <= deg:
+                t2s[i + 12] += int(ci)
+        num = [int(a) + int(b) for a, b in zip(t1, t2s)]
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(num):
+            exp = -1 + k  # divide by q
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        series[0] = series.get(0, 0) - 1
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
+
+    if name in ("71A", "71B"):
+        # OEIS A034322:
+        #   T_71A(q) = q^{-1} * (G(q^71)H(q) - q^14 H(q^71)G(q))
+        deg = max_q_exp + 1
+        G, H = _rogers_ramanujan_GH(deg)
+        Gp = _qpoly_compose_q_power(G, 71, deg)
+        Hp = _qpoly_compose_q_power(H, 71, deg)
+        t1 = _qpoly_mul(Gp, H, deg)
+        t2 = _qpoly_mul(Hp, G, deg)
+        t2s = [0] * (deg + 1)
+        for i, ci in enumerate(t2):
+            if ci and i + 14 <= deg:
+                t2s[i + 14] += int(ci)
+        expr = [int(a) - int(b) for a, b in zip(t1, t2s)]
+
+        series: dict[int, int] = {}
+        for k, ck in enumerate(expr):
+            exp = -1 + k
+            if -1 <= exp <= max_q_exp and ck:
+                series[exp] = series.get(exp, 0) + int(ck)
+        if series.get(0, 0) != 0 or series.get(-1, 0) != 1:
+            raise AssertionError(f"Normalization failed for {name}")
+        return series
 
     if name == "4C":
         # Ramanujan–Sato / Moonshine:
@@ -1697,10 +2023,15 @@ def faber_polynomial_series(
     # during intermediate products; otherwise sequential truncation can drop
     # contributions (order-dependent). The worst-case needed exponent is m-1.
     solve_max_exp = max(m - 1, 0)
-    powers = [
-        _laurent_pow(f, k, min_exp=min_exp, max_exp=solve_max_exp) for k in range(m)
-    ]
-    f_m = _laurent_pow(f, m, min_exp=min_exp, max_exp=solve_max_exp)
+    # Build powers f^k iteratively (O(m) multiplications), since we may have
+    # primes as large as 71 in replicability checks.
+    solve_pows: list[dict[int, int]] = [{0: 1}]
+    for _k in range(1, m + 1):
+        solve_pows.append(
+            _laurent_mul(solve_pows[-1], f, min_exp=min_exp, max_exp=solve_max_exp)
+        )
+    powers = solve_pows[:m]
+    f_m = solve_pows[m]
 
     A = [[Fraction(powers[k].get(e, 0)) for k in range(m)] for e in exps]
     b = [Fraction(-f_m.get(e, 0)) for e in exps]
@@ -1709,11 +2040,16 @@ def faber_polynomial_series(
     # To compute coefficients up to q^N in a sequential product, we need slack
     # up to N+(m-1), since intermediate terms can later combine with q^-1 factors.
     build_max_exp = max_q_exp + (m - 1)
-    series = _laurent_pow(f, m, min_exp=min_exp, max_exp=build_max_exp)
+    build_pows: list[dict[int, int]] = [{0: 1}]
+    for _k in range(1, m + 1):
+        build_pows.append(
+            _laurent_mul(build_pows[-1], f, min_exp=min_exp, max_exp=build_max_exp)
+        )
+    series = dict(build_pows[m])
     for k, ck in enumerate(coeffs):
         if ck == 0:
             continue
-        term = _laurent_pow(f, k, min_exp=min_exp, max_exp=build_max_exp)
+        term = build_pows[k]
         for e, v in term.items():
             series[e] = series.get(e, 0) + int(ck * v)
 
@@ -1753,6 +2089,20 @@ def verify_fricke_prime_replicability(
         "11A": 11,
         "13A": 13,
         "13B": 13,
+        "17A": 17,
+        "19A": 19,
+        "23A": 23,
+        "23B": 23,
+        "29A": 29,
+        "31A": 31,
+        "31B": 31,
+        "41A": 41,
+        "47A": 47,
+        "47B": 47,
+        "59A": 59,
+        "59B": 59,
+        "71A": 71,
+        "71B": 71,
     }
     p = p_map.get(name)
     if p is None:
