@@ -6922,6 +6922,13 @@ class TestLeechMonster:
         assert s12_bridge.get("available") is True
         assert s12_bridge["dims"]["grade1"] == 243
         assert s12_bridge["w33"]["grade1_equals_3b1"] is True
+        msb = s12_bridge.get("monster_subgroup_bridge")
+        assert isinstance(msb, dict)
+        assert int(msb.get("s12_order", 0) or 0) == 479001600  # |S12| = 12!
+        assert msb.get("5A", {}).get("outer_stabilizer_group") == "S12"
+        assert msb.get("5A", {}).get("outer_index_check") is True
+        assert msb.get("11A", {}).get("outer_stabilizer_group") == "PGL2(11)"
+        assert msb.get("11A", {}).get("outer_index_check") is True
         assert set(s12_bridge["jacobi_failures"]["mixed_sectors"]) == {
             "g1_g1_g2",
             "g1_g2_g2",

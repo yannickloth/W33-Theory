@@ -1919,6 +1919,65 @@ def analyze_s12_golay_sl27_bridge(jordan_sample_limit: int = 200) -> dict[str, o
     ), f"Expected 243 = 3*b1 with b1=81, got b1={b1}"
     assert jacobi_failure_pattern_matches, "Unexpected s12 Jacobi failure pattern"
 
+    # Monster / sporadic bridge: the HN cofactor rung for the 5A centralizer
+    # contains an A12 stabilizer (index 1,140,000). Doubling to HN:2 upgrades
+    # that stabilizer to S12, connecting directly to the "s12" story above.
+    monster_subgroup_bridge: dict[str, object] | None = None
+    try:
+        from scripts.w33_monster_centralizer_cofactor_groups import (
+            analyze as analyze_cofactor_groups,
+        )
+
+        cof_rep = analyze_cofactor_groups()
+        if cof_rep.get("available") is True:
+            classes = cof_rep.get("classes", {})
+            if isinstance(classes, dict):
+                bridge: dict[str, object] = {}
+                for cls, pair in (("5A", "2A×3A"), ("11A", "2A×3B")):
+                    info = classes.get(cls, {})
+                    if not isinstance(info, dict):
+                        continue
+                    hits = info.get("perm_hits", [])
+                    if not isinstance(hits, list):
+                        continue
+                    hit = next(
+                        (
+                            h
+                            for h in hits
+                            if isinstance(h, dict) and str(h.get("pair")) == pair
+                        ),
+                        None,
+                    )
+                    if not isinstance(hit, dict):
+                        continue
+                    cof = int(info.get("cofactor_order", 0) or 0)
+                    r_hit = int(hit.get("r", 0) or 0)
+                    outer_stab = int(hit.get("outer_stabilizer_order", 0) or 0)
+                    bridge[cls] = {
+                        "pair": pair,
+                        "cofactor_order": cof,
+                        "r": r_hit,
+                        "stabilizer_order": int(hit.get("stabilizer_order", 0) or 0),
+                        "stabilizer_group": hit.get("stabilizer_group_recognized"),
+                        "outer_stabilizer_order": outer_stab,
+                        "outer_stabilizer_group": hit.get(
+                            "outer_stabilizer_group_recognized"
+                        ),
+                        "outer_index_check": (
+                            bool(outer_stab * r_hit == 2 * cof)
+                            if (cof > 0 and r_hit > 0 and outer_stab > 0)
+                            else False
+                        ),
+                    }
+
+                if bridge:
+                    # 12! is the order of S12, which should appear as the outer
+                    # stabilizer for the HN (5A) rung.
+                    bridge["s12_order"] = int(math.factorial(12))
+                    monster_subgroup_bridge = bridge
+    except Exception:
+        monster_subgroup_bridge = None
+
     return {
         "available": True,
         "code_size": code_size,
@@ -1937,6 +1996,7 @@ def analyze_s12_golay_sl27_bridge(jordan_sample_limit: int = 200) -> dict[str, o
             "pattern_matches": jacobi_failure_pattern_matches,
             "mixed_sectors": sorted(mixed_sectors),
         },
+        "monster_subgroup_bridge": monster_subgroup_bridge,
         "note": (
             "s12 is a Golay-derived Z3-graded Jordan-Lie model whose only grade-level "
             "Jacobi obstructions are the mixed sectors (g1,g1,g2)/(g1,g2,g2), "
