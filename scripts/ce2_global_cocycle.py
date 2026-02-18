@@ -11,8 +11,8 @@ Current status:
       row = match + other - c   in F3^3 Heisenberg coordinates (u1,u2,z)
       col = other
   - Side (U vs V) depends only on which g1 element matches the sl3 index.
-  - Sign is currently loaded from the committed sparse CE2 data and is
-    deterministic on the ordered triple (c, match, other).
+  - Sign is given by a committed explicit GF(2) polynomial (deg ≤ 4),
+    falling back to the compact 864-entry map if needed.
 
   - Implements the remaining "fiber family" (648 / 5832 sparse entries):
       * exactly one e6 + one sl3 matrix unit
@@ -28,6 +28,7 @@ import sys
 from dataclasses import dataclass
 from fractions import Fraction
 from functools import lru_cache
+from itertools import combinations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -193,6 +194,120 @@ def _simple_family_sign_map() -> dict[tuple[int, int, int], int]:
     return sign_map
 
 
+def _encode_trit_pair_bits(trit: int) -> tuple[int, int]:
+    """Encode a trit in {0,1,2} into two GF(2) bits (is1,is2)."""
+    t = int(trit) % 3
+    if t == 0:
+        return (0, 0)
+    if t == 1:
+        return (1, 0)
+    return (0, 1)
+
+
+def _encode_simple_family_sign_input_bits(c_i: int, match_i: int, other_i: int) -> int:
+    """Encode (c,match,other) into an 18-bit mask for the GF(2) sign polynomial."""
+    e6id_to_vec, _vec_to_e6id = _heisenberg_vec_maps()
+    vc = e6id_to_vec[int(c_i)]
+    vm = e6id_to_vec[int(match_i)]
+    vo = e6id_to_vec[int(other_i)]
+    trits = (
+        vc[0],
+        vc[1],
+        vc[2],
+        vm[0],
+        vm[1],
+        vm[2],
+        vo[0],
+        vo[1],
+        vo[2],
+    )
+    bits_mask = 0
+    for i, t in enumerate(trits):
+        b0, b1 = _encode_trit_pair_bits(t)
+        if b0:
+            bits_mask |= 1 << (2 * i + 0)
+        if b1:
+            bits_mask |= 1 << (2 * i + 1)
+    return bits_mask
+
+
+@lru_cache(maxsize=1)
+def _gf2_deg4_monomial_mask_to_feature_idx() -> dict[int, int]:
+    """deg-lex monomials on 18 bits up to degree 4 (4048 terms)."""
+    n_bits = 18
+    masks: list[int] = [0]  # constant
+    for d in range(1, 5):
+        for combo in combinations(range(n_bits), d):
+            m = 0
+            for b in combo:
+                m |= 1 << b
+            masks.append(m)
+    if len(masks) != 4048:
+        raise ValueError(f"unexpected monomial count: {len(masks)} (expected 4048)")
+    out = {m: i for i, m in enumerate(masks)}
+    if len(out) != 4048:
+        raise ValueError("duplicate monomial mask detected")
+    return out
+
+
+@lru_cache(maxsize=1)
+def _simple_family_sign_poly_coeff_mask() -> int | None:
+    """Load a degree-4 GF(2) polynomial for the simple-family sign, if present."""
+    poly_path = (
+        ROOT / "committed_artifacts" / "ce2_simple_family_sign_poly_gf2_deg4.json"
+    )
+    if not poly_path.exists():
+        return None
+    data = json.loads(poly_path.read_text(encoding="utf-8"))
+    idxs = data.get("coeff_feature_indices", [])
+    if not isinstance(idxs, list):
+        raise ValueError("unexpected CE2 sign polynomial JSON format")
+    coeff_mask = 0
+    for idx in idxs:
+        i = int(idx)
+        if not (0 <= i < 4048):
+            raise ValueError(f"unexpected coefficient index: {i}")
+        coeff_mask |= 1 << i
+    return coeff_mask
+
+
+@lru_cache(maxsize=20000)
+def _eval_simple_family_sign_poly_bit(input_bits_mask: int) -> int:
+    """Evaluate the fitted sign polynomial on the 18-bit encoding. Returns bit in {0,1}."""
+    coeff_mask = _simple_family_sign_poly_coeff_mask()
+    if coeff_mask is None:
+        raise RuntimeError("simple-family sign polynomial not available")
+    mask_to_idx = _gf2_deg4_monomial_mask_to_feature_idx()
+    ones = [i for i in range(18) if ((int(input_bits_mask) >> i) & 1)]
+    # constant monomial always evaluates to 1
+    bit = (coeff_mask >> mask_to_idx[0]) & 1
+    for d in range(1, min(4, len(ones)) + 1):
+        for combo in combinations(ones, d):
+            m = 0
+            for b in combo:
+                m |= 1 << b
+            bit ^= (coeff_mask >> mask_to_idx[m]) & 1
+    return int(bit) & 1
+
+
+def predict_simple_family_sign(c_i: int, match_i: int, other_i: int) -> int:
+    """Return sign(c,match,other) ∈ {+1,-1} for the CE2 simple family.
+
+    Preference order:
+      1) Explicit GF(2) polynomial (degree ≤ 4) if the artifact is present
+      2) Compact committed sign map (864-entry table)
+      3) Fallback extraction from sparse CE2 local solutions
+    """
+    coeff_mask = _simple_family_sign_poly_coeff_mask()
+    if coeff_mask is not None:
+        bits = _encode_simple_family_sign_input_bits(
+            int(c_i), int(match_i), int(other_i)
+        )
+        parity = _eval_simple_family_sign_poly_bit(bits)
+        return 1 if parity == 0 else -1
+    return _simple_family_sign_map()[(int(c_i), int(match_i), int(other_i))]
+
+
 def predict_simple_family_uv(
     a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
 ) -> CE2SparseUV | None:
@@ -226,7 +341,7 @@ def predict_simple_family_uv(
     col = int(other_i)
     flat = int(row) * 27 + int(col)
 
-    s = _simple_family_sign_map()[(int(c_i), int(match_i), int(other_i))]
+    s = predict_simple_family_sign(int(c_i), int(match_i), int(other_i))
     coeff = Fraction(int(s), 54)
 
     if side == "U":
