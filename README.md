@@ -315,7 +315,7 @@ yields 3/8 **only** for q = 3. This is the SU(5) GUT boundary condition, derived
 ## Citation
 
 ```bibtex
-@software{dembski_w33_e8_2026,
+@software{dahn_w33_e8_2026,
   author = {Dahn, Wil and Claude},
   title = {The {W}(3,3)--{E8} Correspondence Theorem:
            Deriving the Standard Model from Finite Geometry},
