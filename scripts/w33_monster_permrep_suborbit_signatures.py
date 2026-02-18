@@ -86,22 +86,34 @@ def analyze() -> dict[str, Any]:
         "gcd_nontrivial": int(he_gcd),
         "has_17x80": bool((17 * n_inc) in he_sub),
         "has_17x8": bool((17 * 8) in he_sub),
+        "nontrivial_sum": int(sum(he_nontrivial)),
+        "nontrivial_sum_factorization": _factorint(int(sum(he_nontrivial))),
+        "nontrivial_all_multiples_of_17": bool(
+            all(int(x) % 17 == 0 for x in he_nontrivial)
+        ),
     }
     if he_sub:
         # All nontrivial suborbits in the 2058 action are multiples of 17, and one is 17×80.
         assert he_hits["gcd_nontrivial"] == 17
+        assert he_hits["nontrivial_all_multiples_of_17"] is True
         assert he_hits["has_17x80"] is True
         assert he_hits["has_17x8"] is True
+        # 2058 = 1 + 17×121 (121 = 11^2).
+        assert he_hits["nontrivial_sum"] == 17 * 121
 
     hn_hits = {
         "has_80x385": bool((n_inc * 385) in hn_sub),
         "has_77x2160": bool((77 * e4_q2) in hn_sub),
         "has_7x_aut_w33": bool((7 * sp4_3_order) in hn_sub),
+        "has_27x385": bool((27 * 385) in hn_sub),
+        "has_10x81x385": bool((10 * 81 * 385) in hn_sub),
     }
     if hn_sub:
         assert hn_hits["has_80x385"] is True
         assert hn_hits["has_77x2160"] is True
         assert hn_hits["has_7x_aut_w33"] is True
+        assert hn_hits["has_27x385"] is True
+        assert hn_hits["has_10x81x385"] is True
 
     return {
         "available": True,
@@ -144,6 +156,9 @@ def main() -> None:
     print(f"  suborbits = {he_sub}")
     print(f"  gcd(nontrivial) = {he['signature_hits']['gcd_nontrivial']}")
     print(
+        f"  sum(nontrivial) = {he['signature_hits']['nontrivial_sum']} (= 17×121 = 17×11^2)"
+    )
+    print(
         f"  contains 17×80? {he['signature_hits']['has_17x80']}  (80 = W33 points+lines)"
     )
     print(f"  contains 17×8?  {he['signature_hits']['has_17x8']}  (8 = rank(E8))")
@@ -155,6 +170,12 @@ def main() -> None:
     print(f"  rank = {hn['rank']}")
     print(f"  suborbits (count={len(hn_sub)}): {hn_sub}")
     print(f"  contains 80×385?    {hn['signature_hits']['has_80x385']}")
+    print(
+        f"  contains 27×385?    {hn['signature_hits']['has_27x385']}  (27 = E6 fundamental)"
+    )
+    print(
+        f"  contains 10×81×385? {hn['signature_hits']['has_10x81x385']}  (81 = b1(W33))"
+    )
     print(
         f"  contains 77×2160?   {hn['signature_hits']['has_77x2160']}  (2160 = E4[q^2])"
     )

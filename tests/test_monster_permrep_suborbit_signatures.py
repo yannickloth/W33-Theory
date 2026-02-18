@@ -19,6 +19,8 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
     assert int(hits_he.get("gcd_nontrivial", 0) or 0) == 17
     assert hits_he.get("has_17x80") is True
     assert hits_he.get("has_17x8") is True
+    assert hits_he.get("nontrivial_all_multiples_of_17") is True
+    assert int(hits_he.get("nontrivial_sum", 0) or 0) == 2057
 
     hn = rep.get("hn_1140000", {})
     assert isinstance(hn, dict)
@@ -27,3 +29,5 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
     assert hits_hn.get("has_80x385") is True
     assert hits_hn.get("has_77x2160") is True
     assert hits_hn.get("has_7x_aut_w33") is True
+    assert hits_hn.get("has_27x385") is True
+    assert hits_hn.get("has_10x81x385") is True
