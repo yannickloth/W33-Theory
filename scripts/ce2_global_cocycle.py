@@ -14,8 +14,11 @@ Current status:
   - Sign is currently loaded from the committed sparse CE2 data and is
     deterministic on the ordered triple (c, match, other).
 
-The remaining 648 entries (the 1/108 mixed e6+sl3 family) are intentionally not
-handled here yet.
+  - Implements the remaining "fiber family" (648 / 5832 sparse entries):
+      * exactly one e6 + one sl3 matrix unit
+      * coefficient magnitude = 1/108
+      * supported exactly on the 9 Heisenberg fibers (bad9) in the E6 27-set
+      * sign is fully explicit from indices (no lookup)
 """
 
 from __future__ import annotations
@@ -35,9 +38,20 @@ for p in (ROOT, SCRIPTS_DIR):
 
 
 @dataclass(frozen=True)
-class SimpleFamilyUV:
+class CE2SparseUV:
     U: list[tuple[int, Fraction]]
     V: list[tuple[int, Fraction]]
+
+
+SimpleFamilyUV = CE2SparseUV  # compatibility alias
+
+
+def _flat_e6(row: int, col: int) -> int:
+    return int(row) * 27 + int(col)
+
+
+def _flat_sl3(i: int, j: int) -> int:
+    return 27 * 27 + int(i) * 3 + int(j)
 
 
 def _decode_key_triplet(
@@ -153,7 +167,7 @@ def _simple_family_sign_map() -> dict[tuple[int, int, int], int]:
 
 def predict_simple_family_uv(
     a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
-) -> SimpleFamilyUV | None:
+) -> CE2SparseUV | None:
     """Predict the dominant CE2 simple-family U/V sparse correction for (a,b,c).
 
     The input is three (e6id, sl3_index) pairs.
@@ -188,5 +202,102 @@ def predict_simple_family_uv(
     coeff = Fraction(int(s), 54)
 
     if side == "U":
-        return SimpleFamilyUV(U=[(flat, coeff)], V=[])
-    return SimpleFamilyUV(U=[], V=[(flat, coeff)])
+        return CE2SparseUV(U=[(flat, coeff)], V=[])
+    return CE2SparseUV(U=[], V=[(flat, coeff)])
+
+
+def predict_fiber_family_uv(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUV | None:
+    """Predict the 1/108 fiber-family CE2 correction (supported on bad9 fibers).
+
+    This family occurs exactly when:
+      - exactly one of a_j,b_j matches c_j  (same as the simple family), AND
+      - the three involved E6 ids lie in the same Heisenberg fiber u ∈ F3^2, AND
+      - exactly one of the g1 E6 ids equals c_i (so {a_i,b_i,c_i} has 2 distinct points
+        inside that fiber triad).
+
+    Output:
+      - one e6 matrix unit with +1/108 (in the same side as the matching g1)
+      - one sl3 matrix unit with ±1/108, whose placement across U/V depends on whether
+        match_i==c_i or other_i==c_i.
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    # Exactly one g1 must match the sl3 index of c.
+    if a_j == c_j and b_j != c_j:
+        match_i, match_j = a_i, a_j
+        other_i, other_j = b_i, b_j
+        e6_side = "V"
+    elif b_j == c_j and a_j != c_j:
+        match_i, match_j = b_i, b_j
+        other_i, other_j = a_i, a_j
+        e6_side = "U"
+    else:
+        return None
+
+    e6id_to_vec, _vec_to_e6id = _heisenberg_vec_maps()
+    u_match = e6id_to_vec[match_i][:2]
+    u_other = e6id_to_vec[other_i][:2]
+    u_c = e6id_to_vec[c_i][:2]
+    if not (u_match == u_other == u_c):
+        return None
+
+    match_eq = match_i == c_i
+    other_eq = other_i == c_i
+    if match_eq == other_eq:
+        return None
+
+    e6_idx: int
+    sl3_idx: int
+    sl3_coeff: Fraction
+    sl3_side: str
+
+    # e6 is always +1/108.
+    e6_coeff = Fraction(1, 108)
+
+    if match_eq:
+        # match_i == c_i: diagonal e6[other,other] and positive sl3[other_j,other_j]
+        e6_idx = _flat_e6(other_i, other_i)
+        sl3_idx = _flat_sl3(other_j, other_j)
+        sl3_coeff = Fraction(1, 108)
+        sl3_side = e6_side
+    else:
+        # other_i == c_i: off-diagonal e6[match,other] and negative sl3[other_j,c_j]
+        e6_idx = _flat_e6(match_i, other_i)
+        sl3_idx = _flat_sl3(other_j, c_j)
+        sl3_coeff = Fraction(-1, 108)
+        sl3_side = "U" if e6_side == "V" else "V"
+
+    if e6_side == "U":
+        U = [(e6_idx, e6_coeff)]
+        V = []
+    else:
+        U = []
+        V = [(e6_idx, e6_coeff)]
+
+    if sl3_side == "U":
+        U.append((sl3_idx, sl3_coeff))
+    else:
+        V.append((sl3_idx, sl3_coeff))
+
+    # stable ordering for deterministic output
+    U.sort(key=lambda kv: kv[0])
+    V.sort(key=lambda kv: kv[0])
+    return CE2SparseUV(U=U, V=V)
+
+
+def predict_ce2_uv(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUV | None:
+    """Predict CE2 sparse (U,V) from global laws.
+
+    Precedence matters: the fiber-family overrides the simple-family when both
+    sl3-index conditions hold.
+    """
+    uv = predict_fiber_family_uv(a, b, c)
+    if uv is not None:
+        return uv
+    return predict_simple_family_uv(a, b, c)

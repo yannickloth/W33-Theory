@@ -195,6 +195,25 @@ class LInftyE8Extension:
         """Remove any attached CE 2-cochain."""
         self._ce2_alpha = None
 
+    def enable_ce2_global_predictor(self):
+        """Enable a global CE2 predictor inferred from sparse local repairs.
+
+        This installs a lightweight index-level law `predict_ce2_uv(a,b,c)` from
+        `scripts/ce2_global_cocycle.py` and allows `homotopy_jacobi` to cancel
+        known mixed-sector basis obstructions without per-triple artifacts or
+        on-the-fly LSQ solves.
+        """
+        scripts_dir = ROOT / "scripts"
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+        from ce2_global_cocycle import predict_ce2_uv
+
+        self._ce2_global_predictor = predict_ce2_uv
+
+    def disable_ce2_global_predictor(self):
+        """Disable the global CE2 predictor (if enabled)."""
+        self._ce2_global_predictor = None
+
     def d_alpha_on_triple(self, a, b, c):
         """Compute (d alpha)(a,b,c) for the attached 2-cochain (if any).
 
@@ -264,6 +283,95 @@ class LInftyE8Extension:
                     return term1 + term2 + term3 + term4 + term5 + term6
         except Exception:
             # best-effort fallback to the generic alpha if something goes wrong
+            pass
+
+        # If no explicit alpha is attached, optionally use the global predictor.
+        try:
+            if (
+                (not hasattr(self, "_ce2_alpha") or self._ce2_alpha is None)
+                and hasattr(self, "_ce2_global_predictor")
+                and self._ce2_global_predictor is not None
+            ):
+                # Only trigger on basis-like (g1,g1,g2) triples; avoid accidental
+                # activation on arbitrary superpositions.
+                def typed_key_for_elem(elem):
+                    def single_basis_index(arr: np.ndarray):
+                        idx = np.argwhere(np.abs(arr) > 0.5)
+                        if idx.shape[0] != 1:
+                            return None
+                        return (int(idx[0, 0]), int(idx[0, 1]))
+
+                    # Require a *pure* basis element: exactly one sector present.
+                    if np.any(elem.g1) and not (
+                        np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g2)
+                    ):
+                        ij = single_basis_index(elem.g1)
+                        if ij is None:
+                            return None
+                        return ("g1", ij)
+                    if np.any(elem.g2) and not (
+                        np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g1)
+                    ):
+                        ij = single_basis_index(elem.g2)
+                        if ij is None:
+                            return None
+                        return ("g2", ij)
+                    return None
+
+                a_t = typed_key_for_elem(a)
+                b_t = typed_key_for_elem(b)
+                c_t = typed_key_for_elem(c)
+                if (
+                    a_t is not None
+                    and b_t is not None
+                    and c_t is not None
+                    and a_t[0] == "g1"
+                    and b_t[0] == "g1"
+                    and c_t[0] == "g2"
+                ):
+                    uv = self._ce2_global_predictor(a_t[1], b_t[1], c_t[1])
+                    if uv is not None:
+                        U_flat = np.zeros(900, dtype=np.complex128)
+                        V_flat = np.zeros(900, dtype=np.complex128)
+                        for idx, frac in uv.U:
+                            U_flat[int(idx)] = float(frac)
+                        for idx, frac in uv.V:
+                            V_flat[int(idx)] = float(frac)
+
+                        def flat_numeric_to_e8(vec_flat: np.ndarray):
+                            Nn = 27 * 27
+                            e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
+                            offn = Nn
+                            sl3 = (
+                                vec_flat[offn : offn + 9]
+                                .reshape((3, 3))
+                                .astype(np.complex128)
+                            )
+                            offn += 9
+                            g1 = (
+                                vec_flat[offn : offn + 81]
+                                .reshape((27, 3))
+                                .astype(np.complex128)
+                            )
+                            offn += 81
+                            g2 = (
+                                vec_flat[offn : offn + 81]
+                                .reshape((27, 3))
+                                .astype(np.complex128)
+                            )
+                            return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+
+                        U_e8 = flat_numeric_to_e8(U_flat)
+                        V_e8 = flat_numeric_to_e8(V_flat)
+
+                        term1 = self.br_l2.bracket(a, U_e8)
+                        term2 = self.br_l2.bracket(b, V_e8).scale(-1.0)
+                        term3 = self.br_l2.bracket(c, self.tool.E8Z3.zero())
+                        term4 = self.tool.E8Z3.zero()
+                        term5 = self.tool.E8Z3.zero()
+                        term6 = self.tool.E8Z3.zero()
+                        return term1 + term2 + term3 + term4 + term5 + term6
+        except Exception:
             pass
 
         # fallback: use the attached CE2 alpha callable (if any)

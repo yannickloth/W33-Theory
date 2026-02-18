@@ -37,6 +37,8 @@ for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
+from ce2_global_cocycle import predict_ce2_uv
+
 
 @dataclass(frozen=True)
 class CE2Entry:
@@ -218,6 +220,11 @@ def main() -> None:
     )
     parser.add_argument("--max-entries", type=int, default=None)
     parser.add_argument("--top-patterns", type=int, default=10)
+    parser.add_argument(
+        "--verify-global-laws",
+        action="store_true",
+        help="Verify predict_ce2_uv reproduces every sparse entry exactly.",
+    )
     args = parser.parse_args()
 
     if not args.sparse_json.exists():
@@ -233,6 +240,18 @@ def main() -> None:
     print("=" * 78)
     print(f"Sparse file: {args.sparse_json}")
     print(f"Entries read: {len(entries)}")
+
+    if args.verify_global_laws:
+        mismatches = 0
+        for e in entries:
+            pred = predict_ce2_uv(e.a, e.b, e.c)
+            if pred is None:
+                mismatches += 1
+                continue
+            if sorted(pred.U) != sorted(e.U) or sorted(pred.V) != sorted(e.V):
+                mismatches += 1
+        print(f"Global-law reproduction mismatches: {mismatches} (expected 0)")
+        assert mismatches == 0
 
     # -------------------------------------------------------------------------
     # §1. Pattern census

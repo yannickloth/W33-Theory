@@ -40,7 +40,7 @@ for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from ce2_global_cocycle import predict_simple_family_uv
+from ce2_global_cocycle import predict_ce2_uv
 
 
 def max_abs(e) -> float:
@@ -114,7 +114,9 @@ def _flat_to_e8(toe, vec_flat: np.ndarray):
 
 def main() -> None:
     print("=" * 78)
-    print("ALGEBRA BRIDGE: s12 grade obstruction -> Heisenberg cocycle -> E8 Z3/L∞")
+    print(
+        "ALGEBRA BRIDGE: s12 grade obstruction -> Heisenberg cocycle -> E8 Z3/L-infty"
+    )
     print("=" * 78)
 
     # -------------------------------------------------------------------------
@@ -133,7 +135,7 @@ def main() -> None:
     jacobi_fail = int(laws.get("jacobi_failure_count", -1))
 
     print()
-    print("§1. s12 vs Weyl–Heisenberg closure")
+    print("SECTION 1: s12 vs Weyl–Heisenberg closure")
     print("-" * 50)
     print(f"  Nonzero basis size: {len(labels)} (expected 728 = 27^2-1)")
     print(f"  Grade split: {by_grade} (expected 242/243/243)")
@@ -149,7 +151,7 @@ def main() -> None:
         if jacobi_coeff(a.u, b.u, c.u) != 0:
             raise AssertionError("Heisenberg symplectic Jacobi coefficient nonzero")
     print(f"  Heisenberg symplectic Jacobi sample: 0 / {trials} failures")
-    print("  ✓ Missing ingredient = phase/cocycle (symplectic pairing)")
+    print("  OK: Missing ingredient = phase/cocycle (symplectic pairing)")
 
     # -------------------------------------------------------------------------
     # §2. E6(27) Heisenberg coordinates: bad9 fibers are {u}×Z3
@@ -170,7 +172,7 @@ def main() -> None:
 
     u_points: set[tuple[int, int]] = set()
     print()
-    print("§2. Firewall bad9 = Heisenberg fibers in E6 27-rep")
+    print("SECTION 2: Firewall bad9 = Heisenberg fibers in E6 27-rep")
     print("-" * 50)
     for triad in sorted(fiber_set):
         coords = []
@@ -189,7 +191,7 @@ def main() -> None:
     all_u = {(i, j) for i in range(3) for j in range(3)}
     print(f"  distinct fibers (u points): {len(u_points)} (expected 9)")
     assert u_points == all_u
-    print("  ✓ Each bad triad is a fiber {u}×Z3 and the 9 fibers cover F3^2")
+    print("  OK: Each bad triad is a fiber {u}xZ3 and the 9 fibers cover F3^2")
 
     # -------------------------------------------------------------------------
     # §3. Mixed-sector obstruction: l3 supported on fibers is insufficient;
@@ -226,7 +228,7 @@ def main() -> None:
     residual_no_ce2 = j + l3
 
     print()
-    print("§3. Mixed g1_g1_g2 obstruction and CE2 cocycle cancellation")
+    print("SECTION 3: Mixed g1_g1_g2 obstruction and CE2 cocycle cancellation")
     print("-" * 50)
     print(f"  mixed triple: g1{a_idx}, g1{b_idx}, g2{c_idx}")
     print(f"  ||Jacobi(l2)||_inf = {max_abs(j):.6g}")
@@ -284,7 +286,7 @@ def main() -> None:
     c_pair = tuple(int(x) for x in c_s.split(","))  # type: ignore[assignment]
     if len(a_pair) != 2 or len(b_pair) != 2 or len(c_pair) != 2:
         raise AssertionError("Unexpected CE2 key parsing failure.")
-    pred = predict_simple_family_uv(a_pair, b_pair, c_pair)
+    pred = predict_ce2_uv(a_pair, b_pair, c_pair)
     assert pred is not None
     pred_U_nz = [(int(i), str(v)) for i, v in pred.U]
     pred_V_nz = [(int(i), str(v)) for i, v in pred.V]
@@ -292,7 +294,21 @@ def main() -> None:
     print(f"  Predicted V nonzeros: {len(pred_V_nz)}")
     assert sorted(U_nz) == sorted(pred_U_nz)
     assert sorted(V_nz) == sorted(pred_V_nz)
-    print("  ✓ Global Heisenberg law reproduces CE2 sparse entry exactly")
+    print("  OK: Global Heisenberg law reproduces CE2 sparse entry exactly")
+
+    # Demonstrate that the same correction is produced *without attaching* any
+    # per-triple alpha callable, by enabling the global predictor in the L-infty
+    # extension itself.
+    linfty.enable_ce2_global_predictor()
+    dalpha_global = linfty.d_alpha_on_triple(x, y, z)
+    residual_with_global = residual_no_ce2 + dalpha_global
+    print(f"  ||d(alpha_global)||_inf  = {max_abs(dalpha_global):.6g}")
+    print(f"  ||J+l3+d(alpha_global)||_inf = {max_abs(residual_with_global):.6g}")
+    assert max_abs(residual_with_global) < 1e-10
+    print(
+        "  OK: Mixed-sector anomaly cancelled by global predictor (no attached alpha)"
+    )
+    linfty.disable_ce2_global_predictor()
 
     # Build E8Z3 elements U and V from the sparse rational arrays.
     U_flat = np.zeros(900, dtype=np.complex128)
@@ -344,13 +360,15 @@ def main() -> None:
     dalpha = linfty.d_alpha_on_triple(x, y, z)
     residual_with_ce2 = residual_no_ce2 + dalpha
     print(f"  ||d(alpha)||_inf  = {max_abs(dalpha):.6g}")
-    print(f"  ||J+l3+dα||_inf   = {max_abs(residual_with_ce2):.6g}")
+    print(f"  ||J+l3+d(alpha)||_inf   = {max_abs(residual_with_ce2):.6g}")
     assert max_abs(residual_with_ce2) < 1e-10
 
-    print("  ✓ Mixed-sector anomaly cancelled by an explicit CE-2 cocycle/phase")
+    diff = dalpha + dalpha_global.scale(-1.0)
+    assert max_abs(diff) < 1e-10
+    print("  OK: Mixed-sector anomaly cancelled by an explicit CE-2 cocycle/phase")
 
     print()
-    print("OK: same resolution mechanism across s12 and the E8 Z3/L∞ firewall.")
+    print("OK: same resolution mechanism across s12 and the E8 Z3/L-infty firewall.")
 
 
 if __name__ == "__main__":
