@@ -18,10 +18,14 @@
       "stabilizer_group_atlas": "A6.2^2"
     },
     "144": {
+      "rank": 5,
+      "suborbit_lengths_compressed": "1, 11^2, 55, 66",
+      "suborbit_lengths": [1, 11, 11, 55, 66],
       "stabilizer_order": 660,
       "stabilizer_group_recognized": "PSL2(11)",
       "outer_stabilizer_order": 1320,
-      "outer_stabilizer_group_recognized": "PGL2(11)"
+      "outer_stabilizer_group_recognized": "PGL2(11)",
+      "derived_from": "Coset action on PSL2(11) ⊂ M12 (computed deterministically from M12G1-p12aB0 generators)."
     },
     "220": {
       "rank": 5,

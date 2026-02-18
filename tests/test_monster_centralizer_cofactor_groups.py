@@ -53,6 +53,7 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and h.get("stabilizer_group_recognized") == "PSL2(11)"
         and int(h.get("outer_stabilizer_order", 0) or 0) == 1320
         and h.get("outer_stabilizer_group_recognized") == "PGL2(11)"
+        and h.get("permrep_suborbit_lengths") == [1, 11, 11, 55, 66]
         for h in hits_11
     )
 
