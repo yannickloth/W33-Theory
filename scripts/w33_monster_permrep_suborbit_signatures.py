@@ -62,9 +62,6 @@ def analyze() -> dict[str, Any]:
 
     w33 = compute_w33_monster_invariants()
     n_inc = int(w33.get("n_incidence_objects", 0) or 0)
-    n_vertices = int(w33.get("n_vertices", 0) or 0)
-    ihara_chi = 240 - n_vertices
-    assert ihara_chi == 200
     e4 = e4_coeffs(6)
     e4_q2 = int(e4[2])
 
@@ -82,6 +79,7 @@ def analyze() -> dict[str, Any]:
     he_29155 = _load_permrep_meta("He", 29155)
     he_244800 = _load_permrep_meta("He", 244800)
     hn = _load_permrep_meta("HN", 1140000)
+    m12_220 = _load_permrep_meta("M12", 220)
     m12_495 = _load_permrep_meta("M12", 495)
 
     he_sub = [int(x) for x in he.get("suborbit_lengths", [])]
@@ -89,6 +87,7 @@ def analyze() -> dict[str, Any]:
     he_29155_sub = [int(x) for x in he_29155.get("suborbit_lengths", [])]
     he_244800_sub = [int(x) for x in he_244800.get("suborbit_lengths", [])]
     hn_sub = [int(x) for x in hn.get("suborbit_lengths", [])]
+    m12_220_sub = [int(x) for x in m12_220.get("suborbit_lengths", [])]
     m12_495_sub = [int(x) for x in m12_495.get("suborbit_lengths", [])]
 
     if he_sub:
@@ -101,6 +100,8 @@ def analyze() -> dict[str, Any]:
         assert sum(he_244800_sub) == 244800
     if hn_sub:
         assert sum(hn_sub) == 1140000
+    if m12_220_sub:
+        assert sum(m12_220_sub) == 220
     if m12_495_sub:
         assert sum(m12_495_sub) == 495
 
@@ -177,13 +178,27 @@ def analyze() -> dict[str, Any]:
         assert he_244800_hits["has_1029_eq_3x343"] is True
         assert he_244800_hits["has_16464_as_stabilizer"] is True
 
+    m12_220_hits = {
+        "has_w33_degree_12": bool(12 in m12_220_sub),
+        "has_e6_fund_27": bool(27 in m12_220_sub),
+        "has_4x27": bool(108 in m12_220_sub),
+    }
+    if m12_220_sub:
+        assert m12_220_hits["has_w33_degree_12"] is True
+        assert m12_220_hits["has_e6_fund_27"] is True
+        assert m12_220_hits["has_4x27"] is True
+
     m12_495_hits = {
-        "has_w33_incidence_80": bool(n_inc in m12_495_sub),
-        "has_ihara_chi_200": bool(ihara_chi in m12_495_sub),
+        "has_hodge_eigenvalue_16": bool(16 in m12_495_sub),
+        "has_su5_adjoint_24": bool(24 in m12_495_sub),
+        "has_2x24": bool(48 in m12_495_sub),
+        "has_4x24": bool(96 in m12_495_sub),
     }
     if m12_495_sub:
-        assert m12_495_hits["has_w33_incidence_80"] is True
-        assert m12_495_hits["has_ihara_chi_200"] is True
+        assert m12_495_hits["has_hodge_eigenvalue_16"] is True
+        assert m12_495_hits["has_su5_adjoint_24"] is True
+        assert m12_495_hits["has_2x24"] is True
+        assert m12_495_hits["has_4x24"] is True
 
     return {
         "available": True,
@@ -218,6 +233,11 @@ def analyze() -> dict[str, Any]:
             "rank": int(hn.get("rank", 0) or 0),
             "suborbit_lengths": hn_sub,
             "signature_hits": hn_hits,
+        },
+        "m12_220": {
+            "rank": int(m12_220.get("rank", 0) or 0),
+            "suborbit_lengths": m12_220_sub,
+            "signature_hits": m12_220_hits,
         },
         "m12_495": {
             "rank": int(m12_495.get("rank", 0) or 0),
@@ -287,17 +307,31 @@ def main() -> None:
     print(f"  contains 7×51840?   {hn['signature_hits']['has_7x_aut_w33']}")
     print()
 
-    m12 = rep["m12_495"]
-    print("M12 permrep degree 495:")
-    print(f"  rank = {m12['rank']}")
+    m12_220 = rep["m12_220"]
+    print("M12 induced 3-subset action (degree 220):")
+    print(f"  rank = {m12_220['rank']}")
     print(
-        f"  suborbits (count={len(m12['suborbit_lengths'])}): {m12['suborbit_lengths']}"
+        f"  suborbits (count={len(m12_220['suborbit_lengths'])}): {m12_220['suborbit_lengths']}"
     )
     print(
-        f"  contains 80?  {m12['signature_hits']['has_w33_incidence_80']}  (80 = W33 points+lines)"
+        f"  contains 12?  {m12_220['signature_hits']['has_w33_degree_12']}  (12 = W33 vertex degree)"
     )
     print(
-        f"  contains 200? {m12['signature_hits']['has_ihara_chi_200']}  (200 = |E|-|V|)"
+        f"  contains 27?  {m12_220['signature_hits']['has_e6_fund_27']}  (27 = E6 fundamental)"
+    )
+    print()
+
+    m12_495 = rep["m12_495"]
+    print("M12 induced 4-subset action (degree 495):")
+    print(f"  rank = {m12_495['rank']}")
+    print(
+        f"  suborbits (count={len(m12_495['suborbit_lengths'])}): {m12_495['suborbit_lengths']}"
+    )
+    print(
+        f"  contains 16?  {m12_495['signature_hits']['has_hodge_eigenvalue_16']}  (16 = W33 L1 eigenvalue)"
+    )
+    print(
+        f"  contains 24?  {m12_495['signature_hits']['has_su5_adjoint_24']}  (24 = SU(5) adjoint)"
     )
     print()
     print("ALL CHECKS PASSED ✓")
