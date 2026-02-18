@@ -302,6 +302,13 @@ def _f3_omega(u: tuple[int, int], v: tuple[int, int]) -> int:
     return (y * a - x * b) % 3
 
 
+def _f3_dot(u: tuple[int, int], v: tuple[int, int]) -> int:
+    """Standard dot product on F3^2: <(x,y),(a,b)> = x·a + y·b (mod 3)."""
+    x, y = int(u[0]) % 3, int(u[1]) % 3
+    a, b = int(v[0]) % 3, int(v[1]) % 3
+    return (x * a + y * b) % 3
+
+
 def _f3_k_of_direction(d: tuple[int, int]) -> int:
     """Constant-line selector k(d) used in the CE2 simple-family sign laws."""
     d1, d2 = int(d[0]) % 3, int(d[1]) % 3
@@ -475,6 +482,110 @@ _SIMPLE_FAMILY_SIGN_CONST_P_TERMS: dict[int, tuple[F3SparsePolyTerm, ...]] = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Metaplectic/Weil closed form in bilinear invariants (s=dot(u_c,d), w=omega(u_c,d))
+# ---------------------------------------------------------------------------
+#
+# The coordinate polynomials above are exact, but the CE2 simple-family phase is
+# even more structured: for fixed t and direction d != 0, the c0/e pieces depend
+# only on the bilinear pairings
+#   s := dot(u_c, d)    and    w := omega(u_c, d),
+# i.e. on the F9 product u_c * conj(d) = s + i*w.
+#
+# On the constant-line locus (d1 != 0 and w == k(d)), the sign collapses to a
+# dot-only character.  The small tables below encode c0(s,w), e(s,w), and that
+# constant-line dot-character directly, eliminating runtime dependence on the
+# large sparse coordinate polynomials.
+
+
+def _eval_f3_poly_sw(s: int, w: int, coeff: tuple[tuple[int, int, int], ...]) -> int:
+    """Evaluate an F3 polynomial in (s,w) with coeff[a][b] for s^a*w^b, a,b in {0,1,2}."""
+    ss = (1, int(s) % 3, (int(s) * int(s)) % 3)
+    ww = (1, int(w) % 3, (int(w) * int(w)) % 3)
+    acc = 0
+    for a in range(3):
+        for b in range(3):
+            acc = (acc + int(coeff[a][b]) * ss[a] * ww[b]) % 3
+    return int(acc) % 3
+
+
+_SIMPLE_FAMILY_WEIL_C0_COEFF: dict[
+    int, dict[tuple[int, int], tuple[tuple[int, int, int], ...]]
+] = {
+    # c0(s,w) in basis s^a*w^b with a,b in {0,1,2}.
+    1: {
+        (0, 1): ((1, 0, 2), (0, 1, 0), (0, 0, 0)),
+        (0, 2): ((1, 2, 2), (0, 1, 0), (0, 0, 0)),
+        (1, 0): ((1, 1, 2), (0, 1, 0), (0, 0, 0)),
+        (1, 1): ((2, 1, 1), (0, 2, 0), (0, 0, 0)),
+        (1, 2): ((2, 0, 0), (0, 2, 0), (0, 0, 0)),
+        (2, 0): ((1, 1, 2), (0, 1, 0), (0, 0, 0)),
+        (2, 1): ((2, 2, 0), (0, 2, 0), (0, 0, 0)),
+        (2, 2): ((2, 1, 1), (0, 2, 0), (0, 0, 0)),
+    },
+    2: {
+        (0, 1): ((1, 2, 2), (0, 1, 0), (0, 0, 0)),
+        (0, 2): ((1, 1, 2), (0, 1, 0), (0, 0, 0)),
+        (1, 0): ((1, 0, 2), (0, 1, 0), (0, 0, 0)),
+        (1, 1): ((2, 0, 1), (0, 2, 0), (0, 0, 0)),
+        (1, 2): ((2, 2, 0), (0, 2, 0), (0, 0, 0)),
+        (2, 0): ((1, 0, 2), (0, 1, 0), (0, 0, 0)),
+        (2, 1): ((2, 1, 0), (0, 2, 0), (0, 0, 0)),
+        (2, 2): ((2, 0, 1), (0, 2, 0), (0, 0, 0)),
+    },
+}
+
+
+_SIMPLE_FAMILY_WEIL_E_COEFF: dict[
+    int, dict[tuple[int, int], tuple[tuple[int, int, int], ...]]
+] = {
+    # e(s,w) in basis s^a*w^b with a,b in {0,1,2}; eps = chi(e).
+    1: {
+        (0, 1): ((2, 2, 2), (0, 2, 2), (0, 2, 2)),
+        (0, 2): ((2, 0, 0), (0, 0, 0), (0, 1, 2)),
+        (1, 0): ((0, 1, 2), (1, 0, 0), (1, 1, 2)),
+        (1, 1): ((2, 1, 2), (0, 2, 0), (0, 1, 2)),
+        (1, 2): ((0, 0, 2), (2, 1, 2), (1, 2, 2)),
+        (2, 0): ((2, 1, 1), (0, 2, 2), (1, 2, 2)),
+        (2, 1): ((2, 2, 2), (0, 0, 2), (1, 1, 2)),
+        (2, 2): ((2, 0, 1), (0, 0, 1), (0, 2, 2)),
+    },
+    2: {
+        (0, 1): ((0, 1, 1), (0, 2, 2), (0, 1, 1)),
+        (0, 2): ((0, 2, 1), (0, 2, 1), (0, 2, 1)),
+        (1, 0): ((2, 1, 2), (1, 2, 1), (2, 2, 1)),
+        (1, 1): ((0, 2, 2), (0, 2, 2), (0, 2, 1)),
+        (1, 2): ((2, 0, 0), (2, 1, 0), (2, 1, 1)),
+        (2, 0): ((2, 2, 2), (2, 2, 2), (2, 1, 1)),
+        (2, 1): ((2, 0, 0), (1, 1, 0), (2, 2, 1)),
+        (2, 2): ((0, 1, 2), (0, 2, 1), (0, 1, 1)),
+    },
+}
+
+
+_SIMPLE_FAMILY_WEIL_CONST_SIGN: dict[
+    int, dict[tuple[int, int], tuple[int, int, int]]
+] = {
+    # Constant-line sign depends only on s in {0,1,2} once (t,d) is fixed.
+    1: {
+        (1, 0): (1, 1, 1),
+        (1, 1): (1, -1, -1),
+        (1, 2): (1, 1, 1),
+        (2, 0): (1, 1, 1),
+        (2, 1): (1, 1, 1),
+        (2, 2): (-1, -1, 1),
+    },
+    2: {
+        (1, 0): (-1, -1, -1),
+        (1, 1): (1, 1, -1),
+        (1, 2): (-1, -1, -1),
+        (2, 0): (-1, -1, -1),
+        (2, 1): (-1, -1, -1),
+        (2, 2): (1, -1, 1),
+    },
+}
+
+
 def predict_simple_family_sign_closed_form(c_i: int, match_i: int, other_i: int) -> int:
     """Closed-form sign(c,match,other) ∈ {+1,-1} for the CE2 simple family."""
     e6id_to_vec, _ = _heisenberg_vec_maps()
@@ -486,18 +597,23 @@ def predict_simple_family_sign_closed_form(c_i: int, match_i: int, other_i: int)
     d1 = (int(um1) - int(uc1)) % 3
     d2 = (int(um2) - int(uc2)) % 3
     d = (int(d1), int(d2))
+    if d == (0, 0):
+        raise ValueError("unexpected: d == 0 in CE2 simple-family sign")
 
-    constant_line = False
-    if d1 != 0:
-        constant_line = _f3_omega((uc1, uc2), d) == _f3_k_of_direction(d)
+    w = _f3_omega((uc1, uc2), d)
+    s = _f3_dot((uc1, uc2), d)
 
+    # Exact constant-line selector: independent of t, but the resulting dot-only
+    # character depends on (t,d).
+    constant_line = (d1 != 0) and (int(w) == _f3_k_of_direction(d))
     if constant_line:
-        poly = _SIMPLE_FAMILY_SIGN_CONST_P_TERMS[int(t)]
-        p = _eval_f3_sparse_poly(uc1, uc2, d1, d2, poly)
-        return _f3_chi(p)
+        table = _SIMPLE_FAMILY_WEIL_CONST_SIGN[int(t)][(int(d1), int(d2))]
+        return int(table[int(s) % 3])
 
-    c0 = _eval_f3_sparse_poly(uc1, uc2, d1, d2, _SIMPLE_FAMILY_SIGN_C0_TERMS[int(t)])
-    e = _eval_f3_sparse_poly(uc1, uc2, d1, d2, _SIMPLE_FAMILY_SIGN_EPS_TERMS[int(t)])
+    c0_coeff = _SIMPLE_FAMILY_WEIL_C0_COEFF[int(t)][(int(d1), int(d2))]
+    e_coeff = _SIMPLE_FAMILY_WEIL_E_COEFF[int(t)][(int(d1), int(d2))]
+    c0 = _eval_f3_poly_sw(int(s), int(w), c0_coeff)
+    e = _eval_f3_poly_sw(int(s), int(w), e_coeff)
     eps = _f3_chi(e)
     zsum = (int(zm) + int(zo)) % 3
     return int(eps) * _f3_chi((int(zsum) + int(c0)) % 3)

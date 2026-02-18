@@ -199,7 +199,9 @@ class LInftyE8Extension:
         """Enable a global CE2 predictor inferred from sparse local repairs.
 
         This installs a lightweight index-level law `predict_ce2_uv(a,b,c)` from
-        `scripts/ce2_global_cocycle.py` and allows `homotopy_jacobi` to cancel
+        `scripts/ce2_global_cocycle.py`. The simple-family phase is implemented
+        in a metaplectic/Weil closed form in the bilinear invariants
+        (s=dot(u_c,d), w=omega(u_c,d)) over F9, so `homotopy_jacobi` can cancel
         known mixed-sector basis obstructions without per-triple artifacts or
         on-the-fly LSQ solves.
         """
