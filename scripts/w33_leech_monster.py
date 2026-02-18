@@ -2248,6 +2248,149 @@ def analyze_sporadic_group_magnitudes(
     }
 
 
+def analyze_monster_prime_centralizer_sporadic_ladder(
+    atlas_json_path: str | None = None,
+    sporadic_orders_json_path: str | None = None,
+) -> dict[str, object]:
+    """Match prime-order Monster centralizers to sporadic-group magnitudes.
+
+    Using bundled ATLAS centralizer orders for Monster conjugacy classes and a
+    bundled table of sporadic group order factorizations, we can verify the
+    famous "centralizer ladder" where several prime-order centralizers factor as
+
+        C_M(pX) = p · H
+
+    for a sporadic simple group H (or a small 2-power multiple thereof).
+
+    The output is deterministic/offline and intended as a numerology + structure
+    report, not a new pillar.
+    """
+
+    def _order_from_factorization(fac: dict[int, int]) -> int:
+        n = 1
+        for p, e in fac.items():
+            n *= int(p) ** int(e)
+        return int(n)
+
+    def _is_power_of_two(n: int) -> bool:
+        nn = int(n)
+        return nn > 0 and (nn & (nn - 1)) == 0
+
+    def _v2(n: int) -> int:
+        nn = int(n)
+        k = 0
+        while nn > 0 and nn % 2 == 0:
+            nn //= 2
+            k += 1
+        return int(k)
+
+    atlas = load_monster_atlas_ccls(json_path=atlas_json_path)
+    if atlas is None:
+        return {"available": False, "reason": "monster_atlas_ccls.json missing"}
+    classes = atlas.get("classes", {})
+    if not isinstance(classes, dict) or not classes:
+        return {"available": False, "reason": "invalid monster ATLAS payload"}
+
+    spor_fac = load_sporadic_group_orders(json_path=sporadic_orders_json_path)
+    if spor_fac is None:
+        return {"available": False, "reason": "sporadic_group_orders.json missing"}
+    spor_order = {name: _order_from_factorization(f) for name, f in spor_fac.items()}
+
+    # Prime-order (and 2/3 variants) classes to scan. These are exactly the
+    # ones we already support in offline moonshine tooling elsewhere.
+    prime_classes = [
+        "2A",
+        "2B",
+        "3A",
+        "3B",
+        "3C",
+        "5A",
+        "5B",
+        "7A",
+        "7B",
+        "11A",
+        "13A",
+        "13B",
+        "17A",
+        "19A",
+        "23A",
+        "29A",
+        "31A",
+        "41A",
+        "47A",
+        "59A",
+        "71A",
+    ]
+
+    out_matches: dict[str, object] = {}
+    for cls in prime_classes:
+        meta = classes.get(cls, {})
+        if (
+            not isinstance(meta, dict)
+            or "order" not in meta
+            or "centralizer_order" not in meta
+        ):
+            continue
+        p = int(meta["order"])
+        cent = int(meta["centralizer_order"])
+        if p <= 1 or cent % p != 0:
+            continue
+        cof = cent // p
+
+        exact = [name for name, n in spor_order.items() if int(n) == int(cof)]
+        pow2 = []
+        for name, n in spor_order.items():
+            nn = int(n)
+            if nn <= 0:
+                continue
+            if cof % nn != 0:
+                continue
+            ratio = cof // nn
+            if _is_power_of_two(ratio):
+                pow2.append(
+                    {"group": name, "two_power": _v2(ratio), "ratio": int(ratio)}
+                )
+        pow2 = sorted(pow2, key=lambda r: (int(r["two_power"]), str(r["group"])))
+
+        out_matches[cls] = {
+            "order": p,
+            "centralizer_order": cent,
+            "cofactor": cof,
+            "exact_sporadic_match": exact[0] if exact else None,
+            "power_of_two_sporadic_matches": pow2,
+        }
+
+    # Canonical, fully checkable ladder rungs (computed from bundled data).
+    def _cof(cls: str) -> int:
+        rec = out_matches.get(cls, {})
+        if not isinstance(rec, dict):
+            raise AssertionError(f"missing class record for {cls}")
+        return int(rec["cofactor"])
+
+    assert _cof("2A") == int(spor_order["B"])
+    assert _cof("3A") == int(spor_order["Fi24"])
+    assert _cof("3C") == int(spor_order["Th"])
+    assert _cof("5A") == int(spor_order["HN"])
+    assert _cof("7A") == int(spor_order["He"])
+    assert _cof("11A") == int(spor_order["M12"])
+
+    # 2B: cofactor is a pure 2-power multiple of Co1.
+    co2b = _cof("2B")
+    assert co2b % int(spor_order["Co1"]) == 0
+    ratio_2b = co2b // int(spor_order["Co1"])
+    assert _is_power_of_two(ratio_2b) and _v2(ratio_2b) == 24
+
+    return {
+        "available": True,
+        "prime_classes": prime_classes,
+        "matches": out_matches,
+        "notes": [
+            "Several prime-order centralizers factor as p·H for sporadic H (Baby Monster, Fi24', Th, HN, He, M12).",
+            "2B exhibits the 2^24·Co1 factor in C_M(2B)/2 (the Leech-lattice 2^24 shows up explicitly).",
+        ],
+    }
+
+
 def load_monster_atlas_ccls(json_path: str | None = None) -> dict | None:
     """Load a bundled ATLAS (QMUL) snapshot of Monster conjugacy-class metadata.
 
