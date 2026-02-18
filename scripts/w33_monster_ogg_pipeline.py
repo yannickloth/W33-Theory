@@ -95,12 +95,27 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-q-exp", type=int, default=10)
     parser.add_argument("--out-json", type=Path, default=None)
+    parser.add_argument(
+        "--verify-rr-j",
+        action="store_true",
+        help="Also verify the Rogers-Ramanujan continued-fraction identity for j(tau).",
+    )
     args = parser.parse_args()
 
     from w33_leech_monster import (
         analyze_monster_2x3_ogg_prime_triangle_support,
+        analyze_rogers_ramanujan_j_invariant,
         verify_fricke_prime_replicability,
     )
+
+    if args.verify_rr_j:
+        rr = analyze_rogers_ramanujan_j_invariant(n_terms=8)
+        verdict = "PASS" if rr.get("verified") else "FAIL"
+        print("=" * 78)
+        print("ROGERS-RAMANUJAN CHECK: j(tau) as rational function of R(q)^5")
+        print("=" * 78)
+        print(f"Verdict: {verdict}")
+        print()
 
     rep = analyze_monster_2x3_ogg_prime_triangle_support()
     if rep.get("available") is not True:

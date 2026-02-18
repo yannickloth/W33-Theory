@@ -110,6 +110,34 @@ def _vec_sub(a: tuple[int, int, int], b: tuple[int, int, int]) -> tuple[int, int
 @lru_cache(maxsize=1)
 def _simple_family_sign_map() -> dict[tuple[int, int, int], int]:
     """Load sign(c, match, other) ∈ {+1,-1} from sparse CE2 data for the simple family."""
+    compact_path = ROOT / "committed_artifacts" / "ce2_simple_family_sign_map.json"
+    if compact_path.exists():
+        data = json.loads(compact_path.read_text(encoding="utf-8"))
+        entries = data.get("entries", [])
+        if not isinstance(entries, list):
+            raise ValueError("unexpected compact CE2 sign JSON format")
+
+        sign_map: dict[tuple[int, int, int], int] = {}
+        for rec in entries:
+            if not isinstance(rec, dict):
+                continue
+            try:
+                c_i = int(rec["c"])
+                match_i = int(rec["match"])
+                other_i = int(rec["other"])
+                s = int(rec["sign"])
+            except Exception:
+                continue
+            if s not in (-1, 1):
+                raise ValueError(f"unexpected sign value in compact map: {s}")
+            sign_map[(c_i, match_i, other_i)] = s
+
+        if len(sign_map) != 864:
+            raise ValueError(
+                f"unexpected compact sign-map size: {len(sign_map)} (expected 864)"
+            )
+        return sign_map
+
     sparse_path = ROOT / "committed_artifacts" / "ce2_sparse_local_solutions.json"
     data = json.loads(sparse_path.read_text(encoding="utf-8"))
     entries = data.get("entries", [])
