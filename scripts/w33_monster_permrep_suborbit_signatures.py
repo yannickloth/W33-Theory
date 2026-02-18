@@ -80,6 +80,7 @@ def analyze() -> dict[str, Any]:
     he_244800 = _load_permrep_meta("He", 244800)
     hn = _load_permrep_meta("HN", 1140000)
     m12_220 = _load_permrep_meta("M12", 220)
+    m12_144 = _load_permrep_meta("M12", 144)
     m12_495 = _load_permrep_meta("M12", 495)
 
     he_sub = [int(x) for x in he.get("suborbit_lengths", [])]
@@ -88,10 +89,13 @@ def analyze() -> dict[str, Any]:
     he_244800_sub = [int(x) for x in he_244800.get("suborbit_lengths", [])]
     hn_sub = [int(x) for x in hn.get("suborbit_lengths", [])]
     m12_220_sub = [int(x) for x in m12_220.get("suborbit_lengths", [])]
+    m12_144_sub = [int(x) for x in m12_144.get("suborbit_lengths", [])]
     m12_495_sub = [int(x) for x in m12_495.get("suborbit_lengths", [])]
 
     if he_sub:
         assert sum(he_sub) == 2058
+    if m12_144_sub:
+        assert sum(m12_144_sub) == 144
     if he_8330_sub:
         assert sum(he_8330_sub) == 8330
     if he_29155_sub:
@@ -239,6 +243,10 @@ def analyze() -> dict[str, Any]:
             "suborbit_lengths": m12_220_sub,
             "signature_hits": m12_220_hits,
         },
+        "m12_144": {
+            "rank": int(m12_144.get("rank", 0) or 0),
+            "suborbit_lengths": m12_144_sub,
+        },
         "m12_495": {
             "rank": int(m12_495.get("rank", 0) or 0),
             "suborbit_lengths": m12_495_sub,
@@ -320,6 +328,13 @@ def main() -> None:
         f"  contains 27?  {m12_220['signature_hits']['has_e6_fund_27']}  (27 = E6 fundamental)"
     )
     print()
+
+    m12_144 = rep.get("m12_144", {})
+    if m12_144:
+        print("M12 primitive coset action (degree 144, stabilizer PSL2(11)):")
+        print(f"  rank = {m12_144.get('rank')}")
+        print(f"  suborbits = {m12_144.get('suborbit_lengths')}")
+        print()
 
     m12_495 = rep["m12_495"]
     print("M12 induced 4-subset action (degree 495):")
