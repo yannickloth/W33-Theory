@@ -512,7 +512,12 @@ def predict_simple_family_sign(c_i: int, match_i: int, other_i: int) -> int:
       3) Compact committed sign map (864-entry table)
       4) Fallback extraction from sparse CE2 local solutions
     """
-    return predict_simple_family_sign_closed_form(int(c_i), int(match_i), int(other_i))
+    try:
+        return predict_simple_family_sign_closed_form(
+            int(c_i), int(match_i), int(other_i)
+        )
+    except Exception:
+        pass
 
     coeff_mask = _simple_family_sign_poly_coeff_mask()
     if coeff_mask is not None:
