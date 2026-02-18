@@ -411,15 +411,36 @@ def main() -> None:
         print("   ", fit)
 
     print()
-    print(
-        "NEXT: turn the (row,col,side) Heisenberg law into a global alpha(cocycle) ansatz,"
-    )  # noqa: T201
-    print(
-        "      compress the deterministic sign-table into a low-parameter phase rule,"
-    )  # noqa: T201
-    print(
-        "      and validate directly against homotopy_jacobi residuals on mixed triples."
-    )  # noqa: T201
+    from ce2_global_cocycle import (
+        _simple_family_sign_poly_coeff_mask,
+        predict_simple_family_sign,
+    )
+
+    coeff_mask = _simple_family_sign_poly_coeff_mask()
+    if coeff_mask is None:
+        print("  No committed GF(2) sign-polynomial artifact found.")  # noqa: T201
+        print(  # noqa: T201
+            "NEXT: turn the (row,col,side) Heisenberg law into a global alpha(cocycle) ansatz,"
+        )
+        print(  # noqa: T201
+            "      compress the deterministic sign-table into a low-parameter phase rule,"
+        )
+    else:
+        mism = 0
+        for (c_i, match_i, other_i), s in sign_map.items():
+            if predict_simple_family_sign(c_i, match_i, other_i) != int(s):
+                mism += 1
+        print(  # noqa: T201
+            "  GF(2) sign polynomial (deg≤4): weight=%d, mismatches=%d"
+            % (int(coeff_mask).bit_count(), mism)
+        )
+        assert mism == 0
+        print(  # noqa: T201
+            "NEXT: turn the (row,col,side) Heisenberg law into a global alpha(cocycle) ansatz,"
+        )
+        print(  # noqa: T201
+            "      validate directly against homotopy_jacobi residuals on mixed triples."
+        )
 
 
 if __name__ == "__main__":
