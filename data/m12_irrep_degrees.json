@@ -1,0 +1,17 @@
+{
+  "group": "M12",
+  "order": 95040,
+  "n_conjugacy_classes": 15,
+  "degrees": [1, 11, 11, 16, 16, 45, 54, 55, 55, 55, 66, 99, 120, 144, 176],
+  "sources": [
+    {
+      "title": "OEIS A003856 (character degrees of Mathieu group M12)",
+      "url": "https://oeis.org/A003856"
+    },
+    {
+      "title": "GroupProps: Mathieu group M12",
+      "url": "https://groupprops.subwiki.org/wiki/Mathieu_group_M12"
+    }
+  ],
+  "notes": "Irreducible complex character degrees (multiset). Stored for offline, deterministic checks (GAP not required)."
+}

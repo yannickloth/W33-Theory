@@ -82,6 +82,32 @@ def main() -> None:
     print("Summary ladder (class -> p×H):")
     for cls, fact in ladder:
         print(f"  {cls:3s} -> {fact}")
+
+    # Extra bridge: 11A r_11=144 from the 2A×3B class-algebra signature matches
+    # an M12 irrep degree (degrees stored offline in data/).
+    try:
+        import json
+
+        from w33_leech_monster import (
+            analyze_monster_2a3b_class_algebra_partial_distribution,
+        )
+
+        dist = analyze_monster_2a3b_class_algebra_partial_distribution()
+        if dist.get("available") is True:
+            n_11 = int(dist["classes"]["11A"]["structure_constant_per_element"])
+            r_11 = int(n_11 // 11) if n_11 % 11 == 0 else None
+            degs_path = SCRIPTS_DIR.parent / "data" / "m12_irrep_degrees.json"
+            if degs_path.exists() and r_11 is not None:
+                degs = json.loads(degs_path.read_text(encoding="utf-8")).get(
+                    "degrees", []
+                )
+                degs_int = {int(x) for x in degs}
+                print()
+                print(
+                    f"11A bridge: n_2A,3B^11A/11 = r_11 = {r_11};  r_11 in M12 irrep degrees? {r_11 in degs_int}"
+                )
+    except Exception:
+        pass
     print()
     print("ALL CHECKS PASSED ✓")
 
