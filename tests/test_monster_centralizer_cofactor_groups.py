@@ -51,6 +51,8 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and int(h.get("r", 0) or 0) == 144
         and int(h.get("stabilizer_order", 0) or 0) == 660
         and h.get("stabilizer_group_recognized") == "PSL2(11)"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 1320
+        and h.get("outer_stabilizer_group_recognized") == "PGL2(11)"
         for h in hits_11
     )
 
@@ -61,6 +63,8 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and int(h.get("r", 0) or 0) == 1140000
         and int(h.get("stabilizer_order", 0) or 0) == 239500800
         and h.get("stabilizer_group_recognized") == "A12"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 479001600
+        and h.get("outer_stabilizer_group_recognized") == "S12"
         for h in hits_5
     )
 

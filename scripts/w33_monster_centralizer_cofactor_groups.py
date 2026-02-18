@@ -76,7 +76,9 @@ def _recognize_subgroup_by_order(order: int) -> str | None:
     """
     by_order = {
         660: "PSL2(11)",
+        1320: "PGL2(11)",
         239_500_800: "A12",
+        479_001_600: "S12",
         1_958_400: "Sp4(4):2",
         # Natural stabilizers for small-group minimal permutation actions.
         432: "3^2:GL2(3)",  # point stabilizer in PSL3(3) on PG(2,3)
@@ -193,6 +195,9 @@ def analyze() -> dict[str, Any]:
                 assert r is not None and int(r) > 0
                 assert cof % int(r) == 0
                 stab = int(cof // int(r))
+                outer_stab = (
+                    int(2 * stab) if recognized in {"HN", "He", "M12"} else None
+                )
                 perm_hits.append(
                     {
                         "pair": str(pair_key),
@@ -201,6 +206,14 @@ def analyze() -> dict[str, Any]:
                         "stabilizer_order": int(stab),
                         "stabilizer_group_recognized": _recognize_subgroup_by_order(
                             int(stab)
+                        ),
+                        "outer_stabilizer_order": (
+                            int(outer_stab) if outer_stab is not None else None
+                        ),
+                        "outer_stabilizer_group_recognized": (
+                            _recognize_subgroup_by_order(int(outer_stab))
+                            if outer_stab is not None
+                            else None
                         ),
                     }
                 )
@@ -242,6 +255,8 @@ def analyze() -> dict[str, Any]:
         and int(h["r"]) == 144
         and int(h.get("stabilizer_order", 0) or 0) == 660
         and h.get("stabilizer_group_recognized") == "PSL2(11)"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 1320
+        and h.get("outer_stabilizer_group_recognized") == "PGL2(11)"
         for h in out["11A"]["perm_hits"]
     )
     # 5A: cofactor HN has perm-degree hit r_5(2A×3A)=1140000, stabilizer A12.
@@ -250,6 +265,8 @@ def analyze() -> dict[str, Any]:
         and int(h["r"]) == 1140000
         and int(h.get("stabilizer_order", 0) or 0) == 239_500_800
         and h.get("stabilizer_group_recognized") == "A12"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 479_001_600
+        and h.get("outer_stabilizer_group_recognized") == "S12"
         for h in out["5A"]["perm_hits"]
     )
     # 7A: cofactor He has perm-degree hit r_7(2A×3A)=2058, stabilizer Sp4(4):2.
