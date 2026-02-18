@@ -63,6 +63,32 @@ def _recognize_small_group_by_order(order: int) -> str | None:
     return by_order.get(int(order))
 
 
+def _recognize_subgroup_by_order(order: int) -> str | None:
+    """Recognize a few stabilizer subgroups by order.
+
+    This is meant to be a conservative, offline bridge:
+      cofactor group H  --(perm degree r)-->  stabilizer subgroup K ≤ H
+
+    For the key sporadic rungs we rely on order-uniqueness:
+      - |PSL2(11)| = 660
+      - |A12| = 12!/2 = 239,500,800
+      - |Sp4(4):2| = 2·|Sp4(4)| = 1,958,400
+    """
+    by_order = {
+        660: "PSL2(11)",
+        239_500_800: "A12",
+        1_958_400: "Sp4(4):2",
+        # Natural stabilizers for small-group minimal permutation actions.
+        432: "3^2:GL2(3)",  # point stabilizer in PSL3(3) on PG(2,3)
+        21: "7:3",  # Borel in PSL2(7) on P^1(F7)
+        12: "A4",  # point stabilizer in A5 on 5 points
+        6: "S3",  # point stabilizer in S4 on 4 points
+        2: "C2",  # point stabilizer in S3 on 3 points
+        1: "1",
+    }
+    return by_order.get(int(order))
+
+
 def _perm_degrees_for_group(group: str) -> list[int]:
     g = str(group)
     if g in {"HN", "He", "M12"}:
@@ -164,7 +190,20 @@ def analyze() -> dict[str, Any]:
                 "r_in_perm_degrees": bool(in_perm),
             }
             if in_perm:
-                perm_hits.append({"pair": str(pair_key), "r": int(r), "n": int(n)})
+                assert r is not None and int(r) > 0
+                assert cof % int(r) == 0
+                stab = int(cof // int(r))
+                perm_hits.append(
+                    {
+                        "pair": str(pair_key),
+                        "r": int(r),
+                        "n": int(n),
+                        "stabilizer_order": int(stab),
+                        "stabilizer_group_recognized": _recognize_subgroup_by_order(
+                            int(stab)
+                        ),
+                    }
+                )
 
         perm_hits = sorted(perm_hits, key=lambda x: (int(x["r"]), str(x["pair"])))
 
@@ -196,6 +235,30 @@ def analyze() -> dict[str, Any]:
     # 29A: cofactor C3 has degree-3 regular action, and r_29(2A×3B)=3.
     assert any(
         h["pair"] == "2A×3B" and int(h["r"]) == 3 for h in out["29A"]["perm_hits"]
+    )
+    # 11A: cofactor M12 has perm-degree hit r_11(2A×3B)=144, stabilizer PSL2(11).
+    assert any(
+        h["pair"] == "2A×3B"
+        and int(h["r"]) == 144
+        and int(h.get("stabilizer_order", 0) or 0) == 660
+        and h.get("stabilizer_group_recognized") == "PSL2(11)"
+        for h in out["11A"]["perm_hits"]
+    )
+    # 5A: cofactor HN has perm-degree hit r_5(2A×3A)=1140000, stabilizer A12.
+    assert any(
+        h["pair"] == "2A×3A"
+        and int(h["r"]) == 1140000
+        and int(h.get("stabilizer_order", 0) or 0) == 239_500_800
+        and h.get("stabilizer_group_recognized") == "A12"
+        for h in out["5A"]["perm_hits"]
+    )
+    # 7A: cofactor He has perm-degree hit r_7(2A×3A)=2058, stabilizer Sp4(4):2.
+    assert any(
+        h["pair"] == "2A×3A"
+        and int(h["r"]) == 2058
+        and int(h.get("stabilizer_order", 0) or 0) == 1_958_400
+        and h.get("stabilizer_group_recognized") == "Sp4(4):2"
+        for h in out["7A"]["perm_hits"]
     )
 
     return {"available": True, "classes": out, "pairs": sorted(pairs.keys())}
@@ -229,7 +292,16 @@ def main() -> None:
         if perm_degs:
             print(f"  perm degrees: {perm_degs}")
         if perm_hits:
-            hit_str = ", ".join(f"{h['pair']}→r={h['r']}" for h in perm_hits)
+            hit_strs = []
+            for h in perm_hits:
+                if not isinstance(h, dict):
+                    continue
+                srec = h.get("stabilizer_group_recognized")
+                if isinstance(srec, str) and srec:
+                    hit_strs.append(f"{h['pair']}→r={h['r']} (stab={srec})")
+                else:
+                    hit_strs.append(f"{h['pair']}→r={h['r']}")
+            hit_str = ", ".join(hit_strs)
             print(f"  r_p perm hits: {hit_str}")
         else:
             print("  r_p perm hits: none")
