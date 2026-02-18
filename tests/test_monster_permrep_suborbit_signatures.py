@@ -22,6 +22,13 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
     assert hits_he.get("nontrivial_all_multiples_of_17") is True
     assert int(hits_he.get("nontrivial_sum", 0) or 0) == 2057
 
+    he2 = rep.get("he_29155", {})
+    assert isinstance(he2, dict)
+    hits_he2 = he2.get("signature_hits", {})
+    assert isinstance(hits_he2, dict)
+    assert hits_he2.get("has_e4_q2") is True
+    assert hits_he2.get("has_trace_l1") is True
+
     hn = rep.get("hn_1140000", {})
     assert isinstance(hn, dict)
     hits_hn = hn.get("signature_hits", {})

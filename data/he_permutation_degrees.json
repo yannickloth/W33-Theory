@@ -13,6 +13,64 @@
       "outer_stabilizer_order": 3916800,
       "outer_stabilizer_group_recognized": "Sp4(4):4",
       "outer_stabilizer_group_atlas": "S4(4):4"
+    },
+    "8330": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p8330B0",
+      "rank": 7,
+      "suborbit_lengths_compressed": "1, 105, 720, 840^2, 1344, 4480",
+      "suborbit_lengths": [1, 105, 720, 840, 840, 1344, 4480],
+      "stabilizer_order": 483840
+    },
+    "29155": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p29155B0",
+      "rank": 11,
+      "suborbit_lengths_compressed": "1, 90, 120, 384, 960^2, 1440, 2160, 2880^2, 5760, 11520",
+      "suborbit_lengths": [1, 90, 120, 384, 960, 960, 1440, 2160, 2880, 2880, 5760, 11520],
+      "stabilizer_order": 138240
+    },
+    "244800": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p244800B0",
+      "rank": 36,
+      "suborbit_lengths_compressed": "1, 16, 112^2, 343^2, 784^4, 1029, 1372, 2352, 5488^13, 16464^10",
+      "suborbit_lengths": [
+        1,
+        16,
+        112,
+        112,
+        343,
+        343,
+        784,
+        784,
+        784,
+        784,
+        1029,
+        1372,
+        2352,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        5488,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464,
+        16464
+      ],
+      "stabilizer_order": 16464
     }
   },
   "sources": [
@@ -23,6 +81,18 @@
     {
       "title": "ATLAS of Group Representations: He — permutation representation on 2058 points (rank 5, suborbits)",
       "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p2058B0"
+    },
+    {
+      "title": "ATLAS of Group Representations: He — permutation representation on 8330 points (rank 7, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p8330B0"
+    },
+    {
+      "title": "ATLAS of Group Representations: He — permutation representation on 29155 points (rank 11, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p29155B0"
+    },
+    {
+      "title": "ATLAS of Group Representations: He — permutation representation on 244800 points (rank 36, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p244800B0"
     }
   ],
   "notes": "Permutation representation degrees listed by the ATLAS of Group Representations. Stored for offline, deterministic checks (GAP not required)."
