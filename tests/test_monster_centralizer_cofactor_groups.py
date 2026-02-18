@@ -65,6 +65,22 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and h.get("stabilizer_group_recognized") == "A12"
         and int(h.get("outer_stabilizer_order", 0) or 0) == 479001600
         and h.get("outer_stabilizer_group_recognized") == "S12"
+        and int(h.get("permrep_rank", 0) or 0) == 12
+        and h.get("permrep_suborbit_lengths")
+        == [
+            1,
+            462,
+            2520,
+            2520,
+            10395,
+            16632,
+            30800,
+            69300,
+            166320,
+            166320,
+            311850,
+            362880,
+        ]
         for h in hits_5
     )
 
@@ -75,5 +91,9 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and int(h.get("r", 0) or 0) == 2058
         and int(h.get("stabilizer_order", 0) or 0) == 1958400
         and h.get("stabilizer_group_recognized") == "Sp4(4):2"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 3916800
+        and h.get("outer_stabilizer_group_recognized") == "Sp4(4):4"
+        and int(h.get("permrep_rank", 0) or 0) == 5
+        and h.get("permrep_suborbit_lengths") == [1, 136, 136, 425, 1360]
         for h in hits_7
     )

@@ -80,6 +80,7 @@ def _recognize_subgroup_by_order(order: int) -> str | None:
         239_500_800: "A12",
         479_001_600: "S12",
         1_958_400: "Sp4(4):2",
+        3_916_800: "Sp4(4):4",
         # Natural stabilizers for small-group minimal permutation actions.
         432: "3^2:GL2(3)",  # point stabilizer in PSL3(3) on PG(2,3)
         21: "7:3",  # Borel in PSL2(7) on P^1(F7)
@@ -112,6 +113,28 @@ def _perm_degrees_for_group(group: str) -> list[int]:
         "C2": [2],
         "1": [1],
     }.get(g, [])
+
+
+def _permrep_metadata_for_group(group: str) -> dict[int, dict[str, Any]]:
+    g = str(group)
+    if g not in {"HN", "He", "M12"}:
+        return {}
+    path = ROOT / "data" / f"{g.lower()}_permutation_degrees.json"
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    meta = payload.get("rep_metadata", {})
+    if not isinstance(meta, dict):
+        return {}
+    out: dict[int, dict[str, Any]] = {}
+    for k, v in meta.items():
+        try:
+            deg = int(k)
+        except Exception:
+            continue
+        if isinstance(v, dict):
+            out[int(deg)] = dict(v)
+    return out
 
 
 def analyze() -> dict[str, Any]:
@@ -174,6 +197,7 @@ def analyze() -> dict[str, Any]:
 
         perm_degs = _perm_degrees_for_group(recognized) if recognized else []
         perm_deg_set = set(int(x) for x in perm_degs)
+        permrep_meta = _permrep_metadata_for_group(recognized) if recognized else {}
 
         ratios: dict[str, Any] = {}
         perm_hits: list[dict[str, Any]] = []
@@ -198,25 +222,44 @@ def analyze() -> dict[str, Any]:
                 outer_stab = (
                     int(2 * stab) if recognized in {"HN", "He", "M12"} else None
                 )
-                perm_hits.append(
-                    {
-                        "pair": str(pair_key),
-                        "r": int(r),
-                        "n": int(n),
-                        "stabilizer_order": int(stab),
-                        "stabilizer_group_recognized": _recognize_subgroup_by_order(
-                            int(stab)
-                        ),
-                        "outer_stabilizer_order": (
-                            int(outer_stab) if outer_stab is not None else None
-                        ),
-                        "outer_stabilizer_group_recognized": (
-                            _recognize_subgroup_by_order(int(outer_stab))
-                            if outer_stab is not None
-                            else None
-                        ),
-                    }
-                )
+                rec: dict[str, Any] = {
+                    "pair": str(pair_key),
+                    "r": int(r),
+                    "n": int(n),
+                    "stabilizer_order": int(stab),
+                    "stabilizer_group_recognized": _recognize_subgroup_by_order(
+                        int(stab)
+                    ),
+                    "outer_stabilizer_order": (
+                        int(outer_stab) if outer_stab is not None else None
+                    ),
+                    "outer_stabilizer_group_recognized": (
+                        _recognize_subgroup_by_order(int(outer_stab))
+                        if outer_stab is not None
+                        else None
+                    ),
+                }
+
+                meta = permrep_meta.get(int(r), {})
+                if isinstance(meta, dict) and meta:
+                    rec["permrep_metadata"] = dict(meta)
+                    for k in (
+                        "atlas_permrep_url",
+                        "rank",
+                        "suborbit_lengths_compressed",
+                        "suborbit_lengths",
+                    ):
+                        if k in meta:
+                            rec[f"permrep_{k}"] = meta.get(k)
+
+                    if "stabilizer_order" in meta:
+                        assert int(meta.get("stabilizer_order") or 0) == int(stab)
+                    if outer_stab is not None and "outer_stabilizer_order" in meta:
+                        assert int(meta.get("outer_stabilizer_order") or 0) == int(
+                            outer_stab
+                        )
+
+                perm_hits.append(rec)
 
         perm_hits = sorted(perm_hits, key=lambda x: (int(x["r"]), str(x["pair"])))
 
@@ -275,6 +318,8 @@ def analyze() -> dict[str, Any]:
         and int(h["r"]) == 2058
         and int(h.get("stabilizer_order", 0) or 0) == 1_958_400
         and h.get("stabilizer_group_recognized") == "Sp4(4):2"
+        and int(h.get("outer_stabilizer_order", 0) or 0) == 3_916_800
+        and h.get("outer_stabilizer_group_recognized") == "Sp4(4):4"
         for h in out["7A"]["perm_hits"]
     )
 
@@ -314,8 +359,20 @@ def main() -> None:
                 if not isinstance(h, dict):
                     continue
                 srec = h.get("stabilizer_group_recognized")
+                rank = h.get("permrep_rank")
                 if isinstance(srec, str) and srec:
-                    hit_strs.append(f"{h['pair']}→r={h['r']} (stab={srec})")
+                    extra = []
+                    if rank is not None:
+                        try:
+                            extra.append(f"rank={int(rank)}")
+                        except Exception:
+                            pass
+                    suffix = (
+                        f" ({', '.join(['stab=' + srec] + extra)})"
+                        if extra
+                        else f" (stab={srec})"
+                    )
+                    hit_strs.append(f"{h['pair']}→r={h['r']}{suffix}")
                 else:
                     hit_strs.append(f"{h['pair']}→r={h['r']}")
             hit_str = ", ".join(hit_strs)

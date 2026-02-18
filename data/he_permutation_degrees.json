@@ -1,10 +1,28 @@
 {
   "group": "He",
   "degrees": [2058, 8330, 29155, 244800],
+  "rep_metadata": {
+    "2058": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p2058B0",
+      "rank": 5,
+      "suborbit_lengths_compressed": "1, 136^2, 425, 1360",
+      "suborbit_lengths": [1, 136, 136, 425, 1360],
+      "stabilizer_order": 1958400,
+      "stabilizer_group_recognized": "Sp4(4):2",
+      "stabilizer_group_atlas": "S4(4):2",
+      "outer_stabilizer_order": 3916800,
+      "outer_stabilizer_group_recognized": "Sp4(4):4",
+      "outer_stabilizer_group_atlas": "S4(4):4"
+    }
+  },
   "sources": [
     {
       "title": "ATLAS of Group Representations: Held group He (Representations)",
       "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/He/"
+    },
+    {
+      "title": "ATLAS of Group Representations: He — permutation representation on 2058 points (rank 5, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HeG1-p2058B0"
     }
   ],
   "notes": "Permutation representation degrees listed by the ATLAS of Group Representations. Stored for offline, deterministic checks (GAP not required)."

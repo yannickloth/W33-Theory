@@ -1,6 +1,14 @@
 {
   "group": "M12",
   "degrees": [12, 66, 144, 220, 396, 495, 1320],
+  "rep_metadata": {
+    "144": {
+      "stabilizer_order": 660,
+      "stabilizer_group_recognized": "PSL2(11)",
+      "outer_stabilizer_order": 1320,
+      "outer_stabilizer_group_recognized": "PGL2(11)"
+    }
+  },
   "sources": [
     {
       "title": "Wikipedia: Mathieu group M12 (Maximal subgroups table: indices give transitive coset actions)",
@@ -9,6 +17,10 @@
     {
       "title": "ATLAS of Group Representations: Mathieu group M12 (Maximal subgroups include L2(11))",
       "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M12/"
+    },
+    {
+      "title": "CTblLib: Character table of M12 (maximal subgroups list includes L2(11), index 144)",
+      "url": "https://www.math.rwth-aachen.de/homes/GAP/ctbllib/doc/ctblm12.html"
     }
   ],
   "notes": "Transitive permutation degrees from indices of maximal subgroups (coset actions). Stored for offline, deterministic checks."
