@@ -40,6 +40,8 @@ for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
+from ce2_global_cocycle import predict_simple_family_uv
+
 
 def max_abs(e) -> float:
     return float(
@@ -274,6 +276,23 @@ def main() -> None:
         print(f"  V[flat={idx0}] = {val0}  (e6[{i0},{j0}] in flattened layout)")
     assert (len(U_nz), len(V_nz)) == (0, 1)
     assert V_nz[0][1] == "1/54" and V_nz[0][0] == 179
+
+    # Verify the same sparse CE2 entry is reproduced by the *global* Heisenberg law.
+    a_s, b_s, c_s = ce2_key.split(":")
+    a_pair = tuple(int(x) for x in a_s.split(","))  # type: ignore[assignment]
+    b_pair = tuple(int(x) for x in b_s.split(","))  # type: ignore[assignment]
+    c_pair = tuple(int(x) for x in c_s.split(","))  # type: ignore[assignment]
+    if len(a_pair) != 2 or len(b_pair) != 2 or len(c_pair) != 2:
+        raise AssertionError("Unexpected CE2 key parsing failure.")
+    pred = predict_simple_family_uv(a_pair, b_pair, c_pair)
+    assert pred is not None
+    pred_U_nz = [(int(i), str(v)) for i, v in pred.U]
+    pred_V_nz = [(int(i), str(v)) for i, v in pred.V]
+    print(f"  Predicted U nonzeros: {len(pred_U_nz)}")
+    print(f"  Predicted V nonzeros: {len(pred_V_nz)}")
+    assert sorted(U_nz) == sorted(pred_U_nz)
+    assert sorted(V_nz) == sorted(pred_V_nz)
+    print("  ✓ Global Heisenberg law reproduces CE2 sparse entry exactly")
 
     # Build E8Z3 elements U and V from the sparse rational arrays.
     U_flat = np.zeros(900, dtype=np.complex128)

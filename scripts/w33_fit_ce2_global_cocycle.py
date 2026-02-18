@@ -284,75 +284,94 @@ def main() -> None:
     print("-" * 50)
     print(f"  Count: {len(simple)} / {len(entries)}")
 
-    # Majority map f(c_i) -> row (per e6id of c)
-    row_by_c: dict[int, Counter] = defaultdict(Counter)
-    for e, row, _, _ in simple:
-        row_by_c[int(e.c[0])][int(row)] += 1
-
-    f_c_to_row: dict[int, int] = {}
-    correct_f = 0
-    for e, row, _, _ in simple:
-        c0 = int(e.c[0])
-        if c0 not in f_c_to_row:
-            f_c_to_row[c0] = int(row_by_c[c0].most_common(1)[0][0])
-        if int(row) == int(f_c_to_row[c0]):
-            correct_f += 1
-
-    acc = correct_f / max(1, len(simple))
-    print(f"  Majority row-map accuracy: {correct_f}/{len(simple)} = {acc:.4f}")
-
-    # Try to explain f as a z-affine map with u fixed: z' = s z + t
     e6id_to_uz, uz_to_e6id = _heis_uz_maps()
-    best = None
-    best_match = -1
-    for s in (1, 2):
-        for t in (0, 1, 2):
-            ok = 0
-            tot = 0
-            for c0, r0 in f_c_to_row.items():
-                u, z = e6id_to_uz[int(c0)]
-                zp = (s * z + t) % 3
-                pred = uz_to_e6id[(u[0], u[1], zp)]
-                tot += 1
-                if int(pred) == int(r0):
-                    ok += 1
-            if ok > best_match:
-                best_match = ok
-                best = (s, t)
-    assert best is not None
-    s, t = best
-    print(
-        f"  Best fiberwise z-affine explanation: z' = {s}*z + {t} (mod 3) matches {best_match}/{len(f_c_to_row)} c-values"
-    )
+
+    # Global support law (derived from the CE2 sparse data):
+    #
+    # Let the mixed triple be g1(a_i,a_j), g1(b_i,b_j), g2(c_i,c_j). In the simple
+    # family, exactly one of {a_j,b_j} equals c_j. Define:
+    #   match_i := a_i if a_j=c_j else b_i
+    #   other_i := the remaining g1 index
+    #
+    # Then the single nonzero e6 matrix-unit lives at:
+    #   col = other_i
+    #   row = match + other - c   (in Heisenberg F3^3 coordinates (u1,u2,z))
+    #
+    # Side rule:
+    #   a_j=c_j -> V is nonzero,   b_j=c_j -> U is nonzero.
+    side_ok = 0
+    side_tot = 0
+    row_ok = 0
+    sign_map: dict[tuple[int, int, int], int] = {}
 
     # Column rule: when exactly one of a_j,b_j equals c_j, does col equal the other i?
     col_ok = 0
     col_tot = 0
     sign_by_match_u: dict[tuple[int, int], Counter] = defaultdict(Counter)
-    for e, _, col, val in simple:
+    for e, row, col, val in simple:
         a_i, a_j = e.a
         b_i, b_j = e.b
         c_i, c_j = e.c
         # determine which g1 matches c_j (by sl3 index)
         match_i = None
         other_i = None
+        expected_side = None
         if a_j == c_j and b_j != c_j:
             match_i = a_i
             other_i = b_i
+            expected_side = "V"
         elif b_j == c_j and a_j != c_j:
             match_i = b_i
             other_i = a_i
+            expected_side = "U"
         if other_i is None or match_i is None:
             continue
+
+        side_tot += 1
+        actual_side = "U" if e.U else "V"
+        if actual_side == expected_side:
+            side_ok += 1
+
         col_tot += 1
         if int(col) == int(other_i):
             col_ok += 1
+
+        # Heisenberg affine row law (F3^3 on the 27-point model).
+        (um0, um1), zm = e6id_to_uz[int(match_i)]
+        (uo0, uo1), zo = e6id_to_uz[int(other_i)]
+        (uc0, uc1), zc = e6id_to_uz[int(c_i)]
+        u_row = ((um0 + uo0 - uc0) % 3, (um1 + uo1 - uc1) % 3)
+        z_row = (zm + zo - zc) % 3
+        row_pred = int(uz_to_e6id[(u_row[0], u_row[1], z_row)])
+        if int(row_pred) == int(row):
+            row_ok += 1
+
         u_match, _z = e6id_to_uz[int(match_i)]
         sign_by_match_u[u_match][1 if val > 0 else -1] += 1
 
+        # Deterministic sign table on ordered triples (c, match, other).
+        k = (int(c_i), int(match_i), int(other_i))
+        sgn = 1 if val > 0 else -1
+        if k in sign_map and int(sign_map[k]) != int(sgn):
+            raise AssertionError(
+                f"Non-deterministic sign for key={k}: {sign_map[k]} vs {sgn}"
+            )
+        sign_map[k] = int(sgn)
+
+    print(
+        f"  Side rule (a_j=c_j -> V, b_j=c_j -> U): {side_ok}/{side_tot} = {side_ok/max(1,side_tot):.4f}"
+    )
     print(
         f"  Column rule (col == other g1's 27-index): {col_ok}/{col_tot} = {col_ok/max(1,col_tot):.4f}"
     )
+    print(
+        f"  Heisenberg row law (row = match+other-c in F3^3): {row_ok}/{len(simple)} = {row_ok/max(1,len(simple)):.4f}"
+    )
+    print(f"  Deterministic sign keys (c,match,other): {len(sign_map)} (expected 864)")
+    assert side_ok == side_tot == len(simple)
+    assert col_ok == col_tot == len(simple)
+    assert row_ok == len(simple)
+    assert len(sign_map) == 864
 
     # Build a majority sign table by Heisenberg u for the matching g1
     u_to_sign: dict[tuple[int, int], int] = {}
@@ -374,7 +393,10 @@ def main() -> None:
 
     print()
     print(
-        "NEXT: use the inferred f(c) row-map + sign(u) table as a cocycle ansatz"
+        "NEXT: turn the (row,col,side) Heisenberg law into a global alpha(cocycle) ansatz,"
+    )  # noqa: T201
+    print(
+        "      compress the deterministic sign-table into a low-parameter phase rule,"
     )  # noqa: T201
     print(
         "      and validate directly against homotopy_jacobi residuals on mixed triples."
