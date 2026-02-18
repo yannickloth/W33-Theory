@@ -279,6 +279,22 @@ def main() -> None:
     assert (len(U_nz), len(V_nz)) == (0, 1)
     assert V_nz[0][1] == "1/54" and V_nz[0][0] == 179
 
+    # The last remaining "mystery sign" is now an explicit degree-≤4 GF(2)
+    # phase polynomial on the full Heisenberg (u,z) data.
+    from ce2_global_cocycle import (
+        _simple_family_sign_poly_coeff_mask,
+        predict_simple_family_sign,
+    )
+
+    coeff_mask = _simple_family_sign_poly_coeff_mask()
+    if coeff_mask is not None:
+        # For key "0,0:17,1:3,0", the sign lookup key is (c_i=3, match_i=0, other_i=17).
+        sgn = predict_simple_family_sign(3, 0, 17)
+        print(
+            "  CE2 sign polynomial: weight=%d, sign(c=3,match=0,other=17)=%+d"
+            % (int(coeff_mask).bit_count(), int(sgn))
+        )
+
     # Verify the same sparse CE2 entry is reproduced by the *global* Heisenberg law.
     a_s, b_s, c_s = ce2_key.split(":")
     a_pair = tuple(int(x) for x in a_s.split(","))  # type: ignore[assignment]
