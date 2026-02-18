@@ -1,0 +1,11 @@
+{
+  "group": "He",
+  "degrees": [2058, 8330, 29155, 244800],
+  "sources": [
+    {
+      "title": "ATLAS of Group Representations: Held group He (Representations)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/He/"
+    }
+  ],
+  "notes": "Permutation representation degrees listed by the ATLAS of Group Representations. Stored for offline, deterministic checks (GAP not required)."
+}

@@ -18,9 +18,10 @@ For a fixed (2X, 3Y) pair and a prime-order class C of order p, define the
 where n_{2X,3Y}^C is the structure constant per element (an integer) returned
 by the class-algebra scan.
 
-Systematic question:
-  If C_M(C) = p · H for a cofactor group H, does r_p land in the irreducible
-  character degree multiset of H?
+Systematic questions:
+  If C_M(C) = p · H for a cofactor group H, does r_p land in:
+    (a) the irreducible character degree multiset of H?
+    (b) a known transitive permutation degree (coset action index) of H?
 
 Starting point (now regression-tested in the repo):
   - For 11A we have C_M(11A) = 11 · M12 and r_11(11A; 2A×3B) = 144 ∈ deg(M12).
@@ -45,6 +46,17 @@ for p in (ROOT, SCRIPTS_DIR):
 
 def _load_irrep_degree_multiset(group: str) -> list[int] | None:
     path = ROOT / "data" / f"{str(group).lower()}_irrep_degrees.json"
+    if not path.exists():
+        return None
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    degs = payload.get("degrees", [])
+    if not isinstance(degs, list) or not degs:
+        return None
+    return [int(x) for x in degs]
+
+
+def _load_permutation_degrees(group: str) -> list[int] | None:
+    path = ROOT / "data" / f"{str(group).lower()}_permutation_degrees.json"
     if not path.exists():
         return None
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -82,7 +94,7 @@ def analyze() -> dict[str, Any]:
         return {"available": False, "reason": "unexpected ladder/scan payload"}
 
     # Restrict to the prime-order ladder rungs with exact sporadic matches
-    # where we have (or can add) degree data deterministically.
+    # where we have deterministic spectra (irrep degrees and/or permutation degrees).
     rung_classes = []
     for cls, info in matches.items():
         if not isinstance(info, dict):
@@ -90,7 +102,10 @@ def analyze() -> dict[str, Any]:
         grp = info.get("exact_sporadic_match")
         if not isinstance(grp, str) or not grp:
             continue
-        if _load_irrep_degree_multiset(grp) is None:
+        if (
+            _load_irrep_degree_multiset(grp) is None
+            and _load_permutation_degrees(grp) is None
+        ):
             continue
         rung_classes.append(cls)
     rung_classes = sorted(set(rung_classes))
@@ -101,17 +116,18 @@ def analyze() -> dict[str, Any]:
         if not isinstance(info, dict):
             continue
         grp = str(info.get("exact_sporadic_match"))
-        degs = _load_irrep_degree_multiset(grp)
-        if degs is None:
-            continue
-        deg_set = set(degs)
+        irrep_degs = _load_irrep_degree_multiset(grp) or []
+        irrep_deg_set = set(irrep_degs)
+        perm_degs = _load_permutation_degrees(grp) or []
+        perm_deg_set = set(perm_degs)
 
         p = int(classes.get(cls, {}).get("order", 0) or 0)
         cent = int(classes.get(cls, {}).get("centralizer_order", 0) or 0)
         cof = cent // p if p > 0 and cent % p == 0 else None
 
         ratios_by_pair: dict[str, Any] = {}
-        hits: list[dict[str, Any]] = []
+        irrep_hits: list[dict[str, Any]] = []
+        perm_hits: list[dict[str, Any]] = []
         for pair_key, pdata in pairs.items():
             if not isinstance(pdata, dict):
                 continue
@@ -120,25 +136,32 @@ def analyze() -> dict[str, Any]:
                 continue
             n = int(cinfo.get("structure_constant_per_element", 0) or 0)
             r = None if p <= 0 or n % p != 0 else int(n // p)
-            in_deg = (r is not None) and (r in deg_set)
+            in_irrep = (r is not None) and (r in irrep_deg_set)
+            in_perm = (r is not None) and (r in perm_deg_set)
             ratios_by_pair[str(pair_key)] = {
                 "n": int(n),
                 "p": int(p),
                 "r": r,
-                "r_in_irrep_degrees": bool(in_deg),
+                "r_in_irrep_degrees": bool(in_irrep),
+                "r_in_perm_degrees": bool(in_perm),
             }
-            if in_deg:
-                hits.append({"pair": str(pair_key), "r": int(r), "n": int(n)})
+            if in_irrep:
+                irrep_hits.append({"pair": str(pair_key), "r": int(r), "n": int(n)})
+            if in_perm:
+                perm_hits.append({"pair": str(pair_key), "r": int(r), "n": int(n)})
 
-        hits = sorted(hits, key=lambda x: (int(x["r"]), str(x["pair"])))
+        irrep_hits = sorted(irrep_hits, key=lambda x: (int(x["r"]), str(x["pair"])))
+        perm_hits = sorted(perm_hits, key=lambda x: (int(x["r"]), str(x["pair"])))
         out[cls] = {
             "order": int(p),
             "centralizer_order": int(cent),
             "cofactor_order": int(cof) if cof is not None else None,
             "cofactor_group": grp,
-            "degree_multiset_size": len(degs),
-            "degree_set_size": len(deg_set),
-            "ratio_hits_in_degree_set": hits,
+            "irrep_degree_multiset_size": len(irrep_degs),
+            "irrep_degree_set_size": len(irrep_deg_set),
+            "perm_degree_list_size": len(perm_degs),
+            "ratio_hits_in_irrep_degree_set": irrep_hits,
+            "ratio_hits_in_perm_degree_set": perm_hits,
             "ratios_by_pair": ratios_by_pair,
         }
 
@@ -155,7 +178,9 @@ def main() -> None:
         raise SystemExit("No rungs with available cofactor degree spectra.")
 
     print("=" * 78)
-    print("MONSTER PRIME-RATIO SIGNATURES r_p := n/p  vs  cofactor irrep degrees")
+    print(
+        "MONSTER PRIME-RATIO SIGNATURES r_p := n/p  vs  cofactor spectra (irrep / perm)"
+    )
     print("=" * 78)
     print(
         "Computed from bundled ATLAS + CTblLib character columns + committed degree lists."
@@ -170,12 +195,19 @@ def main() -> None:
         cof = info.get("cofactor_order")
         print()
         print(f"{cls}: order p={p}  centralizer cofactor H={grp}  |H|={cof}")
-        hits = info.get("ratio_hits_in_degree_set", [])
-        if isinstance(hits, list) and hits:
-            hit_str = ", ".join(f"{h['pair']}→r={h['r']}" for h in hits)
-            print(f"  HITS (r ∈ deg(H)): {hit_str}")
+        irrep_hits = info.get("ratio_hits_in_irrep_degree_set", [])
+        if isinstance(irrep_hits, list) and irrep_hits:
+            hit_str = ", ".join(f"{h['pair']}→r={h['r']}" for h in irrep_hits)
+            print(f"  HITS (r ∈ irrep-deg(H)): {hit_str}")
         else:
-            print("  HITS (r ∈ deg(H)): none")
+            print("  HITS (r ∈ irrep-deg(H)): none")
+
+        perm_hits = info.get("ratio_hits_in_perm_degree_set", [])
+        if isinstance(perm_hits, list) and perm_hits:
+            hit_str = ", ".join(f"{h['pair']}→r={h['r']}" for h in perm_hits)
+            print(f"  HITS (r ∈ perm-deg(H)): {hit_str}")
+        else:
+            print("  HITS (r ∈ perm-deg(H)): none")
 
         ratios_by_pair = info.get("ratios_by_pair", {})
         if isinstance(ratios_by_pair, dict):
@@ -186,8 +218,11 @@ def main() -> None:
                 r = row.get("r")
                 if r is None:
                     continue
-                mark = "✓" if row.get("r_in_irrep_degrees") else " "
-                print(f"    {mark} {pair:6s}: r={int(r):>12d}  (n={int(row['n'])})")
+                mark_i = "✓" if row.get("r_in_irrep_degrees") else " "
+                mark_p = "✓" if row.get("r_in_perm_degrees") else " "
+                print(
+                    f"    {mark_i}{mark_p} {pair:6s}: r={int(r):>12d}  (n={int(row['n'])})"
+                )
 
     print()
     print("ALL CHECKS PASSED ✓")

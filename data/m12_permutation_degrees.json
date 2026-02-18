@@ -1,0 +1,15 @@
+{
+  "group": "M12",
+  "degrees": [12, 66, 144, 220, 396, 495, 1320],
+  "sources": [
+    {
+      "title": "Wikipedia: Mathieu group M12 (Maximal subgroups table: indices give transitive coset actions)",
+      "url": "https://en.wikipedia.org/wiki/Mathieu_group_M12"
+    },
+    {
+      "title": "ATLAS of Group Representations: Mathieu group M12 (Maximal subgroups include L2(11))",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M12/"
+    }
+  ],
+  "notes": "Transitive permutation degrees from indices of maximal subgroups (coset actions). Stored for offline, deterministic checks."
+}

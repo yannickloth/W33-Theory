@@ -1,0 +1,11 @@
+{
+  "group": "HN",
+  "degrees": [1140000],
+  "sources": [
+    {
+      "title": "ATLAS of Group Representations: Harada–Norton group HN (Representations)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/HN/"
+    }
+  ],
+  "notes": "Permutation representation degrees listed by the ATLAS of Group Representations. Stored for offline, deterministic checks (GAP not required)."
+}

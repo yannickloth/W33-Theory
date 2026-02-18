@@ -29,7 +29,7 @@ def test_he_hn_irrep_degrees_sum_of_squares_matches_group_order() -> None:
     assert sum(d * d for d in hn_degs) == hn_order
 
 
-def test_prime_ratio_signature_hits_only_for_11a_among_sporadic_rungs() -> None:
+def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
     from scripts.w33_monster_prime_ratio_signatures import analyze
 
     rep = analyze()
@@ -42,21 +42,33 @@ def test_prime_ratio_signature_hits_only_for_11a_among_sporadic_rungs() -> None:
     info_11 = rungs.get("11A", {})
     assert isinstance(info_11, dict)
     assert info_11.get("cofactor_group") == "M12"
-    hits_11 = info_11.get("ratio_hits_in_degree_set", [])
-    assert isinstance(hits_11, list)
-    assert any(int(h.get("r", 0) or 0) == 144 for h in hits_11)
+    hits_11_ir = info_11.get("ratio_hits_in_irrep_degree_set", [])
+    assert isinstance(hits_11_ir, list)
+    assert any(int(h.get("r", 0) or 0) == 144 for h in hits_11_ir)
+
+    hits_11_perm = info_11.get("ratio_hits_in_perm_degree_set", [])
+    assert isinstance(hits_11_perm, list)
+    assert any(int(h.get("r", 0) or 0) == 144 for h in hits_11_perm)
 
     # 5A/7A: no r_p hits any irrep degree of HN/He (for any of the 6 (2X,3Y) pairs).
     info_5 = rungs.get("5A", {})
     assert isinstance(info_5, dict)
     assert info_5.get("cofactor_group") == "HN"
-    hits_5 = info_5.get("ratio_hits_in_degree_set", [])
-    assert isinstance(hits_5, list)
-    assert hits_5 == []
+    hits_5_ir = info_5.get("ratio_hits_in_irrep_degree_set", [])
+    assert isinstance(hits_5_ir, list)
+    assert hits_5_ir == []
+
+    hits_5_perm = info_5.get("ratio_hits_in_perm_degree_set", [])
+    assert isinstance(hits_5_perm, list)
+    assert any(int(h.get("r", 0) or 0) == 1140000 for h in hits_5_perm)
 
     info_7 = rungs.get("7A", {})
     assert isinstance(info_7, dict)
     assert info_7.get("cofactor_group") == "He"
-    hits_7 = info_7.get("ratio_hits_in_degree_set", [])
-    assert isinstance(hits_7, list)
-    assert hits_7 == []
+    hits_7_ir = info_7.get("ratio_hits_in_irrep_degree_set", [])
+    assert isinstance(hits_7_ir, list)
+    assert hits_7_ir == []
+
+    hits_7_perm = info_7.get("ratio_hits_in_perm_degree_set", [])
+    assert isinstance(hits_7_perm, list)
+    assert any(int(h.get("r", 0) or 0) == 2058 for h in hits_7_perm)
