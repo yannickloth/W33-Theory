@@ -35,5 +35,6 @@ pip install pre-commit && pre-commit install
 
 - Every claim must be computationally verified
 - Avoid heavy computation at import time
+- `scripts.w33_permrep_association.analyze_gap_permrep_association` will attempt to recover a full transitive orbit by searching alternate base points if the provided `base` yields an incomplete orbit — prefer calling the function directly rather than invoking its CLI fallback in tests.
 - Use `json.dump(..., indent=2, default=str)` for serialization
 - Keep assertions tight: use `np.isclose` or `pytest.approx` with explicit tolerances
