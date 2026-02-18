@@ -2,11 +2,46 @@
   "group": "M12",
   "degrees": [12, 66, 144, 220, 396, 495, 1320],
   "rep_metadata": {
+    "12": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p12aB0",
+      "rank": 2,
+      "suborbit_lengths_compressed": "1, 11",
+      "suborbit_lengths": [1, 11],
+      "stabilizer_order": 7920
+    },
+    "66": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p66bB0",
+      "rank": 4,
+      "suborbit_lengths_compressed": "1, 10, 20, 35",
+      "suborbit_lengths": [1, 10, 20, 35],
+      "stabilizer_order": 1440
+    },
     "144": {
       "stabilizer_order": 660,
       "stabilizer_group_recognized": "PSL2(11)",
       "outer_stabilizer_order": 1320,
       "outer_stabilizer_group_recognized": "PGL2(11)"
+    },
+    "220": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p220B0",
+      "rank": 5,
+      "suborbit_lengths_compressed": "1, 7, 30, 42, 140",
+      "suborbit_lengths": [1, 7, 30, 42, 140],
+      "stabilizer_order": 432
+    },
+    "396": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p396B0",
+      "rank": 4,
+      "suborbit_lengths_compressed": "1, 60, 165, 170",
+      "suborbit_lengths": [1, 60, 165, 170],
+      "stabilizer_order": 240
+    },
+    "495": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p495B0",
+      "rank": 6,
+      "suborbit_lengths_compressed": "1, 10, 36, 80, 168, 200",
+      "suborbit_lengths": [1, 10, 36, 80, 168, 200],
+      "stabilizer_order": 192
     }
   },
   "sources": [
@@ -21,6 +56,26 @@
     {
       "title": "CTblLib: Character table of M12 (maximal subgroups list includes L2(11), index 144)",
       "url": "https://www.math.rwth-aachen.de/homes/GAP/ctbllib/doc/ctblm12.html"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 12 points (rank 2, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p12aB0"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 66 points (rank 4, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p66bB0"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 220 points (rank 5, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p220B0"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 396 points (rank 4, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p396B0"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 495 points (rank 6, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p495B0"
     }
   ],
   "notes": "Transitive permutation degrees from indices of maximal subgroups (coset actions). Stored for offline, deterministic checks."

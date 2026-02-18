@@ -29,6 +29,13 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
     assert hits_he2.get("has_e4_q2") is True
     assert hits_he2.get("has_trace_l1") is True
 
+    m12 = rep.get("m12_495", {})
+    assert isinstance(m12, dict)
+    hits_m12 = m12.get("signature_hits", {})
+    assert isinstance(hits_m12, dict)
+    assert hits_m12.get("has_w33_incidence_80") is True
+    assert hits_m12.get("has_ihara_chi_200") is True
+
     hn = rep.get("hn_1140000", {})
     assert isinstance(hn, dict)
     hits_hn = hn.get("signature_hits", {})

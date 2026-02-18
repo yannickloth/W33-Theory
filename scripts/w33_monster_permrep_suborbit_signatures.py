@@ -62,6 +62,9 @@ def analyze() -> dict[str, Any]:
 
     w33 = compute_w33_monster_invariants()
     n_inc = int(w33.get("n_incidence_objects", 0) or 0)
+    n_vertices = int(w33.get("n_vertices", 0) or 0)
+    ihara_chi = 240 - n_vertices
+    assert ihara_chi == 200
     e4 = e4_coeffs(6)
     e4_q2 = int(e4[2])
 
@@ -79,12 +82,14 @@ def analyze() -> dict[str, Any]:
     he_29155 = _load_permrep_meta("He", 29155)
     he_244800 = _load_permrep_meta("He", 244800)
     hn = _load_permrep_meta("HN", 1140000)
+    m12_495 = _load_permrep_meta("M12", 495)
 
     he_sub = [int(x) for x in he.get("suborbit_lengths", [])]
     he_8330_sub = [int(x) for x in he_8330.get("suborbit_lengths", [])]
     he_29155_sub = [int(x) for x in he_29155.get("suborbit_lengths", [])]
     he_244800_sub = [int(x) for x in he_244800.get("suborbit_lengths", [])]
     hn_sub = [int(x) for x in hn.get("suborbit_lengths", [])]
+    m12_495_sub = [int(x) for x in m12_495.get("suborbit_lengths", [])]
 
     if he_sub:
         assert sum(he_sub) == 2058
@@ -96,6 +101,8 @@ def analyze() -> dict[str, Any]:
         assert sum(he_244800_sub) == 244800
     if hn_sub:
         assert sum(hn_sub) == 1140000
+    if m12_495_sub:
+        assert sum(m12_495_sub) == 495
 
     he_nontrivial = [x for x in he_sub if x != 1]
     he_gcd = 0
@@ -170,6 +177,14 @@ def analyze() -> dict[str, Any]:
         assert he_244800_hits["has_1029_eq_3x343"] is True
         assert he_244800_hits["has_16464_as_stabilizer"] is True
 
+    m12_495_hits = {
+        "has_w33_incidence_80": bool(n_inc in m12_495_sub),
+        "has_ihara_chi_200": bool(ihara_chi in m12_495_sub),
+    }
+    if m12_495_sub:
+        assert m12_495_hits["has_w33_incidence_80"] is True
+        assert m12_495_hits["has_ihara_chi_200"] is True
+
     return {
         "available": True,
         "w33": {
@@ -203,6 +218,11 @@ def analyze() -> dict[str, Any]:
             "rank": int(hn.get("rank", 0) or 0),
             "suborbit_lengths": hn_sub,
             "signature_hits": hn_hits,
+        },
+        "m12_495": {
+            "rank": int(m12_495.get("rank", 0) or 0),
+            "suborbit_lengths": m12_495_sub,
+            "signature_hits": m12_495_hits,
         },
     }
 
@@ -265,6 +285,20 @@ def main() -> None:
         f"  contains 77×2160?   {hn['signature_hits']['has_77x2160']}  (2160 = E4[q^2])"
     )
     print(f"  contains 7×51840?   {hn['signature_hits']['has_7x_aut_w33']}")
+    print()
+
+    m12 = rep["m12_495"]
+    print("M12 permrep degree 495:")
+    print(f"  rank = {m12['rank']}")
+    print(
+        f"  suborbits (count={len(m12['suborbit_lengths'])}): {m12['suborbit_lengths']}"
+    )
+    print(
+        f"  contains 80?  {m12['signature_hits']['has_w33_incidence_80']}  (80 = W33 points+lines)"
+    )
+    print(
+        f"  contains 200? {m12['signature_hits']['has_ihara_chi_200']}  (200 = |E|-|V|)"
+    )
     print()
     print("ALL CHECKS PASSED ✓")
 
