@@ -290,14 +290,230 @@ def _eval_simple_family_sign_poly_bit(input_bits_mask: int) -> int:
     return int(bit) & 1
 
 
+def _f3_chi(v: int) -> int:
+    """Quadratic character chi on F3: chi(0)=chi(1)=+1, chi(2)=-1."""
+    return 1 if (int(v) % 3) in (0, 1) else -1
+
+
+def _f3_omega(u: tuple[int, int], v: tuple[int, int]) -> int:
+    """Standard symplectic form ω((x,y),(a,b)) = y·a - x·b (mod 3)."""
+    x, y = int(u[0]) % 3, int(u[1]) % 3
+    a, b = int(v[0]) % 3, int(v[1]) % 3
+    return (y * a - x * b) % 3
+
+
+def _f3_k_of_direction(d: tuple[int, int]) -> int:
+    """Constant-line selector k(d) used in the CE2 simple-family sign laws."""
+    d1, d2 = int(d[0]) % 3, int(d[1]) % 3
+    return ((-d1) if d2 == 0 else d1) % 3
+
+
+F3SparsePolyTerm = tuple[int, tuple[int, int, int, int]]
+
+
+def _eval_f3_sparse_poly(
+    uc1: int,
+    uc2: int,
+    d1: int,
+    d2: int,
+    terms: tuple[F3SparsePolyTerm, ...],
+) -> int:
+    """Evaluate a sparse polynomial over F3 in variables (uc1,uc2,d1,d2), exponents in {0,1,2}."""
+    xs = (int(uc1) % 3, int(uc2) % 3, int(d1) % 3, int(d2) % 3)
+    acc = 0
+    for coeff, exps in terms:
+        c = int(coeff) % 3
+        mon = 1
+        for base, exp in zip(xs, exps):
+            e = int(exp)
+            if e == 0:
+                continue
+            if e == 1:
+                mon = (mon * base) % 3
+            elif e == 2:
+                mon = (mon * base * base) % 3
+            else:
+                raise ValueError(f"unexpected exponent for F3 sparse poly: {e}")
+        acc = (acc + c * mon) % 3
+    return int(acc) % 3
+
+
+# Closed-form sign laws in Heisenberg/symplectic variables (uc1,uc2,d1,d2).
+#
+# These sparse term lists were fitted exactly (degree <= 5) against the committed
+# 864-entry CE2 simple-family sign map and then validated by:
+#   - symplectic delta law for t=2 (u_m != u_o)
+#   - constant-line selection rule (same set for t=1 and t=2)
+# See: scripts/w33_ce2_sign_symplectic_closed_form.py
+_SIMPLE_FAMILY_SIGN_C0_TERMS: dict[int, tuple[F3SparsePolyTerm, ...]] = {
+    # t=1 (u_m == u_o), variable-case c0 (deg <= 4, weight 16)
+    1: (
+        (1, (0, 0, 0, 2)),
+        (1, (0, 0, 2, 0)),
+        (2, (0, 1, 0, 0)),
+        (1, (0, 1, 0, 2)),
+        (1, (0, 1, 1, 0)),
+        (2, (0, 1, 1, 1)),
+        (1, (0, 1, 2, 0)),
+        (1, (0, 2, 1, 1)),
+        (2, (0, 2, 2, 0)),
+        (2, (1, 0, 0, 1)),
+        (1, (1, 0, 0, 2)),
+        (2, (1, 0, 1, 1)),
+        (1, (1, 1, 0, 0)),
+        (1, (1, 1, 0, 2)),
+        (2, (1, 1, 1, 1)),
+        (2, (2, 0, 0, 2)),
+    ),
+    # t=2 (u_m != u_o), variable-case c0 (deg <= 4, weight 14)
+    2: (
+        (1, (0, 0, 0, 2)),
+        (1, (0, 0, 2, 0)),
+        (2, (0, 1, 0, 0)),
+        (1, (0, 1, 0, 2)),
+        (2, (0, 1, 1, 1)),
+        (1, (0, 1, 2, 0)),
+        (1, (0, 2, 1, 1)),
+        (2, (0, 2, 2, 0)),
+        (1, (1, 0, 0, 2)),
+        (2, (1, 0, 1, 1)),
+        (1, (1, 1, 0, 0)),
+        (1, (1, 1, 0, 2)),
+        (2, (1, 1, 1, 1)),
+        (2, (2, 0, 0, 2)),
+    ),
+}
+
+_SIMPLE_FAMILY_SIGN_EPS_TERMS: dict[int, tuple[F3SparsePolyTerm, ...]] = {
+    # eps is encoded by e in F3, with eps=+1 if e in {0,1}, else -1.
+    # t=1 variable-case eps encoding polynomial e (deg <= 5, weight 36)
+    1: (
+        (2, (0, 0, 0, 2)),
+        (2, (0, 0, 1, 0)),
+        (2, (0, 0, 1, 1)),
+        (2, (0, 0, 1, 2)),
+        (1, (0, 0, 2, 0)),
+        (2, (0, 0, 2, 1)),
+        (1, (0, 1, 0, 0)),
+        (2, (0, 1, 0, 2)),
+        (1, (0, 1, 1, 0)),
+        (2, (0, 1, 1, 1)),
+        (2, (0, 1, 2, 0)),
+        (2, (0, 2, 1, 0)),
+        (1, (0, 2, 2, 1)),
+        (1, (1, 0, 0, 0)),
+        (2, (1, 0, 0, 1)),
+        (1, (1, 0, 0, 2)),
+        (2, (1, 0, 1, 0)),
+        (1, (1, 0, 1, 1)),
+        (1, (1, 0, 2, 0)),
+        (2, (1, 0, 2, 1)),
+        (2, (1, 1, 0, 0)),
+        (2, (1, 1, 0, 1)),
+        (2, (1, 1, 1, 0)),
+        (2, (1, 1, 1, 1)),
+        (2, (1, 1, 1, 2)),
+        (2, (1, 1, 2, 0)),
+        (2, (1, 1, 2, 1)),
+        (1, (1, 2, 0, 0)),
+        (1, (1, 2, 1, 0)),
+        (1, (1, 2, 1, 1)),
+        (1, (1, 2, 2, 0)),
+        (1, (2, 0, 0, 0)),
+        (1, (2, 0, 0, 1)),
+        (1, (2, 1, 0, 0)),
+        (1, (2, 1, 0, 1)),
+        (2, (2, 2, 0, 0)),
+    ),
+    # t=2 variable-case eps encoding polynomial e (deg <= 5, weight 19)
+    2: (
+        (1, (0, 0, 0, 0)),
+        (2, (0, 0, 0, 2)),
+        (2, (0, 0, 1, 1)),
+        (1, (0, 0, 2, 0)),
+        (2, (0, 1, 1, 1)),
+        (1, (0, 1, 2, 0)),
+        (2, (0, 2, 2, 0)),
+        (1, (1, 0, 0, 0)),
+        (1, (1, 0, 0, 2)),
+        (2, (1, 0, 1, 1)),
+        (1, (1, 1, 0, 0)),
+        (1, (1, 1, 2, 0)),
+        (2, (1, 2, 0, 0)),
+        (2, (1, 2, 1, 1)),
+        (2, (1, 2, 2, 0)),
+        (2, (2, 0, 0, 0)),
+        (2, (2, 0, 0, 2)),
+        (2, (2, 1, 0, 0)),
+        (1, (2, 2, 0, 0)),
+    ),
+}
+
+_SIMPLE_FAMILY_SIGN_CONST_P_TERMS: dict[int, tuple[F3SparsePolyTerm, ...]] = {
+    # Constant-line cases: sign = chi(P) where P is a small F3 polynomial.
+    # t=1 constant-case sign polynomial P (deg <= 2, weight 10)
+    1: (
+        (2, (0, 0, 0, 0)),
+        (2, (0, 0, 0, 2)),
+        (1, (0, 0, 1, 0)),
+        (2, (0, 0, 1, 1)),
+        (2, (0, 1, 0, 1)),
+        (1, (0, 1, 1, 0)),
+        (1, (0, 2, 0, 0)),
+        (1, (1, 0, 0, 0)),
+        (1, (1, 0, 0, 1)),
+        (1, (1, 1, 0, 0)),
+    ),
+    # t=2 constant-case sign polynomial P (deg <= 2, weight 5)
+    2: (
+        (2, (0, 0, 0, 2)),
+        (2, (0, 0, 1, 1)),
+        (2, (0, 2, 0, 0)),
+        (2, (1, 0, 0, 0)),
+        (2, (1, 1, 0, 0)),
+    ),
+}
+
+
+def predict_simple_family_sign_closed_form(c_i: int, match_i: int, other_i: int) -> int:
+    """Closed-form sign(c,match,other) ∈ {+1,-1} for the CE2 simple family."""
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    uc1, uc2, _zc = e6id_to_vec[int(c_i)]
+    um1, um2, zm = e6id_to_vec[int(match_i)]
+    uo1, uo2, zo = e6id_to_vec[int(other_i)]
+
+    t = 1 if (int(um1), int(um2)) == (int(uo1), int(uo2)) else 2
+    d1 = (int(um1) - int(uc1)) % 3
+    d2 = (int(um2) - int(uc2)) % 3
+    d = (int(d1), int(d2))
+
+    constant_line = False
+    if d1 != 0:
+        constant_line = _f3_omega((uc1, uc2), d) == _f3_k_of_direction(d)
+
+    if constant_line:
+        poly = _SIMPLE_FAMILY_SIGN_CONST_P_TERMS[int(t)]
+        p = _eval_f3_sparse_poly(uc1, uc2, d1, d2, poly)
+        return _f3_chi(p)
+
+    c0 = _eval_f3_sparse_poly(uc1, uc2, d1, d2, _SIMPLE_FAMILY_SIGN_C0_TERMS[int(t)])
+    e = _eval_f3_sparse_poly(uc1, uc2, d1, d2, _SIMPLE_FAMILY_SIGN_EPS_TERMS[int(t)])
+    eps = _f3_chi(e)
+    zsum = (int(zm) + int(zo)) % 3
+    return int(eps) * _f3_chi((int(zsum) + int(c0)) % 3)
+
+
 def predict_simple_family_sign(c_i: int, match_i: int, other_i: int) -> int:
     """Return sign(c,match,other) ∈ {+1,-1} for the CE2 simple family.
 
     Preference order:
-      1) Explicit GF(2) polynomial (degree ≤ 4) if the artifact is present
-      2) Compact committed sign map (864-entry table)
-      3) Fallback extraction from sparse CE2 local solutions
+      1) Closed-form symplectic/Heisenberg law (degree ≤ 5, sparse)
+      2) Explicit GF(2) polynomial (degree ≤ 4) if the artifact is present
+      3) Compact committed sign map (864-entry table)
+      4) Fallback extraction from sparse CE2 local solutions
     """
+    return predict_simple_family_sign_closed_form(int(c_i), int(match_i), int(other_i))
+
     coeff_mask = _simple_family_sign_poly_coeff_mask()
     if coeff_mask is not None:
         bits = _encode_simple_family_sign_input_bits(
