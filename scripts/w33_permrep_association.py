@@ -257,6 +257,23 @@ def analyze_gap_permrep_association(gap_file: str | Path, base: int = 1) -> dict
                 )
                 break
         if not found_full:
+            # If we can't recover a full orbit from the parsed .g* files, try a
+            # precomputed association-scheme JSON (same stem, .assoc.json).
+            assoc_path = gap_file.with_suffix(".assoc.json")
+            if assoc_path.exists():
+                logger.warning(
+                    "incomplete generator set for %s — loading precomputed association %s",
+                    gap_file.name,
+                    assoc_path.name,
+                )
+                try:
+                    return json.loads(assoc_path.read_text(encoding="utf-8"))
+                except Exception as e:
+                    logger.exception(
+                        "failed to load precomputed association %s: %s",
+                        assoc_path,
+                        e,
+                    )
             raise RuntimeError(
                 f"incomplete orbit for base={base}; reached {len(coset_reps)} of {n} points - "
                 "did you pass all companion .g* files?"
