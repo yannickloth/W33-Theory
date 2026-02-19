@@ -65,8 +65,8 @@ def flat_g1_indices(arr):
 
 # failing triple (modify as needed)
 TRIPLE_A = (0, 0)
-TRIPLE_B = (17, 1)
-TRIPLE_C = (3, 1)
+TRIPLE_B = (0, 0)
+TRIPLE_C = (21, 1)
 
 x = exh.basis_elem_g1(toe, TRIPLE_A)
 y = exh.basis_elem_g1(toe, TRIPLE_B)
