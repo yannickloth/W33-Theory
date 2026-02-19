@@ -29,10 +29,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies (core only)
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          # install only core/runtime deps needed for assembly (avoid optional TDA packages)
+          pip install numpy sympy pytest pytest-json-report
 
       - name: Run exhaustive homotopy check (rationalized l3)
         run: |
