@@ -1,0 +1,25 @@
+From aa5ed38f20e1014eb278a547f51a0b9c3f3c4648 Mon Sep 17 00:00:00 2001
+From: wilcompute <67532012+wilcompute@users.noreply.github.com>
+Date: Wed, 18 Feb 2026 17:00:46 -0500
+Subject: [PATCH 1/5] Update citation author and reference key in README
+
+More name changes
+---
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/README.md b/README.md
+index 7671611d..70750d1a 100644
+--- a/README.md
++++ b/README.md
+@@ -315,7 +315,7 @@ yields 3/8 **only** for q = 3. This is the SU(5) GUT boundary condition, derived
+ ## Citation
+
+ ```bibtex
+-@software{dembski_w33_e8_2026,
++@software{dahn_w33_e8_2026,
+   author = {Dahn, Wil and Claude},
+   title = {The {W}(3,3)--{E8} Correspondence Theorem:
+            Deriving the Standard Model from Finite Geometry},
+--
+2.53.0.windows.1

@@ -1,0 +1,45 @@
+From ab1131c6b7389402cc62ab0d2e44c66416c234f0 Mon Sep 17 00:00:00 2001
+From: Wil <wiljd4@gmail.com>
+Date: Wed, 18 Feb 2026 18:25:34 -0500
+Subject: [PATCH 3/4] feat(monster): add M12 degree-144 suborbit metadata;
+ assert in centralizer tests
+
+---
+ data/m12_permutation_degrees.json                 | 6 +++++-
+ tests/test_monster_centralizer_cofactor_groups.py | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/data/m12_permutation_degrees.json b/data/m12_permutation_degrees.json
+index f18730c1..a19834da 100644
+--- a/data/m12_permutation_degrees.json
++++ b/data/m12_permutation_degrees.json
+@@ -18,10 +18,14 @@
+       "stabilizer_group_atlas": "A6.2^2"
+     },
+     "144": {
++      "rank": 5,
++      "suborbit_lengths_compressed": "1, 11^2, 55, 66",
++      "suborbit_lengths": [1, 11, 11, 55, 66],
+       "stabilizer_order": 660,
+       "stabilizer_group_recognized": "PSL2(11)",
+       "outer_stabilizer_order": 1320,
+-      "outer_stabilizer_group_recognized": "PGL2(11)"
++      "outer_stabilizer_group_recognized": "PGL2(11)",
++      "derived_from": "Coset action on PSL2(11) ⊂ M12 (computed deterministically from M12G1-p12aB0 generators)."
+     },
+     "220": {
+       "rank": 5,
+diff --git a/tests/test_monster_centralizer_cofactor_groups.py b/tests/test_monster_centralizer_cofactor_groups.py
+index 37e33f3f..a651fbe5 100644
+--- a/tests/test_monster_centralizer_cofactor_groups.py
++++ b/tests/test_monster_centralizer_cofactor_groups.py
+@@ -53,6 +53,7 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
+         and h.get("stabilizer_group_recognized") == "PSL2(11)"
+         and int(h.get("outer_stabilizer_order", 0) or 0) == 1320
+         and h.get("outer_stabilizer_group_recognized") == "PGL2(11)"
++        and h.get("permrep_suborbit_lengths") == [1, 11, 11, 55, 66]
+         for h in hits_11
+     )
+
+--
+2.53.0.windows.1
