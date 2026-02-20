@@ -195,6 +195,14 @@ class E8Z3Bracket:
             os.environ.get("TOE_USE_NUMBA", "").lower() in ("1", "true", "yes")
         )
 
+        # optional fast-NumPy scatter path (uses np.bincount on real/imag parts)
+        self._use_fast_numpy = (
+            bool(use_numba) and False
+        )  # kept False unless explicitly enabled
+        self._use_fast_numpy = self._use_fast_numpy or (
+            os.environ.get("TOE_USE_FAST_CUBIC_SYM", "").lower() in ("1", "true", "yes")
+        )
+
         # Precompile a numba-accelerated cubic_sym implementation if available and requested.
         if self._use_numba and _NUMBA_AVAILABLE:
             a_cl = self._triad_a.copy().astype(np.int64)
@@ -220,6 +228,12 @@ class E8Z3Bracket:
         else:
             self._cubic_sym_numba = None
 
+        # prepare small cached arrays for fast-numpy path
+        self._triad_a_arr = self._triad_a
+        self._triad_b_arr = self._triad_b
+        self._triad_c_arr = self._triad_c
+        self._triad_sign_arr = self._triad_sign
+
     def cubic_sym(self, u: np.ndarray, v: np.ndarray, *, scale: float) -> np.ndarray:
         """
         Vectorized symmetric bilinear map S^2(27) -> 27* induced by the cubic triads.
@@ -244,8 +258,27 @@ class E8Z3Bracket:
         contrib_b = s * (u[a] * v[c] + u[c] * v[a])
         contrib_c = s * (u[a] * v[b] + u[b] * v[a])
 
+        # Fast path: call the numba-compiled kernel when available and requested.
+        if getattr(self, "_cubic_sym_numba", None) is not None and self._use_numba:
+            return self._cubic_sym_numba(u, v, float(scale))
+
+        # Fast NumPy scatter path (optional): use np.bincount on real/imag parts
+        if self._use_fast_numpy:
+            # split real/imag and accumulate using bincount (minlength=27)
+            out_real = (
+                np.bincount(a, weights=contrib_a.real, minlength=27)
+                + np.bincount(b, weights=contrib_b.real, minlength=27)
+                + np.bincount(c, weights=contrib_c.real, minlength=27)
+            )
+            out_imag = (
+                np.bincount(a, weights=contrib_a.imag, minlength=27)
+                + np.bincount(b, weights=contrib_b.imag, minlength=27)
+                + np.bincount(c, weights=contrib_c.imag, minlength=27)
+            )
+            return (out_real + 1j * out_imag).astype(np.complex128)
+
+        # Default (safe) accumulation using np.add.at
         out = np.zeros(27, dtype=np.complex128)
-        # accumulate contributions (handles repeated indices safely)
         np.add.at(out, a, contrib_a)
         np.add.at(out, b, contrib_b)
         np.add.at(out, c, contrib_c)
