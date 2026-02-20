@@ -97,7 +97,7 @@ if res is None:
     raise SystemExit("Local CE2 solver failed on the triple")
 alpha_fn, U_flat, V_flat, U_rats, V_rats = res
 
-# store single-entry artifact
+# store single-entry artifact (merge into existing CE2 file instead of overwriting)
 key = f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
 collected = {
     key: {
@@ -110,8 +110,14 @@ collected = {
         "V_rats": [str(r) if r is not None else "0" for r in V_rats],
     }
 }
-OUT.write_text(json.dumps(collected, indent=2), encoding="utf-8")
-print("Wrote CE2 artifact with 1 entry ->", OUT)
+# merge with any existing entries to avoid accidental overwrite
+if OUT.exists():
+    existing = json.loads(OUT.read_text(encoding="utf-8"))
+else:
+    existing = {}
+existing.update(collected)
+OUT.write_text(json.dumps(existing, indent=2), encoding="utf-8")
+print("Wrote/merged CE2 artifact entry ->", OUT)
 
 # build alpha_global from the single rational solution and attach
 from tools.assemble_exact_l4_from_local_ce2 import flat_rats_to_E8Z3

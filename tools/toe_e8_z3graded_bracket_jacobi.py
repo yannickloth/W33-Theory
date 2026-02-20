@@ -21,11 +21,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence, Tuple
 
 import numpy as np
+
+# optional numba support (safe, optional acceleration for cubic_sym)
+try:
+    import numba as _numba  # type: ignore
+
+    _NUMBA_AVAILABLE = True
+except Exception:
+    _NUMBA_AVAILABLE = False
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -164,6 +173,7 @@ class E8Z3Bracket:
         scale_g2g2: float = 1.0,
         scale_e6: float = 1.0,
         scale_sl3: float = 1.0,
+        use_numba: bool = False,
     ):
         self._proj_e6 = e6_projector
         self._triads = list(cubic_triads)
@@ -179,13 +189,65 @@ class E8Z3Bracket:
         self.scale_e6 = float(scale_e6)
         self.scale_sl3 = float(scale_sl3)
 
+        # Decide whether to enable the optional numba path. Environment variable
+        # TOE_USE_NUMBA=1/true/yes will enable numba globally even if not passed.
+        self._use_numba = bool(use_numba) or (
+            os.environ.get("TOE_USE_NUMBA", "").lower() in ("1", "true", "yes")
+        )
+
+        # optional fast-NumPy scatter path (uses np.bincount on real/imag parts)
+        self._use_fast_numpy = (
+            bool(use_numba) and False
+        )  # kept False unless explicitly enabled
+        self._use_fast_numpy = self._use_fast_numpy or (
+            os.environ.get("TOE_USE_FAST_CUBIC_SYM", "").lower() in ("1", "true", "yes")
+        )
+
+        # Precompile a numba-accelerated cubic_sym implementation if available and requested.
+        if self._use_numba and _NUMBA_AVAILABLE:
+            a_cl = self._triad_a.copy().astype(np.int64)
+            b_cl = self._triad_b.copy().astype(np.int64)
+            c_cl = self._triad_c.copy().astype(np.int64)
+            s_cl = self._triad_sign.copy().astype(np.complex128)
+
+            @_numba.njit
+            def _cubic_sym_numba(u, v, scale):
+                out = np.zeros(27, dtype=np.complex128)
+                for t in range(a_cl.shape[0]):
+                    ai = a_cl[t]
+                    bi = b_cl[t]
+                    ci = c_cl[t]
+                    ss = s_cl[t] * scale
+                    out[ai] += ss * (u[bi] * v[ci] + u[ci] * v[bi])
+                    out[bi] += ss * (u[ai] * v[ci] + u[ci] * v[ai])
+                    out[ci] += ss * (u[ai] * v[bi] + u[bi] * v[ai])
+                return out
+
+            # store the compiled function for cubic_sym to call when enabled
+            self._cubic_sym_numba = _cubic_sym_numba
+        else:
+            self._cubic_sym_numba = None
+
+        # prepare small cached arrays for fast-numpy path
+        self._triad_a_arr = self._triad_a
+        self._triad_b_arr = self._triad_b
+        self._triad_c_arr = self._triad_c
+        self._triad_sign_arr = self._triad_sign
+
     def cubic_sym(self, u: np.ndarray, v: np.ndarray, *, scale: float) -> np.ndarray:
         """
         Vectorized symmetric bilinear map S^2(27) -> 27* induced by the cubic triads.
         Replaces the Python triad loop with NumPy indexing and accumulation for speed.
+
+        When `use_numba` was enabled at construction and `numba` is available, this will
+        dispatch to a precompiled Numba implementation (optional acceleration).
         """
         if u.shape != (27,) or v.shape != (27,):
             raise ValueError("Expected u,v shape (27,)")
+
+        # Fast path: call the numba-compiled kernel when available and requested.
+        if getattr(self, "_cubic_sym_numba", None) is not None and self._use_numba:
+            return self._cubic_sym_numba(u, v, float(scale))
         a = self._triad_a
         b = self._triad_b
         c = self._triad_c
@@ -196,8 +258,27 @@ class E8Z3Bracket:
         contrib_b = s * (u[a] * v[c] + u[c] * v[a])
         contrib_c = s * (u[a] * v[b] + u[b] * v[a])
 
+        # Fast path: call the numba-compiled kernel when available and requested.
+        if getattr(self, "_cubic_sym_numba", None) is not None and self._use_numba:
+            return self._cubic_sym_numba(u, v, float(scale))
+
+        # Fast NumPy scatter path (optional): use np.bincount on real/imag parts
+        if self._use_fast_numpy:
+            # split real/imag and accumulate using bincount (minlength=27)
+            out_real = (
+                np.bincount(a, weights=contrib_a.real, minlength=27)
+                + np.bincount(b, weights=contrib_b.real, minlength=27)
+                + np.bincount(c, weights=contrib_c.real, minlength=27)
+            )
+            out_imag = (
+                np.bincount(a, weights=contrib_a.imag, minlength=27)
+                + np.bincount(b, weights=contrib_b.imag, minlength=27)
+                + np.bincount(c, weights=contrib_c.imag, minlength=27)
+            )
+            return (out_real + 1j * out_imag).astype(np.complex128)
+
+        # Default (safe) accumulation using np.add.at
         out = np.zeros(27, dtype=np.complex128)
-        # accumulate contributions (handles repeated indices safely)
         np.add.at(out, a, contrib_a)
         np.add.at(out, b, contrib_b)
         np.add.at(out, c, contrib_c)

@@ -17,9 +17,11 @@ Purpose: produce exact/rational certificates for the CE2->l4 repair path.
 """
 from __future__ import annotations
 
+import concurrent.futures
 import importlib.util
 import itertools
 import json
+import os
 from fractions import Fraction
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -190,80 +192,210 @@ def main(max_den: int = 720) -> Dict[str, Any]:
         basis_elem_g2,
     )
 
-    for ft in fails:
+    # helper for single-triple CE2 computation (used by worker processes)
+    def _compute_local_for_triple(ft):
         a_idx = tuple(ft["a"])
         b_idx = tuple(ft["b"])
         c_idx = tuple(ft["c"])
-        x = basis_elem_g1(toe, a_idx)
-        y = basis_elem_g1(toe, b_idx)
-        z = basis_elem_g2(toe, c_idx)
 
-        res = linfty.compute_local_ce2_alpha_for_triple(
+        # re-import tool in worker context
+        mod = _load_module(
+            ROOT / "tools" / "toe_e8_z3graded_bracket_jacobi.py", "toe_e8"
+        )
+        from tools.exhaustive_homotopy_check_rationalized_l3 import (
+            basis_elem_g1,
+            basis_elem_g2,
+        )
+
+        proj_w = mod.E6Projector(
+            np.load(
+                ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy"
+            ).astype(np.complex128)
+        )
+        all_triads_w = mod._load_signed_cubic_triads()
+        bad9_w = set(
+            tuple(sorted(t[:3]))
+            for t in json.loads(
+                (
+                    ROOT / "artifacts" / "linfty_coord_search_results_rationalized.json"
+                ).read_text()
+            )["original"]["fiber_triads"]
+        )
+        from tools.build_linfty_firewall_extension import LInftyE8Extension
+
+        linfty_w = LInftyE8Extension(
+            mod, proj_w, all_triads_w, bad9_w, l3_scale=1.0 / 9.0
+        )
+        x = basis_elem_g1(mod, a_idx)
+        y = basis_elem_g1(mod, b_idx)
+        z = basis_elem_g2(mod, c_idx)
+        res = linfty_w.compute_local_ce2_alpha_for_triple(
             x, y, z, return_uv=True, rationalize_uv=True, max_den=max_den
         )
         if res is None:
-            raise RuntimeError(
-                f"Local CE2 solver failed on triple {a_idx},{b_idx},{c_idx}"
-            )
-
-        # unpack
+            return (a_idx, b_idx, c_idx, None)
         alpha_fn, U_flat, V_flat, U_rats, V_rats = res
+        return (
+            a_idx,
+            b_idx,
+            c_idx,
+            float(np.linalg.norm(U_flat)),
+            float(np.linalg.norm(V_flat)),
+            [str(r) if r is not None else "0" for r in U_rats],
+            [str(r) if r is not None else "0" for r in V_rats],
+        )
 
-        # store rationalized arrays as strings for artifact readability
-        key = f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
-        collected[key] = {
-            "a": a_idx,
-            "b": b_idx,
-            "c": c_idx,
-            "U_norm": float(np.linalg.norm(U_flat)),
-            "V_norm": float(np.linalg.norm(V_flat)),
-            "U_rats": [str(r) if r is not None else "0" for r in U_rats],
-            "V_rats": [str(r) if r is not None else "0" for r in V_rats],
-        }
-
-        # build a rational alpha (returns numeric toe.E8Z3 from Fraction lists)
-        def make_alpha_from_rats(
-            Ur: List[Any], Vr: List[Any], x_ref=x, y_ref=y, z_ref=z
-        ):
-            def alpha(a, b):
-                # compare by coordinates (cheap identity using g1/g2 arrays)
-                if (
-                    np.allclose(a.g1, y_ref.g1)
-                    and np.allclose(a.g2, y_ref.g2)
-                    and np.allclose(b.g1, z_ref.g1)
-                    and np.allclose(b.g2, z_ref.g2)
-                ):
-                    return flat_rats_to_E8Z3(toe, Ur)
-                if (
-                    np.allclose(a.g1, z_ref.g1)
-                    and np.allclose(a.g2, z_ref.g2)
-                    and np.allclose(b.g1, y_ref.g1)
-                    and np.allclose(b.g2, y_ref.g2)
-                ):
-                    return flat_rats_to_E8Z3(
-                        toe, [(-float(r)) if r is not None else 0.0 for r in Ur]
+    # run local CE2 solves in parallel (worker reconstructs its own LInfty)
+    parallel_workers = int(os.environ.get("ASSEMBLE_L4_WORKERS", os.cpu_count() or 2))
+    if parallel_workers > 1 and len(fails) > 1:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=parallel_workers) as ex:
+            futs = {ex.submit(_compute_local_for_triple, ft): ft for ft in fails}
+            for fut in concurrent.futures.as_completed(futs):
+                a_idx, b_idx, c_idx, *rest = fut.result()
+                key = (
+                    f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
+                )
+                if rest[0] is None:
+                    raise RuntimeError(
+                        f"Local CE2 solver failed on triple {a_idx},{b_idx},{c_idx}"
                     )
-                if (
-                    np.allclose(a.g1, x_ref.g1)
-                    and np.allclose(a.g2, x_ref.g2)
-                    and np.allclose(b.g1, z_ref.g1)
-                    and np.allclose(b.g2, z_ref.g2)
-                ):
-                    return flat_rats_to_E8Z3(toe, Vr)
-                if (
-                    np.allclose(a.g1, z_ref.g1)
-                    and np.allclose(a.g2, z_ref.g2)
-                    and np.allclose(b.g1, x_ref.g1)
-                    and np.allclose(b.g2, x_ref.g2)
-                ):
-                    return flat_rats_to_E8Z3(
-                        toe, [(-float(r)) if r is not None else 0.0 for r in Vr]
-                    )
-                return toe.E8Z3.zero()
+                U_norm, V_norm, U_rats, V_rats = rest
+                collected[key] = {
+                    "a": a_idx,
+                    "b": b_idx,
+                    "c": c_idx,
+                    "U_norm": U_norm,
+                    "V_norm": V_norm,
+                    "U_rats": U_rats,
+                    "V_rats": V_rats,
+                }
+                # reconstruct basis elements in main process for alpha closure
+                from tools.exhaustive_homotopy_check_rationalized_l3 import (
+                    basis_elem_g1,
+                    basis_elem_g2,
+                )
 
-            return alpha
+                x = basis_elem_g1(toe, a_idx)
+                y = basis_elem_g1(toe, b_idx)
+                z = basis_elem_g2(toe, c_idx)
 
-        local_alphas.append(make_alpha_from_rats(U_rats, V_rats))
+                def make_alpha_from_rats(
+                    Ur: List[Any], Vr: List[Any], x_ref=x, y_ref=y, z_ref=z
+                ):
+                    def alpha(a, b):
+                        if (
+                            np.allclose(a.g1, y_ref.g1)
+                            and np.allclose(a.g2, y_ref.g2)
+                            and np.allclose(b.g1, z_ref.g1)
+                            and np.allclose(b.g2, z_ref.g2)
+                        ):
+                            return flat_rats_to_E8Z3(toe, Ur)
+                        if (
+                            np.allclose(a.g1, z_ref.g1)
+                            and np.allclose(a.g2, z_ref.g2)
+                            and np.allclose(b.g1, y_ref.g1)
+                            and np.allclose(b.g2, y_ref.g2)
+                        ):
+                            return flat_rats_to_E8Z3(
+                                toe, [(-float(r)) if r is not None else 0.0 for r in Ur]
+                            )
+                        if (
+                            np.allclose(a.g1, x_ref.g1)
+                            and np.allclose(a.g2, x_ref.g2)
+                            and np.allclose(b.g1, z_ref.g1)
+                            and np.allclose(b.g2, z_ref.g2)
+                        ):
+                            return flat_rats_to_E8Z3(toe, Vr)
+                        if (
+                            np.allclose(a.g1, z_ref.g1)
+                            and np.allclose(a.g2, z_ref.g2)
+                            and np.allclose(b.g1, x_ref.g1)
+                            and np.allclose(b.g2, x_ref.g2)
+                        ):
+                            return flat_rats_to_E8Z3(
+                                toe, [(-float(r)) if r is not None else 0.0 for r in Vr]
+                            )
+                        return toe.E8Z3.zero()
+
+                    return alpha
+
+                local_alphas.append(make_alpha_from_rats(U_rats, V_rats))
+    else:
+        # fallback to sequential loop
+        for ft in fails:
+            a_idx = tuple(ft["a"])
+            b_idx = tuple(ft["b"])
+            c_idx = tuple(ft["c"])
+            x = basis_elem_g1(toe, a_idx)
+            y = basis_elem_g1(toe, b_idx)
+            z = basis_elem_g2(toe, c_idx)
+
+            res = linfty.compute_local_ce2_alpha_for_triple(
+                x, y, z, return_uv=True, rationalize_uv=True, max_den=max_den
+            )
+            if res is None:
+                raise RuntimeError(
+                    f"Local CE2 solver failed on triple {a_idx},{b_idx},{c_idx}"
+                )
+
+            # unpack
+            alpha_fn, U_flat, V_flat, U_rats, V_rats = res
+
+            # store rationalized arrays as strings for artifact readability
+            key = f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
+            collected[key] = {
+                "a": a_idx,
+                "b": b_idx,
+                "c": c_idx,
+                "U_norm": float(np.linalg.norm(U_flat)),
+                "V_norm": float(np.linalg.norm(V_flat)),
+                "U_rats": [str(r) if r is not None else "0" for r in U_rats],
+                "V_rats": [str(r) if r is not None else "0" for r in V_rats],
+            }
+
+            # build a rational alpha (returns numeric toe.E8Z3 from Fraction lists)
+            def make_alpha_from_rats(
+                Ur: List[Any], Vr: List[Any], x_ref=x, y_ref=y, z_ref=z
+            ):
+                def alpha(a, b):
+                    # compare by coordinates (cheap identity using g1/g2 arrays)
+                    if (
+                        np.allclose(a.g1, y_ref.g1)
+                        and np.allclose(a.g2, y_ref.g2)
+                        and np.allclose(b.g1, z_ref.g1)
+                        and np.allclose(b.g2, z_ref.g2)
+                    ):
+                        return flat_rats_to_E8Z3(toe, Ur)
+                    if (
+                        np.allclose(a.g1, z_ref.g1)
+                        and np.allclose(a.g2, z_ref.g2)
+                        and np.allclose(b.g1, y_ref.g1)
+                        and np.allclose(b.g2, y_ref.g2)
+                    ):
+                        return flat_rats_to_E8Z3(
+                            toe, [(-float(r)) if r is not None else 0.0 for r in Ur]
+                        )
+                    if (
+                        np.allclose(a.g1, x_ref.g1)
+                        and np.allclose(a.g2, x_ref.g2)
+                        and np.allclose(b.g1, z_ref.g1)
+                        and np.allclose(b.g2, z_ref.g2)
+                    ):
+                        return flat_rats_to_E8Z3(toe, Vr)
+                    if (
+                        np.allclose(a.g1, z_ref.g1)
+                        and np.allclose(a.g2, z_ref.g2)
+                        and np.allclose(b.g1, x_ref.g1)
+                        and np.allclose(b.g2, x_ref.g2)
+                    ):
+                        return flat_rats_to_E8Z3(
+                            toe, [(-float(r)) if r is not None else 0.0 for r in Vr]
+                        )
+                    return toe.E8Z3.zero()
+
+                return alpha
+
+            local_alphas.append(make_alpha_from_rats(U_rats, V_rats))
 
     # assemble global CE2 by summing local alphas
     def alpha_global(a, b):

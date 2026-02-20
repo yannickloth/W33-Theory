@@ -37,6 +37,13 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
     assert hits_m12_220.get("has_e6_fund_27") is True
     assert hits_m12_220.get("has_4x27") is True
 
+    m12_144 = rep.get("m12_144", {})
+    assert isinstance(m12_144, dict)
+    sub_m12_144 = m12_144.get("suborbit_lengths", [])
+    assert isinstance(sub_m12_144, list)
+    assert sum(sub_m12_144) == 144
+    assert sub_m12_144 == [1, 11, 11, 55, 66]
+
     m12_495 = rep.get("m12_495", {})
     assert isinstance(m12_495, dict)
     hits_m12_495 = m12_495.get("signature_hits", {})

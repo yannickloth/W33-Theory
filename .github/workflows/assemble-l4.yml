@@ -1,0 +1,59 @@
+name: Assemble canonical L4 (CE2 → l4)
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - 'fix/he-permrep-association'
+
+jobs:
+  assemble_l4:
+    name: Assemble CE2 → l4 and verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python dependencies (core only)
+        run: |
+          python -m pip install --upgrade pip
+          # install only core/runtime deps needed for assembly (avoid optional TDA packages)
+          pip install numpy sympy pytest pytest-json-report
+
+      - name: Run exhaustive homotopy check (rationalized l3)
+        run: |
+          python -u tools/exhaustive_homotopy_check_rationalized_l3.py
+
+      - name: Assemble exact/l4 from CE2 local solutions
+        run: |
+          python -u tools/assemble_exact_l4_from_local_ce2.py
+
+      - name: Upload assembly artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: l4-assembly-artifacts
+          path: |
+            artifacts/ce2_rational_local_solutions.json
+            artifacts/exhaustive_homotopy_rationalized_l3.json
+            artifacts/exhaustive_homotopy_l3_l4.json
+            artifacts/pslq_snf_ce2_uv_check.json
+            artifacts/*.json
+
+      - name: Run linfty/unit tests (non-blocking)
+        run: |
+          pytest -q -k "linfty or monster or pillar" || true
