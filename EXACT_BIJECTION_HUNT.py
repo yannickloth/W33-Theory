@@ -25,6 +25,7 @@ from collections import defaultdict
 from itertools import combinations
 
 import numpy as np
+from scipy.optimize import linear_sum_assignment
 
 print("=" * 70)
 print("EXACT BIJECTION HUNT: THE FINAL ATTACK")
@@ -644,7 +645,28 @@ distances = [closest_E8_root(v)[1] for v in rescaled_edges[:50]]
 print(
     f"\nDistance distribution (first 50): min={min(distances):.4f}, max={max(distances):.4f}"
 )
+print("\n" + "=" * 70)
+print("ATTEMPTING OPTIMAL MATCHING VIA HUNGARIAN ALGORITHM")
+print("=" * 70)
 
+# build cost matrix between rescaled edges and E8 roots (squared distance)
+cost_matrix = np.zeros((len(edges), len(E8_roots)))
+for i, vec in enumerate(rescaled_edges):
+    for j, root in enumerate(E8_roots):
+        cost_matrix[i, j] = np.linalg.norm(vec - np.array(root)) ** 2
+
+row_ind, col_ind = linear_sum_assignment(cost_matrix)
+total_cost = cost_matrix[row_ind, col_ind].sum()
+print(f"Optimal total squared distance: {total_cost:.6f}")
+print(f"Average squared distance per mapping: {total_cost/len(edges):.6f}")
+zero_matches = sum(1 for d in cost_matrix[row_ind, col_ind] if d < 1e-6)
+print(f"Zero distance matches: {zero_matches}")
+
+print("\nSome sample mappings from optimal assignment:")
+for k in range(10):
+    i = row_ind[k]
+    j = col_ind[k]
+    print(f"  Edge {i} -> Root {j}, dist^2 = {cost_matrix[i,j]:.6f}")
 print("\n" + "=" * 70)
 print("SYNTHESIS: WHAT WE'VE LEARNED")
 print("=" * 70)
