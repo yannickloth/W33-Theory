@@ -1,0 +1,29 @@
+{
+  "methods_tried": {
+    "multi_higgs_vev": {
+      "best_mixing": 0.75,
+      "chi2_per_dof": 174026797.2004738
+    },
+    "f3_arithmetic": {
+      "sample_size": 729,
+      "nonzero_fraction": 0.00411522633744856
+    },
+    "alternative_definitions": {
+      "diagonal": 31831893.970056508,
+      "trace": 242576689.5309895
+    },
+    "subset_search": {
+      "best_chi2_per_dof": 173249061.46029446
+    }
+  },
+  "overall_best": {
+    "method": "diagonal",
+    "chi2_per_dof": 31831893.970056508,
+    "details": {
+      "v": 201875.11869427224,
+      "chi2": 286487045.73050857
+    }
+  },
+  "assessment": "NO_MAJOR_CHANGE",
+  "conclusion": "301:1 hierarchy confirmed, quantitative matching needs additional physics"
+}
