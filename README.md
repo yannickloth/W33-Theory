@@ -76,6 +76,7 @@ Each pillar is a proved theorem with an accompanying test. Click any pillar to s
 | 13 | [Topological generations](scripts/w33_three_generations.py) | b<sub>0</sub>(link(v)) &minus; 1 = 3 |
 | 14 | [H27 inclusion](scripts/w33_deep_structure.py) | H<sub>1</sub>(H27) embeds with rank 46 |
 | 15 | [Three generations](scripts/w33_three_generations.py) | 81 = 27 + 27 + 27, all 800 order-3 elements |
+| 15.1 | [Z3 symmetry of H1 subspaces](tools/check_z3_symmetry.py) | order‑3 automorphism cyclically permutes the three 27-spaces |
 | 16 | [Universal mixing](scripts/w33_democratic_mixing.py) | Eigenvalues 1, &minus;1/27 |
 | 17 | [Weinberg angle](scripts/w33_weinberg_dirac.py) | sin&sup2;&theta;<sub>W</sub> = 3/8, **unique** to W(3,3) |
 | 18 | [Spectral democracy](scripts/w33_weinberg_dirac.py) | &lambda;<sub>2</sub>n<sub>2</sub> = &lambda;<sub>3</sub>n<sub>3</sub> = 240 |
@@ -195,6 +196,7 @@ to the theory.
 | Yang&ndash;Mills mass gap | &Delta; = 4 (exact, nonzero) | Predicts confinement |
 | &theta;<sub>QCD</sub> | 0 (topological selection rule) | Solves strong CP problem |
 | Yukawa ratios | ~10, 8.7, 15 from Gram eigenvalues | In line with τ/μ and d/s hierarchies |
+| Generation symmetry | Residual Z3 cyclically permutes the three 27‑dim subspaces | Explains abstract generation permutation |
 | Dark matter candidates | 24 + 15 exact sector, decoupled | Testable prediction |
 | Proton decay | Suppressed by spectral gap | Consistent with bounds |
 | Cosmological action equality | S<sub>EH</sub> = S<sub>YM</sub> = 480 | Novel prediction |
