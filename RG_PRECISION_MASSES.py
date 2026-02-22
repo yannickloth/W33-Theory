@@ -94,9 +94,11 @@ g_MZ = np.sqrt(4 * np.pi * alpha_MZ)
 
 def gauge_couplings(t):
     """Running gauge couplings at scale μ = M_Z * exp(t)"""
-    alpha = alpha_MZ / (1 + b * alpha_MZ / (2 * np.pi) * t)
-    # Prevent negative/zero values near Landau pole
-    alpha = np.maximum(alpha, 1e-6)
+    # correct 1-loop running: 1/α(μ) = 1/α₀ - (b/2π) t
+    # which implies α = α₀ / (1 - b * α₀/(2π) * t)
+    alpha = alpha_MZ / (1 - b * alpha_MZ / (2 * np.pi) * t)
+    # ensure positivity
+    alpha = np.maximum(alpha, 1e-12)
     return np.sqrt(4 * np.pi * alpha)
 
 
@@ -195,19 +197,16 @@ print("─" * 76)
 
 # Helper functions
 
-def yukawa_rge_reverse(y, t):
-    """Negative time for running down (from GUT to M_Z)."""
-    return -yukawa_rge(y, -t)
-
-
 def run_down(y_GUT):
     """Integrate Yukawa RGEs from GUT scale down to M_Z.
 
-    y_GUT should be [y_t, y_b, y_tau] at M_GUT.
-    Returns array of Yukawas at M_Z.
+    We simply run the same differential equations on a decreasing energy
+    variable.  This avoids the earlier sign confusion with ``yukawa_rge_reverse``.
+    ``y_GUT`` is a triple (y_t,y_b,y_tau) at μ=M_GUT; the function returns the
+    corresponding values at μ=M_Z.
     """
-    t_span_down = np.linspace(0, -np.log(M_GUT / M_Z), 1000)
-    sol = odeint(yukawa_rge_reverse, y_GUT, t_span_down)
+    t_span_down = np.linspace(np.log(M_GUT / M_Z), 0, 1000)
+    sol = odeint(yukawa_rge, y_GUT, t_span_down)
     return sol[-1]
 
 # shooting function: given y_t at GUT, compute predicted m_t at M_Z
