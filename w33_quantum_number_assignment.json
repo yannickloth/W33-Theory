@@ -1,0 +1,90 @@
+{
+  "method": "mass_ordering_trial",
+  "optimal_vev": 89757.42900216099,
+  "chi_squared": 5330486782844.066,
+  "chi_squared_per_dof": 484589707531.27875,
+  "fermion_predictions": {
+    "t": {
+      "predicted_MeV": 34297.191827615956,
+      "experimental_MeV": 173000.0,
+      "dimensionless": 0.38210978421396424
+    },
+    "b": {
+      "predicted_MeV": 30788.60487345451,
+      "experimental_MeV": 4180.0,
+      "dimensionless": 0.34302012898245166
+    },
+    "tau": {
+      "predicted_MeV": 29524.386965832964,
+      "experimental_MeV": 1776.86,
+      "dimensionless": 0.3289353014458796
+    },
+    "nu3": {
+      "predicted_MeV": 28681.278822254284,
+      "experimental_MeV": 0.0495,
+      "dimensionless": 0.31954211635856633
+    },
+    "c": {
+      "predicted_MeV": 23852.656933301612,
+      "experimental_MeV": 1270.0,
+      "dimensionless": 0.2657457683277374
+    },
+    "s": {
+      "predicted_MeV": 21581.111033428195,
+      "experimental_MeV": 95.0,
+      "dimensionless": 0.24043815953004413
+    },
+    "mu": {
+      "predicted_MeV": 20260.97985071583,
+      "experimental_MeV": 105.66,
+      "dimensionless": 0.22573039441925224
+    },
+    "nu2": {
+      "predicted_MeV": 19375.558270690635,
+      "experimental_MeV": 0.00867,
+      "dimensionless": 0.2158657894515244
+    },
+    "u": {
+      "predicted_MeV": 15238.329363810239,
+      "experimental_MeV": 2.2,
+      "dimensionless": 0.16977234679308117
+    },
+    "d": {
+      "predicted_MeV": 12554.183714963858,
+      "experimental_MeV": 4.7,
+      "dimensionless": 0.1398679068075981
+    },
+    "e": {
+      "predicted_MeV": 10962.970539706239,
+      "experimental_MeV": 0.511,
+      "dimensionless": 0.12213997951570443
+    }
+  },
+  "generation_structure": {
+    "gen3_heaviest": {
+      "mass_range": [
+        0.278185110054996,
+        0.4161135509245342
+      ]
+    },
+    "gen2_medium": {
+      "mass_range": [
+        0.18409578090686612,
+        0.2725216771311079
+      ]
+    },
+    "gen1_lightest": {
+      "mass_range": [
+        0.0013809724775901194,
+        0.17861805835429445
+      ]
+    }
+  },
+  "degeneracy_analysis": {
+    "unique_masses": 80,
+    "triplets": 0,
+    "singlets": 79
+  },
+  "assessment": "NEEDS_WORK",
+  "confidence": 80
+}
