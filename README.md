@@ -246,8 +246,8 @@ python scripts/w33_weinberg_dirac.py     # Weinberg angle derivation
 python scripts/w33_confinement.py        # Yang–Mills spectral gap
 python scripts/w33_anomaly_cancellation.py
 python scripts/yukawa_analysis.py        # compare predicted Yukawa eigenvalue ratios to fermion masses
+python RG_PRECISION_MASSES.py            # run RG mass predictions with W33 boundary conditions
 ```
-
 The group‑theory utilities are likewise runnable:
 
 ```bash
