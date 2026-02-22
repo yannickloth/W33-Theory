@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-02-22",
+  "quantum_aspects": {
+    "hilbert_space_dim": 4,
+    "num_states": 40,
+    "orthogonal_pairs": 240,
+    "bases_per_state": 4,
+    "contextuality": "GQ(3,3) structure"
+  },
+  "geometric_aspects": {
+    "k3_euler_characteristic": 24,
+    "picard_number": 20,
+    "picard_discriminant": -228,
+    "elliptic_fibers": "E7 + E6 + A2 + 2A1"
+  },
+  "symmetry_group": {
+    "quantum": "Sp(4,3)",
+    "geometric": "W(E6)",
+    "order": 51840
+  },
+  "correspondence": {
+    "40_states": "40 vertices = 40 K3 points",
+    "240_edges": "240 orthogonalities = 240 E8 roots",
+    "24_multiplicity": "\u03c7(K3) = m\u2082 eigenvalue"
+  }
+}
