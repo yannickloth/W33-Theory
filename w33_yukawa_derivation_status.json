@@ -1,0 +1,32 @@
+{
+  "approach": "homology_intersection_form",
+  "w33_params": {
+    "vertices": 40,
+    "edges": 240,
+    "h1_rank": 201
+  },
+  "e6_params": {
+    "fundamental_dim": 27,
+    "num_generations": 3
+  },
+  "target_observables": {
+    "e": 0.5109989461,
+    "mu": 105.6583745,
+    "tau": 1776.86,
+    "u": 2.2,
+    "d": 4.7,
+    "c": 1275,
+    "s": 95,
+    "t": 173000,
+    "b": 4180
+  },
+  "next_steps": [
+    "Compute explicit H1 cycle basis",
+    "Calculate intersection form matrix",
+    "Decompose under Sp(4,3) action",
+    "Extract 27x27 Yukawa blocks",
+    "Diagonalize and compare to data"
+  ],
+  "estimated_time": "2 months",
+  "confidence": 0.4
+}
