@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 def test_cycle_space_properties():
     from tools.cycle_space_analysis import (
@@ -44,3 +45,21 @@ def test_cycle_space_properties():
                 frontier.append(t)
     size = len(orb)
     assert size <= 201 and size % 3 == 0
+
+
+def test_h1_subspaces_file_exists():
+    import os
+    path = os.path.join("data", "h1_subspaces.json")
+    assert os.path.isfile(path), "h1_subspaces.json should be produced"
+    data = json.load(open(path))
+    dims = data.get("subspace_dims", [])
+    # there should be three 27-dim subspaces
+    assert dims == [27, 27, 27]
+    grams = data.get("gram_matrices", [])
+    assert len(grams) == 3
+    # ensure each gram matrix is 27x27 and nondegenerate
+    for G in grams:
+        import numpy as np
+        M = np.array(G, dtype=int)
+        assert M.shape == (27, 27)
+        assert np.linalg.matrix_rank(M) == 27
