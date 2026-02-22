@@ -1,0 +1,22 @@
+{
+  "hierarchy": {
+    "M_Planck_predicted": 5.790477564190692e+19,
+    "M_Planck_actual": 1.22e+19,
+    "ratio": 0.21069073949007067,
+    "formula": "M_Pl = M_weak \u00d7 exp(|W33|) = M_weak \u00d7 exp(40)"
+  },
+  "cosmological_constant": {
+    "screening_factor": 0.59,
+    "num_roots": 240,
+    "suppression": 1.0103754706644785e-55,
+    "formula": "\u039b \u2248 M_Pl\u2074 \u00d7 (0.59)^240"
+  },
+  "fine_structure": {
+    "alpha_inv": 137,
+    "decomposition": "dim(E7) + dim(spacetime) = 133 + 4",
+    "alpha_MZ_inv": 128,
+    "decomposition_MZ": "dim(SO(16) half-spinor) = 128"
+  },
+  "gravity_gauge_group": "SO(4,1) or SO(3,2) \u2282 E8",
+  "unified_group": "E8 \u2192 E6 \u00d7 SO(4,1) \u00d7 (dark)"
+}

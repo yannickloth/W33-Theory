@@ -1,0 +1,49 @@
+{
+  "source_conf_entry": {
+    "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+    "start_vertex": 3,
+    "block_size": 33,
+    "forced_status": "INFEASIBLE",
+    "minimal_conflict": [
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104
+    ],
+    "minimal_conflict_size": 29
+  },
+  "initial_size": 29,
+  "result": [
+    37,
+    38
+  ],
+  "result_size": 2,
+  "checks_limit": 2000,
+  "time_seconds": 137.45551300048828,
+  "timestamp": 1770502026
+}

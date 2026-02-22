@@ -1,0 +1,9 @@
+{
+  "theorem": "Lie(E6 \u222a {M_ext}) = sl(27)",
+  "e6_dimension": 78,
+  "extension_operator": 1,
+  "closure_dimension": 728,
+  "sl27_dimension": 728,
+  "verification": {
+    "dimension_match": true,
+    "traceless":

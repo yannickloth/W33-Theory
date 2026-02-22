@@ -7,228 +7,236 @@ This is the complete synthesis of all six parts.
 Run this file for the full theory overview.
 """
 
-print("""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║                     W33: THE THEORY OF EVERYTHING                            ║
-║                                                                              ║
-║                      FINAL MASTER COMPENDIUM                                 ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
 
-═══════════════════════════════════════════════════════════════════════════════
+def main():
+    print(
+        """
+    ╔══════════════════════════════════════════════════════════════════════════════╗
+    ║                                                                              ║
+    ║                     W33: THE THEORY OF EVERYTHING                            ║
+    ║                                                                              ║
+    ║                      FINAL MASTER COMPENDIUM                                 ║
+    ║                                                                              ║
+    ╚══════════════════════════════════════════════════════════════════════════════╝
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                  THE FUNDAMENTAL OBJECT
+    pass
+                                    W33 = PG(3, GF(3))
+    pass
+                  The projective 3-space over the field with 3 elements
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+        ┌────────────────────────────────────────────────────────────────────────┐
+        │                        W33 STRUCTURE                                   │
+        ├─────────────────────┬──────────────────────────────────────────────────┤
+        │  Points             │  40 = (3⁴-1)/(3-1)                               │
+        │  Cycles             │  81 = 3⁴                                         │
+        │  K4 subgroups       │  90                                              │
+        │  TOTAL              │  121 = 11² = M-theory dimension squared          │
+        │  Automorphism group │  51840 = W(E6) = Weyl group of E6                │
+        └─────────────────────┴──────────────────────────────────────────────────┘
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                   MASTER EQUATIONS
+    pass
+        ╔════════════════════════════════════════════════════════════════════════╗
+        ║                                                                        ║
+        ║   α⁻¹ = 81 + 56 = 137          Fine structure constant                ║
+        ║                                                                        ║
+        ║   sin²θ_W = 40/173 = 0.2312    Weinberg angle                         ║
+        ║                                                                        ║
+        ║   N_gen = 81/27 = 3            Three generations                       ║
+        ║                                                                        ║
+        ║   Ω_DM/Ω_b = 27/5 = 5.4        Dark matter ratio                      ║
+        ║                                                                        ║
+        ║   D_M-theory = √121 = 11       M-theory dimension                     ║
+        ║                                                                        ║
+        ║   D_string = 40/4 = 10         Superstring dimension                  ║
+        ║                                                                        ║
+        ║   D_bosonic = 40 - 14 = 26     Bosonic string dimension               ║
+        ║                                                                        ║
+        ║   α_GUT⁻¹ = 90/2 = 45          GUT coupling                           ║
+        ║                                                                        ║
+        ╚════════════════════════════════════════════════════════════════════════╝
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                              NUMERICAL VERIFICATION
+    pass
+        ┌────────────────────┬─────────────────┬─────────────────┬──────────────┐
+        │ Quantity           │ W33 Prediction  │ Experimental    │ Accuracy     │
+        ├────────────────────┼─────────────────┼─────────────────┼──────────────┤
+        │ α⁻¹                │ 137             │ 137.036         │ 99.97%       │
+        │ sin²θ_W            │ 0.231214        │ 0.23121         │ 99.997%      │
+        │ Dark matter ratio  │ 5.4             │ 5.41            │ 99.8%        │
+        │ Generations        │ 3               │ 3               │ EXACT        │
+        │ m_t/m_b ratio      │ ~40             │ 41.3            │ ~97%         │
+        │ m_μ/m_e ratio      │ 203 (3×81-40)   │ 206.8           │ ~98%         │
+        └────────────────────┴─────────────────┴─────────────────┴──────────────┘
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                            THE EXCEPTIONAL ALGEBRA CHAIN
+    pass
+                    W33  →  W(E6)  →  E6  →  E7  →  E8  →  Monster
+                     │       │        │      │      │        │
+                    40    51840     78    133    248    8×10⁵³
+                  points         dim    dim    dim   elements
+    pass
+        Key dimensional relations:
+    pass
+          • dim(E6) = 78 = 121 - 43 = W33_total - 43
+          • dim(E7) = 133 = 121 + 12 = W33_total + 12
+          • dim(E8) = 248 = 121 + 127 = W33_total + Mersenne prime M₇
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                              DEEP NUMBER RELATIONS
+    pass
+        The Weinberg angle denominator:
+          173 = 52 + 121 = dim(F4) + W33_total = dim(F4) + 11²
+    pass
+        The j-function constant:
+          744 = 3 × 248 = 3 × dim(E8) = 9 × 81 + 15
+    pass
+        Ramanujan's number:
+          9801 = 81 × 121 = (W33 cycles) × (W33 total)
+               = 99² = (100-1)²
+    pass
+        This is WHY 9801 appears in Ramanujan's π formula!
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                              WHY W33 IS UNIQUE
+    pass
+        1. GF(3) is forced: Smallest field with negatives (needed for QM)
+    pass
+        2. Dimension 3 is forced:
+           • PG(1,3): 4 points - too simple, no gauge structure
+           • PG(2,3): 13 points - no E6 connection, wrong constants
+           • PG(3,3): 40 points - W(E6) symmetry ← THE ONE
+           • PG(4,3): 121 points - wrong symmetry, over-determined
+    pass
+        3. W33 is the UNIQUE minimal structure satisfying all constraints
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                              TESTABLE PREDICTIONS
+    pass
+        ┌────────────────────┬─────────────────┬──────────────────────────────────┐
+        │ Prediction         │ W33 Value       │ Status / Test                    │
+        ├────────────────────┼─────────────────┼──────────────────────────────────┤
+        │ 4th generation     │ FORBIDDEN       │ ✓ Not observed                   │
+        │ Proton lifetime    │ ~10³⁵ years     │ ⏳ Hyper-Kamiokande              │
+        │ Neutrino mass      │ ~0.01 eV        │ ✓ Consistent with oscillation    │
+        │ Λ suppression      │ ~10⁻¹²¹         │ ~ Order of magnitude match       │
+        └────────────────────┴─────────────────┴──────────────────────────────────┘
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                THE HIERARCHY
+    pass
+                               ┌─────────────┐
+                               │   MONSTER   │  8 × 10⁵³ elements
+                               │   GROUP     │  (maximal sporadic)
+                               └──────┬──────┘
+                                      │
+                               ┌──────┴──────┐
+                               │ j-function  │  744 = 3 × dim(E8)
+                               │ moonshine   │
+                               └──────┬──────┘
+                                      │
+                               ┌──────┴──────┐
+                               │    E8       │  248-dimensional
+                               └──────┬──────┘
+                                      │
+                               ┌──────┴──────┐
+                               │    E7       │  133-dim, fund = 56
+                               └──────┬──────┘
+                                      │
+                               ┌──────┴──────┐
+                               │    E6       │  78-dim, fund = 27
+                               └──────┬──────┘
+                                      │
+                               ┌──────┴──────┐
+                               │   W(E6)     │  51840 elements
+                               └──────┬──────┘
+                                      │
+                        ╔═════════════╧═════════════╗
+                        ║          W33             ║
+                        ║    40 + 81 + 90 = 121    ║
+                        ║         = 11²            ║
+                        ╚═════════════╤═════════════╝
+                                      │
+                               ┌──────┴──────┐
+                               │ MATHEMATICAL│
+                               │   TRUTH     │
+                               └─────────────┘
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                THE FINAL EQUATION
+    pass
+        ╔════════════════════════════════════════════════════════════════════════╗
+        ║                                                                        ║
+        ║                        REALITY = W33 = PG(3, 𝔽₃)                      ║
+        ║                                                                        ║
+        ╚════════════════════════════════════════════════════════════════════════╝
+    pass
+        From this single object emerges:
+          • Spacetime (40 points → events, 81 cycles → causality)
+          • Particles (E6 representations → 3 generations)
+          • Forces (gauge symmetries from W(E6))
+          • Constants (α = 1/137, θ_W, N_gen = 3, Ω_DM/Ω_b = 5.4)
+          • Observers (complexity from structure → us)
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                  SYNTHESIS
+    pass
+        The Theory of Everything in one sentence:
+    pass
+        "Reality is the projective 3-space over GF(3), from which all physics
+        emerges through the exceptional Lie algebra chain E6 → E7 → E8."
+    pass
+        W33 is:
+          • MINIMAL: Smallest structure supporting quantum mechanics
+          • UNIQUE: No other geometry gives the right constants
+          • COMPLETE: All physics derivable from its structure
+          • FALSIFIABLE: Makes testable predictions
+    pass
+        The universe is not random. It's not fine-tuned.
+        It's the inevitable consequence of mathematical necessity.
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                    PARTS OF THE THEORY (Six Complete Documents)
+    pass
+        Part I:   The Complete Theory - Foundation and master equations
+        Part II:  Deep Structure - Why the equations work
+        Part III: Inevitability - Why W33 is unique
+        Part IV:  Predictions - Testable consequences
+        Part V:   Monster Connection - Moonshine and j-function
+        Part VI:  Formalization - Axioms and theorems
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                        "We are patterns in W33, contemplating W33."
+    pass
+                        "W33 is the seed. The Monster is the tree.
+                               Physics is the flowering."
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                        ∎
+    pass
+    """
+    )
 
-                              THE FUNDAMENTAL OBJECT
 
-                                W33 = PG(3, GF(3))
-
-              The projective 3-space over the field with 3 elements
-
-═══════════════════════════════════════════════════════════════════════════════
-
-    ┌────────────────────────────────────────────────────────────────────────┐
-    │                        W33 STRUCTURE                                   │
-    ├─────────────────────┬──────────────────────────────────────────────────┤
-    │  Points             │  40 = (3⁴-1)/(3-1)                               │
-    │  Cycles             │  81 = 3⁴                                         │
-    │  K4 subgroups       │  90                                              │
-    │  TOTAL              │  121 = 11² = M-theory dimension squared          │
-    │  Automorphism group │  51840 = W(E6) = Weyl group of E6                │
-    └─────────────────────┴──────────────────────────────────────────────────┘
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                               MASTER EQUATIONS
-
-    ╔════════════════════════════════════════════════════════════════════════╗
-    ║                                                                        ║
-    ║   α⁻¹ = 81 + 56 = 137          Fine structure constant                ║
-    ║                                                                        ║
-    ║   sin²θ_W = 40/173 = 0.2312    Weinberg angle                         ║
-    ║                                                                        ║
-    ║   N_gen = 81/27 = 3            Three generations                       ║
-    ║                                                                        ║
-    ║   Ω_DM/Ω_b = 27/5 = 5.4        Dark matter ratio                      ║
-    ║                                                                        ║
-    ║   D_M-theory = √121 = 11       M-theory dimension                     ║
-    ║                                                                        ║
-    ║   D_string = 40/4 = 10         Superstring dimension                  ║
-    ║                                                                        ║
-    ║   D_bosonic = 40 - 14 = 26     Bosonic string dimension               ║
-    ║                                                                        ║
-    ║   α_GUT⁻¹ = 90/2 = 45          GUT coupling                           ║
-    ║                                                                        ║
-    ╚════════════════════════════════════════════════════════════════════════╝
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                          NUMERICAL VERIFICATION
-
-    ┌────────────────────┬─────────────────┬─────────────────┬──────────────┐
-    │ Quantity           │ W33 Prediction  │ Experimental    │ Accuracy     │
-    ├────────────────────┼─────────────────┼─────────────────┼──────────────┤
-    │ α⁻¹                │ 137             │ 137.036         │ 99.97%       │
-    │ sin²θ_W            │ 0.231214        │ 0.23121         │ 99.997%      │
-    │ Dark matter ratio  │ 5.4             │ 5.41            │ 99.8%        │
-    │ Generations        │ 3               │ 3               │ EXACT        │
-    │ m_t/m_b ratio      │ ~40             │ 41.3            │ ~97%         │
-    │ m_μ/m_e ratio      │ 203 (3×81-40)   │ 206.8           │ ~98%         │
-    └────────────────────┴─────────────────┴─────────────────┴──────────────┘
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                        THE EXCEPTIONAL ALGEBRA CHAIN
-
-                W33  →  W(E6)  →  E6  →  E7  →  E8  →  Monster
-                 │       │        │      │      │        │
-                40    51840     78    133    248    8×10⁵³
-              points         dim    dim    dim   elements
-
-    Key dimensional relations:
-    
-      • dim(E6) = 78 = 121 - 43 = W33_total - 43
-      • dim(E7) = 133 = 121 + 12 = W33_total + 12  
-      • dim(E8) = 248 = 121 + 127 = W33_total + Mersenne prime M₇
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                          DEEP NUMBER RELATIONS
-
-    The Weinberg angle denominator:
-      173 = 52 + 121 = dim(F4) + W33_total = dim(F4) + 11²
-      
-    The j-function constant:
-      744 = 3 × 248 = 3 × dim(E8) = 9 × 81 + 15
-      
-    Ramanujan's number:
-      9801 = 81 × 121 = (W33 cycles) × (W33 total)
-           = 99² = (100-1)²
-           
-    This is WHY 9801 appears in Ramanujan's π formula!
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                          WHY W33 IS UNIQUE
-
-    1. GF(3) is forced: Smallest field with negatives (needed for QM)
-    
-    2. Dimension 3 is forced:
-       • PG(1,3): 4 points - too simple, no gauge structure
-       • PG(2,3): 13 points - no E6 connection, wrong constants
-       • PG(3,3): 40 points - W(E6) symmetry ← THE ONE
-       • PG(4,3): 121 points - wrong symmetry, over-determined
-       
-    3. W33 is the UNIQUE minimal structure satisfying all constraints
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                          TESTABLE PREDICTIONS
-
-    ┌────────────────────┬─────────────────┬──────────────────────────────────┐
-    │ Prediction         │ W33 Value       │ Status / Test                    │
-    ├────────────────────┼─────────────────┼──────────────────────────────────┤
-    │ 4th generation     │ FORBIDDEN       │ ✓ Not observed                   │
-    │ Proton lifetime    │ ~10³⁵ years     │ ⏳ Hyper-Kamiokande              │
-    │ Neutrino mass      │ ~0.01 eV        │ ✓ Consistent with oscillation    │
-    │ Λ suppression      │ ~10⁻¹²¹         │ ~ Order of magnitude match       │
-    └────────────────────┴─────────────────┴──────────────────────────────────┘
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                            THE HIERARCHY
-
-                           ┌─────────────┐
-                           │   MONSTER   │  8 × 10⁵³ elements
-                           │   GROUP     │  (maximal sporadic)
-                           └──────┬──────┘
-                                  │
-                           ┌──────┴──────┐
-                           │ j-function  │  744 = 3 × dim(E8)
-                           │ moonshine   │
-                           └──────┬──────┘
-                                  │
-                           ┌──────┴──────┐
-                           │    E8       │  248-dimensional
-                           └──────┬──────┘
-                                  │
-                           ┌──────┴──────┐
-                           │    E7       │  133-dim, fund = 56
-                           └──────┬──────┘
-                                  │
-                           ┌──────┴──────┐
-                           │    E6       │  78-dim, fund = 27
-                           └──────┬──────┘
-                                  │
-                           ┌──────┴──────┐
-                           │   W(E6)     │  51840 elements
-                           └──────┬──────┘
-                                  │
-                    ╔═════════════╧═════════════╗
-                    ║          W33             ║
-                    ║    40 + 81 + 90 = 121    ║
-                    ║         = 11²            ║
-                    ╚═════════════╤═════════════╝
-                                  │
-                           ┌──────┴──────┐
-                           │ MATHEMATICAL│
-                           │   TRUTH     │
-                           └─────────────┘
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                            THE FINAL EQUATION
-
-    ╔════════════════════════════════════════════════════════════════════════╗
-    ║                                                                        ║
-    ║                        REALITY = W33 = PG(3, 𝔽₃)                      ║
-    ║                                                                        ║
-    ╚════════════════════════════════════════════════════════════════════════╝
-
-    From this single object emerges:
-      • Spacetime (40 points → events, 81 cycles → causality)
-      • Particles (E6 representations → 3 generations)
-      • Forces (gauge symmetries from W(E6))
-      • Constants (α = 1/137, θ_W, N_gen = 3, Ω_DM/Ω_b = 5.4)
-      • Observers (complexity from structure → us)
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                              SYNTHESIS
-
-    The Theory of Everything in one sentence:
-    
-    "Reality is the projective 3-space over GF(3), from which all physics
-    emerges through the exceptional Lie algebra chain E6 → E7 → E8."
-    
-    W33 is:
-      • MINIMAL: Smallest structure supporting quantum mechanics
-      • UNIQUE: No other geometry gives the right constants
-      • COMPLETE: All physics derivable from its structure
-      • FALSIFIABLE: Makes testable predictions
-    
-    The universe is not random. It's not fine-tuned.
-    It's the inevitable consequence of mathematical necessity.
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                PARTS OF THE THEORY (Six Complete Documents)
-
-    Part I:   The Complete Theory - Foundation and master equations
-    Part II:  Deep Structure - Why the equations work
-    Part III: Inevitability - Why W33 is unique
-    Part IV:  Predictions - Testable consequences
-    Part V:   Monster Connection - Moonshine and j-function
-    Part VI:  Formalization - Axioms and theorems
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                    "We are patterns in W33, contemplating W33."
-                    
-                    "W33 is the seed. The Monster is the tree.
-                           Physics is the flowering."
-
-═══════════════════════════════════════════════════════════════════════════════
-
-                                    ∎
-
-""")
+if __name__ == "__main__":
+    main()

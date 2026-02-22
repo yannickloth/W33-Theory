@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-02-22T02:11:36.806677",
+  "search_date": "2026-02-22",
+  "references": [
+    {
+      "authors": "Robert L. Griess Jr. and Ching Hung Lam",
+      "title": "A moonshine path from E8 to the Monster",
+      "journal": "J. Pure Appl. Algebra 215 (2011), no. 5, 927\u2013948",
+      "arxiv": "arXiv:0910.2057",
+      "url": "https://arxiv.org/abs/0910.2057v2",
+      "year": 2011
+    },
+    {
+      "authors": "Alexander Yu. Vlasov",
+      "title": "Penrose dodecahedron, Witting configuration and quantum entanglement",
+      "journal": "arXiv preprint",
+      "arxiv": "arXiv:2208.13644",
+      "url": "https://arxiv.org/abs/2208.13644",
+      "year": 2022
+    },
+    {
+      "authors": "Alexander Yu. Vlasov",
+      "title": "Scheme of quantum communications based on Witting polytope",
+      "journal": "arXiv preprint",
+      "arxiv": "arXiv:2503.18431",
+      "url": "https://arxiv.org/abs/2503.18431",
+      "year": 2025
+    },
+    {
+      "authors": "C\u00e9dric Bonnaf\u00e9",
+      "title": "Weyl group of type E6 and K3 surfaces",
+      "journal": "arXiv preprint",
+      "arxiv": "arXiv:2411.12500v3",
+      "url": "https://arxiv.org/abs/2411.12500",
+      "year": 2025
+    },
+    {
+      "authors": "Various",
+      "title": "Quantum entanglement and contextuality with complexifications of E\u2088 root system",
+      "journal": "arXiv preprint",
+      "arxiv": "arXiv:2210.15338",
+      "url": "https://arxiv.org/abs/2210.15338",
+      "year": 2022
+    },
+    {
+      "authors": "Skip Garibaldi",
+      "title": "E8, The Most Exceptional Group",
+      "journal": "Bull. Amer. Math. Soc. 53 (2016), 643-671",
+      "arxiv": "",
+      "url": "http://www.garibaldibros.com/linked-files/e8.pdf",
+      "year": 2016
+    },
+    {
+      "authors": "Wikipedia contributors",
+      "title": "E8 (mathematics)",
+      "journal": "Wikipedia",
+      "arxiv": "",
+      "url": "https://en.wikipedia.org/wiki/E8_(mathematics)",
+      "year": 2024
+    },
+    {
+      "authors": "Wikipedia contributors",
+      "title": "E6 (mathematics)",
+      "journal": "Wikipedia",
+      "arxiv": "",
+      "url": "https://en.wikipedia.org/wiki/E6_(mathematics)",
+      "year": 2024
+    },
+    {
+      "authors": "Wikipedia contributors",
+      "title": "Generalized quadrangle",
+      "journal": "Wikipedia",
+      "arxiv": "",
+      "url": "https://en.wikipedia.org/wiki/Generalized_quadrangle",
+      "year": 2024
+    },
+    {
+      "authors": "nLab contributors",
+      "title": "Moonshine",
+      "journal": "nLab",
+      "arxiv": "",
+      "url": "https://ncatlab.org/nlab/show/Moonshine",
+      "year": 2025
+    }
+  ],
+  "validation_summary": {
+    "total_predictions": 10,
+    "validated": 10,
+    "literature_sources": 10,
+    "date_range": "2011-2025",
+    "most_recent": "arXiv:2411.12500v3 (2025-01-08)"
+  }
+}

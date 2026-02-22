@@ -1,0 +1,60 @@
+name: Pillar 21 smoke
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  pillar21-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest numpy
+
+      - name: Prepare W33 analysis bundle
+        run: |
+          if [ -d artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 ]; then
+            python tools/prepare_w33_analysis_bundle.py --bundle-dir artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1 --out-dir analysis/w33_bundle_temp --v0 0
+          else
+            echo "W33 analysis bundle not found; skipping prepare step (smoke run)."
+          fi
+
+      - name: Run Pillar 21 / Clifford-lift tests
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          bundle_dir = Path("artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1")
+          if bundle_dir.exists():
+              candidates = [
+                  "tests/test_heisenberg_qutrit_structure.py",
+                  "tests/test_heisenberg_translations.py",
+                  "tests/test_clifford_lift.py",
+              ]
+          else:
+              # heavy bundle absent on PR runs; run lightweight diagnostic test instead
+              candidates = ["tests/test_phase_correction_sweep.py"]
+
+          existing = [p for p in candidates if Path(p).exists()]
+          if not existing:
+              # fallback minimal test if nothing else present
+              existing = ["tests/test_phase_correction_sweep.py"]
+
+          cmd = [sys.executable, "-m", "pytest", "-q", *existing]
+          print("Running:", " ".join(existing))
+          raise SystemExit(subprocess.call(cmd))
+          PY

@@ -1,0 +1,23 @@
+{
+  "source_file": "checks/PART_CVII_local_hotspot_feasibility_53_48_offset0_limit200_1770539135.json",
+  "source_test_index": 32,
+  "set": [
+    53,
+    48
+  ],
+  "edges": [
+    53,
+    48
+  ],
+  "roots": [
+    48,
+    86
+  ],
+  "seed_path": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\_tmp_seed_pair_verify_1_1770539174.json",
+  "solver_check": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_e8_embedding_cpsat.json",
+  "solver_status": "INFEASIBLE",
+  "timestamp": 1770539174,
+  "dot_products": 0,
+  "sum_is_root": false,
+  "diff_is_root": false
+}

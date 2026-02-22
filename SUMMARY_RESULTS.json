@@ -1,0 +1,2429 @@
+{
+  "collected_files": [
+    {
+      "file": "PART_C_manifesto.json",
+      "ok": true,
+      "part": "C",
+      "part_number": 100,
+      "short": "The Manifesto",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CI_new_frontiers.json",
+      "ok": true,
+      "part": "CI",
+      "part_number": 101,
+      "short": "New Frontiers and Resolved Anomalies",
+      "timestamp": "2026-01-16T19:17:59.755210"
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "observed",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0,
+          "measured": 33.5,
+          "measured_key": "observed",
+          "percent_diff": 0.0,
+          "predicted": 33.5,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_CII_quantum_gravity.json",
+      "ok": true,
+      "part": "CII",
+      "part_number": 102,
+      "short": "Quantum Gravity, Neutrino Masses, and Evolving Dark Energy",
+      "timestamp": "2026-01-16T19:26:05.796695"
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "w0_measured",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "w0_w33_predicted"
+        },
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "w0_measured",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "w0_w33_predicted"
+        },
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "name": "DESI w0",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826
+        }
+      ],
+      "file": "PART_CIII_precision_frontier.json",
+      "ok": true,
+      "part": "CIII",
+      "part_number": 103,
+      "short": {
+        "experimental": 0.001165920705,
+        "precision_ppm": 0.127,
+        "status": "Most precise magnetic moment ever measured"
+      },
+      "timestamp": "2026-01-16T19:34:55.231560"
+    },
+    {
+      "file": "PART_CIV_definitive_tests.json",
+      "ok": true,
+      "part": "CIV",
+      "part_number": 104,
+      "short": "The Definitive Tests (2026-2035)",
+      "timestamp": "2026-01-16T19:40:22.001203"
+    },
+    {
+      "file": "PART_CIX_d4_triality.json",
+      "ok": true,
+      "part": "CIX",
+      "part_number": 109,
+      "short": "24 = 3 x 8 explains three generations via D4 triality",
+      "timestamp": "2026-01-16T20:04:24.301736"
+    },
+    {
+      "file": "PART_CV_e8_connection.json",
+      "ok": true,
+      "part": "CV",
+      "part_number": 105,
+      "short": "2026-01-16T19:49:45.220795",
+      "timestamp": "2026-01-16T19:49:45.220795"
+    },
+    {
+      "file": "PART_CVI_e8_embedding.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_backtrack_eval.json",
+      "ok": true,
+      "part": "PART_CVII_e6_backtrack_eval",
+      "part_number": null,
+      "short": "PART_CVII_e6_backtrack_eval",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_in_e8_backtrack.json",
+      "ok": true,
+      "part": "PART_CVII_e6_in_e8_backtrack",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_backtrack",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_in_e8_backtrack_exact.json",
+      "ok": true,
+      "part": "PART_CVII_e6_in_e8_backtrack_exact",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_backtrack_exact",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_in_e8_combs.json",
+      "ok": true,
+      "part": "PART_CVII_e6_in_e8_combs",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_combs",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_in_e8_probe.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_in_e8_verify.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_indec_simple_trials.json",
+      "ok": true,
+      "part": "PART_CVII_e6_indec_simple_trials",
+      "part_number": null,
+      "short": "PART_CVII_e6_indec_simple_trials",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_via_A2.json",
+      "ok": true,
+      "part": "PART_CVII_e6_via_A2",
+      "part_number": null,
+      "short": "PART_CVII_e6_via_A2",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_via_A2_search.json",
+      "ok": true,
+      "part": "PART_CVII_e6_via_A2_search",
+      "part_number": null,
+      "short": "PART_CVII_e6_via_A2_search",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e6_weyl_subgroup_py.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e8_embedding_attempt.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e8_embedding_randproj.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVII_e8_test_results.json",
+      "ok": true,
+      "part": "CVII",
+      "part_number": 107,
+      "short": "2026-01-16T19:59:16.282786",
+      "timestamp": "2026-01-16T19:59:16.282786"
+    },
+    {
+      "file": "PART_CVII_sage_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_CVIII_group_isomorphism.json",
+      "ok": true,
+      "part": "CVIII",
+      "part_number": 108,
+      "short": "2026-01-16T19:59:02.486070",
+      "timestamp": "2026-01-16T19:59:02.486070"
+    },
+    {
+      "file": "PART_CX_symmetry_breaking.json",
+      "ok": true,
+      "part": "CX",
+      "part_number": 110,
+      "short": "Complete E8 --> SM breaking encoded in W33",
+      "timestamp": "2026-01-16T20:07:42.528643"
+    },
+    {
+      "file": "PART_CXI_particle_map.json",
+      "ok": true,
+      "part": "CXI",
+      "part_number": 111,
+      "short": "40 = 27 + 12 + 1 particle decomposition",
+      "timestamp": "2026-01-16T20:10:07.396632"
+    },
+    {
+      "file": "PART_CXII_grand_synthesis.json",
+      "ok": true,
+      "part": "CXII",
+      "part_number": 112,
+      "short": "W33 is the discrete skeleton of E8 physics",
+      "timestamp": "2026-01-16T20:11:55.464169"
+    },
+    {
+      "file": "PART_CXIII_sagemath_verification.json",
+      "ok": true,
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "Sp(4,F_3) = W(E6) = Aut(W33) = 51840",
+      "timestamp": "2026-01-26T04:16:08.590903"
+    },
+    {
+      "file": "PART_CXIII_verified_results.json",
+      "ok": true,
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "2026-01-16T20:23:20.913315",
+      "timestamp": "2026-01-16T20:23:20.913315"
+    },
+    {
+      "file": "PART_CXIV_tomotope_connection.json",
+      "ok": true,
+      "part": "CXIV",
+      "part_number": 114,
+      "short": "Tomotope 192 flags = |W(D4)| = triality origin of 3 generations",
+      "timestamp": "2026-01-16T20:29:12.660525"
+    },
+    {
+      "file": "PART_CXIX_27_analysis.json",
+      "ok": true,
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXIX_27_nonneighbors.json",
+      "ok": true,
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXV_reye_tomotope.json",
+      "ok": true,
+      "part": "CXV",
+      "part_number": 115,
+      "short": "Tomotope edges-faces = Reye config, both from 24-cell/D4",
+      "timestamp": "2026-01-16T20:32:35.248440"
+    },
+    {
+      "file": "PART_CXVI_quantum_contextuality.json",
+      "ok": true,
+      "part": "CXVI",
+      "part_number": 116,
+      "short": "Quantum Contextuality and the Kochen-Specker Theorem",
+      "timestamp": "2026-01-16T20:36:34.575116"
+    },
+    {
+      "file": "PART_CXVII_jordan_algebras.json",
+      "ok": true,
+      "part": "CXVII",
+      "part_number": 117,
+      "short": "Exceptional Jordan Algebras and the Number 27",
+      "timestamp": "2026-01-16T20:38:34.588977"
+    },
+    {
+      "file": "PART_CXVIII_explicit_construction.json",
+      "ok": true,
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - Finding Reye/24-cell/Tomotope in W33",
+      "timestamp": "2026-01-26T04:16:22.558572"
+    },
+    {
+      "file": "PART_CXVIII_explicit_results.json",
+      "ok": true,
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - The 40 = 1 + 12 + 27 Decomposition",
+      "timestamp": "2026-01-16T20:51:33.984171"
+    },
+    {
+      "file": "PART_CXX_1296_analysis.json",
+      "ok": true,
+      "part": "CXX",
+      "part_number": 120,
+      "short": "CXX",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXXI_grand_unified.json",
+      "ok": true,
+      "part": "CXXI",
+      "part_number": 121,
+      "short": "CXXI",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXXII_number_40.json",
+      "ok": true,
+      "part": "CXXII",
+      "part_number": 122,
+      "short": "CXXII",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXXIII_72_decomposition.json",
+      "ok": true,
+      "part": "CXXIII",
+      "part_number": 123,
+      "short": "CXXIII",
+      "timestamp": null
+    },
+    {
+      "file": "PART_CXXV_D5_verification.json",
+      "ok": true,
+      "part": "CXXV",
+      "part_number": 125,
+      "short": "CXXV",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LIII_exploration_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 3.6003600314415962e-06,
+          "measured": 137.036,
+          "measured_key": "observed",
+          "percent_diff": 2.627309635016781e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 3.87283236993885e-06,
+          "measured": 0.23121,
+          "measured_key": "observed",
+          "percent_diff": 0.0016750280567185028,
+          "predicted": 0.23121387283236994,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 3.93013100435935e-06,
+          "measured": 0.1179,
+          "measured_key": "observed",
+          "percent_diff": 0.003333444448141942,
+          "predicted": 0.11790393013100436,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0022777777777777952,
+          "measured": 0.2245,
+          "measured_key": "observed",
+          "percent_diff": 1.0146003464489066,
+          "predicted": 0.2222222222222222,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.00039075630252100035,
+          "measured": 0.2265,
+          "measured_key": "observed",
+          "percent_diff": 0.1725193388613688,
+          "predicted": 0.226890756302521,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.004117647058823448,
+          "measured": 0.79,
+          "measured_key": "observed",
+          "percent_diff": 0.5212211466865124,
+          "predicted": 0.7941176470588235,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.00014285714285716677,
+          "measured": 0.357,
+          "measured_key": "observed",
+          "percent_diff": 0.04001600640256773,
+          "predicted": 0.35714285714285715,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0013435114503816958,
+          "measured": 0.304,
+          "measured_key": "observed",
+          "percent_diff": 0.44194455604661054,
+          "predicted": 0.3053435114503817,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.001571428571428557,
+          "measured": 0.573,
+          "measured_key": "observed",
+          "percent_diff": 0.27424582398404135,
+          "predicted": 0.5714285714285714,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.00022197802197802124,
+          "measured": 0.0222,
+          "measured_key": "observed",
+          "percent_diff": 0.9999009999009965,
+          "predicted": 0.02197802197802198,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0024580246913580295,
+          "measured": 0.6889,
+          "measured_key": "observed",
+          "percent_diff": 0.35680428093453764,
+          "predicted": 0.691358024691358,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0024580246913580295,
+          "measured": 0.3111,
+          "measured_key": "observed",
+          "percent_diff": 0.7901075832073383,
+          "predicted": 0.30864197530864196,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.2280701754407986e-05,
+          "measured": 0.9649,
+          "measured_key": "observed",
+          "percent_diff": 0.0012727434712828257,
+          "predicted": 0.9649122807017544,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.09999999999999432,
+          "measured": 67.4,
+          "measured_key": "observed",
+          "percent_diff": 0.14836795252224674,
+          "predicted": 67.5,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 6.666666666665932e-05,
+          "measured": 0.6666,
+          "measured_key": "observed",
+          "percent_diff": 0.0100010001000089,
+          "predicted": 0.6666666666666666,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LIX_master_formula_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "W33 Theory of Everything",
+      "timestamp": "January 2026"
+    },
+    {
+      "file": "PART_LV_exceptional_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "81 + 56 + 40/1111",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LVI_quantum_codes_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "12002",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LVII_fermion_masses_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 0.0024580246913580295,
+          "measured": 0.6889,
+          "measured_key": "observed",
+          "percent_diff": 0.35680428093453764,
+          "predicted": 0.691358024691358,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0024580246913580295,
+          "measured": 0.3111,
+          "measured_key": "observed",
+          "percent_diff": 0.7901075832073383,
+          "predicted": 0.30864197530864196,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.09999999999999432,
+          "measured": 67.4,
+          "measured_key": "observed",
+          "percent_diff": 0.14836795252224674,
+          "predicted": 67.5,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.2280701754407986e-05,
+          "measured": 0.9649,
+          "measured_key": "observed",
+          "percent_diff": 0.0012727434712828257,
+          "predicted": 0.9649122807017544,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LVIII_cosmology_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "Omega_Lambda + Omega_m = 56/81 + 25/81 = 1",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LX_1111_mystery_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "11 \u00d7 101",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXI_predictions_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "W33 makes falsifiable predictions testable in the next 10 years",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXII_sage_pysymmetry_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXIII_gut_breaking_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 4.600360028916839e-06,
+          "measured": 137.035999,
+          "measured_key": "experimental",
+          "percent_diff": 3.357044909722473e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXIV_eigenvector_results.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "12^2 - 2*4 + 1 = 137",
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 2.9215554400300106e-08,
+          "measured": 3.150385083287883e-05,
+          "measured_key": "experimental",
+          "percent_diff": 0.09273645483938568,
+          "predicted": 3.153306638727913e-05,
+          "predicted_key": "W33"
+        }
+      ],
+      "file": "PART_LXIX_CP_violation.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXVI_unified_alpha.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXVII_1111_mystery.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "1111 = 11 \u00d7 101",
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": -9.999999999982245e-06,
+          "measured": 0.22501,
+          "measured_key": "experimental",
+          "percent_diff": 0.004444246922351116,
+          "predicted": 0.225,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -0.007000000000000006,
+          "measured": 0.307,
+          "measured_key": "experimental",
+          "percent_diff": 2.280130293159611,
+          "predicted": 0.3,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.01100000000000001,
+          "measured": 0.545,
+          "measured_key": "experimental",
+          "percent_diff": 2.0183486238532127,
+          "predicted": 0.556,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.0,
+          "measured": 3.0,
+          "measured_key": "experimental",
+          "percent_diff": 0.0,
+          "predicted": 3.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXVIII_why_F3.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": -5.233454094307123e+16,
+          "measured": 1.221e+19,
+          "measured_key": "experimental",
+          "percent_diff": 0.4286203189440723,
+          "predicted": 1.2157665459056929e+19,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.6209999999999951,
+          "measured": 80.379,
+          "measured_key": "experimental",
+          "percent_diff": 0.7725898555592817,
+          "predicted": 81.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -0.21999999999999886,
+          "measured": 246.22,
+          "measured_key": "experimental",
+          "percent_diff": 0.08935098692226418,
+          "predicted": 246.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -1810713114899488.0,
+          "measured": 1.5190534841189862e+17,
+          "measured_key": "experimental",
+          "percent_diff": 1.1920008964988202,
+          "predicted": 1.5009463529699914e+17,
+          "predicted_key": "W33_value"
+        }
+      ],
+      "file": "PART_LXX_gravity.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": -0.25,
+          "measured": 125.25,
+          "measured_key": "experimental",
+          "percent_diff": 0.19960079840319359,
+          "predicted": 125.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.3100000000000023,
+          "measured": 172.69,
+          "measured_key": "experimental",
+          "percent_diff": 0.17951242110139687,
+          "predicted": 173.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXXI_higgs_mass.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 3.432164857664066e-05,
+          "measured": 0.66663234501809,
+          "measured_key": "experimental",
+          "percent_diff": 0.005148512344643178,
+          "predicted": 0.6666666666666666,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LXXII_fermion_masses.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "Froggatt-Nielsen with epsilon = 1/3",
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 4.3730230059373195e+36,
+          "measured": 2.4e+34,
+          "measured_key": "experimental_bound",
+          "percent_diff": 18220.9291914055,
+          "predicted": 4.397023005937319e+36,
+          "predicted_key": "prediction_years"
+        }
+      ],
+      "file": "PART_LXXIII_proton_decay.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "Exactly conserved in W33",
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": -0.4285714285714288,
+          "measured": 5.428571428571429,
+          "measured_key": "experimental",
+          "percent_diff": 7.894736842105267,
+          "predicted": 5.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXXIV_dark_matter.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXIX_anomalies.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "All cancel per generation",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXV_string_theory.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXVI_verification.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXVII_neutrinos.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": "3^14 to 3^20 GeV",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXVIII_running.json",
+      "ok": true,
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    {
+      "comparisons": [
+        {
+          "difference": 4.5163600361775025e-06,
+          "measured": 137.035999084,
+          "measured_key": "experimental",
+          "percent_diff": 3.2957471513810578e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXXX_consolidation.json",
+      "ok": true,
+      "part": "LXXX",
+      "part_number": 80,
+      "short": "Grand Consolidation",
+      "timestamp": "2026-01-16T17:13:20.887834"
+    },
+    {
+      "comparisons": [
+        {
+          "difference": -1.3239132212126925e+17,
+          "measured": 1.22e+19,
+          "measured_key": "experimental",
+          "percent_diff": 1.0851747714858135,
+          "predicted": 1.206760867787873e+19,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.0009463529699914e+17,
+          "measured": 5e+16,
+          "measured_key": "experimental",
+          "percent_diff": 200.18927059399826,
+          "predicted": 1.5009463529699914e+17,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXXXI_gravity.json",
+      "ok": true,
+      "part": "LXXXI",
+      "part_number": 81,
+      "short": "Gravitational Sector",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXII_corrections.json",
+      "ok": true,
+      "part": "LXXXII",
+      "part_number": 82,
+      "short": "Higher-Order Corrections",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXIII_cosmology.json",
+      "ok": true,
+      "part": "LXXXIII",
+      "part_number": 83,
+      "short": "Cosmology",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXIV_construction.json",
+      "ok": true,
+      "part": "LXXXIV",
+      "part_number": 84,
+      "short": "SageMath Graph Construction",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXIX_quantum_code.json",
+      "ok": true,
+      "part": "LXXXIX",
+      "part_number": 89,
+      "short": "Quantum Error Correcting Code",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXV_why_w33.json",
+      "ok": true,
+      "part": "LXXXV",
+      "part_number": 85,
+      "short": "Why W33?",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXVI_bootstrap.json",
+      "ok": true,
+      "part": "LXXXVI",
+      "part_number": 86,
+      "short": "W33 is self-consistently determined by physical requirements",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXVII_spacetime.json",
+      "ok": true,
+      "part": "LXXXVII",
+      "part_number": 87,
+      "short": "Emergence of Spacetime",
+      "timestamp": null
+    },
+    {
+      "file": "PART_LXXXVIII_ultimate.json",
+      "ok": true,
+      "part": "LXXXVIII",
+      "part_number": 88,
+      "short": "The Ultimate Equation",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XC_arrow_of_time.json",
+      "ok": true,
+      "part": "XC",
+      "part_number": 90,
+      "short": "Arrow of Time",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCI_multiverse.json",
+      "ok": true,
+      "part": "XCI",
+      "part_number": 91,
+      "short": "The Multiverse Question",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCII_consciousness.json",
+      "ok": true,
+      "part": "XCII",
+      "part_number": 92,
+      "short": "Consciousness and Observers",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCIII_predictions.json",
+      "ok": true,
+      "part": "XCIII",
+      "part_number": 93,
+      "short": "Experimental Predictions",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCIV_lagrangian.json",
+      "ok": true,
+      "part": "XCIV",
+      "part_number": 94,
+      "short": "SU(3)\u00d7SU(2)\u00d7U(1) from Aut(W33)",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCIX_cp_violation.json",
+      "ok": true,
+      "part": "XCIX",
+      "part_number": 99,
+      "short": "CP Violation",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCV_proton_decay.json",
+      "ok": true,
+      "part": "XCV",
+      "part_number": 95,
+      "short": "Proton Decay - The Smoking Gun",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCVI_complete_derivation.json",
+      "ok": true,
+      "part": "XCVI",
+      "part_number": 96,
+      "short": "The Complete Derivation",
+      "timestamp": null
+    },
+    {
+      "file": "PART_XCVIII_mass_hierarchy.json",
+      "ok": true,
+      "part": "XCVIII",
+      "part_number": 98,
+      "short": "Fermion Mass Hierarchy",
+      "timestamp": null
+    }
+  ],
+  "count": 85,
+  "summaries": {
+    "PART_CIII_precision_frontier.json": {
+      "part": "CIII",
+      "part_number": 103,
+      "short": {
+        "experimental": 0.001165920705,
+        "precision_ppm": 0.127,
+        "status": "Most precise magnetic moment ever measured"
+      },
+      "timestamp": "2026-01-16T19:34:55.231560"
+    },
+    "PART_CII_quantum_gravity.json": {
+      "part": "CII",
+      "part_number": 102,
+      "short": "Quantum Gravity, Neutrino Masses, and Evolving Dark Energy",
+      "timestamp": "2026-01-16T19:26:05.796695"
+    },
+    "PART_CIV_definitive_tests.json": {
+      "part": "CIV",
+      "part_number": 104,
+      "short": "The Definitive Tests (2026-2035)",
+      "timestamp": "2026-01-16T19:40:22.001203"
+    },
+    "PART_CIX_d4_triality.json": {
+      "part": "CIX",
+      "part_number": 109,
+      "short": "24 = 3 x 8 explains three generations via D4 triality",
+      "timestamp": "2026-01-16T20:04:24.301736"
+    },
+    "PART_CI_new_frontiers.json": {
+      "part": "CI",
+      "part_number": 101,
+      "short": "New Frontiers and Resolved Anomalies",
+      "timestamp": "2026-01-16T19:17:59.755210"
+    },
+    "PART_CVIII_group_isomorphism.json": {
+      "part": "CVIII",
+      "part_number": 108,
+      "short": "2026-01-16T19:59:02.486070",
+      "timestamp": "2026-01-16T19:59:02.486070"
+    },
+    "PART_CVII_e6_backtrack_eval.json": {
+      "part": "PART_CVII_e6_backtrack_eval",
+      "short": "PART_CVII_e6_backtrack_eval"
+    },
+    "PART_CVII_e6_in_e8_backtrack.json": {
+      "part": "PART_CVII_e6_in_e8_backtrack",
+      "short": "PART_CVII_e6_in_e8_backtrack"
+    },
+    "PART_CVII_e6_in_e8_backtrack_exact.json": {
+      "part": "PART_CVII_e6_in_e8_backtrack_exact",
+      "short": "PART_CVII_e6_in_e8_backtrack_exact"
+    },
+    "PART_CVII_e6_in_e8_combs.json": {
+      "part": "PART_CVII_e6_in_e8_combs",
+      "short": "PART_CVII_e6_in_e8_combs"
+    },
+    "PART_CVII_e6_in_e8_probe.json": {},
+    "PART_CVII_e6_in_e8_verify.json": {},
+    "PART_CVII_e6_indec_simple_trials.json": {
+      "part": "PART_CVII_e6_indec_simple_trials",
+      "short": "PART_CVII_e6_indec_simple_trials"
+    },
+    "PART_CVII_e6_via_A2.json": {
+      "part": "PART_CVII_e6_via_A2",
+      "short": "PART_CVII_e6_via_A2"
+    },
+    "PART_CVII_e6_via_A2_search.json": {
+      "part": "PART_CVII_e6_via_A2_search",
+      "short": "PART_CVII_e6_via_A2_search"
+    },
+    "PART_CVII_e6_weyl_subgroup_py.json": {},
+    "PART_CVII_e8_embedding_attempt.json": {},
+    "PART_CVII_e8_embedding_randproj.json": {},
+    "PART_CVII_e8_test_results.json": {
+      "part": "CVII",
+      "part_number": 107,
+      "short": "2026-01-16T19:59:16.282786",
+      "timestamp": "2026-01-16T19:59:16.282786"
+    },
+    "PART_CVII_sage_results.json": {},
+    "PART_CVI_e8_embedding.json": {},
+    "PART_CV_e8_connection.json": {
+      "part": "CV",
+      "part_number": 105,
+      "short": "2026-01-16T19:49:45.220795",
+      "timestamp": "2026-01-16T19:49:45.220795"
+    },
+    "PART_CXIII_sagemath_verification.json": {
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "Sp(4,F_3) = W(E6) = Aut(W33) = 51840",
+      "timestamp": "2026-01-26T04:16:08.590903"
+    },
+    "PART_CXIII_verified_results.json": {
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "2026-01-16T20:23:20.913315",
+      "timestamp": "2026-01-16T20:23:20.913315"
+    },
+    "PART_CXII_grand_synthesis.json": {
+      "part": "CXII",
+      "part_number": 112,
+      "short": "W33 is the discrete skeleton of E8 physics",
+      "timestamp": "2026-01-16T20:11:55.464169"
+    },
+    "PART_CXIV_tomotope_connection.json": {
+      "part": "CXIV",
+      "part_number": 114,
+      "short": "Tomotope 192 flags = |W(D4)| = triality origin of 3 generations",
+      "timestamp": "2026-01-16T20:29:12.660525"
+    },
+    "PART_CXIX_27_analysis.json": {
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX"
+    },
+    "PART_CXIX_27_nonneighbors.json": {
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX"
+    },
+    "PART_CXI_particle_map.json": {
+      "part": "CXI",
+      "part_number": 111,
+      "short": "40 = 27 + 12 + 1 particle decomposition",
+      "timestamp": "2026-01-16T20:10:07.396632"
+    },
+    "PART_CXVIII_explicit_construction.json": {
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - Finding Reye/24-cell/Tomotope in W33",
+      "timestamp": "2026-01-26T04:16:22.558572"
+    },
+    "PART_CXVIII_explicit_results.json": {
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - The 40 = 1 + 12 + 27 Decomposition",
+      "timestamp": "2026-01-16T20:51:33.984171"
+    },
+    "PART_CXVII_jordan_algebras.json": {
+      "part": "CXVII",
+      "part_number": 117,
+      "short": "Exceptional Jordan Algebras and the Number 27",
+      "timestamp": "2026-01-16T20:38:34.588977"
+    },
+    "PART_CXVI_quantum_contextuality.json": {
+      "part": "CXVI",
+      "part_number": 116,
+      "short": "Quantum Contextuality and the Kochen-Specker Theorem",
+      "timestamp": "2026-01-16T20:36:34.575116"
+    },
+    "PART_CXV_reye_tomotope.json": {
+      "part": "CXV",
+      "part_number": 115,
+      "short": "Tomotope edges-faces = Reye config, both from 24-cell/D4",
+      "timestamp": "2026-01-16T20:32:35.248440"
+    },
+    "PART_CXXIII_72_decomposition.json": {
+      "part": "CXXIII",
+      "part_number": 123,
+      "short": "CXXIII"
+    },
+    "PART_CXXII_number_40.json": {
+      "part": "CXXII",
+      "part_number": 122,
+      "short": "CXXII"
+    },
+    "PART_CXXI_grand_unified.json": {
+      "part": "CXXI",
+      "part_number": 121,
+      "short": "CXXI"
+    },
+    "PART_CXXV_D5_verification.json": {
+      "part": "CXXV",
+      "part_number": 125,
+      "short": "CXXV"
+    },
+    "PART_CXX_1296_analysis.json": {
+      "part": "CXX",
+      "part_number": 120,
+      "short": "CXX"
+    },
+    "PART_CX_symmetry_breaking.json": {
+      "part": "CX",
+      "part_number": 110,
+      "short": "Complete E8 --> SM breaking encoded in W33",
+      "timestamp": "2026-01-16T20:07:42.528643"
+    },
+    "PART_C_manifesto.json": {
+      "part": "C",
+      "part_number": 100,
+      "short": "The Manifesto"
+    },
+    "PART_LIII_exploration_results.json": {},
+    "PART_LIX_master_formula_results.json": {
+      "short": "W33 Theory of Everything",
+      "timestamp": "January 2026"
+    },
+    "PART_LVIII_cosmology_results.json": {
+      "short": "Omega_Lambda + Omega_m = 56/81 + 25/81 = 1"
+    },
+    "PART_LVII_fermion_masses_results.json": {},
+    "PART_LVI_quantum_codes_results.json": {
+      "short": "12002"
+    },
+    "PART_LV_exceptional_results.json": {
+      "short": "81 + 56 + 40/1111"
+    },
+    "PART_LXIII_gut_breaking_results.json": {},
+    "PART_LXII_sage_pysymmetry_results.json": {},
+    "PART_LXIV_eigenvector_results.json": {
+      "short": "12^2 - 2*4 + 1 = 137"
+    },
+    "PART_LXIX_CP_violation.json": {},
+    "PART_LXI_predictions_results.json": {
+      "short": "W33 makes falsifiable predictions testable in the next 10 years"
+    },
+    "PART_LXVIII_why_F3.json": {},
+    "PART_LXVII_1111_mystery.json": {
+      "short": "1111 = 11 \u00d7 101"
+    },
+    "PART_LXVI_unified_alpha.json": {},
+    "PART_LXXIII_proton_decay.json": {
+      "short": "Exactly conserved in W33"
+    },
+    "PART_LXXII_fermion_masses.json": {
+      "short": "Froggatt-Nielsen with epsilon = 1/3"
+    },
+    "PART_LXXIV_dark_matter.json": {},
+    "PART_LXXIX_anomalies.json": {
+      "short": "All cancel per generation"
+    },
+    "PART_LXXI_higgs_mass.json": {},
+    "PART_LXXVIII_running.json": {},
+    "PART_LXXVII_neutrinos.json": {
+      "short": "3^14 to 3^20 GeV"
+    },
+    "PART_LXXVI_verification.json": {},
+    "PART_LXXV_string_theory.json": {},
+    "PART_LXXXIII_cosmology.json": {
+      "part": "LXXXIII",
+      "part_number": 83,
+      "short": "Cosmology"
+    },
+    "PART_LXXXII_corrections.json": {
+      "part": "LXXXII",
+      "part_number": 82,
+      "short": "Higher-Order Corrections"
+    },
+    "PART_LXXXIV_construction.json": {
+      "part": "LXXXIV",
+      "part_number": 84,
+      "short": "SageMath Graph Construction"
+    },
+    "PART_LXXXIX_quantum_code.json": {
+      "part": "LXXXIX",
+      "part_number": 89,
+      "short": "Quantum Error Correcting Code"
+    },
+    "PART_LXXXI_gravity.json": {
+      "part": "LXXXI",
+      "part_number": 81,
+      "short": "Gravitational Sector"
+    },
+    "PART_LXXXVIII_ultimate.json": {
+      "part": "LXXXVIII",
+      "part_number": 88,
+      "short": "The Ultimate Equation"
+    },
+    "PART_LXXXVII_spacetime.json": {
+      "part": "LXXXVII",
+      "part_number": 87,
+      "short": "Emergence of Spacetime"
+    },
+    "PART_LXXXVI_bootstrap.json": {
+      "part": "LXXXVI",
+      "part_number": 86,
+      "short": "W33 is self-consistently determined by physical requirements"
+    },
+    "PART_LXXXV_why_w33.json": {
+      "part": "LXXXV",
+      "part_number": 85,
+      "short": "Why W33?"
+    },
+    "PART_LXXX_consolidation.json": {
+      "part": "LXXX",
+      "part_number": 80,
+      "short": "Grand Consolidation",
+      "timestamp": "2026-01-16T17:13:20.887834"
+    },
+    "PART_LXX_gravity.json": {},
+    "PART_LX_1111_mystery_results.json": {
+      "short": "11 \u00d7 101"
+    },
+    "PART_XCIII_predictions.json": {
+      "part": "XCIII",
+      "part_number": 93,
+      "short": "Experimental Predictions"
+    },
+    "PART_XCII_consciousness.json": {
+      "part": "XCII",
+      "part_number": 92,
+      "short": "Consciousness and Observers"
+    },
+    "PART_XCIV_lagrangian.json": {
+      "part": "XCIV",
+      "part_number": 94,
+      "short": "SU(3)\u00d7SU(2)\u00d7U(1) from Aut(W33)"
+    },
+    "PART_XCIX_cp_violation.json": {
+      "part": "XCIX",
+      "part_number": 99,
+      "short": "CP Violation"
+    },
+    "PART_XCI_multiverse.json": {
+      "part": "XCI",
+      "part_number": 91,
+      "short": "The Multiverse Question"
+    },
+    "PART_XCVIII_mass_hierarchy.json": {
+      "part": "XCVIII",
+      "part_number": 98,
+      "short": "Fermion Mass Hierarchy"
+    },
+    "PART_XCVI_complete_derivation.json": {
+      "part": "XCVI",
+      "part_number": 96,
+      "short": "The Complete Derivation"
+    },
+    "PART_XCV_proton_decay.json": {
+      "part": "XCV",
+      "part_number": 95,
+      "short": "Proton Decay - The Smoking Gun"
+    },
+    "PART_XC_arrow_of_time.json": {
+      "part": "XC",
+      "part_number": 90,
+      "short": "Arrow of Time"
+    }
+  },
+  "summary_by_part": {
+    "PART_CIII_precision_frontier.json": {
+      "comparisons": [
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "w0_measured",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "w0_w33_predicted"
+        },
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "w0_measured",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "w0_w33_predicted"
+        },
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "name": "DESI w0",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826
+        }
+      ],
+      "file": "PART_CIII_precision_frontier.json",
+      "part": "CIII",
+      "part_number": 103,
+      "short": {
+        "experimental": 0.001165920705,
+        "precision_ppm": 0.127,
+        "status": "Most precise magnetic moment ever measured"
+      },
+      "timestamp": "2026-01-16T19:34:55.231560"
+    },
+    "PART_CII_quantum_gravity.json": {
+      "comparisons": [
+        {
+          "difference": 0.0010000000000000009,
+          "measured": -0.827,
+          "measured_key": "observed",
+          "percent_diff": 0.12091898428053217,
+          "predicted": -0.826,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0,
+          "measured": 33.5,
+          "measured_key": "observed",
+          "percent_diff": 0.0,
+          "predicted": 33.5,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_CII_quantum_gravity.json",
+      "part": "CII",
+      "part_number": 102,
+      "short": "Quantum Gravity, Neutrino Masses, and Evolving Dark Energy",
+      "timestamp": "2026-01-16T19:26:05.796695"
+    },
+    "PART_CIV_definitive_tests.json": {
+      "comparisons": null,
+      "file": "PART_CIV_definitive_tests.json",
+      "part": "CIV",
+      "part_number": 104,
+      "short": "The Definitive Tests (2026-2035)",
+      "timestamp": "2026-01-16T19:40:22.001203"
+    },
+    "PART_CIX_d4_triality.json": {
+      "comparisons": null,
+      "file": "PART_CIX_d4_triality.json",
+      "part": "CIX",
+      "part_number": 109,
+      "short": "24 = 3 x 8 explains three generations via D4 triality",
+      "timestamp": "2026-01-16T20:04:24.301736"
+    },
+    "PART_CI_new_frontiers.json": {
+      "comparisons": null,
+      "file": "PART_CI_new_frontiers.json",
+      "part": "CI",
+      "part_number": 101,
+      "short": "New Frontiers and Resolved Anomalies",
+      "timestamp": "2026-01-16T19:17:59.755210"
+    },
+    "PART_CVIII_group_isomorphism.json": {
+      "comparisons": null,
+      "file": "PART_CVIII_group_isomorphism.json",
+      "part": "CVIII",
+      "part_number": 108,
+      "short": "2026-01-16T19:59:02.486070",
+      "timestamp": "2026-01-16T19:59:02.486070"
+    },
+    "PART_CVII_e6_backtrack_eval.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_backtrack_eval.json",
+      "part": "PART_CVII_e6_backtrack_eval",
+      "part_number": null,
+      "short": "PART_CVII_e6_backtrack_eval",
+      "timestamp": null
+    },
+    "PART_CVII_e6_in_e8_backtrack.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_in_e8_backtrack.json",
+      "part": "PART_CVII_e6_in_e8_backtrack",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_backtrack",
+      "timestamp": null
+    },
+    "PART_CVII_e6_in_e8_backtrack_exact.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_in_e8_backtrack_exact.json",
+      "part": "PART_CVII_e6_in_e8_backtrack_exact",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_backtrack_exact",
+      "timestamp": null
+    },
+    "PART_CVII_e6_in_e8_combs.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_in_e8_combs.json",
+      "part": "PART_CVII_e6_in_e8_combs",
+      "part_number": null,
+      "short": "PART_CVII_e6_in_e8_combs",
+      "timestamp": null
+    },
+    "PART_CVII_e6_in_e8_probe.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_in_e8_probe.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVII_e6_in_e8_verify.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_in_e8_verify.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVII_e6_indec_simple_trials.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_indec_simple_trials.json",
+      "part": "PART_CVII_e6_indec_simple_trials",
+      "part_number": null,
+      "short": "PART_CVII_e6_indec_simple_trials",
+      "timestamp": null
+    },
+    "PART_CVII_e6_via_A2.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_via_A2.json",
+      "part": "PART_CVII_e6_via_A2",
+      "part_number": null,
+      "short": "PART_CVII_e6_via_A2",
+      "timestamp": null
+    },
+    "PART_CVII_e6_via_A2_search.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_via_A2_search.json",
+      "part": "PART_CVII_e6_via_A2_search",
+      "part_number": null,
+      "short": "PART_CVII_e6_via_A2_search",
+      "timestamp": null
+    },
+    "PART_CVII_e6_weyl_subgroup_py.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e6_weyl_subgroup_py.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVII_e8_embedding_attempt.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e8_embedding_attempt.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVII_e8_embedding_randproj.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e8_embedding_randproj.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVII_e8_test_results.json": {
+      "comparisons": null,
+      "file": "PART_CVII_e8_test_results.json",
+      "part": "CVII",
+      "part_number": 107,
+      "short": "2026-01-16T19:59:16.282786",
+      "timestamp": "2026-01-16T19:59:16.282786"
+    },
+    "PART_CVII_sage_results.json": {
+      "comparisons": null,
+      "file": "PART_CVII_sage_results.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CVI_e8_embedding.json": {
+      "comparisons": null,
+      "file": "PART_CVI_e8_embedding.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_CV_e8_connection.json": {
+      "comparisons": null,
+      "file": "PART_CV_e8_connection.json",
+      "part": "CV",
+      "part_number": 105,
+      "short": "2026-01-16T19:49:45.220795",
+      "timestamp": "2026-01-16T19:49:45.220795"
+    },
+    "PART_CXIII_sagemath_verification.json": {
+      "comparisons": null,
+      "file": "PART_CXIII_sagemath_verification.json",
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "Sp(4,F_3) = W(E6) = Aut(W33) = 51840",
+      "timestamp": "2026-01-26T04:16:08.590903"
+    },
+    "PART_CXIII_verified_results.json": {
+      "comparisons": null,
+      "file": "PART_CXIII_verified_results.json",
+      "part": "CXIII",
+      "part_number": 113,
+      "short": "2026-01-16T20:23:20.913315",
+      "timestamp": "2026-01-16T20:23:20.913315"
+    },
+    "PART_CXII_grand_synthesis.json": {
+      "comparisons": null,
+      "file": "PART_CXII_grand_synthesis.json",
+      "part": "CXII",
+      "part_number": 112,
+      "short": "W33 is the discrete skeleton of E8 physics",
+      "timestamp": "2026-01-16T20:11:55.464169"
+    },
+    "PART_CXIV_tomotope_connection.json": {
+      "comparisons": null,
+      "file": "PART_CXIV_tomotope_connection.json",
+      "part": "CXIV",
+      "part_number": 114,
+      "short": "Tomotope 192 flags = |W(D4)| = triality origin of 3 generations",
+      "timestamp": "2026-01-16T20:29:12.660525"
+    },
+    "PART_CXIX_27_analysis.json": {
+      "comparisons": null,
+      "file": "PART_CXIX_27_analysis.json",
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX",
+      "timestamp": null
+    },
+    "PART_CXIX_27_nonneighbors.json": {
+      "comparisons": null,
+      "file": "PART_CXIX_27_nonneighbors.json",
+      "part": "CXIX",
+      "part_number": 119,
+      "short": "CXIX",
+      "timestamp": null
+    },
+    "PART_CXI_particle_map.json": {
+      "comparisons": null,
+      "file": "PART_CXI_particle_map.json",
+      "part": "CXI",
+      "part_number": 111,
+      "short": "40 = 27 + 12 + 1 particle decomposition",
+      "timestamp": "2026-01-16T20:10:07.396632"
+    },
+    "PART_CXVIII_explicit_construction.json": {
+      "comparisons": null,
+      "file": "PART_CXVIII_explicit_construction.json",
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - Finding Reye/24-cell/Tomotope in W33",
+      "timestamp": "2026-01-26T04:16:22.558572"
+    },
+    "PART_CXVIII_explicit_results.json": {
+      "comparisons": null,
+      "file": "PART_CXVIII_explicit_results.json",
+      "part": "CXVIII",
+      "part_number": 118,
+      "short": "Explicit Construction - The 40 = 1 + 12 + 27 Decomposition",
+      "timestamp": "2026-01-16T20:51:33.984171"
+    },
+    "PART_CXVII_jordan_algebras.json": {
+      "comparisons": null,
+      "file": "PART_CXVII_jordan_algebras.json",
+      "part": "CXVII",
+      "part_number": 117,
+      "short": "Exceptional Jordan Algebras and the Number 27",
+      "timestamp": "2026-01-16T20:38:34.588977"
+    },
+    "PART_CXVI_quantum_contextuality.json": {
+      "comparisons": null,
+      "file": "PART_CXVI_quantum_contextuality.json",
+      "part": "CXVI",
+      "part_number": 116,
+      "short": "Quantum Contextuality and the Kochen-Specker Theorem",
+      "timestamp": "2026-01-16T20:36:34.575116"
+    },
+    "PART_CXV_reye_tomotope.json": {
+      "comparisons": null,
+      "file": "PART_CXV_reye_tomotope.json",
+      "part": "CXV",
+      "part_number": 115,
+      "short": "Tomotope edges-faces = Reye config, both from 24-cell/D4",
+      "timestamp": "2026-01-16T20:32:35.248440"
+    },
+    "PART_CXXIII_72_decomposition.json": {
+      "comparisons": null,
+      "file": "PART_CXXIII_72_decomposition.json",
+      "part": "CXXIII",
+      "part_number": 123,
+      "short": "CXXIII",
+      "timestamp": null
+    },
+    "PART_CXXII_number_40.json": {
+      "comparisons": null,
+      "file": "PART_CXXII_number_40.json",
+      "part": "CXXII",
+      "part_number": 122,
+      "short": "CXXII",
+      "timestamp": null
+    },
+    "PART_CXXI_grand_unified.json": {
+      "comparisons": null,
+      "file": "PART_CXXI_grand_unified.json",
+      "part": "CXXI",
+      "part_number": 121,
+      "short": "CXXI",
+      "timestamp": null
+    },
+    "PART_CXXV_D5_verification.json": {
+      "comparisons": null,
+      "file": "PART_CXXV_D5_verification.json",
+      "part": "CXXV",
+      "part_number": 125,
+      "short": "CXXV",
+      "timestamp": null
+    },
+    "PART_CXX_1296_analysis.json": {
+      "comparisons": null,
+      "file": "PART_CXX_1296_analysis.json",
+      "part": "CXX",
+      "part_number": 120,
+      "short": "CXX",
+      "timestamp": null
+    },
+    "PART_CX_symmetry_breaking.json": {
+      "comparisons": null,
+      "file": "PART_CX_symmetry_breaking.json",
+      "part": "CX",
+      "part_number": 110,
+      "short": "Complete E8 --> SM breaking encoded in W33",
+      "timestamp": "2026-01-16T20:07:42.528643"
+    },
+    "PART_C_manifesto.json": {
+      "comparisons": null,
+      "file": "PART_C_manifesto.json",
+      "part": "C",
+      "part_number": 100,
+      "short": "The Manifesto",
+      "timestamp": null
+    },
+    "PART_LIII_exploration_results.json": {
+      "comparisons": null,
+      "file": "PART_LIII_exploration_results.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LIX_master_formula_results.json": {
+      "comparisons": [
+        {
+          "difference": 3.6003600314415962e-06,
+          "measured": 137.036,
+          "measured_key": "observed",
+          "percent_diff": 2.627309635016781e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 3.87283236993885e-06,
+          "measured": 0.23121,
+          "measured_key": "observed",
+          "percent_diff": 0.0016750280567185028,
+          "predicted": 0.23121387283236994,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 3.93013100435935e-06,
+          "measured": 0.1179,
+          "measured_key": "observed",
+          "percent_diff": 0.003333444448141942,
+          "predicted": 0.11790393013100436,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0022777777777777952,
+          "measured": 0.2245,
+          "measured_key": "observed",
+          "percent_diff": 1.0146003464489066,
+          "predicted": 0.2222222222222222,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.00039075630252100035,
+          "measured": 0.2265,
+          "measured_key": "observed",
+          "percent_diff": 0.1725193388613688,
+          "predicted": 0.226890756302521,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.004117647058823448,
+          "measured": 0.79,
+          "measured_key": "observed",
+          "percent_diff": 0.5212211466865124,
+          "predicted": 0.7941176470588235,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.00014285714285716677,
+          "measured": 0.357,
+          "measured_key": "observed",
+          "percent_diff": 0.04001600640256773,
+          "predicted": 0.35714285714285715,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0013435114503816958,
+          "measured": 0.304,
+          "measured_key": "observed",
+          "percent_diff": 0.44194455604661054,
+          "predicted": 0.3053435114503817,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.001571428571428557,
+          "measured": 0.573,
+          "measured_key": "observed",
+          "percent_diff": 0.27424582398404135,
+          "predicted": 0.5714285714285714,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.00022197802197802124,
+          "measured": 0.0222,
+          "measured_key": "observed",
+          "percent_diff": 0.9999009999009965,
+          "predicted": 0.02197802197802198,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.0024580246913580295,
+          "measured": 0.6889,
+          "measured_key": "observed",
+          "percent_diff": 0.35680428093453764,
+          "predicted": 0.691358024691358,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0024580246913580295,
+          "measured": 0.3111,
+          "measured_key": "observed",
+          "percent_diff": 0.7901075832073383,
+          "predicted": 0.30864197530864196,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.2280701754407986e-05,
+          "measured": 0.9649,
+          "measured_key": "observed",
+          "percent_diff": 0.0012727434712828257,
+          "predicted": 0.9649122807017544,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.09999999999999432,
+          "measured": 67.4,
+          "measured_key": "observed",
+          "percent_diff": 0.14836795252224674,
+          "predicted": 67.5,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 6.666666666665932e-05,
+          "measured": 0.6666,
+          "measured_key": "observed",
+          "percent_diff": 0.0100010001000089,
+          "predicted": 0.6666666666666666,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LIX_master_formula_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "W33 Theory of Everything",
+      "timestamp": "January 2026"
+    },
+    "PART_LVIII_cosmology_results.json": {
+      "comparisons": [
+        {
+          "difference": 0.0024580246913580295,
+          "measured": 0.6889,
+          "measured_key": "observed",
+          "percent_diff": 0.35680428093453764,
+          "predicted": 0.691358024691358,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": -0.0024580246913580295,
+          "measured": 0.3111,
+          "measured_key": "observed",
+          "percent_diff": 0.7901075832073383,
+          "predicted": 0.30864197530864196,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 0.09999999999999432,
+          "measured": 67.4,
+          "measured_key": "observed",
+          "percent_diff": 0.14836795252224674,
+          "predicted": 67.5,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.2280701754407986e-05,
+          "measured": 0.9649,
+          "measured_key": "observed",
+          "percent_diff": 0.0012727434712828257,
+          "predicted": 0.9649122807017544,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LVIII_cosmology_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "Omega_Lambda + Omega_m = 56/81 + 25/81 = 1",
+      "timestamp": null
+    },
+    "PART_LVII_fermion_masses_results.json": {
+      "comparisons": null,
+      "file": "PART_LVII_fermion_masses_results.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LVI_quantum_codes_results.json": {
+      "comparisons": null,
+      "file": "PART_LVI_quantum_codes_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "12002",
+      "timestamp": null
+    },
+    "PART_LV_exceptional_results.json": {
+      "comparisons": null,
+      "file": "PART_LV_exceptional_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "81 + 56 + 40/1111",
+      "timestamp": null
+    },
+    "PART_LXIII_gut_breaking_results.json": {
+      "comparisons": null,
+      "file": "PART_LXIII_gut_breaking_results.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXII_sage_pysymmetry_results.json": {
+      "comparisons": null,
+      "file": "PART_LXII_sage_pysymmetry_results.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXIV_eigenvector_results.json": {
+      "comparisons": [
+        {
+          "difference": 4.600360028916839e-06,
+          "measured": 137.035999,
+          "measured_key": "experimental",
+          "percent_diff": 3.357044909722473e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXIV_eigenvector_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "12^2 - 2*4 + 1 = 137",
+      "timestamp": null
+    },
+    "PART_LXIX_CP_violation.json": {
+      "comparisons": [
+        {
+          "difference": 2.9215554400300106e-08,
+          "measured": 3.150385083287883e-05,
+          "measured_key": "experimental",
+          "percent_diff": 0.09273645483938568,
+          "predicted": 3.153306638727913e-05,
+          "predicted_key": "W33"
+        }
+      ],
+      "file": "PART_LXIX_CP_violation.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXI_predictions_results.json": {
+      "comparisons": null,
+      "file": "PART_LXI_predictions_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "W33 makes falsifiable predictions testable in the next 10 years",
+      "timestamp": null
+    },
+    "PART_LXVIII_why_F3.json": {
+      "comparisons": [
+        {
+          "difference": -9.999999999982245e-06,
+          "measured": 0.22501,
+          "measured_key": "experimental",
+          "percent_diff": 0.004444246922351116,
+          "predicted": 0.225,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -0.007000000000000006,
+          "measured": 0.307,
+          "measured_key": "experimental",
+          "percent_diff": 2.280130293159611,
+          "predicted": 0.3,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.01100000000000001,
+          "measured": 0.545,
+          "measured_key": "experimental",
+          "percent_diff": 2.0183486238532127,
+          "predicted": 0.556,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.0,
+          "measured": 3.0,
+          "measured_key": "experimental",
+          "percent_diff": 0.0,
+          "predicted": 3.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXVIII_why_F3.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXVII_1111_mystery.json": {
+      "comparisons": null,
+      "file": "PART_LXVII_1111_mystery.json",
+      "part": null,
+      "part_number": null,
+      "short": "1111 = 11 \u00d7 101",
+      "timestamp": null
+    },
+    "PART_LXVI_unified_alpha.json": {
+      "comparisons": null,
+      "file": "PART_LXVI_unified_alpha.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXIII_proton_decay.json": {
+      "comparisons": [
+        {
+          "difference": 4.3730230059373195e+36,
+          "measured": 2.4e+34,
+          "measured_key": "experimental_bound",
+          "percent_diff": 18220.9291914055,
+          "predicted": 4.397023005937319e+36,
+          "predicted_key": "prediction_years"
+        }
+      ],
+      "file": "PART_LXXIII_proton_decay.json",
+      "part": null,
+      "part_number": null,
+      "short": "Exactly conserved in W33",
+      "timestamp": null
+    },
+    "PART_LXXII_fermion_masses.json": {
+      "comparisons": [
+        {
+          "difference": 3.432164857664066e-05,
+          "measured": 0.66663234501809,
+          "measured_key": "experimental",
+          "percent_diff": 0.005148512344643178,
+          "predicted": 0.6666666666666666,
+          "predicted_key": "predicted"
+        }
+      ],
+      "file": "PART_LXXII_fermion_masses.json",
+      "part": null,
+      "part_number": null,
+      "short": "Froggatt-Nielsen with epsilon = 1/3",
+      "timestamp": null
+    },
+    "PART_LXXIV_dark_matter.json": {
+      "comparisons": [
+        {
+          "difference": -0.4285714285714288,
+          "measured": 5.428571428571429,
+          "measured_key": "experimental",
+          "percent_diff": 7.894736842105267,
+          "predicted": 5.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXXIV_dark_matter.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXIX_anomalies.json": {
+      "comparisons": null,
+      "file": "PART_LXXIX_anomalies.json",
+      "part": null,
+      "part_number": null,
+      "short": "All cancel per generation",
+      "timestamp": null
+    },
+    "PART_LXXI_higgs_mass.json": {
+      "comparisons": [
+        {
+          "difference": -0.25,
+          "measured": 125.25,
+          "measured_key": "experimental",
+          "percent_diff": 0.19960079840319359,
+          "predicted": 125.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.3100000000000023,
+          "measured": 172.69,
+          "measured_key": "experimental",
+          "percent_diff": 0.17951242110139687,
+          "predicted": 173.0,
+          "predicted_key": "prediction"
+        }
+      ],
+      "file": "PART_LXXI_higgs_mass.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXVIII_running.json": {
+      "comparisons": null,
+      "file": "PART_LXXVIII_running.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXVII_neutrinos.json": {
+      "comparisons": null,
+      "file": "PART_LXXVII_neutrinos.json",
+      "part": null,
+      "part_number": null,
+      "short": "3^14 to 3^20 GeV",
+      "timestamp": null
+    },
+    "PART_LXXVI_verification.json": {
+      "comparisons": null,
+      "file": "PART_LXXVI_verification.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXV_string_theory.json": {
+      "comparisons": null,
+      "file": "PART_LXXV_string_theory.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LXXXIII_cosmology.json": {
+      "comparisons": null,
+      "file": "PART_LXXXIII_cosmology.json",
+      "part": "LXXXIII",
+      "part_number": 83,
+      "short": "Cosmology",
+      "timestamp": null
+    },
+    "PART_LXXXII_corrections.json": {
+      "comparisons": null,
+      "file": "PART_LXXXII_corrections.json",
+      "part": "LXXXII",
+      "part_number": 82,
+      "short": "Higher-Order Corrections",
+      "timestamp": null
+    },
+    "PART_LXXXIV_construction.json": {
+      "comparisons": null,
+      "file": "PART_LXXXIV_construction.json",
+      "part": "LXXXIV",
+      "part_number": 84,
+      "short": "SageMath Graph Construction",
+      "timestamp": null
+    },
+    "PART_LXXXIX_quantum_code.json": {
+      "comparisons": null,
+      "file": "PART_LXXXIX_quantum_code.json",
+      "part": "LXXXIX",
+      "part_number": 89,
+      "short": "Quantum Error Correcting Code",
+      "timestamp": null
+    },
+    "PART_LXXXI_gravity.json": {
+      "comparisons": [
+        {
+          "difference": -1.3239132212126925e+17,
+          "measured": 1.22e+19,
+          "measured_key": "experimental",
+          "percent_diff": 1.0851747714858135,
+          "predicted": 1.206760867787873e+19,
+          "predicted_key": "predicted"
+        },
+        {
+          "difference": 1.0009463529699914e+17,
+          "measured": 5e+16,
+          "measured_key": "experimental",
+          "percent_diff": 200.18927059399826,
+          "predicted": 1.5009463529699914e+17,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXXXI_gravity.json",
+      "part": "LXXXI",
+      "part_number": 81,
+      "short": "Gravitational Sector",
+      "timestamp": null
+    },
+    "PART_LXXXVIII_ultimate.json": {
+      "comparisons": null,
+      "file": "PART_LXXXVIII_ultimate.json",
+      "part": "LXXXVIII",
+      "part_number": 88,
+      "short": "The Ultimate Equation",
+      "timestamp": null
+    },
+    "PART_LXXXVII_spacetime.json": {
+      "comparisons": null,
+      "file": "PART_LXXXVII_spacetime.json",
+      "part": "LXXXVII",
+      "part_number": 87,
+      "short": "Emergence of Spacetime",
+      "timestamp": null
+    },
+    "PART_LXXXVI_bootstrap.json": {
+      "comparisons": null,
+      "file": "PART_LXXXVI_bootstrap.json",
+      "part": "LXXXVI",
+      "part_number": 86,
+      "short": "W33 is self-consistently determined by physical requirements",
+      "timestamp": null
+    },
+    "PART_LXXXV_why_w33.json": {
+      "comparisons": null,
+      "file": "PART_LXXXV_why_w33.json",
+      "part": "LXXXV",
+      "part_number": 85,
+      "short": "Why W33?",
+      "timestamp": null
+    },
+    "PART_LXXX_consolidation.json": {
+      "comparisons": [
+        {
+          "difference": 4.5163600361775025e-06,
+          "measured": 137.035999084,
+          "measured_key": "experimental",
+          "percent_diff": 3.2957471513810578e-06,
+          "predicted": 137.03600360036003,
+          "predicted_key": "value"
+        }
+      ],
+      "file": "PART_LXXX_consolidation.json",
+      "part": "LXXX",
+      "part_number": 80,
+      "short": "Grand Consolidation",
+      "timestamp": "2026-01-16T17:13:20.887834"
+    },
+    "PART_LXX_gravity.json": {
+      "comparisons": [
+        {
+          "difference": -5.233454094307123e+16,
+          "measured": 1.221e+19,
+          "measured_key": "experimental",
+          "percent_diff": 0.4286203189440723,
+          "predicted": 1.2157665459056929e+19,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": 0.6209999999999951,
+          "measured": 80.379,
+          "measured_key": "experimental",
+          "percent_diff": 0.7725898555592817,
+          "predicted": 81.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -0.21999999999999886,
+          "measured": 246.22,
+          "measured_key": "experimental",
+          "percent_diff": 0.08935098692226418,
+          "predicted": 246.0,
+          "predicted_key": "prediction"
+        },
+        {
+          "difference": -1810713114899488.0,
+          "measured": 1.5190534841189862e+17,
+          "measured_key": "experimental",
+          "percent_diff": 1.1920008964988202,
+          "predicted": 1.5009463529699914e+17,
+          "predicted_key": "W33_value"
+        }
+      ],
+      "file": "PART_LXX_gravity.json",
+      "part": null,
+      "part_number": null,
+      "short": null,
+      "timestamp": null
+    },
+    "PART_LX_1111_mystery_results.json": {
+      "comparisons": null,
+      "file": "PART_LX_1111_mystery_results.json",
+      "part": null,
+      "part_number": null,
+      "short": "11 \u00d7 101",
+      "timestamp": null
+    },
+    "PART_XCIII_predictions.json": {
+      "comparisons": null,
+      "file": "PART_XCIII_predictions.json",
+      "part": "XCIII",
+      "part_number": 93,
+      "short": "Experimental Predictions",
+      "timestamp": null
+    },
+    "PART_XCII_consciousness.json": {
+      "comparisons": null,
+      "file": "PART_XCII_consciousness.json",
+      "part": "XCII",
+      "part_number": 92,
+      "short": "Consciousness and Observers",
+      "timestamp": null
+    },
+    "PART_XCIV_lagrangian.json": {
+      "comparisons": null,
+      "file": "PART_XCIV_lagrangian.json",
+      "part": "XCIV",
+      "part_number": 94,
+      "short": "SU(3)\u00d7SU(2)\u00d7U(1) from Aut(W33)",
+      "timestamp": null
+    },
+    "PART_XCIX_cp_violation.json": {
+      "comparisons": null,
+      "file": "PART_XCIX_cp_violation.json",
+      "part": "XCIX",
+      "part_number": 99,
+      "short": "CP Violation",
+      "timestamp": null
+    },
+    "PART_XCI_multiverse.json": {
+      "comparisons": null,
+      "file": "PART_XCI_multiverse.json",
+      "part": "XCI",
+      "part_number": 91,
+      "short": "The Multiverse Question",
+      "timestamp": null
+    },
+    "PART_XCVIII_mass_hierarchy.json": {
+      "comparisons": null,
+      "file": "PART_XCVIII_mass_hierarchy.json",
+      "part": "XCVIII",
+      "part_number": 98,
+      "short": "Fermion Mass Hierarchy",
+      "timestamp": null
+    },
+    "PART_XCVI_complete_derivation.json": {
+      "comparisons": null,
+      "file": "PART_XCVI_complete_derivation.json",
+      "part": "XCVI",
+      "part_number": 96,
+      "short": "The Complete Derivation",
+      "timestamp": null
+    },
+    "PART_XCV_proton_decay.json": {
+      "comparisons": null,
+      "file": "PART_XCV_proton_decay.json",
+      "part": "XCV",
+      "part_number": 95,
+      "short": "Proton Decay - The Smoking Gun",
+      "timestamp": null
+    },
+    "PART_XC_arrow_of_time.json": {
+      "comparisons": null,
+      "file": "PART_XC_arrow_of_time.json",
+      "part": "XC",
+      "part_number": 90,
+      "short": "Arrow of Time",
+      "timestamp": null
+    }
+  },
+  "total_part_json_files": 85
+}

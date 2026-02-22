@@ -21,23 +21,65 @@ class W33DataPaths:
         for parent in [p] + list(p.parents):
             if parent.name == "claude_workspace":
                 return W33DataPaths(repo_root=parent.parent)
-        raise ValueError(f"Could not locate claude_workspace above: {p}")
+        # Fallback: locate the git repo root if present.
+        for parent in [p] + list(p.parents):
+            if (parent / ".git").exists():
+                return W33DataPaths(repo_root=parent)
+        # Final fallback: assume the file lives under the repo root.
+        return W33DataPaths(repo_root=p.parent)
 
     @property
     def claude_workspace(self) -> Path:
-        return self.repo_root / "claude_workspace"
+        candidate = self.repo_root / "claude_workspace"
+        return candidate if candidate.exists() else self.repo_root
 
     @property
     def data_root(self) -> Path:
-        return self.claude_workspace / "data"
+        cw_data = self.claude_workspace / "data"
+        if cw_data.exists():
+            return cw_data
+        repo_data = self.repo_root / "data"
+        if repo_data.exists():
+            return repo_data
+        return cw_data
 
     @property
     def rays_csv(self) -> Path:
-        return self.data_root / "_toe" / "w33_orthonormal_phase_solution_20260110" / "W33_point_rays_C4_complex.csv"
+        cw = (
+            self.claude_workspace
+            / "data"
+            / "_toe"
+            / "w33_orthonormal_phase_solution_20260110"
+            / "W33_point_rays_C4_complex.csv"
+        )
+        if cw.exists():
+            return cw
+        return (
+            self.repo_root
+            / "data"
+            / "_toe"
+            / "w33_orthonormal_phase_solution_20260110"
+            / "W33_point_rays_C4_complex.csv"
+        )
 
     @property
     def lines_csv(self) -> Path:
-        return self.data_root / "_workbench" / "02_geometry" / "W33_line_phase_map.csv"
+        cw = (
+            self.claude_workspace
+            / "data"
+            / "_workbench"
+            / "02_geometry"
+            / "W33_line_phase_map.csv"
+        )
+        if cw.exists():
+            return cw
+        return (
+            self.repo_root
+            / "data"
+            / "_workbench"
+            / "02_geometry"
+            / "W33_line_phase_map.csv"
+        )
 
 
 def load_w33_rays(paths: W33DataPaths) -> np.ndarray:
@@ -68,7 +110,9 @@ def load_w33_lines(paths: W33DataPaths) -> List[Tuple[int, int, int, int]]:
     return lines
 
 
-def simplices_from_lines(lines: Sequence[Tuple[int, int, int, int]]) -> dict[int, List[Tuple[int, ...]]]:
+def simplices_from_lines(
+    lines: Sequence[Tuple[int, int, int, int]],
+) -> dict[int, List[Tuple[int, ...]]]:
     """Build a simplicial complex (flag on each line as a K4).
 
     0-simplices: vertices (0..39)

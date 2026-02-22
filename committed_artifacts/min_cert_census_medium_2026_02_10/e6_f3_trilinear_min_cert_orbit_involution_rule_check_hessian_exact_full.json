@@ -1,0 +1,65 @@
+{
+  "status": "ok",
+  "source": "artifacts\\min_cert_census_medium_2026_02_10\\e6_f3_trilinear_min_cert_exact_hessian_full_with_geotypes.json",
+  "rule_under_test": "reduced orbit iff certificate is fixed by at least one symmetry with affine part det=2 and order 2, and z-map in {(1,0),(2,0),(2,1)}",
+  "full_orbit_size": 2592,
+  "representative_count": 256,
+  "candidate_affine_involution_count": 36,
+  "candidate_z_involution_count": 3,
+  "observed_orbit_histogram": {
+    "2592": 201,
+    "1296": 55
+  },
+  "observed_reduced_count": 55,
+  "predicted_reduced_count": 55,
+  "matching_symmetry_count_histogram": {
+    "0": 201,
+    "1": 55
+  },
+  "first_matching_symmetry_profiles": {
+    "z_map_histogram": {
+      "(1, 0)": 49,
+      "(2, 0)": 5,
+      "(2, 1)": 1
+    },
+    "det_histogram": {
+      "2": 55
+    },
+    "affine_order_histogram": {
+      "2": 55
+    }
+  },
+  "mismatch_count": 0,
+  "mismatches": [],
+  "rule_holds": true,
+  "notes": {
+    "non_identity_z_involutions": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "affine_involution_profile_example": {
+      "A": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "det": 2,
+      "shift": [
+        0,
+        0
+      ],
+      "order": 2
+    }
+  }
+}

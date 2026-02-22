@@ -17,9 +17,10 @@ This should give us:
 Let's crack this code.
 """
 
-import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+import numpy as np
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 print("=" * 80)
@@ -35,14 +36,15 @@ print("\n" + "=" * 80)
 print("PART 1: THE INFLATON FIELD")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE INFLATON AS GEOMETRIC MODULUS
 =================================
 
 The inflaton φ parametrizes the "position" in W-space:
   - φ = 0: Deep in W(5,3) (inflation)
   - φ = φ_end: Reached W(3,3) embedding (end of inflation)
-  
+
 Physical interpretation:
   φ = "distance" from W(3,3) submanifold within W(5,3)
 
@@ -51,16 +53,17 @@ The field space:
   - W(3,3) has 40 points embedded within it
   - The 1080 "extra" points span the transverse directions
   - φ measures how far into those 1080 directions we are
-""")
+"""
+)
 
 # Key parameters
 n_w53 = 1120  # W(5,3) points
-n_w33 = 40    # W(3,3) points
+n_w33 = 40  # W(3,3) points
 n_extra = n_w53 - n_w33  # Extra directions
 
 # Steinberg dimensions (vacuum DOF)
-s_w53 = 3**9   # 19683
-s_w33 = 3**4   # 81
+s_w53 = 3**9  # 19683
+s_w33 = 3**4  # 81
 
 # Vacuum fractions
 v_w53 = s_w53 / (n_w53 + s_w53)
@@ -86,7 +89,8 @@ print("\n" + "=" * 80)
 print("PART 2: THE INFLATON POTENTIAL")
 print("=" * 80)
 
-print("""
+print(
+    """
 DERIVING V(φ) FROM W-GEOMETRY
 =============================
 
@@ -104,36 +108,39 @@ For a smooth transition, use:
 The slow-roll requires:
   V'(φ)/V(φ) << 1  (ε small)
   V''(φ)/V(φ) << 1  (η small)
-""")
+"""
+)
 
 # Define the potential
 V_0 = 1.0  # In units of (M_GUT)^4 ≈ (10^16 GeV)^4
 
-def V_inflation(phi, model='quadratic'):
+
+def V_inflation(phi, model="quadratic"):
     """Inflaton potential from W-hierarchy."""
     x = phi / phi_max
-    
-    if model == 'quadratic':
+
+    if model == "quadratic":
         # Simple quadratic interpolation
         f = 1 - x**2
-    elif model == 'tanh':
+    elif model == "tanh":
         # Smooth tanh profile
         w = 0.3
-        f = 1 - np.tanh(x / w)**2
-    elif model == 'plateau':
+        f = 1 - np.tanh(x / w) ** 2
+    elif model == "plateau":
         # Plateau with sharp drop
-        f = 1 - np.exp(-1/(1 - x**2 + 0.01))
+        f = 1 - np.exp(-1 / (1 - x**2 + 0.01))
     else:
         f = 1 - x**2
-    
+
     V_base = v_w33  # Minimum (W(3,3) vacuum)
     V_range = v_w53 - v_w33  # Range of variation
-    
+
     return V_0 * (V_base + V_range * (1 - f))
+
 
 # Plot the potential
 phi_vals = np.linspace(0, phi_max * 0.99, 1000)
-V_vals = [V_inflation(p, 'quadratic') for p in phi_vals]
+V_vals = [V_inflation(p, "quadratic") for p in phi_vals]
 
 print(f"\nPotential parameters:")
 print(f"  V(φ_max) = {V_inflation(phi_max):.4f} V_0  (during inflation)")
@@ -148,7 +155,8 @@ print("\n" + "=" * 80)
 print("PART 3: SLOW-ROLL PARAMETERS")
 print("=" * 80)
 
-print("""
+print(
+    """
 SLOW-ROLL CONDITIONS
 ====================
 
@@ -161,25 +169,28 @@ For successful inflation:
   |η| << 1  (no rapid change in slope)
 
 Inflation ends when ε ≈ 1 or |η| ≈ 1.
-""")
+"""
+)
+
 
 def slow_roll_params(phi, dphi=0.001):
     """Calculate slow-roll parameters at given φ."""
     V = V_inflation(phi)
     V_plus = V_inflation(phi + dphi)
     V_minus = V_inflation(phi - dphi)
-    
+
     # First derivative
     V_prime = (V_plus - V_minus) / (2 * dphi)
-    
+
     # Second derivative
-    V_double_prime = (V_plus - 2*V + V_minus) / (dphi**2)
-    
+    V_double_prime = (V_plus - 2 * V + V_minus) / (dphi**2)
+
     # Slow-roll parameters (M_P = 1)
-    epsilon = 0.5 * (V_prime / V)**2
+    epsilon = 0.5 * (V_prime / V) ** 2
     eta = V_double_prime / V
-    
+
     return epsilon, eta
+
 
 # Calculate at different field values
 print(f"\nSlow-roll parameters:")
@@ -207,7 +218,8 @@ print("\n" + "=" * 80)
 print("PART 4: CMB OBSERVABLES")
 print("=" * 80)
 
-print("""
+print(
+    """
 CMB PREDICTIONS
 ===============
 
@@ -218,10 +230,12 @@ From slow-roll parameters, we predict:
 Observed values (Planck 2018):
   n_s = 0.9649 ± 0.0042
   r < 0.06 (upper limit)
-""")
+"""
+)
 
 # Calculate at CMB scales (typically 50-60 e-folds before end)
 # Need to find the field value 50-60 e-folds before end
+
 
 def e_folds_from_phi(phi_start, phi_end_val=0.1):
     """Calculate number of e-folds from phi_start to phi_end."""
@@ -229,20 +243,21 @@ def e_folds_from_phi(phi_start, phi_end_val=0.1):
     N = 0
     phi = phi_start
     dphi = 0.01
-    
+
     while phi > phi_end_val:
         V = V_inflation(phi)
         V_plus = V_inflation(phi + dphi)
         V_minus = V_inflation(phi - dphi)
         V_prime = (V_plus - V_minus) / (2 * dphi)
-        
+
         if abs(V_prime) > 1e-10:
             dN = V / V_prime * dphi
             N += abs(dN)
-        
+
         phi -= dphi
-    
+
     return N
+
 
 # Find field value 60 e-folds before end
 target_efolds = 60
@@ -267,7 +282,7 @@ print(f"  N(φ_CMB → end) ≈ {N_total:.1f} e-folds")
 
 # Calculate observables at CMB scales
 eps_cmb, eta_cmb = slow_roll_params(phi_cmb)
-n_s_pred = 1 - 6*eps_cmb + 2*eta_cmb
+n_s_pred = 1 - 6 * eps_cmb + 2 * eta_cmb
 r_pred = 16 * eps_cmb
 
 print(f"\nPredicted observables:")
@@ -293,7 +308,8 @@ print("\n" + "=" * 80)
 print("PART 5: GRAVITATIONAL WAVE SPECTRUM")
 print("=" * 80)
 
-print("""
+print(
+    """
 PRIMORDIAL GRAVITATIONAL WAVES
 ==============================
 
@@ -317,7 +333,8 @@ detectable by:
   - Pulsar timing arrays (10⁻⁹ - 10⁻⁷ Hz)
   - Future space missions (10⁻⁴ - 10⁻¹ Hz)
   - CMB B-modes (indirect)
-""")
+"""
+)
 
 # Calculate GW spectrum
 Omega_r = 8e-5  # Radiation fraction today
@@ -329,14 +346,14 @@ f_gw = np.logspace(-18, 4, 1000)  # Hz
 
 # Simple GW spectrum
 n_t = -r_pred / 8
-Omega_gw = Omega_r * r_pred * (f_gw / f_eq)**n_t
+Omega_gw = Omega_r * r_pred * (f_gw / f_eq) ** n_t
 
 # Apply transfer function (simplified)
 # Below f_eq: matter-dominated suppression
 # Above f_rh: reheating cutoff
 f_rh = 1e9  # Hz (reheating frequency)
-transfer = np.where(f_gw < f_eq, (f_gw/f_eq)**2, 1)
-transfer *= np.where(f_gw > f_rh, (f_rh/f_gw)**2, 1)
+transfer = np.where(f_gw < f_eq, (f_gw / f_eq) ** 2, 1)
+transfer *= np.where(f_gw > f_rh, (f_rh / f_gw) ** 2, 1)
 Omega_gw *= transfer
 
 print(f"\nGW spectrum parameters:")
@@ -359,7 +376,8 @@ print("\n" + "=" * 80)
 print("PART 6: PHASE TRANSITION GRAVITATIONAL WAVES")
 print("=" * 80)
 
-print("""
+print(
+    """
 GWs FROM W(5,3) → W(3,3) TRANSITION
 ===================================
 
@@ -378,7 +396,8 @@ For our transition:
     ≈ 0.277 / 0.669 ≈ 0.41
 
 This is a STRONG first-order transition!
-""")
+"""
+)
 
 # Phase transition parameters
 alpha_pt = (v_w53 - v_w33) / v_w33  # Latent heat ratio
@@ -398,14 +417,16 @@ print(f"\n  Peak frequency: f_peak ≈ {f_peak_pt:.0e} Hz")
 
 # Peak amplitude (approximate)
 # Ω_GW,peak ~ α² × (H/β)² × 10^(-5)
-Omega_peak_pt = alpha_pt**2 * (1/beta_over_H)**2 * 1e-5
+Omega_peak_pt = alpha_pt**2 * (1 / beta_over_H) ** 2 * 1e-5
 
 print(f"  Peak amplitude: Ω_GW ≈ {Omega_peak_pt:.2e}")
 
 # This frequency is in the LISA band!
 print(f"\n  LISA sensitivity at {f_peak_pt:.0e} Hz: Ω ~ 10⁻¹²")
 print(f"  Our prediction: Ω ~ {Omega_peak_pt:.0e}")
-print(f"  Detectable? {'YES - strong signal!' if Omega_peak_pt > 1e-12 else 'Marginal'}")
+print(
+    f"  Detectable? {'YES - strong signal!' if Omega_peak_pt > 1e-12 else 'Marginal'}"
+)
 
 # =============================================================================
 # PART 7: REHEATING
@@ -415,7 +436,8 @@ print("\n" + "=" * 80)
 print("PART 7: REHEATING")
 print("=" * 80)
 
-print("""
+print(
+    """
 REHEATING AFTER INFLATION
 =========================
 
@@ -425,21 +447,22 @@ must transfer to radiation (particles).
 Energy available:
   E_reheat = V(φ_max) - V(0)
            ≈ 0.277 × V_0
-           
+
 Reheating temperature:
   T_rh = (30 × ρ_reheat / (π² × g_*))^(1/4)
-  
+
 where g_* ≈ 100 (relativistic DOF).
 
 For V_0 ~ (10¹⁶ GeV)⁴:
   ρ_reheat ~ 0.277 × (10¹⁶ GeV)⁴
   T_rh ~ 10¹⁵ GeV (very high!)
-""")
+"""
+)
 
 # Calculate reheating temperature
 g_star = 106.75  # SM + extras
-rho_reheat = (v_w53 - v_w33)  # In units of V_0
-T_rh_factor = (30 * rho_reheat / (np.pi**2 * g_star))**(1/4)
+rho_reheat = v_w53 - v_w33  # In units of V_0
+T_rh_factor = (30 * rho_reheat / (np.pi**2 * g_star)) ** (1 / 4)
 
 print(f"\nReheating calculation:")
 print(f"  Energy released: {v_w53 - v_w33:.3f} V_0")
@@ -461,7 +484,8 @@ print("\n" + "=" * 80)
 print("PART 8: BARYOGENESIS FROM W-TRANSITION")
 print("=" * 80)
 
-print("""
+print(
+    """
 MATTER-ANTIMATTER ASYMMETRY
 ===========================
 
@@ -481,9 +505,10 @@ The CP violation from K4:
 Estimate:
   η_B = (n_B - n_B̄) / n_γ
       ~ α × ε_CP × (H/β)
-      
+
 where ε_CP ~ sin(phase) ~ 1/√(90) from K4s
-""")
+"""
+)
 
 # Calculate baryon asymmetry
 epsilon_CP = 1 / np.sqrt(90)  # CP violation from K4
@@ -518,7 +543,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE COMPLETE W-INFLATION MODEL")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    W-HIERARCHY INFLATION: SUMMARY                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -553,7 +579,8 @@ print("""
 ║  • Baryogenesis from K4 CP violation                                         ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 10: PREDICTIONS TABLE

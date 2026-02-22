@@ -9,758 +9,796 @@ This document provides the complete unit analysis.
 
 import math
 
-print("""
-╔════════════════════════════════════════════════════════════════════════════╗
-║                                                                            ║
-║            W33 FORMULAS: COMPLETE UNITS AND INTERPRETATIONS                ║
-║                                                                            ║
-║        Every Number Has a Specific Geometric/Algebraic Origin              ║
-║                                                                            ║
-╚════════════════════════════════════════════════════════════════════════════╝
-""")
-
 # =============================================================================
 # UNIT DEFINITIONS
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                         FUNDAMENTAL W33 QUANTITIES
-═══════════════════════════════════════════════════════════════════════════════
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    W33 CONFIGURATION ELEMENTS                               │
-├─────────┬───────────────────────────────────────────────────────────────────┤
-│   40    │ W33 POINTS: External points to oval in PG(2,3)                   │
-│         │ Physical: Observable gauge degrees of freedom                     │
-│         │ Units: [W33 points] - dimensionless count                        │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│   40    │ W33 LINES: Lines in the configuration (dual to points)           │
-│         │ Physical: Gauge boson interaction channels                        │
-│         │ Units: [W33 lines] - dimensionless count                         │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│   81    │ W33 CYCLES: Oriented loops in configuration = 3⁴                 │
-│         │ Physical: Loop/radiative correction contributions                 │
-│         │ Units: [W33 cycles] - dimensionless count                        │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│   90    │ W33 K4s: Klein four-group substructures (ℤ₂ × ℤ₂)               │
-│         │ Physical: Tensor/spin-2 structure (graviton)                      │
-│         │ Units: [W33 K4 subgroups] - dimensionless count                  │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  121    │ W33 TOTAL: Points + Cycles = 40 + 81 = 11²                       │
-│         │ Physical: Complete spacetime structure                            │
-│         │ Units: [W33 elements] - dimensionless count                      │
-└─────────┴───────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    EXCEPTIONAL LIE ALGEBRA DIMENSIONS                       │
-├─────────┬───────────────────────────────────────────────────────────────────┤
-│   27    │ dim(fund(E₆)) = dim(J₃(𝕆)): E₆ fundamental representation       │
-│         │ Physical: One generation of fermions                              │
-│         │ Units: [E₆ fundamental states] - dimensionless                   │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│   56    │ dim(fund(E₇)): E₇ fundamental representation                     │
-│         │ Physical: Matter multiplet including dark sector                  │
-│         │ Units: [E₇ fundamental states] - dimensionless                   │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│   78    │ dim(adj(E₆)): E₆ adjoint representation                          │
-│         │ Physical: Gauge field structure                                   │
-│         │ Units: [E₆ adjoint generators] - dimensionless                   │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  133    │ dim(adj(E₇)): E₇ adjoint representation                          │
-│         │ Physical: Hidden/broken gauge sector                              │
-│         │ Units: [E₇ adjoint generators] - dimensionless                   │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  240    │ |E₈ roots|: Number of roots in E₈ lattice                        │
-│         │ Physical: Complete gauge boson spectrum                           │
-│         │ Units: [E₈ root vectors] - dimensionless                         │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  248    │ dim(E₈): E₈ dimension (adjoint = fundamental)                    │
-│         │ Physical: Ultimate unified gauge structure                        │
-│         │ Units: [E₈ generators] - dimensionless                           │
-└─────────┴───────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       OTHER KEY QUANTITIES                                  │
-├─────────┬───────────────────────────────────────────────────────────────────┤
-│    5    │ = 40/8 = 133-128: W33 points / octonion dimension                │
-│         │ Physical: Dark sector multiplier                                  │
-│         │ Units: [ratio] - dimensionless                                   │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│    8    │ dim(𝕆): Octonion algebra dimension                               │
-│         │ Physical: Maximum division algebra dimension                      │
-│         │ Units: [octonion components] - dimensionless                     │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│    9    │ = 3²: Generations squared                                        │
-│         │ Physical: Inter-generation mixing structure                       │
-│         │ Units: [generation pairs] - dimensionless                        │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  128    │ dim(spinor(SO(16))): Half-spinor representation                  │
-│         │ Physical: Fermionic degrees of freedom                            │
-│         │ Units: [spinor components] - dimensionless                       │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  173    │ = 40 + 133: W33 points + E₇ adjoint                              │
-│         │ Physical: Total electroweak structure                             │
-│         │ Units: [gauge structure elements] - dimensionless                │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│ 1111    │ R₄ = (10⁴-1)/9 = 11×101: 4th repunit number                      │
-│         │ Physical: 4D spacetime encoding                                   │
-│         │ Units: [repunit] - dimensionless                                 │
-└─────────┴───────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    PHYSICAL CONSTANTS (INPUT)                               │
-├─────────┬───────────────────────────────────────────────────────────────────┤
-│    v    │ = 246.22 GeV: Electroweak vacuum expectation value (VEV)         │
-│         │ Physical: Higgs field ground state                                │
-│         │ Units: [GeV] = [energy]                                          │
-├─────────┼───────────────────────────────────────────────────────────────────┤
-│  M_Pl   │ = 1.22 × 10¹⁹ GeV: Planck mass                                   │
-│         │ Physical: Quantum gravity scale                                   │
-│         │ Units: [GeV] = [energy]                                          │
-└─────────┴───────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 1: FINE STRUCTURE CONSTANT
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    FORMULA 1: FINE STRUCTURE CONSTANT
-═══════════════════════════════════════════════════════════════════════════════
-
-                                   40 [W33 points]
-    α⁻¹  =  81 [W33 cycles]  +  56 [E₇ fund]  +  ───────────────────
-                                                  1111 [4th repunit]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  TERM-BY-TERM BREAKDOWN:                                                    │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  81 [W33 cycles]     Loop contributions from W33 cycle structure            │
-│                      = 3⁴ oriented loops in the configuration               │
-│                      Dimensionless count of radiative corrections           │
-│                                                                             │
-│  + 56 [E₇ fund]      Matter multiplet contribution                          │
-│                      = dimension of E₇ fundamental representation           │
-│                      Dimensionless count of matter states                   │
-│                                                                             │
-│  + 40/1111           Quantum correction from point structure                │
-│    [points/repunit]  40 = observable W33 points                             │
-│                      1111 = R₄ = 4th repunit (4D spacetime encoding)        │
-│                      = 11 × 101 = √121 × (133-32)                           │
-│                      Dimensionless ratio                                    │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  α⁻¹ = 81 + 56 + 0.036004 = 137.036004  [dimensionless]                    │
-│                                                                             │
-│  Experimental: 137.035999084(21)                                            │
-│  Agreement: 3.3 parts in 10⁸                                                │
-│                                                                             │
-│  Note: α = e²/(4πε₀ℏc) is inherently dimensionless                         │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 2: WEINBERG ANGLE
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                       FORMULA 2: WEINBERG ANGLE
-═══════════════════════════════════════════════════════════════════════════════
-
-                     40 [W33 points]              40 [observable gauge d.o.f.]
-    sin²θ_W  =  ─────────────────────────  =  ────────────────────────────────
-                40 [points] + 133 [E₇ adj]      173 [total gauge structure]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR:                                                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  40 [W33 points]     = Observable/light gauge sector                        │
-│                      = External points to oval in PG(2,3)                   │
-│                      = Number of "visible" gauge degrees of freedom         │
-│                      Units: [W33 points] - dimensionless count              │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  173 = 40 + 133      = Total electroweak gauge structure                    │
-│                                                                             │
-│       40 [W33 points]     = Light/observable sector                         │
-│     + 133 [E₇ adjoint]    = Hidden/broken sector (E₇ adjoint dimension)    │
-│     ─────────────────────                                                   │
-│       173 [total]         = Complete electroweak structure                  │
-│                                                                             │
-│                      Units: [gauge structure elements] - dimensionless      │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  sin²θ_W = 40/173 = 0.231214...  [dimensionless ratio]                     │
-│                                                                             │
-│  Physical meaning: Fraction of gauge structure that is "observable"         │
-│                                                                             │
-│  Experimental: 0.23121(4) at M_Z in MS-bar scheme                          │
-│  Agreement: 0.1σ (within experimental error!)                               │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 3: DARK MATTER RATIO
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                      FORMULA 3: DARK MATTER RATIO
-═══════════════════════════════════════════════════════════════════════════════
-
-    Ω_DM       27 [E₆ fund states]           27 [visible matter d.o.f.]
-    ────  =  ──────────────────────────  =  ────────────────────────────
-    Ω_b      133 [E₇ adj] - 128 [spinor]     5 [dark sector multiplier]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR:                                                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  27 [E₆ fund]        = Dimension of E₆ fundamental representation           │
-│                      = Dimension of exceptional Jordan algebra J₃(𝕆)        │
-│                      = One complete generation of Standard Model fermions   │
-│                      Units: [matter states] - dimensionless count           │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  5 = 133 - 128       = Dark sector structure                                │
-│                                                                             │
-│      133 [E₇ adj]       = E₇ adjoint dimension (total hidden structure)    │
-│    - 128 [SO(16) spinor] = Fermionic d.o.f. accounted for                  │
-│    ─────────────────────                                                    │
-│        5 [excess]       = "Dark" degrees of freedom                         │
-│                                                                             │
-│  ALTERNATIVE DERIVATION:                                                    │
-│                                                                             │
-│  5 = 40/8            = W33 points / octonion dimension                      │
-│                      = How many "octonion units" fit in W33 points          │
-│                      Units: [ratio] - dimensionless                         │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  Ω_DM/Ω_b = 27/5 = 5.4  [dimensionless ratio]                              │
-│                                                                             │
-│  Physical meaning: Dark matter abundance per visible matter unit            │
-│                                                                             │
-│  Experimental (Planck 2018): 5.408 ± 0.05                                  │
-│  Agreement: 0.15%                                                           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 4: GENERATION COUNT
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                      FORMULA 4: GENERATION COUNT
-═══════════════════════════════════════════════════════════════════════════════
-
-                 81 [W33 cycles]       81 [loop structures]
-    N_gen  =  ────────────────────  =  ──────────────────────  =  3
-              27 [E₆ fund states]      27 [fermions/generation]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR:                                                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  81 [W33 cycles]     = Number of oriented loops in W33 configuration        │
-│                      = 3⁴ (power of 3 from PG(2,3) base field)              │
-│                      = Total fermionic phase space structure                │
-│                      Units: [W33 cycles] - dimensionless count              │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  27 [E₆ fund]        = Fermions in one generation                           │
-│                      = 15 (SM fermions) + 12 (partners in E₆)               │
-│                      = Dimension of fundamental E₆ representation           │
-│                      Units: [fermion states] - dimensionless count          │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  N_gen = 81/27 = 3  [dimensionless count]                                  │
-│                                                                             │
-│  Physical meaning: How many complete generations fit in W33 structure       │
-│                                                                             │
-│  Note: 81 = 3 × 27, so this factorization is EXACT                         │
-│        A 4th generation is mathematically IMPOSSIBLE                        │
-│                                                                             │
-│  Experimental: 3 generations observed                                       │
-│  Agreement: EXACT                                                           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 5: TOP QUARK MASS
 # =============================================================================
 
 v = 246.22
-m_t = v * math.sqrt(40/81)
+m_t = v * math.sqrt(40 / 81)
 
-print(f"""
-═══════════════════════════════════════════════════════════════════════════════
-                       FORMULA 5: TOP QUARK MASS
-═══════════════════════════════════════════════════════════════════════════════
-
-                              ┌─────────────────────┐
-    m_t  =  v [GeV]  ×       │ 40 [W33 points]     │
-                             │ ─────────────────── │
-                             │ 81 [W33 cycles]     │
-                              └─────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  COMPONENTS:                                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  v = 246.22 GeV      = Electroweak vacuum expectation value                 │
-│                      = Higgs field VEV = (√2 G_F)^(-1/2)                    │
-│                      Units: [GeV] - energy                                  │
-│                                                                             │
-│  √(40/81)            = Yukawa coupling from W33 structure                   │
-│                                                                             │
-│       40 [W33 points]   = Observable matter structure                       │
-│       81 [W33 cycles]   = Loop/radiative structure                          │
-│                                                                             │
-│       √(40/81) = 0.7027 [dimensionless ratio]                              │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  CALCULATION:                                                               │
-│                                                                             │
-│  m_t = 246.22 [GeV] × √(40 [points] / 81 [cycles])                         │
-│      = 246.22 [GeV] × 0.7027                                                │
-│      = {m_t:.2f} GeV                                                         │
-│                                                                             │
-│  Experimental: 172.76 ± 0.30 GeV                                            │
-│  Agreement: 0.15%                                                           │
-│                                                                             │
-│  Physical meaning: Top Yukawa = √(points/cycles)                            │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 6: HIGGS MASS
 # =============================================================================
 
-m_H = (v/2) * math.sqrt(81/78)
+m_H = (v / 2) * math.sqrt(81 / 78)
 
-print(f"""
-═══════════════════════════════════════════════════════════════════════════════
-                        FORMULA 6: HIGGS MASS
-═══════════════════════════════════════════════════════════════════════════════
-
-              v [GeV]         ┌─────────────────────┐
-    m_H  =  ─────────  ×     │ 81 [W33 cycles]     │
-                2            │ ─────────────────── │
-                             │ 78 [E₆ adjoint]     │
-                              └─────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  COMPONENTS:                                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  v/2 = 123.11 GeV    = Half the electroweak VEV                             │
-│                      = Natural Higgs mass scale                             │
-│                      Units: [GeV] - energy                                  │
-│                                                                             │
-│  √(81/78)            = Higgs quartic coupling correction                    │
-│                                                                             │
-│       81 [W33 cycles]   = Loop structure (3⁴)                               │
-│       78 [E₆ adjoint]   = Gauge structure of E₆                             │
-│                                                                             │
-│       √(81/78) = 1.019 [dimensionless ratio]                               │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  CALCULATION:                                                               │
-│                                                                             │
-│  m_H = (246.22/2) [GeV] × √(81 [cycles] / 78 [E₆ adj])                     │
-│      = 123.11 [GeV] × 1.019                                                 │
-│      = {m_H:.2f} GeV                                                         │
-│                                                                             │
-│  Experimental: 125.25 ± 0.17 GeV                                            │
-│  Agreement: 0.16%                                                           │
-│                                                                             │
-│  Physical meaning: Higgs mass = (v/2) × √(cycles/gauge)                     │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 7: CABIBBO ANGLE
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                       FORMULA 7: CABIBBO ANGLE
-═══════════════════════════════════════════════════════════════════════════════
-
-                   9 [generation pairs]
-    sin θ_C  =  ─────────────────────────  =  0.225
-                   40 [W33 points]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR:                                                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  9 = 3²              = Generations squared                                  │
-│                      = Number of generation pairs (3 × 3 mixing matrix)    │
-│                      = Inter-generation coupling structure                  │
-│                      Units: [generation pairs] - dimensionless              │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  40 [W33 points]     = Total quark mixing phase space                       │
-│                      = Observable gauge d.o.f. available for mixing         │
-│                      Units: [W33 points] - dimensionless                    │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  sin θ_C = 9/40 = 0.225  [dimensionless]                                   │
-│                                                                             │
-│  Physical meaning: Mixing fraction = (gen pairs)/(available d.o.f.)         │
-│                                                                             │
-│  Experimental: 0.22501                                                      │
-│  Agreement: 0.28%                                                           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 8: KOIDE FORMULA
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                        FORMULA 8: KOIDE PARAMETER
-═══════════════════════════════════════════════════════════════════════════════
-
-               m_e + m_μ + m_τ              2 × 27 [E₆ fund]       2
-    Q  =  ──────────────────────────  =  ────────────────────  =  ───
-          (√m_e + √m_μ + √m_τ)²            81 [W33 cycles]        3
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR (of W33 formula):                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  2 × 27 = 54         = Twice the E₆ fundamental dimension                   │
-│                      = Lepton + antilepton contribution                     │
-│       2 [chiralities]   = Left + Right handed                               │
-│     × 27 [E₆ fund]      = One generation structure                          │
-│                      Units: [lepton states] - dimensionless                 │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  81 [W33 cycles]     = Total loop/mass-generating structure                 │
-│                      = Complete radiative contribution                      │
-│                      Units: [W33 cycles] - dimensionless                    │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  Q = 54/81 = 2/3 = 0.666667  [dimensionless]                               │
-│                                                                             │
-│  Physical meaning: Mass democracy parameter for charged leptons             │
-│                                                                             │
-│  Experimental: 0.666661                                                     │
-│  Agreement: 0.001% (extraordinary!)                                         │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 9: COSMOLOGICAL CONSTANT
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    FORMULA 9: COSMOLOGICAL CONSTANT
-═══════════════════════════════════════════════════════════════════════════════
-
-              ⎛   Λ   ⎞                           1               1
-    -log₁₀  ⎜───────⎟  =  121 [W33 total]  +  ─────────  +  ───────────
-              ⎝ M_Pl⁴ ⎠                        2 [factor]     27 [E₆ fund]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  TERM-BY-TERM:                                                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  121 [W33 total]     = Points + Cycles = 40 + 81 = 11²                     │
-│                      = Complete W33 element count                           │
-│                      = Primary suppression factor                           │
-│                      Units: [W33 elements] - dimensionless                  │
-│                                                                             │
-│  + 1/2               = Geometric factor (half)                              │
-│                      = From dimensional reduction                           │
-│                      Units: [dimensionless]                                 │
-│                                                                             │
-│  + 1/27              = Matter correction = 1/dim(fund(E₆))                  │
-│    [1/E₆ fund]       = One generation's contribution                        │
-│                      Units: [dimensionless]                                 │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  -log₁₀(Λ/M_Pl⁴) = 121 + 0.5 + 0.037 = 121.54  [dimensionless exponent]   │
-│                                                                             │
-│  Therefore: Λ ≈ 10^(-121.54) M_Pl⁴ ≈ 2.9 × 10⁻¹²² M_Pl⁴                   │
-│                                                                             │
-│  Experimental: Λ ≈ 2.888 × 10⁻¹²² M_Pl⁴                                   │
-│  Agreement: < 1%                                                            │
-│                                                                             │
-│  Physical meaning: Vacuum energy suppressed by W33 total + corrections      │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 10: SPACETIME DIMENSIONS
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    FORMULA 10: SPACETIME DIMENSIONS
-═══════════════════════════════════════════════════════════════════════════════
-
-    D  =  √(121 [W33 total])  =  √(40 [points] + 81 [cycles])  =  11
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  COMPONENTS:                                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  121 [W33 total]     = Complete W33 structure count                         │
-│                      = 40 points + 81 cycles                                │
-│                      = 11² (perfect square!)                                │
-│                      Units: [W33 elements] - dimensionless                  │
-│                                                                             │
-│  √121 = 11           = Square root of W33 total                             │
-│                      = Spacetime dimension count                            │
-│                      Units: [dimensions] - dimensionless count              │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DECOMPOSITION:                                                             │
-│                                                                             │
-│  11 = 4 + 7          4 [observed] = Spacetime we experience                 │
-│                      7 [compact]  = Compactified dimensions                 │
-│                                   = dim(Im(𝕆)) = imaginary octonions       │
-│                                   = G₂ holonomy manifold                   │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  D = 11 dimensions  [dimensionless count]                                   │
-│                                                                             │
-│  M-theory (Witten 1995) requires exactly 11 dimensions.                     │
-│  W33 explains WHY it must be 11.                                            │
-│                                                                             │
-│  Agreement: EXACT                                                           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 11: GW POLARIZATIONS
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                  FORMULA 11: GRAVITATIONAL WAVE POLARIZATIONS
-═══════════════════════════════════════════════════════════════════════════════
-
-                  90 [W33 K4 subgroups]
-    N_pol  =  ─────────────────────────────  =  2
-              45 [independent tensor d.o.f.]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  NUMERATOR:                                                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  90 [W33 K4s]        = Klein four-group substructures in W33                │
-│                      = K₄ ≅ ℤ₂ × ℤ₂ subgroups                              │
-│                      = Tensor/spin-2 structure for gravity                  │
-│                      Units: [K4 subgroups] - dimensionless count            │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  DENOMINATOR:                                                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  45 = 90/2           = Independent symmetric tensor components              │
-│                      = Accounts for index symmetry                          │
-│                      = D(D+1)/2 - 1 for D=9 gives 44, close to 45          │
-│                      Units: [tensor components] - dimensionless             │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  N_pol = 90/45 = 2  [dimensionless count]                                  │
-│                                                                             │
-│  Physical meaning: Two physical GW polarizations (plus + cross)             │
-│                                                                             │
-│  Confirmed by LIGO: Exactly 2 polarizations detected                        │
-│  Agreement: EXACT                                                           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 12: 240 CONNECTIONS
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                      FORMULA 12: 240 CONNECTIONS
-═══════════════════════════════════════════════════════════════════════════════
-
-                 40 [W33 points] × 12 [connections/point]
-    N_conn  =  ───────────────────────────────────────────  =  240
-                          2 [double-counting]
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  COMPONENTS:                                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  40 [W33 points]     = Points in W33 configuration                          │
-│                      Units: [points] - dimensionless count                  │
-│                                                                             │
-│  12 [per point]      = Each point connects to 12 others                     │
-│                      = Valency of each point in W33 graph                   │
-│                      Units: [connections/point] - dimensionless             │
-│                                                                             │
-│  2 [factor]          = Each connection counted twice (once per endpoint)    │
-│                      Units: [dimensionless]                                 │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  RESULT:                                                                    │
-│                                                                             │
-│  N_conn = (40 × 12)/2 = 240  [dimensionless count]                         │
-│                                                                             │
-│  THE TRIPLE EQUALITY:                                                       │
-│                                                                             │
-│  240 = W33 connections   (finite geometry)                                  │
-│  240 = |E₈ roots|        (exceptional algebra)                              │
-│  240 = Witting vertices  (complex polytope)                                 │
-│                                                                             │
-│  This proves W33 IS the incidence structure of E₈!                         │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # FORMULA 13: SUSY SCALE
 # =============================================================================
 
-M_SUSY = 246.22 * math.sqrt(90/40)
+M_SUSY = 246.22 * math.sqrt(90 / 40)
 
-print(f"""
-═══════════════════════════════════════════════════════════════════════════════
-                    FORMULA 13: SUPERSYMMETRY SCALE
-═══════════════════════════════════════════════════════════════════════════════
-
-                                    ┌─────────────────────┐
-    M_SUSY  =  M_EW [GeV]  ×       │ 90 [W33 K4s]        │
-                                   │ ─────────────────── │
-                                   │ 40 [W33 points]     │
-                                    └─────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  COMPONENTS:                                                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  M_EW = 246.22 GeV   = Electroweak scale (Higgs VEV)                        │
-│                      Units: [GeV] - energy                                  │
-│                                                                             │
-│  √(90/40)            = SUSY breaking ratio from W33                         │
-│                                                                             │
-│       90 [W33 K4s]      = Tensor/SUSY partner structure                     │
-│       40 [W33 points]   = Observable particle structure                     │
-│                                                                             │
-│       √(90/40) = √2.25 = 1.5 [dimensionless ratio]                         │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  CALCULATION:                                                               │
-│                                                                             │
-│  M_SUSY = 246.22 [GeV] × √(90 [K4s] / 40 [points])                         │
-│         = 246.22 [GeV] × 1.5                                                │
-│         ≈ {M_SUSY:.0f} GeV                                                       │
-│                                                                             │
-│  PREDICTION: Superpartners at ~370 GeV scale                                │
-│  Status: TESTABLE at future colliders (FCC-ee, FCC-hh)                      │
-│                                                                             │
-│  Physical meaning: SUSY scale = EW scale × √(K4s/points)                    │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-""")
 
 # =============================================================================
 # MASTER SUMMARY TABLE
 # =============================================================================
 
-print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    MASTER TABLE WITH COMPLETE UNITS
-═══════════════════════════════════════════════════════════════════════════════
 
-┌───────────────┬─────────────────────────────────────────┬───────────┬───────┐
-│ QUANTITY      │ FORMULA WITH UNITS                      │ VALUE     │ UNIT  │
-├───────────────┼─────────────────────────────────────────┼───────────┼───────┤
-│ α⁻¹          │ 81[cyc] + 56[E₇f] + 40[pts]/1111[R₄]   │ 137.036   │ none  │
-│ sin²θ_W       │ 40[pts] / (40[pts]+133[E₇a])           │ 0.231214  │ none  │
-│ Ω_DM/Ω_b      │ 27[E₆f] / (133[E₇a]-128[spin])         │ 5.4       │ none  │
-│ N_gen         │ 81[cyc] / 27[E₆f]                       │ 3         │ none  │
-│ m_t           │ v[GeV] × √(40[pts]/81[cyc])            │ 173.03    │ GeV   │
-│ m_H           │ (v/2)[GeV] × √(81[cyc]/78[E₆a])        │ 125.46    │ GeV   │
-│ sin θ_C       │ 9[gen²] / 40[pts]                       │ 0.225     │ none  │
-│ Koide Q       │ (2×27[E₆f]) / 81[cyc]                   │ 0.6667    │ none  │
-│ -log₁₀(Λ/M⁴) │ 121[tot] + 1/2 + 1/27[E₆f]             │ 121.54    │ none  │
-│ D             │ √(121[tot])                             │ 11        │ dims  │
-│ N_GW_pol      │ 90[K4s] / 45[tensor]                    │ 2         │ pols  │
-│ N_conn        │ 40[pts]×12[conn]/2                      │ 240       │ roots │
-│ M_SUSY        │ v[GeV] × √(90[K4s]/40[pts])            │ ~370      │ GeV   │
-└───────────────┴─────────────────────────────────────────┴───────────┴───────┘
+def main():
+    print(
+        """
+    ╔════════════════════════════════════════════════════════════════════════════╗
+    ║                                                                            ║
+    ║            W33 FORMULAS: COMPLETE UNITS AND INTERPRETATIONS                ║
+    ║                                                                            ║
+    ║        Every Number Has a Specific Geometric/Algebraic Origin              ║
+    ║                                                                            ║
+    ╚════════════════════════════════════════════════════════════════════════════╝
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                             FUNDAMENTAL W33 QUANTITIES
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │                    W33 CONFIGURATION ELEMENTS                               │
+    ├─────────┬───────────────────────────────────────────────────────────────────┤
+    │   40    │ W33 POINTS: External points to oval in PG(2,3)                   │
+    │         │ Physical: Observable gauge degrees of freedom                     │
+    │         │ Units: [W33 points] - dimensionless count                        │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │   40    │ W33 LINES: Lines in the configuration (dual to points)           │
+    │         │ Physical: Gauge boson interaction channels                        │
+    │         │ Units: [W33 lines] - dimensionless count                         │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │   81    │ W33 CYCLES: Oriented loops in configuration = 3⁴                 │
+    │         │ Physical: Loop/radiative correction contributions                 │
+    │         │ Units: [W33 cycles] - dimensionless count                        │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │   90    │ W33 K4s: Klein four-group substructures (ℤ₂ × ℤ₂)               │
+    │         │ Physical: Tensor/spin-2 structure (graviton)                      │
+    │         │ Units: [W33 K4 subgroups] - dimensionless count                  │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  121    │ W33 TOTAL: Points + Cycles = 40 + 81 = 11²                       │
+    │         │ Physical: Complete spacetime structure                            │
+    │         │ Units: [W33 elements] - dimensionless count                      │
+    └─────────┴───────────────────────────────────────────────────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │                    EXCEPTIONAL LIE ALGEBRA DIMENSIONS                       │
+    ├─────────┬───────────────────────────────────────────────────────────────────┤
+    │   27    │ dim(fund(E₆)) = dim(J₃(𝕆)): E₆ fundamental representation       │
+    │         │ Physical: One generation of fermions                              │
+    │         │ Units: [E₆ fundamental states] - dimensionless                   │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │   56    │ dim(fund(E₇)): E₇ fundamental representation                     │
+    │         │ Physical: Matter multiplet including dark sector                  │
+    │         │ Units: [E₇ fundamental states] - dimensionless                   │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │   78    │ dim(adj(E₆)): E₆ adjoint representation                          │
+    │         │ Physical: Gauge field structure                                   │
+    │         │ Units: [E₆ adjoint generators] - dimensionless                   │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  133    │ dim(adj(E₇)): E₇ adjoint representation                          │
+    │         │ Physical: Hidden/broken gauge sector                              │
+    │         │ Units: [E₇ adjoint generators] - dimensionless                   │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  240    │ |E₈ roots|: Number of roots in E₈ lattice                        │
+    │         │ Physical: Complete gauge boson spectrum                           │
+    │         │ Units: [E₈ root vectors] - dimensionless                         │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  248    │ dim(E₈): E₈ dimension (adjoint = fundamental)                    │
+    │         │ Physical: Ultimate unified gauge structure                        │
+    │         │ Units: [E₈ generators] - dimensionless                           │
+    └─────────┴───────────────────────────────────────────────────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │                       OTHER KEY QUANTITIES                                  │
+    ├─────────┬───────────────────────────────────────────────────────────────────┤
+    │    5    │ = 40/8 = 133-128: W33 points / octonion dimension                │
+    │         │ Physical: Dark sector multiplier                                  │
+    │         │ Units: [ratio] - dimensionless                                   │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │    8    │ dim(𝕆): Octonion algebra dimension                               │
+    │         │ Physical: Maximum division algebra dimension                      │
+    │         │ Units: [octonion components] - dimensionless                     │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │    9    │ = 3²: Generations squared                                        │
+    │         │ Physical: Inter-generation mixing structure                       │
+    │         │ Units: [generation pairs] - dimensionless                        │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  128    │ dim(spinor(SO(16))): Half-spinor representation                  │
+    │         │ Physical: Fermionic degrees of freedom                            │
+    │         │ Units: [spinor components] - dimensionless                       │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  173    │ = 40 + 133: W33 points + E₇ adjoint                              │
+    │         │ Physical: Total electroweak structure                             │
+    │         │ Units: [gauge structure elements] - dimensionless                │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │ 1111    │ R₄ = (10⁴-1)/9 = 11×101: 4th repunit number                      │
+    │         │ Physical: 4D spacetime encoding                                   │
+    │         │ Units: [repunit] - dimensionless                                 │
+    └─────────┴───────────────────────────────────────────────────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │                    PHYSICAL CONSTANTS (INPUT)                               │
+    ├─────────┬───────────────────────────────────────────────────────────────────┤
+    │    v    │ = 246.22 GeV: Electroweak vacuum expectation value (VEV)         │
+    │         │ Physical: Higgs field ground state                                │
+    │         │ Units: [GeV] = [energy]                                          │
+    ├─────────┼───────────────────────────────────────────────────────────────────┤
+    │  M_Pl   │ = 1.22 × 10¹⁹ GeV: Planck mass                                   │
+    │         │ Physical: Quantum gravity scale                                   │
+    │         │ Units: [GeV] = [energy]                                          │
+    └─────────┴───────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                        FORMULA 1: FINE STRUCTURE CONSTANT
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                       40 [W33 points]
+        α⁻¹  =  81 [W33 cycles]  +  56 [E₇ fund]  +  ───────────────────
+                                                      1111 [4th repunit]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  TERM-BY-TERM BREAKDOWN:                                                    │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  81 [W33 cycles]     Loop contributions from W33 cycle structure            │
+    │                      = 3⁴ oriented loops in the configuration               │
+    │                      Dimensionless count of radiative corrections           │
+    │                                                                             │
+    │  + 56 [E₇ fund]      Matter multiplet contribution                          │
+    │                      = dimension of E₇ fundamental representation           │
+    │                      Dimensionless count of matter states                   │
+    │                                                                             │
+    │  + 40/1111           Quantum correction from point structure                │
+    │    [points/repunit]  40 = observable W33 points                             │
+    │                      1111 = R₄ = 4th repunit (4D spacetime encoding)        │
+    │                      = 11 × 101 = √121 × (133-32)                           │
+    │                      Dimensionless ratio                                    │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  α⁻¹ = 81 + 56 + 0.036004 = 137.036004  [dimensionless]                    │
+    │                                                                             │
+    │  Experimental: 137.035999084(21)                                            │
+    │  Agreement: 3.3 parts in 10⁸                                                │
+    │                                                                             │
+    │  Note: α = e²/(4πε₀ℏc) is inherently dimensionless                         │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                           FORMULA 2: WEINBERG ANGLE
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                         40 [W33 points]              40 [observable gauge d.o.f.]
+        sin²θ_W  =  ─────────────────────────  =  ────────────────────────────────
+                    40 [points] + 133 [E₇ adj]      173 [total gauge structure]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR:                                                                 │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  40 [W33 points]     = Observable/light gauge sector                        │
+    │                      = External points to oval in PG(2,3)                   │
+    │                      = Number of "visible" gauge degrees of freedom         │
+    │                      Units: [W33 points] - dimensionless count              │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  173 = 40 + 133      = Total electroweak gauge structure                    │
+    │                                                                             │
+    │       40 [W33 points]     = Light/observable sector                         │
+    │     + 133 [E₇ adjoint]    = Hidden/broken sector (E₇ adjoint dimension)    │
+    │     ─────────────────────                                                   │
+    │       173 [total]         = Complete electroweak structure                  │
+    │                                                                             │
+    │                      Units: [gauge structure elements] - dimensionless      │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  sin²θ_W = 40/173 = 0.231214...  [dimensionless ratio]                     │
+    │                                                                             │
+    │  Physical meaning: Fraction of gauge structure that is "observable"         │
+    │                                                                             │
+    │  Experimental: 0.23121(4) at M_Z in MS-bar scheme                          │
+    │  Agreement: 0.1σ (within experimental error!)                               │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                          FORMULA 3: DARK MATTER RATIO
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+        Ω_DM       27 [E₆ fund states]           27 [visible matter d.o.f.]
+        ────  =  ──────────────────────────  =  ────────────────────────────
+        Ω_b      133 [E₇ adj] - 128 [spinor]     5 [dark sector multiplier]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR:                                                                 │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  27 [E₆ fund]        = Dimension of E₆ fundamental representation           │
+    │                      = Dimension of exceptional Jordan algebra J₃(𝕆)        │
+    │                      = One complete generation of Standard Model fermions   │
+    │                      Units: [matter states] - dimensionless count           │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  5 = 133 - 128       = Dark sector structure                                │
+    │                                                                             │
+    │      133 [E₇ adj]       = E₇ adjoint dimension (total hidden structure)    │
+    │    - 128 [SO(16) spinor] = Fermionic d.o.f. accounted for                  │
+    │    ─────────────────────                                                    │
+    │        5 [excess]       = "Dark" degrees of freedom                         │
+    │                                                                             │
+    │  ALTERNATIVE DERIVATION:                                                    │
+    │                                                                             │
+    │  5 = 40/8            = W33 points / octonion dimension                      │
+    │                      = How many "octonion units" fit in W33 points          │
+    │                      Units: [ratio] - dimensionless                         │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  Ω_DM/Ω_b = 27/5 = 5.4  [dimensionless ratio]                              │
+    │                                                                             │
+    │  Physical meaning: Dark matter abundance per visible matter unit            │
+    │                                                                             │
+    │  Experimental (Planck 2018): 5.408 ± 0.05                                  │
+    │  Agreement: 0.15%                                                           │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                          FORMULA 4: GENERATION COUNT
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                     81 [W33 cycles]       81 [loop structures]
+        N_gen  =  ────────────────────  =  ──────────────────────  =  3
+                  27 [E₆ fund states]      27 [fermions/generation]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR:                                                                 │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  81 [W33 cycles]     = Number of oriented loops in W33 configuration        │
+    │                      = 3⁴ (power of 3 from PG(2,3) base field)              │
+    │                      = Total fermionic phase space structure                │
+    │                      Units: [W33 cycles] - dimensionless count              │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  27 [E₆ fund]        = Fermions in one generation                           │
+    │                      = 15 (SM fermions) + 12 (partners in E₆)               │
+    │                      = Dimension of fundamental E₆ representation           │
+    │                      Units: [fermion states] - dimensionless count          │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  N_gen = 81/27 = 3  [dimensionless count]                                  │
+    │                                                                             │
+    │  Physical meaning: How many complete generations fit in W33 structure       │
+    │                                                                             │
+    │  Note: 81 = 3 × 27, so this factorization is EXACT                         │
+    │        A 4th generation is mathematically IMPOSSIBLE                        │
+    │                                                                             │
+    │  Experimental: 3 generations observed                                       │
+    │  Agreement: EXACT                                                           │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        f"""
+    ═══════════════════════════════════════════════════════════════════════════════
+                           FORMULA 5: TOP QUARK MASS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                  ┌─────────────────────┐
+        m_t  =  v [GeV]  ×       │ 40 [W33 points]     │
+                                 │ ─────────────────── │
+                                 │ 81 [W33 cycles]     │
+                                  └─────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  COMPONENTS:                                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  v = 246.22 GeV      = Electroweak vacuum expectation value                 │
+    │                      = Higgs field VEV = (√2 G_F)^(-1/2)                    │
+    │                      Units: [GeV] - energy                                  │
+    │                                                                             │
+    │  √(40/81)            = Yukawa coupling from W33 structure                   │
+    │                                                                             │
+    │       40 [W33 points]   = Observable matter structure                       │
+    │       81 [W33 cycles]   = Loop/radiative structure                          │
+    │                                                                             │
+    │       √(40/81) = 0.7027 [dimensionless ratio]                              │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  CALCULATION:                                                               │
+    │                                                                             │
+    │  m_t = 246.22 [GeV] × √(40 [points] / 81 [cycles])                         │
+    │      = 246.22 [GeV] × 0.7027                                                │
+    │      = {m_t:.2f} GeV                                                         │
+    │                                                                             │
+    │  Experimental: 172.76 ± 0.30 GeV                                            │
+    │  Agreement: 0.15%                                                           │
+    │                                                                             │
+    │  Physical meaning: Top Yukawa = √(points/cycles)                            │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        f"""
+    ═══════════════════════════════════════════════════════════════════════════════
+                            FORMULA 6: HIGGS MASS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                  v [GeV]         ┌─────────────────────┐
+        m_H  =  ─────────  ×     │ 81 [W33 cycles]     │
+                    2            │ ─────────────────── │
+                                 │ 78 [E₆ adjoint]     │
+                                  └─────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  COMPONENTS:                                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  v/2 = 123.11 GeV    = Half the electroweak VEV                             │
+    │                      = Natural Higgs mass scale                             │
+    │                      Units: [GeV] - energy                                  │
+    │                                                                             │
+    │  √(81/78)            = Higgs quartic coupling correction                    │
+    │                                                                             │
+    │       81 [W33 cycles]   = Loop structure (3⁴)                               │
+    │       78 [E₆ adjoint]   = Gauge structure of E₆                             │
+    │                                                                             │
+    │       √(81/78) = 1.019 [dimensionless ratio]                               │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  CALCULATION:                                                               │
+    │                                                                             │
+    │  m_H = (246.22/2) [GeV] × √(81 [cycles] / 78 [E₆ adj])                     │
+    │      = 123.11 [GeV] × 1.019                                                 │
+    │      = {m_H:.2f} GeV                                                         │
+    │                                                                             │
+    │  Experimental: 125.25 ± 0.17 GeV                                            │
+    │  Agreement: 0.16%                                                           │
+    │                                                                             │
+    │  Physical meaning: Higgs mass = (v/2) × √(cycles/gauge)                     │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                           FORMULA 7: CABIBBO ANGLE
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                       9 [generation pairs]
+        sin θ_C  =  ─────────────────────────  =  0.225
+                       40 [W33 points]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR:                                                                 │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  9 = 3²              = Generations squared                                  │
+    │                      = Number of generation pairs (3 × 3 mixing matrix)    │
+    │                      = Inter-generation coupling structure                  │
+    │                      Units: [generation pairs] - dimensionless              │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  40 [W33 points]     = Total quark mixing phase space                       │
+    │                      = Observable gauge d.o.f. available for mixing         │
+    │                      Units: [W33 points] - dimensionless                    │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  sin θ_C = 9/40 = 0.225  [dimensionless]                                   │
+    │                                                                             │
+    │  Physical meaning: Mixing fraction = (gen pairs)/(available d.o.f.)         │
+    │                                                                             │
+    │  Experimental: 0.22501                                                      │
+    │  Agreement: 0.28%                                                           │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                            FORMULA 8: KOIDE PARAMETER
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                   m_e + m_μ + m_τ              2 × 27 [E₆ fund]       2
+        Q  =  ──────────────────────────  =  ────────────────────  =  ───
+              (√m_e + √m_μ + √m_τ)²            81 [W33 cycles]        3
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR (of W33 formula):                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  2 × 27 = 54         = Twice the E₆ fundamental dimension                   │
+    │                      = Lepton + antilepton contribution                     │
+    │       2 [chiralities]   = Left + Right handed                               │
+    │     × 27 [E₆ fund]      = One generation structure                          │
+    │                      Units: [lepton states] - dimensionless                 │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  81 [W33 cycles]     = Total loop/mass-generating structure                 │
+    │                      = Complete radiative contribution                      │
+    │                      Units: [W33 cycles] - dimensionless                    │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  Q = 54/81 = 2/3 = 0.666667  [dimensionless]                               │
+    │                                                                             │
+    │  Physical meaning: Mass democracy parameter for charged leptons             │
+    │                                                                             │
+    │  Experimental: 0.666661                                                     │
+    │  Agreement: 0.001% (extraordinary!)                                         │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                        FORMULA 9: COSMOLOGICAL CONSTANT
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                  ⎛   Λ   ⎞                           1               1
+        -log₁₀  ⎜───────⎟  =  121 [W33 total]  +  ─────────  +  ───────────
+                  ⎝ M_Pl⁴ ⎠                        2 [factor]     27 [E₆ fund]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  TERM-BY-TERM:                                                              │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  121 [W33 total]     = Points + Cycles = 40 + 81 = 11²                     │
+    │                      = Complete W33 element count                           │
+    │                      = Primary suppression factor                           │
+    │                      Units: [W33 elements] - dimensionless                  │
+    │                                                                             │
+    │  + 1/2               = Geometric factor (half)                              │
+    │                      = From dimensional reduction                           │
+    │                      Units: [dimensionless]                                 │
+    │                                                                             │
+    │  + 1/27              = Matter correction = 1/dim(fund(E₆))                  │
+    │    [1/E₆ fund]       = One generation's contribution                        │
+    │                      Units: [dimensionless]                                 │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  -log₁₀(Λ/M_Pl⁴) = 121 + 0.5 + 0.037 = 121.54  [dimensionless exponent]   │
+    │                                                                             │
+    │  Therefore: Λ ≈ 10^(-121.54) M_Pl⁴ ≈ 2.9 × 10⁻¹²² M_Pl⁴                   │
+    │                                                                             │
+    │  Experimental: Λ ≈ 2.888 × 10⁻¹²² M_Pl⁴                                   │
+    │  Agreement: < 1%                                                            │
+    │                                                                             │
+    │  Physical meaning: Vacuum energy suppressed by W33 total + corrections      │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                        FORMULA 10: SPACETIME DIMENSIONS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+        D  =  √(121 [W33 total])  =  √(40 [points] + 81 [cycles])  =  11
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  COMPONENTS:                                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  121 [W33 total]     = Complete W33 structure count                         │
+    │                      = 40 points + 81 cycles                                │
+    │                      = 11² (perfect square!)                                │
+    │                      Units: [W33 elements] - dimensionless                  │
+    │                                                                             │
+    │  √121 = 11           = Square root of W33 total                             │
+    │                      = Spacetime dimension count                            │
+    │                      Units: [dimensions] - dimensionless count              │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DECOMPOSITION:                                                             │
+    │                                                                             │
+    │  11 = 4 + 7          4 [observed] = Spacetime we experience                 │
+    │                      7 [compact]  = Compactified dimensions                 │
+    │                                   = dim(Im(𝕆)) = imaginary octonions       │
+    │                                   = G₂ holonomy manifold                   │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  D = 11 dimensions  [dimensionless count]                                   │
+    │                                                                             │
+    │  M-theory (Witten 1995) requires exactly 11 dimensions.                     │
+    │  W33 explains WHY it must be 11.                                            │
+    │                                                                             │
+    │  Agreement: EXACT                                                           │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                      FORMULA 11: GRAVITATIONAL WAVE POLARIZATIONS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                      90 [W33 K4 subgroups]
+        N_pol  =  ─────────────────────────────  =  2
+                  45 [independent tensor d.o.f.]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  NUMERATOR:                                                                 │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  90 [W33 K4s]        = Klein four-group substructures in W33                │
+    │                      = K₄ ≅ ℤ₂ × ℤ₂ subgroups                              │
+    │                      = Tensor/spin-2 structure for gravity                  │
+    │                      Units: [K4 subgroups] - dimensionless count            │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  DENOMINATOR:                                                               │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  45 = 90/2           = Independent symmetric tensor components              │
+    │                      = Accounts for index symmetry                          │
+    │                      = D(D+1)/2 - 1 for D=9 gives 44, close to 45          │
+    │                      Units: [tensor components] - dimensionless             │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  N_pol = 90/45 = 2  [dimensionless count]                                  │
+    │                                                                             │
+    │  Physical meaning: Two physical GW polarizations (plus + cross)             │
+    │                                                                             │
+    │  Confirmed by LIGO: Exactly 2 polarizations detected                        │
+    │  Agreement: EXACT                                                           │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                          FORMULA 12: 240 CONNECTIONS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                     40 [W33 points] × 12 [connections/point]
+        N_conn  =  ───────────────────────────────────────────  =  240
+                              2 [double-counting]
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  COMPONENTS:                                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  40 [W33 points]     = Points in W33 configuration                          │
+    │                      Units: [points] - dimensionless count                  │
+    │                                                                             │
+    │  12 [per point]      = Each point connects to 12 others                     │
+    │                      = Valency of each point in W33 graph                   │
+    │                      Units: [connections/point] - dimensionless             │
+    │                                                                             │
+    │  2 [factor]          = Each connection counted twice (once per endpoint)    │
+    │                      Units: [dimensionless]                                 │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  RESULT:                                                                    │
+    │                                                                             │
+    │  N_conn = (40 × 12)/2 = 240  [dimensionless count]                         │
+    │                                                                             │
+    │  THE TRIPLE EQUALITY:                                                       │
+    │                                                                             │
+    │  240 = W33 connections   (finite geometry)                                  │
+    │  240 = |E₈ roots|        (exceptional algebra)                              │
+    │  240 = Witting vertices  (complex polytope)                                 │
+    │                                                                             │
+    │  This proves W33 IS the incidence structure of E₈!                         │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        f"""
+    ═══════════════════════════════════════════════════════════════════════════════
+                        FORMULA 13: SUPERSYMMETRY SCALE
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+                                        ┌─────────────────────┐
+        M_SUSY  =  M_EW [GeV]  ×       │ 90 [W33 K4s]        │
+                                       │ ─────────────────── │
+                                       │ 40 [W33 points]     │
+                                        └─────────────────────┘
+    pass
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  COMPONENTS:                                                                │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │                                                                             │
+    │  M_EW = 246.22 GeV   = Electroweak scale (Higgs VEV)                        │
+    │                      Units: [GeV] - energy                                  │
+    │                                                                             │
+    │  √(90/40)            = SUSY breaking ratio from W33                         │
+    │                                                                             │
+    │       90 [W33 K4s]      = Tensor/SUSY partner structure                     │
+    │       40 [W33 points]   = Observable particle structure                     │
+    │                                                                             │
+    │       √(90/40) = √2.25 = 1.5 [dimensionless ratio]                         │
+    │                                                                             │
+    ├─────────────────────────────────────────────────────────────────────────────┤
+    │  CALCULATION:                                                               │
+    │                                                                             │
+    │  M_SUSY = 246.22 [GeV] × √(90 [K4s] / 40 [points])                         │
+    │         = 246.22 [GeV] × 1.5                                                │
+    │         ≈ {M_SUSY:.0f} GeV                                                       │
+    │                                                                             │
+    │  PREDICTION: Superpartners at ~370 GeV scale                                │
+    │  Status: TESTABLE at future colliders (FCC-ee, FCC-hh)                      │
+    │                                                                             │
+    │  Physical meaning: SUSY scale = EW scale × √(K4s/points)                    │
+    │                                                                             │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    """
+    )
+    print(
+        """
+    ═══════════════════════════════════════════════════════════════════════════════
+                        MASTER TABLE WITH COMPLETE UNITS
+    ═══════════════════════════════════════════════════════════════════════════════
+    pass
+    ┌───────────────┬─────────────────────────────────────────┬───────────┬───────┐
+    │ QUANTITY      │ FORMULA WITH UNITS                      │ VALUE     │ UNIT  │
+    ├───────────────┼─────────────────────────────────────────┼───────────┼───────┤
+    │ α⁻¹          │ 81[cyc] + 56[E₇f] + 40[pts]/1111[R₄]   │ 137.036   │ none  │
+    │ sin²θ_W       │ 40[pts] / (40[pts]+133[E₇a])           │ 0.231214  │ none  │
+    │ Ω_DM/Ω_b      │ 27[E₆f] / (133[E₇a]-128[spin])         │ 5.4       │ none  │
+    │ N_gen         │ 81[cyc] / 27[E₆f]                       │ 3         │ none  │
+    │ m_t           │ v[GeV] × √(40[pts]/81[cyc])            │ 173.03    │ GeV   │
+    │ m_H           │ (v/2)[GeV] × √(81[cyc]/78[E₆a])        │ 125.46    │ GeV   │
+    │ sin θ_C       │ 9[gen²] / 40[pts]                       │ 0.225     │ none  │
+    │ Koide Q       │ (2×27[E₆f]) / 81[cyc]                   │ 0.6667    │ none  │
+    │ -log₁₀(Λ/M⁴) │ 121[tot] + 1/2 + 1/27[E₆f]             │ 121.54    │ none  │
+    │ D             │ √(121[tot])                             │ 11        │ dims  │
+    │ N_GW_pol      │ 90[K4s] / 45[tensor]                    │ 2         │ pols  │
+    │ N_conn        │ 40[pts]×12[conn]/2                      │ 240       │ roots │
+    │ M_SUSY        │ v[GeV] × √(90[K4s]/40[pts])            │ ~370      │ GeV   │
+    └───────────────┴─────────────────────────────────────────┴───────────┴───────┘
+    pass
+    LEGEND:
+      [pts]   = W33 points (40)           [E₆f]  = E₆ fundamental dim (27)
+      [cyc]   = W33 cycles (81)           [E₆a]  = E₆ adjoint dim (78)
+      [K4s]   = W33 K4 subgroups (90)     [E₇f]  = E₇ fundamental dim (56)
+      [tot]   = W33 total (121)           [E₇a]  = E₇ adjoint dim (133)
+      [R₄]    = 4th repunit (1111)        [spin] = SO(16) spinor dim (128)
+      [gen²]  = generations squared (9)   [GeV]  = energy unit
+    pass
+    ═══════════════════════════════════════════════════════════════════════════════
+    """
+    )
+    print(
+        """
+    Every number in W33 theory has a SPECIFIC geometric or algebraic origin.
+    Every formula is a ratio of COUNTABLE mathematical structures.
+    All coupling constants are ultimately DIMENSIONLESS ratios of these counts.
+    Masses arise when multiplied by the ONE physical scale: v = 246.22 GeV.
+    pass
+                        THIS IS THE COMPLETE UNIT ANALYSIS
+    ═══════════════════════════════════════════════════════════════════════════════
+    """
+    )
 
-LEGEND:
-  [pts]   = W33 points (40)           [E₆f]  = E₆ fundamental dim (27)
-  [cyc]   = W33 cycles (81)           [E₆a]  = E₆ adjoint dim (78)
-  [K4s]   = W33 K4 subgroups (90)     [E₇f]  = E₇ fundamental dim (56)
-  [tot]   = W33 total (121)           [E₇a]  = E₇ adjoint dim (133)
-  [R₄]    = 4th repunit (1111)        [spin] = SO(16) spinor dim (128)
-  [gen²]  = generations squared (9)   [GeV]  = energy unit
-  
-═══════════════════════════════════════════════════════════════════════════════
-""")
 
-print("""
-Every number in W33 theory has a SPECIFIC geometric or algebraic origin.
-Every formula is a ratio of COUNTABLE mathematical structures.
-All coupling constants are ultimately DIMENSIONLESS ratios of these counts.
-Masses arise when multiplied by the ONE physical scale: v = 246.22 GeV.
-
-                    THIS IS THE COMPLETE UNIT ANALYSIS
-═══════════════════════════════════════════════════════════════════════════════
-""")
+if __name__ == "__main__":
+    main()

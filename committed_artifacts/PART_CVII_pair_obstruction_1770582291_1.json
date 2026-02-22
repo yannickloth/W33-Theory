@@ -1,0 +1,23 @@
+{
+  "source_file": "checks/_tmp_verify_next20_52_53.json",
+  "source_test_index": 0,
+  "set": [
+    52,
+    53
+  ],
+  "edges": [
+    52,
+    53
+  ],
+  "roots": [
+    7,
+    7
+  ],
+  "seed_path": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\_tmp_seed_pair_verify_1_1770582291.json",
+  "solver_check": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_e8_embedding_cpsat.json",
+  "solver_status": "INFEASIBLE",
+  "timestamp": 1770582291,
+  "dot_products": 8,
+  "sum_is_root": false,
+  "diff_is_root": false
+}

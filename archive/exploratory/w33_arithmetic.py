@@ -10,8 +10,9 @@ This explores:
 4. Prime patterns in W33
 """
 
-import numpy as np
 from collections import Counter
+
+import numpy as np
 
 print("=" * 80)
 print("W33 AND ARITHMETIC FOUNDATIONS")
@@ -26,7 +27,8 @@ print("\n" + "=" * 80)
 print("PART 1: THE W33 ZETA FUNCTION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE ZETA FUNCTION OF W33
 ========================
 
@@ -40,14 +42,17 @@ The "eigenvalues" of W33:
   90 (K4s)
   121 (total)
   25920 (automorphisms)
-""")
+"""
+)
 
 # Define eigenvalues
 eigenvalues = [1, 40, 81, 90, 121, 25920]
 
+
 # Compute zeta at various s
 def w33_zeta(s, terms=eigenvalues):
-    return sum(t**(-s) for t in terms if t > 0)
+    return sum(t ** (-s) for t in terms if t > 0)
+
 
 print("W33 zeta function values:")
 for s in [1, 2, 3, 4]:
@@ -62,6 +67,7 @@ print("\n" + "=" * 80)
 print("PART 2: PRIME STRUCTURE IN W33")
 print("=" * 80)
 
+
 # Prime factorizations
 def factor(n):
     factors = []
@@ -75,12 +81,14 @@ def factor(n):
         factors.append(n)
     return factors
 
+
 numbers = [40, 81, 90, 121, 25920, 137, 173, 133, 248]
 print("Prime factorizations of W33 numbers:")
 for n in numbers:
     f = factor(n)
-    f_str = " × ".join(f"{p}^{f.count(p)}" if f.count(p) > 1 else str(p) 
-                       for p in sorted(set(f)))
+    f_str = " × ".join(
+        f"{p}^{f.count(p)}" if f.count(p) > 1 else str(p) for p in sorted(set(f))
+    )
     print(f"  {n} = {f_str}")
 
 # Collect all primes
@@ -99,22 +107,26 @@ print("\n" + "=" * 80)
 print("PART 3: QUADRATIC FORMS")
 print("=" * 80)
 
-print("""
+print(
+    """
 QUADRATIC IDENTITY:
 
   40 + 81 = 121 = 11²
 
 All W33 numbers are sums of two squares!
-""")
+"""
+)
+
 
 def sum_two_squares(n):
     """Find a,b such that n = a² + b², if possible"""
     for a in range(int(np.sqrt(n)) + 1):
-        b_sq = n - a*a
+        b_sq = n - a * a
         b = int(np.sqrt(b_sq))
-        if b*b == b_sq:
+        if b * b == b_sq:
             return (a, b)
     return None
+
 
 print("Sum of two squares decompositions:")
 for n in [40, 81, 90, 121, 137, 133, 248]:
@@ -169,7 +181,8 @@ print("\n" + "=" * 80)
 print("PART 6: THE 137 MYSTERY")
 print("=" * 80)
 
-print("""
+print(
+    """
 137 AND W33
 ===========
 
@@ -185,7 +198,8 @@ So: 1/α ≈ 137 = GF(3)-structure + E₇-structure!
 Alternative decomposition:
   137 = 128 + 9 = 2⁷ + 3²
   137 = 81 + 56 = 3⁴ + 7×8
-""")
+"""
+)
 
 print("137 decompositions:")
 print(f"  137 = 81 + 56 = 3⁴ + dim(56 of E₇)")
@@ -200,7 +214,8 @@ print("\n" + "=" * 80)
 print("SYNTHESIS: W33 IN NUMBER THEORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║           W33 APPEARS THROUGHOUT NUMBER THEORY                               ║
@@ -235,7 +250,8 @@ print("""
 ║     NUMBER THEORY = W33 ⊗ ℤ / relations                                      ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("W33 = UNIVERSAL ALGEBRAIC-ARITHMETIC STRUCTURE")

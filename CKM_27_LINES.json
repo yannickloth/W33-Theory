@@ -1,0 +1,23 @@
+{
+  "intersection_structure": {
+    "lines": 27,
+    "intersections_per_line": 11,
+    "total_intersections": 156,
+    "by_type": {
+      "ab": 6,
+      "ac": 60,
+      "bc": 30,
+      "cc": 60
+    }
+  },
+  "experimental_ckm": {
+    "lambda": 0.2265,
+    "A": 0.79,
+    "rho_bar": 0.141,
+    "eta_bar": 0.357
+  },
+  "geometric_ratios": {
+    "ab_over_total": 0.038461538461538464,
+    "sin2_theta_C": 0.05130225
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source_conf_entry": {
+    "minimal_conflict": [
+      50,
+      51
+    ],
+    "source": "committed_artifacts/PART_CVII_pair_obstruction_1770577580_1.json"
+  },
+  "initial_size": 2,
+  "result": [],
+  "result_size": 0,
+  "checks_limit": 2000,
+  "time_seconds": 124.15315222740173,
+  "timestamp": 1770581052
+}

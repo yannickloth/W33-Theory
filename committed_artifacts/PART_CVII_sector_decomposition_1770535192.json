@@ -1,0 +1,52 @@
+{
+  "harmonic_0": {
+    "dimension": 81,
+    "commutant_dim": 1,
+    "irreducible": true,
+    "components": [
+      81
+    ]
+  },
+  "coexact_4": {
+    "dimension": 120,
+    "commutant_dim": 3,
+    "irreducible": false,
+    "components": [
+      90,
+      30
+    ],
+    "decomposition": "120 = 90 + 30",
+    "component_details": [
+      {
+        "dimension": 90,
+        "C2_eigenvalue": 0.022222222222222227,
+        "chi_sq_avg": 2.0,
+        "irreducible": false
+      },
+      {
+        "dimension": 30,
+        "C2_eigenvalue": 0.03333333333333334,
+        "chi_sq_avg": 1.0,
+        "irreducible": true
+      }
+    ]
+  },
+  "exact_10": {
+    "dimension": 24,
+    "commutant_dim": 1,
+    "irreducible": true,
+    "components": [
+      24
+    ]
+  },
+  "exact_16": {
+    "dimension": 15,
+    "commutant_dim": 1,
+    "irreducible": true,
+    "components": [
+      15
+    ]
+  },
+  "elapsed_seconds": 245.49936270713806,
+  "group_size": 25920
+}

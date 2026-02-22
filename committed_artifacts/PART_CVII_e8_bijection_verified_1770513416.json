@@ -1,0 +1,40 @@
+{
+  "is_bijection": true,
+  "sector_alignment": {
+    "core_24": {
+      "g0": 10,
+      "g1": 8,
+      "g2": 6
+    },
+    "h27_108": {
+      "g0": 29,
+      "g1": 42,
+      "g2": 37
+    },
+    "cross_108": {
+      "g0": 39,
+      "g1": 31,
+      "g2": 38
+    }
+  },
+  "triangle_cocycle": {
+    "exact_match": 82,
+    "root_sum_exists": 34,
+    "no_match": 44,
+    "total_checked": 160
+  },
+  "root_inner_products": {
+    "shared_vertex": {
+      "-8": 1,
+      "-4": 99,
+      "0": 258,
+      "4": 151
+    },
+    "disjoint": {
+      "-8": 15,
+      "-4": 1078,
+      "0": 2355,
+      "4": 993
+    }
+  }
+}

@@ -9,11 +9,11 @@ Exploring why H1(W33) has dimension 81 = 3^4 and its connections to:
 - Physics constants
 """
 
-import math
 import json
+import math
 import os
-from fractions import Fraction
 from datetime import datetime
+from fractions import Fraction
 
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,7 +29,8 @@ print("\n" + "=" * 60)
 print("PART 1: WHY 81 = 3^4?")
 print("=" * 60)
 
-print("""
+print(
+    """
 W33 = PG(3, GF(3)) is 3-dimensional projective space over GF(3).
 
 Key structure:
@@ -40,7 +41,8 @@ Key structure:
 - Total: 121 = 11^2
 
 The 81 cycles are central. Let's understand why 81 = 3^4.
-""")
+"""
+)
 
 # The 81 could come from:
 print("Possible origins of 81 = 3^4:")
@@ -71,7 +73,7 @@ print()
 # For n=5, m=2: |O(5,q)| = 2 * q^4 * (q^2-1) * (q^4-1)
 m = 2
 q = 3
-omega_5_3 = q**(m**2) * math.prod([q**(2*i) - 1 for i in range(1, m+1)])
+omega_5_3 = q ** (m**2) * math.prod([q ** (2 * i) - 1 for i in range(1, m + 1)])
 o_5_3 = 2 * omega_5_3
 
 print(f"   |O(5,3)| = 2 × 3^4 × (3^2-1) × (3^4-1)")
@@ -109,21 +111,25 @@ print("\n" + "=" * 60)
 print("PART 2: VECTOR SPACES OVER GF(3)")
 print("=" * 60)
 
-print("""
+print(
+    """
 W33 = PG(3, GF(3)) is the projective space of GF(3)^4.
 
 The vector space GF(3)^4 has:
 - 3^4 = 81 vectors
 - 3^4 - 1 = 80 nonzero vectors
 - 40 = 80/2 projective points (±v identified)
-""")
+"""
+)
 
 print("Dimensions of vector spaces over GF(3):")
 for n in range(1, 7):
     vectors = 3**n
     nonzero = 3**n - 1
     projective = nonzero // 2 if n > 0 else 0
-    print(f"  GF(3)^{n}: {vectors} vectors, {nonzero} nonzero, {projective} projective points")
+    print(
+        f"  GF(3)^{n}: {vectors} vectors, {nonzero} nonzero, {projective} projective points"
+    )
 
 # ============================================================================
 # PART 3: THE HOMOLOGY DIMENSION
@@ -133,14 +139,16 @@ print("\n" + "=" * 60)
 print("PART 3: H1 DIMENSION = 81")
 print("=" * 60)
 
-print("""
+print(
+    """
 H1(flag complex of W33) has dimension 81.
 
 This is NOT a coincidence - it's related to:
 1. The 81 = 3^4 vectors in GF(3)^4
 2. The structure of the orthogonal group
 3. The cycles in the incidence geometry
-""")
+"""
+)
 
 # The relationship
 print("Possible explanation:")
@@ -177,7 +185,8 @@ print("\n" + "=" * 60)
 print("PART 5: TERNARY GOLAY CONNECTION")
 print("=" * 60)
 
-print("""
+print(
+    """
 Ternary Golay code [11, 6, 5]_3:
 - Length: 11
 - Dimension: 6
@@ -186,7 +195,8 @@ Ternary Golay code [11, 6, 5]_3:
 - Automorphism: M11 (M12 for extended)
 
 The 729 codewords = 9 copies of 81!
-""")
+"""
+)
 
 print("Breaking down 729:")
 print(f"  729 = 3^6 = 3^2 × 3^4 = 9 × 81")
@@ -241,7 +251,8 @@ print("\n" + "=" * 60)
 print("PART 7: E6 ROOT SYSTEM")
 print("=" * 60)
 
-print("""
+print(
+    """
 E6 has:
 - 72 roots
 - 27-dimensional fundamental representation
@@ -251,7 +262,8 @@ The roots of E6 come in pairs (±α), so 72 roots = 36 pairs.
 36 = 4 × 9 = 4 × 3^2
 
 But 72 = 8 × 9 = 8 × 3^2 - more factors of 3!
-""")
+"""
+)
 
 # Root system of E6
 print("E6 root counts:")
@@ -280,7 +292,8 @@ print("\n" + "=" * 60)
 print("PART 8: 81-DIMENSIONAL REPRESENTATIONS")
 print("=" * 60)
 
-print("""
+print(
+    """
 W33's automorphism group W(E6) has two 81-dimensional irreducible
 representations (V_22 and V_23 in the character table).
 
@@ -290,7 +303,8 @@ These are related by an outer automorphism (tensor with sign).
 1. Induced from a representation of (Z/3)^4
 2. Related to the natural action on GF(3)^4
 3. Connected to the 81 cycles in W33
-""")
+"""
+)
 
 # Decompositions of 81
 print("Decompositions of 81:")
@@ -350,23 +364,17 @@ results = {
         "group": "|W(E6)| = 128 × 81 × 5",
         "exceptional": "dim(E7) - dim(F4) = 81",
         "moonshine": "729 = 9 × 81",
-        "physics": "α⁻¹ = 81 + 56"
+        "physics": "α⁻¹ = 81 + 56",
     },
     "weyl_omega_connection": {
         "W_E6": 51840,
         "Omega_5_3": 25920,
-        "relation": "W(E6) = 2 × Ω(5,3)"
+        "relation": "W(E6) = 2 × Ω(5,3)",
     },
-    "decompositions_81": [
-        "3^4",
-        "1 + 80",
-        "3 × 27",
-        "9 × 9",
-        "133 - 52"
-    ]
+    "decompositions_81": ["3^4", "1 + 80", "3 × 27", "9 × 9", "133 - 52"],
 }
 
 output_file = os.path.join(OUTPUT_DIR, "w33_81_mystery_results.json")
-with open(output_file, 'w') as f:
-    json.dump(results, f, indent=2)
+with open(output_file, "w") as f:
+    json.dump(results, f, indent=2, default=int)
 print(f"\nResults saved to: {output_file}")

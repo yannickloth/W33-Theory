@@ -1,4 +1,3 @@
-
 V23 GEOMETRY SUMMARY
 ======================================================================
 
@@ -8,26 +7,26 @@ CLASSIFICATION BY CENTERS:
   Acentric (0 centers):  2880 = parity 0 (ALL)
   Unicentric (1 center): 2160 = parity 1 (ALL)
   Tricentric (3 centers):  240 = parity 0 (ALL)
-  
+
 CLASSIFICATION BY PARITY:
   Even (parity 0): 3120 = 2880 + 240 (acentric + tricentric)
   Odd (parity 1):  2160 = all unicentric
-  
+
 FERMION-BOSON RATIO:
   Fermions (odd):   2160
   Bosons (even):    3120
-  Ratio: 2/3 (not accidental)
-  
-S3 HOLONOMY (in unicentric only):
-  Identity:    1068 (49.4%)
-  3-cycles:    2072 (50.6% of unicentric = 39.2% total)
-  Transposition: 1092 (50.6% of unicentric = 20.6% total)
+  Ratio: 2160/3120 = 0.692308
+
+S3 HOLONOMY BY CENTERS:
+  Centers=0 (acentric):    {'id': 1488, '3cycle': 1392}
+  Centers=1 (unicentric):  {'transposition': 1092, '3cycle': 680, 'id': 388}
+  Centers=3 (tricentric):  {'id': 240}
 
 INTERPRETATION:
   • Parity perfectly determines centers
   • Centers determine holonomy type
   • Odd parity ↔ Fermions ↔ Unicentric
   • Even parity ↔ Bosons ↔ Acentric or Tricentric
-  • 2/3 fermion-boson ratio is exact geometric property
-  
+  • The fermion/boson ratio is close to 2/3 but not exact here
+
 This is the DISCRETE GEOMETRY ENCODING OF PARTICLE STATISTICS!

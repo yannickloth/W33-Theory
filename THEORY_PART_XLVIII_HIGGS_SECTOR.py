@@ -19,7 +19,8 @@ the interplay of W33 structure with the Planck scale.
 
 import numpy as np
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    THEORY OF EVERYTHING - PART XLVIII                        ║
@@ -29,31 +30,32 @@ print("""
 ║              Symmetry Breaking • Higgs Potential • VEV Structure             ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # W33 CONSTANTS (Dimensionless geometric counts with origins)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # W33 structure
-PTS = 40       # Points in W33 (10C3 / 3)
-LIN = 40       # Lines in W33 (dual to points)
-CYC = 81       # Cycles in W33 = 3⁴
-K4 = 90        # K4 subgroups in W33 = 10C4 × 6
-TOT = 121      # Total = PTS + CYC = 11²
+PTS = 40  # Points in W33 (10C3 / 3)
+LIN = 40  # Lines in W33 (dual to points)
+CYC = 81  # Cycles in W33 = 3⁴
+K4 = 90  # K4 subgroups in W33 = 10C4 × 6
+TOT = 121  # Total = PTS + CYC = 11²
 
 # Exceptional algebra dimensions
-E6_fund = 27   # E6 fundamental representation
-E6_adj = 78    # E6 adjoint dimension
-E7_adj = 133   # E7 adjoint dimension = 40 + 12 + 81
-E8_dim = 248   # E8 dimension = 248
+E6_fund = 27  # E6 fundamental representation
+E6_adj = 78  # E6 adjoint dimension
+E7_adj = 133  # E7 adjoint dimension = 40 + 12 + 81
+E8_dim = 248  # E8 dimension = 248
 
 # Automorphism group
-AUT = 51840    # |Aut(W33)| = |W(E6)| = 2⁷ × 3⁴ × 5
+AUT = 51840  # |Aut(W33)| = |W(E6)| = 2⁷ × 3⁴ × 5
 
 # Special numbers
-R4 = 1111      # 4th repunit = 1 + 10 + 100 + 1000 (4D spacetime)
-DARK = 5       # Dark sector multiplier = 40/8
+R4 = 1111  # 4th repunit = 1 + 10 + 100 + 1000 (4D spacetime)
+DARK = 5  # Dark sector multiplier = 40/8
 
 # Physical input (THE ONE INPUT)
 v_input = 246.22  # GeV - electroweak VEV
@@ -72,20 +74,22 @@ print()
 
 M_Planck = 1.221e19  # GeV - Planck mass
 
-print("""
+print(
+    """
 The electroweak VEV v = 246.22 GeV appears arbitrary in the Standard Model.
 In W33 theory, it emerges from the hierarchy:
 
   v² / M_Planck² = geometric factor
 
 Let's explore this...
-""")
+"""
+)
 
 # The hierarchy problem
 hierarchy = v_input / M_Planck
 print(f"  Hierarchy: v / M_Planck = {hierarchy:.3e}")
 
-hierarchy_squared = (v_input / M_Planck)**2
+hierarchy_squared = (v_input / M_Planck) ** 2
 print(f"  v² / M_P² = {hierarchy_squared:.3e}")
 print()
 
@@ -130,7 +134,8 @@ print("SECTION 2: THE HIGGS POTENTIAL FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The Standard Model Higgs potential is:
 
   V(H) = μ² |H|² + λ |H|⁴
@@ -142,7 +147,8 @@ where:
 After SSB:
   m_H² = 2 λ v²
   μ² = -λ v²
-""")
+"""
+)
 
 # Experimental Higgs mass
 m_H_exp = 125.25  # GeV
@@ -191,7 +197,8 @@ print("SECTION 3: ELECTROWEAK SYMMETRY BREAKING - CORRECTED ANALYSIS")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 After SSB: SU(2)_L × U(1)_Y → U(1)_em
 
 The gauge boson masses emerge from:
@@ -201,10 +208,11 @@ The gauge boson masses emerge from:
 where g, g' are gauge couplings.
 
 KEY INSIGHT: We need to find g and g' from W33!
-""")
+"""
+)
 
 # Experimental values
-m_W_exp = 80.377   # GeV (PDG 2023)
+m_W_exp = 80.377  # GeV (PDG 2023)
 m_Z_exp = 91.1876  # GeV (very precise)
 
 # From experimental masses:
@@ -220,14 +228,16 @@ print()
 
 # W33 prediction for gauge coupling
 # g² / (4π) = α_2 at EW scale
-alpha_em = 1/137.036
+alpha_em = 1 / 137.036
 alpha_2_EW = alpha_em / sin2_theta_W
 g_squared_W33 = 4 * np.pi * alpha_2_EW
 g_W33 = np.sqrt(g_squared_W33)
 
 print(f"  W33 gauge coupling derivation:")
 print(f"    α_em(0) = 1 / (81 + 56 + 40/1111) = 1/137.036")
-print(f"    α_2(EW) = α_em / sin²θ_W = {alpha_em:.6f} / {sin2_theta_W:.5f} = {alpha_2_EW:.5f}")
+print(
+    f"    α_2(EW) = α_em / sin²θ_W = {alpha_em:.6f} / {sin2_theta_W:.5f} = {alpha_2_EW:.5f}"
+)
 print(f"    g² = 4π α_2 = {g_squared_W33:.4f}")
 print(f"    g = {g_W33:.4f}")
 print()
@@ -257,8 +267,12 @@ print()
 print("  ┌" + "─" * 68 + "┐")
 print("  │ CORRECTED GAUGE BOSON MASSES:                                    │")
 print("  │                                                                   │")
-print(f"  │   m_W = g × v / 2 = {m_W_W33:.2f} GeV (exp: {m_W_exp} GeV)                 │")
-print(f"  │   m_Z = m_W / cos θ_W = {m_Z_W33:.2f} GeV (exp: {m_Z_exp} GeV)              │")
+print(
+    f"  │   m_W = g × v / 2 = {m_W_W33:.2f} GeV (exp: {m_W_exp} GeV)                 │"
+)
+print(
+    f"  │   m_Z = m_W / cos θ_W = {m_Z_W33:.2f} GeV (exp: {m_Z_exp} GeV)              │"
+)
 print("  │                                                                   │")
 print("  │   where g is derived from α and sin²θ_W, both from W33!          │")
 print("  └" + "─" * 68 + "┘")
@@ -273,7 +287,8 @@ print("SECTION 4: THE HIGGS DOUBLET STRUCTURE FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The Standard Model has a single Higgs doublet:
 
   H = (H⁺, H⁰)ᵀ
@@ -282,7 +297,8 @@ with hypercharge Y = 1/2. After SSB:
   H → (0, v/√2)ᵀ + fluctuations
 
 WHY one doublet? W33 answers this!
-""")
+"""
+)
 
 # E6 27 decomposes under SM
 # 27 = (3,3,1) + (3̄,1,3) + (1,3̄,3) under SU(3)³ trinification
@@ -334,7 +350,8 @@ print("SECTION 5: VACUUM STABILITY FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 A critical question: Is our vacuum stable?
 
 In the SM, λ runs with energy and can become negative at high scales.
@@ -342,7 +359,8 @@ This depends sensitively on m_H and m_t.
 
 The measured values put us in a METASTABLE region!
 W33 must address this.
-""")
+"""
+)
 
 # Vacuum stability condition
 # λ(μ) > 0 for all μ up to M_Planck
@@ -400,7 +418,8 @@ print("SECTION 6: EXTENDED HIGGS SECTOR - PREDICTIONS")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 Does W33 predict additional Higgs bosons?
 
 E6 models typically have extended Higgs sectors:
@@ -408,7 +427,8 @@ E6 models typically have extended Higgs sectors:
   - But most get large masses
 
 Let's see what W33 predicts...
-""")
+"""
+)
 
 # The 27 of E6 decomposes as:
 # Under SO(10): 27 = 16 + 10 + 1
@@ -463,17 +483,27 @@ print("│ PARAMETER       │ W33 FORMULA                    │ PREDICTED │ 
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ HIGGS MASS                                                               │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ m_H [GeV]       │ (v/2) × √(81[cyc]/78[E6a])     │ {m_H_W33:.1f}     │ {m_H_exp}    │")
+print(
+    f"│ m_H [GeV]       │ (v/2) × √(81[cyc]/78[E6a])     │ {m_H_W33:.1f}     │ {m_H_exp}    │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ COUPLINGS                                                                │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ λ               │ 81/(78×8)                      │ {lambda_W33:.4f}    │ ~{lambda_SM:.4f}   │")
-print(f"│ g_HHH [GeV]     │ 3 m_H² / v                     │ {g_HHH_W33:.1f}     │ ~{g_HHH:.1f}      │")
+print(
+    f"│ λ               │ 81/(78×8)                      │ {lambda_W33:.4f}    │ ~{lambda_SM:.4f}   │"
+)
+print(
+    f"│ g_HHH [GeV]     │ 3 m_H² / v                     │ {g_HHH_W33:.1f}     │ ~{g_HHH:.1f}      │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ GAUGE BOSONS                                                             │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ m_W [GeV]       │ g × v / 2                      │ {m_W_W33:.2f}     │ {m_W_exp}     │")
-print(f"│ m_Z [GeV]       │ m_W / cos θ_W                  │ {m_Z_W33:.2f}     │ {m_Z_exp}    │")
+print(
+    f"│ m_W [GeV]       │ g × v / 2                      │ {m_W_W33:.2f}     │ {m_W_exp}     │"
+)
+print(
+    f"│ m_Z [GeV]       │ m_W / cos θ_W                  │ {m_Z_W33:.2f}     │ {m_Z_exp}    │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ PREDICTIONS                                                              │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")

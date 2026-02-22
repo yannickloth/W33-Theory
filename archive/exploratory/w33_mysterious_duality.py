@@ -16,15 +16,16 @@ Key Discovery: Aut(W33) = W(E6) = 51840
 
 W33 Numbers:
 - 40 points
-- 81 cycles  
+- 81 cycles
 - 90 K4 subgroups
 - 121 = |W33| total
 - Aut(W33) = 51840 = W(E6)
 """
 
-import numpy as np
-from fractions import Fraction
 from collections import defaultdict
+from fractions import Fraction
+
+import numpy as np
 
 print("=" * 70)
 print("W33 AND THE MYSTERIOUS DUALITY")
@@ -41,15 +42,15 @@ print("=" * 70)
 # del Pezzo surface dP_k = Bl_k(P²) - blow up of P² at k points
 # Lines ((-1)-curves) on dP_k
 del_pezzo_lines = {
-    1: 240,   # E8 roots
-    2: 56,    # E7 minuscule representation  
-    3: 27,    # E6 fundamental representation (27 lines on cubic surface)
-    4: 16,    # D5 spinor
-    5: 10,    # A4 related
-    6: 6,     # A2 × A1
-    7: 3,     # A2
-    8: 1,     # A1
-    9: 0,     # P²
+    1: 240,  # E8 roots
+    2: 56,  # E7 minuscule representation
+    3: 27,  # E6 fundamental representation (27 lines on cubic surface)
+    4: 16,  # D5 spinor
+    5: 10,  # A4 related
+    6: 6,  # A2 × A1
+    7: 3,  # A2
+    8: 1,  # A1
+    9: 0,  # P²
 }
 
 # Corresponding root systems
@@ -61,7 +62,7 @@ root_systems = {
     5: "A4 (20 roots, 10 fundamental)",
     6: "A2 × A1 (8+2 roots)",
     7: "A2 (6 roots)",
-    8: "A1 (2 roots)", 
+    8: "A1 (2 roots)",
     9: "trivial",
 }
 
@@ -120,10 +121,10 @@ print("=" * 70)
 # Weyl group orders for exceptional Lie algebras
 weyl_orders = {
     "E8": 696729600,  # = 2^14 × 3^5 × 5^2 × 7
-    "E7": 2903040,    # = 2^10 × 3^4 × 5 × 7
-    "E6": 51840,      # = 2^7 × 3^4 × 5
-    "F4": 1152,       # = 2^7 × 3^2
-    "G2": 12,         # = 2^2 × 3
+    "E7": 2903040,  # = 2^10 × 3^4 × 5 × 7
+    "E6": 51840,  # = 2^7 × 3^4 × 5
+    "F4": 1152,  # = 2^7 × 3^2
+    "G2": 12,  # = 2^2 × 3
 }
 
 print("\nWeyl Group Orders:")
@@ -135,8 +136,12 @@ print(f"\n*** FUNDAMENTAL: Aut(W33) = {weyl_orders['E6']} = W(E6) ***")
 # Compute ratios
 print("\nWeyl Group Index Ratios:")
 print(f"  |W(E7)|/|W(E6)| = {weyl_orders['E7']//weyl_orders['E6']} = 56 = dP_2 lines!")
-print(f"  |W(E8)|/|W(E7)| = {weyl_orders['E8']//weyl_orders['E7']} = 240 = dP_1 lines = E8 roots!")
-print(f"  |W(E8)|/|W(E6)| = {weyl_orders['E8']//weyl_orders['E6']} = 13440 = 56 × 240 = 2^6 × 210")
+print(
+    f"  |W(E8)|/|W(E7)| = {weyl_orders['E8']//weyl_orders['E7']} = 240 = dP_1 lines = E8 roots!"
+)
+print(
+    f"  |W(E8)|/|W(E6)| = {weyl_orders['E8']//weyl_orders['E6']} = 13440 = 56 × 240 = 2^6 × 210"
+)
 
 # ============================================================================
 # PART 4: M-Theory Charges and del Pezzo Spheres
@@ -145,7 +150,8 @@ print("\n" + "=" * 70)
 print("PART 4: M-THEORY CHARGES")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Mysterious Duality (Vafa, Iqbal-Neitzke-Vafa 2001):
 
 M-theory on T^k ↔ del Pezzo dP_k = Bl_k(P²)
@@ -153,7 +159,8 @@ M-theory on T^k ↔ del Pezzo dP_k = Bl_k(P²)
 For M-theory on T^6 (giving 5D):
 - U-duality group = E6
 - BPS charges ↔ 27 lines on cubic surface (= dP_3)
-""")
+"""
+)
 
 print("M-theory on T^6 charges (U-duality = E6):")
 print("  6 momenta (KK modes)")
@@ -179,7 +186,8 @@ print("\n" + "=" * 70)
 print("PART 5: W33 AS THE E6 BRIDGE")
 print("=" * 70)
 
-print("""
+print(
+    """
 The W(3,3) geometry sits at the E6 level of the exceptional hierarchy:
 
     E8 (240 roots)
@@ -195,7 +203,8 @@ W33 Interpretation:
 - This suggests W33 captures a 3-fold structure over the E6 geometry
 - The factor 3 = order of center of E6!
 - Z(E6) = Z/3Z → triple cover structure
-""")
+"""
+)
 
 print("The Number 81 in E-series context:")
 print(f"  81 = 3⁴ (perfect fourth power)")
@@ -209,11 +218,12 @@ print("\n" + "=" * 70)
 print("PART 6: FINE STRUCTURE CONSTANT FROM MYSTERIOUS DUALITY")
 print("=" * 70)
 
-print("""
+print(
+    """
 From Mysterious Duality:
   dP_2 has 56 lines (E7 representation)
   dP_3 has 27 lines (E6 representation)
-  
+
 W33 gives:
   81 cycles = 3 × 27
 
@@ -221,7 +231,8 @@ Fine Structure Constant:
   1/α = 137 = 81 + 56 = |W33 cycles| + |dP_2 lines|
       = 3 × (dP_3 lines) + (dP_2 lines)
       = 3 × 27 + 56
-""")
+"""
+)
 
 alpha_inv = W33_CYCLES + 56
 experimental = 137.035999084
@@ -272,7 +283,8 @@ print("\n" + "=" * 70)
 print("PART 8: SCHLÄFLI GRAPH CONNECTION")
 print("=" * 70)
 
-print("""
+print(
+    """
 The Schläfli graph:
   - 27 vertices (= 27 lines on cubic surface)
   - 216 edges
@@ -284,7 +296,8 @@ Schläfli graph parameters: srg(27, 16, 10, 8)
   - k = 16 neighbors per vertex
   - λ = 10 common neighbors (adjacent)
   - μ = 8 common neighbors (non-adjacent)
-""")
+"""
+)
 
 schlafli_vertices = 27
 schlafli_edges = 216
@@ -332,6 +345,7 @@ print(f"         = 248 = 2 × 81 + 86 = 2 × cycles + ?")
 
 # Check 121 × ln(3)
 import math
+
 e7_approx = W33_TOTAL * math.log(3)
 print(f"\n  121 × ln(3) = {e7_approx:.2f} ≈ {lie_dims['E7']} = dim(E7)")
 print(f"  Error: {abs(e7_approx - lie_dims['E7']):.2f}")
@@ -343,7 +357,8 @@ print("\n" + "=" * 70)
 print("PART 10: THE COMPLETE PICTURE")
 print("=" * 70)
 
-print("""
+print(
+    """
 ╔════════════════════════════════════════════════════════════════════╗
 ║           W33 AND THE MYSTERIOUS DUALITY: SUMMARY                  ║
 ╠════════════════════════════════════════════════════════════════════╣
@@ -382,7 +397,8 @@ print("""
 ║    W33 ←→ W(E6) ←→ 27 lines ←→ M-theory/T⁶ ←→ E6 U-duality       ║
 ║                                                                    ║
 ╚════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # ============================================================================
 # PART 11: New Predictions
@@ -391,7 +407,8 @@ print("\n" + "=" * 70)
 print("PART 11: PREDICTIONS FROM W33/MYSTERIOUS DUALITY")
 print("=" * 70)
 
-print("""
+print(
+    """
 If W33 is truly fundamental to the Mysterious Duality, we predict:
 
 1. TRIPLE STRUCTURE:
@@ -416,12 +433,13 @@ If W33 is truly fundamental to the Mysterious Duality, we predict:
 5. WEINBERG ANGLE:
    sin²θ_W = 40/173 = |points|/(|points| + |E7|)
    where 173 = 40 + 133 = |points| + dim(E7)
-""")
+"""
+)
 
 # Final numerical checks
 print("\nNumerical Verification:")
-dark_energy = 81/121
-weinberg = 40/173
+dark_energy = 81 / 121
+weinberg = 40 / 173
 print(f"  Dark energy prediction: {dark_energy:.4f} vs observed ~0.68")
 print(f"  Weinberg angle: sin²θ_W = {weinberg:.5f} vs observed 0.23121")
 

@@ -1,0 +1,27 @@
+{
+  "source_conf_entry": {
+    "minimal_conflict": [
+      50,
+      51
+    ],
+    "source": "committed_artifacts/PART_CVII_pair_obstruction_1770577580_1.json"
+  },
+  "initial_size": 2,
+  "initial_reproducible": true,
+  "shrink_status": "already_minimal",
+  "result": [
+    50,
+    51
+  ],
+  "result_size": 2,
+  "checks_limit": 10,
+  "time_seconds": 145.46650505065918,
+  "timestamp": 1770586911,
+  "notes": "Conflict appears minimal (no strict subset found infeasible).",
+  "seed_source": "seed_json:committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json",
+  "seed_artifact": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586758.json",
+  "seed_map": {
+    "50": 3,
+    "51": 3
+  }
+}

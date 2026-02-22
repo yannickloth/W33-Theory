@@ -1,0 +1,63 @@
+name: Release → Zenodo (automated)
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-to-zenodo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Publish release to Zenodo (idempotent)
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ZENODO_HOST: ${{ secrets.ZENODO_HOST }}
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          REPO=wilcompute/W33-Theory
+          python scripts/zenodo_sync.py --repo $REPO --tag $TAG --publish --apply --commit || true
+
+      - name: Update GitHub release body with DOI (if present)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DOI_LINE=$(grep -m1 -o 'https://doi.org/[0-9.]\+' RELEASES/DRAFT_${{ github.event.release.tag_name }}.md || true)
+          if [ -z "$DOI_LINE" ]; then
+            echo "No DOI found in release draft; skipping release-body update"
+            exit 0
+          fi
+          echo "Found DOI: $DOI_LINE"
+
+          release_json=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/wilcompute/W33-Theory/releases/tags/${{ github.event.release.tag_name }}")
+          release_id=$(echo "$release_json" | python -c "import sys,json; print(json.load(sys.stdin).get('id',''))")
+          if [ -z "$release_id" ]; then
+            echo "Release not found via GitHub API; skipping"
+            exit 0
+          fi
+          current_body=$(echo "$release_json" | python -c "import sys,json; print(json.load(sys.stdin).get('body','') or '')")
+          if echo "$current_body" | grep -q "$DOI_LINE"; then
+            echo "Release body already contains DOI"
+            exit 0
+          fi
+
+          new_body="$current_body\n\nZenodo DOI: $DOI_LINE"
+          payload=$(python -c "import json,sys; print(json.dumps({'body': sys.stdin.read().strip()}))" <<< "$new_body")
+          curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -d "$payload" "https://api.github.com/repos/wilcompute/W33-Theory/releases/$release_id" || echo "Patch failed"
+          echo "Release body updated (if API accepted the patch)"

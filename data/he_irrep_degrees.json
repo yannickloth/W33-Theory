@@ -1,0 +1,51 @@
+{
+  "group": "He",
+  "order": 4030387200,
+  "n_conjugacy_classes": 33,
+  "degrees": [
+    1,
+    51,
+    51,
+    153,
+    153,
+    680,
+    1029,
+    1029,
+    1275,
+    1275,
+    1275,
+    1920,
+    4080,
+    4352,
+    6272,
+    6528,
+    7497,
+    7497,
+    7650,
+    7650,
+    7650,
+    10880,
+    11475,
+    11475,
+    11900,
+    13720,
+    14400,
+    17493,
+    20825,
+    21504,
+    21504,
+    22050,
+    23324
+  ],
+  "sources": [
+    {
+      "title": "OEIS A003912 (character degrees of Held group He)",
+      "url": "https://oeis.org/A003912"
+    },
+    {
+      "title": "GroupProps: Held group He",
+      "url": "https://groupprops.subwiki.org/wiki/Held_group_He"
+    }
+  ],
+  "notes": "Irreducible complex character degrees (multiset). Stored for offline, deterministic checks (GAP not required)."
+}

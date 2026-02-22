@@ -1,0 +1,10 @@
+{
+  "status": "UNKNOWN",
+  "objective": null,
+  "time_seconds": 300.60778760910034,
+  "k": 40,
+  "vars": 9601,
+  "triangles": 160,
+  "assignments": null,
+  "found": false
+}

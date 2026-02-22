@@ -1,0 +1,115 @@
+name: QEC CI
+
+on:
+  push:
+    branches: [ master, main, feat/qec-mlut ]
+    paths:
+      - 'scripts/w33_quantum_error_correction.py'
+      - 'tests/test_e8_embedding.py'
+      - 'notebooks/w33_qec_demo.ipynb'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - 'scripts/w33_quantum_error_correction.py'
+      - 'tests/test_e8_embedding.py'
+      - 'notebooks/w33_qec_demo.ipynb'
+
+jobs:
+  qec-tests:
+    name: QEC unit tests (fast)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install "nbconvert[execute]" ipykernel
+
+      - name: Run QEC pytest group
+        run: |
+          pytest -q tests/test_e8_embedding.py::TestQuantumErrorCorrection -q
+
+      - name: Upload QEC test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qec-test-logs
+          path: |
+            ./**/PART_CXV_qec_*.json
+
+  notebook:
+    name: Execute QEC demo notebook
+    needs: qec-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install "nbconvert[execute]" ipykernel matplotlib
+
+      - name: Execute notebook
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=300 notebooks/w33_qec_demo.ipynb
+
+      - name: Upload executed notebook
+        uses: actions/upload-artifact@v4
+        with:
+          name: w33-qec-demo-notebook
+          path: notebooks/w33_qec_demo.ipynb
+          retention-days: 7
+
+  qec-benchmark:
+    name: MLUT benchmark (time & memory)
+    needs: qec-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run MLUT benchmark (pytest)
+        run: |
+          pytest -q tests/test_e8_embedding.py::TestQuantumErrorCorrection::test_build_mlut_benchmark -q
+
+      - name: Upload benchmark artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlut-benchmark-logs
+          path: |
+            ./**/PART_CXV_qec_*.json

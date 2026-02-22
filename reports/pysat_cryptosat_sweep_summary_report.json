@@ -1,0 +1,78 @@
+{
+  "report": [
+    {
+      "W_idx": 0,
+      "xor_returncode": 0,
+      "xor_elapsed": 6.875,
+      "xor_sat": true,
+      "xor_valid": true,
+      "cnf_returncode": 0,
+      "cnf_elapsed": 7.390999999999622,
+      "cnf_sat": true,
+      "cnf_valid": true,
+      "cnf_sign_unsat_cores": [
+        {
+          "file": "anchor_core_cpsat_W0_status_FEASIBLE.json",
+          "W_idx": 0,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W10_status_FEASIBLE.json",
+          "W_idx": 10,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W11_status_FEASIBLE.json",
+          "W_idx": 11,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W12_status_FEASIBLE.json",
+          "W_idx": 12,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W13_status_FEASIBLE.json",
+          "W_idx": 13,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W14_status_FEASIBLE.json",
+          "W_idx": 14,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W15_status_FEASIBLE.json",
+          "W_idx": 15,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W4_status_FEASIBLE.json",
+          "W_idx": 4,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W5_status_FEASIBLE.json",
+          "W_idx": 5,
+          "matched": 19,
+          "solvable": true
+        },
+        {
+          "file": "anchor_core_cpsat_W6_status_FEASIBLE.json",
+          "W_idx": 6,
+          "matched": 19,
+          "solvable": true
+        }
+      ]
+    }
+  ],
+  "issues": []
+}

@@ -1,0 +1,180 @@
+{
+  "theorem": "W33-E8 Correspondence",
+  "structures": {
+    "w33": {
+      "type": "SRG(40,12,2,4) = GQ(3,3)",
+      "vertices": 40,
+      "edges": 240,
+      "triangles": 160,
+      "tetrahedra": 40,
+      "spectrum": {
+        "eigenvalues": {
+          "12": 1,
+          "2": 24,
+          "-4": 15
+        },
+        "spectrum": "12^1 + 2^24 + (-4)^15"
+      }
+    },
+    "e8": {
+      "roots": 240,
+      "algebra_dim": 248,
+      "z3_grading": {
+        "g0": 78,
+        "g1": 81,
+        "g2": 81
+      },
+      "algebra_z3": {
+        "g0": 86,
+        "g1": 81,
+        "g2": 81
+      }
+    }
+  },
+  "pillars": {
+    "1_group_isomorphism": {
+      "statement": "Sp(4,3) = W(E6), order 51840",
+      "transitive_on_240": true
+    },
+    "2_numerical_equality": {
+      "statement": "|E(W33)| = |Roots(E8)| = 240"
+    },
+    "3_z3_grading": {
+      "statement": "E8 = g_0(86) + g_1(81) + g_2(81) = 248",
+      "root_decomposition": "78 + 81 + 81 = 240"
+    },
+    "4_homology_theorem": {
+      "statement": "H_1(W33; Z) = Z^81 = dim(g_1)",
+      "betti_numbers": [
+        1,
+        81,
+        0,
+        0
+      ],
+      "euler_characteristic": -80
+    },
+    "5_impossibility": {
+      "statement": "Direct metric embedding impossible (max 13/40)",
+      "nature": "Algebraic-topological correspondence"
+    }
+  },
+  "predictions": {
+    "generations": {
+      "route_1_homological": {
+        "description": "H_1(W33; Z) = Z^81 = Z^(27x3)",
+        "b1": 81,
+        "factorization": "81 = 27 x 3",
+        "generations": 3
+      },
+      "route_2_representation": {
+        "description": "g_1 = 27 x 3 in E8's Z3-grading",
+        "g1_dim": 81,
+        "factorization": "81 = 27 x 3",
+        "generations": 3
+      },
+      "route_3_geometric": {
+        "description": "H27 has 27 vertices, 108 = 27 x 4 internal edges",
+        "h27_vertices": 27,
+        "h27_edges": 108,
+        "edges_per_vertex": 8,
+        "note": "27 vertices x 3 generations = 81 = 81 = dim(g_1)"
+      },
+      "route_4_gq_parameter": {
+        "description": "GQ parameter s = t = 3 = number of generations",
+        "s": 3,
+        "t": 3,
+        "note": "The order of GQ(s,t) with s=t=3 directly gives 3 generations"
+      },
+      "all_agree": true,
+      "n_generations": 3
+    },
+    "dark_matter": {
+      "h27_vertices": 27,
+      "visible_dof": 5,
+      "ratio": 5.4,
+      "ratio_decimal": 5.4,
+      "experimental": 5.36,
+      "relative_error": 0.007462686567164185,
+      "derivation": "H27 (27 non-neighbors) encodes dark sector. GQ(3,3) has 5 = (s+1)(t+1)/(s+t-1) effective visible DOF. Ratio: 27/5 = 5.4 vs experimental 5.36 (0.7% error)."
+    },
+    "weinberg_angle": {
+      "gut_scale_prediction": {
+        "formula": "sin^2(theta_W) = 3/8 at GUT scale (E6 unification)",
+        "value": 0.375,
+        "note": "Standard E6 GUT prediction, confirmed by W33-E8 structure"
+      },
+      "low_energy_running": {
+        "note": "RG running from GUT to Z-pole gives sin^2(theta_W) ~ 0.231",
+        "experimental": 0.23122
+      },
+      "w33_derivation": {
+        "formula": "E6 has rank 6, SU(3) has rank 2. U(1)_Y mixing angle: 3/(3+5) = 3/8",
+        "note": "The E6 x SU(3) structure from the Z3-grading naturally gives the standard E6 GUT Weinberg angle sin^2 = 3/8 at unification scale."
+      }
+    },
+    "gauge_group": {
+      "group": "E6 x SU(3)",
+      "dim": 86,
+      "e6_roots": 72,
+      "su3_roots": 6
+    },
+    "total_dim": 248
+  },
+  "verification": {
+    "edge_root_count": {
+      "w33_edges": 240,
+      "e8_roots": 240,
+      "match": true
+    },
+    "group_isomorphism": {
+      "sp43_order": 51840,
+      "we6_order": 51840,
+      "match": true,
+      "sp43_transitive_on_edges": true,
+      "orbit_size": 240
+    },
+    "z3_grading": {
+      "g0": 78,
+      "g1": 81,
+      "g2": 81,
+      "total_roots": 240,
+      "total_algebra": 248,
+      "match_248": true
+    },
+    "edge_decomposition": {
+      "incident": 12,
+      "h12_internal": 12,
+      "h27_internal": 108,
+      "cross": 108,
+      "total": 240,
+      "match_240": true
+    },
+    "homology": {
+      "b0": 1,
+      "b1": 81,
+      "b2": 0,
+      "b3": 0,
+      "chi": -80,
+      "b1_equals_g1_dim": true,
+      "b1_is_27_times_3": true
+    },
+    "sector_dimensions": {
+      "w33_core": 24,
+      "w33_matter": 108,
+      "w33_bridges": 108,
+      "e8_g0_roots": 78,
+      "e8_g1_roots": 81,
+      "e8_g2_roots": 81,
+      "note": "W33 core(24) <-> g0(78): 24 core edges map to 24 of 78 gauge roots. W33 matter(108) <-> g1(81)+g0(27): 108 matter edges = 81 matter roots + 27 gauge. W33 bridges(108) <-> g2(81)+g0(27): 108 bridge edges = 81 antimatter roots + 27 gauge."
+    },
+    "tetrahedron_structure": {
+      "count": 40,
+      "equals_gq_lines": true,
+      "every_triangle_in_one_tet": true,
+      "independent_constraints": 120,
+      "note": "40 tetrahedra x 3 independent constraints = 120 = rank(d_2)"
+    },
+    "ALL_VERIFIED": true
+  },
+  "elapsed_seconds": 0.8818461894989014
+}

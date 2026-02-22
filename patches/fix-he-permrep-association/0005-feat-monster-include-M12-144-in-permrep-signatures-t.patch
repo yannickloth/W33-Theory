@@ -1,0 +1,82 @@
+From f0f41d9697c6f06168d9cc08719614c2023abfbb Mon Sep 17 00:00:00 2001
+From: Wil <wiljd4@gmail.com>
+Date: Wed, 18 Feb 2026 18:27:25 -0500
+Subject: [PATCH 5/5] feat(monster): include M12-144 in permrep signatures +
+ tests
+
+---
+ .../w33_monster_permrep_suborbit_signatures.py    | 15 +++++++++++++++
+ tests/test_monster_permrep_suborbit_signatures.py |  7 +++++++
+ 2 files changed, 22 insertions(+)
+
+diff --git a/scripts/w33_monster_permrep_suborbit_signatures.py b/scripts/w33_monster_permrep_suborbit_signatures.py
+index 0a4db361..c8c568a4 100644
+--- a/scripts/w33_monster_permrep_suborbit_signatures.py
++++ b/scripts/w33_monster_permrep_suborbit_signatures.py
+@@ -80,6 +80,7 @@ def analyze() -> dict[str, Any]:
+     he_244800 = _load_permrep_meta("He", 244800)
+     hn = _load_permrep_meta("HN", 1140000)
+     m12_220 = _load_permrep_meta("M12", 220)
++    m12_144 = _load_permrep_meta("M12", 144)
+     m12_495 = _load_permrep_meta("M12", 495)
+
+     he_sub = [int(x) for x in he.get("suborbit_lengths", [])]
+@@ -88,10 +89,13 @@ def analyze() -> dict[str, Any]:
+     he_244800_sub = [int(x) for x in he_244800.get("suborbit_lengths", [])]
+     hn_sub = [int(x) for x in hn.get("suborbit_lengths", [])]
+     m12_220_sub = [int(x) for x in m12_220.get("suborbit_lengths", [])]
++    m12_144_sub = [int(x) for x in m12_144.get("suborbit_lengths", [])]
+     m12_495_sub = [int(x) for x in m12_495.get("suborbit_lengths", [])]
+
+     if he_sub:
+         assert sum(he_sub) == 2058
++    if m12_144_sub:
++        assert sum(m12_144_sub) == 144
+     if he_8330_sub:
+         assert sum(he_8330_sub) == 8330
+     if he_29155_sub:
+@@ -239,6 +243,10 @@ def analyze() -> dict[str, Any]:
+             "suborbit_lengths": m12_220_sub,
+             "signature_hits": m12_220_hits,
+         },
++        "m12_144": {
++            "rank": int(m12_144.get("rank", 0) or 0),
++            "suborbit_lengths": m12_144_sub,
++        },
+         "m12_495": {
+             "rank": int(m12_495.get("rank", 0) or 0),
+             "suborbit_lengths": m12_495_sub,
+@@ -321,6 +329,13 @@ def main() -> None:
+     )
+     print()
+
++    m12_144 = rep.get("m12_144", {})
++    if m12_144:
++        print("M12 primitive coset action (degree 144, stabilizer PSL2(11)):")
++        print(f"  rank = {m12_144.get('rank')}")
++        print(f"  suborbits = {m12_144.get('suborbit_lengths')}")
++        print()
++
+     m12_495 = rep["m12_495"]
+     print("M12 induced 4-subset action (degree 495):")
+     print(f"  rank = {m12_495['rank']}")
+diff --git a/tests/test_monster_permrep_suborbit_signatures.py b/tests/test_monster_permrep_suborbit_signatures.py
+index 280b9c6d..954c1560 100644
+--- a/tests/test_monster_permrep_suborbit_signatures.py
++++ b/tests/test_monster_permrep_suborbit_signatures.py
+@@ -37,6 +37,13 @@ def test_sporadic_permrep_suborbit_signatures_match_w33_invariants() -> None:
+     assert hits_m12_220.get("has_e6_fund_27") is True
+     assert hits_m12_220.get("has_4x27") is True
+
++    m12_144 = rep.get("m12_144", {})
++    assert isinstance(m12_144, dict)
++    sub_m12_144 = m12_144.get("suborbit_lengths", [])
++    assert isinstance(sub_m12_144, list)
++    assert sum(sub_m12_144) == 144
++    assert sub_m12_144 == [1, 11, 11, 55, 66]
++
+     m12_495 = rep.get("m12_495", {})
+     assert isinstance(m12_495, dict)
+     hits_m12_495 = m12_495.get("signature_hits", {})
+--
+2.53.0.windows.1

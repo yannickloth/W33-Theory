@@ -1,0 +1,39 @@
+name: GF(2) parity proof CI
+
+on:
+  push:
+    branches:
+      - master
+      - gf2-parity-proof
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-gf2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest numpy
+
+      - name: Prepare minimal hitting sets (fallback if needed)
+        run: |
+          python tools/minimal_hitting_sets.py || true
+
+      - name: Generate GF(2) certificates
+        run: |
+          python tools/generate_gf2_certificate.py
+
+      - name: Run GF(2) proof tests
+        run: |
+          python -m pytest tests/test_gf2_parity_proof.py -q

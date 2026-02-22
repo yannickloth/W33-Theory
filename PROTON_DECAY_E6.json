@@ -1,0 +1,26 @@
+{
+  "GUT_scale_GeV": 2e+16,
+  "alpha_GUT": 0.04,
+  "proton_lifetime_years": {
+    "standard_d6": 3.5649590955904523e+42,
+    "W33_enhanced": 7.824327233120333e+42
+  },
+  "experimental_limits": {
+    "p -> e+ \u03c00": 2.4e+34,
+    "p -> \u03bc+ \u03c00": 1.6e+34,
+    "p -> \u03bd\u0304 K+": 6.6e+33,
+    "p -> e+ \u03b7": 1e+34,
+    "p -> \u03bc+ \u03b7": 4.7e+33
+  },
+  "branching_ratios_E6": {
+    "p -> e+ \u03c00": 0.45,
+    "p -> \u03bc+ \u03c00": 0.15,
+    "p -> \u03bd\u0304 K+": 0.25,
+    "p -> e+ \u03b7": 0.1,
+    "p -> e+ \u03c9": 0.05
+  },
+  "W33_enhancement": {
+    "dangerous_fraction": 0.675,
+    "enhancement_factor": 0.45562500000000006
+  }
+}

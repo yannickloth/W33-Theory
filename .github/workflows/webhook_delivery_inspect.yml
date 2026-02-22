@@ -1,0 +1,62 @@
+name: Inspect webhook deliveries
+
+# Manually-run workflow to fetch repository webhook list + delivery history
+# Requires repository secret `HOOK_ADMIN_TOKEN` (personal access token with
+# scope `admin:repo_hook`). The workflow uploads `hooks.json` and
+# `deliveries.json` as artifacts for inspection.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    env:
+      REPO: ${{ github.repository }}
+
+    steps:
+      - name: Check required secret
+        run: |
+          if [ -z "${{ secrets.HOOK_ADMIN_TOKEN }}" ]; then
+            echo "ERROR: repository secret HOOK_ADMIN_TOKEN is not set. Create a PAT with 'admin:repo_hook' and add it as HOOK_ADMIN_TOKEN." >&2
+            exit 1
+          fi
+
+      - name: List repository webhooks
+        run: |
+          curl -s -H "Authorization: token ${HOOK_ADMIN_TOKEN}" "https://api.github.com/repos/${REPO}/hooks" > hooks.json
+          echo "Saved hooks.json (showing Zenodo candidates):"
+          jq -r '.[] | {id: .id, url: .config.url, events: .events, active: .active}' hooks.json || true
+        env:
+          HOOK_ADMIN_TOKEN: ${{ secrets.HOOK_ADMIN_TOKEN }}
+
+      - name: Find Zenodo hook id
+        id: findhook
+        run: |
+          HOOK_ID=$(jq -r '.[] | select(.config.url|test("zenodo.org")) | .id' hooks.json || true)
+          if [ -z "$HOOK_ID" ]; then
+            echo "zenodo_hook_id=" >> $GITHUB_OUTPUT
+            echo "No Zenodo webhook found."
+            exit 0
+          fi
+          echo "zenodo_hook_id=$HOOK_ID" >> $GITHUB_OUTPUT
+          echo "Found Zenodo webhook id=$HOOK_ID"
+
+      - name: Fetch deliveries for Zenodo webhook
+        if: steps.findhook.outputs.zenodo_hook_id != ''
+        run: |
+          HOOK_ID=${{ steps.findhook.outputs.zenodo_hook_id }}
+          echo "Fetching deliveries for hook $HOOK_ID"
+          curl -s -H "Authorization: token ${HOOK_ADMIN_TOKEN}" "https://api.github.com/repos/${REPO}/hooks/$HOOK_ID/deliveries?per_page=100" > deliveries.json
+          echo "Saved deliveries.json (showing last deliveries):"
+          jq -r '.[] | {id: .id, delivered_at: .delivered_at, status: .status, response: .response}' deliveries.json || true
+        env:
+          HOOK_ADMIN_TOKEN: ${{ secrets.HOOK_ADMIN_TOKEN }}
+
+      - name: Upload artifacts (webhook-inspect)
+        uses: actions/upload-artifact@v4
+        with:
+          name: webhook-inspect
+          path: |
+            hooks.json
+            deliveries.json

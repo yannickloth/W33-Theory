@@ -1,0 +1,110 @@
+{
+  "edges": [
+    230
+  ],
+  "k": 20,
+  "radius": 1,
+  "time_limit": 10,
+  "tests": [
+    {
+      "edge": 230,
+      "root": 124,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 40,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 28,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 84,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 136,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 119,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 7,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 192,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 45,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 36,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 76,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 145,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 129,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 172,
+      "status": "INFEASIBLE"
+    },
+    {
+      "edge": 230,
+      "root": 25,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 16,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 56,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 86,
+      "status": "OPTIMAL"
+    },
+    {
+      "edge": 230,
+      "root": 138,
+      "status": "INFEASIBLE"
+    },
+    {
+      "edge": 230,
+      "root": 122,
+      "status": "INFEASIBLE"
+    }
+  ]
+}

@@ -22,7 +22,8 @@ This is a milestone Part 50!
 
 import numpy as np
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                     THEORY OF EVERYTHING - PART L                            ║
@@ -32,33 +33,34 @@ print("""
 ║            Strong Coupling • Confinement • Asymptotic Freedom • Hadrons      ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # W33 CONSTANTS
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # W33 structure (dimensionless geometric counts)
-PTS = 40       # Points in W33
-LIN = 40       # Lines in W33
-CYC = 81       # Cycles = 3⁴
-K4 = 90        # K4 subgroups
-TOT = 121      # Total = 11²
+PTS = 40  # Points in W33
+LIN = 40  # Lines in W33
+CYC = 81  # Cycles = 3⁴
+K4 = 90  # K4 subgroups
+TOT = 121  # Total = 11²
 
 # Exceptional algebras
-E6_fund = 27   # E6 fundamental
-E6_adj = 78    # E6 adjoint
-E7_adj = 133   # E7 adjoint
-E8_dim = 248   # E8 dimension
-E8_roots = 240 # E8 root system
+E6_fund = 27  # E6 fundamental
+E6_adj = 78  # E6 adjoint
+E7_adj = 133  # E7 adjoint
+E8_dim = 248  # E8 dimension
+E8_roots = 240  # E8 root system
 
 # Special numbers
-R4 = 1111      # 4th repunit
-DARK = 5       # Dark multiplier
-AUT = 51840    # |Aut(W33)|
+R4 = 1111  # 4th repunit
+DARK = 5  # Dark multiplier
+AUT = 51840  # |Aut(W33)|
 
 # Physical input
-v = 246.22     # GeV (electroweak VEV)
+v = 246.22  # GeV (electroweak VEV)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # SECTION 1: THE STRONG COUPLING CONSTANT
@@ -69,13 +71,15 @@ print("SECTION 1: THE STRONG COUPLING CONSTANT α_s")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The strong coupling constant α_s determines the strength of QCD.
 Unlike α_em, it "runs" significantly with energy scale.
 
 At the Z mass: α_s(M_Z) ≈ 0.118
 W33 must derive this from geometry!
-""")
+"""
+)
 
 # Experimental value at Z pole
 alpha_s_exp = 0.1179  # PDG 2022
@@ -106,7 +110,9 @@ print("  │ STRONG COUPLING FROM W33:                                        �
 print("  │                                                                   │")
 print("  │   α_s(M_Z) = 27[E6 fund] / (240[E8 roots] - 11[√121]) = 27/229   │")
 print("  │                                                                   │")
-print(f"  │   Predicted: {alpha_s_W33:.4f}     Experimental: {alpha_s_exp:.4f}                 │")
+print(
+    f"  │   Predicted: {alpha_s_W33:.4f}     Experimental: {alpha_s_exp:.4f}                 │"
+)
 print("  │   Agreement: 0.0% (essentially EXACT!)                           │")
 print("  └" + "─" * 68 + "┘")
 print()
@@ -120,14 +126,16 @@ print("SECTION 2: ASYMPTOTIC FREEDOM FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 QCD has the remarkable property of ASYMPTOTIC FREEDOM:
   - α_s → 0 as energy → ∞ (quarks are "free" at high energy)
   - α_s → large as energy → 0 (confinement at low energy)
 
 This comes from the β-function with coefficient b₀ < 0.
 W33 must explain WHY SU(3) has this property!
-""")
+"""
+)
 
 # QCD beta function
 # β(α_s) = -b₀ α_s² / (2π) + O(α_s³)
@@ -179,12 +187,14 @@ print("SECTION 3: THE QCD SCALE Λ_QCD")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The QCD scale Λ_QCD marks where perturbative QCD breaks down.
 Experimentally: Λ_QCD ≈ 200-300 MeV
 
 W33 must predict this scale!
-""")
+"""
+)
 
 # Experimental QCD scale
 Lambda_QCD_exp = 0.217  # GeV (MS-bar, n_f=5)
@@ -242,12 +252,14 @@ print("SECTION 4: THE PROTON MASS FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 The proton mass m_p ≈ 938 MeV is almost entirely from QCD binding energy.
 The quark masses contribute only ~1%!
 
 W33 must derive m_p from pure geometry.
-""")
+"""
+)
 
 # Experimental proton mass
 m_p_exp = 0.93827  # GeV
@@ -309,7 +321,9 @@ print("  │   m_p = v / (240[E8r] + 27[E6f] - 3[gen]) = v/264               │
 print(f"  │       = {m_p_direct:.3f} GeV                                            │")
 print("  │                                                                   │")
 print(f"  │   Experimental: {m_p_exp} GeV                                          │")
-print(f"  │   Agreement: {abs(m_p_direct - m_p_exp)/m_p_exp * 100:.1f}% (excellent for bound state!)                   │")
+print(
+    f"  │   Agreement: {abs(m_p_direct - m_p_exp)/m_p_exp * 100:.1f}% (excellent for bound state!)                   │"
+)
 print("  └" + "─" * 68 + "┘")
 print()
 
@@ -322,12 +336,14 @@ print("SECTION 5: COLOR CONFINEMENT FROM W33")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 Color confinement: Free quarks cannot exist; they're always bound in hadrons.
 
 The confinement mechanism is one of the Clay Millennium Problems.
 W33 offers a geometric explanation!
-""")
+"""
+)
 
 # String tension
 sigma_exp = 0.44  # GeV² (string tension)
@@ -387,13 +403,15 @@ m_pi_exp = 0.1396  # GeV (π±)
 m_pi0_exp = 0.135  # GeV (π⁰)
 
 print(f"  NUCLEONS:")
-print(f"    Proton:  m_p = {m_p_direct*1000:.1f} MeV (W33), {m_p_exp*1000:.1f} MeV (exp)")
+print(
+    f"    Proton:  m_p = {m_p_direct*1000:.1f} MeV (W33), {m_p_exp*1000:.1f} MeV (exp)"
+)
 print()
 
 # Neutron mass
 m_n_W33 = m_p_direct + 0.00127  # Δm ≈ (m_d - m_u)
 # Actually compute from W33
-m_n_W33 = v / (E8_roots + E6_fund - 3) * (1 + 1/(E7_adj))
+m_n_W33 = v / (E8_roots + E6_fund - 3) * (1 + 1 / (E7_adj))
 print(f"    Neutron: m_n = m_p × (1 + 1/133)")
 print(f"                 = {m_n_W33:.4f} GeV = {m_n_W33*1000:.1f} MeV")
 print(f"    Experimental: {m_n_exp*1000:.2f} MeV")
@@ -401,7 +419,7 @@ print()
 
 # Pion mass
 # π is Goldstone boson → m_π² ∝ m_q
-m_pi_W33 = v * np.sqrt(2/E7_adj) / 10
+m_pi_W33 = v * np.sqrt(2 / E7_adj) / 10
 print(f"  PIONS (pseudo-Goldstone bosons):")
 print(f"    m_π ≈ v × √(2/133) / 10")
 print(f"        ≈ {m_pi_W33:.4f} GeV = {m_pi_W33*1000:.1f} MeV")
@@ -419,9 +437,15 @@ print()
 print("  ┌" + "─" * 68 + "┐")
 print("  │ HADRON MASSES FROM W33:                                          │")
 print("  │                                                                   │")
-print(f"  │   m_p = v/264 = {m_p_direct*1000:.0f} MeV (exp: {m_p_exp*1000:.0f} MeV)                          │")
-print(f"  │   m_n ≈ m_p(1 + 1/133) = {m_n_W33*1000:.0f} MeV (exp: {m_n_exp*1000:.0f} MeV)                    │")
-print(f"  │   m_π ≈ {m_pi_W33*1000:.0f} MeV (exp: {m_pi_exp*1000:.0f} MeV)                                    │")
+print(
+    f"  │   m_p = v/264 = {m_p_direct*1000:.0f} MeV (exp: {m_p_exp*1000:.0f} MeV)                          │"
+)
+print(
+    f"  │   m_n ≈ m_p(1 + 1/133) = {m_n_W33*1000:.0f} MeV (exp: {m_n_exp*1000:.0f} MeV)                    │"
+)
+print(
+    f"  │   m_π ≈ {m_pi_W33*1000:.0f} MeV (exp: {m_pi_exp*1000:.0f} MeV)                                    │"
+)
 print("  └" + "─" * 68 + "┘")
 print()
 
@@ -439,20 +463,30 @@ print("│ PARAMETER       │ W33 FORMULA                    │ PREDICTED │ 
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ COUPLING                                                                 │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ α_s(M_Z)        │ 27[E6f]/(240[E8r]-11[√tot])    │ {alpha_s_W33:.4f}    │ {alpha_s_exp:.4f}    │")
+print(
+    f"│ α_s(M_Z)        │ 27[E6f]/(240[E8r]-11[√tot])    │ {alpha_s_W33:.4f}    │ {alpha_s_exp:.4f}    │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ SCALES                                                                   │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ Λ_QCD [MeV]     │ via RG from W33 α_s            │ {Lambda_from_RG*1000:.0f}       │ ~200      │")
+print(
+    f"│ Λ_QCD [MeV]     │ via RG from W33 α_s            │ {Lambda_from_RG*1000:.0f}       │ ~200      │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ BETA FUNCTION                                                            │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ β₀              │ 11[√tot] - 2×3[gen]×2/3        │ {b0_QCD:.0f}         │ 7         │")
+print(
+    f"│ β₀              │ 11[√tot] - 2×3[gen]×2/3        │ {b0_QCD:.0f}         │ 7         │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ HADRONS                                                                  │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
-print(f"│ m_p [MeV]       │ v/(240+27-3)                   │ {m_p_direct*1000:.0f}       │ 938       │")
-print(f"│ m_n [MeV]       │ m_p(1 + 1/133)                 │ {m_n_W33*1000:.0f}       │ 940       │")
+print(
+    f"│ m_p [MeV]       │ v/(240+27-3)                   │ {m_p_direct*1000:.0f}       │ 938       │"
+)
+print(
+    f"│ m_n [MeV]       │ m_p(1 + 1/133)                 │ {m_n_W33*1000:.0f}       │ 940       │"
+)
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")
 print("│ STRUCTURE                                                                │")
 print("├─────────────────┼────────────────────────────────┼───────────┼───────────┤")

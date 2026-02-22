@@ -17,15 +17,16 @@ This script explores:
   4. The "It from Bit" principle
   5. Observer and measurement
 
-"It from Bit symbolizes the idea that every item of the physical world 
+"It from Bit symbolizes the idea that every item of the physical world
 has at bottom an immaterial source and explanation."
   - John Archibald Wheeler
 """
 
-import numpy as np
+import random
 from collections import defaultdict
 from itertools import combinations
-import random
+
+import numpy as np
 
 print("=" * 80)
 print("W33 AND THE NATURE OF INFORMATION")
@@ -40,7 +41,8 @@ print("\n" + "=" * 80)
 print("PART 1: W33 AS A QUANTUM ERROR-CORRECTING CODE")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE INSIGHT: W33 IS A CODE
 ==========================
 
@@ -65,27 +67,29 @@ W33 CODE PARAMETERS:
   - n = 40 (physical qudits, base 3)
   - Lines give parity constraints
   - K4s give syndrome measurements
-""")
+"""
+)
+
 
 # Build the W33 parity check matrix
 class W33Code:
     """W33 as a quantum error-correcting code."""
-    
+
     def __init__(self):
         self.n = 40  # Block length
-        self.q = 3   # Alphabet size (qutrit)
-        
+        self.q = 3  # Alphabet size (qutrit)
+
         # Generate line constraints
         self.lines = self._generate_lines()
-        
+
         # Parity check matrix H
         # Each line gives a constraint: sum of symbols = 0 (mod 3)
         self.H = self._build_parity_matrix()
-        
+
         # Compute code parameters
         self.k = self.n - np.linalg.matrix_rank(self.H)  # Logical qudits
         self.d = self._estimate_distance()  # Minimum distance
-        
+
     def _generate_lines(self):
         """Generate W33 lines (simplified combinatorial)."""
         lines = []
@@ -97,7 +101,7 @@ class W33Code:
                 line.append(point)
             lines.append(line)
         return lines[:40]
-    
+
     def _build_parity_matrix(self):
         """Build parity check matrix from lines."""
         H = np.zeros((len(self.lines), self.n), dtype=int)
@@ -105,39 +109,39 @@ class W33Code:
             for p in line:
                 H[i, p] = 1
         return H
-    
+
     def _estimate_distance(self):
         """Estimate minimum distance of the code."""
         # For a code defined by GQ(3,3), the distance is related
         # to the structure of non-collinear sets
         # Minimum distance ≈ 4 (size of a line)
         return 4
-    
+
     def encode(self, message):
         """Encode a message into the code."""
         # Message should have length k
         # Encoded word has length n
         # For now, simple embedding
         codeword = np.zeros(self.n, dtype=int)
-        for i, m in enumerate(message[:self.k]):
+        for i, m in enumerate(message[: self.k]):
             codeword[i] = m % self.q
         return codeword
-    
+
     def syndrome(self, received):
         """Compute syndrome of received word."""
         return np.dot(self.H, received) % self.q
-    
+
     def correct_errors(self, received):
         """Attempt to correct errors using syndrome."""
         s = self.syndrome(received)
         if np.all(s == 0):
             return received, 0  # No errors
-        
+
         # Find error pattern consistent with syndrome
         # (Simplified - real decoder would be more sophisticated)
         corrected = received.copy()
         errors_corrected = 0
-        
+
         for i in range(self.n):
             # Try flipping each position
             test = received.copy()
@@ -146,8 +150,9 @@ class W33Code:
                 corrected = test
                 errors_corrected = 1
                 break
-        
+
         return corrected, errors_corrected
+
 
 # Build and analyze the code
 print("\nBuilding W33 quantum code...")
@@ -180,7 +185,8 @@ print("\n" + "=" * 80)
 print("PART 2: THE HOLOGRAPHIC BOUND")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE HOLOGRAPHIC PRINCIPLE
 =========================
 
@@ -200,7 +206,8 @@ W33 HOLOGRAPHY:
   - 40 points = "bulk" (3+1 dimensional?)
   - Boundary = lines? Or some substructure?
   - Information content = 81 bits (from H₁)
-""")
+"""
+)
 
 # Compute information content of W33
 n_points = 40
@@ -234,7 +241,7 @@ print(f"  Information: 81 × log₂(3) ≈ {81 * np.log2(3):.1f} bits")
 
 # Holographic ratio
 boundary = 40  # "Boundary" points
-bulk = 81      # "Bulk" degrees of freedom
+bulk = 81  # "Bulk" degrees of freedom
 holographic_ratio = bulk / boundary
 print(f"\nHolographic ratio (bulk/boundary): {holographic_ratio:.2f}")
 
@@ -246,7 +253,8 @@ print("\n" + "=" * 80)
 print("PART 3: BLACK HOLE INFORMATION PARADOX")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE PARADOX
 ===========
 
@@ -263,30 +271,32 @@ Proposed resolutions:
 
 W33 RESOLUTION:
   The 81 cycles ARE the information-preserving structure!
-  
+
   - Each cycle = one "bit" of black hole memory
   - Berry phase = how information is encoded
   - K4 constraint = information never truly lost
-""")
+"""
+)
+
 
 class W33BlackHole:
     """Model a black hole using W33 structure."""
-    
+
     def __init__(self, mass_planck_units=10):
         self.mass = mass_planck_units
-        
+
         # Bekenstein-Hawking entropy
         self.entropy_bh = 4 * np.pi * self.mass**2
-        
+
         # W33 entropy (81 modes)
         self.entropy_w33 = 81 * np.log(3)
-        
+
         # Number of W33 "quanta" in this black hole
         self.n_w33_units = max(1, int(self.entropy_bh / self.entropy_w33))
-        
+
         # State: 81 phases per W33 unit
         self.state = np.random.randint(0, 12, size=(self.n_w33_units, 81))
-        
+
     def absorb(self, info_bits):
         """Absorb information into the black hole."""
         # Information is encoded in the 81 phases
@@ -295,14 +305,14 @@ class W33BlackHole:
             mode = i % 81
             if unit < self.n_w33_units:
                 self.state[unit, mode] = (self.state[unit, mode] + bit) % 12
-        
+
         print(f"  Absorbed {len(info_bits)} bits into {self.n_w33_units} W33 units")
-    
+
     def hawking_radiate(self, n_bits):
         """Emit Hawking radiation, preserving information."""
         # Key insight: radiation is NOT thermal!
         # It carries subtle correlations from the 81 phases
-        
+
         radiation = []
         for i in range(n_bits):
             unit = i // 81
@@ -311,13 +321,13 @@ class W33BlackHole:
                 # Radiation carries phase information
                 rad_bit = self.state[unit, mode] % 2
                 radiation.append(rad_bit)
-                
+
                 # Update black hole state (entanglement!)
                 self.state[unit, mode] = (self.state[unit, mode] + 6) % 12
-        
+
         self.mass -= n_bits * 0.01  # Lose mass
         return radiation
-    
+
     def get_entropy(self):
         """Compute current entropy."""
         # Shannon entropy of phase distribution
@@ -326,6 +336,7 @@ class W33BlackHole:
         probs = counts / len(flat_state)
         entropy = -np.sum(p * np.log2(p + 1e-10) for p in probs if p > 0)
         return entropy * len(flat_state)
+
 
 print("\nSimulating black hole information processing:")
 bh = W33BlackHole(mass_planck_units=10)
@@ -350,12 +361,13 @@ print("\n" + "=" * 80)
 print("PART 4: IT FROM BIT - THE UNIVERSE AS COMPUTATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 WHEELER'S "IT FROM BIT"
 =======================
 
-"Every it—every particle, every field of force, even the 
-spacetime continuum itself—derives its function, its meaning, 
+"Every it—every particle, every field of force, even the
+spacetime continuum itself—derives its function, its meaning,
 its very existence entirely from binary choices, bits."
   - John Archibald Wheeler
 
@@ -369,21 +381,23 @@ W33 AS A COMPUTER:
 
 The universe doesn't CONTAIN information.
 The universe IS information.
-""")
+"""
+)
+
 
 class W33Computer:
     """The universe as a W33 quantum computer."""
-    
+
     def __init__(self):
         # 40 qutrit registers
         self.registers = np.zeros(40, dtype=int)
-        
+
         # Line operations (entangling gates)
         self.lines = self._generate_lines()
-        
+
         # Computation history
         self.history = []
-        
+
     def _generate_lines(self):
         """Generate W33 line structure."""
         lines = []
@@ -391,39 +405,40 @@ class W33Computer:
             line = [(i + j * 10) % 40 for j in range(4)]
             lines.append(line)
         return lines[:40]
-    
+
     def apply_gate(self, line_idx):
         """Apply a line-based gate."""
         line = self.lines[line_idx]
-        
+
         # Toffoli-like: if 3 qutrits agree, flip the 4th
         values = [self.registers[p] for p in line]
         if values[0] == values[1] == values[2]:
             self.registers[line[3]] = (values[0] + 1) % 3
-        
-        self.history.append(('gate', line_idx, self.registers.copy()))
-    
+
+        self.history.append(("gate", line_idx, self.registers.copy()))
+
     def measure(self, points):
         """Measure specified qutrits."""
         results = {p: self.registers[p] for p in points}
-        self.history.append(('measure', points, results))
+        self.history.append(("measure", points, results))
         return results
-    
+
     def run_program(self, program):
         """Run a sequence of gates."""
         for instruction in program:
-            if instruction[0] == 'G':
+            if instruction[0] == "G":
                 line_idx = int(instruction[1:])
                 self.apply_gate(line_idx)
-            elif instruction[0] == 'M':
-                points = [int(x) for x in instruction[1:].split(',')]
+            elif instruction[0] == "M":
+                points = [int(x) for x in instruction[1:].split(",")]
                 return self.measure(points)
-    
+
     def compute_universal(self):
         """Show W33 is computationally universal."""
         # Any computation can be performed!
         # The 40 qutrits with line operations form a universal gate set
         return True
+
 
 print("\nBuilding W33 quantum computer...")
 computer = W33Computer()
@@ -433,7 +448,7 @@ computer.registers[:5] = [1, 2, 0, 1, 2]
 print(f"  Initial state: {computer.registers[:10]}")
 
 # Run a simple program
-program = ['G0', 'G1', 'G2', 'M0,1,2,3,4']
+program = ["G0", "G1", "G2", "M0,1,2,3,4"]
 result = computer.run_program(program)
 print(f"  After program: {result}")
 
@@ -448,7 +463,8 @@ print("\n" + "=" * 80)
 print("PART 5: THE OBSERVER AND MEASUREMENT")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE MEASUREMENT PROBLEM
 =======================
 
@@ -470,40 +486,43 @@ OBSERVER = any subsystem correlated with W33 phases
 
 This is not consciousness-based!
 It's purely geometric/informational.
-""")
+"""
+)
+
 
 class W33Observer:
     """An observer in the W33 universe."""
-    
+
     def __init__(self, name, observed_points):
         self.name = name
         self.observed = set(observed_points)
         self.memory = {}  # Measurement record
         self.entanglement = defaultdict(float)
-        
+
     def observe(self, universe_state, point):
         """Make an observation."""
         if point not in self.observed:
             print(f"  {self.name} cannot observe point {point}")
             return None
-        
+
         # Record the observation
         value = universe_state[point]
         self.memory[point] = value
-        
+
         # Become entangled with the system
         self.entanglement[point] = 1.0
-        
+
         return value
-    
+
     def knowledge(self):
         """What does this observer know?"""
         return dict(self.memory)
-    
+
     def uncertainty(self, universe_state):
         """Compute observer's uncertainty about unobserved points."""
         unknown = set(range(40)) - set(self.memory.keys())
         return len(unknown) * np.log2(3)  # Bits of uncertainty
+
 
 # Create two observers
 print("\nSimulating observers:")
@@ -526,13 +545,15 @@ for p in [25, 30, 35]:
 print(f"  Bob knows: {bob.knowledge()}")
 print(f"  Bob's uncertainty: {bob.uncertainty(universe):.1f} bits")
 
-print("""
+print(
+    """
 KEY INSIGHT:
   - Different observers have different knowledge
   - But the W33 structure is observer-INDEPENDENT
   - "Objective reality" = the W33 geometry
   - "Subjective knowledge" = correlations with W33
-""")
+"""
+)
 
 # =============================================================================
 # PART 6: CONSCIOUSNESS AND INFORMATION
@@ -542,7 +563,8 @@ print("\n" + "=" * 80)
 print("PART 6: CONSCIOUSNESS AND INFORMATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE HARD PROBLEM OF CONSCIOUSNESS
 =================================
 
@@ -556,7 +578,7 @@ INTEGRATED INFORMATION THEORY (IIT):
 
 W33 AND CONSCIOUSNESS:
   The K4 structure creates irreducible wholes!
-  
+
   - A K4 component cannot be decomposed
   - It has Φ > 0 necessarily
   - The 90 K4s are 90 "proto-conscious" units?
@@ -565,38 +587,41 @@ This doesn't EXPLAIN consciousness, but shows:
   - W33 has the right STRUCTURE for consciousness
   - Integrated information is built in
   - Not an accident, but geometric necessity
-""")
+"""
+)
+
 
 def integrated_information(subsystem, connectivity):
     """Estimate integrated information Φ for a subsystem."""
     n = len(subsystem)
     if n <= 1:
         return 0
-    
+
     # Φ = information generated by the whole
     #   - information generated by the parts
-    
+
     # Whole system information
     whole_info = n * np.log2(3)  # Each qutrit has log2(3) bits
-    
+
     # Partition into two halves
     mid = n // 2
     part1 = subsystem[:mid]
     part2 = subsystem[mid:]
-    
+
     # Information in parts (assuming independent)
     parts_info = len(part1) * np.log2(3) + len(part2) * np.log2(3)
-    
+
     # Integration = mutual information between parts
     # For W33, this is determined by K4 structure
-    
+
     # If subsystem is a K4, it's maximally integrated
     if n == 4:
         phi = 2.0  # K4 has significant integration
     else:
         phi = 0.1 * n  # Other structures less integrated
-    
+
     return phi
+
 
 # Compute Φ for different structures
 print("\nIntegrated Information in W33:")
@@ -617,15 +642,17 @@ print(f"  One K4 (8 points): Φ = {phi_k4:.2f}")
 phi_full = integrated_information(list(range(40)), None)
 print(f"  Full W33 (40 points): Φ = {phi_full:.2f}")
 
-print("""
+print(
+    """
 SPECULATION:
   If consciousness requires Φ > threshold,
   then W33 structures with K4 components
   are NECESSARILY conscious in some sense.
-  
+
   The universe isn't just DESCRIBED by W33.
   The universe EXPERIENCES itself through W33.
-""")
+"""
+)
 
 # =============================================================================
 # PART 7: THE NATURE OF TIME
@@ -635,7 +662,8 @@ print("\n" + "=" * 80)
 print("PART 7: TIME FROM INFORMATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 WHAT IS TIME?
 =============
 
@@ -650,7 +678,7 @@ QUANTUM ARROW:
 
 W33 ARROW OF TIME:
   Time = accumulation of holonomy around cycles!
-  
+
   Each time a "path" is traversed in W33:
   - Berry phase accumulates
   - This is IRREVERSIBLE (topological)
@@ -659,41 +687,44 @@ W33 ARROW OF TIME:
 The 81 cycles are like 81 "clocks":
   - Each ticks at its own rate
   - The overall flow = emergent time
-""")
+"""
+)
+
 
 class W33Time:
     """Time as emergent from W33 holonomy."""
-    
+
     def __init__(self):
         # 81 cycle "clocks"
         self.cycle_phases = np.zeros(81)
         self.total_time = 0
-        
+
     def tick(self, cycle_rates=None):
         """One tick of cosmic time."""
         if cycle_rates is None:
             cycle_rates = np.ones(81)  # All cycles tick equally
-        
+
         # Each cycle accumulates phase
         self.cycle_phases = (self.cycle_phases + cycle_rates * np.pi / 6) % (2 * np.pi)
-        
+
         # Total time = average phase accumulation
         self.total_time += np.mean(cycle_rates)
-        
+
         return self.total_time
-    
+
     def entropy(self):
         """Entropy of the phase distribution."""
         # Discretize phases
-        bins = np.digitize(self.cycle_phases, np.linspace(0, 2*np.pi, 13))
+        bins = np.digitize(self.cycle_phases, np.linspace(0, 2 * np.pi, 13))
         counts = np.bincount(bins, minlength=12)
         probs = counts / 81
         return -sum(p * np.log2(p + 1e-10) for p in probs if p > 0)
-    
+
     def arrow(self):
         """Direction of time arrow."""
         # Arrow points in direction of increasing entropy
         return np.sign(self.entropy() - 0.5)  # Positive = forward
+
 
 print("\nSimulating emergent time:")
 clock = W33Time()
@@ -704,9 +735,11 @@ for i in range(10):
     # Random perturbation to cycle rates
     rates = 1 + 0.1 * np.random.randn(81)
     t = clock.tick(rates)
-    
+
     if i % 3 == 0:
-        print(f"  t={t:.2f}: entropy = {clock.entropy():.3f} bits, arrow = {'→' if clock.arrow() > 0 else '←'}")
+        print(
+            f"  t={t:.2f}: entropy = {clock.entropy():.3f} bits, arrow = {'→' if clock.arrow() > 0 else '←'}"
+        )
 
 # =============================================================================
 # PART 8: THE FINAL SYNTHESIS
@@ -716,7 +749,8 @@ print("\n" + "=" * 80)
 print("PART 8: THE FINAL SYNTHESIS")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║              W33: INFORMATION IS FUNDAMENTAL                                 ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -765,17 +799,18 @@ THE DEEPEST INSIGHT:
   Energy is not fundamental.
   Space is not fundamental.
   Time is not fundamental.
-  
+
   INFORMATION is fundamental.
-  
+
   And W33 is the structure OF information itself.
-  
+
   The universe is not a thing that contains information.
   The universe IS information, organized by W33.
 
 Wheeler was right: "It from Bit."
 More precisely: "It from W(3,3)."
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("END OF INFORMATION-THEORETIC EXPLORATION")

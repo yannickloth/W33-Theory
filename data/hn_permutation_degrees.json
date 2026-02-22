@@ -1,0 +1,40 @@
+{
+  "group": "HN",
+  "degrees": [1140000],
+  "rep_metadata": {
+    "1140000": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HNG1-p1140000B0",
+      "rank": 12,
+      "suborbit_lengths_compressed": "1, 462, 2520^2, 10395, 16632, 30800, 69300, 166320^2, 311850, 362880",
+      "suborbit_lengths": [
+        1,
+        462,
+        2520,
+        2520,
+        10395,
+        16632,
+        30800,
+        69300,
+        166320,
+        166320,
+        311850,
+        362880
+      ],
+      "stabilizer_order": 239500800,
+      "stabilizer_group_recognized": "A12",
+      "outer_stabilizer_order": 479001600,
+      "outer_stabilizer_group_recognized": "S12"
+    }
+  },
+  "sources": [
+    {
+      "title": "ATLAS of Group Representations: Harada-Norton group HN (Representations)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/HN/"
+    },
+    {
+      "title": "ATLAS of Group Representations: HN — permutation representation on 1140000 points (rank 12, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/HNG1-p1140000B0"
+    }
+  ],
+  "notes": "Permutation representation degrees listed by the ATLAS of Group Representations. Stored for offline, deterministic checks (GAP not required)."
+}

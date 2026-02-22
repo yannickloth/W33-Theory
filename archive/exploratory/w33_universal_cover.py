@@ -3,7 +3,7 @@
 W33 - THE UNIVERSAL COVER: AN INFINITE TREE
 
 Since π₁(W33) = F₈₁, the universal cover of W33 is an infinite
-contractible simplicial complex. 
+contractible simplicial complex.
 
 For a bouquet of circles, the universal cover is the Cayley graph
 of the free group - an infinite tree.
@@ -11,17 +11,20 @@ of the free group - an infinite tree.
 Let's explore what the universal cover of W33 looks like!
 """
 
-from sage.all import *
+from itertools import combinations, product
+
 import numpy as np
-from itertools import product, combinations
+from sage.all import *
 
 print("=" * 70)
 print("THE UNIVERSAL COVER OF W33")
 print("=" * 70)
 
+
 # Build W33
 def symplectic_form(x, y):
-    return (x[0]*y[2] - x[2]*y[0] + x[1]*y[3] - x[3]*y[1]) % 3
+    return (x[0] * y[2] - x[2] * y[0] + x[1] * y[3] - x[3] * y[1]) % 3
+
 
 def normalize(v):
     for i in range(4):
@@ -29,6 +32,7 @@ def normalize(v):
             inv = pow(v[i], -1, 3)
             return tuple((inv * x) % 3 for x in v)
     return None
+
 
 proj_points = set()
 for v in product(range(3), repeat=4):
@@ -48,9 +52,11 @@ for i, p1 in enumerate(proj_points):
 
 lines_set = set()
 for i in range(n):
-    for j in range(i+1, n):
+    for j in range(i + 1, n):
         if adj[i][j]:
-            common = [k for k in range(n) if k != i and k != j and adj[i][k] and adj[j][k]]
+            common = [
+                k for k in range(n) if k != i and k != j and adj[i][k] and adj[j][k]
+            ]
             for k, l in combinations(common, 2):
                 if adj[k][l]:
                     lines_set.add(tuple(sorted([i, j, k, l])))
@@ -70,8 +76,9 @@ print("\n" + "=" * 70)
 print("THE CAYLEY GRAPH OF F₈₁")
 print("=" * 70)
 
-print("""
-Since π₁(W33) = F₈₁ (free group on 81 generators), 
+print(
+    """
+Since π₁(W33) = F₈₁ (free group on 81 generators),
 the universal cover is homotopy equivalent to the Cayley graph of F₈₁.
 
 The Cayley graph of F_n is an infinite (2n)-regular tree:
@@ -85,7 +92,8 @@ For F₈₁:
 
 This tree is called the "BRUHAT-TITS TREE" when viewed from
 the perspective of p-adic groups!
-""")
+"""
+)
 
 # =============================================================================
 # GROWTH RATE
@@ -99,11 +107,13 @@ print("=" * 70)
 # V(1) = 2n (neighbors of root)
 # V(d) = 2n × (2n-1)^{d-1} for d ≥ 1
 
+
 def vertices_at_distance(n_gen, d):
     """Count vertices at distance d in Cayley graph of F_n."""
     if d == 0:
         return 1
-    return 2 * n_gen * (2 * n_gen - 1)**(d - 1)
+    return 2 * n_gen * (2 * n_gen - 1) ** (d - 1)
+
 
 n_gen = 81
 print(f"Vertices at distance d from root (for F_{n_gen}):")
@@ -127,7 +137,8 @@ print("\n" + "=" * 70)
 print("UNIVERSAL COVER AS SIMPLICIAL COMPLEX")
 print("=" * 70)
 
-print("""
+print(
+    """
 The universal cover of W33 is MORE than just the Cayley graph.
 It's an infinite 3-dimensional simplicial complex!
 
@@ -143,7 +154,8 @@ Cayley graph of F₈₁.
 Key property: The universal cover is CONTRACTIBLE
   - All homotopy groups are trivial
   - H_i = 0 for all i ≥ 0 (reduced homology)
-""")
+"""
+)
 
 # =============================================================================
 # THE DECK TRANSFORMATION GROUP
@@ -152,7 +164,8 @@ print("\n" + "=" * 70)
 print("DECK TRANSFORMATIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 The DECK TRANSFORMATION GROUP is π₁(W33) = F₈₁.
 
 This group acts on the universal cover by:
@@ -164,7 +177,8 @@ Each element g ∈ F₈₁ gives a "translation" of the infinite tree/complex.
 
 The 81 generators of F₈₁ correspond to 81 "fundamental directions"
 in the universal cover - these are the 81 apartments through any flag!
-""")
+"""
+)
 
 # =============================================================================
 # CONNECTION TO p-ADIC ANALYSIS
@@ -173,7 +187,8 @@ print("\n" + "=" * 70)
 print("★ CONNECTION TO p-ADIC NUMBERS ★")
 print("=" * 70)
 
-print("""
+print(
+    """
 AMAZING INSIGHT: The universal cover of W33 is closely related
 to the BRUHAT-TITS BUILDING of PSp(4) over Q₃ (3-adic numbers)!
 
@@ -195,7 +210,8 @@ This connects:
   2. Algebraic topology (π₁ = F₈₁)
   3. Number theory (p-adic analysis)
   4. Representation theory (Steinberg)
-""")
+"""
+)
 
 # =============================================================================
 # THE 81 AS p-ADIC DIRECTIONS
@@ -204,7 +220,8 @@ print("\n" + "=" * 70)
 print("THE 81 GENERATORS AS p-ADIC DIRECTIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 The 81 generators of π₁(W33) = F₈₁ can be interpreted as:
 
 1. GEOMETRIC: 81 apartments through any flag (as we verified!)
@@ -218,16 +235,17 @@ The 81 generators of π₁(W33) = F₈₁ can be interpreted as:
 Each corresponds to a positive root direction in the root system C₂,
 tensored with GF(3):
   - 4 positive roots × 3 non-identity elements = 4 × 3 = 12? No...
-  
+
 Actually: |U| = 3^4 = 81 because U has dimension 4 over GF(3),
 with one parameter for each positive root:
   - α₁: 3 choices
-  - α₂: 3 choices  
+  - α₂: 3 choices
   - α₁+α₂: 3 choices
   - 2α₁+α₂: 3 choices
-  
+
 Total: 3 × 3 × 3 × 3 = 81 ✓
-""")
+"""
+)
 
 # =============================================================================
 # VISUALIZATION: LOCAL STRUCTURE
@@ -236,7 +254,8 @@ print("\n" + "=" * 70)
 print("LOCAL STRUCTURE OF UNIVERSAL COVER")
 print("=" * 70)
 
-print("""
+print(
+    """
 At any vertex of the universal cover:
 
   - 12 incident edges (lifts of edges through corresponding W33 point)
@@ -252,7 +271,8 @@ Specifically, from a vertex v at distance d from the root:
 
 Wait, that's not quite right for a free group...
 Let me think about this more carefully.
-""")
+"""
+)
 
 # The free group F₈₁ acts on a tree with 162-regular vertices
 # But W33 has 40 vertices with degree 12 each
@@ -273,23 +293,25 @@ print("\n" + "=" * 70)
 print("★ UNIVERSAL COVER SUMMARY ★")
 print("=" * 70)
 
-print("""
+print(
+    """
 The UNIVERSAL COVER of W33:
 
   1. Is an infinite, contractible, 3-dimensional simplicial complex
-  
+
   2. Has 1-skeleton homotopy equivalent to Cayley graph of F₈₁
      (an infinite 162-regular tree)
-     
+
   3. Is acted upon freely by π₁(W33) = F₈₁ (deck transformations)
-  
+
   4. Has exponential growth rate 161
-  
+
   5. Is closely related to the Bruhat-Tits building of PSp(4, Q₃)
-  
+
   6. Connects finite geometry, topology, and p-adic number theory!
 
 The covering map W33̃ → W33 is the "infinite unfolding" that
 reveals the hidden infinite structure encoded in the 81-dimensional
 Steinberg representation.
-""")
+"""
+)

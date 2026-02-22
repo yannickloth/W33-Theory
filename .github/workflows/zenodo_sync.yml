@@ -1,0 +1,68 @@
+name: Zenodo DOI sync
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'     # every 30 minutes
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run Zenodo sync (dry-run -> apply if DOI found)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/zenodo_sync.py --repo wilcompute/W33-Theory --tag v2026-02-15-qec-mlut --publish --apply || true
+
+      - name: Commit & push changes (if any)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add RELEASES/DRAFT_v2026-02-15-qec-mlut.md README.md outreach/social_posts.md outreach/blog_post.md || true
+          if ! git diff --staged --quiet; then
+            git commit -m "ci: add Zenodo DOI for v2026-02-15-qec-mlut (automated)" || echo "commit failed"
+            git push origin HEAD:master || echo "push failed"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Update GitHub release body with DOI (if present)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # extract DOI from the release draft (if the CI script inserted it)
+          DOI_LINE=$(grep -m1 -o 'https://doi.org/[0-9.]\+' RELEASES/DRAFT_v2026-02-15-qec-mlut.md || true)
+          if [ -z "$DOI_LINE" ]; then
+            echo "No DOI found in release draft; skipping release-body update"
+            exit 0
+          fi
+          echo "Found DOI: $DOI_LINE"
+
+          # fetch release by tag and update body if DOI is not already present
+          release_json=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/wilcompute/W33-Theory/releases/tags/v2026-02-15-qec-mlut")
+          release_id=$(echo "$release_json" | python -c "import sys,json; print(json.load(sys.stdin).get('id',''))")
+          if [ -z "$release_id" ]; then
+            echo "Release not found via GitHub API; skipping"
+            exit 0
+          fi
+          current_body=$(echo "$release_json" | python -c "import sys,json; print(json.load(sys.stdin).get('body','') or '')")
+          if echo "$current_body" | grep -q "$DOI_LINE"; then
+            echo "Release body already contains DOI"
+            exit 0
+          fi
+
+          new_body="$current_body\n\nZenodo DOI: $DOI_LINE"
+          payload=$(python -c "import json,sys; print(json.dumps({'body': sys.stdin.read().strip()}))" <<< "$new_body")
+          curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -d "$payload" "https://api.github.com/repos/wilcompute/W33-Theory/releases/$release_id" || echo "Patch failed"
+          echo "Release body updated (if API accepted the patch)"

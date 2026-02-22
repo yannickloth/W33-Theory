@@ -1,0 +1,9 @@
+{
+  "bundle": "W33_Heisenberg_action_bundle_20260209_v1",
+  "analysis_zip": "artifacts/bundles/W33_Heisenberg_action_bundle_20260209_v1/analysis.zip",
+  "total_parallelograms": 54,
+  "matches": 54,
+  "anti_matches": 0,
+  "match_fraction": 1.0,
+  "note": "Canonical orientation selection applied; all parallelograms match expected Z3 holonomy."
+}

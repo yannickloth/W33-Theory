@@ -9,11 +9,13 @@ Every single one connects to W33 and physics!
 Let's decode them ALL.
 """
 
-import numpy as np
-from fractions import Fraction
 import math
+from fractions import Fraction
 
-print("""
+import numpy as np
+
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                   THEORY OF EVERYTHING - PART XIX                            ║
 ║                                                                              ║
@@ -21,7 +23,8 @@ print("""
 ║                                                                              ║
 ║     Every number tells a story about the universe!                           ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # THE WITTING NUMBERS
@@ -34,17 +37,17 @@ print()
 
 # Witting polytope data from Wikipedia
 WITTING = {
-    'vertices': 240,
-    'edges': 2160,      # 3-edges (complex edges with 3 vertices each)
-    'faces': 2160,      # 3{3}3 Möbius-Kantor polygons
-    'cells': 240,       # 3{3}3{3}3 Hessian polyhedra
-    'diameters': 40,
-    'edges_per_vertex': 27,
-    'faces_per_vertex': 72,
-    'cells_per_vertex': 27,
-    'symmetry': 155520,
-    'petrie_polygon': 30,
-    'van_oss_polygon': 90,
+    "vertices": 240,
+    "edges": 2160,  # 3-edges (complex edges with 3 vertices each)
+    "faces": 2160,  # 3{3}3 Möbius-Kantor polygons
+    "cells": 240,  # 3{3}3{3}3 Hessian polyhedra
+    "diameters": 40,
+    "edges_per_vertex": 27,
+    "faces_per_vertex": 72,
+    "cells_per_vertex": 27,
+    "symmetry": 155520,
+    "petrie_polygon": 30,
+    "van_oss_polygon": 90,
 }
 
 print("Witting Polytope 3{3}3{3}3{3}3 in C⁴:")
@@ -193,31 +196,31 @@ print("═══ FUNDAMENTAL RATIOS ═══")
 print()
 
 # vertices/diameters
-ratio1 = WITTING['vertices'] / WITTING['diameters']
+ratio1 = WITTING["vertices"] / WITTING["diameters"]
 print(f"  vertices/diameters = 240/40 = {ratio1}")
 print("    = 6 (hexagonal structure per diameter)")
 print()
 
 # edges/vertices
-ratio2 = WITTING['edges'] / WITTING['vertices']
+ratio2 = WITTING["edges"] / WITTING["vertices"]
 print(f"  edges/vertices = 2160/240 = {ratio2}")
 print("    = 9 = 3² (triality squared)")
 print()
 
 # symmetry/vertices
-ratio3 = WITTING['symmetry'] / WITTING['vertices']
+ratio3 = WITTING["symmetry"] / WITTING["vertices"]
 print(f"  symmetry/vertices = 155520/240 = {ratio3}")
 print("    = 648 = 8 × 81 = 8 × (W33 cycles)")
 print()
 
 # edges/diameters
-ratio4 = WITTING['edges'] / WITTING['diameters']
+ratio4 = WITTING["edges"] / WITTING["diameters"]
 print(f"  edges/diameters = 2160/40 = {ratio4}")
 print("    = 54 = 2 × 27 = 2 × (E6 rep)")
 print()
 
 # W(E6) / vertices
-ratio5 = w_e6 / WITTING['vertices']
+ratio5 = w_e6 / WITTING["vertices"]
 print(f"  |W(E6)|/vertices = 51840/240 = {ratio5}")
 print("    = 216 = 6³ = 6 × 6 × 6")
 print()
@@ -293,7 +296,8 @@ print("PART 5: THE COMPLETE CHAIN")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                      THE DESCENT FROM E8 TO PHYSICS                          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -338,7 +342,8 @@ print("""
 ║  • All particle masses and couplings                                         ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # NUMERICAL COINCIDENCES OR DEEP TRUTHS?
@@ -349,7 +354,8 @@ print("PART 6: ARE THESE COINCIDENCES?")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 Consider the probability that these are random coincidences:
 
   1. Witting diameters = 40 = W33 points
@@ -380,7 +386,8 @@ Combined probability of ALL being coincidence:
 This is essentially ZERO.
 
 CONCLUSION: These connections are REAL, not coincidental!
-""")
+"""
+)
 
 # Calculate combined probability
 p = 0.025 * 0.01 * 0.01 * 0.03 * 0.04 * 0.001 * 0.00003
@@ -396,7 +403,8 @@ print("PART 7: OPEN QUESTIONS")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 What we still need to understand:
 
 1. WHY does complex projection (E8 → Witting) preserve physics?
@@ -420,7 +428,8 @@ What we still need to understand:
    - How does dynamics emerge?
 
 These questions point to Part XX and beyond...
-""")
+"""
+)
 
 print("=" * 80)
 print("END OF PART XIX: DEEP WITTING NUMEROLOGY")

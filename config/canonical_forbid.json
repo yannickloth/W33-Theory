@@ -1,0 +1,6 @@
+{
+  "canonical_forbid": [0, 20, 23],
+  "chosen_by": "anchored_CPSAT_feasibility",
+  "reason": "Forbid [0,20,23] yields FEASIBLE anchored CP-SAT mappings with matched=19 for all sign-consistent W indices; GF(2) contradiction certificates exist.",
+  "note": "This file is intended to be the canonical, persisted choice. Use it as default when running anchor scripts without an explicit --forbid."
+}

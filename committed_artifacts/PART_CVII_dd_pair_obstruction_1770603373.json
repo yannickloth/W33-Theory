@@ -1,0 +1,56 @@
+{
+  "dd_shrink_results": [
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586708.json",
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770586911.json",
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770588180.json",
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589216.json",
+    "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_dd_shrink_result_1770589424.json"
+  ],
+  "set": [
+    50,
+    51
+  ],
+  "edges": [
+    50,
+    51
+  ],
+  "vertices": [
+    [
+      4,
+      21
+    ],
+    [
+      4,
+      34
+    ]
+  ],
+  "roots": [
+    3,
+    3
+  ],
+  "root_vectors": {
+    "3": [
+      -2,
+      0,
+      0,
+      0,
+      -2,
+      0,
+      0,
+      0
+    ]
+  },
+  "dot_products": 8,
+  "sum_is_root": false,
+  "diff_is_root": false,
+  "solver_check": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\checks\\PART_CVII_e8_embedding_cpsat.json",
+  "solver_status": "INFEASIBLE",
+  "seed_source_used": "dd_shrink_result_seed_artifact:C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json",
+  "used_seed_json": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\committed_artifacts\\PART_CVII_dd_seed_initial_1770586555.json",
+  "verified_roots": [
+    3,
+    3
+  ],
+  "verified_seed": 212,
+  "notes": "Auto-verified by register_dd_obstructions.py"
+}

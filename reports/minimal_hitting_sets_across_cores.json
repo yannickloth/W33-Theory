@@ -1,0 +1,38 @@
+{
+  "cores": [
+    {
+      "file": "opt_mapping_W0_status_FEASIBLE.json",
+      "size": 10
+    },
+    {
+      "file": "opt_mapping_W4_status_FEASIBLE.json",
+      "size": 10
+    },
+    {
+      "file": "opt_mapping_W5_status_FEASIBLE.json",
+      "size": 10
+    }
+  ],
+  "union_size": 24,
+  "minimal_hitting_sets": [
+    {
+      "size": 1,
+      "hitting_sets": [
+        [
+          [
+            0,
+            18,
+            25
+          ]
+        ],
+        [
+          [
+            0,
+            20,
+            23
+          ]
+        ]
+      ]
+    }
+  ]
+}

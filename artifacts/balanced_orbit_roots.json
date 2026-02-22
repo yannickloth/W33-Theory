@@ -1,0 +1,18 @@
+{
+  "balanced_orbit_id": 4,
+  "root_count": 27,
+  "inner_product_counts": {
+    "0.0": 135,
+    "1.0": 216
+  },
+  "root_neighbor_degree_distribution": {
+    "16": 27
+  },
+  "common_neighbors_adjacent": {
+    "10": 216
+  },
+  "common_neighbors_nondjacent": {
+    "8": 135
+  },
+  "a2_triangle_count": 0
+}

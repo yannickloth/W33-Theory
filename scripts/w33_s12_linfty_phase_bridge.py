@@ -1,0 +1,391 @@
+#!/usr/bin/env python3
+"""s12 -> Heisenberg -> E8 Z3/L∞: make the cocycle/phase bridge explicit.
+
+This script ties together three threads in the repo:
+
+1) **s12 (ternary Golay) grade-defined algebra** (`tools/s12_universal_algebra.py`)
+   reproduces the Z3 grade split (242,243,243) for the 728 = 27^2-1 basis but
+   exhibits a *finite Jacobi obstruction set* when you only keep grade-level
+   coefficients (no phases).
+
+2) **Weyl–Heisenberg closure** (`scripts/s12_sl27_heisenberg_algebra.py`) resolves
+   this by upgrading "grade-only coefficients" to an honest associative algebra
+   (3-qutrit Weyl operators) whose commutator bracket satisfies Jacobi
+   automatically.  Algebraically: the missing ingredient is the **2-cocycle /
+   phase** given by the symplectic pairing.
+
+3) **E8 Z3 + L∞ firewall** (`tools/build_linfty_firewall_extension.py`) shows the
+   same mechanism: the pure-sector Jacobi anomaly is cancelled by l3 supported
+   on the 9 Heisenberg fibers ("bad9"), but a recorded **mixed-sector**
+   obstruction requires an additional CE-2 coboundary term d(alpha) — i.e. an
+   explicit cocycle/phase correction rather than grade-only coefficients.
+
+Run:
+  & .venv\\Scripts\\python.exe -X utf8 scripts\\w33_s12_linfty_phase_bridge.py
+"""
+
+from __future__ import annotations
+
+import json
+import random
+import sys
+from fractions import Fraction
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS_DIR = ROOT / "scripts"
+for p in (ROOT, SCRIPTS_DIR):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+from ce2_global_cocycle import predict_ce2_uv
+
+
+def max_abs(e) -> float:
+    return float(
+        max(
+            0.0 if e.e6.size == 0 else np.max(np.abs(e.e6)),
+            0.0 if e.sl3.size == 0 else np.max(np.abs(e.sl3)),
+            0.0 if e.g1.size == 0 else np.max(np.abs(e.g1)),
+            0.0 if e.g2.size == 0 else np.max(np.abs(e.g2)),
+        )
+    )
+
+
+def _load_first_ce2_entry(path: Path) -> dict[str, object]:
+    """Parse only the first key/value pair from the large CE2 JSON artifact.
+
+    The artifact is a single top-level JSON object mapping "a:b:c" -> payload.
+    This helper avoids loading the full 100+MB file when we only need one
+    representative entry for demonstration.
+    """
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    buf: list[str] = ["{"]
+    depth = 0
+    started = False
+    with open(path, "r", encoding="utf-8") as f:
+        # skip the opening "{"
+        first = f.readline()
+        if "{" not in first:
+            raise ValueError("Unexpected JSON header (expected '{').")
+
+        for line in f:
+            buf.append(line.rstrip("\n"))
+            if not started:
+                # first entry line contains the value object opening "{"
+                if "{" in line:
+                    started = True
+                    depth += line.count("{") - line.count("}")
+            else:
+                depth += line.count("{") - line.count("}")
+
+            if started and depth == 0:
+                # strip trailing comma after the first entry, if present
+                if buf[-1].rstrip().endswith(","):
+                    buf[-1] = buf[-1].rstrip().rstrip(",")
+                break
+
+    buf.append("}")
+    obj = json.loads("\n".join(buf))
+    if not isinstance(obj, dict) or len(obj) != 1:
+        raise ValueError("Failed to parse a single-entry CE2 payload.")
+    key = next(iter(obj.keys()))
+    payload = obj[key]
+    if not isinstance(payload, dict):
+        raise ValueError("Unexpected CE2 entry payload type.")
+    return {"key": key, "payload": payload}
+
+
+def _flat_to_e8(toe, vec_flat: np.ndarray):
+    N = 27 * 27
+    e6 = vec_flat[:N].reshape((27, 27)).astype(np.complex128)
+    off = N
+    sl3 = vec_flat[off : off + 9].reshape((3, 3)).astype(np.complex128)
+    off += 9
+    g1 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
+    off += 81
+    g2 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
+    return toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
+
+
+def main() -> None:
+    print("=" * 78)
+    print(
+        "ALGEBRA BRIDGE: s12 grade obstruction -> Heisenberg cocycle -> E8 Z3/L-infty"
+    )
+    print("=" * 78)
+
+    # -------------------------------------------------------------------------
+    # §1. s12: grade-only Jacobi obstruction vs Heisenberg closure
+    # -------------------------------------------------------------------------
+    from s12_sl27_heisenberg_algebra import _build_golay_labels, jacobi_coeff
+
+    import tools.s12_universal_algebra as s12
+
+    labels = _build_golay_labels()
+    by_grade = {0: 0, 1: 0, 2: 0}
+    for lab in labels:
+        by_grade[int(lab.grade)] += 1
+
+    laws = s12.verify_universal_grade_laws()
+    jacobi_fail = int(laws.get("jacobi_failure_count", -1))
+
+    print()
+    print("SECTION 1: s12 vs Weyl–Heisenberg closure")
+    print("-" * 50)
+    print(f"  Nonzero basis size: {len(labels)} (expected 728 = 27^2-1)")
+    print(f"  Grade split: {by_grade} (expected 242/243/243)")
+    print(f"  s12 grade-only Jacobi failure count: {jacobi_fail} (expected 6)")
+    assert len(labels) == 728
+    assert by_grade == {0: 242, 1: 243, 2: 243}
+    assert jacobi_fail == 6
+
+    rng = random.Random(42)
+    trials = 5000
+    for _ in range(trials):
+        a, b, c = rng.sample(labels, 3)
+        if jacobi_coeff(a.u, b.u, c.u) != 0:
+            raise AssertionError("Heisenberg symplectic Jacobi coefficient nonzero")
+    print(f"  Heisenberg symplectic Jacobi sample: 0 / {trials} failures")
+    print("  OK: Missing ingredient = phase/cocycle (symplectic pairing)")
+
+    # -------------------------------------------------------------------------
+    # §2. E6(27) Heisenberg coordinates: bad9 fibers are {u}×Z3
+    # -------------------------------------------------------------------------
+    model_path = ROOT / "artifacts" / "e6_cubic_affine_heisenberg_model.json"
+    fw_path = ROOT / "artifacts" / "firewall_bad_triads_mapping.json"
+
+    model = json.loads(model_path.read_text(encoding="utf-8"))
+    fw = json.loads(fw_path.read_text(encoding="utf-8"))
+
+    e6id_to_h = model["e6id_to_heisenberg"]
+    fiber_triads = model["fiber_triads_e6id"]
+    fw_bad = fw["bad_triangles_Schlafli_e6id"]
+
+    fiber_set = {tuple(int(x) for x in t) for t in fiber_triads}
+    fw_set = {tuple(int(x) for x in t) for t in fw_bad}
+    assert fiber_set == fw_set
+
+    u_points: set[tuple[int, int]] = set()
+    print()
+    print("SECTION 2: Firewall bad9 = Heisenberg fibers in E6 27-rep")
+    print("-" * 50)
+    for triad in sorted(fiber_set):
+        coords = []
+        for e6id in triad:
+            h = e6id_to_h[str(e6id)]
+            u = tuple(int(x) for x in h["u"])
+            z = int(h["z"])
+            coords.append((u, z))
+        u0 = coords[0][0]
+        zs = {z for _, z in coords}
+        assert all(u == u0 for u, _ in coords)
+        assert zs == {0, 1, 2}
+        u_points.add(u0)
+        print(f"  triad {triad}: u={u0} z-set={sorted(zs)}")
+
+    all_u = {(i, j) for i in range(3) for j in range(3)}
+    print(f"  distinct fibers (u points): {len(u_points)} (expected 9)")
+    assert u_points == all_u
+    print("  OK: Each bad triad is a fiber {u}xZ3 and the 9 fibers cover F3^2")
+
+    # -------------------------------------------------------------------------
+    # §3. Mixed-sector obstruction: l3 supported on fibers is insufficient;
+    #     a CE-2 coboundary (explicit cocycle) cancels the remaining anomaly.
+    # -------------------------------------------------------------------------
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = np.load(ROOT / "artifacts" / "e6_27rep_basis_export" / "E6_basis_78.npy")
+    e6_basis = e6_basis.astype(np.complex128)
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    a_idx = (0, 0)
+    b_idx = (17, 1)
+    c_idx = (3, 0)
+    x = basis_elem_g1(toe, a_idx)
+    y = basis_elem_g1(toe, b_idx)
+    z = basis_elem_g2(toe, c_idx)
+
+    j = toe._jacobi(linfty.br_l2, x, y, z)
+    l3 = linfty.l3(x, y, z)
+    residual_no_ce2 = j + l3
+
+    print()
+    print("SECTION 3: Mixed g1_g1_g2 obstruction and CE2 cocycle cancellation")
+    print("-" * 50)
+    print(f"  mixed triple: g1{a_idx}, g1{b_idx}, g2{c_idx}")
+    print(f"  ||Jacobi(l2)||_inf = {max_abs(j):.6g}")
+    print(f"  ||l3||_inf        = {max_abs(l3):.6g}")
+    print(f"  ||J+l3||_inf      = {max_abs(residual_no_ce2):.6g}")
+    assert max_abs(residual_no_ce2) > 1e-10
+
+    # Load a representative sparse rational CE2 entry and attach it as an
+    # explicit cocycle/phase correction.
+    #
+    # Prefer the commit-friendly sparse artifact (if available) so this script
+    # is portable. Fall back to the large, ignored artifact otherwise.
+    ce2_key = "0,0:17,1:3,0"
+    sparse_path = ROOT / "committed_artifacts" / "ce2_sparse_local_solutions.json"
+    U_nz: list[tuple[int, str]] = []
+    V_nz: list[tuple[int, str]] = []
+    if sparse_path.exists():
+        sparse = json.loads(sparse_path.read_text(encoding="utf-8"))
+        for rec in sparse.get("entries", []):
+            if isinstance(rec, dict) and rec.get("k") == ce2_key:
+                U_nz = [(int(i), str(v)) for i, v in rec.get("U", [])]
+                V_nz = [(int(i), str(v)) for i, v in rec.get("V", [])]
+                break
+    else:
+        ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
+        first = _load_first_ce2_entry(ce2_path)
+        payload = first["payload"]
+        if not isinstance(payload, dict):
+            raise AssertionError("Unexpected CE2 payload type.")
+        U_rats = payload.get("U_rats", [])
+        V_rats = payload.get("V_rats", [])
+        if not isinstance(U_rats, list) or not isinstance(V_rats, list):
+            raise AssertionError("Unexpected CE2 U/V arrays.")
+        if len(U_rats) != 900 or len(V_rats) != 900:
+            raise AssertionError("Expected flattened E8Z3 arrays of length 900.")
+        U_nz = [(i, str(s)) for i, s in enumerate(U_rats) if str(s) != "0"]
+        V_nz = [(i, str(s)) for i, s in enumerate(V_rats) if str(s) != "0"]
+
+    # This entry is built around the canonical mixed triple:
+    #   (0,0) : (17,1) : (3,0)
+    print(f"  CE2 sample key: {ce2_key}")
+    print(f"  U nonzeros: {len(U_nz)}")
+    print(f"  V nonzeros: {len(V_nz)}")
+    if V_nz:
+        idx0, val0 = V_nz[0]
+        i0, j0 = idx0 // 27, idx0 % 27
+        print(f"  V[flat={idx0}] = {val0}  (e6[{i0},{j0}] in flattened layout)")
+    assert (len(U_nz), len(V_nz)) == (0, 1)
+    assert V_nz[0][1] == "1/54" and V_nz[0][0] == 179
+
+    # The last remaining "mystery sign" is now an explicit degree-≤4 GF(2)
+    # phase polynomial on the full Heisenberg (u,z) data.
+    from ce2_global_cocycle import (
+        _simple_family_sign_poly_coeff_mask,
+        predict_simple_family_sign,
+    )
+
+    coeff_mask = _simple_family_sign_poly_coeff_mask()
+    if coeff_mask is not None:
+        # For key "0,0:17,1:3,0", the sign lookup key is (c_i=3, match_i=0, other_i=17).
+        sgn = predict_simple_family_sign(3, 0, 17)
+        print(
+            "  CE2 sign polynomial: weight=%d, sign(c=3,match=0,other=17)=%+d"
+            % (int(coeff_mask).bit_count(), int(sgn))
+        )
+
+    # Verify the same sparse CE2 entry is reproduced by the *global* Heisenberg law.
+    a_s, b_s, c_s = ce2_key.split(":")
+    a_pair = tuple(int(x) for x in a_s.split(","))  # type: ignore[assignment]
+    b_pair = tuple(int(x) for x in b_s.split(","))  # type: ignore[assignment]
+    c_pair = tuple(int(x) for x in c_s.split(","))  # type: ignore[assignment]
+    if len(a_pair) != 2 or len(b_pair) != 2 or len(c_pair) != 2:
+        raise AssertionError("Unexpected CE2 key parsing failure.")
+    pred = predict_ce2_uv(a_pair, b_pair, c_pair)
+    assert pred is not None
+    pred_U_nz = [(int(i), str(v)) for i, v in pred.U]
+    pred_V_nz = [(int(i), str(v)) for i, v in pred.V]
+    print(f"  Predicted U nonzeros: {len(pred_U_nz)}")
+    print(f"  Predicted V nonzeros: {len(pred_V_nz)}")
+    assert sorted(U_nz) == sorted(pred_U_nz)
+    assert sorted(V_nz) == sorted(pred_V_nz)
+    print("  OK: Global Heisenberg law reproduces CE2 sparse entry exactly")
+
+    # Demonstrate that the same correction is produced *without attaching* any
+    # per-triple alpha callable, by enabling the global predictor in the L-infty
+    # extension itself.
+    linfty.enable_ce2_global_predictor()
+    dalpha_global = linfty.d_alpha_on_triple(x, y, z)
+    residual_with_global = residual_no_ce2 + dalpha_global
+    print(f"  ||d(alpha_global)||_inf  = {max_abs(dalpha_global):.6g}")
+    print(f"  ||J+l3+d(alpha_global)||_inf = {max_abs(residual_with_global):.6g}")
+    assert max_abs(residual_with_global) < 1e-10
+    print(
+        "  OK: Mixed-sector anomaly cancelled by global predictor (no attached alpha)"
+    )
+    linfty.disable_ce2_global_predictor()
+
+    # Build E8Z3 elements U and V from the sparse rational arrays.
+    U_flat = np.zeros(900, dtype=np.complex128)
+    V_flat = np.zeros(900, dtype=np.complex128)
+    for idx, s in U_nz:
+        U_flat[idx] = float(Fraction(s))
+    for idx, s in V_nz:
+        V_flat[idx] = float(Fraction(s))
+
+    U = _flat_to_e8(toe, U_flat)
+    V = _flat_to_e8(toe, V_flat)
+
+    def alpha(a, b):
+        # alpha(x, z) = V and skew-symmetry alpha(z, x) = -V
+        if (
+            np.allclose(a.g1, x.g1)
+            and np.allclose(a.g2, x.g2)
+            and np.allclose(b.g1, z.g1)
+            and np.allclose(b.g2, z.g2)
+        ):
+            return V
+        if (
+            np.allclose(a.g1, z.g1)
+            and np.allclose(a.g2, z.g2)
+            and np.allclose(b.g1, x.g1)
+            and np.allclose(b.g2, x.g2)
+        ):
+            return V.scale(-1.0)
+
+        # (This sample entry has U=0, but keep the pattern explicit.)
+        if max_abs(U) > 0 and (
+            np.allclose(a.g1, y.g1)
+            and np.allclose(a.g2, y.g2)
+            and np.allclose(b.g1, z.g1)
+            and np.allclose(b.g2, z.g2)
+        ):
+            return U
+        if max_abs(U) > 0 and (
+            np.allclose(a.g1, z.g1)
+            and np.allclose(a.g2, z.g2)
+            and np.allclose(b.g1, y.g1)
+            and np.allclose(b.g2, y.g2)
+        ):
+            return U.scale(-1.0)
+        return toe.E8Z3.zero()
+
+    linfty.attach_ce2_alpha(alpha)
+
+    dalpha = linfty.d_alpha_on_triple(x, y, z)
+    residual_with_ce2 = residual_no_ce2 + dalpha
+    print(f"  ||d(alpha)||_inf  = {max_abs(dalpha):.6g}")
+    print(f"  ||J+l3+d(alpha)||_inf   = {max_abs(residual_with_ce2):.6g}")
+    assert max_abs(residual_with_ce2) < 1e-10
+
+    diff = dalpha + dalpha_global.scale(-1.0)
+    assert max_abs(diff) < 1e-10
+    print("  OK: Mixed-sector anomaly cancelled by an explicit CE-2 cocycle/phase")
+
+    print()
+    print("OK: same resolution mechanism across s12 and the E8 Z3/L-infty firewall.")
+
+
+if __name__ == "__main__":
+    main()

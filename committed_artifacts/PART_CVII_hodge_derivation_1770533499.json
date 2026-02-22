@@ -1,0 +1,31 @@
+{
+  "srg_parameters": {
+    "n": 40,
+    "k": 12,
+    "lambda": 2,
+    "mu": 4
+  },
+  "adjacency_eigenvalues": {
+    "k": {
+      "value": 12,
+      "multiplicity": 1
+    },
+    "r": {
+      "value": 2,
+      "multiplicity": 24
+    },
+    "s": {
+      "value": -4,
+      "multiplicity": 15
+    }
+  },
+  "hodge_spectrum": {
+    "-0.0": 81,
+    "4.0": 120,
+    "10.0": 24,
+    "16.0": 15
+  },
+  "derivation": {
+    "harmonic": {
+      "eigenvalue": 0,
+      "multiplicity":

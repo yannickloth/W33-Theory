@@ -1,0 +1,49 @@
+{
+  "seed_edges": [
+    {
+      "edge_index": 113,
+      "root_index": 201
+    },
+    {
+      "edge_index": 117,
+      "root_index": 215
+    },
+    {
+      "edge_index": 126,
+      "root_index": 157
+    },
+    {
+      "edge_index": 154,
+      "root_index": 67
+    },
+    {
+      "edge_index": 161,
+      "root_index": 154
+    },
+    {
+      "edge_index": 168,
+      "root_index": 55
+    },
+    {
+      "edge_index": 193,
+      "root_index": 184
+    },
+    {
+      "edge_index": 200,
+      "root_index": 13
+    },
+    {
+      "edge_index": 204,
+      "root_index": 212
+    },
+    {
+      "edge_index": 205,
+      "root_index": 84
+    },
+    {
+      "edge_index": 206,
+      "root_index": 106
+    }
+  ],
+  "rotation": null
+}

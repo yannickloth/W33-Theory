@@ -1,0 +1,44 @@
+{
+  "checked": [
+    {
+      "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+      "start_vertex": 9,
+      "block_size": 33,
+      "forced_status": "INFEASIBLE",
+      "minimal_conflict": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "minimal_conflict_size": 29
+    }
+  ],
+  "timestamp": 1770498791,
+  "bij_source": "committed_artifacts/PART_CVII_e8_bijection_intermediate_1770491863.json"
+}

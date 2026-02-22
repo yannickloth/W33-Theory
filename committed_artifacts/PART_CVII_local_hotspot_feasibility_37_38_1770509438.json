@@ -1,0 +1,101 @@
+{
+  "edges": [
+    37,
+    38
+  ],
+  "k": 40,
+  "radius": 1,
+  "time_limit": 5,
+  "tests": [
+    {
+      "pair": [
+        37,
+        28,
+        38,
+        22
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        132,
+        38,
+        6
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        40,
+        38,
+        23
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        35,
+        38,
+        23
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        4,
+        38,
+        31
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        84,
+        38,
+        38
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        27,
+        38,
+        14
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        82,
+        38,
+        25
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        42,
+        38,
+        170
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        37,
+        30,
+        38,
+        71
+      ],
+      "status": "INFEASIBLE"
+    }
+  ]
+}

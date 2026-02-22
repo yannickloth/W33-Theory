@@ -8,9 +8,10 @@ Or are there other Sp(n, F_p) universes?
 What makes our universe special?
 """
 
-import numpy as np
-from fractions import Fraction
 import json
+from fractions import Fraction
+
+import numpy as np
 
 print("=" * 70)
 print("W33 THEORY PART XCI: THE MULTIVERSE QUESTION")
@@ -25,7 +26,8 @@ print("\n" + "=" * 70)
 print("SECTION 1: THE LANDSCAPE PROBLEM")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE MULTIVERSE DEBATE:
 
 String theory suggests 10^500 possible vacuum states.
@@ -44,13 +46,15 @@ Instead of string vacua, consider symplectic graphs over finite fields:
 
 Each (n, p) gives a different "universe" with different physics.
 Is ours (n=4, p=3) special?
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 2: THE Sp(n, F_p) LANDSCAPE")
 print("=" * 70)
 
-print("""
+print(
+    """
 FAMILY OF SYMPLECTIC GRAPHS:
 
 For dimension n (even) and prime p, we get:
@@ -59,23 +63,25 @@ For dimension n (even) and prime p, we get:
 The W33 is Sp(4, F_3): n=4, p=3
 
 Let's explore other possibilities:
-""")
+"""
+)
+
 
 def symplectic_parameters(n, p):
     """Calculate parameters for Sp(n, F_p) symplectic graph."""
     # Number of isotropic 1-spaces in F_p^n with symplectic form
     # For Sp(2m, F_p): |isotropic lines| = (p^m - 1)(p^m + 1)/(p-1) for m = n/2
     # But actually, the count is (p^n - 1)/(p - 1) for isotropic vectors
-    # divided by (p-1) for projectivization... 
-    
+    # divided by (p-1) for projectivization...
+
     # For symplectic graph from Sp(n, F_p), n=2m:
-    # v = (p^m + 1)(p^(m-1) + 1)...(p + 1)(p^m - 1)(p^(m-1) - 1)...(p - 1) / ... 
+    # v = (p^m + 1)(p^(m-1) + 1)...(p + 1)(p^m - 1)(p^(m-1) - 1)...(p - 1) / ...
     # This gets complicated. Let's use the known formulas.
-    
+
     # For Sp(4, F_q): v = (q^2+1)(q+1) - doesn't match...
     # Actually for the ISOTROPIC LINE graph:
-    # v = (q^4 - 1)/(q - 1) × correction = ... 
-    
+    # v = (q^4 - 1)/(q - 1) × correction = ...
+
     # Let's just enumerate some known cases:
     if n == 4 and p == 2:
         # Sp(4, F_2) = S_6 (symmetric group)
@@ -96,6 +102,7 @@ def symplectic_parameters(n, p):
         return 364, 40, 4, 4  # Estimated
     else:
         return None, None, None, None
+
 
 # Survey of possible universes
 print("SYMPLECTIC GRAPH LANDSCAPE:")
@@ -125,7 +132,8 @@ print("\n" + "=" * 70)
 print("SECTION 3: SELECTION PRINCIPLES")
 print("=" * 70)
 
-print("""
+print(
+    """
 WHY (n=4, p=3)?
 
 What makes Sp(4, F_3) special among all Sp(n, F_p)?
@@ -137,10 +145,10 @@ CANDIDATE SELECTION PRINCIPLES:
    - p=3 is the smallest odd prime
    - W33 is the "simplest complex universe"
 
-2. ANTHROPIC SELECTION  
+2. ANTHROPIC SELECTION
    - Only W33 allows observers (life, chemistry, stars)
    - Other (n,p) have "wrong" physics
-   
+
 3. MATHEMATICAL UNIQUENESS
    - W33 has special properties among SRGs
    - 240 edges = E₈ roots
@@ -151,45 +159,52 @@ CANDIDATE SELECTION PRINCIPLES:
    - Other (n,p) may be self-contradictory
 
 Let's test these!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 4: ANTHROPIC CONSTRAINTS")
 print("=" * 70)
 
-print("""
+print(
+    """
 WHAT DO OBSERVERS REQUIRE?
 
 For life (as we know it):
   1. Stable atoms (chemistry)
-  2. Stable stars (energy source)  
+  2. Stable stars (energy source)
   3. Complex molecules (DNA-like)
   4. Long timescales (evolution)
   5. Three spatial dimensions (stable orbits)
   6. Fine structure constant ~1/137 (chemistry works)
-  
+
 Let's check which (n,p) could support observers:
-""")
+"""
+)
+
 
 def alpha_from_params(v, k, lam, mu):
     """Calculate α⁻¹ from graph parameters."""
     if v is None:
         return None
     try:
-        alpha_inv = (k**2 - 2*mu + 1) + v / ((k-1)*((k-lam)**2 + 1))
+        alpha_inv = (k**2 - 2 * mu + 1) + v / ((k - 1) * ((k - lam) ** 2 + 1))
         return alpha_inv
     except:
         return None
 
+
 def spatial_dim(p):
     """Spatial dimensions from characteristic."""
     return p  # Our hypothesis: d = p
+
 
 def generations(m3):
     """Number of generations from m₃."""
     if m3 and m3 % 5 == 0:
         return m3 // 5
     return None
+
 
 print("ANTHROPIC ANALYSIS:")
 print("-" * 70)
@@ -201,16 +216,16 @@ for n, p, notes in cases:
     v_p, k_p, lam_p, mu_p = symplectic_parameters(n, p)
     alpha_inv = alpha_from_params(v_p, k_p, lam_p, mu_p)
     d = spatial_dim(p)
-    
+
     # Estimate m3 from eigenvalue formula
     # m₁ + m₂ + m₃ = v, m₁ = 1, so m₂ + m₃ = v - 1
     # For our case m₂/m₃ = 24/15 ≈ 1.6
     if v_p:
         m3_est = (v_p - 1) // 2.6 if v_p > 1 else 0  # rough estimate
-        n_gen = generations(int(m3_est)) if m3_est else '?'
+        n_gen = generations(int(m3_est)) if m3_est else "?"
     else:
-        n_gen = '?'
-    
+        n_gen = "?"
+
     # Check viability
     viable = "?"
     if alpha_inv:
@@ -221,29 +236,32 @@ for n, p, notes in cases:
                 viable = f"NO (d={d})"
         else:
             viable = f"NO (α⁻¹={alpha_inv:.1f})"
-    
+
     alpha_str = f"{alpha_inv:.3f}" if alpha_inv else "?"
     print(f"({n},{p}){' '*5} {alpha_str:<15} {d:<10} {str(n_gen):<10} {viable}")
 
 print("-" * 70)
 
-print("""
+print(
+    """
 RESULT:
 
 Only (n=4, p=3) seems to satisfy ALL anthropic constraints:
   - α⁻¹ ≈ 137 ✓
-  - 3 spatial dimensions ✓  
+  - 3 spatial dimensions ✓
   - 3 generations ✓
   - Stable chemistry ✓
-  
+
 Other universes are "sterile" - no observers can exist!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 5: ARE OTHER UNIVERSES REAL?")
 print("=" * 70)
 
-print("""
+print(
+    """
 PHILOSOPHICAL QUESTION:
 
 Do Sp(n, F_p) for other (n, p) "exist"?
@@ -255,23 +273,25 @@ THREE POSITIONS:
    Other Sp(n, F_p) universes are just as real as ours.
    We happen to be in the anthropically selected one.
 
-2. PHYSICAL REALISM  
+2. PHYSICAL REALISM
    Only our universe (the one with observers) exists.
    Other (n, p) are mathematical curiosities, not real.
-   
+
 3. W33 UNIQUENESS
    Only W33 is fully self-consistent.
    Other Sp(n, F_p) have internal contradictions.
    W33 is the ONLY possible universe.
 
 Let's investigate option 3!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 6: SELF-CONSISTENCY TEST")
 print("=" * 70)
 
-print("""
+print(
+    """
 BOOTSTRAP CONSTRAINTS:
 
 For a universe to be self-consistent:
@@ -282,27 +302,31 @@ For a universe to be self-consistent:
   5. Gravity must be weaker than other forces (hierarchy)
 
 TEST ON Sp(n, F_p) FAMILY:
-""")
+"""
+)
+
 
 def test_self_consistency(n, p):
     """Test if Sp(n, F_p) universe is self-consistent."""
     v_p, k_p, lam_p, mu_p = symplectic_parameters(n, p)
-    
+
     if v_p is None:
         return "UNKNOWN"
-    
+
     failures = []
-    
+
     # Test 1: α⁻¹ in range
     alpha_inv = alpha_from_params(v_p, k_p, lam_p, mu_p)
     if alpha_inv is None or alpha_inv < 100 or alpha_inv > 200:
-        failures.append(f"α⁻¹={alpha_inv:.1f} out of range" if alpha_inv else "α undefined")
-    
+        failures.append(
+            f"α⁻¹={alpha_inv:.1f} out of range" if alpha_inv else "α undefined"
+        )
+
     # Test 2: d = 3
     d = spatial_dim(p)
     if d != 3:
         failures.append(f"d={d}≠3")
-    
+
     # Test 3: GUT structure (need SU(5) or larger)
     # Requires specific eigenspace structure
     # For W33: 1 + 24 + 15 = SU(5) rep dimensions
@@ -311,18 +335,19 @@ def test_self_consistency(n, p):
         pass  # W33 has SU(5)
     else:
         failures.append("No SU(5) structure")
-    
+
     # Test 4: Hierarchy
     # Need M_Planck >> M_EW
     # For W33: 3^36 separation
     # Other p: p^(v-4) separation
     if p == 2:
         failures.append("Hierarchy too small (p=2)")
-    
+
     if len(failures) == 0:
         return "CONSISTENT ✓"
     else:
         return f"FAILS: {', '.join(failures)}"
+
 
 print(f"{'(n,p)':<10} {'Self-Consistency Result'}")
 print("-" * 60)
@@ -331,20 +356,23 @@ for n, p, _ in cases:
     print(f"({n},{p}){' '*5} {result}")
 print("-" * 60)
 
-print("""
+print(
+    """
 CONCLUSION:
 
 Only (n=4, p=3) passes all self-consistency tests!
 
-W33 is not just anthropically selected - 
+W33 is not just anthropically selected -
 it's the ONLY mathematically consistent option!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 7: THE UNIQUENESS THEOREM (CONJECTURE)")
 print("=" * 70)
 
-print("""
+print(
+    """
 CONJECTURE: W33 UNIQUENESS THEOREM
 
 Among all strongly regular graphs arising from finite geometry,
@@ -363,16 +391,18 @@ If this theorem is true, then:
 
 This would be the ultimate answer to "Why this universe?"
 Because it's the ONLY possible one!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 8: QUANTUM MULTIVERSE?")
 print("=" * 70)
 
-print("""
+print(
+    """
 MANY-WORLDS INTERPRETATION:
 
-Quantum mechanics suggests "many worlds" - 
+Quantum mechanics suggests "many worlds" -
 each measurement branches reality.
 
 DOES W33 ALLOW THIS?
@@ -391,13 +421,15 @@ So many-worlds is COMPATIBLE with W33 uniqueness:
 
 The multiverse question is about PHYSICS, not states.
 W33 says: ONE physics, many states.
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 9: ETERNAL INFLATION?")
 print("=" * 70)
 
-print("""
+print(
+    """
 ETERNAL INFLATION:
 
 In inflation theory, different regions might have different vacua.
@@ -414,15 +446,17 @@ The apparent "multiverse" from eternal inflation
 is actually ONE universe with distant regions.
 
 W33 parameters are UNIVERSAL:
-  v = 40, k = 12, λ = 2, μ = 4 
+  v = 40, k = 12, λ = 2, μ = 4
   ...everywhere, always.
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 10: THE FINAL ANSWER")
 print("=" * 70)
 
-print("""
+print(
+    """
 IS THERE A MULTIVERSE?
 
 W33 THEORY ANSWER: NO (in the physics sense)
@@ -446,13 +480,15 @@ The question "Why W33?" has the answer:
 
 This is not fine-tuning. This is mathematical necessity.
 The universe exists because it MUST.
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("PART XCI CONCLUSIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE MULTIVERSE QUESTION ANSWERED!
 
 KEY INSIGHTS:
@@ -476,7 +512,8 @@ KEY INSIGHTS:
 
 THE UNIVERSE IS NOT FINE-TUNED.
 IT'S THE ONLY OPTION.
-""")
+"""
+)
 
 # Save results
 results = {
@@ -488,18 +525,18 @@ results = {
     "other_universes": {
         "(4,2)": "Fails: p=2 too small, no chemistry",
         "(4,5)": "Fails: d=5 spatial dimensions",
-        "(4,7)": "Fails: d=7 spatial dimensions", 
-        "(6,3)": "Fails: No SU(5) structure"
+        "(4,7)": "Fails: d=7 spatial dimensions",
+        "(6,3)": "Fails: No SU(5) structure",
     },
     "implications": [
         "Universe is unique",
         "Constants are determined",
         "No fine-tuning needed",
-        "Mathematical necessity"
-    ]
+        "Mathematical necessity",
+    ],
 }
 
 with open("PART_XCI_multiverse.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=int)
 
 print("\nResults saved to PART_XCI_multiverse.json")

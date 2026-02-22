@@ -1,0 +1,191 @@
+{
+  "edges": [
+    50,
+    51
+  ],
+  "k": 40,
+  "radius": 1,
+  "time_limit": 30,
+  "tests": [
+    {
+      "pair": [
+        50,
+        3,
+        51,
+        3
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        2
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        17
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        14
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        90
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        103
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        47
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        19
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        100
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        79
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        48
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        15
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        31
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        20
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        1
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        105
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        101
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        6
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        16
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        50,
+        2,
+        51,
+        53
+      ],
+      "status": "INFEASIBLE"
+    }
+  ]
+}

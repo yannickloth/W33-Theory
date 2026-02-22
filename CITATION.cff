@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "W(3,3)-E8 Correspondence Theorem"
+type: software
+authors:
+  - family-names: "Dembski"
+    given-names: "William"
+    name-suffix: "Jr."
+version: "2026.02.16"
+date-released: "2026-02-16"
+url: "https://github.com/wilcompute/W33-Theory"
+repository-code: "https://github.com/wilcompute/W33-Theory"
+license: MIT
+keywords:
+  - "generalized quadrangle"
+  - "E8 Lie algebra"
+  - "Standard Model"
+  - "Hodge theory"
+  - "spectral geometry"
+  - "gauge theory"
+  - "particle physics"
+abstract: >-
+  Complete derivation of the Standard Model from the W(3,3)
+  generalized quadrangle and E8 Lie algebra. 60 proved pillars
+  establish that the 240 edges of W(3,3) biject to the 240 roots
+  of E8, the first homology H₁ = Z⁸¹ carries an irreducible
+  representation matching matter content, the Hodge spectrum
+  0⁸¹+4¹²⁰+10²⁴+16¹⁵ encodes gauge structure, and the Weinberg
+  angle sin²θ_W = 3/8 emerges uniquely from GQ(3,3). All results
+  verified by 280 automated tests with zero free parameters.

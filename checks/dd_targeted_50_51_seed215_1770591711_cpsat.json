@@ -1,0 +1,10 @@
+{
+  "status": "INFEASIBLE",
+  "objective": null,
+  "time_seconds": 2.2521700859069824,
+  "k": 40,
+  "vars": 9600,
+  "triangles": 160,
+  "assignments": null,
+  "found": false
+}

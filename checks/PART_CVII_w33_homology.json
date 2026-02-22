@@ -1,0 +1,46 @@
+{
+  "simplicial_complex": {
+    "0": 40,
+    "1": 240,
+    "2": 160,
+    "3": 40,
+    "4": 0
+  },
+  "boundary_ranks": {
+    "1": 39,
+    "2": 120,
+    "3": 40
+  },
+  "betti_numbers": {
+    "0": 1,
+    "1": 81,
+    "2": 0,
+    "3": 0,
+    "4": 0
+  },
+  "euler_characteristic": -80,
+  "cycle_space": {
+    "spanning_tree_edges": 39,
+    "non_tree_edges": 201,
+    "graph_cycle_rank": 201,
+    "note": "Graph cycle rank = 201 = 240 - 39. But rank(d2) = 120 triangle boundaries kill 120 graph cycles, leaving b_1 = 201 - 120 = 81 independent simplicial 1-cycles."
+  },
+  "tetrahedron_structure": {
+    "triangles_total": 160,
+    "tetrahedra_total": 40,
+    "total_face_incidences": 160,
+    "membership_distribution": {
+      "1": 160
+    },
+    "free_triangles": 0,
+    "all_triangles_in_exactly_one_tet": true
+  },
+  "theorem": {
+    "H0": "Z (connected)",
+    "H1": "Z^81",
+    "H2": "0",
+    "H3": "0",
+    "physical_significance": "H_1(W33) = Z^81 = dim(g_1) of E8 Z3-grading. The cycle space encodes the matter sector: 81 = 27 x 3 = 3 generations of 27-dimensional E6 matter representations."
+  },
+  "elapsed_seconds": 0.7717888355255127
+}

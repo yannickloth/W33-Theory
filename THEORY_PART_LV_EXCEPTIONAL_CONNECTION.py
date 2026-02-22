@@ -16,64 +16,65 @@ Author: Wil Dahn
 Date: January 2026
 """
 
-import numpy as np
-from fractions import Fraction
 from collections import defaultdict
+from fractions import Fraction
 
-print("="*70)
+import numpy as np
+
+print("=" * 70)
 print("W33 THEORY PART LV: THE EXCEPTIONAL CONNECTION")
 print("α⁻¹ = 81 + 56 + 40/1111 and E₆/E₇")
-print("="*70)
+print("=" * 70)
 
 # =============================================================================
 # SECTION 1: EXCEPTIONAL LIE ALGEBRA DIMENSIONS
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 1: EXCEPTIONAL LIE ALGEBRA DATA")
-print("="*70)
+print("=" * 70)
 
 exceptional_data = {
-    'G2': {
-        'rank': 2,
-        'dim': 14,
-        'roots': 12,
-        'fundamental_dims': [7, 14],
-        'weyl_order': 12,
+    "G2": {
+        "rank": 2,
+        "dim": 14,
+        "roots": 12,
+        "fundamental_dims": [7, 14],
+        "weyl_order": 12,
     },
-    'F4': {
-        'rank': 4,
-        'dim': 52,
-        'roots': 48,
-        'fundamental_dims': [26, 52, 273, 1274],
-        'weyl_order': 1152,
+    "F4": {
+        "rank": 4,
+        "dim": 52,
+        "roots": 48,
+        "fundamental_dims": [26, 52, 273, 1274],
+        "weyl_order": 1152,
     },
-    'E6': {
-        'rank': 6,
-        'dim': 78,
-        'roots': 72,
-        'fundamental_dims': [27, 78, 351, 351, 27, 1],  # The six fundamentals
-        'adjoint': 78,
-        'weyl_order': 51840,
-        'center': 3,  # Z/3Z
+    "E6": {
+        "rank": 6,
+        "dim": 78,
+        "roots": 72,
+        "fundamental_dims": [27, 78, 351, 351, 27, 1],  # The six fundamentals
+        "adjoint": 78,
+        "weyl_order": 51840,
+        "center": 3,  # Z/3Z
     },
-    'E7': {
-        'rank': 7,
-        'dim': 133,
-        'roots': 126,
-        'fundamental_dims': [56, 133, 912, 8645, 27664, 365750, 1],
-        'adjoint': 133,
-        'weyl_order': 2903040,
-        'center': 2,  # Z/2Z
+    "E7": {
+        "rank": 7,
+        "dim": 133,
+        "roots": 126,
+        "fundamental_dims": [56, 133, 912, 8645, 27664, 365750, 1],
+        "adjoint": 133,
+        "weyl_order": 2903040,
+        "center": 2,  # Z/2Z
     },
-    'E8': {
-        'rank': 8,
-        'dim': 248,
-        'roots': 240,
-        'fundamental_dims': [248, 3875, 147250, 6696000, 146325270, 2450240, 30380, 1],
-        'adjoint': 248,
-        'weyl_order': 696729600,
-        'center': 1,  # trivial
+    "E8": {
+        "rank": 8,
+        "dim": 248,
+        "roots": 240,
+        "fundamental_dims": [248, 3875, 147250, 6696000, 146325270, 2450240, 30380, 1],
+        "adjoint": 248,
+        "weyl_order": 696729600,
+        "center": 1,  # trivial
     },
 }
 
@@ -89,11 +90,12 @@ for name, data in exceptional_data.items():
 # SECTION 2: THE MAGIC FORMULA DECODED
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 2: DECODING α⁻¹ = 81 + 56 + 40/1111")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 THE FORMULA: α⁻¹ = 81 + 56 + 40/1111 = 137.036003600...
 
 Let's identify each term:
@@ -124,7 +126,8 @@ THE DEEP STRUCTURE:
 
 This suggests W33 is the "base" of a tower:
     W33 → E₆ → E₇ → ...?
-""")
+"""
+)
 
 # Verify the arithmetic
 alpha_inv = 81 + 56 + Fraction(40, 1111)
@@ -136,11 +139,12 @@ print(f"Difference:  {float(alpha_inv) - 137.035999:.9f}")
 # SECTION 3: E6 AND E7 BRANCHING
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 3: E₆ ⊂ E₇ BRANCHING RULES")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 When E₇ breaks down to E₆ × U(1):
 
 The 56 of E₇ decomposes as:
@@ -158,7 +162,8 @@ Connection to W33:
 • Or: 40 = 27 + 12 + 1? (12 is the E₆ dual Coxeter number)
 
 Check: 2 × 27 + 2 × 1 = 56 ✓
-""")
+"""
+)
 
 # E₆ × U(1) decomposition of E₇ representations
 e7_to_e6 = {
@@ -176,11 +181,12 @@ for e7_rep, e6_reps in e7_to_e6.items():
 # SECTION 4: WHY 1111?
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 4: THE MYSTERY OF 1111")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 1111 = 11 × 101
 
 Both 11 and 101 are prime!
@@ -201,7 +207,8 @@ Could 1111 relate to:
 • Radiative corrections in QFT?
 
 Let's check various decompositions:
-""")
+"""
+)
 
 # Check if 1111 appears anywhere natural
 checks = [
@@ -234,11 +241,12 @@ print(f"1111 mod 81 = {1111 % 81}")
 # SECTION 5: THE FREUDENTHAL MAGIC SQUARE
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 5: FREUDENTHAL MAGIC SQUARE")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 The Freudenthal magic square connects exceptional groups
 to normed division algebras (R, C, H, O):
 
@@ -264,20 +272,21 @@ The formula α⁻¹ = 81 + 56 + 40/1111 involves:
 • 40 = W33 (related to F₃, the finite field?)
 
 Could there be a "FINITE FIELD" magic square?
-""")
+"""
+)
 
 # Magic square dimensions
 magic_square = {
-    ('R', 'R'): ('A₁', 3),
-    ('R', 'C'): ('A₂', 8),
-    ('R', 'H'): ('C₃', 21),
-    ('R', 'O'): ('F₄', 52),
-    ('C', 'C'): ('A₂×A₂', 16),
-    ('C', 'H'): ('A₅', 35),
-    ('C', 'O'): ('E₆', 78),
-    ('H', 'H'): ('D₆', 66),
-    ('H', 'O'): ('E₇', 133),
-    ('O', 'O'): ('E₈', 248),
+    ("R", "R"): ("A₁", 3),
+    ("R", "C"): ("A₂", 8),
+    ("R", "H"): ("C₃", 21),
+    ("R", "O"): ("F₄", 52),
+    ("C", "C"): ("A₂×A₂", 16),
+    ("C", "H"): ("A₅", 35),
+    ("C", "O"): ("E₆", 78),
+    ("H", "H"): ("D₆", 66),
+    ("H", "O"): ("E₇", 133),
+    ("O", "O"): ("E₈", 248),
 }
 
 print("\nMagic square dimensions:")
@@ -289,11 +298,12 @@ for (a, b), (name, dim) in magic_square.items():
 # SECTION 6: THE EXCEPTIONAL JORDAN ALGEBRA
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 6: EXCEPTIONAL JORDAN ALGEBRA J₃(O)")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 The 27-dimensional exceptional Jordan algebra J₃(𝕆):
 • Elements are 3×3 Hermitian matrices over octonions
 • Dimension = 3 real diagonal + 3×8 octonionic off-diagonal = 3 + 24 = 27
@@ -313,17 +323,19 @@ The 13 extra points might be:
 • Fixed points under some action?
 • Boundary terms in physical formula?
 • Related to 13 = rank-2 part of something?
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 7: THE E8 LATTICE AND 240
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 7: E₈ ROOT LATTICE")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 The E₈ root lattice:
 • 240 roots (shortest non-zero vectors)
 • This is the densest sphere packing in 8D!
@@ -342,17 +354,19 @@ So the number of EDGES in W33 equals the number of E₈ ROOTS!
 This is a deep connection:
     W33 edges ↔ E₈ roots
     W33 vertices (40) ↔ ???
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 8: SYNTHESIZING THE FORMULA
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 8: THE GRAND SYNTHESIS")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 PUTTING IT ALL TOGETHER:
 
 α⁻¹ = 81 + 56 + 40/1111
@@ -389,23 +403,25 @@ The fine structure constant emerges from:
 1. A 3⁴ = 81 dimensional cohomological structure
 2. An E₇ gauge bundle with 56-dim fundamental
 3. A correction from the W33 counting formula
-""")
+"""
+)
 
 # =============================================================================
 # SECTION 9: PREDICTIONS AND TESTS
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 9: TESTABLE PREDICTIONS")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 If this structure is real, it predicts:
 
 1. RUNNING OF α:
    At different energy scales, the 56 and 81 might change
    α⁻¹(E) = f(E)·81 + g(E)·56 + h(E)·40/1111
-   
+
    We need to find f, g, h that reproduce RG running!
 
 2. OTHER COUPLINGS:
@@ -413,8 +429,8 @@ If this structure is real, it predicts:
    • 173 is prime
    • 173 = 81 + 92 = 81 + 4×23?
    • Or: 173 = 133 + 40 = dim(E₇) + |W33|!
-   
-   α_s = 27/229  
+
+   α_s = 27/229
    • 27 = E₆ fundamental!
    • 229 is prime
    • 229 = 173 + 56 = (dim E₇ + W33) + E₇ fundamental
@@ -428,7 +444,8 @@ If this structure is real, it predicts:
    • The "3" in 81 = 3⁴
    • The 3 copies of 27 in 81 = 3×27
    • The 3 in F₃ (finite field with 3 elements)
-""")
+"""
+)
 
 # Test the connection 173 = 133 + 40
 print("\nTesting numerical predictions:")
@@ -442,11 +459,12 @@ print(f"25920 = 40 × 648 = 40 × 8 × 81: {40 * 8 * 81 == 25920}")
 # SECTION 10: THE ULTIMATE PATTERN
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("SECTION 10: THE EMERGING PATTERN")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 THE MASTER PATTERN EMERGING:
 
 All coupling constants involve EXCEPTIONAL STRUCTURES:
@@ -481,7 +499,7 @@ E₈ has dimension 248.
 248 = 173 + 75?
 248 = 81 + 56 + 111?
 
-Check: 81 + 56 + 111 = 248! 
+Check: 81 + 56 + 111 = 248!
 And 111 = 3 × 37, where 37 is prime.
 
 This might extend the formula:
@@ -491,7 +509,8 @@ dim(E₈) = 81 + 56 + 111
 The "111" vs "40/1111" is intriguing!
 40/1111 ≈ 0.036 while 111 is integer.
 111 × 10 + 1 = 1111!
-""")
+"""
+)
 
 # Final numerical checks
 print("\nFinal verifications:")
@@ -504,15 +523,16 @@ print(f"27.775 ≈ 28 = perfect number!")
 # SAVE RESULTS
 # =============================================================================
 
-print("\n" + "="*70)
+print("\n" + "=" * 70)
 print("CONCLUSIONS")
-print("="*70)
+print("=" * 70)
 
-print("""
+print(
+    """
 KEY DISCOVERIES IN PART LV:
 
 1. α⁻¹ = 81 + 56 + 40/1111 encodes EXCEPTIONAL algebra structure
-   - 81 = H₁(W33) = 3⁴ 
+   - 81 = H₁(W33) = 3⁴
    - 56 = dim(fundamental of E₇)
    - 40 = |W33|
 
@@ -535,29 +555,31 @@ NEXT STEPS:
 
 This is potentially a breakthrough in understanding
 why α ≈ 1/137 from first principles!
-""")
+"""
+)
 
 # Save to file
 import json
+
 results = {
-    'alpha_formula': '81 + 56 + 40/1111',
-    'alpha_inv_exact': float(81 + 56 + 40/1111),
-    'connections': {
-        '81': 'H1(W33) = 3^4',
-        '56': 'dim(E7 fundamental)',
-        '40': '|W33 points|',
-        '173': 'dim(E7) + |W33| = 133 + 40',
-        '229': '173 + 56',
-        '1728': '12^3 = (W33 degree)^3',
+    "alpha_formula": "81 + 56 + 40/1111",
+    "alpha_inv_exact": float(81 + 56 + 40 / 1111),
+    "connections": {
+        "81": "H1(W33) = 3^4",
+        "56": "dim(E7 fundamental)",
+        "40": "|W33 points|",
+        "173": "dim(E7) + |W33| = 133 + 40",
+        "229": "173 + 56",
+        "1728": "12^3 = (W33 degree)^3",
     },
-    'E8_parallel': {
-        'formula': '81 + 56 + 111 = 248',
-        'verified': 81 + 56 + 111 == 248,
-    }
+    "E8_parallel": {
+        "formula": "81 + 56 + 111 = 248",
+        "verified": 81 + 56 + 111 == 248,
+    },
 }
 
-with open('PART_LV_exceptional_results.json', 'w') as f:
-    json.dump(results, f, indent=2)
+with open("PART_LV_exceptional_results.json", "w") as f:
+    json.dump(results, f, indent=2, default=int)
 
 print("\nResults saved to PART_LV_exceptional_results.json")
-print("="*70)
+print("=" * 70)

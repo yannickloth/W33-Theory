@@ -9,9 +9,10 @@ W33 might explain this through its eigenvalue structure:
 The SIGN of the eigenvalues encodes temporal asymmetry!
 """
 
-import numpy as np
-from fractions import Fraction
 import json
+from fractions import Fraction
+
+import numpy as np
 
 print("=" * 70)
 print("W33 THEORY PART XC: THE ARROW OF TIME")
@@ -26,7 +27,8 @@ print("\n" + "=" * 70)
 print("SECTION 1: THE TIME PUZZLE")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE MYSTERY OF TIME'S ARROW:
 
 Physics at the microscopic level is TIME-SYMMETRIC:
@@ -44,13 +46,15 @@ Where does this ASYMMETRY come from?
 
 STANDARD ANSWER: Special initial conditions (low entropy Big Bang)
 W33 ANSWER: Time asymmetry is BUILT INTO the graph structure!
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 2: EIGENVALUE ASYMMETRY")
 print("=" * 70)
 
-print("""
+print(
+    """
 W33 EIGENVALUES:
 
   e₁ = +12  (multiplicity 1)
@@ -59,7 +63,8 @@ W33 EIGENVALUES:
 
 Notice: TWO positive eigenvalues, ONE negative!
 This is an ASYMMETRY in the spectrum.
-""")
+"""
+)
 
 # The sum of eigenvalues
 sum_eig = m1 * e1 + m2 * e2 + m3 * e3
@@ -75,24 +80,29 @@ negative_content = m3 * e3
 print(f"\nSIGNED CONTENT:")
 print(f"  Positive: {m1}×{e1} + {m2}×{e2} = {positive_content}")
 print(f"  Negative: {m3}×{e3} = {negative_content}")
-print(f"  Ratio: {positive_content}/{abs(negative_content)} = {positive_content/abs(negative_content):.2f}")
+print(
+    f"  Ratio: {positive_content}/{abs(negative_content)} = {positive_content/abs(negative_content):.2f}"
+)
 
-print(f"""
+print(
+    f"""
 The positive content is {positive_content/abs(negative_content):.2f}x the negative content!
 This ASYMMETRY could be the origin of time's arrow.
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 3: TIME FROM SPECTRUM")
 print("=" * 70)
 
-print("""
+print(
+    """
 HYPOTHESIS: Time direction is set by eigenvalue sign asymmetry.
 
 Interpretation:
   - Positive eigenvalues → "future-directed" modes
   - Negative eigenvalue → "past-directed" mode
-  
+
 Since positive content > negative content:
   The universe has a PREFERENCE for future direction!
 
@@ -102,7 +112,8 @@ MAGNITUDE MATTERS TOO:
 
 The dominant eigenvalue (k = 12) is POSITIVE.
 This sets the "flow" of time toward the future.
-""")
+"""
+)
 
 # The dominant direction
 print(f"\nDOMINANT EIGENVALUE ANALYSIS:")
@@ -120,7 +131,8 @@ print("\n" + "=" * 70)
 print("SECTION 4: ENTROPY AND THE SECOND LAW")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE SECOND LAW OF THERMODYNAMICS:
 
 Entropy of an isolated system always increases (or stays constant).
@@ -137,7 +149,8 @@ Consider the eigenspaces as "entropic sectors":
   - E₃ (dim 15): Higher entropy (matter sector)
 
 The universe "started" near E₁ (ordered) and evolves toward E₂, E₃ (disordered).
-""")
+"""
+)
 
 # Entropy-like measure from eigenspace dimensions
 # More dimensions = more microstates = higher entropy
@@ -154,7 +167,8 @@ print(f"  S(E₃) = log({m3}) = {entropy_3:.3f}")
 total_entropy = np.log(v)
 print(f"\n  Total: S(W33) = log({v}) = {total_entropy:.3f}")
 
-print(f"""
+print(
+    f"""
 INTERPRETATION:
   - Big Bang: System in E₁, entropy ~ 0
   - Evolution: Spreads to E₂, E₃
@@ -162,13 +176,15 @@ INTERPRETATION:
 
 The ratio S_max/S_min = log(40)/log(1) = ∞
 (Starting entropy was essentially zero!)
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 5: CAUSALITY FROM GRAPH STRUCTURE")
 print("=" * 70)
 
-print("""
+print(
+    """
 CAUSALITY: Effects follow causes.
 
 In graph terms, "causality" could mean:
@@ -185,7 +201,8 @@ The "causal structure" is:
   - Distance 0: Self (1 vertex)
   - Distance 1: Direct causes/effects (12 vertices)
   - Distance 2: Indirect (27 vertices)
-""")
+"""
+)
 
 # Causal structure
 print(f"\nCAUSAL HIERARCHY:")
@@ -195,7 +212,8 @@ print(f"  d=2: {v - k - 1} vertices (indirect)")
 print(f"  Total: {1 + k + (v-k-1)} = {v}")
 
 # Light cone analogy
-print(f"""
+print(
+    f"""
 LIGHT CONE ANALOGY:
   - d=0 is "here-now"
   - d=1 is "light cone edge" (causal contact)
@@ -203,13 +221,15 @@ LIGHT CONE ANALOGY:
 
 The FINITE nature of W33 means causality is DISCRETE!
 At Planck scale, there are exactly {k} causally connected events.
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("SECTION 6: CPT THEOREM AND W33")
 print("=" * 70)
 
-print("""
+print(
+    """
 CPT THEOREM:
 
 Any Lorentz-invariant quantum field theory must be CPT symmetric:
@@ -230,7 +250,8 @@ These should include discrete C, P, T operations:
 
 If Aut(W33) ⊃ {1, C, P, T, CP, CT, PT, CPT}:
   Then CPT theorem is automatic from graph symmetry!
-""")
+"""
+)
 
 # Check if 8 divides |Aut(W33)|
 aut_order = 51840
@@ -243,10 +264,11 @@ print("\n" + "=" * 70)
 print("SECTION 7: WHY TIME MOVES FORWARD")
 print("=" * 70)
 
-print("""
+print(
+    """
 THE DEEP QUESTION: Why does time move at all?
 
-STATIC VIEW: The universe is a 4D "block" 
+STATIC VIEW: The universe is a 4D "block"
   - All of time exists simultaneously
   - The "flow" of time is an illusion
   - But then why do we EXPERIENCE time as flowing?
@@ -265,7 +287,8 @@ One "tick" of time = one automorphism applied.
 
 After 51840 ticks, we return to the start (cyclic time at micro-level).
 But at macro-level, this appears as continuous time.
-""")
+"""
+)
 
 # Time from automorphisms
 planck_time = 5.39e-44  # seconds
@@ -281,7 +304,8 @@ print("\n" + "=" * 70)
 print("SECTION 8: THERMODYNAMIC ARROW")
 print("=" * 70)
 
-print("""
+print(
+    """
 THREE ARROWS OF TIME:
 
 1. THERMODYNAMIC: Entropy increases
@@ -299,7 +323,8 @@ The eigenvalue asymmetry (positive > negative) ensures:
   - Forward memory (psychological)
 
 They align because they share the SAME ORIGIN: W33 structure.
-""")
+"""
+)
 
 # The arrows unified
 print("\nARROW ALIGNMENT FROM W33:")
@@ -313,7 +338,8 @@ print("\n" + "=" * 70)
 print("SECTION 9: COULD TIME RUN BACKWARD?")
 print("=" * 70)
 
-print("""
+print(
+    """
 THOUGHT EXPERIMENT: What if e₃ were the largest eigenvalue?
 
 If the spectrum were {-12, 2, 4} instead of {12, 2, -4}:
@@ -331,7 +357,8 @@ The actual spectrum is {12, 2, -4}.
 
 This is FIXED by the graph structure.
 The arrow of time is not a choice; it's mathematical necessity!
-""")
+"""
+)
 
 # Could we have a different spectrum?
 print("\nCOULD THE SPECTRUM BE DIFFERENT?")
@@ -346,7 +373,8 @@ print("\n" + "=" * 70)
 print("SECTION 10: PREDICTIONS")
 print("=" * 70)
 
-print("""
+print(
+    """
 TESTABLE PREDICTIONS:
 
 1. TIME IS ULTIMATELY DISCRETE
@@ -371,13 +399,15 @@ TESTABLE PREDICTIONS:
 5. THE ARROW IS UNIVERSAL
    - Same direction everywhere in observable universe
    - Because all regions share the same W33 structure
-""")
+"""
+)
 
 print("\n" + "=" * 70)
 print("PART XC CONCLUSIONS")
 print("=" * 70)
 
-print(f"""
+print(
+    f"""
 THE ARROW OF TIME FROM W33!
 
 KEY INSIGHTS:
@@ -400,7 +430,8 @@ KEY INSIGHTS:
 TIME IS NOT MYSTERIOUS!
 It's a necessary consequence of W33's eigenvalue structure.
 The arrow points the way mathematics dictates.
-""")
+"""
+)
 
 # Save results
 results = {
@@ -409,27 +440,23 @@ results = {
     "eigenvalue_asymmetry": {
         "positive_content": int(positive_content),
         "negative_content": int(negative_content),
-        "ratio": float(positive_content / abs(negative_content))
+        "ratio": float(positive_content / abs(negative_content)),
     },
-    "dominant_eigenvalue": {
-        "value": e1,
-        "sign": "positive",
-        "multiplicity": m1
-    },
+    "dominant_eigenvalue": {"value": e1, "sign": "positive", "multiplicity": m1},
     "time_cycle": {
         "automorphisms": aut_order,
         "planck_times_per_cycle": aut_order,
-        "cycle_duration_seconds": float(cycle_time)
+        "cycle_duration_seconds": float(cycle_time),
     },
     "predictions": [
         "Time is discrete at Planck scale",
         "CPT symmetry is exact",
         "Initial entropy was minimal",
-        "Arrow is universal"
-    ]
+        "Arrow is universal",
+    ],
 }
 
 with open("PART_XC_arrow_of_time.json", "w") as f:
-    json.dump(results, f, indent=2)
+    json.dump(results, f, indent=2, default=int)
 
 print("\nResults saved to PART_XC_arrow_of_time.json")

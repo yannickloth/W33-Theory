@@ -1,0 +1,25 @@
+{
+  "generated_at_utc": "2026-02-10T05:44:21.753145+00:00",
+  "python_executable": "C:\\Users\\wiljd\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+  "bundles_total": 2,
+  "bundles_succeeded": 2,
+  "bundles_failed_or_skipped": 0,
+  "results": [
+    {
+      "bundle_dir": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\analysis\\w33_bundle_temp",
+      "out_dir": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\analysis\\w33_bundle_temp\\analysis",
+      "status": "ok",
+      "notes": [],
+      "matches": 54,
+      "total": 54
+    },
+    {
+      "bundle_dir": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\bundles\\W33_Heisenberg_action_bundle_20260209_v1",
+      "out_dir": "C:\\Users\\wiljd\\OneDrive\\Desktop\\Theory of Everything\\artifacts\\bundles\\W33_Heisenberg_action_bundle_20260209_v1\\analysis",
+      "status": "ok",
+      "notes": [],
+      "matches": 54,
+      "total": 54
+    }
+  ]
+}

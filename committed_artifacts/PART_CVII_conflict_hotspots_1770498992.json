@@ -1,0 +1,562 @@
+{
+  "merged_source": "checks\\PART_CVII_infeasible_block_analysis_quick_merged_1770498926.json",
+  "total_blocks_analyzed": 6,
+  "hotspots_top20": [
+    {
+      "edge_index": 53,
+      "edge": [
+        4,
+        10
+      ],
+      "count": 6,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185201Z.json",
+          "start_vertex": 24
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 48,
+      "edge": [
+        4,
+        5
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 49,
+      "edge": [
+        4,
+        6
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 50,
+      "edge": [
+        4,
+        7
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 51,
+      "edge": [
+        4,
+        8
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 52,
+      "edge": [
+        4,
+        9
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 54,
+      "edge": [
+        4,
+        11
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 55,
+      "edge": [
+        4,
+        12
+      ],
+      "count": 5,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185752Z.json",
+          "start_vertex": 6
+        }
+      ]
+    },
+    {
+      "edge_index": 37,
+      "edge": [
+        3,
+        9
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 38,
+      "edge": [
+        3,
+        11
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 39,
+      "edge": [
+        3,
+        13
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 40,
+      "edge": [
+        3,
+        18
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 41,
+      "edge": [
+        3,
+        20
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 42,
+      "edge": [
+        3,
+        22
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 43,
+      "edge": [
+        3,
+        27
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 44,
+      "edge": [
+        3,
+        29
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 45,
+      "edge": [
+        3,
+        31
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 46,
+      "edge": [
+        3,
+        36
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 47,
+      "edge": [
+        3,
+        38
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    },
+    {
+      "edge_index": 95,
+      "edge": [
+        9,
+        11
+      ],
+      "count": 4,
+      "blocks": [
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185135Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185137Z.json",
+          "start_vertex": 9
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185138Z.json",
+          "start_vertex": 3
+        },
+        {
+          "file": "checks\\PART_CVII_e8_bijection_local_seed_20260207T185219Z.json",
+          "start_vertex": 11
+        }
+      ]
+    }
+  ]
+}

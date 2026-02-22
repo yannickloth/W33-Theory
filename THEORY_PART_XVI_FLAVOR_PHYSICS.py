@@ -11,15 +11,18 @@ we now explore:
 """
 
 import math
+
 import numpy as np
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║             THEORY OF EVERYTHING - PART XVI                          ║
 ║                                                                      ║
 ║          THE 81 CYCLES AND FLAVOR PHYSICS                            ║
 ╚══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART A: THE 81 CYCLES STRUCTURE
@@ -30,7 +33,8 @@ print("PART A: STRUCTURE OF THE 81 CYCLES")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 THE 81 CYCLES IN W33
 ═══════════════════════
 
@@ -39,17 +43,18 @@ W33 = W(3,3) has exactly 81 cycles (maximal cliques).
 WHY 81 = 3⁴?
 
 In a whist tournament W(n,n):
-  • Each cycle involves 4 players (K4 structure internally)  
+  • Each cycle involves 4 players (K4 structure internally)
   • Cycles are determined by choosing:
     - 1st dimension: 3 choices
     - 2nd dimension: 3 choices
     - 3rd dimension: 3 choices
     - 4th dimension: 3 choices
-    
+
   Total: 3 × 3 × 3 × 3 = 3⁴ = 81
 
 This is the number of maximal abelian subgroups!
-""")
+"""
+)
 
 # Factorizations of 81
 print("═══ Factorizations of 81 ═══")
@@ -60,7 +65,8 @@ print(f"  81 = 9 × 9    (two factors of 9)")
 print(f"  81 = 27 × 3   (E6 rep × triality)")
 print()
 
-print("""
+print(
+    """
 THE 81-27-3 STRUCTURE
 ═══════════════════════
 
@@ -76,7 +82,8 @@ The 27 of E6 contains (under SO(10) decomposition):
        └────────── fermion spinor (contains SM fermions)
 
 So 81 = 3 × (16 + 10 + 1) = 48 + 30 + 3
-""")
+"""
+)
 
 print(f"  81 = 3 × 16 + 3 × 10 + 3 × 1")
 print(f"     = {3*16} + {3*10} + {3*1}")
@@ -92,7 +99,8 @@ print("PART B: CKM MIXING MATRIX")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 CKM MATRIX: EXPERIMENTAL VALUES
 ═══════════════════════════════
 
@@ -109,7 +117,8 @@ Key features:
   • Nearly diagonal (small mixing)
   • Hierarchical structure: |Vub| << |Vcb| << |Vus|
   • |Vus| ≈ 0.225 ≈ sin(θC) (Cabibbo angle)
-""")
+"""
+)
 
 # Experimental values
 Vus_exp = 0.2252
@@ -131,14 +140,14 @@ print()
 
 # Possible W33 expressions
 candidates = [
-    ("9/40", 9/40),
-    ("1/4 - 1/81", 1/4 - 1/81),
-    ("40/178", 40/178),
-    ("27/121", 27/121),
-    ("√(40/173)/2", math.sqrt(40/173)/2),
-    ("81/(3×121)", 81/(3*121)),
-    ("9/40", 9/40),
-    ("3/√173", 3/math.sqrt(173)),
+    ("9/40", 9 / 40),
+    ("1/4 - 1/81", 1 / 4 - 1 / 81),
+    ("40/178", 40 / 178),
+    ("27/121", 27 / 121),
+    ("√(40/173)/2", math.sqrt(40 / 173) / 2),
+    ("81/(3×121)", 81 / (3 * 121)),
+    ("9/40", 9 / 40),
+    ("3/√173", 3 / math.sqrt(173)),
 ]
 
 print("W33 candidates for sin(θC):")
@@ -148,7 +157,7 @@ for name, val in candidates:
 print()
 
 # Best match: 9/40
-best_cabibbo = 9/40
+best_cabibbo = 9 / 40
 print(f"BEST MATCH: sin(θC) ≈ 9/40 = {best_cabibbo:.6f}")
 print(f"  Interpretation: 9/40 = 9 (W33 substructure) / 40 (W33 points)")
 print(f"  Difference from experiment: {abs(best_cabibbo - Vus_exp):.6f}")
@@ -157,12 +166,12 @@ print()
 # For |Vcb|
 print(f"  |Vcb| = {Vcb_exp:.4f}")
 candidates_cb = [
-    ("1/27 + 1/81", 1/27 + 1/81),
-    ("9/173", 9/173),
-    ("40/1000", 40/1000),
-    ("1/24", 1/24),
-    ("81/1960", 81/1960),
-    ("3/73", 3/73),
+    ("1/27 + 1/81", 1 / 27 + 1 / 81),
+    ("9/173", 9 / 173),
+    ("40/1000", 40 / 1000),
+    ("1/24", 1 / 24),
+    ("81/1960", 81 / 1960),
+    ("3/73", 3 / 73),
 ]
 
 print("W33 candidates for |Vcb|:")
@@ -174,10 +183,10 @@ print()
 # For |Vub|
 print(f"  |Vub| = {Vub_exp:.5f}")
 candidates_ub = [
-    ("9/40 × 1/27/2", (9/40) * (1/27) / 2),
-    ("1/270", 1/270),
-    ("3/810", 3/810),
-    ("1/(81×3)", 1/(81*3)),
+    ("9/40 × 1/27/2", (9 / 40) * (1 / 27) / 2),
+    ("1/270", 1 / 270),
+    ("3/810", 3 / 810),
+    ("1/(81×3)", 1 / (81 * 3)),
 ]
 
 print("W33 candidates for |Vub|:")
@@ -195,7 +204,8 @@ print("PART C: PMNS MIXING MATRIX (NEUTRINOS)")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 PMNS MATRIX: EXPERIMENTAL VALUES
 ════════════════════════════════
 
@@ -208,7 +218,8 @@ Unlike CKM, PMNS has LARGE mixing angles!
   • θ₁₃ ≈ 8.5° (reactor angle)
 
 Key observation: θ₂₃ ≈ 45° = π/4 (maximal mixing!)
-""")
+"""
+)
 
 # Experimental values
 theta12_exp = 33.5 * math.pi / 180
@@ -225,19 +236,19 @@ print(f"  W33: EXACT maximal mixing predicted by K4 symmetry!")
 print(f"        K4 (Klein four group) has order 4 → θ = π/4")
 print()
 
-# For solar angle  
+# For solar angle
 print(f"Solar angle θ₁₂:")
 print(f"  Experiment: {33.5}°")
 print(f"  sin²(θ₁₂) = {math.sin(theta12_exp)**2:.4f}")
 print()
 
 # Check W33 ratios for sin²(θ₁₂)
-sin2_12_exp = math.sin(theta12_exp)**2
+sin2_12_exp = math.sin(theta12_exp) ** 2
 candidates_12 = [
-    ("1/3", 1/3),
-    ("27/81", 27/81),
-    ("40/121", 40/121),
-    ("9/27", 9/27),
+    ("1/3", 1 / 3),
+    ("27/81", 27 / 81),
+    ("40/121", 40 / 121),
+    ("9/27", 9 / 27),
 ]
 
 print("W33 candidates for sin²(θ₁₂):")
@@ -258,12 +269,12 @@ print(f"  Experiment: {8.5}°")
 print(f"  sin²(θ₁₃) = {math.sin(theta13_exp)**2:.4f}")
 print()
 
-sin2_13_exp = math.sin(theta13_exp)**2
+sin2_13_exp = math.sin(theta13_exp) ** 2
 candidates_13 = [
-    ("1/40", 1/40),
-    ("3/121", 3/121),
-    ("1/45", 1/45),
-    ("9/400", 9/400),
+    ("1/40", 1 / 40),
+    ("3/121", 3 / 121),
+    ("1/45", 1 / 45),
+    ("9/400", 9 / 400),
 ]
 
 print("W33 candidates for sin²(θ₁₃):")
@@ -282,7 +293,8 @@ print("PART D: FERMION MASS HIERARCHIES")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 WHY DO MASSES SPAN 13 ORDERS OF MAGNITUDE?
 ═══════════════════════════════════════════
 
@@ -293,15 +305,16 @@ Fermion masses (in GeV):
   • Strange quark: m_s = 0.093
   • Up quark:      m_u = 0.0022
   • Down quark:    m_d = 0.0047
-  
+
   • Tau:           m_τ = 1.777
   • Muon:          m_μ = 0.1057
   • Electron:      m_e = 0.000511
-  
+
   • Neutrinos:     m_ν ~ 10⁻¹¹ (eV scale → 10⁻¹¹ GeV)
 
 Ratio: m_t/m_ν ~ 10¹³ (13 orders of magnitude!)
-""")
+"""
+)
 
 # Key mass ratios
 m_t = 172.76
@@ -321,9 +334,9 @@ print(f"  m_t/m_b = {ratio_tb:.2f}")
 # Try W33 expressions for this ratio
 candidates_tb = [
     ("40", 40),
-    ("81/2", 81/2),
-    ("√(27×64)", math.sqrt(27*64)),
-    ("173/4", 173/4),
+    ("81/2", 81 / 2),
+    ("√(27×64)", math.sqrt(27 * 64)),
+    ("173/4", 173 / 4),
 ]
 
 print(f"  W33 candidates:")
@@ -337,9 +350,9 @@ ratio_mue = m_mu / m_e
 print(f"  m_μ/m_e = {ratio_mue:.2f}")
 
 candidates_mue = [
-    ("81×2.5", 81*2.5),
-    ("3×81-40", 3*81-40),
-    ("27×8", 27*8),
+    ("81×2.5", 81 * 2.5),
+    ("3×81-40", 3 * 81 - 40),
+    ("27×8", 27 * 8),
 ]
 
 print(f"  W33 candidates:")
@@ -353,9 +366,9 @@ ratio_taumu = m_tau / m_mu
 print(f"  m_τ/m_μ = {ratio_taumu:.2f}")
 
 candidates_taumu = [
-    ("27/1.6", 27/1.6),
+    ("27/1.6", 27 / 1.6),
     ("√270", math.sqrt(270)),
-    ("3²×1.87", 9*1.87),
+    ("3²×1.87", 9 * 1.87),
 ]
 
 print(f"  W33 candidates:")
@@ -373,7 +386,8 @@ print("PART E: W33 HIERARCHICAL STRUCTURE")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 W33 HIERARCHY MECHANISM
 ═══════════════════════════
 
@@ -388,10 +402,11 @@ This suggests mass scales follow:
 where λ ≈ 0.22 ≈ sin(θC) ≈ 9/40
 
 This is the "Froggatt-Nielsen" pattern!
-""")
+"""
+)
 
 # Check the hierarchical pattern
-lambda_val = 9/40
+lambda_val = 9 / 40
 print(f"If λ = sin(θC) ≈ 9/40 = {lambda_val:.4f}:")
 print()
 
@@ -409,14 +424,16 @@ print(f"  Actual: m_τ : m_μ : m_e = 1.777 : 0.1057 : 0.000511")
 print(f"                        = 1 : {0.1057/1.777:.4f} : {0.000511/1.777:.6f}")
 print()
 
-print("""
+print(
+    """
 REFINED HIERARCHY:
 
 The charged lepton ratios are closer to:
   m_τ : m_μ : m_e ≈ 1 : λ² : λ⁵
 
 This suggests different W33 "depth" for different particles.
-""")
+"""
+)
 
 # =============================================================================
 # SUMMARY
@@ -427,7 +444,8 @@ print("SUMMARY: W33 FLAVOR PHYSICS")
 print("=" * 72)
 print()
 
-print("""
+print(
+    """
 ╔═══════════════════════════════════════════════════════════════════════╗
 ║  W33 FLAVOR PHYSICS: KEY PREDICTIONS                                  ║
 ╠═══════════════════════════════════════════════════════════════════════╣
@@ -457,7 +475,8 @@ print("""
 ║    • Neutrinos: large mixing, degenerate masses                       ║
 ║    • Both emerge from SAME W33 structure!                             ║
 ╚═══════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # Numerical summary
 print("═══ Numerical Summary ═══")

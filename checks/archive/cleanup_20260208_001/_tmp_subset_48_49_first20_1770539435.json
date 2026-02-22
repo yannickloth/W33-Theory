@@ -1,0 +1,193 @@
+{
+  "edges": [
+    48,
+    49
+  ],
+  "k": 40,
+  "radius": 1,
+  "time_limit": 5,
+  "batch_offset": 0,
+  "batch_limit": 200,
+  "tests": [
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        130
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        129
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        69
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        61
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        159
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        45
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        148
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        201
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        139
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        185
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        77
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        177
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        236
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        125
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        217
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        225
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        52
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        209
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        193
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "pair": [
+        48,
+        20,
+        49,
+        20
+      ],
+      "status": "INFEASIBLE"
+    }
+  ]
+}

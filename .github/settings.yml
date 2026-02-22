@@ -1,0 +1,19 @@
+repository:
+  description: "The W(3,3)-E8 Correspondence Theorem: deriving the Standard Model from a single finite geometry. 43 proved pillars, 213 tests, zero free parameters."
+  homepage: "https://github.com/wilcompute/W33-Theory"
+  topics:
+    - w33
+    - e8
+    - standard-model
+    - theory-of-everything
+    - finite-geometry
+    - generalized-quadrangle
+    - particle-physics
+    - mathematical-physics
+    - hodge-theory
+    - representation-theory
+    - gauge-theory
+    - computational-mathematics
+    - reproducible-research
+    - weinberg-angle
+    - yang-mills

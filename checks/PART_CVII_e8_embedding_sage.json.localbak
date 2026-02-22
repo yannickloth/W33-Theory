@@ -1,0 +1,13 @@
+{
+  "found": false,
+  "time_seconds": 0.0,
+  "attempts": 10,
+  "best": {
+    "max_assigned": 0,
+    "edges_satisfied": 0,
+    "attempt": null,
+    "picked_indices": null,
+    "pos": null,
+    "time_at_best": null
+  }
+}

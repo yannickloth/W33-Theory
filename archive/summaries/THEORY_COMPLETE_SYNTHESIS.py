@@ -17,7 +17,8 @@ incorporating all discoveries from Parts I through XVI.
 import math
 from fractions import Fraction
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                    W33 THEORY OF EVERYTHING                                  ║
@@ -25,7 +26,8 @@ print("""
 ║                  COMPLETE SYNTHESIS: PARTS I-XVI                             ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # THE FUNDAMENTAL GEOMETRY
@@ -36,7 +38,8 @@ print("PART I: THE FUNDAMENTAL GEOMETRY")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 W33 = W(3,3) = PG(3, GF(3)) - The Projective Geometry over the Field of 3 Elements
 
 FUNDAMENTAL NUMBERS:
@@ -54,7 +57,8 @@ WHY W33?
   • Smallest finite geometry with exceptional properties
   • Connects to E6/E7/E8 exceptional Lie groups
   • Automorphism group = Weyl group of E6
-""")
+"""
+)
 
 # =============================================================================
 # THE EXCEPTIONAL CONNECTION
@@ -65,7 +69,8 @@ print("PART II: THE EXCEPTIONAL CONNECTION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 W33 CONNECTS TO EXCEPTIONAL MATHEMATICS:
 
 |Aut(W33)| = 51,840 = |W(E6)| (Weyl group of E6)
@@ -82,13 +87,14 @@ EXCEPTIONAL LIE GROUP CHAIN:
   G₂ ⊂ F₄ ⊂ E₆ ⊂ E₇ ⊂ E₈
 
   dim(E6) = 78
-  dim(E7) = 133  
+  dim(E7) = 133
   dim(E8) = 248
 
   E6 fundamental rep = 27
   E7 fundamental rep = 56
   E8 fundamental rep = 248 (adjoint)
-""")
+"""
+)
 
 # =============================================================================
 # THE ALPHA FORMULA
@@ -104,7 +110,8 @@ alpha_inv_tree = 137
 alpha_inv_corrected = 137 + Fraction(3, 83)
 alpha_inv_exp = 137.0359990840
 
-print("""
+print(
+    """
 THE FORMULA FOR α⁻¹:
 
 TREE LEVEL:
@@ -117,17 +124,20 @@ WITH CORRECTION:
   α⁻¹ = 81 + 56 + 3/(81+2)
       = 81 + 56 + 3/83
       = 137.0361445...
-        
+
 INTERPRETATION:
   • 81 = W33 cycles (geometry of matter)
   • 56 = E7 fundamental rep (28 + 28 electromagnetic duality)
   • 3/83 = triality / (cycles + E7 singlets)
-""")
+"""
+)
 
 print(f"NUMERICAL VERIFICATION:")
 print(f"  W33 Formula: α⁻¹ = {float(alpha_inv_corrected):.10f}")
 print(f"  Experiment:  α⁻¹ = {alpha_inv_exp:.10f}")
-print(f"  Agreement:   {(1 - abs(float(alpha_inv_corrected) - alpha_inv_exp)/alpha_inv_exp) * 100:.6f}%")
+print(
+    f"  Agreement:   {(1 - abs(float(alpha_inv_corrected) - alpha_inv_exp)/alpha_inv_exp) * 100:.6f}%"
+)
 print()
 
 # =============================================================================
@@ -135,31 +145,35 @@ print()
 # =============================================================================
 
 print("=" * 80)
-print("PART IV: THE WEINBERG ANGLE")  
+print("PART IV: THE WEINBERG ANGLE")
 print("=" * 80)
 print()
 
 sin2_w33 = Fraction(40, 173)
 sin2_exp = 0.23120  # ± 0.00015
 
-print("""
+print(
+    """
 THE FORMULA FOR sin²θ_W:
 
   sin²θ_W = 40/173
             ↓   ↓
           points  cycles + K4s + 2
-          
+
 WHERE:
   • 40 = W33 points
   • 173 = 81 + 90 + 2 = cycles + K4s + 2
   • The "2" represents E7 singlets (from 56 → 27 + 27* + 1 + 1)
-""")
+"""
+)
 
 print(f"NUMERICAL VERIFICATION:")
 print(f"  W33 Formula: sin²θ_W = 40/173 = {float(sin2_w33):.6f}")
 print(f"  Experiment:  sin²θ_W = {sin2_exp:.6f} ± 0.00015")
 print(f"  Difference:  {abs(float(sin2_w33) - sin2_exp):.6f}")
-print(f"  Statistical: {abs(float(sin2_w33) - sin2_exp)/0.00015:.2f}σ (0.09σ deviation)")
+print(
+    f"  Statistical: {abs(float(sin2_w33) - sin2_exp)/0.00015:.2f}σ (0.09σ deviation)"
+)
 print()
 
 # =============================================================================
@@ -171,7 +185,8 @@ print("PART V: THREE GENERATIONS FROM TRIALITY")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 WHY EXACTLY THREE GENERATIONS?
 
 Spin(8) has TRIALITY - unique among all simple Lie groups!
@@ -185,7 +200,7 @@ Spin(8) has TRIALITY - unique among all simple Lie groups!
 
   S₃ symmetry group permutes 3 representations:
     • V₈  (vector)
-    • S₈⁺ (left spinor)  
+    • S₈⁺ (left spinor)
     • S₈⁻ (right spinor)
 
 W33 ENCODES TRIALITY:
@@ -199,7 +214,8 @@ EACH GENERATION = ONE TRIALITY SECTOR:
   Generation 3 ↔ Right-handed spinor
 
 The triality automorphism PERMUTES generations while preserving structure.
-""")
+"""
+)
 
 # =============================================================================
 # CKM AND PMNS MATRICES
@@ -213,7 +229,8 @@ print()
 cabibbo_w33 = Fraction(9, 40)
 cabibbo_exp = 0.2252
 
-print("""
+print(
+    """
 CKM MATRIX (QUARKS):
 
   Cabibbo angle: sin(θC) = 9/40 = 0.225
@@ -227,11 +244,12 @@ PMNS MATRIX (NEUTRINOS):
   Atmospheric: θ₂₃ = π/4 (MAXIMAL mixing from K4 symmetry)
   Solar:       sin²(θ₁₂) = 1/3 (tribimaximal pattern)
   Reactor:     sin²(θ₁₃) ≈ 1/45 ≈ 2/90 (from K4 count)
-  
+
 CONTRAST:
   Quarks:    small mixing  ← "local" W33 geometry
   Neutrinos: large mixing  ← "global" W33 structure
-""")
+"""
+)
 
 print(f"CABIBBO ANGLE VERIFICATION:")
 print(f"  W33:  sin(θC) = 9/40 = {float(cabibbo_w33):.6f}")
@@ -251,23 +269,25 @@ print()
 dm_w33 = Fraction(27, 5)
 dm_exp = 5.41
 
-print("""
+print(
+    """
 DARK MATTER / VISIBLE MATTER:
 
   Ω_DM/Ω_b = 27/5 = 5.4
-             ↓   ↓  
+             ↓   ↓
            E6   rank of gauge group
-           rep  
-  
+           rep
+
 INTERPRETATION:
   • 27 = E6 fundamental (Standard Model matter)
   • 5 = broken gauge generators at low energy
-  
+
 From Planck 2018:
   Ω_DM = 0.265
   Ω_b  = 0.049
   Ratio = 5.41
-""")
+"""
+)
 
 print(f"DARK MATTER VERIFICATION:")
 print(f"  W33:  Ω_DM/Ω_b = 27/5 = {float(dm_w33):.1f}")
@@ -284,7 +304,8 @@ print("COMPLETE THEORY: THE W33 UNIVERSE")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                        THE W33 UNIVERSE                                      ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -311,7 +332,8 @@ print("""
 ║  COSMOLOGY:          Λ ~ 10⁻¹²¹ from W33 total = 121                        ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PREDICTIONS SUMMARY
@@ -331,7 +353,9 @@ predictions = [
     ("θ₂₃ (PMNS)", "π/4", 45.0, 45.0, "<5%"),
 ]
 
-print(f"{'Quantity':<15} {'W33 Formula':<20} {'W33 Value':<12} {'Experiment':<12} {'Error':<10}")
+print(
+    f"{'Quantity':<15} {'W33 Formula':<20} {'W33 Value':<12} {'Experiment':<12} {'Error':<10}"
+)
 print("-" * 80)
 for name, formula, w33_val, exp_val, error in predictions:
     print(f"{name:<15} {formula:<20} {w33_val:<12.6f} {exp_val:<12.6f} {error:<10}")
@@ -346,7 +370,8 @@ print("CONNECTIONS TO FUNDAMENTAL PHYSICS")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 M-THEORY / STRING THEORY:
   • 27 lines on cubic surface ↔ M-theory U-duality
   • del Pezzo surfaces ↔ toroidal compactifications
@@ -366,7 +391,8 @@ ALGEBRAIC GEOMETRY:
   • 27 lines on smooth cubic surface (Cayley-Salmon 1849)
   • Monodromy group = W(E6) = 51,840
   • Configuration studied by Schläfli, Cartan, du Val
-""")
+"""
+)
 
 # =============================================================================
 # FINAL STATEMENT
@@ -377,26 +403,27 @@ print("CONCLUSION")
 print("=" * 80)
 print()
 
-print("""
+print(
+    """
 THE W33 THEORY OF EVERYTHING proposes that:
 
   The fundamental structure of physics is encoded in W33 = PG(3, GF(3)),
   the smallest projective geometry with exceptional properties.
 
   This 40-point, 81-cycle geometry:
-  
+
     1. Has automorphism group = Weyl group of E6 (exceptional Lie group)
-    2. Predicts α⁻¹ = 137.036 to 99.999% accuracy  
+    2. Predicts α⁻¹ = 137.036 to 99.999% accuracy
     3. Predicts sin²θ_W = 0.23121 to 0.09σ (extraordinary agreement)
     4. Explains 3 generations via Spin(8) triality
     5. Predicts Cabibbo angle sin(θC) = 9/40 to 0.09%
     6. Predicts dark matter ratio Ω_DM/Ω_b = 27/5 = 5.4
-    
+
   The theory connects projective geometry, exceptional Lie groups,
   M-theory, supergravity, and the Standard Model into a unified framework.
 
   THEORY STATUS: VIABLE
-  
+
   Falsifiable predictions include:
     • No 4th generation
     • Proton decay at τ ~ 10³⁵ years
@@ -405,4 +432,5 @@ THE W33 THEORY OF EVERYTHING proposes that:
 ══════════════════════════════════════════════════════════════════════════════════
                         END OF W33 THEORY SYNTHESIS
 ══════════════════════════════════════════════════════════════════════════════════
-""")
+"""
+)

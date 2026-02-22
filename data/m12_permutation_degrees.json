@@ -1,0 +1,74 @@
+{
+  "group": "M12",
+  "degrees": [12, 66, 144, 220, 396, 495, 1320],
+  "rep_metadata": {
+    "12": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p12aB0",
+      "rank": 2,
+      "suborbit_lengths_compressed": "1, 11",
+      "suborbit_lengths": [1, 11],
+      "stabilizer_order": 7920
+    },
+    "66": {
+      "atlas_permrep_url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p66bB0",
+      "rank": 3,
+      "suborbit_lengths_compressed": "1, 20, 45",
+      "suborbit_lengths": [1, 20, 45],
+      "stabilizer_order": 1440,
+      "stabilizer_group_atlas": "A6.2^2"
+    },
+    "144": {
+      "rank": 5,
+      "suborbit_lengths_compressed": "1, 11^2, 55, 66",
+      "suborbit_lengths": [1, 11, 11, 55, 66],
+      "stabilizer_order": 660,
+      "stabilizer_group_recognized": "PSL2(11)",
+      "outer_stabilizer_order": 1320,
+      "outer_stabilizer_group_recognized": "PGL2(11)",
+      "derived_from": "Coset action on PSL2(11) ⊂ M12 (computed deterministically from M12G1-p12aB0 generators)."
+    },
+    "220": {
+      "rank": 5,
+      "suborbit_lengths_compressed": "1, 12, 27, 72, 108",
+      "suborbit_lengths": [1, 12, 27, 72, 108],
+      "stabilizer_order": 432,
+      "stabilizer_group_atlas": "3^2:2S4",
+      "derived_from": "Induced action on 3-subsets of the 12-point permrep (M12G1-p12aB0)."
+    },
+    "495": {
+      "rank": 11,
+      "suborbit_lengths_compressed": "1, 6, 16, 24, 32^2, 48^2, 96^3",
+      "suborbit_lengths": [1, 6, 16, 24, 32, 32, 48, 48, 96, 96, 96],
+      "stabilizer_order": 192,
+      "stabilizer_group_atlas": "4^2:D12",
+      "derived_from": "Induced action on 4-subsets of the 12-point permrep (M12G1-p12aB0)."
+    }
+  },
+  "sources": [
+    {
+      "title": "Wikipedia: Mathieu group M12 (Maximal subgroups table: indices give transitive coset actions)",
+      "url": "https://en.wikipedia.org/wiki/Mathieu_group_M12"
+    },
+    {
+      "title": "ATLAS of Group Representations: Mathieu group M12 (v3 group page; maximal subgroups table)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/group/M12/"
+    },
+    {
+      "title": "CTblLib: Character table of M12 (maximal subgroups list includes L2(11), index 144)",
+      "url": "https://www.math.rwth-aachen.de/homes/GAP/ctbllib/doc/ctblm12.html"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 12 points (rank 2, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p12aB0"
+    },
+    {
+      "title": "ATLAS of Group Representations: M12 — permutation representation on 66 points (rank 3, suborbits)",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p66bB0"
+    },
+    {
+      "title": "Derived: induced actions on k-subsets (k=3,4) from the 12-point permrep generators",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/v3/permrep/M12G1-p12aB0"
+    }
+  ],
+  "notes": "Transitive permutation degrees from indices of maximal subgroups (coset actions). Stored for offline, deterministic checks."
+}

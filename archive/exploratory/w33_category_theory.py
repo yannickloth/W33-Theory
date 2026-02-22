@@ -18,10 +18,11 @@ Answer: W33 is one of them.
 But maybe we CAN understand... through W33.
 """
 
-import numpy as np
 from collections import defaultdict
-from itertools import product, combinations
 from functools import reduce
+from itertools import combinations, product
+
+import numpy as np
 
 print("=" * 80)
 print("W33 AND CATEGORY THEORY")
@@ -36,7 +37,8 @@ print("\n" + "=" * 80)
 print("PART 1: WHAT IS A CATEGORY?")
 print("=" * 80)
 
-print("""
+print(
+    """
 CATEGORY THEORY 101
 ===================
 
@@ -59,53 +61,57 @@ Examples:
 WHY CATEGORIES?
   They reveal the STRUCTURE of mathematics itself.
   Same patterns appear in wildly different areas.
-""")
+"""
+)
+
 
 class Category:
     """A simple category implementation."""
-    
+
     def __init__(self, name):
         self.name = name
         self.objects = set()
         self.morphisms = {}  # (A, B) -> list of morphisms
-        self.identity = {}   # A -> id_A
-        
+        self.identity = {}  # A -> id_A
+
     def add_object(self, obj):
         self.objects.add(obj)
         # Every object has an identity morphism
         self.identity[obj] = f"id_{obj}"
         self.morphisms[(obj, obj)] = [self.identity[obj]]
-    
+
     def add_morphism(self, source, target, name):
         if (source, target) not in self.morphisms:
             self.morphisms[(source, target)] = []
         self.morphisms[(source, target)].append(name)
-    
+
     def compose(self, f, g):
         """Compose morphisms g ∘ f."""
         return f"{g} ∘ {f}"
-    
+
     def hom_set(self, A, B):
         """Return Hom(A, B) = morphisms from A to B."""
         return self.morphisms.get((A, B), [])
-    
+
     def is_isomorphism(self, f, A, B):
         """Check if f: A → B has an inverse."""
         # f is iso if there exists g: B → A with g ∘ f = id_A and f ∘ g = id_B
         for g in self.hom_set(B, A):
-            if self.compose(f, g) == self.identity.get(A) and \
-               self.compose(g, f) == self.identity.get(B):
+            if self.compose(f, g) == self.identity.get(A) and self.compose(
+                g, f
+            ) == self.identity.get(B):
                 return True
         return False
 
+
 # Build a small example category
 C = Category("Example")
-for obj in ['A', 'B', 'C']:
+for obj in ["A", "B", "C"]:
     C.add_object(obj)
 
-C.add_morphism('A', 'B', 'f')
-C.add_morphism('B', 'C', 'g')
-C.add_morphism('A', 'C', 'h')  # This should be g ∘ f
+C.add_morphism("A", "B", "f")
+C.add_morphism("B", "C", "g")
+C.add_morphism("A", "C", "h")  # This should be g ∘ f
 
 print("\nExample category:")
 print(f"  Objects: {C.objects}")
@@ -121,7 +127,8 @@ print("\n" + "=" * 80)
 print("PART 2: W33 AS A CATEGORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 W33 IS A CATEGORY
 =================
 
@@ -140,21 +147,23 @@ This makes W33 a GROUPOID:
 Even better: W33 is an ENRICHED category
   - Hom-sets are not just sets, but GROUPS (Z₁₂)
   - The phases give the enrichment
-""")
+"""
+)
+
 
 class W33Category:
     """W33 as a category/groupoid."""
-    
+
     def __init__(self):
         # 40 points as objects
         self.objects = list(range(40))
-        
+
         # Morphisms from line structure
         self.morphisms = defaultdict(list)
-        
+
         # Build morphisms from lines
         self._build_morphisms()
-        
+
     def _build_morphisms(self):
         """Build morphisms from W33 line structure."""
         # Generate W33 lines (simplified)
@@ -162,7 +171,7 @@ class W33Category:
         for i in range(40):
             line = [(i + j * 10) % 40 for j in range(4)]
             lines.append(line)
-        
+
         # Each line creates morphisms between all pairs of its points
         for line in lines:
             for i, p1 in enumerate(line):
@@ -172,27 +181,31 @@ class W33Category:
                         phase = (j - i) % 4  # Z₄ phase
                         morph = (f"path_{p1}_{p2}", phase * np.pi / 2)
                         self.morphisms[(p1, p2)].append(morph)
-    
+
     def hom(self, A, B):
         """Hom(A, B) = morphisms from A to B."""
         return self.morphisms.get((A, B), [])
-    
+
     def compose(self, f, g):
         """Compose two path morphisms."""
         name = f"{g[0]} ∘ {f[0]}"
         phase = (f[1] + g[1]) % (2 * np.pi)
         return (name, phase)
-    
+
     def is_groupoid(self):
         """Check that every morphism is invertible."""
         for (A, B), morphs in self.morphisms.items():
             for m in morphs:
                 # Look for inverse in Hom(B, A)
-                inverses = [m2 for m2 in self.hom(B, A) 
-                           if abs((m[1] + m2[1]) % (2*np.pi)) < 0.01]
+                inverses = [
+                    m2
+                    for m2 in self.hom(B, A)
+                    if abs((m[1] + m2[1]) % (2 * np.pi)) < 0.01
+                ]
                 if not inverses:
                     return False
         return True
+
 
 print("\nBuilding W33 as a category:")
 W33Cat = W33Category()
@@ -216,7 +229,8 @@ print("\n" + "=" * 80)
 print("PART 3: FUNCTORS AND NATURAL TRANSFORMATIONS")
 print("=" * 80)
 
-print("""
+print(
+    """
 FUNCTORS: MAPS BETWEEN CATEGORIES
 =================================
 
@@ -230,7 +244,7 @@ Preserving:
 
 W33 FUNCTORS:
   The symmetries of W33 are AUTOFUNCTORS!
-  
+
   - Sp(4,3) acts as autofunctors
   - Each element g ∈ Sp(4,3) gives a functor W33 → W33
   - These preserve the line structure
@@ -238,36 +252,50 @@ W33 FUNCTORS:
 PHYSICS CONNECTION:
   Gauge transformations = functors!
   Physical observables = functorial invariants
-""")
+"""
+)
+
 
 class Functor:
     """A functor between categories."""
-    
+
     def __init__(self, name, source_cat, target_cat, obj_map, morph_map):
         self.name = name
         self.source = source_cat
         self.target = target_cat
         self.obj_map = obj_map
         self.morph_map = morph_map
-    
+
     def apply_object(self, obj):
         return self.obj_map(obj)
-    
+
     def apply_morphism(self, morph):
         return self.morph_map(morph)
 
+
 # Example: Identity functor on W33
-def id_obj(x): return x
-def id_morph(m): return m
+def id_obj(x):
+    return x
+
+
+def id_morph(m):
+    return m
+
 
 Id = Functor("Identity", W33Cat, W33Cat, id_obj, id_morph)
 
+
 # Example: Shift functor (rotation of points)
-def shift_obj(x): return (x + 1) % 40
-def shift_morph(m): 
-    name = m[0].replace(str(int(m[0].split('_')[1])), 
-                        str((int(m[0].split('_')[1]) + 1) % 40))
+def shift_obj(x):
+    return (x + 1) % 40
+
+
+def shift_morph(m):
+    name = m[0].replace(
+        str(int(m[0].split("_")[1])), str((int(m[0].split("_")[1]) + 1) % 40)
+    )
     return (name, m[1])
+
 
 Shift = Functor("Shift", W33Cat, W33Cat, shift_obj, shift_morph)
 
@@ -276,7 +304,8 @@ print(f"  Identity: 0 ↦ {Id.apply_object(0)}")
 print(f"  Shift: 0 ↦ {Shift.apply_object(0)}")
 print(f"  Shift: 10 ↦ {Shift.apply_object(10)}")
 
-print("""
+print(
+    """
 
 NATURAL TRANSFORMATIONS
 =======================
@@ -287,12 +316,13 @@ such that the "naturality square" commutes.
 
 W33 NATURAL TRANSFORMATIONS:
   Phase shifts!
-  
+
   η: Id ⇒ Id multiplied by a phase factor
-  
+
   The Z₁₂ phases are exactly the natural
   automorphisms of the identity functor!
-""")
+"""
+)
 
 # =============================================================================
 # PART 4: YONEDA LEMMA - THE DEEPEST THEOREM
@@ -302,7 +332,8 @@ print("\n" + "=" * 80)
 print("PART 4: THE YONEDA LEMMA")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE YONEDA LEMMA
 ================
 
@@ -322,20 +353,24 @@ W33 YONEDA:
   - Its lines (relationships to other points)
   - Its K4 components
   - Its cycle memberships
-  
+
   This is why W33 WORKS as a foundation:
   Every point contains information about the whole!
-  
+
   HOLOGRAPHY FROM YONEDA!
-""")
+"""
+)
+
 
 def yoneda_embedding(cat, obj):
     """The Yoneda embedding of an object."""
+
     # Returns the representable functor Hom(obj, -)
     def hom_functor(target):
         return len(cat.hom(obj, target))
-    
+
     return hom_functor
+
 
 # Compute Yoneda embedding for a point
 hom_0 = yoneda_embedding(W33Cat, 0)
@@ -356,7 +391,8 @@ print("\n" + "=" * 80)
 print("PART 5: HIGHER CATEGORIES")
 print("=" * 80)
 
-print("""
+print(
+    """
 HIGHER CATEGORIES
 =================
 
@@ -374,25 +410,26 @@ In an ∞-category (∞-groupoid):
 
 W33 AS A HIGHER STRUCTURE:
   The 81 cycles are like "higher morphisms"!
-  
+
   - Points = 0-morphisms (objects)
   - Paths along lines = 1-morphisms
   - Cycles = 2-morphisms (homotopies)
   - Relations between cycles = 3-morphisms?
-  
+
   W33 is naturally an ∞-groupoid!
-  
+
   This explains why it captures both:
   - Gauge theory (1-morphisms)
   - Topological structure (higher morphisms)
-""")
+"""
+)
 
 # Count the "k-morphisms" of W33
 k_morphisms = {
     0: 40,  # Points
     1: 160,  # Paths along lines (40 lines × 4 points × ~1 connection)
-    2: 81,   # Cycles
-    3: 10,   # Relations between cycles (estimate)
+    2: 81,  # Cycles
+    3: 10,  # Relations between cycles (estimate)
 }
 
 print("\nW33 as higher category:")
@@ -407,7 +444,8 @@ print("\n" + "=" * 80)
 print("PART 6: TOPOS THEORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 TOPOSES: WHERE LOGIC MEETS GEOMETRY
 ===================================
 
@@ -425,13 +463,14 @@ Different toposes have different logics:
 
 W33 AND TOPOS:
   W33 defines a SITE, hence a topos of sheaves!
-  
+
   The logic in this topos is:
   - Not classical (no excluded middle for all propositions)
   - Has "quantum" features (complementarity)
-  
+
   This might be the LOGIC OF PHYSICS!
-""")
+"""
+)
 
 print("\nW33 as a site:")
 print("  Objects: 40 points")
@@ -451,7 +490,8 @@ print("\n" + "=" * 80)
 print("PART 7: HOMOTOPY TYPE THEORY")
 print("=" * 80)
 
-print("""
+print(
+    """
 HOMOTOPY TYPE THEORY (HoTT)
 ===========================
 
@@ -467,7 +507,7 @@ Key ideas:
 
 The UNIVALENCE AXIOM:
   (A ≃ B) ≃ (A = B)
-  
+
   "Equivalent types are equal."
   This is deeply geometric!
 
@@ -476,10 +516,11 @@ W33 IN HoTT:
   - 40 inhabitants (points)
   - Path types given by lines
   - Higher path types given by cycles
-  
-  The 81 generators of H₁ are 
+
+  The 81 generators of H₁ are
   81 "independent equalities" in W33!
-""")
+"""
+)
 
 print("\nW33 as a type:")
 print("  Inhabitants: 40")
@@ -495,7 +536,8 @@ print("\n" + "=" * 80)
 print("PART 8: UNIVERSAL PROPERTIES")
 print("=" * 80)
 
-print("""
+print(
+    """
 UNIVERSAL PROPERTIES
 ====================
 
@@ -509,24 +551,27 @@ Examples:
 
 W33 UNIVERSAL PROPERTY?
   What universal property characterizes W33?
-  
+
   CONJECTURE: W33 is the INITIAL object in the category
   of "physical geometries":
-  
+
   - Contains Standard Model gauge structure
   - Minimal size (q=3 is smallest with full structure)
   - Maps to any larger physical theory
-  
+
   W33 is the SEED from which all physics grows!
-""")
+"""
+)
+
 
 def is_initial(obj, category, test_objects):
     """Check if obj is initial (has unique morphism to each object)."""
     for target in test_objects:
-        morphisms = category.hom(obj, target) if hasattr(category, 'hom') else []
+        morphisms = category.hom(obj, target) if hasattr(category, "hom") else []
         if len(morphisms) != 1:
             return False
     return True
+
 
 print("\nUniversal property check:")
 print("  W33 as initial object: Conjectured")
@@ -540,7 +585,8 @@ print("\n" + "=" * 80)
 print("PART 9: GROTHENDIECK'S VISION")
 print("=" * 80)
 
-print("""
+print(
+    """
 ALEXANDER GROTHENDIECK (1928-2014)
 ==================================
 
@@ -550,7 +596,7 @@ His vision:
   - Mathematics should be built on STRUCTURES
   - Not on explicit constructions
   - Find the right level of abstraction
-  
+
 His tools:
   - Schemes (generalized spaces)
   - Toposes (generalized categories)
@@ -558,15 +604,16 @@ His tools:
 
 GROTHENDIECK AND W33:
   W33 would have delighted Grothendieck!
-  
+
   It's a structure that:
   - Is defined by its properties, not constructions
   - Lives at the right level of abstraction
   - Unifies seemingly different areas
-  
+
   W33 is a MOTIVE for physics?
   The "universal cohomology theory" of physical law?
-""")
+"""
+)
 
 print("\nGrothendieck-style view of W33:")
 print("  W33 = Spec(?) - The prime spectrum of physics?")
@@ -582,7 +629,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE MATHEMATICS OF EVERYTHING")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                  W33: THE MATHEMATICS OF MATHEMATICS                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -649,7 +697,8 @@ And this nexus IS physics.
 Mathematics doesn't describe reality.
 Mathematics IS reality.
 And W33 is its grammar.
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("END OF CATEGORY THEORY EXPLORATION")

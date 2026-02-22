@@ -1,0 +1,23 @@
+{
+  "group_size": 25920,
+  "b1": 81,
+  "commutant_dim": 1,
+  "avg_chi_squared": 1.0000000000000002,
+  "n_irreducible_components": 1,
+  "component_dimensions": [
+    81
+  ],
+  "decomposition": "81 = 81",
+  "all_generators_preserve": true,
+  "C2_eigenvalues": [
+    [
+      0.01234567901234569,
+      81
+    ]
+  ],
+  "elapsed_seconds": 53.3185248374939,
+  "irreducibility_checks": {
+    "component_0": {
+      "dimension": 81,
+      "chi_sq_avg": 1.0,
+      "irreducible":

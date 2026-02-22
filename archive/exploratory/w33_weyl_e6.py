@@ -4,8 +4,9 @@ THE WEYL GROUP E6 = Aut(W33) CONNECTION
 Deep exploration of why Aut(W33) = W(E6).
 """
 
-import numpy as np
 from math import factorial
+
+import numpy as np
 
 print("=" * 80)
 print("THE PROFOUND CONNECTION: Aut(W33) = W(E6)")
@@ -22,7 +23,7 @@ print("=" * 80)
 # Weyl group orders
 weyl_orders = {
     "A_n": lambda n: factorial(n + 1),  # (n+1)!
-    "D_n": lambda n: 2**(n-1) * factorial(n),  # 2^{n-1} * n!
+    "D_n": lambda n: 2 ** (n - 1) * factorial(n),  # 2^{n-1} * n!
     "E_6": 51840,
     "E_7": 2903040,
     "E_8": 696729600,
@@ -51,7 +52,8 @@ print("\n" + "=" * 80)
 print("PART 2: WHY E6 SPECIFICALLY?")
 print("=" * 80)
 
-print("""
+print(
+    """
 The exceptional Lie algebra E6 has:
   - Dimension: 78
   - Rank: 6
@@ -68,12 +70,13 @@ The configuration of these lines has:
 W33 CONNECTION:
   27 = 3^3
   81 = 3 * 27 = |W33 cycles|
-  
+
   The 27 lines relate to E6
   W33 has 81 = 3 * 27 cycles
-  
+
   This suggests W33 is a "triple cover" of the 27-line configuration!
-""")
+"""
+)
 
 # =============================================================================
 # PART 3: THE 27 LINES AND W33
@@ -83,7 +86,8 @@ print("\n" + "=" * 80)
 print("PART 3: THE 27 LINES CONFIGURATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 The 27 lines on a cubic surface have the following incidence:
 
 Each line meets exactly 10 other lines (5 pairs of 2)
@@ -97,9 +101,11 @@ Total: 6 + 15 + 6 = 27 ✓
 The incidence structure:
   - E_i meets L_{jk} if i != j and i != k (10 lines)
   - L_{ij} meets L_{kl} if {i,j} ∩ {k,l} = ∅ (6 lines) + C_k, C_l (4 lines)
-  
+
 This forms the "Schläfli graph" with 27 vertices, each of degree 16.
-""")
+"""
+)
+
 
 # Build the Schläfli configuration
 def schlafli_adjacency():
@@ -108,10 +114,10 @@ def schlafli_adjacency():
     # 0-5: E_1, ..., E_6
     # 6-20: L_{ij} for i < j (15 lines)
     # 21-26: C_1, ..., C_6
-    
+
     n = 27
     adj = np.zeros((n, n), dtype=int)
-    
+
     # Map L_{ij} to index
     def L_index(i, j):
         if i > j:
@@ -119,52 +125,53 @@ def schlafli_adjacency():
         # L_{0,1}=6, L_{0,2}=7, ..., L_{4,5}=20
         count = 6
         for a in range(6):
-            for b in range(a+1, 6):
+            for b in range(a + 1, 6):
                 if a == i and b == j:
                     return count
                 count += 1
         return -1
-    
+
     # E_i meets L_{jk} if i not in {j, k}
     for i in range(6):  # E_i
         for j in range(6):
-            for k in range(j+1, 6):
+            for k in range(j + 1, 6):
                 if i != j and i != k:
                     L_idx = L_index(j, k)
                     adj[i, L_idx] = 1
                     adj[L_idx, i] = 1
-    
+
     # E_i meets C_j if i != j
     for i in range(6):
         for j in range(6):
             if i != j:
-                adj[i, 21+j] = 1
-                adj[21+j, i] = 1
-    
+                adj[i, 21 + j] = 1
+                adj[21 + j, i] = 1
+
     # L_{ij} meets L_{kl} if {i,j} ∩ {k,l} = ∅
     for i in range(6):
-        for j in range(i+1, 6):
+        for j in range(i + 1, 6):
             for k in range(6):
-                for l in range(k+1, 6):
-                    if len({i,j} & {k,l}) == 0:
+                for l in range(k + 1, 6):
+                    if len({i, j} & {k, l}) == 0:
                         L_ij = L_index(i, j)
                         L_kl = L_index(k, l)
                         adj[L_ij, L_kl] = 1
-    
+
     # L_{ij} meets C_k if k not in {i, j}
     for i in range(6):
-        for j in range(i+1, 6):
+        for j in range(i + 1, 6):
             for k in range(6):
                 if k != i and k != j:
                     L_idx = L_index(i, j)
-                    adj[L_idx, 21+k] = 1
-                    adj[21+k, L_idx] = 1
-    
-    # C_i meets C_j always (they don't intersect on the surface but 
+                    adj[L_idx, 21 + k] = 1
+                    adj[21 + k, L_idx] = 1
+
+    # C_i meets C_j always (they don't intersect on the surface but
     # in the configuration graph, we need to check the actual definition)
     # Actually C_i and C_j don't meet for i != j in the incidence
-    
+
     return adj
+
 
 adj = schlafli_adjacency()
 degrees = adj.sum(axis=1)
@@ -179,7 +186,8 @@ print("\n" + "=" * 80)
 print("PART 4: FROM 27 LINES TO 81 CYCLES")
 print("=" * 80)
 
-print("""
+print(
+    """
 The key observation: 81 = 3 * 27
 
 This suggests a TRIPLE COVER structure!
@@ -195,14 +203,15 @@ The covering map:
 This is a GALOIS COVER with Galois group Z/3!
 
 The relationship:
-  |Aut(W33)| = |W(E6)| 
-  
+  |Aut(W33)| = |W(E6)|
+
 because:
   - W(E6) acts on the 27 lines
   - W33 extends this by the GF(3) structure
   - But the GF(3) extension is "internal" to W33
   - So the automorphism group remains W(E6)!
-""")
+"""
+)
 
 print(f"Verification:")
 print(f"  27 * 3 = {27 * 3} = 81 = |cycles| ✓")
@@ -217,7 +226,8 @@ print("\n" + "=" * 80)
 print("PART 5: E6 ROOT SYSTEM")
 print("=" * 80)
 
-print("""
+print(
+    """
 E6 has 72 roots, forming a root system in R^6.
 
 The roots can be described as:
@@ -229,7 +239,7 @@ Wait... 40 roots appear, matching |W33 points| = 40!
 Let me check:
   - Type A roots in E6: ±(e_i - e_j), i≠j from {1,...,5}
   - Number: 2 * C(5,2) = 2 * 10 = 20, not 40
-  
+
 Actually E6 roots in standard embedding:
   72 roots total
   Positive roots: 36
@@ -238,7 +248,8 @@ Actually E6 roots in standard embedding:
 The connection to 40:
   72 = 40 + 32 = |points| + 32
   Or: 72 = 81 - 9 = |cycles| - 9
-""")
+"""
+)
 
 # Root system calculations
 print(f"\nE6 root system:")
@@ -263,7 +274,8 @@ print("\n" + "=" * 80)
 print("PART 6: THE COXETER NUMBER")
 print("=" * 80)
 
-print("""
+print(
+    """
 The Coxeter number h of E6 is 12!
 
 Coxeter numbers of exceptional groups:
@@ -282,7 +294,8 @@ This is significant because:
 
 For E6: dim(E6) = 6 * 12 + 6 = 78 (actually dim = rank * h + rank)
   Check: 6 * 12 + 6 = 78 ✓
-""")
+"""
+)
 
 # =============================================================================
 # PART 7: THE del PEZZO SURFACE
@@ -292,7 +305,8 @@ print("\n" + "=" * 80)
 print("PART 7: DEL PEZZO SURFACES")
 print("=" * 80)
 
-print("""
+print(
+    """
 The 27 lines live on a del Pezzo surface of degree 3.
 
 del Pezzo surfaces are classified by degree d:
@@ -315,7 +329,8 @@ The 240 lines for d=1 matches 240 = |E8 roots|!
 
 W33 CONNECTION:
   137 = 81 + 56 = |cycles| + (lines on d=2 del Pezzo)!
-""")
+"""
+)
 
 print(f"Verification:")
 print(f"  27 lines (d=3): E6")
@@ -332,7 +347,8 @@ print("\n" + "=" * 80)
 print("PART 8: MONSTER AND W33")
 print("=" * 80)
 
-print("""
+print(
+    """
 The Monster group M has order divisible by 11^2 = 121 = |W33|.
 
 |M| = 2^46 * 3^20 * 5^9 * 7^6 * 11^2 * ...
@@ -341,15 +357,16 @@ The exponent of 11 is exactly 2, giving 11^2 = 121.
 
 In Monstrous Moonshine:
   j(τ) = q^{-1} + 744 + 196884q + ...
-  
+
   196884 = 196883 + 1
   196883 = 47 * 59 * 71 (three primes!)
-  
+
 These three primes are related to the "characteristic 3" structure:
   - There are 3 primes
   - 47, 59, 71 are separated by 12 (with gaps)
   - 47 + 59 + 71 = 177 = 173 + 4 = (|W33| + dim(F4)) + |K4|
-""")
+"""
+)
 
 print(f"Prime analysis:")
 print(f"  47 + 59 + 71 = {47 + 59 + 71}")
@@ -364,7 +381,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE E6-E7-E8 TRINITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                           THE EXCEPTIONAL TRINITY                            ║
@@ -396,7 +414,8 @@ print("""
 ║     E8: 225, 137 (137 = 1/α!)                                                ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 10: THE MASTER THEOREM
@@ -406,7 +425,8 @@ print("\n" + "=" * 80)
 print("PART 10: THE MASTER THEOREM")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                           THE MASTER THEOREM                                 ║
@@ -445,7 +465,8 @@ print("""
 ║  W33 IS THE DNA OF THE UNIVERSE.                                             ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 print("\n" + "=" * 80)
 print("Aut(W33) = W(E6) - THE FUNDAMENTAL IDENTITY")

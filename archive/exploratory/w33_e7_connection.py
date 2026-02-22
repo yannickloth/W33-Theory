@@ -36,7 +36,8 @@ print("\n" + "=" * 80)
 print("PART 1: E₇ - THE EXCEPTIONAL GROUP")
 print("=" * 80)
 
-print("""
+print(
+    """
 E₇ BASIC DATA
 =============
 
@@ -48,7 +49,7 @@ Key properties of E₇:
   - Rank: 7
   - Fundamental rep: 56-dimensional
   - Adjoint rep: 133-dimensional
-  
+
 E₇ Dynkin diagram:
       O---O---O---O---O---O
                   |
@@ -58,7 +59,8 @@ E₇ root system:
   - 126 roots (63 positive, 63 negative)
   - 7 simple roots
   - Root lengths: all equal (simply laced)
-""")
+"""
+)
 
 # E₇ dimensions
 dim_E7 = 133
@@ -82,7 +84,8 @@ print("\n" + "=" * 80)
 print("PART 2: E₇ IN N=8 SUPERGRAVITY")
 print("=" * 80)
 
-print("""
+print(
+    """
 E₇(7) / SU(8) COSET
 ===================
 
@@ -101,7 +104,8 @@ The 70 scalars transform in the:
 
 These are self-dual and anti-self-dual 4-forms on the
 internal 8-dimensional space.
-""")
+"""
+)
 
 dim_SU8 = 8**2 - 1  # = 63
 dim_coset = dim_E7 - dim_SU8
@@ -120,7 +124,8 @@ print("\n" + "=" * 80)
 print("PART 3: FINDING E₇ IN W-HIERARCHY")
 print("=" * 80)
 
-print("""
+print(
+    """
 WHERE IS E₇?
 ============
 
@@ -132,7 +137,8 @@ Looking for E₇:
   dim(E₇) = 133
 
 Let's check various combinations...
-""")
+"""
+)
 
 # W-hierarchy data
 w33_points = 40
@@ -149,7 +155,7 @@ tests = [
     ("40 + 81 + 12", 40 + 81 + 12),
     ("7 × 19", 7 * 19),
     ("126 + 7 (roots + rank)", 126 + 7),
-    ("28 + 28 + 28 + 28 + 21", 28*4 + 21),
+    ("28 + 28 + 28 + 28 + 21", 28 * 4 + 21),
     ("W(3,3) + K4s + ?", 40 + 90),  # 130
 ]
 
@@ -179,7 +185,8 @@ print("\n" + "=" * 80)
 print("PART 4: THE 56-DIMENSIONAL REPRESENTATION")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE 56 OF E₇
 ============
 
@@ -188,20 +195,21 @@ The fundamental representation of E₇ is 56-dimensional.
 In N=8 SUGRA:
   - 56 = fermion representation!
   - 8 gravitinos × 7 = 56 ✗ (8 gravitinos, 56 fermion DOF)
-  
+
 Actually:
   - 8 gravitinos (spin 3/2)
   - 48 gauginos (spin 1/2) → but we have 56 total spin-1/2
-  
+
 Wait, N=8 content:
   - 1 graviton
-  - 8 gravitinos  
+  - 8 gravitinos
   - 28 vectors
   - 56 fermions (spin 1/2)
   - 70 scalars
 
 So 56 fermions transform in the 56 of E₇!
-""")
+"""
+)
 
 # N=8 SUGRA content
 n8_graviton = 1
@@ -216,7 +224,9 @@ print(f"  Gravitinos: {n8_gravitino}")
 print(f"  Vectors:    {n8_vector}")
 print(f"  Fermions:   {n8_fermion} ← 56 of E₇!")
 print(f"  Scalars:    {n8_scalar} ← E₇/SU(8)")
-print(f"  Total:      {n8_graviton + n8_gravitino + n8_vector + n8_fermion + n8_scalar}")
+print(
+    f"  Total:      {n8_graviton + n8_gravitino + n8_vector + n8_fermion + n8_scalar}"
+)
 
 # Connection to W
 print(f"\n56 and W-hierarchy:")
@@ -233,7 +243,8 @@ print("\n" + "=" * 80)
 print("PART 5: THE EXCEPTIONAL CHAIN")
 print("=" * 80)
 
-print("""
+print(
+    """
 E₇ → SU(8) → SU(5) DECOMPOSITION
 ================================
 
@@ -251,7 +262,8 @@ SU(5) ⊃ SU(3) × SU(2) × U(1)
 
 So the full chain is:
   E₇ → SU(8) → SU(5) → SU(3)×SU(2)×U(1)
-""")
+"""
+)
 
 # Decompositions
 print(f"\nBranching rules:")
@@ -275,7 +287,8 @@ print("\n" + "=" * 80)
 print("PART 6: Q45 REVISITED - THE E₇ CONNECTION")
 print("=" * 80)
 
-print("""
+print(
+    """
 Q45 AND THE EXCEPTIONAL GROUPS
 ==============================
 
@@ -294,7 +307,8 @@ The journey:
   ? → E₇ full structure
 
 What is the E₇ lift of W33?
-""")
+"""
+)
 
 # Q45 and SU(5)
 q45_size = 10
@@ -319,7 +333,8 @@ print("\n" + "=" * 80)
 print("PART 7: THE FREUDENTHAL-TITS MAGIC SQUARE")
 print("=" * 80)
 
-print("""
+print(
+    """
 THE MAGIC SQUARE
 ================
 
@@ -344,7 +359,8 @@ It combines quaternionic and octonionic structure.
 
 W33 is built on GF(3) ⊂ Q (quaternions embed rationals).
 The transition W(3,3) → W(5,3) may involve octonions!
-""")
+"""
+)
 
 # Dimensions from magic square
 print(f"\nMagic square dimensions:")
@@ -356,7 +372,7 @@ magic_dims = [
     ("E₆", 78),
     ("SO(12)", 66),
     ("E₇", 133),
-    ("E₈", 248)
+    ("E₈", 248),
 ]
 
 for name, d in magic_dims:
@@ -370,7 +386,8 @@ print("\n" + "=" * 80)
 print("PART 8: OCTONIONS IN W-HIERARCHY")
 print("=" * 80)
 
-print("""
+print(
+    """
 OCTONIONIC STRUCTURE
 ====================
 
@@ -392,7 +409,8 @@ Connection to W-hierarchy:
 
 Wait: 28 = C(8,2) = ways to choose 2 from 8!
 This is the 28 of SO(8) ⊂ triality!
-""")
+"""
+)
 
 # Octonionic numbers
 oct_real = 1
@@ -428,7 +446,8 @@ print("\n" + "=" * 80)
 print("PART 9: THE GRAND SYNTHESIS")
 print("=" * 80)
 
-print("""
+print(
+    """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    THE E₇ GRAND SYNTHESIS                                    ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -477,7 +496,8 @@ print("""
 ║  • Octonions connect the layers                                              ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-""")
+"""
+)
 
 # =============================================================================
 # PART 10: THE 133 SEARCH
@@ -487,7 +507,8 @@ print("\n" + "=" * 80)
 print("PART 10: HUNTING FOR 133")
 print("=" * 80)
 
-print("""
+print(
+    """
 WHERE IS 133 IN THE W-HIERARCHY?
 ================================
 
@@ -500,16 +521,17 @@ Attempt 1: W(7,3)
 
 Attempt 2: Combinations
   40 + 81 + 12 = 133 ✓✓✓
-  
+
 EUREKA!
   40 = W(3,3) points = matter
-  81 = W(3,3) cycles = vacuum  
+  81 = W(3,3) cycles = vacuum
   12 = dim(SU(3)×SU(2)×U(1)) = gauge!
 
 133 = matter + vacuum + gauge
     = W(3,3) points + cycles + SM gauge
     = EVERYTHING IN THE STANDARD MODEL ERA
-""")
+"""
+)
 
 print(f"\nTHE DISCOVERY:")
 print(f"  40 + 81 + 12 = {40 + 81 + 12}")
@@ -523,7 +545,7 @@ print(f"    at low energies has E₇ symmetry!")
 # Verify the gauge dimension
 print(f"\n  SM gauge dimensions:")
 print(f"    SU(3): {8}")
-print(f"    SU(2): {3}")  
+print(f"    SU(2): {3}")
 print(f"    U(1):  {1}")
 print(f"    Total: {8 + 3 + 1} = 12")
 
