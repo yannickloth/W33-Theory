@@ -1,0 +1,147 @@
+{
+  "generators": [
+    {
+      "name": "Transvection T\u2081",
+      "matrix": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "fixed_points": 24,
+      "num_cycles": 72,
+      "cycle_type": {
+        "3": 72
+      },
+      "is_reflection": false
+    },
+    {
+      "name": "Transvection T\u2082",
+      "matrix": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "fixed_points": 24,
+      "num_cycles": 72,
+      "cycle_type": {
+        "3": 72
+      },
+      "is_reflection": false
+    },
+    {
+      "name": "Block Swap",
+      "matrix": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0
+        ]
+      ],
+      "fixed_points": 8,
+      "num_cycles": 116,
+      "cycle_type": {
+        "2": 116
+      },
+      "is_reflection": true
+    },
+    {
+      "name": "Scaling S",
+      "matrix": [
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      "fixed_points": 240,
+      "num_cycles": 0,
+      "cycle_type": {},
+      "is_reflection": true
+    }
+  ],
+  "w33_params": {
+    "vertices": 40,
+    "edges": 240,
+    "regularity": 12
+  }
+}
