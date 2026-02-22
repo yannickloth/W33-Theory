@@ -1,0 +1,68 @@
+{
+  "w33_params": {
+    "vertices": 40,
+    "edges": 240,
+    "beta_1": 201
+  },
+  "homology": {
+    "rank": 201,
+    "num_cycles": 201,
+    "cycle_lengths": [
+      4,
+      4,
+      4,
+      5,
+      5,
+      4,
+      5,
+      5,
+      4,
+      5,
+      5,
+      4,
+      4,
+      4,
+      5,
+      5,
+      4,
+      5,
+      5,
+      4
+    ]
+  },
+  "intersection_form": {
+    "shape": [
+      201,
+      201
+    ],
+    "symmetric": true,
+    "eigenvalue_multiplicities": {
+      "157.16": 1,
+      "66.67": 2,
+      "11.0": 2,
+      "10.47": 6,
+      "9.78": 6,
+      "8.03": 1,
+      "6.77": 6,
+      "4.0": 42,
+      "3.81": 6,
+      "-0.84": 1,
+      "-1.2": 2,
+      "-2.0": 81,
+      "-3.28": 6,
+      "-3.78": 6,
+      "-3.84": 6,
+      "-4.0": 6,
+      "-4.35": 1,
+      "-5.0": 12,
+      "-9.47": 2,
+      "-10.93": 6
+    }
+  },
+  "next_steps": [
+    "Identify which 81 cycles form 3 generations",
+    "Compute Sp(4,3) action on H\u2081",
+    "Extract 27\u00d727 Yukawa blocks",
+    "Match masses to experiment"
+  ]
+}
