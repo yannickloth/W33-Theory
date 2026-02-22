@@ -1,0 +1,148 @@
+{
+  "e6_decomposition": {
+    "total_dim": 27,
+    "sm_fermions": 16,
+    "exotic_fermions": 11
+  },
+  "state_assignment": {
+    "quarks_left": [
+      "u_L_red",
+      "u_L_green",
+      "u_L_blue",
+      "d_L_red",
+      "d_L_green",
+      "d_L_blue"
+    ],
+    "quarks_right": [
+      "u_R_red",
+      "u_R_green",
+      "u_R_blue",
+      "d_R_red",
+      "d_R_green",
+      "d_R_blue"
+    ],
+    "leptons_left": [
+      "nu_L",
+      "e_L"
+    ],
+    "leptons_right": [
+      "nu_R",
+      "e_R"
+    ],
+    "exotics": [
+      "exotic_1",
+      "exotic_2",
+      "exotic_3",
+      "exotic_4",
+      "exotic_5",
+      "exotic_6",
+      "exotic_7",
+      "exotic_8",
+      "exotic_9",
+      "exotic_10",
+      "exotic_11"
+    ]
+  },
+  "quantum_numbers": {
+    "u_L": {
+      "color": 3.0,
+      "isospin": 2.0,
+      "Y": 0.3333333333333333,
+      "Q": 0.6666666666666666
+    },
+    "d_L": {
+      "color": 3.0,
+      "isospin": 2.0,
+      "Y": 0.3333333333333333,
+      "Q": -0.3333333333333333
+    },
+    "u_R": {
+      "color": 3.0,
+      "isospin": 1.0,
+      "Y": 1.3333333333333333,
+      "Q": 0.6666666666666666
+    },
+    "d_R": {
+      "color": 3.0,
+      "isospin": 1.0,
+      "Y": -0.6666666666666666,
+      "Q": -0.3333333333333333
+    },
+    "nu_L": {
+      "color": 1.0,
+      "isospin": 2.0,
+      "Y": -1.0,
+      "Q": 0.0
+    },
+    "e_L": {
+      "color": 1.0,
+      "isospin": 2.0,
+      "Y": -1.0,
+      "Q": -1.0
+    },
+    "nu_R": {
+      "color": 1.0,
+      "isospin": 1.0,
+      "Y": 0.0,
+      "Q": 0.0
+    },
+    "e_R": {
+      "color": 1.0,
+      "isospin": 1.0,
+      "Y": -2.0,
+      "Q": -1.0
+    }
+  },
+  "experimental_masses": {
+    "quarks": {
+      "u": [
+        2.2,
+        "MeV"
+      ],
+      "d": [
+        4.7,
+        "MeV"
+      ],
+      "c": [
+        1.27,
+        "GeV"
+      ],
+      "s": [
+        95,
+        "MeV"
+      ],
+      "t": [
+        173.0,
+        "GeV"
+      ],
+      "b": [
+        4.18,
+        "GeV"
+      ]
+    },
+    "leptons": {
+      "e": [
+        0.5109989461,
+        "MeV"
+      ],
+      "mu": [
+        105.6583745,
+        "MeV"
+      ],
+      "tau": [
+        1776.86,
+        "MeV"
+      ]
+    },
+    "neutrinos": {
+      "\u0394m\u00b2_21": [
+        7.53e-05,
+        "eV\u00b2"
+      ],
+      "\u0394m\u00b2_31": [
+        0.002453,
+        "eV\u00b2"
+      ]
+    }
+  }
+}
