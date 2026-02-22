@@ -53,16 +53,24 @@ recommended course is:
 
 2. **Investigate Renormalization Group (RG) running and threshold effects.**
    If the geometric masses correspond to high‑scale values, RG evolution may
-   bridge the gap to low‑energy data and resolve the remaining discrepancies.
-
+   bridge the gap to low‑energy data and resolve the remaining discrepancies.   – initial 1‑loop code demonstrates that simple running drives Yukawa
+     couplings toward zero and fails to reproduce the top mass; the script now
+     includes a shooting solver and tests.  Next step is implementing 2‑loop
+     β‑functions and realistic thresholds.
 3. **Leverage the successful gauge coupling prediction.**  A short paper or
    note comparing the W33 numbers to experimental couplings would provide
    compelling independent evidence for the theory and could be combined with
    the mass‑hierarchy result.
 
-4. **Explore CKM/PMNS mixing from off‑diagonal Yukawas.**  Having established
-   the diagonal mass structure and unification of couplings, mixing angles are
-   the natural next target.
+4. **Explore CKM/PMNS mixing from off‑diagonal Yukawas.**  A new script
+   (`scripts/w33_ckm_matrix.py`) computes the CKM matrix directly from the
+   mismatch of two Z₃ generation decompositions of H₁(81).  The result is
+   quasi-democratic (all angles ≈45°) with CP conserved at the symmetric
+   level, indicating that spontaneous symmetry breaking of the vacuum is
+   needed to generate the small observed Cabibbo angle and CP phase.  Having
+   established the diagonal mass structure and unification of couplings,
+   mixing angles remain a key target and the new tool provides a concrete
+   starting point.
 
 5. **Prepare for publication.**  The combination of topology‑derived
    generations, Yukawa hierarchy, and gauge unification constitutes a
