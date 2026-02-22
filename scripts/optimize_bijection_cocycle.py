@@ -87,7 +87,16 @@ def optimize(
     alpha=0.7,
     beta=0.3,
     temp0=0.01,
+    verbose: bool = False,
 ):
+    """Optimize bijection by maximizing triangle exactness and sector alignment.
+
+    The function now supports a ``verbose`` flag: when enabled it prints a
+    progress message every 10% of the requested iteration budget and also
+    reports when a trial exceeds the supplied time limit.  This helps diagnose
+    runs that appear to "hang" around the 40–50% mark by giving feedback on
+    the internal loop and showing elapsed time.
+    """
     """Optimize bijection by maximizing triangle exactness and sector alignment.
 
     Objective: score = alpha * exact_frac + beta * sector_pref_fraction
@@ -178,8 +187,13 @@ def optimize(
 
     start = time.time()
     it = 0
+    next_log = iterations // 10 if iterations >= 10 else 1
     while it < iterations and (time.time() - start) < time_limit:
         it += 1
+        if verbose and it == next_log:
+            pct = int(100 * it / iterations)
+            print(f"    progress: {pct}% (it={it}/{iterations}, elapsed={time.time()-start:.1f}s)")
+            next_log += iterations // 10
         # pick swap candidates
         if restrict_sector:
             sec = rng.choice(["h27", "cross", "h12", "incident"])
@@ -293,6 +307,11 @@ def optimize(
             # revert
             bij[e1], bij[e2] = bij[e2], bij[e1]
 
+    # loop termination diagnostics
+    if verbose:
+        elapsed = time.time() - start
+        reason = "iterations" if it >= iterations else "time limit"
+        print(f"    optimization terminated after {it} iterations ({reason}), elapsed {elapsed:.2f}s, best_score={best_score:.6f}, best_exact={best_exact}")
     # Final verification on best_bij
     verification = verify_bijection_properties(
         best_bij, edges, roots, z3, edge_decomp, adj, n

@@ -68,6 +68,7 @@ def run_campaign(
             alpha=alpha,
             beta=beta,
             temp0=temp,
+            verbose=True,  # helpful progress output
         )
         runtime = time.time() - t0
 
