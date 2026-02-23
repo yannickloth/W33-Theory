@@ -91,16 +91,13 @@ def _pair_label(pair_info: dict[str, object]) -> str:
     return f"{a}x{b}"
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--max-q-exp", type=int, default=10)
-    parser.add_argument("--out-json", type=Path, default=None)
-    parser.add_argument(
-        "--verify-rr-j",
-        action="store_true",
-        help="Also verify the Rogers-Ramanujan continued-fraction identity for j(tau).",
-    )
-    args = parser.parse_args()
+def analyze(
+    *,
+    max_q_exp: int = 10,
+    scan_primes: Iterable[int] | None = None,
+    verify_rr_j: bool = False,
+) -> dict[str, Any]:
+    """Run the Ogg-prime pipeline and return a structured report."""
 
     from w33_leech_monster import (
         analyze_monster_2x3_ogg_prime_triangle_support,
@@ -108,23 +105,22 @@ def main() -> None:
         verify_fricke_prime_replicability,
     )
 
-    if args.verify_rr_j:
+    rr: dict[str, object] | None = None
+    if verify_rr_j:
         rr = analyze_rogers_ramanujan_j_invariant(n_terms=8)
-        verdict = "PASS" if rr.get("verified") else "FAIL"
-        print("=" * 78)
-        print("ROGERS-RAMANUJAN CHECK: j(tau) as rational function of R(q)^5")
-        print("=" * 78)
-        print(f"Verdict: {verdict}")
-        print()
 
     rep = analyze_monster_2x3_ogg_prime_triangle_support()
     if rep.get("available") is not True:
-        raise SystemExit("Monster 2x3 scan unavailable (missing bundled data).")
+        return {
+            "available": False,
+            "reason": "Monster 2x3 scan unavailable (missing bundled data).",
+            "rr_j": rr,
+        }
 
     pairs = rep.get("pairs", {})
     ogg_primes = rep.get("ogg_primes", [])
     if not isinstance(pairs, dict) or not isinstance(ogg_primes, list):
-        raise SystemExit("Unexpected report format.")
+        return {"available": False, "reason": "Unexpected report format.", "rr_j": rr}
 
     # Normalize pairs into a stable list.
     pair_list: list[dict[str, object]] = []
@@ -143,24 +139,17 @@ def main() -> None:
             by_p.setdefault(int(hit.prime), []).append(hit)
         for p, hits in by_p.items():
             pair_prime_hits[(label, int(p))] = sorted(hits, key=lambda h: h.class_name)
-            pair_prime_mass[(label, int(p))] = sum(
-                (h.prob for h in hits), Fraction(0, 1)
-            )
+            pair_prime_mass[(label, int(p))] = sum((h.prob for h in hits), Fraction(0, 1))
 
-    scan_primes = sorted({int(p) for p in ogg_primes if isinstance(p, int) and p >= 5})
+    all_scan_primes = sorted({int(p) for p in ogg_primes if isinstance(p, int) and p >= 5})
+    if scan_primes is None:
+        scan_list = all_scan_primes
+    else:
+        allowed = {int(p) for p in scan_primes}
+        scan_list = [p for p in all_scan_primes if p in allowed]
 
     results: list[dict[str, Any]] = []
-
-    print("=" * 78)
-    print(
-        "MONSTER OGG-PRIME PIPELINE: Delta(2,3,p) SUPPORT -> BEST PAIR -> REPLICABILITY"
-    )
-    print("=" * 78)
-    print(f"Scan primes: {scan_primes}")
-    print(f"Replicability max_q_exp: {int(args.max_q_exp)}")
-    print()
-
-    for p in scan_primes:
+    for p in scan_list:
         # Find best pair by mass.
         best_label: str | None = None
         best_mass = Fraction(-1, 1)
@@ -173,26 +162,28 @@ def main() -> None:
 
         hits = pair_prime_hits.get((best_label or "", int(p)), [])
         classes = [h.class_name for h in hits]
-
-        print(f"p={p:2d}: best={best_label} mass={best_mass} (~{float(best_mass):.6g})")
-        for h in hits:
-            print(f"      class {h.class_name:4s} prob={h.prob} (~{float(h.prob):.6g})")
+        hit_payload = [
+            {
+                "class_name": str(h.class_name),
+                "prob": {
+                    "numerator": int(h.prob.numerator),
+                    "denominator": int(h.prob.denominator),
+                    "value": str(h.prob),
+                    "float": float(h.prob),
+                },
+            }
+            for h in hits
+        ]
 
         cls_results: list[dict[str, Any]] = []
         for cls in classes:
             try:
-                chk = verify_fricke_prime_replicability(
-                    cls, max_q_exp=int(args.max_q_exp)
-                )
+                chk = verify_fricke_prime_replicability(cls, max_q_exp=int(max_q_exp))
                 cls_results.append(chk)
-                verdict = "PASS" if chk.get("verified") else "FAIL"
-                nm = int(chk.get("n_mismatches", 0) or 0)
-                print(f"      replicability {cls:4s}: {verdict} (mismatches={nm})")
             except Exception as e:
                 cls_results.append(
-                    {"class_name": cls, "p": int(p), "verified": False, "error": str(e)}
+                    {"class_name": str(cls), "p": int(p), "verified": False, "error": str(e)}
                 )
-                print(f"      replicability {cls:4s}: unavailable ({e})")
 
         results.append(
             {
@@ -204,10 +195,103 @@ def main() -> None:
                     "value": str(best_mass),
                     "float": float(best_mass),
                 },
+                "hits": hit_payload,
                 "classes": classes,
                 "replicability": cls_results,
             }
         )
+
+    return {
+        "available": True,
+        "scan_primes": scan_list,
+        "replicability_max_q_exp": int(max_q_exp),
+        "rr_j": rr,
+        "results": results,
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--max-q-exp", type=int, default=10)
+    parser.add_argument("--out-json", type=Path, default=None)
+    parser.add_argument(
+        "--verify-rr-j",
+        action="store_true",
+        help="Also verify the Rogers-Ramanujan continued-fraction identity for j(tau).",
+    )
+    args = parser.parse_args()
+
+    report = analyze(max_q_exp=int(args.max_q_exp), verify_rr_j=bool(args.verify_rr_j))
+    if report.get("available") is not True:
+        raise SystemExit(str(report.get("reason") or "analysis unavailable"))
+
+    rr = report.get("rr_j")
+    if isinstance(rr, dict):
+        verdict = "PASS" if rr.get("verified") else "FAIL"
+        print("=" * 78)
+        print("ROGERS-RAMANUJAN CHECK: j(tau) as rational function of R(q)^5")
+        print("=" * 78)
+        print(f"Verdict: {verdict}")
+        print()
+
+    scan_primes = report.get("scan_primes", [])
+    results = report.get("results", [])
+    if not isinstance(results, list):
+        raise SystemExit("Unexpected results payload.")
+
+    print("=" * 78)
+    print(
+        "MONSTER OGG-PRIME PIPELINE: Delta(2,3,p) SUPPORT -> BEST PAIR -> REPLICABILITY"
+    )
+    print("=" * 78)
+    print(f"Scan primes: {scan_primes}")
+    print(f"Replicability max_q_exp: {int(args.max_q_exp)}")
+    print()
+
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        p = int(item.get("p", 0) or 0)
+        best_pair = str(item.get("best_pair") or "?")
+        mass = item.get("mass", {})
+        mass_str = mass.get("value") if isinstance(mass, dict) else None
+        mass_f = mass.get("float") if isinstance(mass, dict) else None
+        hits = item.get("hits", [])
+        replicability = item.get("replicability", [])
+
+        if isinstance(mass_str, str) and isinstance(mass_f, (int, float)):
+            print(f"p={p:2d}: best={best_pair} mass={mass_str} (~{float(mass_f):.6g})")
+        else:
+            print(f"p={p:2d}: best={best_pair}")
+
+        if isinstance(hits, list):
+            for h in hits:
+                if not isinstance(h, dict):
+                    continue
+                cls_name = str(h.get("class_name") or "?")
+                prob = h.get("prob", {})
+                prob_str = prob.get("value") if isinstance(prob, dict) else None
+                prob_f = prob.get("float") if isinstance(prob, dict) else None
+                if isinstance(prob_str, str) and isinstance(prob_f, (int, float)):
+                    print(
+                        f"      class {cls_name:4s} prob={prob_str} (~{float(prob_f):.6g})"
+                    )
+                else:
+                    print(f"      class {cls_name:4s}")
+
+        if isinstance(replicability, list):
+            for chk in replicability:
+                if not isinstance(chk, dict):
+                    continue
+                cls = str(chk.get("class_name") or "?")
+                if "error" in chk:
+                    print(
+                        f"      replicability {cls:4s}: unavailable ({chk.get('error')})"
+                    )
+                    continue
+                verdict = "PASS" if chk.get("verified") else "FAIL"
+                nm = int(chk.get("n_mismatches", 0) or 0)
+                print(f"      replicability {cls:4s}: {verdict} (mismatches={nm})")
         print()
 
     if args.out_json is not None:

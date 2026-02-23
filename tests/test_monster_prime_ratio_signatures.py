@@ -72,3 +72,22 @@ def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
     hits_7_perm = info_7.get("ratio_hits_in_perm_degree_set", [])
     assert isinstance(hits_7_perm, list)
     assert any(int(h.get("r", 0) or 0) == 2058 for h in hits_7_perm)
+
+    # Pipeline check: Δ(2,3,11) support -> best (2X,3Y) by mass -> replicability.
+    from scripts.w33_monster_ogg_pipeline import analyze as analyze_ogg_pipeline
+
+    pipe = analyze_ogg_pipeline(max_q_exp=5, scan_primes=[11])
+    assert pipe.get("available") is True
+    assert pipe.get("scan_primes") == [11]
+    results = pipe.get("results", [])
+    assert isinstance(results, list)
+    assert len(results) == 1
+    rec = results[0]
+    assert isinstance(rec, dict)
+    assert rec.get("p") == 11
+    assert rec.get("best_pair") == "2Ax3A"
+    assert rec.get("classes") == ["11A"]
+    repl = rec.get("replicability", [])
+    assert isinstance(repl, list)
+    assert repl and repl[0].get("class_name") == "11A"
+    assert repl[0].get("verified") is True

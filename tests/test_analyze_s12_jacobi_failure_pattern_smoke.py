@@ -43,3 +43,10 @@ def test_analyze_s12_jacobi_failure_pattern_cli_smoke(tmp_path: Path) -> None:
     assert "# s12 Jacobi Failure Pattern" in text
     assert "predicate match" in text
     assert "S3 Orbits" in text
+
+    # Explicit algebra bridge: the missing Jacobi phase is a Weyl–Heisenberg cocycle,
+    # and the same phase threads through the E8 Z3 / L-infinity firewall via CE2.
+    cmd2 = [sys.executable, "-X", "utf8", "scripts/w33_s12_linfty_phase_bridge.py"]
+    run2 = subprocess.run(cmd2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    assert run2.returncode == 0, run2.stderr
+    assert "Global Heisenberg law reproduces CE2 sparse entry exactly" in run2.stdout
