@@ -66,3 +66,12 @@ tmp*
 *.zip
 .ci-logs/
 .claude/
+
+# Temporary Python scripts and logs
+TEMP_*.py
+temp_*.py
+*.aux
+*.log
+*.toc
+*.out
+*.pdf
