@@ -49,6 +49,17 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         for h in hits_13
     )
 
+    # PSL2(7): r_17(2A×3B)=14 hits the coset action on A4 (index 14).
+    hits_17 = classes["17A"]["perm_hits"]
+    assert isinstance(hits_17, list)
+    assert any(
+        h.get("pair") == "2A×3B"
+        and int(h.get("r", 0) or 0) == 14
+        and int(h.get("stabilizer_order", 0) or 0) == 12
+        and h.get("stabilizer_group_recognized") == "A4"
+        for h in hits_17
+    )
+
     # Stabilizer subgroup bridge for sporadic rungs:
     # If r_p hits a permutation degree of the cofactor H, the corresponding
     # stabilizer order is |K| = |H| / r_p.  Several rungs land on ATLAS-maximal

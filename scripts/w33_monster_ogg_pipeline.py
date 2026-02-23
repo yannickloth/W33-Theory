@@ -111,6 +111,138 @@ def _pair_label_to_x(label: str) -> str:
     return str(label).replace("×", "x")
 
 
+def _max_r_for_pair_from_hits(
+    *,
+    pair_x: str,
+    hits: object,
+    require_nontrivial: bool = True,
+) -> int:
+    if not isinstance(hits, list):
+        return 0
+    best = 0
+    for h in hits:
+        if not isinstance(h, dict):
+            continue
+        if _pair_label_to_x(str(h.get("pair") or "")) != str(pair_x):
+            continue
+        try:
+            r = int(h.get("r", 0) or 0)
+        except Exception:
+            r = 0
+        if require_nontrivial and r <= 1:
+            continue
+        best = max(best, r)
+    return int(best)
+
+
+def _structure_score_by_pair_for_record(rec: dict[str, Any]) -> dict[str, Any]:
+    mass_by_pair = rec.get("mass_by_pair", {})
+    if not isinstance(mass_by_pair, dict):
+        return {}
+
+    cofactor = rec.get("cofactor_perm_hits", {})
+    ratio_rungs = rec.get("ratio_signature_rungs", {})
+
+    out: dict[str, Any] = {}
+    for pair_x, mass_info in mass_by_pair.items():
+        if not isinstance(pair_x, str) or not isinstance(mass_info, dict):
+            continue
+
+        perm_r = 0
+        irrep_r = 0
+
+        if isinstance(cofactor, dict):
+            for cls_info in cofactor.values():
+                if not isinstance(cls_info, dict):
+                    continue
+                perm_r = max(
+                    perm_r,
+                    _max_r_for_pair_from_hits(
+                        pair_x=pair_x, hits=cls_info.get("perm_hits")
+                    ),
+                )
+
+        if isinstance(ratio_rungs, dict):
+            for rung in ratio_rungs.values():
+                if not isinstance(rung, dict):
+                    continue
+                perm_r = max(
+                    perm_r,
+                    _max_r_for_pair_from_hits(
+                        pair_x=pair_x,
+                        hits=rung.get("ratio_hits_in_perm_degree_set"),
+                    ),
+                )
+                irrep_r = max(
+                    irrep_r,
+                    _max_r_for_pair_from_hits(
+                        pair_x=pair_x,
+                        hits=rung.get("ratio_hits_in_irrep_degree_set"),
+                    ),
+                )
+
+        try:
+            mass_f = float(mass_info.get("float", 0.0) or 0.0)
+        except Exception:
+            mass_f = 0.0
+
+        out[pair_x] = {
+            "mass": dict(mass_info),
+            "mass_float": float(mass_f),
+            "perm_r_max": int(perm_r),
+            "irrep_r_max": int(irrep_r),
+            "has_nontrivial_perm_hit": bool(perm_r > 1),
+            "has_nontrivial_irrep_hit": bool(irrep_r > 1),
+        }
+
+    return out
+
+
+def _select_best_pair_by_structure_score(
+    rec: dict[str, Any],
+) -> tuple[str | None, str]:
+    scores = rec.get("structure_score_by_pair", {})
+    if not isinstance(scores, dict) or not scores:
+        return (rec.get("best_pair"), "mass")
+
+    def _iter_pairs() -> Iterable[tuple[str, dict[str, Any]]]:
+        for pair_x, info in scores.items():
+            if isinstance(pair_x, str) and isinstance(info, dict):
+                yield pair_x, info
+
+    perm_candidates: list[tuple[str, dict[str, Any]]] = []
+    irrep_candidates: list[tuple[str, dict[str, Any]]] = []
+    for pair_x, info in _iter_pairs():
+        if bool(info.get("has_nontrivial_perm_hit")):
+            perm_candidates.append((pair_x, info))
+        if bool(info.get("has_nontrivial_irrep_hit")):
+            irrep_candidates.append((pair_x, info))
+
+    if perm_candidates:
+        perm_candidates.sort(
+            key=lambda kv: (
+                int(kv[1].get("perm_r_max", 0) or 0),
+                float(kv[1].get("mass_float", 0.0) or 0.0),
+                kv[0],
+            ),
+            reverse=True,
+        )
+        return (perm_candidates[0][0], "perm_hit")
+
+    if irrep_candidates:
+        irrep_candidates.sort(
+            key=lambda kv: (
+                int(kv[1].get("irrep_r_max", 0) or 0),
+                float(kv[1].get("mass_float", 0.0) or 0.0),
+                kv[0],
+            ),
+            reverse=True,
+        )
+        return (irrep_candidates[0][0], "irrep_hit")
+
+    return (rec.get("best_pair"), "mass")
+
+
 def analyze(
     *,
     max_q_exp: int = 10,
@@ -358,7 +490,7 @@ def analyze(
                                     h
                                     for h in perm_hits
                                     if isinstance(h, dict)
-                                    and int(h.get("r", 0) or 0) > 0
+                                    and int(h.get("r", 0) or 0) > 1
                                     and isinstance(h.get("pair"), str)
                                 ),
                                 key=lambda h: int(h.get("r", 0) or 0),
@@ -370,6 +502,14 @@ def analyze(
                         rec["cofactor_perm_hits"] = attached
                         if rec.get("recommended_pair_perm_hit") is None:
                             rec["recommended_pair_perm_hit"] = recommended
+
+    for rec in results:
+        if not isinstance(rec, dict):
+            continue
+        rec["structure_score_by_pair"] = _structure_score_by_pair_for_record(rec)
+        best_structure, why = _select_best_pair_by_structure_score(rec)
+        rec["best_pair_by_structure"] = best_structure
+        rec["best_pair_by_structure_reason"] = str(why)
 
     return {
         "available": True,
@@ -423,6 +563,8 @@ def main() -> None:
             continue
         p = int(item.get("p", 0) or 0)
         best_pair = str(item.get("best_pair") or "?")
+        best_struct = item.get("best_pair_by_structure")
+        best_struct_reason = item.get("best_pair_by_structure_reason")
         rec_perm = item.get("recommended_pair_perm_hit")
         rec_irrep = item.get("recommended_pair_nontrivial_irrep_hit")
         mass = item.get("mass", {})
@@ -436,6 +578,8 @@ def main() -> None:
             print(f"p={p:2d}: best={best_pair} mass={mass_str} (~{float(mass_f):.6g})")
         else:
             print(f"p={p:2d}: best={best_pair}")
+        if isinstance(best_struct, str) and best_struct and best_struct != best_pair:
+            print(f"      structure-best ({best_struct_reason}): {best_struct}")
         if isinstance(rec_perm, str) and rec_perm and rec_perm != best_pair:
             print(f"      recommended perm-hit pair: {rec_perm}")
         if isinstance(rec_irrep, str) and rec_irrep and rec_irrep != best_pair:

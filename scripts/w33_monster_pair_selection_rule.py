@@ -53,12 +53,13 @@ def main() -> None:
         raise SystemExit("Unexpected report payload.")
 
     print("=" * 78)
-    print("MONSTER PAIR SELECTION RULE: mass-best vs signature-best")
+    print("MONSTER PAIR SELECTION RULE: mass-best vs structure-best")
     print("=" * 78)
     print(f"Primes: {rep.get('scan_primes')}")
     print(f"Replicability max_q_exp: {rep.get('replicability_max_q_exp')}")
     print()
 
+    struct_ctr: Counter[str] = Counter()
     perm_ctr: Counter[str] = Counter()
     irrep_ctr: Counter[str] = Counter()
 
@@ -68,11 +69,15 @@ def main() -> None:
             continue
         p = int(rec.get("p", 0) or 0)
         best = str(rec.get("best_pair") or "?")
+        struct = rec.get("best_pair_by_structure")
+        struct_reason = rec.get("best_pair_by_structure_reason")
         perm = rec.get("recommended_pair_perm_hit")
         irrep = rec.get("recommended_pair_nontrivial_irrep_hit")
         classes = rec.get("classes", [])
         cof = rec.get("cofactor_perm_hits", {})
 
+        if isinstance(struct, str) and struct:
+            struct_ctr[struct] += 1
         if isinstance(perm, str) and perm:
             perm_ctr[perm] += 1
         if isinstance(irrep, str) and irrep:
@@ -82,6 +87,8 @@ def main() -> None:
             {
                 "p": p,
                 "best_by_mass": best,
+                "best_by_structure": struct,
+                "best_by_structure_reason": struct_reason,
                 "recommended_perm_hit": perm,
                 "recommended_irrep_hit": irrep,
                 "classes": classes,
@@ -90,10 +97,14 @@ def main() -> None:
         )
 
         delta = ""
-        if isinstance(perm, str) and perm and perm != best:
-            delta = "  <-- perm-hit differs"
+        if isinstance(struct, str) and struct and struct != best:
+            delta = "  <-- structure differs"
 
-        print(f"p={p:2d}: best_by_mass={best:6s}  perm_hit={perm!s:6s}  irrep_hit={irrep!s:6s}{delta}")
+        struct_s = str(struct or "?")
+        reason_s = str(struct_reason or "mass")
+        print(
+            f"p={p:2d}: mass={best:6s}  structure={struct_s:6s} ({reason_s})  perm_hit={perm!s:6s}  irrep_hit={irrep!s:6s}{delta}"
+        )
         if isinstance(classes, list) and classes:
             for cls in classes:
                 if not isinstance(cls, str):
@@ -110,6 +121,13 @@ def main() -> None:
         print()
 
     print("-" * 78)
+    print("Structure-best recommendations (frequency):")
+    for k, v in struct_ctr.most_common():
+        print(f"  {k:6s}: {v}")
+    if not struct_ctr:
+        print("  (none)")
+    print()
+
     print("Permutation-hit recommendations (frequency):")
     for k, v in perm_ctr.most_common():
         print(f"  {k:6s}: {v}")
@@ -132,4 +150,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

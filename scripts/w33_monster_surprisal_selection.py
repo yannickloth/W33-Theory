@@ -68,6 +68,8 @@ def main() -> None:
 
         p = int(rec.get("p", 0) or 0)
         best = str(rec.get("best_pair") or "?")
+        struct = rec.get("best_pair_by_structure")
+        struct_reason = rec.get("best_pair_by_structure_reason")
         perm = rec.get("recommended_pair_perm_hit")
         irrep = rec.get("recommended_pair_nontrivial_irrep_hit")
         masses = rec.get("mass_by_pair", {})
@@ -75,6 +77,11 @@ def main() -> None:
             continue
 
         m_best = float(masses.get(best, {}).get("float", 0.0) or 0.0)
+        m_struct = (
+            float(masses.get(str(struct), {}).get("float", 0.0) or 0.0)
+            if isinstance(struct, str)
+            else 0.0
+        )
         m_perm = (
             float(masses.get(str(perm), {}).get("float", 0.0) or 0.0)
             if isinstance(perm, str)
@@ -88,12 +95,20 @@ def main() -> None:
 
         ratio_perm = (m_best / m_perm) if (m_best > 0 and m_perm > 0) else float("inf")
         ratio_irrep = (m_best / m_irrep) if (m_best > 0 and m_irrep > 0) else float("inf")
+        ratio_struct = (
+            (m_best / m_struct) if (m_best > 0 and m_struct > 0) else float("inf")
+        )
 
         tag = ""
-        if isinstance(perm, str) and perm and perm != best:
+        if isinstance(struct, str) and struct and struct != best:
             tag = "  <-- structure != mass"
 
         print(f"p={p:2d}: best={best:6s} mass={m_best:.6g}")
+        if isinstance(struct, str) and struct and struct != best:
+            why = str(struct_reason or "structure")
+            print(
+                f"      structure={struct:6s} ({why}) mass={m_struct:.6g}  ratio={ratio_struct:.3g}  -log10(mass)={- _safe_log10(m_struct):.3g}"
+            )
         if isinstance(perm, str) and perm:
             print(
                 f"      perm-hit={perm:6s} mass={m_perm:.6g}  ratio={ratio_perm:.3g}  -log10(mass)={- _safe_log10(m_perm):.3g}"
@@ -118,4 +133,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

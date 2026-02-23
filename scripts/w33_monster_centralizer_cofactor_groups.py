@@ -109,7 +109,9 @@ def _perm_degrees_for_group(group: str) -> list[int]:
         # (13*4=52), and (at least) a transitive action on ordered pairs of
         # distinct points (13*12=156).
         "PSL3(3)": [13, 52, 156],
-        "PSL2(7)": [8],  # action on P^1(F7)
+        # PSL2(7) has a natural action on P^1(F7) (8) and a transitive action
+        # on cosets of A4 (index 14).
+        "PSL2(7)": [8, 14],
         "A5": [5],
         "S4": [4],
         "S3": [3],

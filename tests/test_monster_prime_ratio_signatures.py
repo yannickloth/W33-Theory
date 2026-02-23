@@ -94,6 +94,8 @@ def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
 
     # The "best by mass" pair differs from the "best by cofactor-spectrum hit":
     # 11A has C_M(11A) = 11·M12 and r_11=144 occurs for 2A×3B, landing in deg(M12).
+    assert rec.get("best_pair_by_structure") == "2Ax3B"
+    assert rec.get("best_pair_by_structure_reason") == "perm_hit"
     assert rec.get("recommended_pair_perm_hit") == "2Ax3B"
     assert rec.get("recommended_pair_nontrivial_irrep_hit") == "2Ax3B"
 
