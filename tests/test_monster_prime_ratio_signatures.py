@@ -91,3 +91,8 @@ def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
     assert isinstance(repl, list)
     assert repl and repl[0].get("class_name") == "11A"
     assert repl[0].get("verified") is True
+
+    # The "best by mass" pair differs from the "best by cofactor-spectrum hit":
+    # 11A has C_M(11A) = 11·M12 and r_11=144 occurs for 2A×3B, landing in deg(M12).
+    assert rec.get("recommended_pair_perm_hit") == "2Ax3B"
+    assert rec.get("recommended_pair_nontrivial_irrep_hit") == "2Ax3B"

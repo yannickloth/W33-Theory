@@ -57,6 +57,7 @@ class PrimeHit:
     prime: int
     class_name: str
     prob: Fraction
+    structure_constant_per_element: int
 
 
 def _iter_prime_hits(pair_info: dict[str, object]) -> Iterable[PrimeHit]:
@@ -81,7 +82,18 @@ def _iter_prime_hits(pair_info: dict[str, object]) -> Iterable[PrimeHit]:
         prob = _fraction_from_payload(cls_info.get("probability"))
         if prob == 0:
             continue
-        hits.append(PrimeHit(prime=int(p), class_name=str(cls_name), prob=prob))
+        try:
+            n = int(cls_info.get("structure_constant_per_element", 0) or 0)
+        except Exception:
+            n = 0
+        hits.append(
+            PrimeHit(
+                prime=int(p),
+                class_name=str(cls_name),
+                prob=prob,
+                structure_constant_per_element=int(n),
+            )
+        )
     return hits
 
 
@@ -91,11 +103,20 @@ def _pair_label(pair_info: dict[str, object]) -> str:
     return f"{a}x{b}"
 
 
+def _pair_label_to_times(label: str) -> str:
+    return str(label).replace("x", "×")
+
+
+def _pair_label_to_x(label: str) -> str:
+    return str(label).replace("×", "x")
+
+
 def analyze(
     *,
     max_q_exp: int = 10,
     scan_primes: Iterable[int] | None = None,
     verify_rr_j: bool = False,
+    include_ratio_signatures: bool = True,
 ) -> dict[str, Any]:
     """Run the Ogg-prime pipeline and return a structured report."""
 
@@ -171,6 +192,12 @@ def analyze(
                     "value": str(h.prob),
                     "float": float(h.prob),
                 },
+                "structure_constant_per_element": int(h.structure_constant_per_element),
+                "r": (
+                    int(h.structure_constant_per_element // int(p))
+                    if int(p) > 0 and int(h.structure_constant_per_element) % int(p) == 0
+                    else None
+                ),
             }
             for h in hits
         ]
@@ -200,6 +227,81 @@ def analyze(
                 "replicability": cls_results,
             }
         )
+
+    ratio_sig: dict[str, Any] | None = None
+    if include_ratio_signatures:
+        try:
+            from scripts.w33_monster_prime_ratio_signatures import (
+                analyze as analyze_ratio_signatures,
+            )
+
+            ratio_sig = analyze_ratio_signatures()
+            if ratio_sig.get("available") is not True:
+                ratio_sig = None
+        except Exception:
+            ratio_sig = None
+
+    if ratio_sig is not None:
+        rungs = ratio_sig.get("rungs", {})
+        if isinstance(rungs, dict):
+            for rec in results:
+                if not isinstance(rec, dict):
+                    continue
+                classes = rec.get("classes", [])
+                if not isinstance(classes, list):
+                    continue
+                rung_info: dict[str, Any] = {}
+                recommended_perm_pair: str | None = None
+                recommended_irrep_pair: str | None = None
+                for cls in classes:
+                    if not isinstance(cls, str) or cls not in rungs:
+                        continue
+                    info = rungs.get(cls, {})
+                    if not isinstance(info, dict):
+                        continue
+                    perm_hits = info.get("ratio_hits_in_perm_degree_set", [])
+                    irrep_hits = info.get("ratio_hits_in_irrep_degree_set", [])
+                    rung_info[cls] = {
+                        "cofactor_group": info.get("cofactor_group"),
+                        "ratio_hits_in_perm_degree_set": perm_hits,
+                        "ratio_hits_in_irrep_degree_set": irrep_hits,
+                    }
+
+                    # Choose a canonical "recommended" pair for this rung.
+                    if isinstance(perm_hits, list) and perm_hits:
+                        # Prefer the largest nontrivial r.
+                        best = max(
+                            (
+                                h
+                                for h in perm_hits
+                                if isinstance(h, dict) and int(h.get("r", 0) or 0) > 1
+                            ),
+                            key=lambda h: int(h.get("r", 0) or 0),
+                            default=None,
+                        )
+                        if best is not None:
+                            recommended_perm_pair = _pair_label_to_x(
+                                str(best.get("pair") or "")
+                            )
+                    if isinstance(irrep_hits, list) and irrep_hits:
+                        best = max(
+                            (
+                                h
+                                for h in irrep_hits
+                                if isinstance(h, dict) and int(h.get("r", 0) or 0) > 1
+                            ),
+                            key=lambda h: int(h.get("r", 0) or 0),
+                            default=None,
+                        )
+                        if best is not None:
+                            recommended_irrep_pair = _pair_label_to_x(
+                                str(best.get("pair") or "")
+                            )
+
+                if rung_info:
+                    rec["ratio_signature_rungs"] = rung_info
+                    rec["recommended_pair_perm_hit"] = recommended_perm_pair
+                    rec["recommended_pair_nontrivial_irrep_hit"] = recommended_irrep_pair
 
     return {
         "available": True,
