@@ -28,14 +28,17 @@ If you want, I can:
   planes used on those pages for direct visual comparison.
 
 Additional sources (Vogel / Jacobi / modular-function identities):
-- https://arxiv.org/abs/2601.01612 — Isaev (2026), *Universal Casimir projectors and invariant tensors*
+- https://arxiv.org/abs/2601.01612 — Isaev (2026), *Vogel universality and beyond*
   - Universal / Vogel-parameterized projector formulas may be a clean lens for the
     `s12` → `sl(27)` resonance (dimension 728) and for classifying which
     deformations (cocycles/phases) restore Jacobi.
-- https://link.springer.com/article/10.1140/epjc/s10052-025-14260-8 — Morozov & Sleptsov (2025),
-  *Classification Problem for Jacobi Identities*
+- https://link.springer.com/article/10.1140/epjc/s10052-025-14943-y — Morozov & Sleptsov (2025),
+  *Vogel’s universality and the classification problem for Jacobi identities*
   - Directly relevant to the “finite Jacobi obstruction set” we see in the grade-only
     `s12` universal algebra and motivates the “add the missing 2-cocycle/phase” strategy.
+- https://arxiv.org/abs/2504.13831 — Bishler & Mironov (2025), *On refined Vogel’s universality*
+  - Refined Chern–Simons / Macdonald dimensions suggest an extension of universality
+    to refined settings; relevant to our TQFT and modularity pillars.
 - https://en.wikipedia.org/wiki/Rogers%E2%80%93Ramanujan_continued_fraction — Rogers–Ramanujan continued fraction
   - Source for the explicit identity expressing the elliptic modular invariant `j(τ)`
     as a rational function of `R(q)^5`; used by `scripts/w33_monster_ogg_pipeline.py --verify-rr-j`.
