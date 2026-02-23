@@ -39,6 +39,16 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         h.get("pair") == "2A×3B" and int(h.get("r", 0) or 0) == 3 for h in hits_29
     )
 
+    # PSL3(3): r_13(2A×3B)=156 hits a natural transitive degree (ordered pairs of points).
+    hits_13 = classes["13A"]["perm_hits"]
+    assert isinstance(hits_13, list)
+    assert any(
+        h.get("pair") == "2A×3B"
+        and int(h.get("r", 0) or 0) == 156
+        and int(h.get("stabilizer_order", 0) or 0) == 36
+        for h in hits_13
+    )
+
     # Stabilizer subgroup bridge for sporadic rungs:
     # If r_p hits a permutation degree of the cofactor H, the corresponding
     # stabilizer order is |K| = |H| / r_p.  Several rungs land on ATLAS-maximal

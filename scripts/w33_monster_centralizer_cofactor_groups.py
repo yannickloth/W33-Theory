@@ -83,6 +83,7 @@ def _recognize_subgroup_by_order(order: int) -> str | None:
         3_916_800: "Sp4(4):4",
         # Natural stabilizers for small-group minimal permutation actions.
         432: "3^2:GL2(3)",  # point stabilizer in PSL3(3) on PG(2,3)
+        36: "3^2:C4",  # stabilizer of an ordered pair of distinct points in PG(2,3)
         21: "7:3",  # Borel in PSL2(7) on P^1(F7)
         12: "A4",  # point stabilizer in A5 on 5 points
         6: "S3",  # point stabilizer in S4 on 4 points
@@ -104,7 +105,10 @@ def _perm_degrees_for_group(group: str) -> list[int]:
         return []
     # Natural minimal faithful permutation degrees for small groups.
     return {
-        "PSL3(3)": [13],  # action on PG(2,3) points
+        # PSL3(3) has a natural action on PG(2,3) points (13), on flags
+        # (13*4=52), and (at least) a transitive action on ordered pairs of
+        # distinct points (13*12=156).
+        "PSL3(3)": [13, 52, 156],
         "PSL2(7)": [8],  # action on P^1(F7)
         "A5": [5],
         "S4": [4],
