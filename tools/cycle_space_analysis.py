@@ -59,6 +59,7 @@ def build_cycle_basis(n: int, adj: list[list[int]], edges: list[tuple[int, int]]
     """Return basis for the graph cycle space (nullspace of incidence matrix).
 
     The basis vectors live in Z^{|E|}; there are 201 of them for W33.
+    We'll clear denominators to ensure the output is integral.
     """
     m = len(edges)
     # build oriented incidence matrix (n x m)
@@ -68,7 +69,15 @@ def build_cycle_basis(n: int, adj: list[list[int]], edges: list[tuple[int, int]]
         B[j, k] = -1
     M = Matrix(B.tolist())
     null = M.nullspace()
-    basis = [np.array([int(v) for v in vec], dtype=int).flatten() for vec in null]
+    basis = []
+    for vec in null:
+        # vec may have rational entries; clear denominators
+        denoms = [fr.q for fr in vec]
+        l = 1
+        for d in denoms:
+            l = l * d // np.gcd(l, d)
+        int_vec = np.array([int(fr * l) for fr in vec], dtype=int).flatten()
+        basis.append(int_vec)
     return basis
 
 
@@ -106,15 +115,23 @@ def compute_automorphisms(n: int, adj: list[list[int]], limit: int | None = None
 
 
 def permute_cycle(vec: np.ndarray, perm: dict[int, int], edges: list[tuple[int, int]]):
-    """Apply a vertex permutation to a cycle-vector (edge-coordinates)."""
+    """Apply a vertex permutation to a cycle-vector (edge-coordinates).
+
+    The edge list uses an orientation (i<j).  When the permutation reverses the
+    order of the endpoints the orientation flips sign, so we multiply by -1 in
+    that case to keep the cycle space invariant.
+    """
     out = np.zeros_like(vec)
     for k, (i, j) in enumerate(edges):
         ni = perm[i]
         nj = perm[j]
+        sign = 1
         if ni > nj:
+            # orientation reversed relative to our canonical ordering
             ni, nj = nj, ni
+            sign = -1
         idx = edges.index((ni, nj))
-        out[idx] = vec[k]
+        out[idx] = sign * vec[k]
     return out
 
 

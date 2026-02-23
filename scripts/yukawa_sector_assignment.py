@@ -51,6 +51,20 @@ def koide_error(Glep: np.ndarray) -> float:
     return abs(Q - 2 / 3)
 
 
+def mass_ratio_error(pred: np.ndarray, actual: tuple[float, float, float]) -> float:
+    """Compare predicted eigenvalue set with three physical masses.
+
+    We compute the two inter-generation ratios m2/m1 and m3/m1 and return the
+    sum of squared relative differences.  This gives a simple quantitative
+    penalty for how well the hierarchy matches experiment.
+    """
+    if pred.size < 3:
+        return float('inf')
+    r_pred = (pred[1] / pred[0], pred[2] / pred[0])
+    r_actual = (actual[1] / actual[0], actual[2] / actual[0])
+    return sum(((rp - ra) / ra) ** 2 for rp, ra in zip(r_pred, r_actual))
+
+
 def main():
     grams = load_gram_list()
     if len(grams) < 3:
@@ -63,13 +77,74 @@ def main():
         Gup = np.array(grams[perm[0]], dtype=float)
         Gdown = np.array(grams[perm[1]], dtype=float)
         Glep = np.array(grams[perm[2]], dtype=float)
-        score = ckmlike_error(Gup, Gdown) + koide_error(Glep)
+        ckm_err = ckmlike_error(Gup, Gdown)
+        koide_err = koide_error(Glep)
+        # compute predicted light masses if largest eigenlet scaled to heavy mass
+        def scaled_masses(G, heavy_mass):
+            vals = np.linalg.eigvalsh(G)
+            vals.sort()
+            sqrt_vals = np.sqrt(vals)
+            scale = heavy_mass / sqrt_vals[-1]
+            return scale * sqrt_vals
+
+        # heavy masses for each sector
+        heavy = {"up": masses_GeV["t"], "down": masses_GeV["b"], "lepton": masses_GeV["τ"]}
+        pred_up = scaled_masses(Gup, heavy["up"])
+        pred_down = scaled_masses(Gdown, heavy["down"])
+        pred_lep = scaled_masses(Glep, heavy["lepton"])
+
+        # compare to actual experimental masses
+        actual = {
+            "up": (masses_GeV["u"], masses_GeV["c"], masses_GeV["t"]),
+            "down": (masses_GeV["d"], masses_GeV["s"], masses_GeV["b"]),
+            "lepton": (masses_GeV["e"], masses_GeV["μ"], masses_GeV["τ"]),
+        }
+        mass_err = (
+            mass_ratio_error(pred_up, actual["up"])
+            + mass_ratio_error(pred_down, actual["down"])
+            + mass_ratio_error(pred_lep, actual["lepton"])
+        )
+
+        # also compute best-fit scale factor for each sector and resulting heavy-mass prediction
+        def fit_scale(pred: np.ndarray, target: tuple[float, float, float]) -> tuple[float, float]:
+            # least-squares scale through origin
+            vec = pred[:3]
+            targ = np.array(target, dtype=float)
+            scale = float(np.dot(vec, targ) / np.dot(vec, vec)) if np.dot(vec, vec) > 0 else 0.0
+            pred_heavy = scale * pred[-1]
+            return scale, pred_heavy
+
+        fit_up, pred_heavy_up = fit_scale(pred_up, actual["up"])
+        fit_down, pred_heavy_down = fit_scale(pred_down, actual["down"])
+        fit_lep, pred_heavy_lep = fit_scale(pred_lep, actual["lepton"])
+
+        heavy_err = (
+            abs(pred_heavy_up - actual["up"][2]) / actual["up"][2]
+            + abs(pred_heavy_down - actual["down"][2]) / actual["down"][2]
+            + abs(pred_heavy_lep - actual["lepton"][2]) / actual["lepton"][2]
+        )
+
+        score = ckm_err + koide_err + mass_err + heavy_err
+
         entry = {
             "perm": perm,
             "sectors": [sectors[i] for i in perm],
-            "ckm_error": ckmlike_error(Gup, Gdown),
-            "koide_error": koide_error(Glep),
+            "ckm_error": ckm_err,
+            "koide_error": koide_err,
+            "mass_error": mass_err,
+            "heavy_error": heavy_err,
             "score": score,
+            "fit_scales": {"up": fit_up, "down": fit_down, "lepton": fit_lep},
+            "predicted_heavy_masses": {
+                "up": pred_heavy_up,
+                "down": pred_heavy_down,
+                "lepton": pred_heavy_lep,
+            },
+            "predicted_masses": {
+                "up": pred_up.tolist(),
+                "down": pred_down.tolist(),
+                "lepton": pred_lep.tolist(),
+            },
         }
         results.append(entry)
         if best is None or score < best["score"]:

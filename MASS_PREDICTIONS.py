@@ -203,6 +203,44 @@ print(f"    Koide Q = {Q_up:.6f}")
 print(f"\n  Down-type quarks (d, s, b):")
 print(f"    Koide Q = {Q_down:.6f}")
 
+# ═══════════════════════════════════════════════════════════════════════
+#                 YUKAWA EIGENVALUE PREDICTIONS FROM W33
+# ═══════════════════════════════════════════════════════════════════════
+
+print("\nYukawa eigenvalue hierarchy predicted by the H1 cycle-space grammar:")
+try:
+    with open("data/h1_subspaces.json") as _f:
+        _h1 = json.load(_f)
+    _ratios = {}
+    # prepare experimental ratios for comparison
+    _exp = {
+        "tau/mu": masses_GeV["τ"]/masses_GeV["μ"],
+        "mu/e": masses_GeV["μ"]/masses_GeV["e"],
+        "tau/e": masses_GeV["τ"]/masses_GeV["e"],
+        "b/s": masses_GeV["b"]/masses_GeV["s"],
+        "s/d": masses_GeV["s"]/masses_GeV["d"],
+        "b/d": masses_GeV["b"]/masses_GeV["d"],
+        "t/c": masses_GeV["t"]/masses_GeV["c"],
+        "c/u": masses_GeV["c"]/masses_GeV["u"],
+        "t/u": masses_GeV["t"]/masses_GeV["u"],
+    }
+    for idx, G in enumerate(_h1["gram_matrices"]):
+        _Gmat = np.array(G, dtype=float)
+        _eigs = np.linalg.eigvalsh(_Gmat)
+        _eigs.sort()
+        _sqrt = np.sqrt(_eigs)
+        _ratio = _sqrt[-1] / _sqrt[0]
+        print(f"  subspace {idx}: sqrt-eigen min {_sqrt[0]:.3f}, max {_sqrt[-1]:.3f}, ratio {_ratio:.3f}")
+        # compare to experimental ratios
+        _best = min(_exp.items(), key=lambda kv: abs(kv[1]-_ratio)/kv[1])
+        print(f"     closest match: {_best[0]} = {_best[1]:.3f} (rel diff {abs(_best[1]-_ratio)/_best[1]:.1%})")
+        # Koide parameter for three largest sqrt-values
+        _Q = koide_parameter(_sqrt[-3], _sqrt[-2], _sqrt[-1])
+        print(f"     Koide Q (largest 3) = {_Q:.4f}")
+except FileNotFoundError:
+    print("  (data/h1_subspaces.json not found; run tools/cycle_space_decompose.py first)")
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 #                    27 LINES INTERSECTION STRUCTURE
 # ═══════════════════════════════════════════════════════════════════════════

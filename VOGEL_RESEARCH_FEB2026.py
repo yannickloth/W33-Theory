@@ -85,6 +85,39 @@ def vogel_dimension(alpha, beta, gamma):
 # THE DELIGNE EXCEPTIONAL SERIES
 # ==============================================================================
 
+# precomputed dimensions on the Deligne line
+DELIGNE_DIMS = {
+    -3: 3,
+    -2: 8,
+    Fraction(-5, 3): 14,
+    -1: 28,
+    0: 52,
+    1: 78,
+    2: 133,
+    3: 190,
+    4: 248,
+}
+
+def deligne_dim(t):
+    """Return the Deligne-series dimension for parameter *t*.
+
+    The exact universal formula is a polynomial in *t* of degree 4; we
+    currently provide the known discrete points listed in DELIGNE_DIMS.
+    If *t* is not one of the canonical values we interpolate linearly
+    between the nearest neighbours.
+    """
+    if t in DELIGNE_DIMS:
+        return DELIGNE_DIMS[t]
+    # simple linear interpolation
+    keys = sorted(DELIGNE_DIMS.keys())
+    for i in range(len(keys) - 1):
+        a, b = keys[i], keys[i + 1]
+        if a < t < b:
+            da = DELIGNE_DIMS[a]
+            db = DELIGNE_DIMS[b]
+            return da + (db - da) * (float(t - a) / float(b - a))
+    return None
+
 
 def deligne_parameter_formula():
     """
@@ -305,6 +338,28 @@ def search_dimension_648():
     print("\n\nPossible identification:")
     print("  If g/Z lives in Vogel's plane, what are its parameters?")
     print("  Or: Is 648-dim algebra OUTSIDE the classical/exceptional families?")
+
+
+def search_vogel_params_for_dim(target, grid=range(-6, 7)):
+    """Brute-force scan small integer/fraction grid for Vogel points with given dimension.
+
+    This uses the `vogel_dimension` helper which recognizes classical and
+    exceptional parameters; for an exotic dimension such as 648 we expect no
+    matches.
+    """
+    results = []
+    from fractions import Fraction
+    for a_num in grid:
+        for a_den in [1, 2, 3, 4, 6]:
+            alpha = Fraction(a_num, a_den)
+            for b_num in grid:
+                for b_den in [1, 2, 3, 4, 6]:
+                    beta = Fraction(b_num, b_den)
+                    gamma = -alpha - beta
+                    dim = vogel_dimension(alpha, beta, gamma)
+                    if dim == target:
+                        results.append((alpha, beta, gamma))
+    return results
 
 
 # ==============================================================================

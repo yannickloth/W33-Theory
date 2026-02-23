@@ -328,6 +328,25 @@ for param, (pred, exp) in pmns_pred.items():
     err = abs(pred - exp) / exp * 100
     print(f"  {param}: predicted {pred:.4f}, experimental {exp:.4f}, error {err:.2f}%")
 
+# compute Jarlskog and CP phase from earlier json
+try:
+    import json
+    with open('PART_XCIX_cp_violation.json') as f:
+        data = json.load(f)
+        J_val = data.get('jarlskog_pmns')
+        if J_val:
+            s12 = np.sqrt(40 / 131)
+            s23 = np.sqrt(4 / 7)
+            s13 = np.sqrt(2 / 91)
+            c12 = np.sqrt(1 - s12 ** 2)
+            c23 = np.sqrt(1 - s23 ** 2)
+            c13 = np.sqrt(1 - s13 ** 2)
+            sin_delta = J_val / (s12 * s23 * s13 * c12 * c23 * c13 ** 2)
+            delta = np.degrees(np.arcsin(sin_delta))
+            print(f"\n  Derived PMNS CP phase δ_CP ≈ {delta:.1f}° from Jarlskog {J_val:.4f}")
+except FileNotFoundError:
+    pass
+
 # =============================================================================
 # SECTION 7: UNIFIED MIXING PATTERN
 # =============================================================================

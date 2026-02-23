@@ -299,12 +299,34 @@ def main():
     Path("data").mkdir(exist_ok=True)
     with open("data/cycle_space_order3_matrix.json", "w") as f:
         json.dump({"matrix": [[int(x) for x in row] for row in M.tolist()]}, f)
+    # also serialize the actual H1-basis coordinate vectors for each 27-subspace
+    # this will allow later scripts to examine how group elements permute the
+    # subspaces without recomputing the decomposition from scratch.
+    serialized_bases = []
+    for S in subspaces:
+        serialized_bases.append([[int(x) for x in vec] for vec in S])
+
     with open("data/h1_subspaces.json", "w") as f:
         json.dump({
             "subspace_dims": [len(S) for S in subspaces],
             "gram_matrices": gram_matrices,
+            "subspace_bases": serialized_bases,
         }, f)
     print("saved action matrix and h1_subspaces data")
+
+    # perform a quick eigenvalue analysis of the Yukawa Gram matrices
+    print("\nYukawa Gram eigenvalue analysis:")
+    import numpy as _np
+    for idx, G in enumerate(gram_matrices):
+        Gmat = _np.array(G, dtype=float)
+        eigs = _np.linalg.eigvalsh(Gmat)
+        eigs.sort()
+        ratio = eigs[-1] / eigs[0]
+        sqrt_ratio = _np.sqrt(ratio)
+        print(
+            f"  subspace {idx}: eigen min {eigs[0]:.3f}, max {eigs[-1]:.3f}, "
+            f"ratio {ratio:.3f}, sqrt ratio {sqrt_ratio:.3f}"
+        )
 
     # save matrix for later
     Path("data").mkdir(exist_ok=True)

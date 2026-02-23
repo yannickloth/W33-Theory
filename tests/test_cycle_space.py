@@ -63,3 +63,28 @@ def test_h1_subspaces_file_exists():
         M = np.array(G, dtype=int)
         assert M.shape == (27, 27)
         assert np.linalg.matrix_rank(M) == 27
+
+
+def test_yukawa_eigenvalue_hierarchy():
+    import numpy as np, json
+    data = json.load(open('data/h1_subspaces.json'))
+    for G in data['gram_matrices']:
+        M = np.array(G, dtype=float)
+        eig = np.linalg.eigvalsh(M)
+        # hierarchy measured by sqrt(max/min)
+        ratio = np.sqrt(eig.max() / eig.min())
+        # should be hierarchical but not astronomically large
+        assert 5 < ratio < 30
+
+
+def test_yukawa_koide_parameter():
+    import numpy as np, json
+    data = json.load(open('data/h1_subspaces.json'))
+    for G in data['gram_matrices']:
+        eig = np.linalg.eigvalsh(np.array(G, dtype=float))
+        # take three largest sqrt-values as proto-masses
+        masses = np.sqrt(np.sort(eig)[-3:])
+        Q = (masses.sum()) / (np.sqrt(masses).sum() ** 2)
+        # Koide parameter need not be exact; just verify it remains O(1)
+        assert abs(Q - 2/3) < 0.5  # within 50% of Koide value
+

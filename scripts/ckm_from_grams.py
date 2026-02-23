@@ -31,12 +31,40 @@ import os
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, repo_root)
 
-# experimental CKM magnitudes (PDG 2024)
+# experimental CKM magnitudes (PDG 2024 default)
 V_CKM_exp = np.array([
     [0.97373, 0.2243, 0.00382],
     [0.2210, 0.987, 0.0410],
     [0.0080, 0.0388, 1.013],
 ])
+
+
+def fetch_experimental_ckm_from_wikipedia() -> np.ndarray | None:
+    """Attempt to pull the CKM magnitude table from Wikipedia.
+
+    Returns a 3x3 numpy array if successful, otherwise ``None``.
+    """
+    try:
+        import urllib.request, re
+        url = (
+            "https://en.wikipedia.org/wiki/Cabibbo%E2%80%93Kobayashi%E2%80%93Maskawa_matrix"
+        )
+        html = urllib.request.urlopen(url, timeout=10).read().decode("utf-8")
+        # look for pattern like |V_{ud}| = 0.97373 in the page text
+        nums = re.findall(r"V_[uc,t][dsb]?\|?\s*=\s*([0]\.[0-9]+)", html)
+        if len(nums) >= 9:
+            vals = list(map(float, nums[:9]))
+            return np.array(vals).reshape((3, 3))
+    except Exception:
+        pass
+    return None
+
+# try to update values live
+from scripts.experimental_data import fetch_ckm_from_wikipedia
+live = fetch_ckm_from_wikipedia()
+if live is not None:
+    print("Fetched live CKM magnitudes from Wikipedia, updating values.")
+    V_CKM_exp = live
 
 labels_up = ["u", "c", "t"]
 labels_down = ["d", "s", "b"]

@@ -249,6 +249,16 @@ def main():
     print(f"    (λ₁/λ₃)² = ({lambda_1}/{lambda_3})² = {suppression_Y}")
     print(f"    = {float(suppression_Y):.4f}")
 
+    # lifetime estimate incorporating RG scale and coupling
+    alpha_GUT = 1 / 25
+    M_scale = 2e16  # GeV
+    M_X = M_scale * np.sqrt(lambda_2 / lambda_1)
+    tau_ref = 1e34  # years for M_X = 1e16 GeV
+    tau_est = tau_ref * (M_X / 1e16) ** 4 * (1 / alpha_GUT) ** 2
+    print(f"\n  RG-improved lifetime estimate:")
+    print(f"    assuming Λ_GUT = {M_scale:.1e} GeV and α_GUT = {alpha_GUT:.2f}")
+    print(f"    M_X ≈ {M_X:.2e} GeV → τ_p ≈ {tau_est:.2e} yr")
+
     # ================================================================
     # PART 6: Spectral Isolation of Exact Sector
     # ================================================================

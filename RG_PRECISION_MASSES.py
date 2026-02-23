@@ -12,9 +12,16 @@ observed masses after proper RG evolution.
 """
 
 import json
+import sys
+
+# ensure unicode-friendly output when running under pipes/CI
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
 
 import numpy as np
-from scipy.integrate import odeint
+from scipy.integrate import odeint, solve_ivp
 
 print("=" * 76)
 print(" " * 10 + "PRECISION MASS PREDICTIONS WITH RG RUNNING")
@@ -50,19 +57,51 @@ print("\n" + "─" * 76)
 print("GUT Scale Boundary Conditions from W33/E8")
 print("─" * 76)
 
+import argparse
+
 # Key ratios from W33/E8 structure at M_GUT
-# These are the "bare" mass ratios before RG running
+# These are the "bare" mass ratios before RG running; can be overridden
+# by command-line options for exploration.
+parser = argparse.ArgumentParser(
+    description="RG running of Yukawa couplings with optional two-loop terms"
+)
+parser.add_argument(
+    "--mtmb",
+    type=float,
+    default=240.0 / 6.0,
+    help="m_t/m_b ratio at the GUT scale (default 240/6 = 40)",
+)
+parser.add_argument(
+    "--two-loop",
+    action="store_true",
+    help="include approximate 2-loop corrections to RGEs",
+)
+parser.add_argument(
+    "--thresholds",
+    action="store_true",
+    help="apply simple decoupling thresholds at m_t (and optionally m_b)",
+)
+parser.add_argument(
+    "--eps",
+    type=float,
+    default=0.01,
+    help="damping factor for two-loop Yukawa terms (set 0 to disable)",
+)
+args = parser.parse_args()
 
 W33_ratios_GUT = {
     # From previous analysis
-    "m_t/m_b": 240 / 6,  # = 40, matches experiment to 3%
-    "m_c/m_s": 40 / 3,  # ≈ 13.3
+    "m_t/m_b": args.mtmb,
+    "m_c/m_s": 40 / 3,  # ≈ 13.3 (unchanged)
     "m_t/m_c": 133 / 1,  # dim(E7) = 133
     "m_s/m_d": 240 / 12,  # = 20
     "m_μ/m_e": 27 * 8,  # = 216 (octonions × E6 rep)
     "m_τ/m_μ": 240 / 14,  # ≈ 17
     "m_b/m_τ": 3,  # Color factor
 }
+
+print(f"Using m_t/m_b = {W33_ratios_GUT['m_t/m_b']:.2f} (two-loop={args.two_loop})")
+print(f"Yukawa damping eps = {args.eps}")
 
 print("  W33/E8 mass ratios at GUT scale:")
 for name, ratio in W33_ratios_GUT.items():
@@ -103,13 +142,19 @@ def gauge_couplings(t):
 
 
 # Yukawa coupling RG equations
-def yukawa_rge(y, t):
+def yukawa_rge(t, y):
     """
-    RG equations for (y_t, y_b, y_τ)
-    y = [y_t, y_b, y_τ]
+    RG equations for (y_t, y_b, y_τ) suitable for solve_ivp.
     t = ln(μ/M_Z)
+    y = [y_t, y_b, y_τ]
     """
     y_t, y_b, y_tau = y
+    mu = M_Z * np.exp(t)
+
+    # apply simple threshold decoupling if requested
+    if args.thresholds and mu < M_t:
+        # below top mass we drop the top Yukawa from loops
+        y_t = 0.0
     g = gauge_couplings(t)
     g1, g2, g3 = g
 
@@ -121,6 +166,45 @@ def yukawa_rge(y, t):
         y_t**2 + 9 / 2 * y_b**2 + y_tau**2 - 8 * g3**2 - 9 / 4 * g2**2 - 5 / 12 * g1**2
     )
     beta_tau = y_tau * (3 * y_b**2 + 5 / 2 * y_tau**2 - 9 / 4 * g2**2 - 15 / 4 * g1**2)
+
+    # two-loop Yukawa contributions (SM) taken from standard references
+    # (Machacek-Vaughn, arXiv:hep-ph/9709356).  These are lengthy but we only
+    # keep the dominant terms; gauge-dependent pieces are included as well.
+    # Note: g1, g2, g3 are GUT-normalized as in the rest of the script.
+    if args.two_loop:
+        # gauge-dependent two-loop Yukawa terms only, suppressed by small
+        # factor to keep the integrator stable.  A more precise treatment
+        # would solve the full system or use a stiff solver.
+        eps = args.eps
+        g1sq = g1**2
+        g2sq = g2**2
+        g3sq = g3**2
+        Cg = 36 * g3sq + 225 / 16 * g2sq + 393 / 80 * g1sq
+        beta_t += eps * y_t * (
+            y_t**2 * Cg
+            + y_b**2 * Cg
+            - 108 * g3sq**2
+            + 9 * g2sq**2
+            + (17 / 20) * g1sq**2
+            + (5 / 4) * g2sq * g1sq
+        )
+        beta_b += eps * y_b * (
+            y_b**2 * Cg
+            + y_t**2 * Cg
+            - 108 * g3sq**2
+            + 9 * g2sq**2
+            + (17 / 20) * g1sq**2
+            + (5 / 4) * g2sq * g1sq
+        )
+        # tau receives no color terms
+        Cg_tau = 225 / 16 * g2sq + 297 / 80 * g1sq
+        beta_tau += eps * y_tau * (
+            y_tau**2 * Cg_tau
+            + y_b**2 * Cg
+            + 9 * g2sq**2
+            + (9 / 5) * g2sq * g1sq
+            + (783 / 400) * g1sq**2
+        )
 
     return np.array([beta_t, beta_b, beta_tau]) / (16 * np.pi**2)
 
@@ -156,22 +240,21 @@ print(f"    y_t(M_Z) = {y_t_MZ:.4f}")
 print(f"    y_b(M_Z) = {y_b_MZ:.4f}")
 print(f"    y_τ(M_Z) = {y_tau_MZ:.4f}")
 
-# Solve RG equations from M_Z to M_GUT
-t_span = np.linspace(0, np.log(M_GUT / M_Z), 1000)
+# Solve RG equations from M_Z to M_GUT using a stiff integrator
+# t variable = ln(mu / M_Z)
+t_max = np.log(M_GUT / M_Z)
 y0 = [y_t_MZ, y_b_MZ, y_tau_MZ]
-
-solution = odeint(yukawa_rge, y0, t_span)
-
-y_t_GUT = solution[-1, 0]
-y_b_GUT = solution[-1, 1]
-y_tau_GUT = solution[-1, 2]
+# solve_ivp expects signature f(t,y)
+sol_up = solve_ivp(lambda t, y: yukawa_rge(t, y), [0, t_max], y0, method='Radau', rtol=1e-6, atol=1e-9)
+# take final values
+y_t_GUT, y_b_GUT, y_tau_GUT = sol_up.y[:, -1]
 
 print(f"\n  Running to GUT scale (M_GUT = {M_GUT:.0e} GeV):")
 print(f"    y_t(M_GUT) = {y_t_GUT:.4f}")
 print(f"    y_b(M_GUT) = {y_b_GUT:.4f}")
 print(f"    y_τ(M_GUT) = {y_tau_GUT:.4f}")
 
-# Mass ratios at GUT scale
+#  Mass ratios at GUT scale (from upward run)
 ratio_tb_GUT = y_t_GUT / y_b_GUT
 ratio_btau_GUT = y_b_GUT / y_tau_GUT
 
@@ -180,8 +263,55 @@ print(f"    m_t/m_b (GUT) = {ratio_tb_GUT:.2f}")
 print(f"    m_b/m_τ (GUT) = {ratio_btau_GUT:.2f}")
 
 print(f"\n  W33 predictions at GUT scale:")
-print(f"    m_t/m_b = 240/6 = {240/6:.2f}")
-print(f"    m_b/m_τ = 3")
+print(f"    m_t/m_b = {W33_ratios_GUT['m_t/m_b']:.2f} (input)")
+print(f"    m_b/m_τ = {W33_ratios_GUT['m_b/m_τ']:.2f}")
+
+# calculate required ratio to match bottom
+from scipy.optimize import root_scalar
+
+def run_down(y_GUT):
+    # integrate downward using solve_ivp by reversing variable
+    t_start = np.log(M_GUT / M_Z)
+    def rge_rev(t, y):
+        return yukawa_rge(t, y)
+
+    if not args.thresholds:
+        sol = solve_ivp(rge_rev, [t_start, 0], y_GUT, method='Radau', rtol=1e-6, atol=1e-9)
+        return sol.y[:, -1]
+    # with thresholds, do piecewise integration: run to m_t then decouple top
+    t_top = np.log(M_t / M_Z)
+    # first segment
+    sol1 = solve_ivp(rge_rev, [t_start, t_top], y_GUT, method='Radau', rtol=1e-6, atol=1e-9)
+    y_at_top = sol1.y[:, -1]
+    # decouple top Yukawa
+    y_at_top[0] = 0.0
+    # continue downward
+    sol2 = solve_ivp(rge_rev, [t_top, 0], y_at_top, method='Radau', rtol=1e-6, atol=1e-9)
+    return sol2.y[:, -1]
+
+# if we fit y_t_GUT to top mass, find r such that bottom matches
+print("\nDetermining GUT ratio required to fit bottom mass under RG...")
+def bottom_diff(r):
+    y_b0 = y_t_GUT / r
+    y_tau0 = y_b0 / 3
+    yMZ = run_down([y_t_GUT, y_b0, y_tau0])
+    m_b_calc = yMZ[1] * v / np.sqrt(2)
+    return m_b_calc - m_b_MZ
+
+try:
+    sol_r = root_scalar(bottom_diff, bracket=[1, 200])
+    r_req = sol_r.root
+    print(f"    required m_t/m_b ratio at GUT to fit bottom {r_req:.2f}")
+    print(f"    W33 predicted ratio = {240/6:.2f} (factor {r_req/(240/6):.2f} difference)")
+    # demonstrate sensitivity for a few benchmark ratios
+    for test_r in [240/6, 72.0, r_req]:
+        y_b0 = y_t_GUT / test_r
+        y_tau0 = y_b0 / 3
+        yMZ = run_down([y_t_GUT, y_b0, y_tau0])
+        m_b_calc = yMZ[1] * v / np.sqrt(2)
+        print(f"      if m_t/m_b(GUT)={test_r:.2f} → m_b(M_Z)={m_b_calc:.2f} GeV")
+except Exception as e:
+    print("    failed to determine required ratio", e)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #                    INVERSE: GUT TO LOW ENERGY
@@ -195,24 +325,12 @@ print("─" * 76)
 # the low-energy top mass matches experiment.  W33 ratios fix
 # m_t/m_b and m_b/m_τ at M_GUT.
 
-# Helper functions
-
-def run_down(y_GUT):
-    """Integrate Yukawa RGEs from GUT scale down to M_Z.
-
-    We simply run the same differential equations on a decreasing energy
-    variable.  This avoids the earlier sign confusion with ``yukawa_rge_reverse``.
-    ``y_GUT`` is a triple (y_t,y_b,y_tau) at μ=M_GUT; the function returns the
-    corresponding values at μ=M_Z.
-    """
-    t_span_down = np.linspace(np.log(M_GUT / M_Z), 0, 1000)
-    sol = odeint(yukawa_rge, y_GUT, t_span_down)
-    return sol[-1]
+# Helper functions (note `run_down` is already defined above with solve_ivp)
 
 # shooting function: given y_t at GUT, compute predicted m_t at M_Z
 def top_mass_difference(y_t_guess):
-    y_b_guess = y_t_guess / (240 / 6)
-    y_tau_guess = y_b_guess / 3
+    y_b_guess = y_t_guess / W33_ratios_GUT["m_t/m_b"]
+    y_tau_guess = y_b_guess / W33_ratios_GUT["m_b/m_τ"]
     y_at_MZ = run_down([y_t_guess, y_b_guess, y_tau_guess])
     m_t_calc = y_at_MZ[0] * v / np.sqrt(2)
     return m_t_calc - m_t_MZ
@@ -222,15 +340,15 @@ from scipy.optimize import root_scalar
 try:
     sol = root_scalar(top_mass_difference, bracket=[0.01, 5.0], method="bisect", xtol=1e-4)
     y_t_GUT_fit = sol.root
-    y_b_GUT_fit = y_t_GUT_fit / (240 / 6)
-    y_tau_GUT_fit = y_b_GUT_fit / 3
+    y_b_GUT_fit = y_t_GUT_fit / W33_ratios_GUT["m_t/m_b"]
+    y_tau_GUT_fit = y_b_GUT_fit / W33_ratios_GUT["m_b/m_τ"]
     print(f"  Fitted y_t(GUT) = {y_t_GUT_fit:.4f}")
     print(f"  Implied y_b(GUT) = {y_b_GUT_fit:.4f}, y_τ(GUT) = {y_tau_GUT_fit:.4f}")
 except Exception as e:
     print("  Fit failed, using naive W33 values", e)
     y_t_GUT_fit = 1.0
-    y_b_GUT_fit = y_t_GUT_fit / (240 / 6)
-    y_tau_GUT_fit = y_b_GUT_fit / 3
+    y_b_GUT_fit = y_t_GUT_fit / W33_ratios_GUT["m_t/m_b"]
+    y_tau_GUT_fit = y_b_GUT_fit / W33_ratios_GUT["m_b/m_τ"]
 
 # compute predictions with fitted boundary
 y_t_pred, y_b_pred, y_tau_pred = run_down([y_t_GUT_fit, y_b_GUT_fit, y_tau_GUT_fit])
@@ -321,7 +439,7 @@ print("\n" + "=" * 76)
 print("RG RUNNING SUMMARY")
 print("=" * 76)
 
-summary = """
+summary = f"""
 ╔══════════════════════════════════════════════════════════════════════════╗
 ║              PRECISION MASS PREDICTIONS WITH RG RUNNING                   ║
 ╠══════════════════════════════════════════════════════════════════════════╣
@@ -334,9 +452,9 @@ summary = """
 ║                                                                           ║
 ║  W33/E8 RATIOS USED:                                                      ║
 ║  ───────────────────                                                     ║
-║  • m_t/m_b = 240/6 = 40 (E8 roots / color)                               ║
+║  • m_t/m_b = {W33_ratios_GUT['m_t/m_b']:.2f} (input)                    ║
 ║  • m_t/m_c = 133 (dim E7)                                                ║
-║  • m_b/m_τ = 3 (color factor)                                            ║
+║  • m_b/m_τ = {W33_ratios_GUT['m_b/m_τ']:.2f} (color factor)             ║
 ║  • m_b/m_s = 240/12 = 20                                                 ║
 ║  • m_τ/m_μ = 240/14 ≈ 17                                                 ║
 ║                                                                           ║
@@ -370,11 +488,12 @@ results = {
     "masses_predicted": {k: float(v) for k, v in masses_pred.items()},
     "masses_experimental": masses_exp,
     "W33_ratios": W33_ratios_GUT,
+    # record run options
+    "options": {"two_loop": args.two_loop, "eps": args.eps, "thresholds": args.thresholds},
 }
 
-with open(
-    "C:/Users/wiljd/OneDrive/Desktop/Theory of Everything/RG_MASSES.json", "w"
-) as f:
+# write to local file in workspace root for portability
+with open("RG_MASSES.json", "w") as f:
     json.dump(results, f, indent=2, default=str)
 
 print("\nResults saved to RG_MASSES.json")

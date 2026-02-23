@@ -287,6 +287,14 @@ def main():
     T_15_norm = np.sqrt(T_15_norm)
     print(f"  ||T_15||_F = {T_15_norm:.8f}")
 
+    # crude conversion to self-interaction cross section per mass
+    m_dm_gev = 100.0  # assume ~100 GeV scale
+    g_eff = T_24_norm
+    m_dm_g = m_dm_gev * 1.78e-24  # grams
+    sigma_over_m = (g_eff ** 4) / (4 * np.pi * (m_dm_gev ** 3))
+    sigma_over_m *= 1.78e-24
+    print(f"\n  Approximate self-interaction σ/m = {sigma_over_m:.2e} cm^2/g")
+
     # =====================================================================
     # PART 4: DARK MATTER MASS PREDICTIONS
     # =====================================================================

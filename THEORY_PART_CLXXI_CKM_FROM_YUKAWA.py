@@ -49,5 +49,10 @@ regression guard once a more refined analytic derivation is available.
 Further work (CLXXII?) will investigate whether the same geometry can also
 account for the Pontecorvo–Maki–Nakagawa–Sakata (PMNS) matrix by associating one
 of the subspaces with the neutrino Dirac coupling and including a seesaw
+
+A companion utility (`scripts/mixing_from_grams.py`) now scans every ordered
+pair of Gram matrices and computes the 3×3 overlap together with errors
+relative to both the CKM and PMNS experimental magnitude matrices, allowing
+rapid identification of the most quark-like and lepton-like pairings.
 structure.
 """

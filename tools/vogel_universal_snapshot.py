@@ -132,7 +132,12 @@ def _load_s12_report(path: Path) -> dict[str, Any] | None:
 
 
 def build_snapshot(
-    s12_report_path: Path, exceptional_line_denominator_cap: int = 24
+    s12_report_path: Path,
+    exceptional_line_denominator_cap: int = 24,
+    firewall_json_path: Path | None = None,
+    exact_search_max_num: int = 50,
+    exact_search_max_den: int = 10,
+    exact_search_fix_alpha: Fraction | None = Fraction(-2),
 ) -> dict[str, Any]:
     exceptional_direct = {
         "A2": (Fraction(-2), Fraction(2), Fraction(3), 8),
@@ -194,8 +199,65 @@ def build_snapshot(
         for dim in target_dims
     }
 
+    # run a small rational grid search for exact triples hitting the targets
+    # helper to brute-force a small rational grid looking for exact Vogel triples
+    def _search_exact(d: int, max_num: int, max_den: int, fix_alpha: Fraction | None):
+        found = []
+        alphas: list[Fraction] = []
+        if fix_alpha is not None:
+            alphas = [fix_alpha]
+        else:
+            for a_num in range(-max_num, max_num + 1):
+                for a_den in range(1, max_den + 1):
+                    alphas.append(Fraction(a_num, a_den))
+        for alpha in alphas:
+            for b_num in range(-max_num, max_num + 1):
+                for b_den in range(1, max_den + 1):
+                    beta = Fraction(b_num, b_den)
+                    for g_num in range(-max_num, max_num + 1):
+                        for g_den in range(1, max_den + 1):
+                            gamma = Fraction(g_num, g_den)
+                            try:
+                                dim = vogel_dimension(alpha, beta, gamma)
+                            except ZeroDivisionError:
+                                continue
+                            if dim == Fraction(d):
+                                found.append((alpha, beta, gamma))
+        # canonicalize
+        uniq = []
+        seen = set()
+        for a,b,c in found:
+            den = a.denominator * b.denominator * c.denominator
+            A = int(a * den); B = int(b * den); C = int(c * den)
+            g = math.gcd(math.gcd(abs(A), abs(B)), abs(C))
+            if g:
+                A//=g; B//=g; C//=g
+            key = tuple(sorted([A,B,C], key=lambda x:(abs(x),x)))
+            if key not in seen:
+                seen.add(key)
+                uniq.append((str(a), str(b), str(c)))
+        return uniq
+
+    exact_triples: dict[str, list[tuple[str, str, str]]] = {}
+    for dim in target_dims:
+        sols = _search_exact(dim, exact_search_max_num, exact_search_max_den, exact_search_fix_alpha)
+        exact_triples[str(dim)] = sols
+
+
+    # optional firewall data
+    firewall_info: dict[str, Any] | None = None
+    if firewall_json_path is not None:
+        try:
+            txt = firewall_json_path.read_text(encoding="utf-8")
+            fw = json.loads(txt)
+            count = len(fw.get("bad_triangles_Schlafli_orbit_index", []))
+            firewall_info = {"count": int(count), "source": str(firewall_json_path)}
+        except Exception:
+            firewall_info = {"error": "could not read firewall file", "path": str(firewall_json_path)}
+
     snapshot = {
         "status": "ok",
+        "exact_triples": exact_triples,
         "generated_utc": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
         "vogel_dimension_formula": "dim = ((alpha-2t)(beta-2t)(gamma-2t))/(alpha*beta*gamma), t=alpha+beta+gamma",
         "exceptional_direct_table": {
@@ -208,6 +270,7 @@ def build_snapshot(
             "exceptional_line_rational_search": exceptional_line_hits,
         },
         "s12_bridge": s12_summary,
+        "firewall": firewall_info,
         "web_sources": [
             {
                 "title": "Vogel universality and beyond",
@@ -294,6 +357,18 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
                 value["hit_count"],
             )
         )
+    # report any explicit rational triples found
+    et = snapshot.get("exact_triples", {})
+    if et:
+        lines.append("")
+        lines.append("## Exact Triple Search")
+        for key, triples in et.items():
+            if triples:
+                lines.append(f"- dim `{key}` exact Vogel triples:")
+                for a,b,c in triples:
+                    lines.append(f"    - ({a},{b},{c})")
+            else:
+                lines.append(f"- dim `{key}` no exact triples found within grid")
     lines.append(
         "- arithmetic closure and family split docs: "
         "`docs/VOGEL_RATIONAL_DIMENSION_THEOREM_2026_02_11.md`, "
@@ -320,6 +395,13 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
             f"- Jordan triple symmetry holds: `{s12['jordan_symmetry_holds']}`"
         )
         lines.append("")
+    fw = snapshot.get("firewall")
+    if fw is not None:
+        lines.append("## Firewall")
+        lines.append("")
+        lines.append(f"- bad triads count: `{fw.get('count', '?')}`")
+        lines.append(f"- source: `{fw.get('source')}`")
+        lines.append("")
     lines.append("## Recent Sources")
     lines.append("")
     for src in snapshot.get("web_sources", []):
@@ -341,6 +423,12 @@ def main() -> None:
         default=24,
     )
     parser.add_argument(
+        "--firewall-json",
+        type=Path,
+        default=None,
+        help="optional path to firewall_bad_triads_mapping.json",
+    )
+    parser.add_argument(
         "--out-json",
         type=Path,
         default=ROOT / "artifacts" / "vogel_universal_snapshot_2026_02_11.json",
@@ -350,11 +438,33 @@ def main() -> None:
         type=Path,
         default=ROOT / "docs" / "VOGEL_UNIVERSAL_RESEARCH_2026_02_11.md",
     )
+    parser.add_argument(
+        "--exact-search-max-num",
+        type=int,
+        default=50,
+        help="max numerator for internal exact triple search",
+    )
+    parser.add_argument(
+        "--exact-search-max-den",
+        type=int,
+        default=10,
+        help="max denominator for internal exact triple search",
+    )
+    parser.add_argument(
+        "--exact-search-fix-alpha",
+        type=str,
+        default="-2",
+        help="rational alpha value for exact search (use quotes)",
+    )
     args = parser.parse_args()
 
     snapshot = build_snapshot(
         s12_report_path=args.s12_report_json,
         exceptional_line_denominator_cap=int(args.exceptional_line_denominator_cap),
+        firewall_json_path=args.firewall_json,
+        exact_search_max_num=int(args.exact_search_max_num),
+        exact_search_max_den=int(args.exact_search_max_den),
+        exact_search_fix_alpha=Fraction(args.exact_search_fix_alpha),
     )
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
