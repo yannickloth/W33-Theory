@@ -57,6 +57,17 @@ logs/
 external/
 extracted/
 artifacts/
+artifacts_for_release_*/
+artifacts_run_*/
+artifacts_try_*/
+analysis/w33_bundle_temp/
+notebooks/
+*.vsix
+Claude.txt
+conflicts.txt
+hunt_output.txt
+runlog*.txt
+nul
 
 # Miscellaneous large or temporary directories
 .More New Work/
@@ -70,6 +81,9 @@ tmp*
 # Temporary Python scripts and logs
 TEMP_*.py
 temp_*.py
+# helper scripts used during debugging or inspection
+scripts/show_*.py
+scripts/inspect_*.py
 *.aux
 *.log
 *.toc

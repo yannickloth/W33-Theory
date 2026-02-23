@@ -1,0 +1,47 @@
+{
+  "part": "CXIX",
+  "findings": {
+    "h27_degree": 8,
+    "h27_edges": 108,
+    "cross_edges": 108,
+    "connection_patterns": 9,
+    "pattern_sizes": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "stab_order": "1296",
+    "orbits_on_27": [
+      27
+    ],
+    "orbits_on_12": [
+      12
+    ],
+    "stab_factorization": "2^4 * 3^4",
+    "h27_eigenvalues": [
+      [
+        "8",
+        1
+      ],
+      [
+        "-4",
+        6
+      ],
+      [
+        "-1",
+        8
+      ],
+      [
+        "2",
+        12
+      ]
+    ],
+    "aut_h27": "1296"
+  }
+}
