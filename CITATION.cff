@@ -6,8 +6,8 @@ authors:
   - family-names: "Dembski"
     given-names: "William"
     name-suffix: "Jr."
-version: "2026.02.16"
-date-released: "2026-02-16"
+version: "2026.02.23"
+date-released: "2026-02-23"
 url: "https://github.com/wilcompute/W33-Theory"
 repository-code: "https://github.com/wilcompute/W33-Theory"
 license: MIT
@@ -21,10 +21,11 @@ keywords:
   - "particle physics"
 abstract: >-
   Complete derivation of the Standard Model from the W(3,3)
-  generalized quadrangle and E8 Lie algebra. 60 proved pillars
+  generalized quadrangle and E8 Lie algebra. 65 proved pillars
   establish that the 240 edges of W(3,3) biject to the 240 roots
   of E8, the first homology H₁ = Z⁸¹ carries an irreducible
   representation matching matter content, the Hodge spectrum
-  0⁸¹+4¹²⁰+10²⁴+16¹⁵ encodes gauge structure, and the Weinberg
-  angle sin²θ_W = 3/8 emerges uniquely from GQ(3,3). All results
-  verified by 280 automated tests with zero free parameters.
+  0⁸¹+4¹²⁰+10²⁴+16¹⁵ encodes gauge structure, sin²θ_W = 3/8
+  emerges uniquely from GQ(3,3), and α_GUT^{-1} = 8π is derived
+  from W33 geometry. All results verified by 733 automated tests
+  with zero free parameters.

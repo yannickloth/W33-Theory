@@ -82,7 +82,7 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 
 ---
 
-## The 60 Pillars
+## The 65 Pillars
 
 Each pillar is a proved theorem. Every pillar has an executable verification script and at least one automated test.
 
