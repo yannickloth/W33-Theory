@@ -411,16 +411,23 @@ def main() -> None:
             continue
         p = int(item.get("p", 0) or 0)
         best_pair = str(item.get("best_pair") or "?")
+        rec_perm = item.get("recommended_pair_perm_hit")
+        rec_irrep = item.get("recommended_pair_nontrivial_irrep_hit")
         mass = item.get("mass", {})
         mass_str = mass.get("value") if isinstance(mass, dict) else None
         mass_f = mass.get("float") if isinstance(mass, dict) else None
         hits = item.get("hits", [])
         replicability = item.get("replicability", [])
+        cofactor = item.get("cofactor_perm_hits", {})
 
         if isinstance(mass_str, str) and isinstance(mass_f, (int, float)):
             print(f"p={p:2d}: best={best_pair} mass={mass_str} (~{float(mass_f):.6g})")
         else:
             print(f"p={p:2d}: best={best_pair}")
+        if isinstance(rec_perm, str) and rec_perm and rec_perm != best_pair:
+            print(f"      recommended perm-hit pair: {rec_perm}")
+        if isinstance(rec_irrep, str) and rec_irrep and rec_irrep != best_pair:
+            print(f"      recommended irrep-hit pair: {rec_irrep}")
 
         if isinstance(hits, list):
             for h in hits:
@@ -430,12 +437,20 @@ def main() -> None:
                 prob = h.get("prob", {})
                 prob_str = prob.get("value") if isinstance(prob, dict) else None
                 prob_f = prob.get("float") if isinstance(prob, dict) else None
+                r = h.get("r")
                 if isinstance(prob_str, str) and isinstance(prob_f, (int, float)):
                     print(
-                        f"      class {cls_name:4s} prob={prob_str} (~{float(prob_f):.6g})"
+                        f"      class {cls_name:4s} r={r} prob={prob_str} (~{float(prob_f):.6g})"
                     )
                 else:
                     print(f"      class {cls_name:4s}")
+                if isinstance(cofactor, dict) and cls_name in cofactor:
+                    ci = cofactor.get(cls_name, {})
+                    if isinstance(ci, dict):
+                        grp = ci.get("cofactor_group_recognized")
+                        cof = ci.get("cofactor_order")
+                        if isinstance(grp, str) and grp and isinstance(cof, int):
+                            print(f"           cofactor H={grp} |H|={cof}")
 
         if isinstance(replicability, list):
             for chk in replicability:
