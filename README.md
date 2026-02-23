@@ -2,6 +2,8 @@
 
 **A finite-geometry approach to Standard Model structure**
 
+> Release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet modularity, TQFT).
+
 ---
 
 ## What This Is
