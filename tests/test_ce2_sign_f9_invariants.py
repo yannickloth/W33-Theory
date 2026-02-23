@@ -75,3 +75,41 @@ def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
         var_eps[key] = int(eps)
 
     assert len(var_c0) > 0 and len(var_eps) > 0 and len(const_sign) > 0
+
+    # Regression: the global Heisenberg/Weil law reproduces many sparse local CE2 repairs.
+    import json
+    from pathlib import Path
+
+    from scripts.ce2_global_cocycle import predict_ce2_uv
+
+    payload = json.loads(
+        Path("committed_artifacts/ce2_sparse_local_solutions.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    entries = payload.get("entries", [])
+    assert isinstance(entries, list) and len(entries) >= 200
+
+    for rec in entries[:200]:
+        assert isinstance(rec, dict)
+        a = rec.get("a", [])
+        b = rec.get("b", [])
+        c = rec.get("c", [])
+        assert isinstance(a, list) and len(a) == 2
+        assert isinstance(b, list) and len(b) == 2
+        assert isinstance(c, list) and len(c) == 2
+
+        pred = predict_ce2_uv((int(a[0]), int(a[1])), (int(b[0]), int(b[1])), (int(c[0]), int(c[1])))
+        assert pred is not None
+
+        U_expected = rec.get("U", [])
+        V_expected = rec.get("V", [])
+        assert isinstance(U_expected, list)
+        assert isinstance(V_expected, list)
+
+        U_pred = sorted([(int(i), str(v)) for i, v in pred.U])
+        V_pred = sorted([(int(i), str(v)) for i, v in pred.V])
+        U_exp = sorted([(int(i), str(s)) for i, s in U_expected])
+        V_exp = sorted([(int(i), str(s)) for i, s in V_expected])
+        assert U_pred == U_exp
+        assert V_pred == V_exp
