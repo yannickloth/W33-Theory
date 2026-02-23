@@ -172,6 +172,17 @@ def analyze(
 
     results: list[dict[str, Any]] = []
     for p in scan_list:
+        mass_by_pair: dict[str, dict[str, object]] = {}
+        for info in pair_list:
+            label = _pair_label(info)
+            m = pair_prime_mass.get((label, int(p)), Fraction(0, 1))
+            mass_by_pair[str(label)] = {
+                "numerator": int(m.numerator),
+                "denominator": int(m.denominator),
+                "value": str(m),
+                "float": float(m),
+            }
+
         # Find best pair by mass.
         best_label: str | None = None
         best_mass = Fraction(-1, 1)
@@ -226,6 +237,7 @@ def analyze(
                 "hits": hit_payload,
                 "classes": classes,
                 "replicability": cls_results,
+                "mass_by_pair": mass_by_pair,
             }
         )
 
