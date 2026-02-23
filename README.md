@@ -2,17 +2,6 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-[![Tests](https://img.shields.io/badge/tests-733%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-65%20proved-blue)]()
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
-[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
-[![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
-[![Zenodo DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18652825-blue)](https://doi.org/10.5281/zenodo.18652825)
-
-> **Draft releases:**
-> `v2026-02-15-qec-mlut` &mdash; Pillar&nbsp;45 (GF(3) QEC + MLUT). See PR&nbsp;#82.
-> `v2026-02-16-pillars-58-60` &mdash; Pillars 58&ndash;60 (p-adic AdS/CFT, string worldsheet, TQFT). See `RELEASES/DRAFT_v2026-02-16-pillars-58-60.md`.
-
 ---
 
 ## What This Is
