@@ -2,17 +2,6 @@
 
 **Deriving the Standard Model of particle physics from a single finite geometry**
 
-[![Tests](https://img.shields.io/badge/tests-583%20passed-brightgreen)]()
-[![Pillars](https://img.shields.io/badge/pillars-60%20proved-blue)]()
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-yellow)]()
-[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)]()
-[![QEC CI](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml/badge.svg?branch=master)](https://github.com/wilcompute/W33-Theory/actions/workflows/qec.yml)
-[![Release: Pillar-45 draft](https://img.shields.io/badge/release-Pillar--45%20(QEC)-blue)](docs/outreach/pillar-45-qec.md) [Zenodo DOI](https://doi.org/10.5281/zenodo.18652825)
-
-> Draft release: `v2026-02-15-qec-mlut — Zenodo: https://doi.org/10.5281/zenodo.18652825` — Pillar‑45 (GF(3) QEC + MLUT). See PR #82 and join the discussion at Issue #83.
->
-> Draft release: `v2026-02-16-pillars-58-60` - Pillars 58-60 (p-adic AdS/CFT, string worldsheet modularity, TQFT). See `RELEASES/DRAFT_v2026-02-16-pillars-58-60.md`.
-
 ---
 
 ## Overview
