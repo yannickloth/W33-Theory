@@ -117,6 +117,7 @@ def analyze(
     scan_primes: Iterable[int] | None = None,
     verify_rr_j: bool = False,
     include_ratio_signatures: bool = True,
+    include_cofactor_perm_hits: bool = True,
 ) -> dict[str, Any]:
     """Run the Ogg-prime pipeline and return a structured report."""
 
@@ -302,6 +303,61 @@ def analyze(
                     rec["ratio_signature_rungs"] = rung_info
                     rec["recommended_pair_perm_hit"] = recommended_perm_pair
                     rec["recommended_pair_nontrivial_irrep_hit"] = recommended_irrep_pair
+
+    if include_cofactor_perm_hits:
+        try:
+            from scripts.w33_monster_centralizer_cofactor_groups import (
+                analyze as analyze_cofactor_groups,
+            )
+
+            cofactor = analyze_cofactor_groups()
+        except Exception:
+            cofactor = None
+
+        if isinstance(cofactor, dict) and cofactor.get("available") is True:
+            classes_info = cofactor.get("classes", {})
+            if isinstance(classes_info, dict):
+                for rec in results:
+                    if not isinstance(rec, dict):
+                        continue
+                    classes = rec.get("classes", [])
+                    if not isinstance(classes, list):
+                        continue
+                    attached: dict[str, Any] = {}
+                    recommended: str | None = None
+                    for cls in classes:
+                        if not isinstance(cls, str):
+                            continue
+                        info = classes_info.get(cls, {})
+                        if not isinstance(info, dict):
+                            continue
+                        perm_hits = info.get("perm_hits", [])
+                        attached[cls] = {
+                            "cofactor_order": info.get("cofactor_order"),
+                            "cofactor_group_recognized": info.get(
+                                "cofactor_group_recognized"
+                            ),
+                            "perm_degrees": info.get("perm_degrees"),
+                            "perm_hits": perm_hits,
+                        }
+                        if isinstance(perm_hits, list) and perm_hits:
+                            best = max(
+                                (
+                                    h
+                                    for h in perm_hits
+                                    if isinstance(h, dict)
+                                    and int(h.get("r", 0) or 0) > 0
+                                    and isinstance(h.get("pair"), str)
+                                ),
+                                key=lambda h: int(h.get("r", 0) or 0),
+                                default=None,
+                            )
+                            if best is not None:
+                                recommended = _pair_label_to_x(str(best.get("pair")))
+                    if attached:
+                        rec["cofactor_perm_hits"] = attached
+                        if rec.get("recommended_pair_perm_hit") is None:
+                            rec["recommended_pair_perm_hit"] = recommended
 
     return {
         "available": True,
