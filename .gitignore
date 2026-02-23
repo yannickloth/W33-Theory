@@ -57,3 +57,12 @@ logs/
 external/
 extracted/
 artifacts/
+
+# Miscellaneous large or temporary directories
+.More New Work/
+bundles/
+.tmp*
+tmp*
+*.zip
+.ci-logs/
+.claude/
