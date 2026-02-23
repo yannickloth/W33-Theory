@@ -47,3 +47,13 @@ htmlcov/
 # Temporary files
 *.tmp
 *.bak
+
+# Generated outputs and logs
+checks/
+data/
+committed_artifacts/
+outputs/
+logs/
+external/
+extracted/
+artifacts/
