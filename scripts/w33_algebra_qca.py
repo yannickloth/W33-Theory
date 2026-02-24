@@ -856,6 +856,12 @@ def compute_simple_root_weights(points, edges, simple_edges):
     # build edge->index map for 240 edges
     edge_index = {e: idx for idx, e in enumerate(edges)}
 
+    # Build adjacency (tools/cycle_space_* expects an adjacency list).
+    n = len(points)
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[int(u)].append(int(v))
+        adj[int(v)].append(int(u))
 
     # need the 81-dim H1 basis; replicate minimal quiet version from
     # tools/cycle_space_decompose to avoid importing the heavy debug script.
@@ -863,9 +869,8 @@ def compute_simple_root_weights(points, edges, simple_edges):
     from tools.cycle_space_analysis import build_cycle_basis
     from sympy import Matrix
 
-    adj_dict = {i: set(neis) for i, neis in enumerate(points)}
-    full_basis = build_cycle_basis(len(points), adj_dict, edges)
-    simplices = build_clique_complex(len(points), adj_dict)
+    full_basis = build_cycle_basis(n, adj, edges)
+    simplices = build_clique_complex(n, adj)
     B2 = boundary_matrix(simplices[2], simplices[1])
     M2 = Matrix(B2.tolist())
     im_basis_sym = M2.columnspace()
@@ -898,9 +903,9 @@ def compute_simple_root_weights(points, edges, simple_edges):
             continue
         ei = edge_index[edge]
         # represent edge as 240-vector
-        evec = np.zeros((len(edges),), dtype=int)
+        evec = np.zeros((len(edges),), dtype=float)
         evec[ei] = 1
-        coords81 = np.rint(pinv @ evec).astype(int)
+        coords81 = (pinv @ evec).astype(float)
         w_vals = []
         for j, G in enumerate(gram_list):
             # subspace basis j is list of 27 vectors length 81
@@ -941,26 +946,80 @@ def compute_chevalley_invariants():
     simple_edges = []
     meta_map = {tuple(map(int,r["root_orbit"])):r for r in rows}
 
+    # precompute geometry edges for validation
+    _geom_pts, geom_edges, *_ = build_w33_geometry()
+    geom_edge_set = {tuple(sorted(e)) for e in geom_edges}
+
     # attempt to load accurate root->edge correspondence produced by
     # tools/sage_e8_root_edge_bijection.py (stored in artifacts_archive)
     orbit_to_edge = {}
     map_path = Path("artifacts_archive/e8_root_to_w33_edge.json")
     if map_path.exists():
         dmap = json.loads(map_path.read_text(encoding="utf-8"))
+        # raw mapping may use old vertex labeling; store temporarily
+        raw_map = {}
         for k, v in dmap.get("root_to_edge", {}).items():
             try:
                 key = tuple(json.loads(k))
             except Exception:
                 # already tuple-like string? fallback parse
                 key = tuple(int(x.strip()) for x in k.strip('[]').split(','))
-            orbit_to_edge[key] = tuple(v)
+            raw_map[key] = tuple(v)
+
+        # attempt to relabel raw_map edges to current geometry using graph isomorphism
+        try:
+            import networkx as nx
+            # build graphs
+            G_old = nx.Graph()
+            G_old.add_nodes_from(range(40))
+            for e in raw_map.values():
+                G_old.add_edge(*tuple(sorted(e)))
+            _, curr_edges, *_ = build_w33_geometry()
+            G_new = nx.Graph()
+            G_new.add_nodes_from(range(40))
+            for e in curr_edges:
+                G_new.add_edge(*tuple(sorted(e)))
+            gm = nx.algorithms.isomorphism.GraphMatcher(G_old, G_new)
+            if gm.is_isomorphic():
+                mapping = gm.mapping
+                print("Info: relabeling archived root->edge mapping to current vertex labels")
+                for k, e in raw_map.items():
+                    # apply mapping; if any vertex not in mapping, leave as-is
+                    a = mapping.get(e[0], e[0])
+                    b = mapping.get(e[1], e[1])
+                    orbit_to_edge[k] = (a, b)
+            else:
+                print("WARNING: unable to relabel archived mapping via graph isomorphism; will validate entries instead")
+                orbit_to_edge.update(raw_map)
+        except ImportError:
+            # networkx not available (unlikely)
+            orbit_to_edge.update(raw_map)
+
+        # validate mapping against current geometry
+        invalid = []
+        for edge in orbit_to_edge.values():
+            if tuple(sorted(edge)) not in geom_edge_set:
+                invalid.append(edge)
+        if invalid:
+            pct = 100 * len(invalid) / len(orbit_to_edge)
+            print(f"WARNING: {len(invalid)}/{len(orbit_to_edge)} ({pct:.1f}%) of archived mapping edges not in geometry")
+            # discard mapping if majority invalid
+            if pct > 50:
+                print("Discarding stale root->edge mapping; simple_edges will use metadata only")
+                orbit_to_edge.clear()
 
     for i, s in enumerate(simples):
         info = meta_map.get(s, {})
+        # prefer explicit mapping from archive, but validate it
         edge = orbit_to_edge.get(s) or tuple(info.get("edge", []))
         # ensure canonical ordering
         if len(edge) == 2 and edge[0] > edge[1]:
             edge = (edge[1], edge[0])
+        # verify edge belongs to current geometry
+        if edge and tuple(sorted(edge)) not in geom_edge_set:
+            # mapping is stale or inconsistent; drop and warn
+            print(f"WARNING: simple root {i} edge {edge} not in current W33 geometry; clearing")
+            edge = ()
         entry = {"i": i, **info}
         entry["edge"] = list(edge) if edge else []
         simple_edges.append(entry)

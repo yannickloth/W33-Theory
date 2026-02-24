@@ -5,33 +5,14 @@ from pathlib import Path
 import pytest
 
 
+# use the shared geometry builder from the main script rather than
+# duplicating logic here; this ensures consistency between the test and
+# the code under test.
+from scripts.w33_algebra_qca import build_w33_geometry
+
 def build_w33_edges():
-    F3 = [0, 1, 2]
-    vectors = [v for v in product(F3, repeat=4) if any(x != 0 for x in v)]
-
-    proj_points = []
-    seen = set()
-    for v in vectors:
-        v = list(v)
-        for i in range(4):
-            if v[i] != 0:
-                inv = 1 if v[i] == 1 else 2
-                v = tuple((x * inv) % 3 for x in v)
-                break
-        if v not in seen:
-            seen.add(v)
-            proj_points.append(v)
-
-    def omega(x, y):
-        return (x[0] * y[2] - x[2] * y[0] + x[1] * y[3] - x[3] * y[1]) % 3
-
-    edges = set()
-    for i in range(len(proj_points)):
-        for j in range(i + 1, len(proj_points)):
-            if omega(proj_points[i], proj_points[j]) == 0:
-                edges.add((i, j))
-
-    return edges
+    _, edges, *_ = build_w33_geometry()
+    return {tuple(sorted(e)) for e in edges}
 
 
 def test_e8_root_to_w33_edge_bijection():
