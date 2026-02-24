@@ -96,6 +96,18 @@ def all_solutions_p(A: np.ndarray, p: int) -> list[Dict[tuple[int, int], int]]:
 
     A = (np.asarray(A, dtype=np.int64) % p).reshape((2, 2))
 
+    # quick identity case: µ can be any linear functional (p^2 choices)
+    if np.array_equal(A % p, np.eye(2, dtype=int) % p):
+        out: list[Dict[tuple[int, int], int]] = []
+        for a in range(p):
+            for b in range(p):
+                mu: Dict[tuple[int, int], int] = {}
+                for x in range(p):
+                    for y in range(p):
+                        mu[(x, y)] = (a * x + b * y) % p
+                out.append(mu)
+        return out
+
     # vector space V = F_p^2
     V = [(i, j) for i in range(p) for j in range(p)]
 

@@ -67,6 +67,10 @@ def test_basis_perm_to_code_perm():
         cp = basis_perm_to_code_perm(alg, perm)
         # no nonidentity matrix should induce a code permutation
         assert cp is None
+        # full-hexad map must agree when cp is computed (identity case only)
+        from scripts.w33_golay_lie_algebra import hexad_perm_to_code_perm
+        full = hexad_perm_to_code_perm(alg, perm)
+        assert full is None
 
 
 def test_nontrivial_action_exists():

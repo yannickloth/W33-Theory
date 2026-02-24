@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **865 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **868 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -341,7 +341,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 865 tests, quiet mode
+python -m pytest -q            # 868 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
@@ -468,7 +468,7 @@ W33-Theory/
 │   ├── cycle_space_decompose.py           # Boundary matrix / automorphisms
 │   ├── reconstruct_w33_e8_mapping.py      # Edge-root bijection from seed
 │   └── edge_stabilizers.py               # Stabilizer enumeration
-├── tests/              # 765-test suite (pytest)
+├── tests/              # 868-test suite (pytest)
 │   ├── test_e8_embedding.py               # Core embedding tests
 │   ├── test_cycle_space.py
 │   ├── test_yukawa_sector_assignment.py

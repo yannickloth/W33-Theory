@@ -926,6 +926,86 @@ def basis_perm_to_code_perm(alg: GolayLieAlgebra, perm24: list[int]) -> list[int
     return [mapping[i] for i in range(12)]
 
 
+def hexad_perm_to_code_perm(alg: GolayLieAlgebra, perm24: list[int]) -> list[int] | None:
+    """Attempt point permutation using the full 132 Golay hexads.
+
+    This uses every weight-6 codeword hexad, not only the 24 basis supports.
+    The 24-permutation acts only on those 24 basis hexads; other hexads remain
+    fixed.  Points are distinguished by membership in all 132 hexads, so the
+    mapping may succeed more often, but in practice we still expect ``None``
+    for nonidentity symplectic matrices.
+    """
+    # build all hexads from the ternary Golay code
+    from tools.s12_universal_algebra import (
+        ternary_golay_generator_matrix,
+        enumerate_linear_code_f3,
+    )
+
+    gen = ternary_golay_generator_matrix()
+    codewords = enumerate_linear_code_f3(gen)
+    hexads = sorted(
+        {
+            tuple(sorted(i for i, x in enumerate(cw) if int(x) % 3 != 0))
+            for cw in codewords
+            if sum(1 for x in cw if int(x) % 3 != 0) == 6
+        }
+    )
+    # verify size
+    if len(hexads) != 132:
+        return None
+
+    # compute supports for basis reps; each should appear among the hexads
+    gen = ternary_golay_generator_matrix()
+    G = np.array(gen, dtype=int) % 3
+    supports = [
+        {i for i, x in enumerate(((np.array(rep) % 3) @ G) % 3) if x != 0}
+        for rep in alg.reps
+    ]
+    # map each support to its hexad index (if present)
+    support_to_hexad: dict[int, int] = {}
+    for idx, h in enumerate(hexads):
+        hs = set(h)
+        for j, sup in enumerate(supports):
+            if sup == hs and j not in support_to_hexad:
+                support_to_hexad[j] = idx
+    # if not all basis supports found, fall back to None
+    if len(support_to_hexad) != 24:
+        return None
+
+    # build incidence sets for each point using all 132 hexads
+    inc_all = [set() for _ in range(12)]
+    for hidx, h in enumerate(hexads):
+        for pt in h:
+            inc_all[pt].add(hidx)
+    # now apply permutation to the 24 basis hexads
+    new_inc = [set() for _ in range(12)]
+    for pt in range(12):
+        for hidx in list(inc_all[pt]):
+            # if this hexad is one of the 24 basis ones, move it
+            for basis_idx, hex_idx in support_to_hexad.items():
+                if hex_idx == hidx:
+                    # compute new hexad index after permuting basis element
+                    new_hex_idx = support_to_hexad.get(perm24[basis_idx])
+                    if new_hex_idx is not None:
+                        new_inc[pt].add(new_hex_idx)
+                    break
+            else:
+                # hexad not moved, keep same
+                new_inc[pt].add(hidx)
+    # invert mapping
+    mapping: dict[int, int] = {}
+    for i, s in enumerate(new_inc):
+        for j, orig in enumerate(inc_all):
+            if s == orig:
+                mapping[i] = j
+                break
+        else:
+            return None
+    if len(mapping) != 12 or len(set(mapping.values())) != 12:
+        return None
+    return [mapping[i] for i in range(12)]
+
+
 def analyze(*, compute_derivations: bool = True) -> dict[str, Any]:
     alg = build_golay_lie_algebra()
     ad = _ad_matrices(alg)
