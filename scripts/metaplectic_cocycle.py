@@ -32,46 +32,139 @@ def _add(u: U2, v: U2) -> U2:
     return ((u[0] + v[0]) % 3, (u[1] + v[1]) % 3)
 
 
+def _add_p(u: tuple[int, int], v: tuple[int, int], p: int) -> tuple[int, int]:
+    return ((u[0] + v[0]) % p, (u[1] + v[1]) % p)
+
+
+def _row_reduce_mod_p(mat: np.ndarray, p: int) -> tuple[int, np.ndarray, list[int]]:
+    """Return (rank, rref, pivot_cols) over F_p."""
+    A = (np.asarray(mat, dtype=np.int64) % int(p)).copy()
+    m, n = A.shape
+    row = 0
+    pivots: list[int] = []
+
+    for col in range(n):
+        pivot = None
+        for r in range(row, m):
+            if int(A[r, col] % p) != 0:
+                pivot = r
+                break
+        if pivot is None:
+            continue
+        if pivot != row:
+            A[[row, pivot]] = A[[pivot, row]]
+        inv = pow(int(A[row, col] % p), -1, p)
+        A[row, :] = (A[row, :] * inv) % p
+        for r in range(m):
+            if r == row:
+                continue
+            factor = int(A[r, col] % p)
+            if factor:
+                A[r, :] = (A[r, :] - factor * A[row, :]) % p
+        pivots.append(int(col))
+        row += 1
+        if row == m:
+            break
+    return int(row), A % p, pivots
+
+
 def all_solutions(A: np.ndarray) -> list[Dict[U2, int]]:
-    r"""Return *all* cochain solutions \mu_A satisfying the cocycle eq.
+    """Convenience wrapper for the p=3 case."""
+    return all_solutions_p(A, 3)
 
-    For each 2×2 matrix ``A`` over F3 we brute-force the 3^8 possible
-    assignments on the nonzero grades (with mu(0,0)=0) and collect those
-    satisfying
 
-        phi(A g, A h) - phi(g, h) = mu(g+h) - mu(g) - mu(h)   (mod 3)
+def all_solutions_p(A: np.ndarray, p: int) -> list[Dict[tuple[int, int], int]]:
+    r"""Return *all* cochain solutions for matrix ``A`` over \(\mathbb F_p\).
 
-    The result is a list of dictionaries mapping the 9 vectors of F3^2
-    to values in F3.  The affine structure of the solution space is
-    obvious: adding any linear functional (a*g+b*h) to a solution produces
-    another.
+    The arguments mirror :func:`all_solutions` but work for any odd prime ``p``.
+    We solve the linear system on \(\mu:\mathbb F_p^2\to\mathbb F_p\) (with
+    the gauge \(\mu(0)=0\)) by row-reduction over \(\mathbb F_p\), and then
+    generate the full affine solution space by adding all linear functionals.
+
+        phi_p(A g, A h) - phi_p(g, h) = mu(g+h) - mu(g) - mu(h)  (mod p)
+
+    where ``phi_p(g,h)=g[0]*h[1]`` is the standard Heisenberg cocycle.
+
+    The list returned consists of dictionaries mapping the \(p^2\) vectors
+    of \(\mathbb F_p^2\) to elements of \(\mathbb F_p\).  Solutions form an
+    affine space over the 2-dimensional space of linear functionals.
     """
 
-    V = [(i, j) for i in range(3) for j in range(3)]
-    solutions: list[Dict[U2, int]] = []
+    p = int(p)
+    if p <= 1 or p % 2 == 0:
+        raise ValueError(f"expected odd prime p, got {p}")
+
+    A = (np.asarray(A, dtype=np.int64) % p).reshape((2, 2))
+
+    # vector space V = F_p^2
+    V = [(i, j) for i in range(p) for j in range(p)]
+
+    def apply_matrix_p(A: np.ndarray, g: tuple[int,int]) -> tuple[int,int]:
+        return (
+            (int(A[0, 0]) * g[0] + int(A[0, 1]) * g[1]) % p,
+            (int(A[1, 0]) * g[0] + int(A[1, 1]) * g[1]) % p,
+        )
+
+    def phi_p(g: tuple[int,int], h: tuple[int,int]) -> int:
+        return (g[0] * h[1]) % p
 
     # precompute deltas
     delta = {}
     for g, h in itertools.product(V, V):
         delta[(g, h)] = (
-            phi(apply_matrix(A, g), apply_matrix(A, h)) - phi(g, h)
-        ) % 3
+            phi_p(apply_matrix_p(A, g), apply_matrix_p(A, h)) - phi_p(g, h)
+        ) % p
 
-    # iterate over all assignments on nonzero grades; include zero fixed to 0
-    nonzeros = GRADES_NONZERO
-    for values in itertools.product(range(3), repeat=len(nonzeros)):
-        mu = {(0, 0): 0}
-        mu.update({g: int(v) for g, v in zip(nonzeros, values)})
-        ok = True
-        for g, h in itertools.product(V, V):
-            gh = _add(g, h)
-            lhs = (mu[gh] - mu[g] - mu[h]) % 3
-            if lhs != delta[(g, h)]:
-                ok = False
-                break
-        if ok:
-            solutions.append(mu)
-    return solutions
+    nonzeros = [v for v in V if v != (0, 0)]
+    idx = {v: i for i, v in enumerate(nonzeros)}  # unknown index
+    n = len(nonzeros)  # = p^2 - 1
+
+    # Build dense linear system M x = b over F_p:
+    #   x[v] = mu(v) for v != 0; and mu(0)=0 is fixed.
+    rows = p * p * p * p
+    M = np.zeros((rows, n), dtype=np.int64)
+    b = np.zeros((rows,), dtype=np.int64)
+    r = 0
+    for g in V:
+        for h in V:
+            gh = _add_p(g, h, p)
+            # mu(g+h) - mu(g) - mu(h) = delta(g,h)
+            if gh != (0, 0):
+                M[r, idx[gh]] = (M[r, idx[gh]] + 1) % p
+            if g != (0, 0):
+                M[r, idx[g]] = (M[r, idx[g]] - 1) % p
+            if h != (0, 0):
+                M[r, idx[h]] = (M[r, idx[h]] - 1) % p
+            b[r] = int(delta[(g, h)] % p)
+            r += 1
+
+    # Solve by row-reducing the augmented system [M|b].
+    aug = np.concatenate([M, b.reshape((-1, 1))], axis=1) % p
+    _rank, rref, pivots = _row_reduce_mod_p(aug, p)
+
+    # Inconsistency check: 0 = 1 rows.
+    for i in range(rref.shape[0]):
+        if np.all((rref[i, :n] % p) == 0) and int(rref[i, n] % p) != 0:
+            return []
+
+    # Pick a particular solution by setting all free variables = 0.
+    x0 = np.zeros((n,), dtype=np.int64)
+    for row, col in enumerate(pivots):
+        x0[int(col)] = int(rref[row, n] % p)
+
+    mu0: dict[tuple[int, int], int] = {(0, 0): 0}
+    for v in nonzeros:
+        mu0[v] = int(x0[idx[v]] % p)
+
+    # Generate the full affine space by adding all linear maps (a,b)⋅(x,y).
+    out: list[Dict[tuple[int, int], int]] = []
+    for a in range(p):
+        for bb in range(p):
+            mu: dict[tuple[int, int], int] = {}
+            for x, y in V:
+                mu[(x, y)] = int((mu0[(x, y)] + a * x + bb * y) % p)
+            out.append(mu)
+    return out
 
 
 

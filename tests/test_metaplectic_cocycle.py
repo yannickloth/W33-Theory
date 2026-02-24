@@ -88,3 +88,36 @@ def test_additional_patterns():
     for row in summary:
         print(row)
 
+
+def test_phi_omega_zero_relation():
+    # empirical relation between number of zeros in canonical phase and
+    # symplectic-delta omega values for nonzero grades.
+    from scripts.grade_weil_phase import GRADES_NONZERO, omega, apply_matrix
+
+    allowed = {(0, 0), (2, 2), (4, 0), (4, 2), (8, 8)}
+    for A in all_symplectic_matrices():
+        md = solution_space_metadata(A)
+        # metadata count includes the (0,0) origin always zero;
+        # remove it to compare with omega-values on nonzero grades.
+        phi_zeros = md["dist"].get(0, 0) - 1
+        wzeros = 0
+        for g in GRADES_NONZERO:
+            Ag = apply_matrix(A, g)
+            d = ((Ag[0] - g[0]) % 3, (Ag[1] - g[1]) % 3)
+            if omega(g, d) == 0:
+                wzeros += 1
+        assert (phi_zeros, wzeros) in allowed
+
+
+def test_omega_zero_implies_phi_zero():
+    """Whenever the symplectic delta is zero, the phase on that grade vanishes."""
+    from scripts.grade_weil_phase import GRADES_NONZERO, omega, apply_matrix
+
+    for A in all_symplectic_matrices():
+        mu = canonical_phase(A)
+        for g in GRADES_NONZERO:
+            Ag = apply_matrix(A, g)
+            d = ((Ag[0] - g[0]) % 3, (Ag[1] - g[1]) % 3)
+            if omega(g, d) == 0:
+                assert mu[g] == 0
+

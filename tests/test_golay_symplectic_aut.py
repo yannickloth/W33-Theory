@@ -65,8 +65,8 @@ def test_basis_perm_to_code_perm():
         if perm is None:
             continue
         cp = basis_perm_to_code_perm(alg, perm)
-        if cp is not None:
-            assert sorted(cp) == list(range(12))
+        # no nonidentity matrix should induce a code permutation
+        assert cp is None
 
 
 def test_nontrivial_action_exists():
