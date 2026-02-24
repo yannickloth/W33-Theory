@@ -206,7 +206,7 @@ def _golay_p_axis_generators() -> tuple[np.ndarray, np.ndarray]:
     return g11 % p, g21 % p
 
 
-def analyze(*, compute_full_order: bool = False) -> dict[str, Any]:
+def analyze(*, compute_full_order: bool = False, include_matrices: bool = False) -> dict[str, Any]:
     """Find a Golay-side outer normalizer element extending 2.M12 to M12:2."""
     p = 3
     t0 = time.time()
@@ -275,74 +275,105 @@ def analyze(*, compute_full_order: bool = False) -> dict[str, Any]:
     def _find_A_for_targets(
         *, dd11: np.ndarray, dd21: np.ndarray, h1: np.ndarray, h2: np.ndarray
     ) -> np.ndarray | None:
-        """Solve A dd11 = h1 A and A dd21 = h2 A; return an invertible A if found."""
+        """Solve A dd11 = h1 A and A dd21 = h2 A; return an invertible A if found.
+
+        Prefer symmetric solutions A = A^T when available. In that case the
+        symplectic swap X = [[0,A],[-A^{-T},0]] satisfies X^2 = -I_12 and has
+        the canonical order-4 "Fourier" signature.
+        """
         L1 = np.kron(dd11.T % p, I6) % p
         L2 = np.kron(dd21.T % p, I6) % p
         K1 = (L1 - np.kron(I6, h1 % p)) % p
         K2 = (L2 - np.kron(I6, h2 % p)) % p
         K = np.concatenate([K1, K2], axis=0) % p
+        if K.size == 0:
+            return None
+
+        def _enumerate_candidates(vecs: list[np.ndarray]) -> list[tuple[int, ...]]:
+            k = len(vecs)
+            coeffs: list[tuple[int, ...]] = []
+            for i in range(k):
+                c = [0] * k
+                c[i] = 1
+                coeffs.append(tuple(c))
+
+            kk = min(k, 12)
+            for i in range(kk):
+                for j in range(i + 1, kk):
+                    for a in (1, 2):
+                        for b in (1, 2):
+                            c = [0] * k
+                            c[i] = a
+                            c[j] = b
+                            coeffs.append(tuple(c))
+
+            if k <= 7:
+                for idx in range(1, p**k):
+                    x = idx
+                    c = []
+                    for _ in range(k):
+                        c.append(int(x % p))
+                        x //= p
+                    coeffs.append(tuple(c))
+            else:
+                for _ in range(8000):
+                    c = tuple(int(x) for x in rng.integers(0, p, size=(k,)))
+                    if any(c):
+                        coeffs.append(c)
+            return coeffs
+
+        def _search_from_basis(basis: list[np.ndarray]) -> np.ndarray | None:
+            if not basis:
+                return None
+            vecs = [v.reshape((-1,)) % p for v in basis]
+            coeffs = _enumerate_candidates(vecs)
+
+            for c in coeffs:
+                v = np.zeros((36,), dtype=np.int64)
+                for ci, bi in zip(c, vecs):
+                    if ci:
+                        v = (v + int(ci) * bi) % p
+                if not np.any(v):
+                    continue
+                A = v.reshape((6, 6), order="F") % p
+                try:
+                    _inv_mod_p(A, p)
+                except ValueError:
+                    continue
+                if not np.array_equal((A @ dd11) % p, (h1 @ A) % p):
+                    continue
+                if not np.array_equal((A @ dd21) % p, (h2 @ A) % p):
+                    continue
+                return A % p
+            return None
+
+        # First try the symmetric subspace (A = A^T) by adding explicit linear
+        # constraints to the nullspace problem. This avoids relying on luck in
+        # the coefficient enumeration.
+        sym_rows: list[np.ndarray] = []
+        for i in range(6):
+            for j in range(i + 1, 6):
+                row = np.zeros((36,), dtype=np.int64)
+                row[i + 6 * j] = 1
+                row[j + 6 * i] = -1
+                sym_rows.append(row % p)
+        Sym = np.stack(sym_rows, axis=0) % p
+        Ksym = np.concatenate([K, Sym], axis=0) % p
+        basis_sym = _nullspace_basis_mod_p(Ksym, p)
+        A = _search_from_basis(basis_sym)
+        if A is not None:
+            return A % p
+
+        # Fallback: any invertible intertwiner.
         basis = _nullspace_basis_mod_p(K, p)
         if not basis:
             return None
-
-        k = len(basis)
-        vecs = [v.reshape((-1,)) % p for v in basis]
-
-        # Candidate coefficient vectors in F_p^k. We always try the unit vectors
-        # (each basis direction), plus small pairwise combinations, then fall
-        # back to either exhaustive enumeration (small k) or RNG sampling.
-        coeffs: list[tuple[int, ...]] = []
-        for i in range(k):
-            c = [0] * k
-            c[i] = 1
-            coeffs.append(tuple(c))
-
-        kk = min(k, 12)
-        for i in range(kk):
-            for j in range(i + 1, kk):
-                for a in (1, 2):
-                    for b in (1, 2):
-                        c = [0] * k
-                        c[i] = a
-                        c[j] = b
-                        coeffs.append(tuple(c))
-
-        if k <= 7:
-            for idx in range(1, p**k):
-                x = idx
-                c: list[int] = []
-                for _ in range(k):
-                    c.append(int(x % p))
-                    x //= p
-                coeffs.append(tuple(c))
-        else:
-            for _ in range(8000):
-                c = tuple(int(x) for x in rng.integers(0, p, size=(k,)))
-                if any(c):
-                    coeffs.append(c)
-
-        A_nonsym: np.ndarray | None = None
-        for c in coeffs:
-            v = np.zeros((36,), dtype=np.int64)
-            for ci, bi in zip(c, vecs):
-                if ci:
-                    v = (v + int(ci) * bi) % p
-            if not np.any(v):
-                continue
-            A = v.reshape((6, 6), order="F") % p
-            try:
-                _inv_mod_p(A, p)
-            except ValueError:
-                continue
-            if not np.array_equal((A @ dd11) % p, (h1 @ A) % p):
-                continue
-            if not np.array_equal((A @ dd21) % p, (h2 @ A) % p):
-                continue
-            if np.array_equal(A % p, A.T % p):
-                return A % p
-            if A_nonsym is None:
-                A_nonsym = A % p
-        return A_nonsym
+        A_any = _search_from_basis(basis)
+        if A_any is None:
+            return None
+        if np.array_equal(A_any % p, A_any.T % p):
+            return A_any % p
+        return A_any % p
 
     ord_d11 = _order_mod_p(d11, p=p, max_pow=400)
     tr_d11 = int(np.trace(d11) % p)
@@ -465,13 +496,75 @@ def analyze(*, compute_full_order: bool = False) -> dict[str, Any]:
     outer["minus_I6_in_H"] = bool(_matrix_bytes(minus_I6, p) in seen)
     outer["predicted_full_order"] = 2 * int(base_order)
 
+    # Polarization witness: the commutant of 2.M12 inside End(F3^12) has
+    # dimension 2 and contains a non-scalar involution J with 6+6 Lagrangian
+    # eigenspaces. The outer element X conjugates J -> -J (Fourier swap).
+    from scripts.w33_2suz_m12_2_subgroup import (
+        _basis_matrix,
+        _commutant_basis,
+        _find_involutive_commutant_element,
+        _is_scalar_multiple_of_identity,
+        _is_totally_isotropic,
+        _solve_in_basis,
+        _symplectic_inverse,
+    )
+
+    I12 = np.eye(12, dtype=np.int64) % p
+    x = X % p
+    y1 = E11 % p
+    y2 = E21 % p
+
+    comm_basis = _commutant_basis([y1, y2], p=p)
+    inv = _find_involutive_commutant_element(comm_basis, p=p)
+
+    polarization: dict[str, Any] = {
+        "commutant_dim": int(len(comm_basis)),
+        "found_involution": bool(inv is not None),
+    }
+    if inv is not None:
+        polarization["involution_is_scalar"] = _is_scalar_multiple_of_identity(inv, p=p)
+        polarization["involution_squares_to_I"] = bool(
+            np.array_equal((inv @ inv) % p, I12)
+        )
+
+        plus_vecs = _nullspace_basis_mod_p((inv - I12) % p, p)
+        minus_vecs = _nullspace_basis_mod_p((inv + I12) % p, p)
+        U_plus = _basis_matrix(plus_vecs, p=p)
+        U_minus = _basis_matrix(minus_vecs, p=p)
+
+        polarization["eigenspace_dims"] = {
+            "+1": int(len(plus_vecs)),
+            "-1": int(len(minus_vecs)),
+        }
+        polarization["plus_isotropic"] = _is_totally_isotropic(U_plus, J0, p=p)
+        polarization["minus_isotropic"] = _is_totally_isotropic(U_minus, J0, p=p)
+
+        x_inv = _symplectic_inverse(x, J0, p=p)
+        inv_conj = (x_inv @ inv @ x) % p
+        polarization["x_conjugates_J_to_minus_J"] = bool(
+            np.array_equal(inv_conj, (-inv) % p)
+        )
+
+        if U_plus.shape == (12, 6) and U_minus.shape == (12, 6):
+            A_swap = _solve_in_basis(U_minus, (x @ U_plus) % p, p=p)
+            B_swap = _solve_in_basis(U_plus, (x @ U_minus) % p, p=p)
+            minus_I = (-np.eye(6, dtype=np.int64)) % p
+            polarization["swap_blocks"] = {
+                "AB_equals_minus_I": bool(
+                    np.array_equal((A_swap @ B_swap) % p, minus_I)
+                ),
+                "BA_equals_minus_I": bool(
+                    np.array_equal((B_swap @ A_swap) % p, minus_I)
+                ),
+            }
+
     if compute_full_order:
         from scripts.w33_2suz_m12_2_subgroup import _matrix_group_order
 
         full = _matrix_group_order([E11, E21, X], p=p, limit=450_000)
         orders["full_order"] = int(full) if full is not None else None
 
-    return {
+    out: dict[str, Any] = {
         "available": True,
         "field_p": int(p),
         "base_group": {
@@ -482,8 +575,17 @@ def analyze(*, compute_full_order: bool = False) -> dict[str, Any]:
         },
         "orders": orders,
         "outer": outer,
+        "polarization": polarization,
         "elapsed_s": float(time.time() - t0),
     }
+    if include_matrices:
+        out["matrices_mod3"] = {
+            "A": (A % p).astype(int).tolist(),
+            "X": (X % p).astype(int).tolist(),
+            "E11": (E11 % p).astype(int).tolist(),
+            "E21": (E21 % p).astype(int).tolist(),
+        }
+    return out
 
 
 def main() -> None:
@@ -515,8 +617,29 @@ def main() -> None:
     print(f"  -I6 in H:    {outer['minus_I6_in_H']}")
     print()
 
+    pol = rep.get("polarization", {})
+    if isinstance(pol, dict) and pol:
+        print("3) Polarization witness from commutant of 2.M12")
+        print("-" * 58)
+        print(f"  commutant dim      = {pol.get('commutant_dim')} (expect 2)")
+        print(f"  found involution   = {pol.get('found_involution')}")
+        if pol.get("found_involution") is True:
+            print(f"  involution scalar  = {pol.get('involution_is_scalar')} (expect False)")
+            print(f"  J^2 = I            = {pol.get('involution_squares_to_I')} (expect True)")
+            print(f"  eigenspace dims    = {pol.get('eigenspace_dims')} (expect 6+6)")
+            print(f"  plus isotropic     = {pol.get('plus_isotropic')} (expect True)")
+            print(f"  minus isotropic    = {pol.get('minus_isotropic')} (expect True)")
+            print(
+                f"  X: J -> -J         = {pol.get('x_conjugates_J_to_minus_J')} (expect True)"
+            )
+            sb = pol.get("swap_blocks", {})
+            if isinstance(sb, dict) and sb:
+                print(f"  swap AB=-I         = {sb.get('AB_equals_minus_I')}")
+                print(f"  swap BA=-I         = {sb.get('BA_equals_minus_I')}")
+        print()
+
     orders = rep["orders"]
-    print("3) Orders")
+    print("4) Orders")
     print("-" * 58)
     print(f"  |H|         = {orders['base_order']} (expect 190080 = 2.M12)")
     print(f"  predicted   = {outer['predicted_full_order']} (expect 380160 = 2*(2.M12))")

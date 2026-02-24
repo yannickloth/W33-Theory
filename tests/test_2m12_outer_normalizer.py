@@ -21,3 +21,14 @@ def test_golay_side_outer_normalizer_exists() -> None:
 
     xord = int(outer.get("X_order", 0) or 0)
     assert xord > 0 and xord % 2 == 0
+
+    pol = rep.get("polarization", {})
+    assert isinstance(pol, dict)
+    assert int(pol.get("commutant_dim", 0) or 0) == 2
+    assert pol.get("found_involution") is True
+    assert pol.get("involution_is_scalar") is False
+    assert pol.get("involution_squares_to_I") is True
+    assert pol.get("eigenspace_dims") == {"+1": 6, "-1": 6}
+    assert pol.get("plus_isotropic") is True
+    assert pol.get("minus_isotropic") is True
+    assert pol.get("x_conjugates_J_to_minus_J") is True
