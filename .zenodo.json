@@ -1,6 +1,6 @@
 {
   "title": "W(3,3)-E8 Correspondence Theorem: Standard Model from Finite Geometry",
-  "description": "A complete derivation of the Standard Model of particle physics from the W(3,3) generalized quadrangle and E8 Lie algebra correspondence. The theory proves 67 pillars connecting combinatorial, topological, and algebraic structures to gauge symmetries, fermion generations, coupling constants, and mass hierarchies — with zero free parameters. All results are computationally verified by 832 automated tests.",
+  "description": "A complete derivation of the Standard Model of particle physics from the W(3,3) generalized quadrangle and E8 Lie algebra correspondence. The theory proves 67 pillars connecting combinatorial, topological, and algebraic structures to gauge symmetries, fermion generations, coupling constants, and mass hierarchies — with zero free parameters. All results are computationally verified by 834 automated tests.",
   "creators": [
     {
       "name": "Dembski, William Jr.",
@@ -51,5 +51,5 @@
     {"term": "Mathematical Physics", "scheme": "arxiv"},
     {"term": "Combinatorics", "scheme": "arxiv"}
   ],
-  "notes": "67 proved pillars, 832 automated tests. Key predictions: sin²θ_W = 3/8 (exact), α_GUT^{-1} = 8π from W33 geometry, 3 generations topologically protected, spectral gap Δ=4 ensures proton stability and confinement; CKM/PMNS and CP-violation invariants derived from complex Yukawa profiles."
+  "notes": "67 proved pillars, 834 automated tests. Key predictions: sin²θ_W = 3/8 (exact), α_GUT^{-1} = 8π from W33 geometry, 3 generations topologically protected, spectral gap Δ=4 ensures proton stability and confinement; CKM/PMNS and CP-violation invariants derived from complex Yukawa profiles."
 }
