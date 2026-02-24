@@ -146,6 +146,14 @@ def analyze() -> dict[str, Any]:
     assert isinstance(m12_2_gens, dict)
     assert int(m12_2_gens.get("x_order", 0) or 0) == 4
     assert int(m12_2_gens.get("y_order", 0) or 0) == 3
+    pol = m12_2.get("polarization", {})
+    assert isinstance(pol, dict)
+    assert int(pol.get("commutant_dim", 0) or 0) == 2
+    assert pol.get("found_involution") is True
+    assert pol.get("eigenspace_dims") == {"+1": 6, "-1": 6}
+    assert pol.get("plus_isotropic") is True
+    assert pol.get("minus_isotropic") is True
+    assert pol.get("x_conjugates_J_to_minus_J") is True
 
     return {
         "available": True,
@@ -193,6 +201,7 @@ def analyze() -> dict[str, Any]:
             "words": dict(m12_2.get("m12_2_words", {}))
             if isinstance(m12_2.get("m12_2_words"), dict)
             else {},
+            "polarization": dict(pol),
         },
     }
 
@@ -281,6 +290,21 @@ def main() -> None:
             f"ord(x)={int(m12_2.get('x_order', 0) or 0)}, "
             f"ord(y)={int(m12_2.get('y_order', 0) or 0)}"
         )
+        pol = m12_2.get("polarization", {})
+        if isinstance(pol, dict) and pol:
+            print(
+                "  polarization: "
+                f"commutant dim={int(pol.get('commutant_dim', 0) or 0)}, "
+                f"eigenspaces={pol.get('eigenspace_dims')}, "
+                f"xJx^-1=-J={bool(pol.get('x_conjugates_J_to_minus_J'))}"
+            )
+            swap = pol.get("swap_blocks", {})
+            if isinstance(swap, dict) and swap:
+                print(
+                    "  Fourier swap: "
+                    f"AB=-I={bool(swap.get('AB_equals_minus_I'))}, "
+                    f"BA=-I={bool(swap.get('BA_equals_minus_I'))}"
+                )
 
     print()
     print("ALL CHECKS PASSED ✓")

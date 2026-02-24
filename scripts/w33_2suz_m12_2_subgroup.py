@@ -41,6 +41,55 @@ def _mat_mod_p(A: np.ndarray, p: int) -> np.ndarray:
     return (np.asarray(A, dtype=np.int64) % int(p)).astype(np.int64)
 
 
+def _row_reduce_mod_p(mat: np.ndarray, p: int) -> tuple[int, np.ndarray, list[int]]:
+    """Return (rank, rref, pivot_cols) for mat over F_p (small p, dense)."""
+    A = _mat_mod_p(mat, p).astype(np.int64, copy=True)
+    n_rows, n_cols = A.shape
+    rank = 0
+    pivot_cols: list[int] = []
+
+    for col in range(n_cols):
+        pivot = None
+        for r in range(rank, n_rows):
+            if int(A[r, col]) % p != 0:
+                pivot = r
+                break
+        if pivot is None:
+            continue
+        if pivot != rank:
+            A[[rank, pivot], :] = A[[pivot, rank], :]
+        inv = pow(int(A[rank, col]) % p, -1, p)
+        A[rank, :] = (A[rank, :] * inv) % p
+        for r in range(n_rows):
+            if r == rank:
+                continue
+            factor = int(A[r, col]) % p
+            if factor:
+                A[r, :] = (A[r, :] - factor * A[rank, :]) % p
+        pivot_cols.append(int(col))
+        rank += 1
+        if rank == n_rows:
+            break
+
+    return int(rank), A, pivot_cols
+
+
+def _nullspace_basis_mod_p(mat: np.ndarray, p: int) -> list[np.ndarray]:
+    """Return a basis (as vectors) for the right nullspace of mat over F_p."""
+    rank, rref, pivots = _row_reduce_mod_p(mat, p)
+    n_cols = int(rref.shape[1])
+    free_cols = [c for c in range(n_cols) if c not in pivots]
+    basis: list[np.ndarray] = []
+    for free in free_cols:
+        v = np.zeros(n_cols, dtype=np.int64)
+        v[free] = 1
+        for i in range(rank):
+            pivot_col = pivots[i]
+            v[pivot_col] = (-int(rref[i, free])) % p
+        basis.append(v % p)
+    return basis
+
+
 def _standard_symplectic_form(n: int, p: int = 3) -> np.ndarray:
     """Return J0 = [[0,I],[-I,0]] on F_p^{2n}."""
     I = np.eye(n, dtype=np.int64) % p
@@ -143,6 +192,121 @@ def build_m12_2_generators_from_suz(a: np.ndarray, b: np.ndarray, *, p: int = 3)
     return {"x": x % p, "y": y % p}
 
 
+def _commutant_basis(gens: Iterable[np.ndarray], *, p: int = 3) -> list[np.ndarray]:
+    """Return a basis for the commutant {X : Xg=gX for all g in gens} over F_p."""
+    gens = [_mat_mod_p(g, p) for g in gens]
+    if not gens:
+        return []
+    n = int(gens[0].shape[0])
+    I = np.eye(n, dtype=np.int64) % p
+
+    blocks: list[np.ndarray] = []
+    for g in gens:
+        g = _mat_mod_p(g, p)
+        # Using column-major vec: vec(Xg - gX) = (g^T⊗I - I⊗g) vec(X).
+        K = (np.kron(g.T, I) - np.kron(I, g)) % p
+        blocks.append(K.astype(np.int64, copy=False))
+    system = np.concatenate(blocks, axis=0) % p
+
+    vec_basis = _nullspace_basis_mod_p(system, p)
+    out: list[np.ndarray] = []
+    for v in vec_basis:
+        out.append(v.reshape((n, n), order="F") % p)
+    return out
+
+
+def _is_scalar_multiple_of_identity(M: np.ndarray, *, p: int = 3) -> bool:
+    M = _mat_mod_p(M, p)
+    n = int(M.shape[0])
+    I = np.eye(n, dtype=np.int64) % p
+    return any(np.array_equal(M, (c * I) % p) for c in range(p))
+
+
+def _find_involutive_commutant_element(
+    comm_basis: list[np.ndarray], *, p: int = 3
+) -> np.ndarray | None:
+    """Find a non-scalar J in span(comm_basis) with J^2=I (if one exists)."""
+    if not comm_basis:
+        return None
+    n = int(comm_basis[0].shape[0])
+    I = np.eye(n, dtype=np.int64) % p
+
+    candidates: list[np.ndarray] = []
+    if len(comm_basis) > 4:
+        # For large commutants this search can explode; we only need the dim-2 case.
+        return None
+
+    from itertools import product
+
+    for coeffs in product(range(p), repeat=len(comm_basis)):
+        if all(int(c) == 0 for c in coeffs):
+            continue
+        M = np.zeros((n, n), dtype=np.int64)
+        for c, B in zip(coeffs, comm_basis, strict=False):
+            if int(c):
+                M = (M + int(c) * B) % p
+        if _is_scalar_multiple_of_identity(M, p=p):
+            continue
+        if np.array_equal((M @ M) % p, I):
+            candidates.append(M % p)
+
+    if not candidates:
+        return None
+    candidates.sort(key=_matrix_bytes)
+    return candidates[0]
+
+
+def _basis_matrix(vecs: list[np.ndarray], *, p: int = 3) -> np.ndarray:
+    if not vecs:
+        return np.zeros((0, 0), dtype=np.int64)
+    cols = [_mat_mod_p(v.reshape(-1, 1), p).reshape(-1) for v in vecs]
+    return (np.column_stack(cols) % p).astype(np.int64, copy=False)
+
+
+def _is_totally_isotropic(U: np.ndarray, J0: np.ndarray, *, p: int = 3) -> bool:
+    if U.size == 0:
+        return False
+    B = (U.T @ (J0 % p) @ U) % p
+    return bool(np.all(B % p == 0))
+
+
+def _solve_in_basis(basis: np.ndarray, vecs: np.ndarray, *, p: int = 3) -> np.ndarray:
+    """Solve basis @ X = vecs over F_p (basis must have full column rank)."""
+    basis = _mat_mod_p(basis, p)
+    vecs = _mat_mod_p(vecs, p)
+    n_rows, n_cols = basis.shape
+    if vecs.shape[0] != n_rows:
+        raise ValueError("basis and vecs row mismatch")
+    k = int(vecs.shape[1])
+
+    aug = np.concatenate([basis, vecs], axis=1) % p
+    row = 0
+    pivots: list[int] = []
+    for col in range(n_cols):
+        pivot = None
+        for r in range(row, n_rows):
+            if int(aug[r, col]) % p != 0:
+                pivot = r
+                break
+        if pivot is None:
+            raise ValueError("basis is rank-deficient")
+        if pivot != row:
+            aug[[row, pivot], :] = aug[[pivot, row], :]
+        inv = pow(int(aug[row, col]) % p, -1, p)
+        aug[row, :] = (aug[row, :] * inv) % p
+        for r in range(n_rows):
+            if r == row:
+                continue
+            factor = int(aug[r, col]) % p
+            if factor:
+                aug[r, :] = (aug[r, :] - factor * aug[row, :]) % p
+        pivots.append(col)
+        row += 1
+    if pivots != list(range(n_cols)):
+        raise ValueError("expected full pivoting on all columns")
+    return aug[:n_cols, n_cols : n_cols + k] % p
+
+
 def analyze(
     *,
     compute_orders: bool = True,
@@ -180,6 +344,52 @@ def analyze(
     x_inv = _symplectic_inverse(x, J0, p=3)
     y_conj = (x_inv @ y @ x) % 3
 
+    # Canonical polarization: the commutant of the derived subgroup <y, y^x>
+    # inside End(F3^12) has dimension 2 and contains a non-scalar involution J
+    # with eigenspaces of dimension 6+6 that are both Lagrangian (totally isotropic).
+    comm_basis = _commutant_basis([y, y_conj], p=3)
+    inv = _find_involutive_commutant_element(comm_basis, p=3)
+
+    polarization: dict[str, Any] = {
+        "commutant_dim": int(len(comm_basis)),
+        "found_involution": bool(inv is not None),
+    }
+    if inv is not None:
+        polarization["involution_is_scalar"] = _is_scalar_multiple_of_identity(inv, p=3)
+        polarization["involution_squares_to_I"] = bool(
+            np.array_equal((inv @ inv) % 3, I12)
+        )
+
+        plus_vecs = _nullspace_basis_mod_p((inv - I12) % 3, 3)
+        minus_vecs = _nullspace_basis_mod_p((inv + I12) % 3, 3)
+        U_plus = _basis_matrix(plus_vecs, p=3)
+        U_minus = _basis_matrix(minus_vecs, p=3)
+
+        polarization["eigenspace_dims"] = {
+            "+1": int(len(plus_vecs)),
+            "-1": int(len(minus_vecs)),
+        }
+        polarization["plus_isotropic"] = _is_totally_isotropic(U_plus, J0, p=3)
+        polarization["minus_isotropic"] = _is_totally_isotropic(U_minus, J0, p=3)
+
+        inv_conj = (x_inv @ inv @ x) % 3
+        polarization["x_conjugates_J_to_minus_J"] = bool(
+            np.array_equal(inv_conj, (-inv) % 3)
+        )
+
+        if U_plus.shape == (12, 6) and U_minus.shape == (12, 6):
+            A_swap = _solve_in_basis(U_minus, (x @ U_plus) % 3, p=3)
+            B_swap = _solve_in_basis(U_plus, (x @ U_minus) % 3, p=3)
+            minus_I6 = (2 * np.eye(6, dtype=np.int64)) % 3
+            polarization["swap_blocks"] = {
+                "AB_equals_minus_I": bool(
+                    np.array_equal((A_swap @ B_swap) % 3, minus_I6)
+                ),
+                "BA_equals_minus_I": bool(
+                    np.array_equal((B_swap @ A_swap) % 3, minus_I6)
+                ),
+            }
+
     out: dict[str, Any] = {
         "available": True,
         "field_p": 3,
@@ -198,6 +408,7 @@ def analyze(
             "y_preserves_J0": True,
             "minus_I_is_A_squared": bool(np.array_equal((A @ A) % 3, minus_I)),
         },
+        "polarization": polarization,
     }
 
     if compute_orders:
@@ -246,6 +457,23 @@ def main() -> None:
         print("  |<x,y>|      =", orders.get("full_order"), "(expect 380160 = 2*190080)")
         print("  |<y,y^x>|    =", orders.get("derived_order"), "(expect 190080 = 2*M12)")
         print("  projective   =", orders.get("projective_order_div2"), "(expect 190080 = M12:2)")
+    pol = rep.get("polarization", {})
+    print()
+    print("Polarization witness from commutant of derived subgroup")
+    print("-" * 58)
+    if isinstance(pol, dict):
+        print("  commutant dim      =", pol.get("commutant_dim"), "(expect 2)")
+        print("  involution found   =", pol.get("found_involution"), "(expect True)")
+        print("  x J x^{-1} = -J    =", pol.get("x_conjugates_J_to_minus_J"), "(expect True)")
+        eig = pol.get("eigenspace_dims", {})
+        if isinstance(eig, dict):
+            print("  eigenspace dims    =", eig, "(expect {+1:6, -1:6})")
+        print("  plus isotropic     =", pol.get("plus_isotropic"), "(expect True)")
+        print("  minus isotropic    =", pol.get("minus_isotropic"), "(expect True)")
+        swap = pol.get("swap_blocks", {})
+        if isinstance(swap, dict) and swap:
+            print("  swap AB = -I       =", swap.get("AB_equals_minus_I"), "(expect True)")
+            print("  swap BA = -I       =", swap.get("BA_equals_minus_I"), "(expect True)")
     print()
     print("ALL CHECKS PASSED ✓")
     print(f"Elapsed: {time.time() - t0:.2f}s")
