@@ -152,6 +152,27 @@ def main() -> None:
     except Exception as e:
         print("  inner_aut_commuting? check failed", e)
     print()
+
+    # outer automorphisms induced by Sp(2,3) acting on grades
+    try:
+        from scripts.w33_golay_lie_algebra import (
+            build_golay_lie_algebra,
+            symplectic_aut_permutation,
+            verify_symplectic_automorphism,
+        )
+        from scripts.grade_weil_phase import all_symplectic_matrices
+        alg = build_golay_lie_algebra()
+        perms = []
+        for A in all_symplectic_matrices():
+            p = symplectic_aut_permutation(alg, A)
+            perms.append(tuple(p))
+            if not verify_symplectic_automorphism(alg, A):
+                print("  symplectic permutation failed automorphism check", A)
+        uniq = len(set(perms))
+        print(f"  symplectic grade perms: {uniq} distinct (expected 24)")
+    except Exception:
+        pass
+    print()
     print("Suggested lead (heuristic)")
     print("-" * 60)
     print("  - characteristic 3 Cartan-type phenomena are plausible")
