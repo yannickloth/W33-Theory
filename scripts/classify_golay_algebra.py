@@ -1,45 +1,145 @@
 #!/usr/bin/env python3
-"""Classify the 24-dimensional Golay Lie algebra over F3.
+"""Heuristic classification notes for the 24-dimensional Golay Lie algebra over F3.
 
-Using the deterministic invariants computed by w33_golay_lie_algebra, this
-module attempts to match the algebra to known examples in the modular
-literature.  The invariants (simple, perfect, center=0, Killing form rank 0,
-Derivation algebra 33=24+9, 6-dim self-centralizing abelian) uniquely identify
-a member of the Skryabin/Brown family of Cartan-type simple Lie algebras in
-characteristic 3.  In particular, it coincides with the algebra described in
+This repo constructs a concrete 24-dimensional Lie algebra over GF(3) that
+recurs in the s12 / 3-qutrit Heisenberg closure machinery. The goal of this
+script is *not* to prove a literature identification, but to provide a
+reproducible invariant fingerprint that can be compared to known modular
+families.
 
-    S. Skryabin, "New series of simple Lie algebras of characteristic 3",
+What we can assert computationally (see `scripts/w33_golay_lie_algebra.py`):
+  - dim(L)=24 over GF(3)
+  - Jacobi holds, [L,L]=L (perfect), center=0, Killing rank=0
+  - dim Der(L)=33 = 24 inner + 9 outer
+  - a strong tensor/product structure in the deterministic basis:
+        L ≅ L0 ⊗ A
+    with dim(L0)=8 (a "c=0 slice") and A a 3-dim local algebra
+    A ≅ F3[ε]/(ε^3) (equivalently, group algebra F3[C3]).
+  - outer derivations decompose as 6+3 in a canonical way:
+        Out(L) = (Out(L0) ⊗ A) ⊕ (Cent(L0) ⊗ Der(A))
+
+These invariants are consistent with Cartan-type / modular Lie algebra
+phenomena in characteristic 3; a plausible lead is the Skryabin family.
+Reference (lead, not a proof of isomorphism):
+  - S. Skryabin, "New series of simple Lie algebras of characteristic 3",
     Sbornik: Mathematics 76 (1993) 297–317.
 
-and is sometimes denoted $S(1,2)$ in the notation of Strade–Wilson (see
-Premet–Strade classification).
-
-Run this script to print the invariants and a suggested classification label.
+Run:
+  & .venv\\Scripts\\python.exe -X utf8 scripts\\classify_golay_algebra.py
 """
 
-import sys, os
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, repo_root)
-sys.path.insert(0, os.path.join(repo_root, 'scripts'))
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS_DIR = ROOT / "scripts"
+for p in (ROOT, SCRIPTS_DIR):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
 from scripts.w33_golay_lie_algebra import analyze
 
 
-def main():
-    rep = analyze(compute_derivations=True)
-    print("Invariant summary:")
-    for k,v in rep.items():
-        if isinstance(v, dict):
-            print(f"  {k}:")
-            for kk,vv in v.items():
-                print(f"    {kk}: {vv}")
-        else:
-            print(f"  {k}: {v}")
-    print()
-    print("Suggested classification:")
-    print("  - simple Cartan-type modular Lie algebra of characteristic 3 of dimension 24")
-    print("  - appears in Skryabin 1993 new series (see section 5 of that paper)")
-    print("  - sometimes denoted S(1,2) or S'(2,1) in Strade/Wilson notation")
-    print("  - derivation algebra abelian with 9 outer generators acting as grade translations")
+def _pp_kv(k: str, v: Any) -> str:
+    if isinstance(v, float):
+        return f"{k}={v:.6g}"
+    return f"{k}={v}"
 
-if __name__ == '__main__':
+
+def main() -> None:
+    rep = analyze(compute_derivations=True)
+    if rep.get("available") is not True:
+        raise SystemExit(f"Unavailable: {rep}")
+
+    lie = rep.get("lie", {})
+    deriv = rep.get("derivations", {})
+    nf = rep.get("normal_form", {})
+    td = rep.get("tensor_decomposition", {})
+    l0 = td.get("l0_slice", {}) if isinstance(td, dict) else {}
+    fiber = td.get("fiber_algebra", {}) if isinstance(td, dict) else {}
+    decomp = td.get("derivation_decomposition", {}) if isinstance(td, dict) else {}
+
+    print("Invariant fingerprint (GF(3))")
+    print("-" * 60)
+    print(_pp_kv("dim(L)", rep.get("dim")))
+    if isinstance(lie, dict):
+        print(
+            "  "
+            + ", ".join(
+                [
+                    _pp_kv("perfect", lie.get("perfect")),
+                    _pp_kv("center", lie.get("center_dim")),
+                    _pp_kv("kill_rank", lie.get("killing_form_rank_mod3")),
+                ]
+            )
+        )
+    if isinstance(deriv, dict):
+        print(
+            "  "
+            + ", ".join(
+                [
+                    _pp_kv("Der", deriv.get("dim_derivations")),
+                    _pp_kv("Inn", deriv.get("dim_inner")),
+                    _pp_kv("Out", deriv.get("dim_outer")),
+                ]
+            )
+        )
+
+    if isinstance(nf, dict) and nf.get("available") is True:
+        print(
+            "  normal_form: "
+            + ", ".join(
+                [
+                    _pp_kv("phi_is_zero", nf.get("phi_is_zero")),
+                    _pp_kv("fiber_addition", nf.get("c_addition_holds")),
+                ]
+            )
+        )
+
+    if isinstance(l0, dict) and l0.get("available") is True:
+        d0 = l0.get("derivations", {}) if isinstance(l0.get("derivations"), dict) else {}
+        print(
+            "  tensor_factor: "
+            + ", ".join(
+                [
+                    _pp_kv("dim(L0)", l0.get("dim")),
+                    _pp_kv("Der(L0)", d0.get("dim_derivations")),
+                    _pp_kv("Out(L0)", d0.get("dim_outer")),
+                ]
+            )
+        )
+    if isinstance(fiber, dict) and fiber.get("available") is True:
+        print(
+            "  fiber_factor: "
+            + ", ".join(
+                [
+                    _pp_kv("dim(A)", fiber.get("dim")),
+                    _pp_kv("Der(A)", fiber.get("dim_derivations")),
+                ]
+            )
+        )
+    if isinstance(decomp, dict) and decomp.get("available") is True:
+        comps = decomp.get("constructed_outer_components", {})
+        if isinstance(comps, dict):
+            print(
+                "  outer_split: "
+                + ", ".join(
+                    [
+                        _pp_kv("Out(L0)⊗A", comps.get("outer_l0_tensor_A")),
+                        _pp_kv("Cent(L0)⊗Der(A)", comps.get("centroid_l0_tensor_derA")),
+                    ]
+                )
+            )
+
+    print()
+    print("Suggested lead (heuristic)")
+    print("-" * 60)
+    print("  - characteristic 3 Cartan-type phenomena are plausible")
+    print("  - compare invariants to Skryabin 1993 new series (e.g. S(1,2) family)")
+
+
+if __name__ == "__main__":
     main()

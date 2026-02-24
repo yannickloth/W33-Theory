@@ -149,63 +149,51 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 ### Golay 24-dim Lie algebra over GF(3)
 
 The Monster/Golay bridge produces a concrete **24-dimensional Lie algebra over GF(3)**,
-grades by **F3^2 \ {(0,0)}** with 8 grades and 3 basis elements per grade.  After
-careful calculation of structure constants we discovered a remarkable simplicity:
-by permuting the three basis vectors in each nonzero grade according to the
-pattern
+grades by **F3^2 \ {(0,0)}** with 8 nonzero grades each carrying a 3‑dimensional
+fiber.  A series of normal-form transformations turns out to be especially
+helpful: by reordering the basis inside each grade one can absorb all phase
+factors, after which the bracket is given simply by the underlying symplectic
+form.
 
-```
-(0,1): [0,1,2], (0,2): [0,2,1], (1,0): [0,2,1], (1,1): [0,1,2],
-(1,2): [0,2,1], (2,0): [0,2,1], (2,1): [0,1,2], (2,2): [0,2,1]
-```
-
-the commutator reduces to
+In the current deterministic basis the commutator satisfies
 
 ```
 [E_{g,c}, E_{h,d}] = omega(g,h)
-    E_{g+h, (c + d + phi(g,h)) mod 3]
+    E_{g+h, (c + d) mod 3]
 ```
 
-where `omega(g,h)` is the standard symplectic form on $\mathbb F_3^2$ and the
-`phi` table below is a constant 2‑cocycle.
+with no additional cocycle at all.  (The earlier version of the algebra
+included a nontrivial constant `phi(g,h)`; the normal‑form code in
+`scripts/w33_golay_lie_algebra.py` now confirms `phi_is_zero` and the
+accompanying test suite checks the triviality.)
 
-The permutation recipe and cocycle were computed by
-`scripts/compute_cocycle.py` (now tested in
-`tests/test_cocycle_structure.py`), and the `phi` map satisfies
-$$
-\phi(g,h)+\phi(g+h,t)=\phi(h,t)+\phi(g,h+t)\pmod 3
-$$
-which places the algebra in the family of twisted loop algebras (a rank‑1
-Cartan‑type algebra with grading by $\mathbb F_3^2$ and a nontrivial 2-cocycle).
-In other words, the Golay algebra can be viewed as a twisted loop/current
-algebra on the eight nonzero elements of $\mathbb F_3^2$ with 3‑dimensional
-fibres — a nonclassical simple Lie algebra of Cartan type.  This construction
-matches exactly one of the examples in Skryabin's 1993 "New series of simple
-Lie algebras of characteristic 3" (often denoted $S(1,2)$ in Strade–Wilson
-notation).  It is the unique dimension‑24 member of the family and in the
-Premet–Strade classification appears as a Cartan‑type algebra with abelian
-33‑dim derivation algebra (24 inner + 9 translations); the inner
-automorphism subgroup is a nonabelian 3‑group whose tangent space has
-dimension 24 (hence order at least $3^{24}$).
+Viewed from this vantage the algebra is the **untwisted current algebra** on
+the eight nonzero elements of $\mathbb F_3^2$ with 3‑dimensional fibres – a
+simple Cartan‑type Lie algebra of characteristic 3.  It coincides with the
+unique 24‑dimensional member of Skryabin's $S(1,2)$ family in his 1993
+classification.  Recent normal-form work also produced an explicit outer
+derivation decomposition (24 inner + 9 outer), with a canonical `6+3` split visible from the tensor factorization.
 
-Attempts to reduce the metaplectic/Weil phase law to the 2‑dimensional
-grade plane reveal an obstruction: the cocycle \(\phi\) is not cohomologous
-with its Sp(2,3)-conjugates except for the identity.  In other words the
-required quadratic correction lives in the full 12‑dimensional phase space of
-the extraspecial group (as encoded in `scripts/grade_weil_phase.py`), and no
-nontrivial symplectic 2×2 matrix admits a finite phase function.  This
-explains why 2.Suz must be handled in Sp(12,3) rather than via a simple
-2×2 representation.
-
-Deterministic invariants are computed by `scripts/w33_golay_lie_algebra.py` and
-regression-tested in `tests/test_golay_lie_algebra.py`; a companion
-`classify_golay_algebra.py` script reproduces the invariants and prints the
-suggested literature identification.
+Key structural invariants (computed by `scripts/w33_golay_lie_algebra.py` and
+regression-tested in `tests/test_golay_lie_algebra.py`) are:
 
 - Jacobi holds; `[L,L]=L` (perfect)
-- `dim Z(L)=0`; Killing form rank mod 3 is 0
+- `dim Z(L)=0`; Killing form rank mod 3 is 0
 - `dim Der(L)=33` with `dim Inn(L)=24` and `dim Out(L)=9`
-- A canonical 6-dim maximal abelian subalgebra is self-centralizing (centralizer dim 6)
+- A canonical 6‑dim maximal abelian subalgebra is self-centralizing
+
+Because the cocycle has been removed, the inner automorphism subgroup is no
+longer a simple elementary abelian 3‑group; explicit matrix experiments show
+noncommuting generators and orders larger than 3 (see
+`scripts/inner_auto_structure.py`).  Consequently the order of Inn(L) remains
+an open question, although its Lie algebra has dimension 24.
+
+The metaplectic/Weil phase obstruction noted earlier still applies: even with
+`phi=0` the required quadratic correction cannot be reduced to the 2‑dimensional
+grade plane.  Any finite phase lives in the full 12‑dimensional extraspecial
+phase space, hence 2.Suz cannot act through a simple 2×2 representation.
+
+`scripts/classify_golay_algebra.py` reproduces the fingerprint and prints a conservative literature lead (heuristic).
 
 ### Standard Model Structure (Pillars 33&ndash;36)
 

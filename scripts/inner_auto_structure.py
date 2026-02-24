@@ -59,23 +59,34 @@ print('unique orders', set(orders))
 zeros = [i for i,M in enumerate(T) if np.array_equal(M, I)]
 print('indices with T=I (should be none):', zeros)
 
-# test commutation and product formula for random pairs
-import random
-pairs = random.sample([(i,j) for i in range(size) for j in range(size)], 20)
+# test commutation for all pairs and compute exact product mapping
 commuting = True
-product_law = True
-for i,j in pairs:
-    M = T[i]; N = T[j]
-    if not np.array_equal(mat_mult(M, N), mat_mult(N, M)):
-        commuting = False
-    # check if M*N == T[i+j mod 24]? but x+y in Lie algebra not index
-    # here we can't easily add basis vectors; assume linear combination
-    # We'll compute ad of sum and see.
-    S = mod3(I + ad[i] + ad[j] + ad[i].dot(ad[j]))
-    if not np.array_equal(mat_mult(M, N), S):
-        product_law = False
-print('commuting pair test (sample):', commuting)
-print('product law sample S = I+ad(x+y)+ad(x)ad(y):', product_law)
+product_map = {}  # (i,j) -> k if exists such that T_i T_j = T_k
+for i in range(size):
+    for j in range(size):
+        M = T[i]; N = T[j]
+        if not np.array_equal(mat_mult(M, N), mat_mult(N, M)):
+            commuting = False
+        # look for k with T_k == M*N
+        found = False
+        for k, P in enumerate(T):
+            if np.array_equal(mat_mult(M, N), P):
+                product_map[(i, j)] = k
+                found = True
+                break
+        if not found:
+            product_map[(i, j)] = None
+
+print('commuting all pairs:', commuting)
+# report whether product law holds universally
+if all(v is not None for v in product_map.values()):
+    print('product law holds for all pairs; mapping size', len(product_map))
+else:
+    bad = [pair for pair, k in product_map.items() if k is None]
+    print('product fails for pairs', bad[:10], '... total', len(bad))
+
+# Optionally display structure of product_map for small subset
+print('sample products:', list(product_map.items())[:10])
 
 # determine rank of vector space spanned by logs M-I
 logs = [mod3(M - I) for M in T]
