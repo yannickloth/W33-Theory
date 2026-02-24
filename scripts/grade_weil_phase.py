@@ -191,6 +191,29 @@ def main() -> None:
     print("nontrivial phases:", n_nontrivial)
     if n_ok != len(mats):
         raise SystemExit("ERROR: phase solver failed for some symplectic matrices")
+
+    # verify the 1-cocycle property: mu_{AB}(g) = mu_A(g) + mu_B(A g)
+    def _verify_cocycle() -> bool:
+        for A in mats:
+            for B in mats:
+                muA = compute_phase(A)
+                muB = compute_phase(B)
+                muAB = compute_phase((A @ B) % 3)
+                if muA is None or muB is None or muAB is None:
+                    return False
+                for g in GRADES_NONZERO:
+                    lhs = int(muAB[g])
+                    rhs = (int(muA[g]) + int(muB[apply_matrix(A, g)])) % 3
+                    if lhs != rhs:
+                        print("cocycle failure", A, B, g, lhs, rhs)
+                        return False
+        return True
+
+    if not _verify_cocycle():
+        raise SystemExit("ERROR: Weil phase failed 1-cocycle identity")
+    else:
+        print("1-cocycle identity holds for all pairs")
+
     print("ALL CHECKS PASSED ✓")
 
 

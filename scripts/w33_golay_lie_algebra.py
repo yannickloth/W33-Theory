@@ -33,6 +33,13 @@ from typing import Any
 
 import numpy as np
 
+# for grade-plane automorphisms
+try:
+    from scripts.grade_weil_phase import apply_matrix, compute_phase
+except ImportError:  # allow import failure in isolation
+    apply_matrix = None  # type: ignore
+    compute_phase = None  # type: ignore
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = ROOT / "scripts"
 for p in (ROOT, SCRIPTS_DIR):
@@ -883,6 +890,100 @@ def analyze(*, compute_derivations: bool = True) -> dict[str, Any]:
             "self_centralizing": bool(cartan_centralizer_dim == 6),
         },
     }
+
+
+
+# ---------------------------------------------------------------------------
+# Symplectic-grade automorphisms using Weil phase
+# ---------------------------------------------------------------------------
+
+def symplectic_aut_permutation(alg: GolayLieAlgebra, A: np.ndarray) -> list[int]:
+    """Return the permutation of the 24 basis indices induced by the linear
+    action of the symplectic matrix ``A`` on the grade plane.  This map simply
+    sends a basis element with grade ``g`` and fiber position ``c`` to the
+    element with grade ``A g`` and the *same* fiber position.  No Weil phase
+    is used; because our algebra has trivial cocycle, this permutation is a
+    genuine Lie automorphism.
+    """
+    if apply_matrix is None:
+        raise ImportError("grade_weil_phase.apply_matrix unavailable")
+
+    # build grade -> indices and pos-in-grade maps
+    grade_to_indices: dict[tuple[int, int], list[int]] = {}
+    for i, g in enumerate(alg.grades):
+        grade_to_indices.setdefault(tuple(g), []).append(i)
+    pos_in_grade: dict[int, int] = {}
+    for g, idxs in grade_to_indices.items():
+        for pos, idx in enumerate(idxs):
+            pos_in_grade[idx] = pos
+
+    perm: list[int] = [-1] * 24
+    for i in range(24):
+        g = tuple(alg.grades[i])
+        c = pos_in_grade[i]
+        newg = apply_matrix(A, g)
+        idxs = grade_to_indices.get(tuple(newg))
+        if idxs is None:
+            raise AssertionError(f"grade {newg} not found")
+        perm[i] = idxs[c]
+    return perm
+
+
+def symplectic_aut_with_phase(alg: GolayLieAlgebra, A: np.ndarray) -> list[int] | None:
+    """Variant that applies Weil phase shifts to fiber indices.
+
+    This map is *not* guaranteed to be a Lie automorphism because the phase
+    cochain need not be additive.  It is provided for exploratory experimentation
+    and does exactly what earlier versions of this module attempted to do.
+    """
+    if apply_matrix is None or compute_phase is None:
+        raise ImportError("grade_weil_phase utilities unavailable")
+
+    mu = compute_phase(A)
+    if mu is None:
+        return None
+
+    grade_to_indices: dict[tuple[int, int], list[int]] = {}
+    for i, g in enumerate(alg.grades):
+        grade_to_indices.setdefault(tuple(g), []).append(i)
+    pos_in_grade: dict[int, int] = {}
+    for g, idxs in grade_to_indices.items():
+        for pos, idx in enumerate(idxs):
+            pos_in_grade[idx] = pos
+
+    perm: list[int] = [-1] * 24
+    for i in range(24):
+        g = tuple(alg.grades[i])
+        c = pos_in_grade[i]
+        newg = apply_matrix(A, g)
+        newc = (c + mu.get(g, 0)) % 3
+        idxs = grade_to_indices.get(tuple(newg))
+        if idxs is None or newc >= len(idxs):
+            return None
+        perm[i] = idxs[newc]
+    return perm
+
+
+def verify_symplectic_automorphism(alg: GolayLieAlgebra, A: np.ndarray) -> bool:
+    """Check that the permutation returned by ``symplectic_aut_permutation``
+    preserves the Lie bracket (i.e. is an automorphism of the algebra).
+    """
+    perm = symplectic_aut_permutation(alg, A)
+    for i in range(24):
+        for j in range(24):
+            entry = _bracket(alg, i, j)
+            if entry is None:
+                if _bracket(alg, perm[i], perm[j]) is not None:
+                    return False
+                continue
+            k, c = entry
+            entry2 = _bracket(alg, perm[i], perm[j])
+            if entry2 is None:
+                return False
+            k2, c2 = entry2
+            if perm[k] != k2 or (c % 3) != (c2 % 3):
+                return False
+    return True
 
 
 def main() -> None:

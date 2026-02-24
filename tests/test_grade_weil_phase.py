@@ -1,5 +1,5 @@
 import numpy as np
-from scripts.grade_weil_phase import all_symplectic_matrices, compute_phase
+from scripts.grade_weil_phase import all_symplectic_matrices, compute_phase, apply_matrix
 
 def test_identity_phase():
     I = np.array([[1,0],[0,1]], dtype=int)
