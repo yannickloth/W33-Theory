@@ -37,6 +37,8 @@ ART = ROOT / "artifacts"
 U2 = Tuple[int, int]
 U3 = Tuple[int, int, int]
 Triad = Tuple[int, int, int]
+Perm = Tuple[int, ...]
+Mat2 = Tuple[Tuple[int, int], Tuple[int, int]]
 
 
 def _load_json(path: Path) -> Any:
@@ -69,6 +71,11 @@ def _u_scale(a: U2, s: int) -> U2:
 def _omega_u(a: U2, b: U2) -> int:
     """Alternating form omega((x,y),(x',y')) = x*y' - y*x' over F3."""
     return _mod3(a[0] * b[1] - a[1] * b[0])
+
+
+def _psi(a: U2, u: U2) -> int:
+    """Heisenberg cocycle psi = (1/2)·omega on F3, with 1/2 = 2 mod 3."""
+    return _mod3(2 * _omega_u(a, u))
 
 
 def _dir_canonical(d: U2) -> U2:
@@ -203,6 +210,108 @@ def _u_line_direction(u_line: Tuple[U2, U2, U2]) -> U2:
     return next(iter(diffs))
 
 
+def _apply_matrix(A: Mat2, u: U2) -> U2:
+    return (
+        _mod3(A[0][0] * u[0] + A[0][1] * u[1]),
+        _mod3(A[1][0] * u[0] + A[1][1] * u[1]),
+    )
+
+
+def _perm_compose(p: Perm, q: Perm) -> Perm:
+    """Permutation composition p∘q (apply q then p)."""
+    return tuple(p[i] for i in q)
+
+
+def _perm_translation(
+    e6id_to_vec: Mapping[int, U3], vec_to_e6id: Mapping[U3, int], a: U2, c: int
+) -> Perm:
+    """Heisenberg translation (u,z) ↦ (u+a, z+c+psi(a,u))."""
+    a = (_mod3(a[0]), _mod3(a[1]))
+    c = _mod3(int(c))
+    out: list[int] = []
+    for i in range(27):
+        u1, u2, z = e6id_to_vec[i]
+        u = (u1, u2)
+        u_new = _u_add(u, a)
+        z_new = _mod3(z + c + _psi(a, u))
+        out.append(int(vec_to_e6id[(u_new[0], u_new[1], z_new)]))
+    return tuple(out)
+
+
+def _perm_symplectic(
+    e6id_to_vec: Mapping[int, U3], vec_to_e6id: Mapping[U3, int], A: Mat2
+) -> Perm:
+    """Linear Sp(2,3)=SL(2,3) action on u-plane; z unchanged."""
+    out: list[int] = []
+    for i in range(27):
+        u1, u2, z = e6id_to_vec[i]
+        u_new = _apply_matrix(A, (u1, u2))
+        out.append(int(vec_to_e6id[(u_new[0], u_new[1], z)]))
+    return tuple(out)
+
+
+def analyze_hessian_heisenberg_group(
+    triads: Iterable[Triad], e6id_to_vec: Mapping[int, U3], vec_to_e6id: Mapping[U3, int]
+) -> Dict[str, Any]:
+    """Enumerate Heisenberg⋊SL(2,3) on H27 and verify triad invariance."""
+    triad_set = {tuple(sorted(map(int, t))) for t in triads}
+    if len(triad_set) != 45:
+        raise ValueError("expected 45 triads for group invariance check")
+
+    # Generators: Heisenberg translations (two u-shifts + central z-shift) and SL(2,3) (S,T).
+    gen_T10 = _perm_translation(e6id_to_vec, vec_to_e6id, (1, 0), 0)
+    gen_T01 = _perm_translation(e6id_to_vec, vec_to_e6id, (0, 1), 0)
+    gen_Z = _perm_translation(e6id_to_vec, vec_to_e6id, (0, 0), 1)
+
+    # Standard generators of SL(2,3): S=[[0,-1],[1,0]], T=[[1,1],[0,1]] with -1=2 mod 3.
+    S: Mat2 = ((0, 2), (1, 0))
+    T: Mat2 = ((1, 1), (0, 1))
+    gen_S = _perm_symplectic(e6id_to_vec, vec_to_e6id, S)
+    gen_T = _perm_symplectic(e6id_to_vec, vec_to_e6id, T)
+
+    gens = [gen_T10, gen_T01, gen_Z, gen_S, gen_T]
+    identity: Perm = tuple(range(27))
+
+    # BFS closure (|G| is expected to be 27*24 = 648).
+    from collections import deque
+
+    seen: set[Perm] = {identity}
+    q: deque[Perm] = deque([identity])
+    while q:
+        g = q.popleft()
+        for h in gens:
+            gh = _perm_compose(h, g)
+            if gh not in seen:
+                seen.add(gh)
+                q.append(gh)
+
+    group = seen
+    order = len(group)
+
+    # Orbit size (transitivity) from point 0.
+    orbit0 = {g[0] for g in group}
+
+    def _triad_image(p: Perm, tri: Triad) -> Triad:
+        a, b, c = tri
+        return tuple(sorted((p[a], p[b], p[c])))  # type: ignore[return-value]
+
+    triads_invariant = True
+    for g in group:
+        for tri in triad_set:
+            if _triad_image(g, tri) not in triad_set:
+                triads_invariant = False
+                break
+        if not triads_invariant:
+            break
+
+    return {
+        "order": order,
+        "orbit_size": len(orbit0),
+        "transitive": len(orbit0) == 27,
+        "triads_invariant": triads_invariant,
+    }
+
+
 def analyze_hessian_tritangent_split() -> Dict[str, Any]:
     model = load_heisenberg_model()
     e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps(model)
@@ -329,6 +438,8 @@ def analyze_hessian_tritangent_split() -> Dict[str, Any]:
     if recon_affine != set(affine_triads):
         raise ValueError("reconstructed affine triads mismatch artifact")
 
+    hessian_group = analyze_hessian_heisenberg_group(all_triads, e6id_to_vec, vec_to_e6id)
+
     return {
         "counts": {
             "points_total": 27,
@@ -343,6 +454,7 @@ def analyze_hessian_tritangent_split() -> Dict[str, Any]:
             "fiber_matches": True,
             "affine_matches": True,
         },
+        "hessian_group": hessian_group,
         "ag23_checks": {
             "direction_sizes": direction_sizes,
             "u_point_line_degrees": dict(sorted(through.items())),
@@ -399,6 +511,17 @@ def main() -> None:
     assert set(ag["direction_sizes"].values()) == {3}
     assert sorted(set(ag["u_point_line_degrees"].values())) == [4]
     assert ag["pairs_total"] == 36
+
+    hg = res["hessian_group"]
+    print("\nHeisenberg⋊SL(2,3) symmetry on H27")
+    print("-" * 30)
+    print("  order:", hg["order"])
+    print("  orbit size:", hg["orbit_size"])
+    print("  triads invariant:", hg["triads_invariant"])
+
+    assert hg["order"] == 648
+    assert hg["transitive"] is True
+    assert hg["triads_invariant"] is True
 
     print("\nALL CHECKS PASSED ✓")
 
