@@ -190,7 +190,22 @@ an open question, although its Lie algebra has dimension 24.
 
 The metaplectic/Weil phase obstruction noted earlier still applies: even with
 `phi=0` the required quadratic correction cannot be reduced to the 2‑dimensional
-grade plane.  Any finite phase lives in the full 12‑dimensional extraspecial
+grade plane.  We now have a **canonical closed‑form** formula for the phase
+cochain (see `scripts/grade_weil_phase.py`):
+
+```python
+mu_A(g) = f(A g) - f(g),
+    where f(x,y) = 2 x y (mod 3) and A \in Sp(2,3).
+```
+
+The companion tests verify the 1‑cocycle identity and consequently show that
+this choice of gauge is compatible with composition.  When the phase is applied
+to the Golay algebra itself the resulting "phase‑corrected" grade permutations
+turn out to **coincide with the naive ones**; classification output prints this
+fact, confirming again that the bracket normal form has exhausted all
+nontrivial fibre cocycle freedom.
+
+Any finite phase still lives in the full 12‑dimensional extraspecial
 phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 
 `scripts/classify_golay_algebra.py` reproduces the fingerprint and prints a conservative literature lead (heuristic).

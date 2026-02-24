@@ -812,6 +812,79 @@ def _outer_derivation_tensor_decomposition(
     }
 
 
+# --- Symplectic / Weil automorphism helpers ------------------------------
+
+
+def compute_symplectic_automorphism(
+    alg: GolayLieAlgebra, A: np.ndarray
+) -> list[int] | None:
+    """Return a permutation corresponding to grade-plane matrix ``A``.
+
+    Uses the Weil phase for a canonical lift of Sp(2,3) to algebra
+    automorphisms.  If dependencies are missing or the map fails, returns
+    ``None``.
+    """
+    if compute_phase is None or apply_matrix is None:
+        return None
+
+    mu = compute_phase(A % 3)
+    if mu is None:
+        return None
+
+    grade_to_indices: dict[tuple[int, int], list[int]] = {}
+    for idx, g in enumerate(alg.grades):
+        grade_to_indices.setdefault(tuple(g), []).append(int(idx))
+    pos_in_grade: dict[int, int] = {}
+    for g, idxs in grade_to_indices.items():
+        for pos, idx in enumerate(idxs):
+            pos_in_grade[int(idx)] = int(pos)
+
+    perm: list[int] = [-1] * 24
+    for i in range(24):
+        g = tuple(alg.grades[i])
+        c = pos_in_grade[i]
+        newg = apply_matrix(A, g)
+        newc = (c + mu[g]) % 3
+        idxs = grade_to_indices.get(tuple(newg))
+        if idxs is None:
+            return None
+        perm[i] = idxs[newc]
+    return perm
+
+
+def _verify_permutation_is_aut(alg: GolayLieAlgebra, perm: list[int]) -> bool:
+    """Check that a candidate permutation preserves the Lie bracket."""
+    if len(perm) != 24 or any(p < 0 or p >= 24 for p in perm):
+        return False
+    for i in range(24):
+        for j in range(24):
+            e1 = _bracket(alg, i, j)
+            e2 = _bracket(alg, perm[i], perm[j])
+            if e1 is None and e2 is None:
+                continue
+            if e1 is None or e2 is None:
+                return False
+            k, c = e1
+            k2, c2 = e2
+            if perm[int(k)] != int(k2) or int(c) != int(c2):
+                return False
+    return True
+
+
+def symplectic_automorphisms(alg: GolayLieAlgebra) -> list[list[int]]:
+    """Return list of valid Sp(2,3)-derived automorphism permutations."""
+    from scripts.grade_weil_phase import all_symplectic_matrices
+
+    perms: list[list[int]] = []
+    for A in all_symplectic_matrices():
+        perm = compute_symplectic_automorphism(alg, A)
+        if perm is None:
+            continue
+        if _verify_permutation_is_aut(alg, perm):
+            perms.append(perm)
+    return perms
+
+
 def analyze(*, compute_derivations: bool = True) -> dict[str, Any]:
     alg = build_golay_lie_algebra()
     ad = _ad_matrices(alg)

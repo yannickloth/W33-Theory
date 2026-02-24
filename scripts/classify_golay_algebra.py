@@ -163,13 +163,29 @@ def main() -> None:
         from scripts.grade_weil_phase import all_symplectic_matrices
         alg = build_golay_lie_algebra()
         perms = []
+        phase_perms: list[tuple[int, ...]] = []
         for A in all_symplectic_matrices():
             p = symplectic_aut_permutation(alg, A)
             perms.append(tuple(p))
             if not verify_symplectic_automorphism(alg, A):
                 print("  symplectic permutation failed automorphism check", A)
+            # also record the Weil-phase variant (should agree when phi=0)
+            if hasattr(alg, 'grades'):
+                try:
+                    from scripts.w33_golay_lie_algebra import symplectic_aut_with_phase
+                    p2 = symplectic_aut_with_phase(alg, A)
+                    if p2 is not None:
+                        phase_perms.append(tuple(p2))
+                except ImportError:
+                    pass
         uniq = len(set(perms))
         print(f"  symplectic grade perms: {uniq} distinct (expected 24)")
+        if phase_perms:
+            uniq2 = len(set(phase_perms))
+            if uniq2 != uniq or set(phase_perms) != set(perms):
+                print(f"  phase-corrected perms differ: {uniq2} distinct")
+            else:
+                print("  phase-corrected perms coincide with plain grade perms")
     except Exception:
         pass
     print()
