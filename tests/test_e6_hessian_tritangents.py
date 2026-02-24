@@ -21,6 +21,8 @@ def test_e6_hessian_tritangents_counts():
     assert c["u_points"] == 9
     assert c["u_lines"] == 12
     assert c["u_line_directions"] == 4
+    assert res["reconstruction"]["fiber_matches"] is True
+    assert res["reconstruction"]["affine_matches"] is True
 
 
 def test_e6_hessian_tritangents_firewall_bad9_matches_fibers():
@@ -41,4 +43,3 @@ def test_e6_hessian_tritangents_ag23_incidence():
     assert ag["pairs_total"] == 36  # C(9,2)
     assert sorted(set(ag["direction_sizes"].values())) == [3]  # 4 directions × 3 parallels
     assert sorted(set(ag["u_point_line_degrees"].values())) == [4]  # 4 lines through each u
-

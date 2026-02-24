@@ -66,6 +66,10 @@ def _u_sub(a: U2, b: U2) -> U2:
 def _u_scale(a: U2, s: int) -> U2:
     return (_mod3(s * a[0]), _mod3(s * a[1]))
 
+def _omega_u(a: U2, b: U2) -> int:
+    """Alternating form omega((x,y),(x',y')) = x*y' - y*x' over F3."""
+    return _mod3(a[0] * b[1] - a[1] * b[0])
+
 
 def _dir_canonical(d: U2) -> U2:
     """Canonicalize direction in F3^2 up to nonzero scalar multiples."""
@@ -161,6 +165,26 @@ def _extract_u_lines(model: Mapping[str, Any]) -> List[Tuple[U2, U2, U2]]:
         raise ValueError("expected 12 distinct u-lines")
     return sorted(set(u_lines))
 
+def _all_ag23_lines() -> List[Tuple[U2, U2, U2]]:
+    """All 12 affine lines in AG(2,3) on U=F3^2 (as 3-point subsets)."""
+    U = [(i, j) for i in range(3) for j in range(3)]
+    # 4 direction classes in F3^2 / {±1}
+    dirs = sorted({_dir_canonical((a, b)) for a in range(3) for b in range(3) if not (a == 0 and b == 0)})
+    if len(dirs) != 4:
+        raise ValueError("expected 4 direction classes in AG(2,3)")
+
+    lines: set[Tuple[U2, U2, U2]] = set()
+    for u0 in U:
+        for d in dirs:
+            pts = tuple(sorted({_u_add(u0, _u_scale(d, t)) for t in (0, 1, 2)}))
+            if len(pts) != 3:
+                raise ValueError("unexpected line size")
+            lines.add(pts)  # duplicates collapse
+
+    if len(lines) != 12:
+        raise ValueError(f"expected 12 AG(2,3) lines, got {len(lines)}")
+    return sorted(lines)
+
 
 def _u_line_direction(u_line: Tuple[U2, U2, U2]) -> U2:
     """Return the direction class of a 3-point affine line in AG(2,3)."""
@@ -196,7 +220,12 @@ def analyze_hessian_tritangent_split() -> Dict[str, Any]:
     if sorted(bad) != sorted(fiber_triads):
         raise ValueError("firewall bad triads do not match fiber triads")
 
-    u_lines = _extract_u_lines(model)
+    # The u-plane is canonically AG(2,3). We compute its 12 lines directly,
+    # and only use the artifact's u-lines as a cross-check.
+    u_lines = _all_ag23_lines()
+    u_lines_art = _extract_u_lines(model)
+    if set(u_lines) != set(u_lines_art):
+        raise ValueError("artifact u-lines do not match AG(2,3) enumeration")
     dirs: dict[U2, list[Tuple[U2, U2, U2]]] = defaultdict(list)
     for L in u_lines:
         dirs[_u_line_direction(L)].append(L)
@@ -264,6 +293,42 @@ def analyze_hessian_tritangent_split() -> Dict[str, Any]:
         if union_points != expected_points:
             raise ValueError("u-line triads do not partition the 3 fibers")
 
+    # ---------------------------------------------------------------------
+    # Canonical reconstruction (no triad lookup):
+    # For each u-line L={u0+t d}, define its omega-offset c = omega(u0,d).
+    # Then the three affine triads over L are the graphs z = b - c*t.
+    # ---------------------------------------------------------------------
+    recon_fiber: set[Triad] = set()
+    U_pts = [(i, j) for i in range(3) for j in range(3)]
+    for u in U_pts:
+        tri = tuple(sorted(vec_to_e6id[(u[0], u[1], z)] for z in (0, 1, 2)))
+        recon_fiber.add(tri)
+    if len(recon_fiber) != 9:
+        raise ValueError("expected 9 reconstructed fiber triads")
+
+    recon_affine: set[Triad] = set()
+    for L in u_lines:
+        u0 = min(L)
+        # pick a direction from the line itself (canonical up to ±1)
+        other = next(p for p in L if p != u0)
+        d = _dir_canonical(_u_sub(other, u0))
+        c = int(_omega_u(u0, d)) % 3
+        a = (-c) % 3  # z-slope on the lift
+        for b in (0, 1, 2):
+            tri_pts = []
+            for t in (0, 1, 2):
+                u = _u_add(u0, _u_scale(d, t))
+                z = (b + a * t) % 3
+                tri_pts.append(int(vec_to_e6id[(u[0], u[1], z)]))
+            recon_affine.add(tuple(sorted(tri_pts)))
+    if len(recon_affine) != 36:
+        raise ValueError(f"expected 36 reconstructed affine triads, got {len(recon_affine)}")
+
+    if recon_fiber != set(fiber_triads):
+        raise ValueError("reconstructed fiber triads mismatch artifact")
+    if recon_affine != set(affine_triads):
+        raise ValueError("reconstructed affine triads mismatch artifact")
+
     return {
         "counts": {
             "points_total": 27,
@@ -273,6 +338,10 @@ def analyze_hessian_tritangent_split() -> Dict[str, Any]:
             "u_points": len(u_points),
             "u_lines": len(u_lines),
             "u_line_directions": len(dirs),
+        },
+        "reconstruction": {
+            "fiber_matches": True,
+            "affine_matches": True,
         },
         "ag23_checks": {
             "direction_sizes": direction_sizes,
