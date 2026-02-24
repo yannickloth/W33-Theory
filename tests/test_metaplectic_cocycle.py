@@ -44,3 +44,47 @@ def test_solver_space_dimension():
     for mu in expected:
         assert mu in sols
 
+
+def test_additional_patterns():
+    # confirm metadata patterns observed during exploration
+    involution_found = False
+    summary = []
+    encountered_patterns: set[tuple[int, int, int]] = set()
+    for A in all_symplectic_matrices():
+        md = solution_space_metadata(A)
+        # number-of-solutions sanity
+        assert md["num_solutions"] == 9
+        # involution: only one, order 2, phase trivial
+        if md["order"] == 2:
+            involution_found = True
+            # only the origin and eight grades all map to zero
+            assert md["dist"] == {0: 9}
+        # any element of order>2 must have some nonzero canonical value
+        if md["order"] is not None and md["order"] > 2:
+            assert any(v != 0 for v in md["canonical"].values())
+        # the number of zeros on nonzero grades is always even
+        counts = dict(md["dist"])
+        counts[0] -= 1
+        assert counts.get(0, 0) % 2 == 0
+
+        # record histogram type ignoring value labels 1/2
+        nzhist = {k: v for k, v in counts.items() if k != 0}
+        pattern = (counts.get(0, 0), nzhist.get(1, 0), nzhist.get(2, 0))
+        encountered_patterns.add(pattern)
+
+        summary.append((md["order"], md["trace"], counts))
+
+    assert involution_found, "expected an involution in Sp(2,3)"
+    # the only patterns that occur
+    assert encountered_patterns == {
+        (8, 0, 0),  # involution
+        (4, 2, 2),  # balanced 4/2/2
+        (2, 6, 0),  # two zeros, six ones
+        (2, 0, 6),  # two zeros, six twos (orientation swap)
+        (0, 4, 4),  # no zeros
+    }
+    # print summary for manual inspection
+    print("order, trace, nonzero-hist")
+    for row in summary:
+        print(row)
+
