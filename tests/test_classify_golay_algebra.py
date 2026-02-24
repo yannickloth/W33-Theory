@@ -8,3 +8,5 @@ def test_classify_prints_name(capsys):
     captured = capsys.readouterr().out
     assert 'Skryabin' in captured
     assert '24' in captured
+    # inner automorphism group should not be completely commuting in normal form
+    assert 'inner_aut_commuting? False' in captured

@@ -134,8 +134,10 @@ def main() -> None:
                 )
             )    # probe inner automorphism commutation using ad matrices
     try:
-        from scripts.w33_golay_lie_algebra import _ad_matrices
+        # we need the base algebra object to compute adjoint matrices
+        from scripts.w33_golay_lie_algebra import _ad_matrices, build_golay_lie_algebra
         import numpy as np
+        alg = build_golay_lie_algebra()
         adm = _ad_matrices(alg)
         size = 24
         I = np.eye(size, dtype=int)
