@@ -13,6 +13,11 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
     # Lie/symmetric/cyclic cofactor recognitions by order.
     assert classes["13A"]["cofactor_order"] == 5616
     assert classes["13A"]["cofactor_group_recognized"] == "PSL3(3)"
+    # new recognitions for 13B and 5B based on ATLAS/CTblLib centralizer shapes
+    assert classes["13B"]["cofactor_order"] == 4056
+    assert classes["13B"]["cofactor_group_recognized"] == "13^2:2A4"
+    assert classes["5B"]["cofactor_order"] == 18_900_000_000
+    assert classes["5B"]["cofactor_group_recognized"] == "5^6:2J2"
 
     assert classes["17A"]["cofactor_order"] == 168
     assert classes["17A"]["cofactor_group_recognized"] == "PSL2(7)"
@@ -50,6 +55,16 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
         and int(h.get("r", 0) or 0) == 156
         and int(h.get("stabilizer_order", 0) or 0) == 36
         for h in hits_13
+    )
+
+    hits_13b = classes["13B"]["perm_hits"]
+    assert isinstance(hits_13b, list)
+    assert any(
+        h.get("pair") == "2A×3C"
+        and int(h.get("r", 0) or 0) == 104
+        and int(h.get("stabilizer_order", 0) or 0) == 39
+        and h.get("stabilizer_group_recognized") == "13:3"
+        for h in hits_13b
     )
 
     # PSL2(7): r_17(2A×3B)=14 hits the coset action on A4 (index 14).

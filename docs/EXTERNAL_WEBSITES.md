@@ -32,6 +32,12 @@ Additional sources (Vogel / Jacobi / modular-function identities):
   - Listed as the **7B centralizer in the Monster** (order 84,707,280), matching our ATLAS-derived
     cofactor magnitude |C_M(7B)|/7 = 12,101,040 and justifying the recognition label `7^4:2A7`
     in `scripts/w33_monster_centralizer_cofactor_groups.py`.
+- https://www.math.rwth-aachen.de/~Thomas.Breuer/ctbllib/ctbltoc/data/13%5E1%2B2.2A4.html — CTblLib: `13^{1+2}.2A4`
+  - This entry documents the **13B centralizer** (order 52,728 = 13^{1+2}·|2A4|), confirming the
+    cofactor |C_M(13B)|/13 = 4,056 and leading to recognition string `13^2:2A4` in the same script.
+- https://www.math.rwth-aachen.de/~Thomas.Breuer/ctbllib/ctbltoc/data/5%5E1%2B6.2J2.html — CTblLib: `5^{1+6}.2J2`
+  - The **5B centralizer** has order 94,500,000,000 = 5^{1+6}·|2J2|, giving cofactor 18,900,000,000
+    and justifying the `5^6:2J2` cofactor label used in the pipeline.
 - https://arxiv.org/abs/2601.01612 — Isaev (2026), *Vogel universality and beyond*
   - Universal / Vogel-parameterized projector formulas may be a clean lens for the
     `s12` → `sl(27)` resonance (dimension 728) and for classifying which

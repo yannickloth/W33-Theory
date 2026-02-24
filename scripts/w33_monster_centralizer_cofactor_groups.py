@@ -51,12 +51,18 @@ def _factorint(n: int) -> dict[int, int]:
 
 def _recognize_small_group_by_order(order: int) -> str | None:
     by_order = {
-        5616: "PSL3(3)",  # SL3(3) is centerless
-        168: "PSL2(7)",  # ≅ GL3(2)
+        5616: "PSL3(3)",  # SL3(3) is centerless (13A cofactor)
+        168: "PSL2(7)",  # ≅ GL3(2) (17A cofactor)
         # 7B centralizer in the Monster has shape 7^{1+4}.2A7 (CTblLib),
         # so the cofactor magnitude |C_M(7B)|/7 = 7^4·|2A7| = 12,101,040.
         12_101_040: "7^4:2A7",
-        60: "A5",  # ≅ PSL2(5)
+        # 13B centralizer in the Monster is 13^{1+2}:24, so after dividing
+        # by p the cofactor is 13^2:2A4 = 4056.
+        4056: "13^2:2A4",
+        # 5B centralizer shape 5^{1+6}:2J2 (CTblLib/ATLAS).  Dividing by p gives
+        # cofactor 5^6:2J2 = 18,900,000,000.
+        18_900_000_000: "5^6:2J2",
+        60: "A5",  # ≅ PSL2(5) (19A cofactor)
         24: "S4",
         6: "S3",
         3: "C3",
@@ -88,6 +94,7 @@ def _recognize_subgroup_by_order(order: int) -> str | None:
         432: "3^2:GL2(3)",  # point stabilizer in PSL3(3) on PG(2,3)
         36: "3^2:C4",  # stabilizer of an ordered pair of distinct points in PG(2,3)
         21: "7:3",  # Borel in PSL2(7) on P^1(F7)
+        39: "13:3",  # stabilizer candidate in 13^2:2A4 index 104
         12: "A4",  # point stabilizer in A5 on 5 points
         6: "S3",  # point stabilizer in S4 on 4 points
         2: "C2",  # point stabilizer in S3 on 3 points
@@ -112,6 +119,14 @@ def _perm_degrees_for_group(group: str) -> list[int]:
         # (13*4=52), and (at least) a transitive action on ordered pairs of
         # distinct points (13*12=156).
         "PSL3(3)": [13, 52, 156],
+        # 13^2:2A4 arises from the 13B centralizer 13^{1+2}.2A4 in the Monster.
+        # Natural transitive degrees include the affine action on 13^2=169 points,
+        # and (in our scan) the signature r_13=104 corresponds to a subgroup of
+        # order 39 (=13:3).
+        "13^2:2A4": [104, 169],
+        # 5^6:2J2 is the cofactor of the 5B centralizer 5^{1+6}:2.J2; it has an
+        # affine action on 5^6 points.
+        "5^6:2J2": [15625],
         # PSL2(7) has a natural action on P^1(F7) (8) and a transitive action
         # on cosets of A4 (index 14).
         "PSL2(7)": [8, 14],

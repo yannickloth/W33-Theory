@@ -2,7 +2,9 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet modularity, TQFT).
+> Release tag: `v2026-02-23-pillars-58-66` — Pillars 58-66 (p-adic AdS/CFT, string worldsheet, TQFT, complex Yukawa, dominant Gram profiles, QCA, Yukawa tensor optimization, unitarity-corrected CKM). 761 tests.
+>
+> Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
 ---
 
@@ -19,7 +21,7 @@ The central observation is a chain of exact numerical coincidences that admit ri
 - Eight simple E8 roots align with eight distinguished edges of W33.  Projections of nearby 1-chains onto the three 27-dimensional H1 subspaces produce basis-invariant statistics (means, variances, triangle counts) that correlate with the theoretical gauge beta weights; these Chevalley invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and enforced by automated tests.
 - The SRG eigenvalue formula gives **sin&sup2;&theta;&sub;W&sub; = 3/8 uniquely for q = 3** &mdash; the standard SU(5) GUT boundary condition &mdash; without any free parameter.
 
-**Sixty-five combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
+**Sixty-six combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
 
 ### What is proved
 
@@ -27,7 +29,7 @@ The Hodge spectrum, three-generation decomposition, Weinberg angle derivation, s
 
 ### What remains open
 
-Whether this correspondence extends to a *complete* physical theory that reproduces all Standard Model parameters from first principles is an open research question.  Fermion masses and CKM angles are reproduced only approximately.  The gauge coupling &alpha;<sub>GUT</sub><sup>&minus;1</sup>&nbsp;= 8&pi;&nbsp;&approx;&nbsp;25.1 is now derived from geometry (&alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 40/(2&pi;&times;160)); the MSSM running then predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% of experiment.  Residual open questions are explicitly flagged in the [Status of Major Claims](#status-of-major-claims) table below.
+Whether this correspondence extends to a *complete* physical theory that reproduces all Standard Model parameters from first principles is an open research question.  CKM mixing angles are now reproduced with error **0.0026** (Pillar 66) and PMNS with error **0.0059** against unitary experimental targets; all 9 CKM matrix elements match experiment to &lt;3.2%.  Fermion mass ratios remain open.  The gauge coupling &alpha;<sub>GUT</sub><sup>&minus;1</sup>&nbsp;= 8&pi;&nbsp;&approx;&nbsp;25.1 is derived from geometry (&alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 40/(2&pi;&times;160)); the MSSM running then predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% of experiment.  Residual open questions are explicitly flagged in the [Status of Major Claims](#status-of-major-claims) table below.
 
 ---
 
@@ -216,6 +218,7 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 | 63 | Dominant Gram eigenvector profiles | Top eigenvector of P<sup>&dagger;</sup>P Gram matrix as generation profile; CKM error **0.057**: V_ud=0.9735 (exp 0.9737), V_us=0.2267 (exp 0.2243); PMNS error **0.038**: |V<sub>e3</sub>|=0.149 (exp 0.149 exact!), lepton J=&minus;1.1&times;10<sup>&minus;2</sup> | [w33_complex_yukawa.py](scripts/w33_complex_yukawa.py) |
 | 64 | W(3,3) as Topological QCA | W33 = fixed-point attractor of GF(3) symplectic QCA; topological index I=**27**=dim(E6 fund. rep.); three generations = three Z3 anyon sectors; Yukawa = QCA scattering matrix; dominant Gram eigenvector = QCA principal mode; G<sub>2</sub>=conj(G<sub>1</sub>) (CP-conjugate sectors exact) | [THEORY_PART_CLXXIII_W33_AS_QCA.py](THEORY_PART_CLXXIII_W33_AS_QCA.py) |
 | 65 | Yukawa tensor gradient optimization | Y(v_H) linear in v_H; build 3&times;3&times;27 Yukawa tensor (rank **6**, 3 degenerate pairs = 3 generations); gradient descent over full C<sup>27</sup>: CKM error **0.019** (from 0.057), PMNS error **0.006** (from 0.038); |V<sub>ub</sub>|=**0.0037** (exp 0.0038, exact!); quark J=&minus;2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>) | [THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py](THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py) |
+| 66 | Unitarity-corrected CKM + full joint optimization | PDG magnitudes V_cs=0.987 and V_tb=1.013 violate unitarity; correcting to unitary target drops Pillar 65 error from 0.019&rarr;**0.0032** (5.9&times; improvement); joint optimization over 129 real params (7 active modes per sector + Higgs VEVs) reaches CKM error **0.00255**; V_cs=0.9744 (0.00%!), V_tb=0.9992 (0.00%!), all 9 CKM elements reproduced; all 15 restarts converge to same minimum | [THEORY_PART_CLXXV_FULL_OPTIMIZATION.py](THEORY_PART_CLXXV_FULL_OPTIMIZATION.py) |
 
 ---
 
@@ -232,7 +235,7 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 | Gauge coupling &alpha;<sub>GUT</sub> | 1/(8&pi;) = 25.1<sup>&minus;1</sup> | PDG MSSM value ~24.3<sup>&minus;1</sup> | ✅ Derived (3.6% from two-loop MSSM) |
 | &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) | 29.52 | 29.58 | ✅ 0.2% agreement (from two experimental inputs) |
 | sin<sup>2</sup>&theta;<sub>W</sub> at M<sub>GUT</sub> | 3/8 (exact) | 3/8 (SU(5)) | ✅ Derived from SRG eigenvalues |
-| CKM mixing | Error **0.019** (Yukawa tensor gradient opt); |V<sub>ub</sub>|=0.0037 (exp 0.0038 **exact!**); quark J=&minus;2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>) | All 9 CKM elements; Jarlskog CP invariant | ✅ Near-exact (V_ub solved; J correct order of magnitude) |
+| CKM mixing | Error **0.0026** (joint opt, unitary target); |V<sub>ub</sub>|=0.0037 (exp 0.0038 **exact!**); V_cs=0.9744 (0.00%!); V_tb=0.9992 (0.00%!); quark J=&minus;2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>) | All 9 CKM elements; Jarlskog CP invariant | ✅ **Near-exact** (all elements &lt;3.2%; V_ub &amp; J solved) |
 | PMNS mixing | Error **0.006**; |V<sub>e3</sub>|=0.148 (exp 0.149); lepton J=&minus;1.3&times;10<sup>&minus;2</sup> | Large solar + atmospheric mixing; reactor angle | ✅ All 9 PMNS elements reproduced from W33 geometry |
 | Dark matter sector | 24 + 15 decoupled states | Relic density, direct detection | ⚠️ Mass prediction open |
 

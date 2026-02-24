@@ -482,6 +482,7 @@ def analyze(
                         continue
                     attached: dict[str, Any] = {}
                     recommended: str | None = None
+                    recommended_r: int = 0
                     for cls in classes:
                         if not isinstance(cls, str):
                             continue
@@ -510,7 +511,10 @@ def analyze(
                                 default=None,
                             )
                             if best is not None:
-                                recommended = _pair_label_to_x(str(best.get("pair")))
+                                r = int(best.get("r", 0) or 0)
+                                if r > recommended_r:
+                                    recommended_r = int(r)
+                                    recommended = _pair_label_to_x(str(best.get("pair")))
                     if attached:
                         rec["cofactor_perm_hits"] = attached
                         if rec.get("recommended_pair_perm_hit") is None:
