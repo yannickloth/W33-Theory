@@ -622,27 +622,13 @@ def predict_simple_family_sign_closed_form(c_i: int, match_i: int, other_i: int)
 def predict_simple_family_sign(c_i: int, match_i: int, other_i: int) -> int:
     """Return sign(c,match,other) ∈ {+1,-1} for the CE2 simple family.
 
-    Preference order:
-      1) Closed-form symplectic/Heisenberg law (degree ≤ 5, sparse)
-      2) Explicit GF(2) polynomial (degree ≤ 4) if the artifact is present
-      3) Compact committed sign map (864-entry table)
-      4) Fallback extraction from sparse CE2 local solutions
+    This function now uses the closed-form metaplectic/Heisenberg law
+    exclusively.  The earlier polynomial and lookup-table fallbacks were
+    removed once the closed-form was shown to cover all 864 entries, so
+    calling this will never consult the legacy code paths.
     """
-    try:
-        return predict_simple_family_sign_closed_form(
-            int(c_i), int(match_i), int(other_i)
-        )
-    except Exception:
-        pass
-
-    coeff_mask = _simple_family_sign_poly_coeff_mask()
-    if coeff_mask is not None:
-        bits = _encode_simple_family_sign_input_bits(
-            int(c_i), int(match_i), int(other_i)
-        )
-        parity = _eval_simple_family_sign_poly_bit(bits)
-        return 1 if parity == 0 else -1
-    return _simple_family_sign_map()[(int(c_i), int(match_i), int(other_i))]
+    # Direct closed-form evaluation; let errors propagate if logic is wrong.
+    return predict_simple_family_sign_closed_form(int(c_i), int(match_i), int(other_i))
 
 
 def predict_simple_family_uv(
