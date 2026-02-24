@@ -39,3 +39,25 @@ def test_m12_irrep_degrees_sumsq_and_11a_ratio_hit() -> None:
     n = int(info["structure_constant_per_element"])
     assert n == 11 * 144
     assert 144 in degrees_int
+
+    # Phase bridge: the M12 symmetry of the ternary Golay code is most natural as
+    # a monomial action (permutation + diagonal signs). This is exactly the
+    # pattern the repo exploits: "grade-only" isn't enough; the phase matters.
+    from scripts.w33_monster_11a_m12_golay_bridge import analyze as analyze_bridge
+
+    bridge = analyze_bridge()
+    assert bridge.get("available") is True
+
+    golay = bridge.get("golay", {})
+    assert isinstance(golay, dict)
+    perm_only = golay.get("perm_only_preserves_code_rows", {})
+    assert isinstance(perm_only, dict)
+    # At least one generator needs a sign lift (permutation-only fails).
+    assert (perm_only.get("b11_code") is False) or (perm_only.get("b21_code") is False)
+
+    lifts = golay.get("monomial_lift_signs", {})
+    assert isinstance(lifts, dict)
+    s11 = lifts.get("b11_code", [])
+    s21 = lifts.get("b21_code", [])
+    assert isinstance(s11, list) and len(s11) == 12 and set(map(int, s11)).issubset({1, 2})
+    assert isinstance(s21, list) and len(s21) == 12 and set(map(int, s21)).issubset({1, 2})
