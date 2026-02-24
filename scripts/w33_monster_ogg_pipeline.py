@@ -528,11 +528,114 @@ def analyze(
         rec["best_pair_by_structure"] = best_structure
         rec["best_pair_by_structure_reason"] = str(why)
 
+        # Rank all 6 pairs by probability mass into order-p classes.
+        mass_by_pair = rec.get("mass_by_pair", {})
+        supported_by_pair = rec.get("supported_classes_by_pair", {})
+        ranked_mass: list[dict[str, Any]] = []
+        if isinstance(mass_by_pair, dict):
+            for pair_x, mass in mass_by_pair.items():
+                if not isinstance(pair_x, str) or not isinstance(mass, dict):
+                    continue
+                try:
+                    mf = float(mass.get("float", 0.0) or 0.0)
+                except Exception:
+                    mf = 0.0
+                sup = []
+                if isinstance(supported_by_pair, dict):
+                    xs = supported_by_pair.get(pair_x, [])
+                    if isinstance(xs, list):
+                        sup = [str(x) for x in xs]
+                ranked_mass.append(
+                    {
+                        "pair": str(pair_x),
+                        "mass": dict(mass),
+                        "mass_float": float(mf),
+                        "supported_classes": sup,
+                    }
+                )
+        ranked_mass.sort(key=lambda x: (float(x["mass_float"]), str(x["pair"])), reverse=True)
+        rec["ranked_pairs_by_mass"] = ranked_mass
+
+        # Rank all pairs by structure hits first, then by mass.
+        scores = rec.get("structure_score_by_pair", {})
+        ranked_struct: list[dict[str, Any]] = []
+        if isinstance(scores, dict):
+            for pair_x, info in scores.items():
+                if not isinstance(pair_x, str) or not isinstance(info, dict):
+                    continue
+                ranked_struct.append(
+                    {
+                        "pair": str(pair_x),
+                        "mass_float": float(info.get("mass_float", 0.0) or 0.0),
+                        "perm_r_max": int(info.get("perm_r_max", 0) or 0),
+                        "irrep_r_max": int(info.get("irrep_r_max", 0) or 0),
+                        "has_nontrivial_perm_hit": bool(info.get("has_nontrivial_perm_hit")),
+                        "has_nontrivial_irrep_hit": bool(
+                            info.get("has_nontrivial_irrep_hit")
+                        ),
+                    }
+                )
+
+        def _struct_key(x: dict[str, Any]) -> tuple:
+            return (
+                bool(x.get("has_nontrivial_perm_hit")),
+                int(x.get("perm_r_max", 0) or 0),
+                bool(x.get("has_nontrivial_irrep_hit")),
+                int(x.get("irrep_r_max", 0) or 0),
+                float(x.get("mass_float", 0.0) or 0.0),
+                str(x.get("pair") or ""),
+            )
+
+        ranked_struct.sort(key=_struct_key, reverse=True)
+        rec["ranked_pairs_by_structure"] = ranked_struct
+
+    from collections import Counter
+
+    best_by_mass_counts: Counter[str] = Counter()
+    best_by_structure_counts: Counter[str] = Counter()
+    structure_reason_counts: Counter[str] = Counter()
+    rec_perm_counts: Counter[str] = Counter()
+    rec_irrep_counts: Counter[str] = Counter()
+    n_diff = 0
+    for rec in results:
+        if not isinstance(rec, dict):
+            continue
+        mass_pair = rec.get("best_pair")
+        if isinstance(mass_pair, str):
+            best_by_mass_counts[mass_pair] += 1
+        struct_pair = rec.get("best_pair_by_structure")
+        if isinstance(struct_pair, str):
+            best_by_structure_counts[struct_pair] += 1
+        reason = rec.get("best_pair_by_structure_reason")
+        if isinstance(reason, str):
+            structure_reason_counts[reason] += 1
+        if (
+            isinstance(mass_pair, str)
+            and isinstance(struct_pair, str)
+            and mass_pair != struct_pair
+        ):
+            n_diff += 1
+        rec_perm = rec.get("recommended_pair_perm_hit")
+        if isinstance(rec_perm, str):
+            rec_perm_counts[rec_perm] += 1
+        rec_irrep = rec.get("recommended_pair_nontrivial_irrep_hit")
+        if isinstance(rec_irrep, str):
+            rec_irrep_counts[rec_irrep] += 1
+
     return {
         "available": True,
         "scan_primes": scan_list,
         "replicability_max_q_exp": int(max_q_exp),
         "rr_j": rr,
+        "summary": {
+            "n_primes": len(results),
+            "n_structure_best_differs_from_mass_best": int(n_diff),
+            "best_pair_by_mass_counts": dict(best_by_mass_counts),
+            "best_pair_by_structure_counts": dict(best_by_structure_counts),
+            "best_pair_by_structure_reason_counts": dict(structure_reason_counts),
+            "recommended_pair_perm_hit_counts": dict(rec_perm_counts),
+            "recommended_pair_nontrivial_irrep_hit_counts": dict(rec_irrep_counts),
+        },
         "results": results,
     }
 

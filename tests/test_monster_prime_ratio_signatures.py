@@ -79,6 +79,15 @@ def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
     pipe = analyze_ogg_pipeline(max_q_exp=5, scan_primes=[11])
     assert pipe.get("available") is True
     assert pipe.get("scan_primes") == [11]
+    summary = pipe.get("summary", {})
+    assert isinstance(summary, dict)
+    assert summary.get("n_primes") == 1
+    assert summary.get("n_structure_best_differs_from_mass_best") == 1
+    assert summary.get("best_pair_by_mass_counts") == {"2Ax3A": 1}
+    assert summary.get("best_pair_by_structure_counts") == {"2Ax3B": 1}
+    assert summary.get("best_pair_by_structure_reason_counts") == {"perm_hit": 1}
+    assert summary.get("recommended_pair_perm_hit_counts") == {"2Ax3B": 1}
+    assert summary.get("recommended_pair_nontrivial_irrep_hit_counts") == {"2Ax3B": 1}
     results = pipe.get("results", [])
     assert isinstance(results, list)
     assert len(results) == 1
@@ -98,6 +107,24 @@ def test_prime_ratio_signature_irrep_and_perm_hits_on_sporadic_rungs() -> None:
     assert rec.get("best_pair_by_structure_reason") == "perm_hit"
     assert rec.get("recommended_pair_perm_hit") == "2Ax3B"
     assert rec.get("recommended_pair_nontrivial_irrep_hit") == "2Ax3B"
+
+    ranked_mass = rec.get("ranked_pairs_by_mass", [])
+    assert isinstance(ranked_mass, list)
+    assert len(ranked_mass) == 6
+    assert ranked_mass[0].get("pair") == "2Ax3A"
+    assert {str(x.get("pair")) for x in ranked_mass} == {
+        "2Ax3A",
+        "2Ax3B",
+        "2Ax3C",
+        "2Bx3A",
+        "2Bx3B",
+        "2Bx3C",
+    }
+
+    ranked_struct = rec.get("ranked_pairs_by_structure", [])
+    assert isinstance(ranked_struct, list)
+    assert len(ranked_struct) == 6
+    assert ranked_struct[0].get("pair") == "2Ax3B"
 
     # Quantify the mismatch: the signature pair carries tiny probability mass.
     masses = rec.get("mass_by_pair", {})
