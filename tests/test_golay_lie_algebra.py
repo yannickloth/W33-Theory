@@ -52,3 +52,28 @@ def test_golay_lie_algebra_core_invariants():
     assert cartan["dim"] == 6
     assert cartan["centralizer_dim"] == 6
     assert cartan["self_centralizing"] is True
+
+    # Strengthen: the c=0 slice L0 is exactly the "Pauli commutator" algebra on
+    # the 8 nonzero grades g∈F3^2\{0} with bracket [e_g,e_h]=omega(g,h)e_{g+h}.
+    from scripts.w33_golay_lie_algebra import build_golay_lie_algebra, omega
+
+    alg = build_golay_lie_algebra()
+    l0_slice = [3 * i for i in range(8)]
+    grade_to_slice = {tuple(alg.grades[i]): int(i) for i in l0_slice}
+    assert len(grade_to_slice) == 8
+
+    def add(g, h):
+        return ((int(g[0]) + int(h[0])) % 3, (int(g[1]) + int(h[1])) % 3)
+
+    for i in l0_slice:
+        gi = tuple(alg.grades[i])
+        for j in l0_slice:
+            gj = tuple(alg.grades[j])
+            c_exp = int(omega(gi, gj)) % 3
+            if c_exp == 0:
+                assert int(alg.bracket_c[i, j]) == 0
+                continue
+            gsum = add(gi, gj)
+            assert gsum != (0, 0)
+            assert int(alg.bracket_c[i, j]) % 3 == c_exp
+            assert int(alg.bracket_k[i, j]) == grade_to_slice[gsum]

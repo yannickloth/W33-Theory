@@ -2,7 +2,6 @@ import numpy as np
 from scripts.grade_weil_phase import all_symplectic_matrices, compute_phase
 
 def test_identity_phase():
-    mats = all_symplectic_matrices()
     I = np.array([[1,0],[0,1]], dtype=int)
     mu = compute_phase(I)
     assert mu is not None
@@ -10,13 +9,16 @@ def test_identity_phase():
 
 def test_some_nontrivial():
     mats = all_symplectic_matrices()
-    # ensure at least one non-identity returns None (no phase)
+    # for our section cocycle, every symplectic A should admit a phase correction,
+    # and at least one non-identity should produce a nontrivial mu.
     nonid = [A for A in mats if not np.array_equal(A, np.eye(2, dtype=int))]
     assert nonid
-    any_bad = False
-    for A in nonid[:5]:
+
+    any_nontrivial = False
+    for A in nonid:
         mu = compute_phase(A)
-        if mu is None:
-            any_bad = True
+        assert mu is not None
+        if any(int(v) % 3 != 0 for v in mu.values()):
+            any_nontrivial = True
             break
-    assert any_bad
+    assert any_nontrivial

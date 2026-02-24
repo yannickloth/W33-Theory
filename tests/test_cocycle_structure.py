@@ -1,42 +1,22 @@
-import pytest
-import os, sys
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, repo_root)
-sys.path.insert(0, os.path.join(repo_root, 'scripts'))
-from scripts import find_golay_ideals as F
-
-# reproduce grade->indices mapping
-grades = [g for g, rep in F.coset_reps_24]
-grade_indices = {}
-for idx, g in enumerate(grades):
-    grade_indices.setdefault(g, []).append(idx)
-
-# trivial cocycle in current normal form
-grade_permutations = {}
-phi_const = {}
-
-def grade_pos(idx, order_map=None):
-    g = grades[idx]
-    pos = grade_indices[g].index(idx)
-    if order_map and g in order_map:
-        pos = order_map[g].index(pos)
-    return pos
+from __future__ import annotations
 
 
-def omega(g, h):
-    return (g[0] * h[1] - g[1] * h[0]) % 3
+def test_golay_phi_normal_form_is_trivial() -> None:
+    from scripts.w33_golay_lie_algebra import _phi_normal_form, build_golay_lie_algebra
 
-
-def test_phi_after_reordering():
-    from scripts.w33_golay_lie_algebra import build_golay_lie_algebra, _phi_normal_form
     alg = build_golay_lie_algebra()
     nf = _phi_normal_form(alg)
-    assert nf.get("available", False)
-    assert nf.get("phi_is_zero", False)
+    assert nf.get("available") is True
+    assert nf.get("phi_is_zero") is True
+    assert nf.get("phi_values_distinct") == [0]
     for v in nf.get("phi_const_by_grade_pair", {}).values():
-        assert v == 0
+        assert int(v) == 0
 
 
-def test_phi_cocycle_condition():
-    # trivial cocycle automatically satisfies condition
-    assert phi_const == {} or all(v == 0 for v in phi_const.values())
+def test_golay_fiber_index_addition_holds() -> None:
+    from scripts.w33_golay_lie_algebra import _phi_normal_form, build_golay_lie_algebra
+
+    alg = build_golay_lie_algebra()
+    nf = _phi_normal_form(alg)
+    assert nf.get("available") is True
+    assert nf.get("c_addition_holds") is True
