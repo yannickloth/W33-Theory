@@ -135,6 +135,18 @@ def analyze() -> dict[str, Any]:
     assert sp12["standardized_generators"]["A_std_preserves_J0"] is True
     assert sp12["standardized_generators"]["B_std_preserves_J0"] is True
 
+    # ATLAS maximal subgroup witness: M12:2 < Suz given as words in standard generators.
+    # Evaluate the words inside our offline 2.Suz ⊂ Sp(12,3) model (orders only here;
+    # full closure is regression-tested separately).
+    from scripts.w33_2suz_m12_2_subgroup import analyze as analyze_m12_2_in_suz
+
+    m12_2 = analyze_m12_2_in_suz(compute_orders=False)
+    assert m12_2.get("available") is True
+    m12_2_gens = m12_2.get("m12_2_generators", {})
+    assert isinstance(m12_2_gens, dict)
+    assert int(m12_2_gens.get("x_order", 0) or 0) == 4
+    assert int(m12_2_gens.get("y_order", 0) or 0) == 3
+
     return {
         "available": True,
         "monster": {
@@ -174,6 +186,14 @@ def analyze() -> dict[str, Any]:
             "qutrits_n": int(sp12["interpretation"]["qutrits_n"]),
             "heisenberg_irrep_dim": int(sp12["interpretation"]["heisenberg_irrep_dim"]),
         },
+        "suz_m12_2_subgroup_words": {
+            "available": True,
+            "x_order": int(m12_2_gens.get("x_order", 0) or 0),
+            "y_order": int(m12_2_gens.get("y_order", 0) or 0),
+            "words": dict(m12_2.get("m12_2_words", {}))
+            if isinstance(m12_2.get("m12_2_words"), dict)
+            else {},
+        },
     }
 
 
@@ -188,6 +208,7 @@ def main() -> None:
     golay_lag = rep["golay_lagrangian"]
     sl27 = rep["sl27"]
     sp12 = rep["2suz_sp12_embedding"]
+    m12_2 = rep.get("suz_m12_2_subgroup_words", {})
 
     print("=" * 78)
     print("MONSTER 3B <-> Heisenberg <-> Golay s12 <-> sl(27) BRIDGE")
@@ -250,6 +271,16 @@ def main() -> None:
         f"  phase space dim = {int(sp12['dim'])} â‡’ qutrits n = {int(sp12['qutrits_n'])}, "
         f"Heisenberg irrep dim = {int(sp12['heisenberg_irrep_dim'])}"
     )
+
+    if isinstance(m12_2, dict) and m12_2.get("available") is True:
+        print()
+        print("Â§7. Maximal subgroup witness: M12:2 < Suz (ATLAS words)")
+        print("-" * 58)
+        print(
+            "  word-generator orders: "
+            f"ord(x)={int(m12_2.get('x_order', 0) or 0)}, "
+            f"ord(y)={int(m12_2.get('y_order', 0) or 0)}"
+        )
 
     print()
     print("ALL CHECKS PASSED ✓")
