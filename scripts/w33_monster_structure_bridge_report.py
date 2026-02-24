@@ -57,6 +57,28 @@ def analyze(*, max_q_exp: int = 3) -> dict[str, Any]:
         return {"available": False, "reason": "unexpected pipeline payload"}
 
     rows: list[dict[str, Any]] = []
+
+    # generic Golay code data and monomial factories for phase-lift detection
+    from tools.s12_universal_algebra import (
+        enumerate_linear_code_f3,
+        ternary_golay_generator_matrix,
+    )
+    gen = ternary_golay_generator_matrix()
+    generator_rows = [tuple(int(x) % 3 for x in row) for row in gen]
+    code_set = set(enumerate_linear_code_f3(gen))
+    from scripts.monomial_utils import find_sign_lifts_for_group, monomial_group_order
+    from scripts.derive_m12_p144_suborbits import perm_from_cycles, inv, compose
+
+    def _factory_11A() -> list[tuple[int, ...]]:
+        b11 = perm_from_cycles(12, [[1, 4], [3, 10], [5, 11], [6, 12]])
+        b21 = perm_from_cycles(12, [[1, 8, 9], [2, 3, 4], [5, 12, 11], [6, 10, 7]])
+        return [b11, b21]
+
+    def _factory_identity() -> list[tuple[int, ...]]:
+        """Trivial identity generator set (useful for testing)."""
+        return [tuple(range(12))]
+
+    _MONOMIAL_FACTORIES = {"11A": _factory_11A, "identity": _factory_identity}
     for rec in results:
         if not isinstance(rec, dict):
             continue
