@@ -132,8 +132,23 @@ def main() -> None:
                         _pp_kv("Cent(L0)⊗Der(A)", comps.get("centroid_l0_tensor_derA")),
                     ]
                 )
-            )
-
+            )    # probe inner automorphism commutation using ad matrices
+    try:
+        from scripts.w33_golay_lie_algebra import _ad_matrices
+        import numpy as np
+        adm = _ad_matrices(alg)
+        size = 24
+        I = np.eye(size, dtype=int)
+        mod3 = lambda A: A % 3
+        T = [mod3(I + A) for A in adm]
+        commuting = all(
+            np.array_equal(mod3(T[i].dot(T[j])), mod3(T[j].dot(T[i])))
+            for i in range(size)
+            for j in range(size)
+        )
+        print("  inner_aut_commuting?", commuting)
+    except Exception as e:
+        print("  inner_aut_commuting? check failed", e)
     print()
     print("Suggested lead (heuristic)")
     print("-" * 60)
