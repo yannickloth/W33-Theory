@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Metaplectic/Weil 1-cocycle on the grade plane F3^2.
+"""Metaplectic/Weil phase on the grade plane F3^2.
 
 This is a small, *self-contained* computation for the qutrit (p=3) case.
 
@@ -15,14 +15,31 @@ For any A in Sp(2,3)=SL(2,3), define the transported cocycle:
 
     phi_A(g,h) := phi(A g, A h).
 
-Because A preserves the alternating class, phi_A is cohomologous to phi, so
-there exists a 1-cochain mu_A: V -> F3 such that:
+Because A preserves the alternating form, phi_A is cohomologous to phi, so there
+exists a 1-cochain mu_A: V -> F3 such that:
 
     phi_A(g,h) - phi(g,h) = mu_A(g+h) - mu_A(g) - mu_A(h).          (*)
 
 This mu_A is the finite-field shadow of the metaplectic (Weil) correction.
-We compute one canonical solution with mu_A(0)=0 by solving the linear system
-over GF(3) induced by (*).
+
+Important subtlety (and the reason this file exists): the solution mu_A is not
+unique. If mu_A solves (*), then so does mu_A + ℓ for any additive homomorphism
+ℓ:V->F3 (i.e. a linear functional). Picking arbitrary representatives for each A
+breaks the expected composition law.
+
+We avoid that by using a closed-form gauge choice.
+
+Define the Sp-invariant alternating cocycle:
+
+    psi(g,h) := (1/2)·omega(g,h)  (mod 3),  with 1/2 = 2 in F3.
+
+Then phi and psi differ by an exact coboundary:
+
+    phi(g,h) = psi(g,h) + (d f)(g,h),   with f(x,y) = 2·x·y.
+
+So a canonical, composition-compatible choice is:
+
+    mu_A(g) := f(A g) - f(g).
 
 The returned mu is a dict on the 8 nonzero grades (0,0) is fixed to 0.
 """
@@ -30,8 +47,6 @@ The returned mu is a dict on the 8 nonzero grades (0,0) is fixed to 0.
 from __future__ import annotations
 
 import itertools
-from dataclasses import dataclass
-
 import numpy as np
 
 F3 = 3
@@ -62,93 +77,22 @@ def apply_matrix(A: np.ndarray, g: U2) -> U2:
         (int(A[1, 0]) * int(g[0]) + int(A[1, 1]) * int(g[1])) % 3,
     )
 
-
-@dataclass(frozen=True)
-class LinearSystemMod3:
-    A: np.ndarray  # shape (m,n) in {0,1,2}
-    b: np.ndarray  # shape (m,) in {0,1,2}
+def psi(g: U2, h: U2) -> int:
+    """Sp-invariant alternating cocycle: psi = (1/2)·omega, with 1/2=2 in F3."""
+    return int((2 * omega(g, h)) % 3)
 
 
-def _solve_mod3(system: LinearSystemMod3) -> np.ndarray | None:
-    """Solve A x = b over GF(3), returning one solution with free vars = 0."""
-    A = np.array(system.A, dtype=np.int64) % 3
-    b = np.array(system.b, dtype=np.int64) % 3
-    m, n = A.shape
-
-    # Augmented matrix [A | b].
-    M = np.zeros((m, n + 1), dtype=np.int64)
-    M[:, :n] = A
-    M[:, n] = b
-
-    pivot_cols: list[int] = []
-    row = 0
-    for col in range(n):
-        if row >= m:
-            break
-        pivot = None
-        for r in range(row, m):
-            if int(M[r, col]) % 3 != 0:
-                pivot = r
-                break
-        if pivot is None:
-            continue
-        if pivot != row:
-            M[[row, pivot]] = M[[pivot, row]]
-        inv = pow(int(M[row, col] % 3), -1, 3)
-        M[row, :] = (M[row, :] * inv) % 3
-        for r in range(m):
-            if r == row:
-                continue
-            f = int(M[r, col] % 3)
-            if f:
-                M[r, :] = (M[r, :] - f * M[row, :]) % 3
-        pivot_cols.append(int(col))
-        row += 1
-
-    # Check consistency: rows [0 ...] = 0 with nonzero RHS.
-    for r in range(row, m):
-        if int(np.sum(M[r, :n]) % 3) == 0 and int(M[r, n] % 3) != 0:
-            return None
-
-    free_cols = [c for c in range(n) if c not in pivot_cols]
-    x = np.zeros((n,), dtype=np.int64)
-    # free vars already set to 0; solve pivot vars from reduced form.
-    for pr, pc in enumerate(pivot_cols):
-        acc = int(M[pr, n] % 3)
-        for fc in free_cols:
-            acc = (acc - int(M[pr, fc]) * int(x[fc])) % 3
-        x[pc] = acc % 3
-    return x % 3
+def gauge_f(g: U2) -> int:
+    """Gauge 1-cochain f(x,y)=2·x·y so that phi = psi + d f."""
+    return int((2 * int(g[0]) * int(g[1])) % 3)
 
 
 def compute_phase(A: np.ndarray) -> dict[U2, int] | None:
-    """Return mu_A on the 8 nonzero grades, normalized by mu_A(0)=0."""
-    grades = list(GRADES_NONZERO)
-    idx = {g: i for i, g in enumerate(grades)}
-
-    rows: list[np.ndarray] = []
-    rhs: list[int] = []
-
-    for g in grades:
-        for h in grades:
-            gh = _u2_add(g, h)
-            lhs = (phi(apply_matrix(A, g), apply_matrix(A, h)) - phi(g, h)) % 3
-
-            # Equation: mu(gh) - mu(g) - mu(h) = lhs, with mu(0)=0.
-            row = np.zeros((len(grades),), dtype=np.int64)
-            if gh != (0, 0):
-                row[idx[gh]] = (row[idx[gh]] + 1) % 3
-            row[idx[g]] = (row[idx[g]] - 1) % 3
-            row[idx[h]] = (row[idx[h]] - 1) % 3
-            rows.append(row % 3)
-            rhs.append(int(lhs))
-
-    system = LinearSystemMod3(A=np.stack(rows, axis=0) % 3, b=np.array(rhs) % 3)
-    sol = _solve_mod3(system)
-    if sol is None:
-        return None
-
-    return {g: int(sol[i] % 3) for i, g in enumerate(grades)}
+    """Return canonical mu_A on the 8 nonzero grades, normalized by mu_A(0)=0."""
+    A = np.array(A, dtype=int) % 3
+    return {
+        g: int((gauge_f(apply_matrix(A, g)) - gauge_f(g)) % 3) for g in GRADES_NONZERO
+    }
 
 
 def all_symplectic_matrices() -> list[np.ndarray]:
@@ -192,7 +136,8 @@ def main() -> None:
     if n_ok != len(mats):
         raise SystemExit("ERROR: phase solver failed for some symplectic matrices")
 
-    # verify the 1-cocycle property: mu_{AB}(g) = mu_A(g) + mu_B(A g)
+    # verify the 1-cocycle property for the induced Heisenberg automorphisms:
+    # (A,mu_A)∘(B,mu_B) = (AB, mu_B + mu_A∘B).
     def _verify_cocycle() -> bool:
         for A in mats:
             for B in mats:
@@ -203,7 +148,7 @@ def main() -> None:
                     return False
                 for g in GRADES_NONZERO:
                     lhs = int(muAB[g])
-                    rhs = (int(muA[g]) + int(muB[apply_matrix(A, g)])) % 3
+                    rhs = (int(muB[g]) + int(muA[apply_matrix(B, g)])) % 3
                     if lhs != rhs:
                         print("cocycle failure", A, B, g, lhs, rhs)
                         return False

@@ -22,3 +22,23 @@ def test_some_nontrivial():
             any_nontrivial = True
             break
     assert any_nontrivial
+
+    # Weil 1-cocycle check for the induced Heisenberg automorphisms:
+    # (A,mu_A)∘(B,mu_B) = (AB, mu_B + mu_A∘B).
+    def key(M: np.ndarray) -> tuple[int, ...]:
+        return tuple(int(x) % 3 for x in M.reshape(-1))
+
+    mu_by_key = {key(A): compute_phase(A) for A in mats}
+    assert all(v is not None for v in mu_by_key.values())
+
+    for A in mats:
+        muA = mu_by_key[key(A)]
+        assert muA is not None
+        for B in mats:
+            AB = (A @ B) % 3
+            muAB = mu_by_key[key(AB)]
+            muB = mu_by_key[key(B)]
+            assert muAB is not None and muB is not None
+            for g in muA:
+                Bg = apply_matrix(B, g)
+                assert muAB[g] == (muB[g] + muA[Bg]) % 3
