@@ -1,8 +1,8 @@
-# W(3,3)&ndash;E8 Theory
+﻿# W(3,3)&ndash;E8 Theory
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **68 pillars** and **874 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **68 pillars** and **877 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -342,7 +342,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 874 tests, quiet mode
+python -m pytest -q            # 877 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
@@ -469,7 +469,7 @@ W33-Theory/
 │   ├── cycle_space_decompose.py           # Boundary matrix / automorphisms
 │   ├── reconstruct_w33_e8_mapping.py      # Edge-root bijection from seed
 │   └── edge_stabilizers.py               # Stabilizer enumeration
-├── tests/              # 874-test suite (pytest)
+├── tests/              # 877-test suite (pytest)
 │   ├── test_e8_embedding.py               # Core embedding tests
 │   ├── test_cycle_space.py
 │   ├── test_yukawa_sector_assignment.py
@@ -519,3 +519,4 @@ This convergence across independent disciplines is strong evidence that the unde
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+

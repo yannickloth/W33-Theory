@@ -7,6 +7,11 @@ explains why they matter for the W33 ↔ E8 work.
   - Witting→PG(3,2) trace‑map examples, Witting polytope visualizations,
     MiniMOG/MOG discussion, and explicit 40↔240 observations used repeatedly
     in our analyses.
+  - Key page for the 45-tritangent split: https://fgmarcelis.wordpress.com/2014/03/07/e8-%C2%A7-11-pg24-in-pg34/
+    - Enumerates **9 diameters** partitioning the 27-vertex Hessian/Witting model into 9 triples, with **12** ways to
+      pick 3 diameters (3 rows + 3 columns + 6 determinant terms). This matches our intrinsic
+      artifacts/e6_cubic_affine_heisenberg_model.json split (36 affine u-lines + 9 constant-u fibers) and explains why
+      the firewall forbids exactly the 9 fiber triads.
 
 - https://bendwavy.org/klitzing/explain/gc.htm — B. Klitzing / Bendwavy
   - Comprehensive reference on abstract and Grünbaum‑Coxeter polytopes (elliptic
@@ -21,6 +26,12 @@ Why these matter (quick):
   and mod‑wrapped constructions that give combinatorial templates (vertex
   counts/incidence matrices) useful when comparing geometric vs. algebraic
   realizations of W33/Witting/E8.
+
+Quick canonical encyclopedia references for the same structure:
+- https://en.wikipedia.org/wiki/Hessian_polyhedron — Hessian polyhedron / Hessian configuration
+  - 27 vertices; 12 van Oss polygons (_3{4}_2); Hessian configuration (9_4, 12_3). This matches our AG(2,3) u-plane:
+    9 u-points, 12 u-lines, 4 lines through each point (verified by scripts/e6_hessian_tritangents.py).
+- https://en.wikipedia.org/wiki/Witting_polytope — Witting polytope context / symmetry
 
 If you want, I can:
 - Add specific page references from these sites to `EXTERNAL_READING_NOTES_JAN28_2026.md`.

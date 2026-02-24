@@ -31,6 +31,10 @@ def pytest_ignore_collect(path, config):
     if not (p.suffix == ".py" and p.name.startswith("test_")):
         return None
 
+    # Local exploratory tests (kept untracked) should not affect canonical runs.
+    if p.name in {"test_yukawa_mass_ratios.py"}:
+        return True
+
     try:
         text = p.read_text(encoding="utf-8", errors="ignore")
     except Exception:
