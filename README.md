@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Release tag: `v2026-02-23-pillars-58-67` — Pillars 58-67 (p-adic AdS/CFT, string worldsheet, TQFT, complex Yukawa, dominant Gram profiles, QCA, Yukawa tensor optimization, unitarity-corrected CKM, W33 causal-information structure). 775 tests.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **66 pillars** and **765 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -146,6 +146,18 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 | 31 | Exact sector physics | 39 = 24 + 15 &harr; SU(5) + SO(6) adjoints | [w33_exact_sector_physics.py](scripts/w33_exact_sector_physics.py) |
 | 32 | Coupling constants | sin&sup2;&theta;&sub;W&sub; = 3/8, 16 dimension identities | [w33_coupling_constants.py](scripts/w33_coupling_constants.py) |
 
+### Golay 24-dim Lie algebra over GF(3)
+
+The Monster/Golay bridge produces a concrete **24-dimensional Lie algebra over GF(3)**,
+graded by **F3^2 \\ {(0,0)}** with 8 grades and 3 basis elements per grade.
+Deterministic invariants are computed by `scripts/w33_golay_lie_algebra.py` and
+regression-tested in `tests/test_golay_lie_algebra.py`:
+
+- Jacobi holds; `[L,L]=L` (perfect)
+- `dim Z(L)=0`; Killing form rank mod 3 is 0
+- `dim Der(L)=33` with `dim Inn(L)=24` and `dim Out(L)=9`
+- A canonical 6-dim maximal abelian subalgebra is self-centralizing (centralizer dim 6)
+
 ### Standard Model Structure (Pillars 33&ndash;36)
 
 | # | Theorem | Key result | Script |
@@ -206,7 +218,7 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 | 56 | Cryptographic lattice | E8 unimodular &amp; self-dual; Hodge hash &Ropf;&sup2;&sup4;&sup0;&rarr;&Ropf;&sup8;&sup1; | [w33_cryptographic_lattice.py](scripts/w33_cryptographic_lattice.py) |
 | 57 | Leech/Monster/Moonshine | j(q) coefficients in Monster irreps; 196884=1+196883 | [w33_leech_monster.py](scripts/w33_leech_monster.py) |
 
-### New Physics &amp; Geometry (Pillars 58&ndash;65)
+### New Physics &amp; Geometry (Pillars 58&ndash;66)
 
 | # | Theorem | Key result | Script |
 |---|---------|------------|--------|
@@ -276,7 +288,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 619 tests, quiet mode
+python -m pytest -q            # 765 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
@@ -403,7 +415,7 @@ W33-Theory/
 │   ├── cycle_space_decompose.py           # Boundary matrix / automorphisms
 │   ├── reconstruct_w33_e8_mapping.py      # Edge-root bijection from seed
 │   └── edge_stabilizers.py               # Stabilizer enumeration
-├── tests/              # 619-test suite (pytest)
+├── tests/              # 765-test suite (pytest)
 │   ├── test_e8_embedding.py               # Core embedding tests
 │   ├── test_cycle_space.py
 │   ├── test_yukawa_sector_assignment.py
