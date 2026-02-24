@@ -27,9 +27,22 @@ def test_monster_3b_heisenberg_s12_sl27_bridge_identities() -> None:
     assert int(golay.get("n_codewords", 0) or 0) == 729
     assert int(golay.get("n_nonzero", 0) or 0) == 728
 
+    golay_lag = rep.get("golay_lagrangian", {})
+    assert isinstance(golay_lag, dict)
+    assert golay_lag.get("systematic_generator") is True
+    assert golay_lag.get("A_symmetric") is True
+    assert golay_lag.get("symplectic_isotropic_all_pairs") is True
+    assert int(golay_lag.get("max_abelian_subgroup_order", 0) or 0) == 3**7
+
+    A = golay_lag.get("A_matrix_mod3", [])
+    assert isinstance(A, list) and len(A) == 6
+    assert all(isinstance(r, list) and len(r) == 6 for r in A)
+    for i in range(6):
+        for j in range(6):
+            assert int(A[i][j]) % 3 == int(A[j][i]) % 3
+
     sl27 = rep.get("sl27", {})
     assert isinstance(sl27, dict)
     assert int(sl27.get("hilbert_dim", 0) or 0) == 27
     assert int(sl27.get("operator_basis_dim", 0) or 0) == 729
     assert int(sl27.get("traceless_dim", 0) or 0) == 728
-

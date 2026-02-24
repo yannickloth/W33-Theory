@@ -36,6 +36,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = ROOT / "scripts"
 for p in (ROOT, SCRIPTS_DIR):
@@ -89,9 +91,29 @@ def analyze() -> dict[str, Any]:
     import tools.s12_universal_algebra as s12
 
     gen = s12.ternary_golay_generator_matrix()
+    G = np.array(gen, dtype=np.int64) % 3
+    systematic = bool(np.array_equal(G[:, :6], np.eye(6, dtype=np.int64)))
+    assert systematic, "Expected systematic Golay generator [I|A]."
+    A = (G[:, 6:] % 3).astype(np.int64)
+    A_symmetric = bool(np.array_equal(A, A.T))
+    assert A_symmetric, "Expected symmetric A in systematic Golay generator [I|A]."
+
     codewords = s12.enumerate_linear_code_f3(gen)
     golay_words = len(codewords)
     golay_nonzero = golay_words - 1
+
+    # Symplectic/Lagrangian bridge (6-qutrit phase space F3^{12}):
+    # With generator [I|A], the code is the graph {(p, A p)} and since A is
+    # symmetric it is isotropic for the standard symplectic form
+    #   ω((p,q),(p',q')) = p·q' - q·p'.
+    C = np.array(codewords, dtype=np.int64) % 3
+    p = C[:, :6]
+    q = C[:, 6:]
+    omega = (p @ q.T - q @ p.T) % 3
+    symplectic_isotropic = bool(np.all(omega == 0))
+    assert symplectic_isotropic, "Golay codewords should be symplectic-isotropic."
+
+    max_abelian_heisenberg_order = 3 ** (6 + 1)  # Lagrangian lift includes center
 
     hilbert_dim = 3**3  # 3 qutrits
     operator_basis = hilbert_dim**2  # 27^2 = 3^6
@@ -120,6 +142,13 @@ def analyze() -> dict[str, Any]:
             "n_codewords": int(golay_words),
             "n_nonzero": int(golay_nonzero),
         },
+        "golay_lagrangian": {
+            "systematic_generator": bool(systematic),
+            "A_matrix_mod3": A.tolist(),
+            "A_symmetric": bool(A_symmetric),
+            "symplectic_isotropic_all_pairs": bool(symplectic_isotropic),
+            "max_abelian_subgroup_order": int(max_abelian_heisenberg_order),
+        },
         "sl27": {
             "hilbert_dim": int(hilbert_dim),
             "operator_basis_dim": int(operator_basis),
@@ -136,6 +165,7 @@ def main() -> None:
     monster = rep["monster"]
     heis = rep["heisenberg"]
     golay = rep["golay"]
+    golay_lag = rep["golay_lagrangian"]
     sl27 = rep["sl27"]
 
     print("=" * 78)
@@ -166,7 +196,21 @@ def main() -> None:
     print(f"  #nonzero codewords = {golay['n_nonzero']} = 3^6-1 = 728")
 
     print()
-    print("§4. sl(27) closure: 27^2-1 = 728")
+    print("§4. Golay code is Lagrangian in symplectic F3^12")
+    print("-" * 58)
+    print(f"  Systematic generator [I|A]: {bool(golay_lag['systematic_generator'])}")
+    print(f"  A symmetric mod 3: {bool(golay_lag['A_symmetric'])}")
+    print(
+        "  Symplectic isotropic (all codeword pairs): "
+        f"{bool(golay_lag['symplectic_isotropic_all_pairs'])}"
+    )
+    print(
+        "  Lifted max-abelian subgroup order in 3^{1+12}: "
+        f"{int(golay_lag['max_abelian_subgroup_order'])} (=3^7)"
+    )
+
+    print()
+    print("§5. sl(27) closure: 27^2-1 = 728")
     print("-" * 58)
     print(f"  Hilbert dim (3 qutrits) = 3^3 = {sl27['hilbert_dim']}")
     print(f"  Operator basis dim = 27^2 = {sl27['operator_basis_dim']}")
