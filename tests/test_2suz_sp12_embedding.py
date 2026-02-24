@@ -28,3 +28,9 @@ def test_2suz_gf3_dim12_embeds_in_sp12() -> None:
     assert std.get("A_std_preserves_J0") is True
     assert std.get("B_std_preserves_J0") is True
 
+    sig = rep.get("standard_generator_signature", {})
+    assert isinstance(sig, dict)
+    assert int(sig.get("ord_A", 0) or 0) == 4
+    assert int(sig.get("ord_B", 0) or 0) == 3
+    assert int(sig.get("ord_AB", 0) or 0) == 13
+    assert sig.get("A_squared_is_minus_I") is True

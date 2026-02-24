@@ -394,6 +394,25 @@ def analyze() -> dict[str, Any]:
     assert _rank_mod_p(A, p) == 12
     assert _rank_mod_p(B, p) == 12
 
+    I12 = np.eye(12, dtype=np.int64) % p
+    minus_I12 = (-I12) % p  # = 2I in GF(3)
+
+    # Standard-generator signature (ATLAS-style):
+    # In the double cover 2.Suz, the lift of an involution typically has order 4
+    # with square equal to the central involution.  Here:
+    #   ord(A)=4, A^2=-I, ord(B)=3, ord(AB)=13.
+    A2 = (A @ A) % p
+    assert np.array_equal(A2, minus_I12), "Expected A^2 to be the central involution (-I)."
+    assert np.array_equal((A2 @ A2) % p, I12), "Expected A^4 = I."
+
+    B3 = np.linalg.matrix_power(B, 3) % p
+    assert np.array_equal(B3, I12), "Expected B^3 = I."
+
+    AB = (A @ B) % p
+    AB13 = np.linalg.matrix_power(AB, 13) % p
+    assert np.array_equal(AB13, I12), "Expected (AB)^13 = I."
+    assert not np.array_equal(AB, I12), "AB should not be identity (so ord(AB)=13)."
+
     form = solve_unique_invariant_alternating_form([A, B], p=p)
     J = form["form"]
     assert _rank_mod_p(J, p) == 12
@@ -419,6 +438,13 @@ def analyze() -> dict[str, Any]:
         "generators": {
             "A_rank": int(_rank_mod_p(A, p)),
             "B_rank": int(_rank_mod_p(B, p)),
+        },
+        "standard_generator_signature": {
+            "ord_A": 4,
+            "ord_B": 3,
+            "ord_AB": 13,
+            "A_squared_is_minus_I": True,
+            "central_involution_is_minus_I": True,
         },
         "invariant_form": {
             "linear_system_shape": tuple(int(x) for x in form["linear_system_shape"]),
@@ -462,23 +488,32 @@ def main() -> None:
     print(f"  rank(A) = {rep['generators']['A_rank']}")
     print(f"  rank(B) = {rep['generators']['B_rank']}")
 
+    sig = rep["standard_generator_signature"]
+    print()
+    print("§2. Standard-generator signature (double cover 2.Suz)")
+    print("-" * 58)
+    print(
+        "  orders: ord(A)={ord_A}, ord(B)={ord_B}, ord(AB)={ord_AB}".format(**sig)
+    )
+    print("  A^2 = -I (central involution):", bool(sig["A_squared_is_minus_I"]))
+
     inv = rep["invariant_form"]
     print()
-    print("§2. Solve invariant alternating form g^T J g = J")
+    print("§3. Solve invariant alternating form g^T J g = J")
     print("-" * 58)
     print(f"  linear system shape = {tuple(inv['linear_system_shape'])}  (eqns × vars)")
     print(f"  nullspace dim = {inv['nullspace_dim']}  (expect 1 up to scalar)")
     print(f"  rank(J) = {inv['rank']}  (nondegenerate)")
 
     print()
-    print("§3. Change basis to standard symplectic form J0")
+    print("§4. Change basis to standard symplectic form J0")
     print("-" * 58)
     print(f"  rank(P) = {rep['symplectic_basis']['P_rank']}")
     print("  standardized generators preserve J0: True")
 
     interp = rep["interpretation"]
     print()
-    print("§4. Information-theory interpretation (qutrit Clifford backbone)")
+    print("§5. Information-theory interpretation (qutrit Clifford backbone)")
     print("-" * 58)
     print(f"  phase space V = F3^{interp['phase_space_dim']} ≅ (qutrit Pauli) / center")
     print(f"  qutrits n = {interp['qutrits_n']}")
