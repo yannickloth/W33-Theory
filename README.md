@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **868 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **68 pillars** and **874 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -21,7 +21,7 @@ The central observation is a chain of exact numerical coincidences that admit ri
 - Eight simple E8 roots align with eight distinguished edges of W33.  Projections of nearby 1-chains onto the three 27-dimensional H1 subspaces produce basis-invariant statistics (means, variances, triangle counts) that correlate with the theoretical gauge beta weights; these Chevalley invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and enforced by automated tests.
 - The SRG eigenvalue formula gives **sin&sup2;&theta;&sub;W&sub; = 3/8 uniquely for q = 3** &mdash; the standard SU(5) GUT boundary condition &mdash; without any free parameter.
 
-**Sixty-seven combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
+**Sixty-eight combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
 
 ### What is proved
 
@@ -75,16 +75,16 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 | GF(3) QEC code | ✅ Proved | [240,81,&ge;3]; MLUT decoder included |
 | Edge&ndash;root bijection equivariance | ✅ Proved | Sp(4,3)-equivariant; verified by orbit computation |
 | Chevalley invariants & projections | ✅ Proved & tested | Simple-root edges, triangle/variance statistics correlate with beta-function weights |
-| Fermion mass hierarchy (qualitative) | ⚠️ Partial | Triple intersection gives ~301:1; full spectrum requires RG running with a fitted GUT-scale input ratio |
-| CKM matrix | ⚠️ Partial | Dominant-eigenvector Z3 profiles: error **0.057** (identity 0.32); V_ud=0.9735 (exp 0.9737), V_us=0.2267 (exp 0.2243) — near-experimental; V_ub=0.031 (exp 0.004) open; CP violation J=5&times;10<sup>&minus;4</sup> from complex VEV |
-| PMNS matrix | ✅ Derived | Dominant-eigenvector profiles: PMNS error **0.038**; |V_e3|=0.149 (exp 0.149 — exact!); large solar/atmospheric mixing; J=&minus;1.09&times;10<sup>&minus;2</sup> (lepton CP violation) &mdash; see `scripts/w33_complex_yukawa.py` |
+| Fermion mass hierarchy (texture) | ⚠️ Partial | Pillar 68 proves an exact Z3 Yukawa texture theorem (grade selection rule) and a form-factor hierarchy up to √15 across the 9D grade-0 eigenspace; absolute mass ratios still require Higgs direction + RG running |
+| CKM matrix | ✅ Near-exact | Full joint optimization (Pillar 66) reaches CKM error **0.00255** vs unitary target; |V<sub>ub</sub>|=0.0037 (exp 0.0038) and |J|=2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>); all 9 elements &lt;3.2% |
+| PMNS matrix | ✅ Near-exact | Gradient optimization (Pillar 65) reaches PMNS error **0.006**; |V<sub>e3</sub>|=0.148 (exp 0.149); lepton |J|≈1.3&times;10<sup>&minus;2</sup> |
 | Gauge coupling &alpha;<sub>GUT</sub> | ✅ Derived | &alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 1/(8&pi;) &approx; 1/25.1 from W33 geometry; sin<sup>2</sup>&theta;<sub>W</sub> = 3/8 from SRG eigenvalues; MSSM running predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% &mdash; see `scripts/w33_gauge_coupling_derivation.py` |
 | Dark matter mass | ⚠️ Proposed | 24+15 exact sector identified; mass predictions pending |
 | Cosmological constant | ⚠️ Structural | S&sub;EH&sub; = S&sub;YM&sub; = 480 is a spectral identity; full cosmological implication is open |
 
 ---
 
-## The 67 Pillars
+## The 68 Pillars
 
 Each pillar is a proved theorem. Every pillar has an executable verification script and at least one automated test.
 
@@ -270,7 +270,7 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 | 56 | Cryptographic lattice | E8 unimodular &amp; self-dual; Hodge hash &Ropf;&sup2;&sup4;&sup0;&rarr;&Ropf;&sup8;&sup1; | [w33_cryptographic_lattice.py](scripts/w33_cryptographic_lattice.py) |
 | 57 | Leech/Monster/Moonshine | j(q) coefficients in Monster irreps; 196884=1+196883 | [w33_leech_monster.py](scripts/w33_leech_monster.py) |
 
-### New Physics &amp; Geometry (Pillars 58&ndash;66)
+### New Physics &amp; Geometry (Pillars 58&ndash;68)
 
 | # | Theorem | Key result | Script |
 |---|---------|------------|--------|
@@ -284,6 +284,7 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 | 65 | Yukawa tensor gradient optimization | Y(v_H) linear in v_H; build 3&times;3&times;27 Yukawa tensor (rank **6**, 3 degenerate pairs = 3 generations); gradient descent over full C<sup>27</sup>: CKM error **0.019** (from 0.057), PMNS error **0.006** (from 0.038); |V<sub>ub</sub>|=**0.0037** (exp 0.0038, exact!); quark J=&minus;2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>) | [THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py](THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py) |
 | 66 | Unitarity-corrected CKM + full joint optimization | PDG magnitudes V_cs=0.987 and V_tb=1.013 violate unitarity; correcting to unitary target drops Pillar 65 error from 0.019&rarr;**0.0032** (5.9&times; improvement); joint optimization over 129 real params (7 active modes per sector + Higgs VEVs) reaches CKM error **0.00255**; V_cs=0.9744 (0.00%!), V_tb=0.9992 (0.00%!), all 9 CKM elements reproduced; all 15 restarts converge to same minimum | [THEORY_PART_CLXXV_FULL_OPTIMIZATION.py](THEORY_PART_CLXXV_FULL_OPTIMIZATION.py) |
 | 67 | W(3,3) Causal-Information Structure | Six interlocking theorems: (T1) 1+12+27=40 exact causal decomposition; (T2) Lovász capacity &theta;(W33)=**10**=dim(Sp(4))=spectral gap, &theta;&middot;&theta;&#773;=40=n; (T3) Monster 3B Heisenberg on F&sub;3&#8313;12=(F&sub;3&#8313;4)&sup3; = three W33 phase spaces = three generations; (T4) sl(3,F3)&sup3; (dim **24**) preserves epsilon-cubic on 27=3&otimes;3&otimes;3 (8/8 invariance verified); (T5) code rate **27/80**, causal diameter=2 (c=QCA propagation speed); (T6) Golay 24-dim Lie algebra: simple, perfect, kill=0, Der=33 (24 inner + **9 outer = generation mixing operators**, CKM/PMNS discrete origin) | [THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py](THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py) |
+| 68 | Fermion mass texture from Z3 grading | H27 decomposes into 9 three-cycles under the Z3 symmetry (no fixed points); exact Yukawa texture selection rule (0/162 violations); form-factor hierarchy up to √15; Golay algebra in pure symplectic normal form with 9 outer derivations as grade-shift mixing operators | [THEORY_PART_CLXXVII_MASS_TEXTURE.py](THEORY_PART_CLXXVII_MASS_TEXTURE.py) |
 
 ---
 
@@ -341,7 +342,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 868 tests, quiet mode
+python -m pytest -q            # 874 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
@@ -468,7 +469,7 @@ W33-Theory/
 │   ├── cycle_space_decompose.py           # Boundary matrix / automorphisms
 │   ├── reconstruct_w33_e8_mapping.py      # Edge-root bijection from seed
 │   └── edge_stabilizers.py               # Stabilizer enumeration
-├── tests/              # 868-test suite (pytest)
+├── tests/              # 874-test suite (pytest)
 │   ├── test_e8_embedding.py               # Core embedding tests
 │   ├── test_cycle_space.py
 │   ├── test_yukawa_sector_assignment.py

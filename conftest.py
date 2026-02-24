@@ -29,12 +29,12 @@ def pytest_ignore_collect(path, config):
     # Only apply this heuristic to Python test files. Scanning the entire repo can be
     # very noisy and slow, and can trigger surprising capture/log issues.
     if not (p.suffix == ".py" and p.name.startswith("test_")):
-        return False
+        return None
 
     try:
         text = p.read_text(encoding="utf-8", errors="ignore")
     except Exception:
-        return False
+        return None
 
     for mod, triggers in _skip_triggers.items():
         if not _optional_modules.get(mod, False):
@@ -45,7 +45,7 @@ def pytest_ignore_collect(path, config):
                     if getattr(config.option, "verbose", 0) > 0:
                         print(f"Skipping {path} (requires {mod})")
                     return True
-    return False
+    return None
 
 
 def main():

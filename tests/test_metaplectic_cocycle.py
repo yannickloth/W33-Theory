@@ -121,3 +121,22 @@ def test_omega_zero_implies_phi_zero():
             if omega(g, d) == 0:
                 assert mu[g] == 0
 
+
+def test_solver_general_prime():
+    """The cocycle solver should work for other odd primes p."""
+    from scripts.metaplectic_cocycle import all_solutions_p
+
+    for p in (5, 7):
+        # identity should give p^2 linear functionals
+        I = np.eye(2, dtype=int)
+        sols = all_solutions_p(I, p)
+        assert len(sols) == p * p
+        # values should be in the correct range
+        for mu in sols:
+            for v, val in mu.items():
+                assert 0 <= val < p
+        # test a nontrivial symplectic matrix mod p
+        A = np.array([[1, 1], [0, 1]], dtype=int) % p
+        sols2 = all_solutions_p(A, p)
+        assert len(sols2) == p * p
+

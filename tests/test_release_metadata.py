@@ -7,10 +7,10 @@ def test_readme_mentions_new_pillars():
 
     zen = json.load(open(".zenodo.json", "r", encoding="utf-8"))
     blob = (zen.get("description", "") or "") + "\n" + (zen.get("notes", "") or "")
-    assert "67 pillars" in blob
-    assert "868 automated tests" in blob
+    assert "68 pillars" in blob
+    assert "874 automated tests" in blob
 
 
-def test_citation_has_67_pillars():
+def test_citation_has_68_pillars():
     txt = open("CITATION.cff", "r", encoding="utf-8").read()
-    assert "868 automated tests" in txt
+    assert "874 automated tests" in txt

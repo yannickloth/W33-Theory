@@ -9,6 +9,13 @@ def test_generic_monomial_lift_reproduces_2m12():
     rep = analyze_11a(compute_monomial_order=False)
     assert rep.get("available") is True
     golay = rep.get("golay", {})
+    # verify that the bridge returned the atlas->code point map ("pi") and that
+    # it is a permutation of 0..11.
+    steiner = rep.get("steiner_design", {})
+    pi_map = steiner.get("atlas_to_code_point_map")
+    assert isinstance(pi_map, list) and len(pi_map) == 12
+    assert sorted(pi_map) == list(range(12))
+
     # pick perms in code coords from earlier bridge output
     perms = []
     if golay.get("m12_generators_in_code_coords"):

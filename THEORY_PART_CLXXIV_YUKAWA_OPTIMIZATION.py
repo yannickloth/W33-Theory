@@ -426,6 +426,19 @@ def main():
     print()
 
     # Save
+    # compute singular values (mass hierarchies) for the final CKM VEVs
+    try:
+        v_up_final = np.array(results['ckm']['v1_re']) + 1j * np.array(results['ckm']['v1_im'])
+        v_dn_final = np.array(results['ckm']['v2_re']) + 1j * np.array(results['ckm']['v2_im'])
+        v_up_final /= np.linalg.norm(v_up_final)
+        v_dn_final /= np.linalg.norm(v_dn_final)
+        Y_u_final = yukawa_fast(T, v_up_final)
+        Y_d_final = yukawa_fast(T, v_dn_final)
+        sv_u_final = np.linalg.svd(Y_u_final, compute_uv=False).tolist()
+        sv_d_final = np.linalg.svd(Y_d_final, compute_uv=False).tolist()
+    except Exception:
+        sv_u_final = sv_d_final = None
+
     output = {
         "pillar": 65,
         "title": "Yukawa Tensor Gradient Optimization",
@@ -441,6 +454,10 @@ def main():
         "improved_pmns": best_pmns < base_pmns_err,
         "ckm": results.get("ckm", {}),
         "pmns": results.get("pmns", {}),
+        "ckm_singular_values": {
+            "up": sv_u_final,
+            "down": sv_d_final,
+        },
     }
     os.makedirs("data", exist_ok=True)
     with open("data/w33_yukawa_optimization.json", "w") as f:
