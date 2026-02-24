@@ -38,6 +38,14 @@ Additional sources (Vogel / Jacobi / modular-function identities):
 - https://www.math.rwth-aachen.de/~Thomas.Breuer/ctbllib/ctbltoc/data/5%5E1%2B6.2J2.html — CTblLib: `5^{1+6}.2J2`
   - The **5B centralizer** has order 94,500,000,000 = 5^{1+6}·|2J2|, giving cofactor 18,900,000,000
     and justifying the `5^6:2J2` cofactor label used in the pipeline.
+- https://www.math.rwth-aachen.de/~Thomas.Breuer/ctbllib/ctbltoc/data/3%5E1%2B12.2Suz.html — CTblLib: `3^{1+12}.2Suz`
+  - Documents the **3B centralizer shape** `3^{1+12}.2Suz`, used in
+    `scripts/w33_monster_3b_s12_sl27_bridge.py` to connect Monster’s non-Fricke 3B
+    class to the `s12` / Heisenberg / `sl(27)` closure (3^6−1 = 728).
+- https://atlas.math.rwth-aachen.de/Atlas/v3/spor/M/ — ATLAS (RWTH): Monster group page
+  - Lists prime-order class centralizers (including `3B`) and maximal subgroups
+    (including the normalizer `3^{1+12}.2Suz.2`), providing an independent
+    cross-check for the numeric identity |C_M(3B)| = 3^{1+12}·|2Suz|.
 - https://arxiv.org/abs/2601.01612 — Isaev (2026), *Vogel universality and beyond*
   - Universal / Vogel-parameterized projector formulas may be a clean lens for the
     `s12` → `sl(27)` resonance (dimension 728) and for classifying which
