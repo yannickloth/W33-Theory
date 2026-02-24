@@ -18,6 +18,11 @@ def test_some_nontrivial():
     for A in nonid:
         mu = compute_phase(A)
         assert mu is not None
+        # check gauge-formula holds for returned phase
+        from scripts.grade_weil_phase import gauge_f, apply_matrix
+        for g, val in mu.items():
+            expect = (gauge_f(apply_matrix(A, g)) - gauge_f(g)) % 3
+            assert int(val) == int(expect)
         if any(int(v) % 3 != 0 for v in mu.values()):
             any_nontrivial = True
             break
