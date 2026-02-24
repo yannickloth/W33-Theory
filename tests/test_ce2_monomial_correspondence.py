@@ -16,6 +16,10 @@ def test_ce2_nontrivial_when_monolift_exists():
     # search among factories
     for cls, factory in _MONOMIAL_FACTORIES.items():
         perms = factory()
+        # ensure permutations are same dimension as code words
+        if not perms or any(len(p) != len(generator_rows[0]) for p in perms):
+            # not a 12-point factory, skip (e.g. dummy test entry)
+            continue
         lifts = find_sign_lifts_for_group(perms, generator_rows, code_set)
         if lifts is None:
             continue
