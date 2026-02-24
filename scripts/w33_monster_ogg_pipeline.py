@@ -325,6 +325,17 @@ def analyze(
                 best_mass = mass
                 best_label = label
 
+        supported_classes_by_pair: dict[str, list[str]] = {}
+        supported_classes_set: set[str] = set()
+        for info in pair_list:
+            label = _pair_label(info)
+            phits = pair_prime_hits.get((label, int(p)), [])
+            cls_list = [h.class_name for h in phits]
+            if cls_list:
+                supported_classes_by_pair[str(label)] = list(cls_list)
+                supported_classes_set.update(cls_list)
+        supported_classes = sorted(supported_classes_set)
+
         hits = pair_prime_hits.get((best_label or "", int(p)), [])
         classes = [h.class_name for h in hits]
         hit_payload = [
@@ -368,6 +379,8 @@ def analyze(
                 },
                 "hits": hit_payload,
                 "classes": classes,
+                "supported_classes": supported_classes,
+                "supported_classes_by_pair": supported_classes_by_pair,
                 "replicability": cls_results,
                 "mass_by_pair": mass_by_pair,
             }
@@ -392,7 +405,7 @@ def analyze(
             for rec in results:
                 if not isinstance(rec, dict):
                     continue
-                classes = rec.get("classes", [])
+                classes = rec.get("supported_classes", rec.get("classes", []))
                 if not isinstance(classes, list):
                     continue
                 rung_info: dict[str, Any] = {}
@@ -464,7 +477,7 @@ def analyze(
                 for rec in results:
                     if not isinstance(rec, dict):
                         continue
-                    classes = rec.get("classes", [])
+                    classes = rec.get("supported_classes", rec.get("classes", []))
                     if not isinstance(classes, list):
                         continue
                     attached: dict[str, Any] = {}

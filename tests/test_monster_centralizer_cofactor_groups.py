@@ -17,6 +17,9 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
     assert classes["17A"]["cofactor_order"] == 168
     assert classes["17A"]["cofactor_group_recognized"] == "PSL2(7)"
 
+    assert classes["7B"]["cofactor_order"] == 12101040
+    assert classes["7B"]["cofactor_group_recognized"] == "7^4:2A7"
+
     assert classes["19A"]["cofactor_order"] == 60
     assert classes["19A"]["cofactor_group_recognized"] == "A5"
 

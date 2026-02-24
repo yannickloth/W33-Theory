@@ -53,6 +53,9 @@ def _recognize_small_group_by_order(order: int) -> str | None:
     by_order = {
         5616: "PSL3(3)",  # SL3(3) is centerless
         168: "PSL2(7)",  # ≅ GL3(2)
+        # 7B centralizer in the Monster has shape 7^{1+4}.2A7 (CTblLib),
+        # so the cofactor magnitude |C_M(7B)|/7 = 7^4·|2A7| = 12,101,040.
+        12_101_040: "7^4:2A7",
         60: "A5",  # ≅ PSL2(5)
         24: "S4",
         6: "S3",

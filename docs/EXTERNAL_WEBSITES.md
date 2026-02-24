@@ -28,6 +28,10 @@ If you want, I can:
   planes used on those pages for direct visual comparison.
 
 Additional sources (Vogel / Jacobi / modular-function identities):
+- https://www.math.rwth-aachen.de/~Thomas.Breuer/ctbllib/ctbltoc/data/7%5E1%2B4.2A7.html — CTblLib: `7^{1+4}.2A7`
+  - Listed as the **7B centralizer in the Monster** (order 84,707,280), matching our ATLAS-derived
+    cofactor magnitude |C_M(7B)|/7 = 12,101,040 and justifying the recognition label `7^4:2A7`
+    in `scripts/w33_monster_centralizer_cofactor_groups.py`.
 - https://arxiv.org/abs/2601.01612 — Isaev (2026), *Vogel universality and beyond*
   - Universal / Vogel-parameterized projector formulas may be a clean lens for the
     `s12` → `sl(27)` resonance (dimension 728) and for classifying which
