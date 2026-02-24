@@ -80,7 +80,11 @@ def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
     import json
     from pathlib import Path
 
-    from scripts.ce2_global_cocycle import predict_ce2_uv
+    from scripts.ce2_global_cocycle import (
+        predict_ce2_uv,
+        transport_ce2_uv_under_e6_monomial,
+    )
+    from scripts.e6_hessian_tritangents import hessian_monomial_generators
 
     payload = json.loads(
         Path("committed_artifacts/ce2_sparse_local_solutions.json").read_text(
@@ -113,3 +117,26 @@ def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
         V_exp = sorted([(int(i), str(s)) for i, s in V_expected])
         assert U_pred == U_exp
         assert V_pred == V_exp
+
+    # Equivariance: the CE2 law is a genuine monomial cocycle for the 648-group
+    # action once the diagonal phase is applied to both inputs and output.
+    gens = hessian_monomial_generators()
+    assert set(gens.keys()) == {"T10", "T01", "Z", "S", "T"}
+
+    sample = entries[0]
+    a0 = tuple(int(x) for x in sample["a"])
+    b0 = tuple(int(x) for x in sample["b"])
+    c0 = tuple(int(x) for x in sample["c"])
+    uv0 = predict_ce2_uv(a0, b0, c0)
+    assert uv0 is not None
+
+    for perm, eps in gens.values():
+        a1 = (int(perm[int(a0[0])]), int(a0[1]))
+        b1 = (int(perm[int(b0[0])]), int(b0[1]))
+        c1 = (int(perm[int(c0[0])]), int(c0[1]))
+        uv1 = predict_ce2_uv(a1, b1, c1)
+        assert uv1 is not None
+        transported = transport_ce2_uv_under_e6_monomial(
+            uv0, a=a0, b=b0, c=c0, perm=perm, eps=eps
+        )
+        assert transported == uv1

@@ -23,6 +23,7 @@ import json
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Tuple
 
@@ -248,6 +249,201 @@ def _perm_symplectic(
         u_new = _apply_matrix(A, (u1, u2))
         out.append(int(vec_to_e6id[(u_new[0], u_new[1], z)]))
     return tuple(out)
+
+
+@lru_cache(maxsize=1)
+def _signed_cubic_triad_sign_data() -> tuple[list[Triad], list[int], dict[Triad, int]]:
+    """Return (triads, signs, sign_by_triad) for the canonical E6 cubic."""
+    path = ART / "canonical_su3_gauge_and_cubic.json"
+    data = _load_json(path)
+    raw_triads = data.get("triads", [])
+    raw_d = (data.get("solution") or {}).get("d_triples", [])
+    if not (isinstance(raw_triads, list) and isinstance(raw_d, list)):
+        raise ValueError("unexpected signed-cubic JSON payload")
+    if len(raw_triads) != 45 or len(raw_d) != 45:
+        raise ValueError("expected 45 signed cubic triads")
+
+    triads: list[Triad] = []
+    signs: list[int] = []
+    for t, obj in zip(raw_triads, raw_d, strict=True):
+        if not (isinstance(t, list) and len(t) == 3 and isinstance(obj, dict)):
+            raise ValueError("unexpected signed-cubic triad entry")
+        tri = _norm_triad(t)
+        s = int(obj.get("sign", 0) or 0)
+        if s not in (-1, 1):
+            raise ValueError(f"unexpected cubic triad sign: {s}")
+        triads.append(tri)
+        signs.append(int(s))
+
+    sign_by = {t: int(s) for t, s in zip(triads, signs, strict=True)}
+    if len(triads) != 45 or len(sign_by) != 45:
+        raise ValueError("unexpected signed-cubic triad duplication")
+    return triads, signs, sign_by
+
+
+def _gf2_solve_min_weight(*, rows: list[int], rhs: list[int], n_vars: int) -> int | None:
+    """Solve A x = b over GF(2), choosing the minimum-weight solution.
+
+    Input rows are bitmasks of length ``n_vars`` (least-significant bit is var 0).
+    Returns a bitmask encoding a solution x with the fewest 1-bits (ties broken
+    by the smallest integer mask), or None if inconsistent.
+    """
+    if len(rows) != len(rhs):
+        raise ValueError("rows/rhs length mismatch")
+    if n_vars <= 0 or n_vars > 63:
+        raise ValueError("unsupported n_vars for bitmask solver")
+
+    m = len(rows)
+    A = [int(r) for r in rows]
+    b = [int(x) & 1 for x in rhs]
+
+    pivot_cols: list[int] = []
+
+    row = 0
+    for col in range(n_vars):
+        bit = 1 << int(col)
+        pivot = None
+        for r in range(row, m):
+            if A[r] & bit:
+                pivot = r
+                break
+        if pivot is None:
+            continue
+        if pivot != row:
+            A[row], A[pivot] = A[pivot], A[row]
+            b[row], b[pivot] = b[pivot], b[row]
+
+        # eliminate this column in all other rows (RREF)
+        for r in range(m):
+            if r == row:
+                continue
+            if A[r] & bit:
+                A[r] ^= A[row]
+                b[r] ^= b[row]
+
+        pivot_cols.append(int(col))
+        row += 1
+        if row == m:
+            break
+
+    # inconsistency check: 0 = 1 rows
+    for r in range(m):
+        if A[r] == 0 and b[r] == 1:
+            return None
+
+    pivot_set = set(pivot_cols)
+    free_cols = [c for c in range(n_vars) if c not in pivot_set]
+
+    # particular solution with all free vars = 0
+    x0 = 0
+    for r, col in enumerate(pivot_cols):
+        if b[r] & 1:
+            x0 |= 1 << int(col)
+
+    # After elimination, pivot rows live in A[0:rank]; snapshot them now.
+    pivot_row_masks = [int(A[r]) for r in range(len(pivot_cols))]
+
+    # basis vectors for each free variable (homogeneous solutions)
+    basis: list[int] = []
+    for fc in free_cols:
+        v = 1 << int(fc)
+        for prow_mask, pcol in zip(pivot_row_masks, pivot_cols, strict=True):
+            if prow_mask & (1 << int(fc)):
+                v |= 1 << int(pcol)
+        basis.append(int(v))
+
+    # brute-force all 2^d solutions (d is small here) and choose minimal weight
+    best = x0
+    best_w = int(best).bit_count()
+    for mask in range(1 << len(basis)):
+        x = x0
+        for i, v in enumerate(basis):
+            if (mask >> i) & 1:
+                x ^= int(v)
+        w = int(x).bit_count()
+        if w < best_w or (w == best_w and int(x) < int(best)):
+            best = int(x)
+            best_w = int(w)
+    return int(best)
+
+
+@lru_cache(maxsize=2048)
+def signed_cubic_sign_lift_for_perm(perm: Perm) -> Tuple[int, ...]:
+    """Return a {±1}-valued diagonal sign lift for a permutation of H27.
+
+    The canonical E6 cubic invariant is stored as 45 signed triads (i,j,k,±1).
+    Many natural permutations preserve the *support* triads but flip some signs.
+
+    For a given permutation ``perm`` on {0..26}, we solve for a diagonal sign
+    vector eps[i]∈{+1,-1} such that the monomial map
+
+        x_j ↦ eps[j] · x_{perm^{-1}(j)}
+
+    preserves the signed cubic exactly.
+
+    Gauge: eps[0] is fixed to +1, which is sufficient for deterministic lifting.
+    """
+    if len(perm) != 27:
+        raise ValueError("expected perm of length 27")
+    if sorted(perm) != list(range(27)):
+        raise ValueError("expected perm to be a permutation of 0..26")
+
+    triads, signs, sign_by = _signed_cubic_triad_sign_data()
+    rows: list[int] = []
+    rhs: list[int] = []
+    for (i, j, k), s in zip(triads, signs, strict=True):
+        img = tuple(sorted((perm[i], perm[j], perm[k])))
+        s_img = int(sign_by[img])
+        ratio = int(s_img * s)  # division in {±1} equals multiplication
+        b = 0 if ratio == 1 else 1
+        mask = (1 << int(perm[i])) | (1 << int(perm[j])) | (1 << int(perm[k]))
+        rows.append(int(mask))
+        rhs.append(int(b))
+
+    # gauge: eps[0] = +1  <=>  e_0 = 0 in GF(2)
+    rows.append(1 << 0)
+    rhs.append(0)
+
+    sol = _gf2_solve_min_weight(rows=rows, rhs=rhs, n_vars=27)
+    if sol is None:
+        raise ValueError("no signed-cubic sign lift exists for this permutation")
+
+    eps = tuple((-1 if ((sol >> i) & 1) else 1) for i in range(27))
+
+    # Sanity: verify triad sign transport identity with the solved eps.
+    for (i, j, k), s in zip(triads, signs, strict=True):
+        img = tuple(sorted((perm[i], perm[j], perm[k])))
+        s_img = int(sign_by[img])
+        prod = int(eps[perm[i]] * eps[perm[j]] * eps[perm[k]])
+        if int(s_img) != int(s) * prod:
+            raise AssertionError("signed-cubic lift verification failed")
+
+    return eps
+
+
+@lru_cache(maxsize=1)
+def hessian_heisenberg_generators() -> Dict[str, Perm]:
+    """Return canonical generators of Heisenberg⋊SL(2,3) as permutations of H27."""
+    model = load_heisenberg_model()
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps(model)
+
+    gen_T10 = _perm_translation(e6id_to_vec, vec_to_e6id, (1, 0), 0)
+    gen_T01 = _perm_translation(e6id_to_vec, vec_to_e6id, (0, 1), 0)
+    gen_Z = _perm_translation(e6id_to_vec, vec_to_e6id, (0, 0), 1)
+
+    S: Mat2 = ((0, 2), (1, 0))
+    T: Mat2 = ((1, 1), (0, 1))
+    gen_S = _perm_symplectic(e6id_to_vec, vec_to_e6id, S)
+    gen_T = _perm_symplectic(e6id_to_vec, vec_to_e6id, T)
+
+    return {"T10": gen_T10, "T01": gen_T01, "Z": gen_Z, "S": gen_S, "T": gen_T}
+
+
+@lru_cache(maxsize=1)
+def hessian_monomial_generators() -> Dict[str, Tuple[Perm, Tuple[int, ...]]]:
+    """Return canonical lifted generators (perm, eps) preserving the *signed* cubic."""
+    gens = hessian_heisenberg_generators()
+    return {k: (p, signed_cubic_sign_lift_for_perm(p)) for k, p in gens.items()}
 
 
 def analyze_hessian_heisenberg_group(

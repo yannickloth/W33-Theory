@@ -312,6 +312,32 @@ def main() -> None:
     assert sorted(V_nz) == sorted(pred_V_nz)
     print("  OK: Global Heisenberg law reproduces CE2 sparse entry exactly")
 
+    # ---------------------------------------------------------------------
+    # §4. Hessian 648-group: the diagonal "missing cocycle" is the same phase
+    # ---------------------------------------------------------------------
+    #
+    # The 27 E6 ids carry a finite Heisenberg⋊SL(2,3) (=648) symmetry that also
+    # preserves the signed E6 cubic.  The important point for the L∞/CE2 story
+    # is that CE2 is *not* grade-only: the correct transport requires a diagonal
+    # phase on the inputs (g1/g2 basis vectors) in addition to conjugating the
+    # output (E6 matrix unit / sl3 unit).  This is exactly the "missing cocycle"
+    # phenomenon, now expressed concretely.
+    from ce2_global_cocycle import transport_ce2_uv_under_e6_monomial
+    from e6_hessian_tritangents import hessian_monomial_generators
+
+    gens = hessian_monomial_generators()
+    for name, (perm, eps) in gens.items():
+        a2 = (int(perm[int(a_pair[0])]), int(a_pair[1]))
+        b2 = (int(perm[int(b_pair[0])]), int(b_pair[1]))
+        c2 = (int(perm[int(c_pair[0])]), int(c_pair[1]))
+        pred2 = predict_ce2_uv(a2, b2, c2)
+        assert pred2 is not None
+        transported = transport_ce2_uv_under_e6_monomial(
+            pred, a=a_pair, b=b_pair, c=c_pair, perm=perm, eps=eps
+        )
+        assert transported == pred2
+        print(f"  OK: Hessian transport ({name}) matches CE2 global law")
+
     # Demonstrate that the same correction is produced *without attaching* any
     # per-triple alpha callable, by enabling the global predictor in the L-infty
     # extension itself.

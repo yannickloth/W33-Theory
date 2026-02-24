@@ -767,3 +767,68 @@ def predict_ce2_uv(
     if uv is not None:
         return uv
     return predict_simple_family_uv(a, b, c)
+
+
+def transport_ce2_uv_under_e6_monomial(
+    uv: CE2SparseUV,
+    *,
+    a: tuple[int, int],
+    b: tuple[int, int],
+    c: tuple[int, int],
+    perm: tuple[int, ...],
+    eps: tuple[int, ...],
+) -> CE2SparseUV:
+    """Transport a sparse CE2 correction under a monomial 27-rep action.
+
+    Conventions:
+      - The monomial action on E6 27-basis vectors is
+
+            e_i  ↦  eps[perm[i]] · e_{perm[i]}    with eps ∈ {±1}^{27}.
+
+        (This matches the signed-cubic lift in `scripts/e6_hessian_tritangents.py`.)
+
+      - The induced action on E6 matrix units is conjugation by the monomial
+        matrix, so for a flattened e6 entry E_{r,c} we have
+
+            E_{r,c} ↦ eps[perm[r]]·eps[perm[c]] · E_{perm[r], perm[c]}.
+
+      - The CE2 payload stores U=alpha(b,c) and V=alpha(a,c); by bilinearity,
+        transporting the *inputs* contributes an additional factor
+        eps[perm[b_i]]·eps[perm[c_i]] on U and eps[perm[a_i]]·eps[perm[c_i]] on V.
+
+    This function is a compact way to make the "missing cocycle" explicit:
+    output conjugation alone does not match the transported CE2 law unless the
+    input phases are included.
+    """
+    if len(perm) != 27 or len(eps) != 27:
+        raise ValueError("expected (perm, eps) on 27 points")
+
+    a_i, _a_j = int(a[0]), int(a[1])
+    b_i, _b_j = int(b[0]), int(b[1])
+    c_i, _c_j = int(c[0]), int(c[1])
+
+    phase_a = int(eps[int(perm[int(a_i)])])
+    phase_b = int(eps[int(perm[int(b_i)])])
+    phase_c = int(eps[int(perm[int(c_i)])])
+
+    def _transport_index(idx: int, coeff: Fraction) -> tuple[int, Fraction]:
+        idx = int(idx)
+        if idx < 27 * 27:
+            r = int(idx) // 27
+            col = int(idx) % 27
+            r2 = int(perm[int(r)])
+            c2 = int(perm[int(col)])
+            idx2 = int(r2) * 27 + int(c2)
+            coeff2 = coeff * int(eps[r2]) * int(eps[c2])
+            return int(idx2), coeff2
+        return int(idx), coeff
+
+    U_conj = [_transport_index(i, v) for i, v in uv.U]
+    V_conj = [_transport_index(i, v) for i, v in uv.V]
+
+    U_out = [(i, v * int(phase_b) * int(phase_c)) for i, v in U_conj]
+    V_out = [(i, v * int(phase_a) * int(phase_c)) for i, v in V_conj]
+
+    U_out.sort(key=lambda kv: kv[0])
+    V_out.sort(key=lambda kv: kv[0])
+    return CE2SparseUV(U=U_out, V=V_out)
