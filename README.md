@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **834 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **858 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -341,7 +341,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 834 tests, quiet mode
+python -m pytest -q            # 858 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 

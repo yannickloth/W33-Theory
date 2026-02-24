@@ -39,6 +39,10 @@ Thumbs.db
 # Jupyter
 .ipynb_checkpoints/
 
+# Local scratch scripts
+scripts/explore_sp.py
+scripts/sp_phase_monomial_correlation.py
+
 # Testing
 .pytest_cache/
 .coverage
