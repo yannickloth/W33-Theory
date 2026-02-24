@@ -12,9 +12,9 @@ Example input format (JSON):
     "another": [ [0,1,2], [3,4,5] ]       # etc.
 }
 
-If the value is a list of lists of integers of length *n*, it is treated as
-cycle notation and converted to a permutation of length *n* using the helper
-from derive_m12_p144_suborbits.
+Each element in the list may be either:
+  - an explicit permutation list of length *n* (0-based or 1-based), or
+  - a single cycle written as a list of integers (0-based or 1-based).
 
 This tool is intended to make it easy to test new ladder rungs by supplying
 candidate permutation generators without editing other scripts.
@@ -24,8 +24,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
+
+# ensure top-level workspace root is on sys.path so we can import other scripts
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 import numpy as np
 
@@ -40,18 +46,51 @@ Perm = Tuple[int, ...]
 
 
 def parse_value(val: Any) -> List[Perm]:
-    """Interpret value from JSON as a list of permutations."""
+    """Interpret value from JSON as a list of permutations.
+
+    Each element of ``val`` may be either a full permutation (tuple of length
+    *n* containing all values 0..n-1 or 1..n) or a single cycle written as a
+    sequence of integers.  The latter form is converted to a full permutation of
+    size *n* by inferring the degree from the maximum index. Indices may be
+    0-based or 1-based; cycle conversion uses :func:`perm_from_cycles`, which
+    expects 1-based indices.
+    """
     if not isinstance(val, list):
         raise ValueError("expected list of permutations")
+
+    # Determine degree and indexing convention. If 0 appears anywhere, treat
+    # data as 0-based (0..n-1); otherwise treat it as 1-based (1..n).
+    max_idx = -1
+    has_zero = False
+    for item in val:
+        if isinstance(item, list):
+            for x in item:
+                if isinstance(x, int) and x > max_idx:
+                    max_idx = x
+                if x == 0:
+                    has_zero = True
+    if max_idx < 0:
+        raise ValueError("no integers found in permutation data")
+    base = 0 if has_zero else 1
+    n = max_idx + (1 if base == 0 else 0)
+
     perms: List[Perm] = []
     for item in val:
-        if isinstance(item, list) and item and all(isinstance(x, int) for x in item):
-            # ambiguous: either cycle or full perm; decide by length relative to other items
-            # if length equals n for some n, treat as explicit perm
-            # else treat as single cycle
-            perms.append(tuple(item))
-        else:
+        if not (isinstance(item, list) and all(isinstance(x, int) for x in item)):
             raise ValueError(f"cannot parse permutation item: {item}")
+        if len(item) == n:
+            # explicit permutation: convert to 0-based if necessary
+            perm = tuple(int(x) - 1 for x in item) if base == 1 else tuple(int(x) for x in item)
+            if sorted(perm) != list(range(n)):
+                raise ValueError(f"not a permutation of 0..{n-1}: {item}")
+            perms.append(perm)
+        else:
+            # treat as cycle notation
+            cyc = [int(x) + 1 for x in item] if base == 0 else [int(x) for x in item]
+            perm = perm_from_cycles(n, [cyc])
+            if sorted(perm) != list(range(n)):
+                raise ValueError(f"cycle conversion did not produce a permutation: {item}")
+            perms.append(perm)
     return perms
 
 
