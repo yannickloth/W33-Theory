@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from tools.s12_universal_algebra import ternary_golay_generator_matrix
 
 # for grade-plane automorphisms
 try:
@@ -883,6 +884,46 @@ def symplectic_automorphisms(alg: GolayLieAlgebra) -> list[list[int]]:
         if _verify_permutation_is_aut(alg, perm):
             perms.append(perm)
     return perms
+
+
+def basis_perm_to_code_perm(alg: GolayLieAlgebra, perm24: list[int]) -> list[int] | None:
+    """Convert a 24-element basis permutation into a 12-point code permutation.
+
+    The Golay algebra basis elements correspond to 24 codewords of weight 6
+    in the ternary Golay code.  Each of the 12 coordinates appears in exactly
+    12 of those supports; the relationship is encoded by ``supports`` below.
+    A 24-permutation induces a permutation of the twelve points by tracking
+    how these incidence sets move.
+
+    If ``perm24`` does not respect the point-incidence structure, ``None``
+    is returned.
+    """
+    # build support incidence only once for this algebra
+    gen = ternary_golay_generator_matrix()
+    G = np.array(gen, dtype=int) % 3
+    supports = [
+        {i for i, x in enumerate(((np.array(rep) % 3) @ G) % 3) if x != 0}
+        for rep in alg.reps
+    ]
+    # compute original incidence sets for each code point
+    inc = [set(idx for idx, s in enumerate(supports) if i in s) for i in range(12)]
+
+    # apply basis permutation
+    new_inc = [ {perm24[idx] for idx in incpt} for incpt in inc ]
+
+    # invert by matching sets
+    mapping: dict[int, int] = {}
+    for i, s in enumerate(new_inc):
+        for j, orig in enumerate(inc):
+            if s == orig:
+                mapping[i] = j
+                break
+        else:
+            return None
+    # ensure bijection
+    if len(mapping) != 12 or len(set(mapping.values())) != 12:
+        return None
+    return [mapping[i] for i in range(12)]
 
 
 def analyze(*, compute_derivations: bool = True) -> dict[str, Any]:

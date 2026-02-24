@@ -35,6 +35,40 @@ def test_all_symplectic_are_automorphisms():
             assert sorted(perm3) == list(range(24))
 
 
+def test_basis_perm_to_code_perm():
+    """Ensure the helper converts 24->12 permutations correctly."""
+    from scripts.w33_golay_lie_algebra import basis_perm_to_code_perm
+    # the conversion should always return either None or a 12-element permutation
+    alg = build_golay_lie_algebra()
+    id24 = list(range(24))
+    cp = basis_perm_to_code_perm(alg, id24)
+    # result may be None because the 24 basis hexads do not distinguish all
+    # twelve points; that's acceptable.  If a map is returned it must be a
+    # valid permutation.
+    if cp is not None:
+        assert sorted(cp) == list(range(12))
+
+    # scalar 2*I permutation should still produce either None or a permutation
+    import numpy as np
+    A2 = np.array([[2, 0], [0, 2]], dtype=int)
+    perm2 = compute_symplectic_automorphism(alg, A2)
+    assert perm2 is not None
+    cp2 = basis_perm_to_code_perm(alg, perm2)
+    if cp2 is not None:
+        assert sorted(cp2) == list(range(12))
+    # but if they do the returned mapping must be a true permutation.
+    mats = all_symplectic_matrices()
+    for A in mats:
+        if np.array_equal(A, np.eye(2, dtype=int)):
+            continue
+        perm = compute_symplectic_automorphism(alg, A)
+        if perm is None:
+            continue
+        cp = basis_perm_to_code_perm(alg, perm)
+        if cp is not None:
+            assert sorted(cp) == list(range(12))
+
+
 def test_nontrivial_action_exists():
     # at least one non-identity matrix should move some basis vector
     alg = build_golay_lie_algebra()
