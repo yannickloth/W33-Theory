@@ -67,12 +67,43 @@ def compute_inner_aut_group(limit: Optional[int] = None) -> List[np.ndarray]:
 
 
 def permutation_matrix(perm: Iterable[int]) -> np.ndarray:
-    """Convert a permutation of {0..23} into a 24×24 permutation matrix."""
+    """Convert a permutation of {0..23} into a 24x24 permutation matrix."""
     P = np.zeros((24, 24), dtype=int)
     for i, j in enumerate(perm):
         P[int(j), int(i)] = 1
     return P
 
+
+def symplectic_conjugates_inner_group(limit: Optional[int] = 5000) -> bool:
+    """Heuristic check: a symplectic grade map normalizes the generated subgroup.
+
+    This constructs the inner subgroup up to ``limit`` elements and tests
+    membership after conjugation by one nontrivial symplectic basis permutation.
+    If it returns ``False`` the result may be inconclusive (the truncated group
+    may simply miss conjugates).
+    """
+    try:
+        from scripts.w33_golay_lie_algebra import (
+            build_golay_lie_algebra,
+            symplectic_aut_permutation,
+        )
+        from scripts.grade_weil_phase import all_symplectic_matrices
+    except ImportError:
+        return False
+    alg = build_golay_lie_algebra()
+    A0 = None
+    for A in all_symplectic_matrices():
+        if not np.array_equal(A, np.eye(2, dtype=int)):
+            A0 = np.asarray(A, dtype=np.int64) % 3
+            break
+    if A0 is None:
+        return False
+    perm = symplectic_aut_permutation(alg, A0)
+    if perm is None:
+        return False
+    P = permutation_matrix(perm)
+    G = compute_inner_aut_group(limit=limit)
+    return check_conjugation_stability(G, P)
 
 def check_conjugation_stability(
     group: Iterable[np.ndarray], P: np.ndarray
@@ -82,10 +113,59 @@ def check_conjugation_stability(
     ``group`` should be a list of matrices; membership is checked by a simple
     byte-string set.
     """
-    seen = {g.tobytes() for g in group}
+    seen = {np.asarray(g, dtype=np.int64).tobytes() for g in group}
+    P = np.asarray(P, dtype=np.int64) % 3
+    # Permutation matrices satisfy P^{-1} = P^T, so avoid float inverses.
+    P_inv = P.T.copy() % 3
     for g in group:
-        h = (P.dot(g).dot(np.linalg.inv(P)) % 3).astype(np.int64)
+        g = np.asarray(g, dtype=np.int64) % 3
+        h = (P @ g @ P_inv) % 3
         if h.tobytes() not in seen:
+            return False
+    return True
+
+
+def symplectic_conjugates_transvection_generators() -> bool:
+    """Return True if a symplectic basis-permutation conjugates T_i as expected.
+
+    If P is a Lie automorphism that permutes the monomial basis (our symplectic
+    grade permutations do), then it should transport inner derivations by:
+
+        P ad(e_i) P^{-1} = ad(P e_i) = ad(e_{perm[i]}).
+
+    For the transvection candidates T_i = I + ad(e_i) mod 3 this implies:
+
+        P T_i P^{-1} = T_{perm[i]}.
+    """
+    from scripts.grade_weil_phase import all_symplectic_matrices
+    from scripts.w33_golay_lie_algebra import (
+        build_golay_lie_algebra,
+        _ad_matrices,
+        symplectic_aut_permutation,
+    )
+
+    alg = build_golay_lie_algebra()
+    ad = _ad_matrices(alg)
+    I = np.eye(24, dtype=np.int64) % 3
+    T = [(I + np.asarray(Ai, dtype=np.int64)) % 3 for Ai in ad]
+
+    A0 = None
+    for A in all_symplectic_matrices():
+        if not np.array_equal(A, np.eye(2, dtype=int)):
+            A0 = np.asarray(A, dtype=np.int64) % 3
+            break
+    if A0 is None:
+        return False
+
+    perm = symplectic_aut_permutation(alg, A0)
+    if perm is None:
+        return False
+    P = permutation_matrix(perm).astype(np.int64) % 3
+    P_inv = P.T.copy() % 3
+    for i in range(24):
+        lhs = (P @ T[i] @ P_inv) % 3
+        rhs = T[int(perm[i])]
+        if not np.array_equal(lhs, rhs):
             return False
     return True
 
@@ -94,7 +174,7 @@ def main() -> None:
     """Quick command‑line driver for exploring the inner automorphism group."""
     import time
     from scripts.grade_weil_phase import all_symplectic_matrices
-    from scripts.w33_golay_lie_algebra import symplectic_aut_permutation
+    from scripts.w33_golay_lie_algebra import build_golay_lie_algebra, symplectic_aut_permutation
 
     t0 = time.time()
     print("building inner automorphism group (limit=unbounded)...")
@@ -110,6 +190,8 @@ def main() -> None:
         P = permutation_matrix(perm)
         print("conjugation by first symplectic perm preserves group?", check_conjugation_stability(G, P))
 
+    print("symplectic conjugates transvection generators?", symplectic_conjugates_transvection_generators())
+    print("symplectic conjugates inner group? (heuristic, limit=5000)", symplectic_conjugates_inner_group())
     print("done")
 
 

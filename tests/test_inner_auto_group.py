@@ -18,3 +18,9 @@ def test_inner_group_growth():
     import numpy as np
     I = np.eye(24, dtype=int)
     assert any(np.array_equal(M, I) for M in G)
+
+
+def test_symplectic_conjugates_transvection_generators():
+    from scripts.inner_auto_group import symplectic_conjugates_transvection_generators
+
+    assert symplectic_conjugates_transvection_generators() is True
