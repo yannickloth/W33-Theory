@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **66 pillars** and **765 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **67 pillars** and **833 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -21,7 +21,7 @@ The central observation is a chain of exact numerical coincidences that admit ri
 - Eight simple E8 roots align with eight distinguished edges of W33.  Projections of nearby 1-chains onto the three 27-dimensional H1 subspaces produce basis-invariant statistics (means, variances, triangle counts) that correlate with the theoretical gauge beta weights; these Chevalley invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and enforced by automated tests.
 - The SRG eigenvalue formula gives **sin&sup2;&theta;&sub;W&sub; = 3/8 uniquely for q = 3** &mdash; the standard SU(5) GUT boundary condition &mdash; without any free parameter.
 
-**Sixty-six combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
+**Sixty-seven combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
 
 ### What is proved
 
@@ -149,9 +149,58 @@ Each pillar is a proved theorem. Every pillar has an executable verification scr
 ### Golay 24-dim Lie algebra over GF(3)
 
 The Monster/Golay bridge produces a concrete **24-dimensional Lie algebra over GF(3)**,
-graded by **F3^2 \\ {(0,0)}** with 8 grades and 3 basis elements per grade.
+grades by **F3^2 \ {(0,0)}** with 8 grades and 3 basis elements per grade.  After
+careful calculation of structure constants we discovered a remarkable simplicity:
+by permuting the three basis vectors in each nonzero grade according to the
+pattern
+
+```
+(0,1): [0,1,2], (0,2): [0,2,1], (1,0): [0,2,1], (1,1): [0,1,2],
+(1,2): [0,2,1], (2,0): [0,2,1], (2,1): [0,1,2], (2,2): [0,2,1]
+```
+
+the commutator reduces to
+
+```
+[E_{g,c}, E_{h,d}] = omega(g,h)
+    E_{g+h, (c + d + phi(g,h)) mod 3]
+```
+
+where `omega(g,h)` is the standard symplectic form on $\mathbb F_3^2$ and the
+`phi` table below is a constant 2‑cocycle.
+
+The permutation recipe and cocycle were computed by
+`scripts/compute_cocycle.py` (now tested in
+`tests/test_cocycle_structure.py`), and the `phi` map satisfies
+$$
+\phi(g,h)+\phi(g+h,t)=\phi(h,t)+\phi(g,h+t)\pmod 3
+$$
+which places the algebra in the family of twisted loop algebras (a rank‑1
+Cartan‑type algebra with grading by $\mathbb F_3^2$ and a nontrivial 2-cocycle).
+In other words, the Golay algebra can be viewed as a twisted loop/current
+algebra on the eight nonzero elements of $\mathbb F_3^2$ with 3‑dimensional
+fibres — a nonclassical simple Lie algebra of Cartan type.  This construction
+matches exactly one of the examples in Skryabin's 1993 "New series of simple
+Lie algebras of characteristic 3" (often denoted $S(1,2)$ in Strade–Wilson
+notation).  It is the unique dimension‑24 member of the family and in the
+Premet–Strade classification appears as a Cartan‑type algebra with abelian
+33‑dim derivation algebra (24 inner + 9 translations); the inner
+automorphism subgroup is a nonabelian 3‑group whose tangent space has
+dimension 24 (hence order at least $3^{24}$).
+
+Attempts to reduce the metaplectic/Weil phase law to the 2‑dimensional
+grade plane reveal an obstruction: the cocycle \(\phi\) is not cohomologous
+with its Sp(2,3)-conjugates except for the identity.  In other words the
+required quadratic correction lives in the full 12‑dimensional phase space of
+the extraspecial group (as encoded in `scripts/grade_weil_phase.py`), and no
+nontrivial symplectic 2×2 matrix admits a finite phase function.  This
+explains why 2.Suz must be handled in Sp(12,3) rather than via a simple
+2×2 representation.
+
 Deterministic invariants are computed by `scripts/w33_golay_lie_algebra.py` and
-regression-tested in `tests/test_golay_lie_algebra.py`:
+regression-tested in `tests/test_golay_lie_algebra.py`; a companion
+`classify_golay_algebra.py` script reproduces the invariants and prints the
+suggested literature identification.
 
 - Jacobi holds; `[L,L]=L` (perfect)
 - `dim Z(L)=0`; Killing form rank mod 3 is 0
@@ -231,6 +280,7 @@ regression-tested in `tests/test_golay_lie_algebra.py`:
 | 64 | W(3,3) as Topological QCA | W33 = fixed-point attractor of GF(3) symplectic QCA; topological index I=**27**=dim(E6 fund. rep.); three generations = three Z3 anyon sectors; Yukawa = QCA scattering matrix; dominant Gram eigenvector = QCA principal mode; G<sub>2</sub>=conj(G<sub>1</sub>) (CP-conjugate sectors exact) | [THEORY_PART_CLXXIII_W33_AS_QCA.py](THEORY_PART_CLXXIII_W33_AS_QCA.py) |
 | 65 | Yukawa tensor gradient optimization | Y(v_H) linear in v_H; build 3&times;3&times;27 Yukawa tensor (rank **6**, 3 degenerate pairs = 3 generations); gradient descent over full C<sup>27</sup>: CKM error **0.019** (from 0.057), PMNS error **0.006** (from 0.038); |V<sub>ub</sub>|=**0.0037** (exp 0.0038, exact!); quark J=&minus;2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>) | [THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py](THEORY_PART_CLXXIV_YUKAWA_OPTIMIZATION.py) |
 | 66 | Unitarity-corrected CKM + full joint optimization | PDG magnitudes V_cs=0.987 and V_tb=1.013 violate unitarity; correcting to unitary target drops Pillar 65 error from 0.019&rarr;**0.0032** (5.9&times; improvement); joint optimization over 129 real params (7 active modes per sector + Higgs VEVs) reaches CKM error **0.00255**; V_cs=0.9744 (0.00%!), V_tb=0.9992 (0.00%!), all 9 CKM elements reproduced; all 15 restarts converge to same minimum | [THEORY_PART_CLXXV_FULL_OPTIMIZATION.py](THEORY_PART_CLXXV_FULL_OPTIMIZATION.py) |
+| 67 | W(3,3) Causal-Information Structure | Six interlocking theorems: (T1) 1+12+27=40 exact causal decomposition; (T2) Lovász capacity &theta;(W33)=**10**=dim(Sp(4))=spectral gap, &theta;&middot;&theta;&#773;=40=n; (T3) Monster 3B Heisenberg on F&sub;3&#8313;12=(F&sub;3&#8313;4)&sup3; = three W33 phase spaces = three generations; (T4) sl(3,F3)&sup3; (dim **24**) preserves epsilon-cubic on 27=3&otimes;3&otimes;3 (8/8 invariance verified); (T5) code rate **27/80**, causal diameter=2 (c=QCA propagation speed); (T6) Golay 24-dim Lie algebra: simple, perfect, kill=0, Der=33 (24 inner + **9 outer = generation mixing operators**, CKM/PMNS discrete origin) | [THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py](THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py) |
 
 ---
 
@@ -288,7 +338,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 765 tests, quiet mode
+python -m pytest -q            # 833 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
