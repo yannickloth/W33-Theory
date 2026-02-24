@@ -33,7 +33,11 @@ def test_monster_centralizer_cofactor_recognition_and_perm_hits() -> None:
 
     assert classes["29A"]["cofactor_order"] == 3
     assert classes["29A"]["cofactor_group_recognized"] == "C3"
-
+    # New recognitions for 13B and 5B based on ATLAS/CTblLib centralizer shapes
+    assert classes["13B"]["cofactor_order"] == 4056
+    assert classes["13B"]["cofactor_group_recognized"] == "13^2:2A4"
+    assert classes["5B"]["cofactor_order"] == 18_900_000_000
+    assert classes["5B"]["cofactor_group_recognized"] == "5^6:2J2"
     # Prime-ratio permutation-degree hits.
     hits_23 = classes["23A"]["perm_hits"]
     assert isinstance(hits_23, list)

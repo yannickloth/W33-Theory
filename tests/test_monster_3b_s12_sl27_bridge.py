@@ -46,3 +46,13 @@ def test_monster_3b_heisenberg_s12_sl27_bridge_identities() -> None:
     assert int(sl27.get("hilbert_dim", 0) or 0) == 27
     assert int(sl27.get("operator_basis_dim", 0) or 0) == 729
     assert int(sl27.get("traceless_dim", 0) or 0) == 728
+
+    sp12 = rep.get("2suz_sp12_embedding", {})
+    assert isinstance(sp12, dict)
+    assert sp12.get("available") is True
+    assert int(sp12.get("field_p", 0) or 0) == 3
+    assert int(sp12.get("dim", 0) or 0) == 12
+    assert int(sp12.get("invariant_form_nullspace_dim", 0) or 0) == 1
+    assert int(sp12.get("invariant_form_rank", 0) or 0) == 12
+    assert int(sp12.get("qutrits_n", 0) or 0) == 6
+    assert int(sp12.get("heisenberg_irrep_dim", 0) or 0) == 729

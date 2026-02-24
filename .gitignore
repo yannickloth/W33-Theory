@@ -78,6 +78,9 @@ tmp*
 .ci-logs/
 .claude/
 
+# Claude scratch workspace
+claude_workspace/
+
 # Temporary Python scripts and logs
 TEMP_*.py
 temp_*.py
@@ -89,3 +92,15 @@ scripts/inspect_*.py
 *.toc
 *.out
 *.pdf
+
+# Vendored small ATLAS matrix-rep snapshots (kept in-repo for offline verification)
+!data/
+data/*
+!data/atlas/
+!data/atlas/**
+
+# Local scratch (do not commit)
+THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py
+scripts/find_golay_ideals.py
+scripts/golay_derivations.py
+tests/test_information_structure.py

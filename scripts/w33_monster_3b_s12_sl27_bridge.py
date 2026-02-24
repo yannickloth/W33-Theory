@@ -57,6 +57,7 @@ def analyze() -> dict[str, Any]:
         load_monster_atlas_ccls,
         load_sporadic_group_orders,
     )
+    from scripts.w33_2suz_sp12_embedding import analyze as analyze_2suz_sp12
 
     atlas = load_monster_atlas_ccls()
     if atlas is None:
@@ -124,6 +125,16 @@ def analyze() -> dict[str, Any]:
     assert operator_basis == heisenberg_irrep_dim == 3**6 == 729
     assert traceless_basis == golay_nonzero == 728
 
+    # ATLAS generators: verify 2.Suz acts symplectically on F3^12 (up to basis change).
+    sp12 = analyze_2suz_sp12()
+    assert sp12.get("available") is True
+    assert sp12["field_p"] == 3
+    assert sp12["dim"] == 12
+    assert sp12["invariant_form"]["nullspace_dim"] == 1
+    assert sp12["invariant_form"]["rank"] == 12
+    assert sp12["standardized_generators"]["A_std_preserves_J0"] is True
+    assert sp12["standardized_generators"]["B_std_preserves_J0"] is True
+
     return {
         "available": True,
         "monster": {
@@ -154,6 +165,15 @@ def analyze() -> dict[str, Any]:
             "operator_basis_dim": int(operator_basis),
             "traceless_dim": int(traceless_basis),
         },
+        "2suz_sp12_embedding": {
+            "available": True,
+            "field_p": int(sp12["field_p"]),
+            "dim": int(sp12["dim"]),
+            "invariant_form_nullspace_dim": int(sp12["invariant_form"]["nullspace_dim"]),
+            "invariant_form_rank": int(sp12["invariant_form"]["rank"]),
+            "qutrits_n": int(sp12["interpretation"]["qutrits_n"]),
+            "heisenberg_irrep_dim": int(sp12["interpretation"]["heisenberg_irrep_dim"]),
+        },
     }
 
 
@@ -167,9 +187,10 @@ def main() -> None:
     golay = rep["golay"]
     golay_lag = rep["golay_lagrangian"]
     sl27 = rep["sl27"]
+    sp12 = rep["2suz_sp12_embedding"]
 
     print("=" * 78)
-    print("MONSTER 3B ↔ Heisenberg ↔ Golay s12 ↔ sl(27) BRIDGE")
+    print("MONSTER 3B <-> Heisenberg <-> Golay s12 <-> sl(27) BRIDGE")
     print("=" * 78)
 
     print()
@@ -215,6 +236,20 @@ def main() -> None:
     print(f"  Hilbert dim (3 qutrits) = 3^3 = {sl27['hilbert_dim']}")
     print(f"  Operator basis dim = 27^2 = {sl27['operator_basis_dim']}")
     print(f"  traceless dim = 27^2-1 = {sl27['traceless_dim']}")
+
+    print()
+    print("Â§6. 2.Suz âŠ‚ Sp(12,3) (6-qutrit Clifford backbone)")
+    print("-" * 58)
+    print(f"  ATLAS GF(3) dim-12 rep available: {bool(sp12['available'])}")
+    print(
+        "  invariant alternating form: nullspace dim = "
+        f"{int(sp12['invariant_form_nullspace_dim'])} (unique up to scalar), "
+        f"rank = {int(sp12['invariant_form_rank'])}"
+    )
+    print(
+        f"  phase space dim = {int(sp12['dim'])} â‡’ qutrits n = {int(sp12['qutrits_n'])}, "
+        f"Heisenberg irrep dim = {int(sp12['heisenberg_irrep_dim'])}"
+    )
 
     print()
     print("ALL CHECKS PASSED ✓")

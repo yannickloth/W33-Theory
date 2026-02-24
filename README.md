@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Release tag: `v2026-02-23-pillars-58-66` — Pillars 58-66 (p-adic AdS/CFT, string worldsheet, TQFT, complex Yukawa, dominant Gram profiles, QCA, Yukawa tensor optimization, unitarity-corrected CKM). 761 tests.
+> Release tag: `v2026-02-23-pillars-58-67` — Pillars 58-67 (p-adic AdS/CFT, string worldsheet, TQFT, complex Yukawa, dominant Gram profiles, QCA, Yukawa tensor optimization, unitarity-corrected CKM, W33 causal-information structure). 775 tests.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -84,7 +84,7 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 
 ---
 
-## The 65 Pillars
+## The 66 Pillars
 
 Each pillar is a proved theorem. Every pillar has an executable verification script and at least one automated test.
 
