@@ -19,8 +19,10 @@ def test_golay_side_outer_normalizer_exists() -> None:
     assert outer.get("minus_I6_in_H") is True
     assert int(outer.get("dual_sign", 0) or 0) in {1, 2}
 
-    xord = int(outer.get("X_order", 0) or 0)
-    assert xord > 0 and xord % 2 == 0
+    assert outer.get("A_symmetrizer_in_H") is True
+    assert outer.get("A_symmetric") is True
+    assert outer.get("X2_equals_minus_I12") is True
+    assert int(outer.get("X_order", 0) or 0) == 4
 
     pol = rep.get("polarization", {})
     assert isinstance(pol, dict)
@@ -32,3 +34,7 @@ def test_golay_side_outer_normalizer_exists() -> None:
     assert pol.get("plus_isotropic") is True
     assert pol.get("minus_isotropic") is True
     assert pol.get("x_conjugates_J_to_minus_J") is True
+    swap = pol.get("swap_blocks", {})
+    assert isinstance(swap, dict)
+    assert swap.get("AB_equals_minus_I") is True
+    assert swap.get("BA_equals_minus_I") is True

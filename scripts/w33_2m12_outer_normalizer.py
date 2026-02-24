@@ -457,13 +457,31 @@ def analyze(*, compute_full_order: bool = False, include_matrices: bool = False)
         return {"available": False, "reason": "failed to find outer normalizer swap A"}
 
     A = A_best % p
-    A_inv = _inv_mod_p(A, p)
     dual_sign = int(dual_sign_best)
 
     # Symplectic embedding (p-axis gauge): E(g)=diag(g, g^{-T}).
     Z6 = np.zeros((6, 6), dtype=np.int64)
     E11 = np.block([[g11, Z6], [Z6, g11_inv.T % p]]) % p
     E21 = np.block([[g21, Z6], [Z6, g21_inv.T % p]]) % p
+
+    # Canonicalize the swap by left-multiplying A with an element of H to make
+    # it symmetric. This produces an order-4 "Fourier swap" satisfying X^2=-I,
+    # matching the Suz-side witness.
+    sym_h: np.ndarray | None = None
+    for b in elems:
+        h = (
+            np.frombuffer(b, dtype=np.uint8)
+            .astype(np.int64, copy=False)
+            .reshape((6, 6))
+            % p
+        )
+        S = (h @ A) % p
+        if np.array_equal(S, S.T % p):
+            sym_h = h % p
+            A = S % p
+            break
+
+    A_inv = _inv_mod_p(A, p)
 
     # Outer swap: X = [[0,A],[-A^{-T},0]].
     X = np.block([[Z6, A % p], [(-A_inv.T) % p, Z6]]) % p
@@ -482,6 +500,7 @@ def analyze(*, compute_full_order: bool = False, include_matrices: bool = False)
     orders: dict[str, Any] = {"base_order": int(base_order)}
     outer: dict[str, Any] = {
         "A_symmetric": bool(np.array_equal(A % p, A.T % p)),
+        "A_symmetrizer_in_H": bool(sym_h is not None),
         "X_order": _order_mod_p(X, p=p, max_pow=2000),
         "conjugates_g11_dual_to_H": True,
         "conjugates_g21_dual_to_H": True,
