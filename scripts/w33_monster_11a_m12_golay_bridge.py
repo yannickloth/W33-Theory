@@ -40,6 +40,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import networkx as nx
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = ROOT / "scripts"
@@ -217,6 +218,12 @@ def analyze(*, compute_monomial_order: bool = False) -> dict[str, Any]:
 
     gen = ternary_golay_generator_matrix()
     generator_rows = [tuple(int(x) % 3 for x in row) for row in gen]
+    G = np.array(gen, dtype=np.int64) % 3
+    assert G.shape == (6, 12)
+    assert int(np.linalg.matrix_rank(G % 3)) == 6
+    # Self-dual ternary Golay: generator rows are mutually orthogonal (standard dot product).
+    assert np.all((G @ G.T) % 3 == 0)
+
     codewords = enumerate_linear_code_f3(gen)
     code_set = set(codewords)
     assert len(code_set) == 3**6
@@ -282,6 +289,20 @@ def analyze(*, compute_monomial_order: bool = False) -> dict[str, Any]:
     assert monomial_preserves_code(b11_code, signs_11)
     assert monomial_preserves_code(b21_code, signs_21)
 
+    # Monomial matrices with entries in {±1} are orthogonal over F3: M^T M = I.
+    def monomial_matrix(perm: tuple[int, ...], signs: tuple[int, ...]) -> np.ndarray:
+        n = len(perm)
+        M = np.zeros((n, n), dtype=np.int64)
+        for i, j in enumerate(perm):
+            M[int(j), int(i)] = int(signs[int(j)]) % 3
+        return M % 3
+
+    I12 = np.eye(12, dtype=np.int64) % 3
+    M11 = monomial_matrix(b11_code, signs_11)
+    M21 = monomial_matrix(b21_code, signs_21)
+    assert np.array_equal((M11.T @ M11) % 3, I12)
+    assert np.array_equal((M21.T @ M21) % 3, I12)
+
     monomial_order = None
     if compute_monomial_order:
         g1 = (b11_code, signs_11)
@@ -325,12 +346,17 @@ def analyze(*, compute_monomial_order: bool = False) -> dict[str, Any]:
                 "b11_code": bool(perm_only_ok_11),
                 "b21_code": bool(perm_only_ok_21),
             },
+            "m12_generators_in_code_coords": {
+                "b11_code_perm": list(map(int, b11_code)),
+                "b21_code_perm": list(map(int, b21_code)),
+            },
             "monomial_lift_signs": {
                 "b11_code": list(map(int, signs_11)),
                 "b21_code": list(map(int, signs_21)),
             },
             "monomial_group_order": int(monomial_order) if monomial_order else None,
             "is_2m12": bool(monomial_order == 190_080) if monomial_order else None,
+            "code_is_self_dual": True,
         },
         "signature": {
             "pair": "2A x 3B",
@@ -371,6 +397,12 @@ def main() -> None:
     perm_only = g["perm_only_preserves_code_rows"]
     print(f"  perm-only preserves generator rows? b11={perm_only['b11_code']} b21={perm_only['b21_code']}")
     print("  found diagonal sign lifts in {1,2}^12: True")
+
+    print()
+    print("§2b. Code-level orthogonality (why the 2-cover is natural)")
+    print("-" * 58)
+    print("  ternary Golay is self-dual under the standard dot product: True")
+    print("  monomial lifts preserve dot product (M^T M = I mod 3): True")
 
     print()
     print("§3. Prime-ratio signature r_11")
