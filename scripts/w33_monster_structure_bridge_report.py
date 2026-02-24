@@ -114,12 +114,28 @@ def analyze(*, max_q_exp: int = 3) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-q-exp", type=int, default=3)
+    parser.add_argument(
+        "--include-monomial-lifts",
+        action="store_true",
+        help="Add slow, explicit monomial-lift checks (e.g., 11A -> 2.M12) to the report.",
+    )
     parser.add_argument("--out-json", type=Path, default=None)
     args = parser.parse_args()
 
     rep = analyze(max_q_exp=int(args.max_q_exp))
     if rep.get("available") is not True:
         raise SystemExit(str(rep.get("reason") or "analysis unavailable"))
+
+    lift_11a = None
+    if bool(args.include_monomial_lifts):
+        try:
+            from scripts.w33_monster_11a_m12_golay_bridge import analyze as analyze_11a
+
+            lift_11a = analyze_11a(compute_monomial_order=True)
+            if lift_11a.get("available") is not True:
+                lift_11a = None
+        except Exception:
+            lift_11a = None
 
     print("=" * 78)
     print("MONSTER STRUCTURE BRIDGE: structure-best pair -> cofactor perm degree -> stabilizer")
@@ -161,6 +177,13 @@ def main() -> None:
                     print(f"      {cls}: H={H}  r={rr}  |K|={stab} ({stab_grp})")
                 else:
                     print(f"      {cls}: H={H}  r={rr}  |K|={stab}")
+                if lift_11a is not None and cls == "11A":
+                    golay = lift_11a.get("golay", {})
+                    if isinstance(golay, dict):
+                        order = golay.get("monomial_group_order")
+                        is_2m12 = golay.get("is_2m12")
+                        if isinstance(order, int) and order > 0:
+                            print(f"            monomial lift: |G|={order}  is_2.M12? {bool(is_2m12)}")
         print()
 
     if args.out_json is not None:
