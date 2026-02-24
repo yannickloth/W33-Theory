@@ -91,12 +91,19 @@ def monomial_group_order(gens: Iterable[Monomial], limit: Optional[int] = None) 
 def apply_monomial(
     word: Tuple[int, ...], perm: Tuple[int, ...], signs: Tuple[int, ...]
 ) -> Tuple[int, ...]:
-    """Apply monomial map to a vector over F3 (represented as tuple)."""
-    # permutation then diagonal
+    """Apply monomial map to a vector over F3 (represented as tuple).
+
+    The convention is the same as :func:`scripts.w33_monster_11a_m12_golay_bridge._act_word_by_monomial`:
+    first perform the permutation ``out[j] = word[i]`` where ``perm[i]=j``,
+    then multiply each coordinate by the corresponding `signs` entry.
+    """
     n = len(word)
     assert len(perm) == n and len(signs) == n
-    w = tuple(word[int(perm_inv)] for perm_inv in perm)
-    return tuple((int(signs[i]) * int(w[i])) % 3 for i in range(n))
+    # apply permutation in the same orientation as _act_word_by_perm
+    out = [0] * n
+    for i, j in enumerate(perm):
+        out[int(j)] = int(word[int(i)]) % 3
+    return tuple((int(signs[i]) * int(out[i])) % 3 for i in range(n))
 
 
 def find_sign_lift_for_perm(
@@ -107,14 +114,25 @@ def find_sign_lift_for_perm(
 ) -> Optional[Tuple[int, ...]]:
     """Return a sign vector in {1,2}^n making ``perm`` preserve the code.
 
-    The search is brute-force memoizing on generator rows only.  Returns
-    ``None`` if no such signs exist.
+    We still search over all sign choices, but once a candidate satisfies the
+    generator-row constraints we additionally verify that *every* codeword is
+    taken to another codeword.  That stronger requirement matches the later
+    sanity check previously done in the 11A bridge and avoids choosing a
+    "false positive" sign vector.
     """
     n = len(perm)
     for signs in itertools.product((1, 2), repeat=n):
+        # quick generator-row check first
         ok = True
         for row in generator_rows:
             if apply_monomial(row, perm, signs) not in code_set:
+                ok = False
+                break
+        if not ok:
+            continue
+        # full code preservation test
+        for cw in code_set:
+            if apply_monomial(cw, perm, signs) not in code_set:
                 ok = False
                 break
         if ok:

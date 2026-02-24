@@ -45,6 +45,30 @@ def _find_perm_hit_for_pair(perm_hits: object, pair_x: str) -> dict[str, Any] | 
     return None
 
 
+# monomial factory registry (filled ahead of any analysis)
+# these generators are defined at module load time to make the registry
+# available to external tests and helpers.
+from tools.s12_universal_algebra import (
+    enumerate_linear_code_f3,
+    ternary_golay_generator_matrix,
+)
+from scripts.monomial_utils import find_sign_lifts_for_group, monomial_group_order
+from scripts.derive_m12_p144_suborbits import perm_from_cycles, inv, compose
+
+
+def _factory_11A() -> list[tuple[int, ...]]:
+    b11 = perm_from_cycles(12, [[1, 4], [3, 10], [5, 11], [6, 12]])
+    b21 = perm_from_cycles(12, [[1, 8, 9], [2, 3, 4], [5, 12, 11], [6, 10, 7]])
+    return [b11, b21]
+
+
+def _factory_identity() -> list[tuple[int, ...]]:
+    """Trivial identity generator set (useful for testing)."""
+    return [tuple(range(12))]
+
+_MONOMIAL_FACTORIES: dict[str, Any] = {"11A": _factory_11A, "identity": _factory_identity}
+
+
 def analyze(*, max_q_exp: int = 3) -> dict[str, Any]:
     from scripts.w33_monster_ogg_pipeline import analyze as analyze_pipeline
 
@@ -58,7 +82,7 @@ def analyze(*, max_q_exp: int = 3) -> dict[str, Any]:
 
     rows: list[dict[str, Any]] = []
 
-    # generic Golay code data and monomial factories for phase-lift detection
+    # generic Golay code data for monomial/phase-lift detection
     from tools.s12_universal_algebra import (
         enumerate_linear_code_f3,
         ternary_golay_generator_matrix,
@@ -66,19 +90,6 @@ def analyze(*, max_q_exp: int = 3) -> dict[str, Any]:
     gen = ternary_golay_generator_matrix()
     generator_rows = [tuple(int(x) % 3 for x in row) for row in gen]
     code_set = set(enumerate_linear_code_f3(gen))
-    from scripts.monomial_utils import find_sign_lifts_for_group, monomial_group_order
-    from scripts.derive_m12_p144_suborbits import perm_from_cycles, inv, compose
-
-    def _factory_11A() -> list[tuple[int, ...]]:
-        b11 = perm_from_cycles(12, [[1, 4], [3, 10], [5, 11], [6, 12]])
-        b21 = perm_from_cycles(12, [[1, 8, 9], [2, 3, 4], [5, 12, 11], [6, 10, 7]])
-        return [b11, b21]
-
-    def _factory_identity() -> list[tuple[int, ...]]:
-        """Trivial identity generator set (useful for testing)."""
-        return [tuple(range(12))]
-
-    _MONOMIAL_FACTORIES = {"11A": _factory_11A, "identity": _factory_identity}
     for rec in results:
         if not isinstance(rec, dict):
             continue
@@ -179,7 +190,8 @@ def main() -> None:
         r = row.get("mass_ratio_best_over_structure")
         tag = ""
         if isinstance(struct, str) and struct and struct != mass:
-            tag = f"  (ratio best/structure ≈ {float(r):.3g})" if isinstance(r, (int, float)) else ""
+            # avoid non-ascii '≈' to keep output safe under default Windows encoding
+            tag = f"  (ratio best/structure ~ {float(r):.3g})" if isinstance(r, (int, float)) else ""
         print(f"p={p:2d}: mass={mass}  structure={struct} ({why}){tag}")
 
         bridge = row.get("bridge", [])

@@ -63,6 +63,7 @@ def test_find_signs_group():
 def test_bridge_report_factories():
     from scripts.w33_monster_structure_bridge_report import _MONOMIAL_FACTORIES
     assert "11A" in _MONOMIAL_FACTORIES
+    assert "identity" in _MONOMIAL_FACTORIES
     perms = _MONOMIAL_FACTORIES["11A"]()
     assert isinstance(perms, list) and len(perms) == 2
     for perm in perms:
