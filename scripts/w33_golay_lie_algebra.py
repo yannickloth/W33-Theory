@@ -32,20 +32,21 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from tools.s12_universal_algebra import ternary_golay_generator_matrix
-
-# for grade-plane automorphisms
-try:
-    from scripts.grade_weil_phase import apply_matrix, compute_phase
-except ImportError:  # allow import failure in isolation
-    apply_matrix = None  # type: ignore
-    compute_phase = None  # type: ignore
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = ROOT / "scripts"
 for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
+
+from tools.s12_universal_algebra import ternary_golay_generator_matrix  # noqa: E402
+
+# for grade-plane automorphisms
+try:
+    from scripts.grade_weil_phase import apply_matrix, compute_phase  # noqa: E402
+except ImportError:  # allow import failure in isolation
+    apply_matrix = None  # type: ignore
+    compute_phase = None  # type: ignore
 
 
 F3 = 3

@@ -333,6 +333,14 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 
 ---
 
+
+## Auxiliary Mathematical Utilities
+
+* `scripts/w33_cross_ratio.py` – functions for computing projective cross ratios and
+  applying/inverting Möbius transformations over the reals, sympy symbolic
+  expressions, or prime finite fields.  Useful for the exploratory notebook and
+  for seeking projective interpretations of mass/CKM constants.
+
 ## Quick Start
 * **Exploring universality:** you can hunt for elementary cellular automata
   on W33 cycles using `scripts/w33_universal_search.py --max-length N` and
