@@ -37,9 +37,7 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 
 ### Chevalley basis and H1 projections
 - Eight simple E8 roots correspond to eight distinguished W33 edges.  The Cartan matrix reconstructed from their orbit coordinates is exactly the standard Sage–ordering E8 matrix.
-- Each simple edge's neighbourhood (incident edges, triangles, distances) admits basis-invariant statistics computed from the three 27×27 H1 Gram matrices.  Subspace‑0 values dominate uniformly and the grade‑average means order as
-  $$g0\_{e6} > g2 > g1$$
-  matching the Frobenius weight ratios used in the gauge‑coupling derivation.
+- Each simple edge's neighbourhood (incident edges, triangles, distances) admits basis-invariant statistics computed from the three 27×27 H1 Gram matrices.  Subspace‑0 values dominate uniformly and the grade‑average means order as `g0_e6 > g2 > g1`, matching the Frobenius weight ratios used in the gauge‑coupling derivation.
 - Triangle counts at simple vertex pairs are all 22 or 24; the two g0_e6 roots share a common vertex.
 - These invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and verified via a new test suite (see [tests/test_simple_edge_invariants.py](tests/test_simple_edge_invariants.py)).
 
@@ -170,9 +168,9 @@ included a nontrivial constant `phi(g,h)`; the normal‑form code in
 accompanying test suite checks the triviality.)
 
 Viewed from this vantage the algebra is the **untwisted current algebra** on
-the eight nonzero elements of $\mathbb F_3^2$ with 3‑dimensional fibres – a
+the eight nonzero elements of `F3^2` with 3‑dimensional fibres – a
 simple Cartan‑type Lie algebra of characteristic 3.  It is consistent with the
-unique 24‑dimensional member of Skryabin's $S(1,2)$ family in his 1993
+unique 24‑dimensional member of Skryabin's `S(1,2)` family in his 1993
 classification.  Recent normal-form work also produced an explicit outer
 derivation decomposition (24 inner + 9 outer), with a canonical `6+3` split visible from the tensor factorization.
 
