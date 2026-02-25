@@ -7,10 +7,24 @@
   \usepackage{textcomp}
   \usepackage{lmodern}
 \else
-  \usepackage{fontspec}
-  \setmainfont{Latin Modern Roman}
-  \setsansfont{Latin Modern Sans}
-  \setmonofont{Latin Modern Mono}
+  % Tectonic runs XeTeX by default; avoid fontspec/fontconfig for portability.
+  \usepackage[T1]{fontenc}
+  \usepackage{textcomp}
+  \usepackage{lmodern}
+\fi
+% Tectonic's XeTeX mode may not define \textsubscript; provide a safe fallback.
+\providecommand{\textsubscript}[1]{\ensuremath{_{\textrm{#1}}}}
+% In XeTeX/LuaTeX, emulate \DeclareUnicodeCharacter using newunicodechar so the
+% Pandoc-style Unicode source compiles without fontspec/fontconfig gymnastics.
+\ifPDFTeX
+  % inputenc provides \DeclareUnicodeCharacter
+\else
+  \usepackage{newunicodechar}
+  \providecommand{\DeclareUnicodeCharacter}[2]{%
+    \begingroup
+    \lccode`~=\numexpr"#1\relax
+    \lowercase{\endgroup\newunicodechar{~}{#2}}%
+  }
 \fi
 \DeclareUnicodeCharacter{2080}{\textsubscript{0}}
 \DeclareUnicodeCharacter{2081}{\textsubscript{1}}
@@ -22,6 +36,9 @@
 \DeclareUnicodeCharacter{2087}{\textsubscript{7}}
 \DeclareUnicodeCharacter{2088}{\textsubscript{8}}
 \DeclareUnicodeCharacter{2089}{\textsubscript{9}}
+\DeclareUnicodeCharacter{2011}{-}
+\DeclareUnicodeCharacter{2013}{--}
+\DeclareUnicodeCharacter{2014}{---}
 \DeclareUnicodeCharacter{2212}{-}
 \DeclareUnicodeCharacter{00D7}{\times}
 \DeclareUnicodeCharacter{2070}{\textsuperscript{0}}
@@ -94,8 +111,10 @@
   linkcolor=accent,
   urlcolor=accent,
   citecolor=accent,
-  pdfauthor={},
-  pdftitle={W33 Theory of Everything — Final Proof}
+  pdfauthor={Wil Dahn},
+  pdftitle={W33 Theory of Everything — Final Proof},
+  pdfsubject={Finite-geometry derivation from W(3,3) and E8},
+  pdfkeywords={W(3,3), W33, E8, finite geometry, Lie algebra, Standard Model}
 }
 
 \providecommand{\tightlist}{%
@@ -120,7 +139,10 @@
 
 \newcommand{\subtitletext}{E8 → W33 via Coxeter 6-cycles}
 \newcommand{\doctitle}{W33 Theory of Everything — Final Proof}
-\newcommand{\docdate}{January 27, 2026}
+\newcommand{\docauthor}{Wil Dahn}
+\newcommand{\docrepo}{https://github.com/wilcompute/W33-Theory}
+\newcommand{\doctag}{v2026-02-21-fieldtheory}
+\newcommand{\docdate}{February 25, 2026}
 
 \begin{document}
 \begin{titlepage}
@@ -134,8 +156,10 @@
   {\large\docdate\par}
   \vspace{0.8cm}
   \begin{flushright}
-    \textsc{W33 Theory of Everything}\par
-    \textsc{Computed Proof + Artifacts}
+    \textsc{\docauthor}\par
+    \textsc{Repository: \href{\docrepo}{\docrepo}}\par
+    \textsc{Tag: \doctag}\par
+    \textsc{Computed proof + artifacts}
   \end{flushright}
 \end{titlepage}
 
@@ -1898,35 +1922,35 @@ Structure}\label{hierarchy-of-structure}
 
 \begin{verbatim}
 LEVEL 0: Planck scale (10^1^9 GeV)
-   ↓
+   v
 LEVEL 1: W33 incidence geometry (40 points)
-   • Define metric and symmetry
-   • Fundamental building blocks
-   ↓
+   * Define metric and symmetry
+   * Fundamental building blocks
+   v
 LEVEL 2: K4 components (90 objects)
-   • All have (Z_4, Z_3) = (2, 0)
-   • Universal quantum numbers
-   • Protected topological sector
-   ↓
+   * All have (Z_4, Z_3) = (2, 0)
+   * Universal quantum numbers
+   * Protected topological sector
+   v
 LEVEL 3: Q45 quotient (45 vertices)
-   • SU(5) dimension match
-   • Gauge structure emerges
-   • Fiber bundle (Z_2 x Z_3)
-   ↓
+   * SU(5) dimension match
+   * Gauge structure emerges
+   * Fiber bundle (Z_2 x Z_3)
+   v
 LEVEL 4: V23 triangles (5,280 configurations)
-   • Classify by parity (fermion/boson)
-   • Encode by holonomy (mass/coupling)
-   • Separate by centers (interaction strength)
-   ↓
+   * Classify by parity (fermion/boson)
+   * Encode by holonomy (mass/coupling)
+   * Separate by centers (interaction strength)
+   v
 LEVEL 5: Particle spectrum
-   • 180 fermions (3 families x 2 helicity x 3 colors + 3 leptons)
-   • 90 bosons (photon, W, Z, gluons + Higgs + ghosts)
-   • 40 topological modes (protected sector)
-   ↓
+   * 180 fermions (3 families x 2 helicity x 3 colors + 3 leptons)
+   * 90 bosons (photon, W, Z, gluons + Higgs + ghosts)
+   * 40 topological modes (protected sector)
+   v
 LEVEL 6: Energy scales
-   • Electroweak: 100 GeV
-   • GUT: 10^1^6 GeV
-   • Planck: 10^1^9 GeV
+   * Electroweak: 100 GeV
+   * GUT: 10^1^6 GeV
+   * Planck: 10^1^9 GeV
 \end{verbatim}
 
 \subsubsection{10.2 Emergence of Physics from
