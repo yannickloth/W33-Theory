@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **69 pillars** and **877 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **71 pillars** and **880 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -29,7 +29,7 @@ The Hodge spectrum, three-generation decomposition, Weinberg angle derivation, s
 
 ### What remains open
 
-Whether this correspondence extends to a *complete* physical theory that reproduces all Standard Model parameters from first principles is an open research question.  CKM mixing angles are now reproduced with error **0.0026** (Pillar 66) and PMNS with error **0.0059** against unitary experimental targets; all 9 CKM matrix elements match experiment to &lt;3.2%.  Fermion mass ratios remain open.  The gauge coupling &alpha;<sub>GUT</sub><sup>&minus;1</sup>&nbsp;= 8&pi;&nbsp;&approx;&nbsp;25.1 is derived from geometry (&alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 40/(2&pi;&times;160)); the MSSM running then predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% of experiment.  Residual open questions are explicitly flagged in the [Status of Major Claims](#status-of-major-claims) table below.
+Whether this correspondence extends to a *complete* physical theory that reproduces all Standard Model parameters from first principles is an open research question.  CKM mixing angles are now reproduced with error **0.0026** (Pillar 66) and PMNS with error **0.0059** against unitary experimental targets; all 9 CKM matrix elements match experiment to &lt;3.2%.  Fermion mass ratios remain open – sampling of the active Yukawa subspace shows a Pareto trade-off between CKM and mass errors, suggesting a structural obstruction that any full theory must overcome.  The gauge coupling &alpha;<sub>GUT</sub><sup>&minus;1</sup>&nbsp;= 8&pi;&nbsp;&approx;&nbsp;25.1 is derived from geometry (&alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 40/(2&pi;&times;160)); the MSSM running then predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% of experiment.  Residual open questions are explicitly flagged in the [Status of Major Claims](#status-of-major-claims) table below.
 
 ---
 
@@ -77,6 +77,8 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 | Chevalley invariants & projections | ✅ Proved & tested | Simple-root edges, triangle/variance statistics correlate with beta-function weights |
 | Fermion mass hierarchy (texture) | ⚠️ Partial | Pillar 68 proves an exact Z3 Yukawa texture theorem (grade selection rule) and a form-factor hierarchy up to √15 across the 9D grade-0 eigenspace; absolute mass ratios still require Higgs direction + RG running |
 | CKM matrix | ✅ Near-exact | Full joint optimization (Pillar 66) reaches CKM error **0.00255** vs unitary target; |V<sub>ub</sub>|=0.0037 (exp 0.0038) and |J|=2.9&times;10<sup>&minus;5</sup> (exp 3.1&times;10<sup>&minus;5</sup>); all 9 elements &lt;3.2% |
+| CKM–mass trade‑off | ⚠️ Empirical | A randomized Pareto sampling of the rank‑6 active Yukawa subspace (see `scripts/combined_ckm_mass_landscape.py`) reveals a convex frontier: reducing mass‑ratio error increases CKM error and vice versa.  The best joint weight‑1 solution has combined error ≈40; no vector simultaneously brings both errors below ≈38, hinting at an intrinsic incompatibility within the fixed active subspace. |
+
 | PMNS matrix | ✅ Near-exact | Gradient optimization (Pillar 65) reaches PMNS error **0.006**; |V<sub>e3</sub>|=0.148 (exp 0.149); lepton |J|≈1.3&times;10<sup>&minus;2</sup> |
 | Gauge coupling &alpha;<sub>GUT</sub> | ✅ Derived | &alpha;<sub>GUT</sub> = n<sub>v</sub>/(2&pi;n<sub>t</sub>) = 1/(8&pi;) &approx; 1/25.1 from W33 geometry; sin<sup>2</sup>&theta;<sub>W</sub> = 3/8 from SRG eigenvalues; MSSM running predicts &alpha;<sub>2</sub><sup>&minus;1</sup>(M<sub>Z</sub>) within 0.2% &mdash; see `scripts/w33_gauge_coupling_derivation.py` |
 | Dark matter mass | ⚠️ Proposed | 24+15 exact sector identified; mass predictions pending |
@@ -84,7 +86,38 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 
 ---
 
-## The 69 Pillars
+## The 71 Pillars
+
+*New analytic tools added in recent updates:*
+
+- **`scripts/combined_ckm_mass_landscape.py`** samples the rank‑6 active subspace and produces a Pareto curve showing the CKM vs mass error trade‑off.  `tests/test_combined_landscape.py` ensures the tool runs and outputs correctly.
+- **`scripts/w33_monster_rp_index_table.py`** constructs a deterministic table of Monster prime-ratio signatures, verifying that for each Ogg prime class the ratio \(r_p=n/p\) coincides with an index \([H:K]\) of a recognized cofactor group.  Regression tests check the sporadic primes and mass‑vs‑structure best‑pair mismatches.
+- **CE2 global predictor helpers** (`explain_simple_family_sign_closed_form` and `explain_predict_ce2_uv`) allow obstruction-report scripts to display Weil invariants and support locations rather than raw table lookups.
+
+These additions lay groundwork for the current exploration of the active-subspace landscape and Monster prime structure described below.
+
+### Monster prime-ratio index pattern
+
+In parallel, a lightweight weight-scan of the active Yukawa subspace shows that
+CKM error cannot be driven below approximately **0.307** even when the mass
+weight is set to 0.01; increasing the mass weight raises the CKM error toward
+1.88 while mass error grows correspondingly.  The minimal combined error
+found was **39.70** at weight 1, confirming the Pareto trade-off noted above.
+The full weight-scan results are stored in `data/weight_scan.json` and can be
+recomputed with `scripts/landscape_weight_scan.py`.
+
+### Monster prime-ratio index pattern
+
+Running `w33_monster_rp_index_table.py` over the Ogg primes produces the following empirical summary:
+
+- **Perm-index best pairs** are almost always `2A×3B` for primes 11, 13, 17, 23, 29, with `r_p` values 144, 156, 14, 4, 3 respectively.  These coincide with natural permutation degrees of the recognized cofactor groups (M12, PSL3(3), PSL2(7), S4, C3).
+- For lower primes 5 and 7 the best pair is `2A×3A` and the corresponding cofactor groups are HN and He with huge permutation degrees (1,140,000 and 2,058) stabilised by A12 and Sp4(4):2.
+- Mass-optimal pairs often differ from structure-optimal pairs: the mismatch occurs for 5, 11, 13, 17, 23, 29 (six primes), reflecting subtle tension between the triangle-scan mass statistics and the Monster cofactor geometry.
+- For primes ≥31 no non‑trivial perm-hit occurs (cofactors too small or trivial), consistent with the active permutation structure collapsing; the table still reports the maximal candidate `r` values for completeness.
+
+The `rp_index.json` payload is committed to `data/` and can be used to guide further number‑theoretic investigations.
+
+
 
 Each pillar is a proved theorem. Every pillar has an executable verification script and at least one automated test.
 
