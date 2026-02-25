@@ -27,6 +27,6 @@ abstract: >-
   representation matching matter content, the Hodge spectrum
   0⁸¹+4¹²⁰+10²⁴+16¹⁵ encodes gauge structure, sin²θ_W = 3/8
   emerges uniquely from GQ(3,3), and α_GUT^{-1} = 8π is derived
-  from W33 geometry. All results verified by 880 automated tests
+  from W33 geometry. All results verified by 882 automated tests
   with zero free parameters.
 

@@ -10,10 +10,10 @@
     zen = json.load(open(".zenodo.json", "r", encoding="utf-8"))
     blob = (zen.get("description", "") or "") + "\n" + (zen.get("notes", "") or "")
     assert "71 pillars" in blob or "69 pillars" in blob
-    assert "880" in blob or "877" in blob
+    assert "882" in blob or "880" in blob or "877" in blob
 
 
 def test_citation_mentions_69_pillars():
     txt = open("CITATION.cff", "r", encoding="utf-8").read()
     assert "71 proved pillars" in txt or "69 proved pillars" in txt
-    assert "880" in txt or "877" in txt
+    assert "882" in txt or "880" in txt or "877" in txt

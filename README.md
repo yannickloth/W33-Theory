@@ -2,7 +2,7 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **71 pillars** and **880 tests**.
+> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **71 pillars** and **882 tests**.
 >
 > Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
 
@@ -21,7 +21,7 @@ The central observation is a chain of exact numerical coincidences that admit ri
 - Eight simple E8 roots align with eight distinguished edges of W33.  Projections of nearby 1-chains onto the three 27-dimensional H1 subspaces produce basis-invariant statistics (means, variances, triangle counts) that correlate with the theoretical gauge beta weights; these Chevalley invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and enforced by automated tests.
 - The SRG eigenvalue formula gives **sin&sup2;&theta;<sub>W</sub> = 3/8 uniquely for q = 3** &mdash; the standard SU(5) GUT boundary condition &mdash; without any free parameter.
 
-**Sixty-nine combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
+**Seventy-one combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
 
 ### What is proved
 
@@ -91,33 +91,23 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 *New analytic tools added in recent updates:*
 
 - **`scripts/combined_ckm_mass_landscape.py`** samples the rank‑6 active subspace and produces a Pareto curve showing the CKM vs mass error trade‑off.  `tests/test_combined_landscape.py` ensures the tool runs and outputs correctly.
-- **`scripts/w33_monster_rp_index_table.py`** constructs a deterministic table of Monster prime-ratio signatures, verifying that for each Ogg prime class the ratio \(r_p=n/p\) coincides with an index \([H:K]\) of a recognized cofactor group.  Regression tests check the sporadic primes and mass‑vs‑structure best‑pair mismatches.
+- **`scripts/w33_monster_rp_index_table.py`** constructs a deterministic table of Monster prime-ratio signatures, verifying that for each Ogg prime class the ratio r<sub>p</sub> = n/p coincides with an index [H:K] of a recognized cofactor group. Regression tests check the sporadic primes and mass‑vs‑structure best‑pair mismatches.
 - **CE2 global predictor helpers** (`explain_simple_family_sign_closed_form` and `explain_predict_ce2_uv`) allow obstruction-report scripts to display Weil invariants and support locations rather than raw table lookups.
 
-These additions lay groundwork for the current exploration of the active-subspace landscape and Monster prime structure described below.
+These additions lay groundwork for continued work on the active-subspace landscape and Monster prime structure described below.
 
 ### Monster prime-ratio index pattern
 
-In parallel, a lightweight weight-scan of the active Yukawa subspace shows that
-CKM error cannot be driven below approximately **0.307** even when the mass
-weight is set to 0.01; increasing the mass weight raises the CKM error toward
-1.88 while mass error grows correspondingly.  The minimal combined error
-found was **39.70** at weight 1, confirming the Pareto trade-off noted above.
-The full weight-scan results are stored in `data/weight_scan.json` and can be
-recomputed with `scripts/landscape_weight_scan.py`.
-
-### Monster prime-ratio index pattern
-
-Running `w33_monster_rp_index_table.py` over the Ogg primes produces the following empirical summary:
+Running `scripts/w33_monster_rp_index_table.py` over the Ogg primes produces the following empirical summary:
 
 - **Perm-index best pairs** are almost always `2A×3B` for primes 11, 13, 17, 23, 29, with `r_p` values 144, 156, 14, 4, 3 respectively.  These coincide with natural permutation degrees of the recognized cofactor groups (M12, PSL3(3), PSL2(7), S4, C3).
 - For lower primes 5 and 7 the best pair is `2A×3A` and the corresponding cofactor groups are HN and He with huge permutation degrees (1,140,000 and 2,058) stabilised by A12 and Sp4(4):2.
 - Mass-optimal pairs often differ from structure-optimal pairs: the mismatch occurs for 5, 11, 13, 17, 23, 29 (six primes), reflecting subtle tension between the triangle-scan mass statistics and the Monster cofactor geometry.
 - For primes ≥31 no non‑trivial perm-hit occurs (cofactors too small or trivial), consistent with the active permutation structure collapsing; the table still reports the maximal candidate `r` values for completeness.
 
-The `rp_index.json` payload is committed to `data/` and can be used to guide further number‑theoretic investigations.
+To write a machine-readable report, run:
 
-
+- `python -X utf8 scripts/w33_monster_rp_index_table.py --out-json outputs/monster_rp_index_table.json`
 
 Each pillar is a proved theorem. Every pillar has an executable verification script and at least one automated test.
 
@@ -303,7 +293,7 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 | 56 | Cryptographic lattice | E8 unimodular &amp; self-dual; Hodge hash &Ropf;<sup>240</sup>&rarr;&Ropf;<sup>81</sup> | [w33_cryptographic_lattice.py](scripts/w33_cryptographic_lattice.py) |
 | 57 | Leech/Monster/Moonshine | j(q) coefficients in Monster irreps; 196884=1+196883 | [w33_leech_monster.py](scripts/w33_leech_monster.py) |
 
-### New Physics &amp; Geometry (Pillars 58&ndash;69)
+### New Physics &amp; Geometry (Pillars 58&ndash;71)
 
 | # | Theorem | Key result | Script |
 |---|---------|------------|--------|
@@ -319,6 +309,8 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 | 67 | W(3,3) Causal-Information Structure | Six interlocking theorems: (T1) 1+12+27=40 exact causal decomposition; (T2) Lovász capacity &theta;(W33)=**10**=dim(Sp(4))=spectral gap, &theta;&middot;&theta;&#773;=40=n; (T3) Monster 3B Heisenberg on F<sub>3</sub><sup>12</sup> = (F<sub>3</sub><sup>4</sup>)<sup>3</sup> = three W33 phase spaces = three generations; (T4) sl(3,F3)&sup3; (dim **24**) preserves epsilon-cubic on 27=3&otimes;3&otimes;3 (8/8 invariance verified); (T5) code rate **27/80**, causal diameter=2 (c=QCA propagation speed); (T6) Golay 24-dim Lie algebra: simple, perfect, kill=0, Der=33 (24 inner + **9 outer = generation mixing operators**, CKM/PMNS discrete origin) | [THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py](THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py) |
 | 68 | Fermion mass texture from Z3 grading | H27 decomposes into 9 three-cycles under the Z3 symmetry (no fixed points); exact Yukawa texture selection rule (0/162 violations); form-factor hierarchy up to √15; Golay algebra in pure symplectic normal form with 9 outer derivations as grade-shift mixing operators | [THEORY_PART_CLXXVII_MASS_TEXTURE.py](THEORY_PART_CLXXVII_MASS_TEXTURE.py) |
 | 69 | Hessian/Heisenberg symmetry | The 45 E6 cubic triads split 36+9 and are invariant under Heisenberg⋊SL(2,3) of order 648 acting on H27 &cong; F<sub>3</sub><sup>2</sup>&times;F<sub>3</sub> | [e6_hessian_tritangents.py](scripts/e6_hessian_tritangents.py) |
+| 70 | Mixed-sector Weil lift (CE2/L&infin; firewall) | The mixed-sector CE2 sign/phase is a canonical metaplectic/Weil lift (not a lookup table): obstruction reports can print the closed-form Weil invariants and support locations that explain each repair | [w33_s12_linfty_phase_bridge.py](scripts/w33_s12_linfty_phase_bridge.py) + [ce2_global_cocycle.py](scripts/ce2_global_cocycle.py) |
+| 71 | Monster Ogg prime-ratio indices | Cross-checked table across Ogg primes/classes: r<sub>p</sub> = n/p lands in a recognized cofactor permutation degree and equals an index [H:K]; best (2X,3Y) pairs ranked by mass vs structure hits | [w33_monster_rp_index_table.py](scripts/w33_monster_rp_index_table.py) |
 
 ---
 
@@ -376,7 +368,7 @@ pip install numpy sympy networkx pytest
 ### Run the test suite
 
 ```bash
-python -m pytest -q            # 877 tests, quiet mode
+python -m pytest -q            # 882 tests, quiet mode
 python -m pytest tests -v      # verbose
 ```
 
@@ -503,7 +495,7 @@ W33-Theory/
 │   ├── cycle_space_decompose.py           # Boundary matrix / automorphisms
 │   ├── reconstruct_w33_e8_mapping.py      # Edge-root bijection from seed
 │   └── edge_stabilizers.py               # Stabilizer enumeration
-├── tests/              # 877-test suite (pytest)
+├── tests/              # 882-test suite (pytest)
 │   ├── test_e8_embedding.py               # Core embedding tests
 │   ├── test_cycle_space.py
 │   ├── test_yukawa_sector_assignment.py
