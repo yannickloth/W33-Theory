@@ -268,7 +268,7 @@ def main() -> None:
     print(f"  traceless dim = 27^2-1 = {sl27['traceless_dim']}")
 
     print()
-    print("Â§6. 2.Suz âŠ‚ Sp(12,3) (6-qutrit Clifford backbone)")
+    print("§6. 2.Suz ⊂ Sp(12,3) (6-qutrit Clifford backbone)")
     print("-" * 58)
     print(f"  ATLAS GF(3) dim-12 rep available: {bool(sp12['available'])}")
     print(
@@ -277,13 +277,13 @@ def main() -> None:
         f"rank = {int(sp12['invariant_form_rank'])}"
     )
     print(
-        f"  phase space dim = {int(sp12['dim'])} â‡’ qutrits n = {int(sp12['qutrits_n'])}, "
+        f"  phase space dim = {int(sp12['dim'])} => qutrits n = {int(sp12['qutrits_n'])}, "
         f"Heisenberg irrep dim = {int(sp12['heisenberg_irrep_dim'])}"
     )
 
     if isinstance(m12_2, dict) and m12_2.get("available") is True:
         print()
-        print("Â§7. Maximal subgroup witness: M12:2 < Suz (ATLAS words)")
+        print("§7. Maximal subgroup witness: M12:2 < Suz (ATLAS words)")
         print("-" * 58)
         print(
             "  word-generator orders: "

@@ -308,6 +308,30 @@ def analyze() -> dict[str, Any]:
     assert out["47A"]["cofactor_order"] == 2
 
     # Perm-degree hits that link cleanly to r_p signatures.
+    # 13A: cofactor PSL3(3) has perm-degree hit r_13(2A×3B)=156, stabilizer 3^2:C4.
+    assert any(
+        h["pair"] == "2A×3B"
+        and int(h["r"]) == 156
+        and int(h.get("stabilizer_order", 0) or 0) == 36
+        and h.get("stabilizer_group_recognized") == "3^2:C4"
+        for h in out["13A"]["perm_hits"]
+    )
+    # 13B: cofactor 13^2:2A4 has perm-degree hit r_13(2A×3C)=104, stabilizer 13:3.
+    assert any(
+        h["pair"] == "2A×3C"
+        and int(h["r"]) == 104
+        and int(h.get("stabilizer_order", 0) or 0) == 39
+        and h.get("stabilizer_group_recognized") == "13:3"
+        for h in out["13B"]["perm_hits"]
+    )
+    # 17A: cofactor PSL2(7) has perm-degree hit r_17(2A×3B)=14, stabilizer A4.
+    assert any(
+        h["pair"] == "2A×3B"
+        and int(h["r"]) == 14
+        and int(h.get("stabilizer_order", 0) or 0) == 12
+        and h.get("stabilizer_group_recognized") == "A4"
+        for h in out["17A"]["perm_hits"]
+    )
     # 23A: cofactor S4 has degree-4 action, and r_23(2A×3B)=4.
     assert any(
         h["pair"] == "2A×3B" and int(h["r"]) == 4 for h in out["23A"]["perm_hits"]

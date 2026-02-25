@@ -4827,28 +4827,28 @@ if __name__ == "__main__":
             n3 = cls.get("3B", {}).get("structure_constant_per_element")
             if isinstance(p3, dict) and n3 is not None:
                 print(
-                    "- Class algebra: Pr(2AÂ·3B âˆˆ 3B) = %s (n=%s)"
+                    "- Class algebra: Pr(2A·3B ∈ 3B) = %s (n=%s)"
                     % (p3.get("value"), n3),
                 )
             p41 = cls.get("41A", {}).get("probability", {})
             n41 = cls.get("41A", {}).get("structure_constant_per_element")
             if isinstance(p41, dict) and n41 is not None:
                 print(
-                    "- Class algebra: Pr(2AÂ·3B âˆˆ 41A) = %s (n=%s)"
+                    "- Class algebra: Pr(2A·3B ∈ 41A) = %s (n=%s)"
                     % (p41.get("value"), n41),
                 )
             p31 = cls.get("31A", {}).get("probability", {})
             n31 = cls.get("31A", {}).get("structure_constant_per_element")
             if isinstance(p31, dict) and n31 is not None:
                 print(
-                    "- Class algebra: Pr(2AÂ·3B âˆˆ 31A) = %s (n=%s)"
+                    "- Class algebra: Pr(2A·3B ∈ 31A) = %s (n=%s)"
                     % (p31.get("value"), n31),
                 )
             p71 = cls.get("71A", {}).get("probability", {})
             n71 = cls.get("71A", {}).get("structure_constant_per_element")
             if isinstance(p71, dict) and n71 is not None:
                 print(
-                    "- Class algebra: Pr(2AÂ·3B âˆˆ 71A) = %s (n=%s)"
+                    "- Class algebra: Pr(2A·3B ∈ 71A) = %s (n=%s)"
                     % (p71.get("value"), n71),
                 )
             p47 = cls.get("47A", {}).get("probability", {})
@@ -4856,7 +4856,7 @@ if __name__ == "__main__":
             if isinstance(p47, dict) and isinstance(p59, dict):
                 if p47.get("numerator") == 0 and p59.get("numerator") == 0:
                     print(
-                        "- Class algebra: Pr(2AÂ·3B âˆˆ 47A) = 0; Pr(... âˆˆ 59A) = 0"
+                        "- Class algebra: Pr(2A·3B ∈ 47A) = 0; Pr(... ∈ 59A) = 0"
                     )
     pipe = out.get("atlas_standard_generators_pipeline", {})
     if isinstance(pipe, dict) and pipe.get("available") is True:
@@ -4871,7 +4871,7 @@ if __name__ == "__main__":
     rr = out.get("rogers_ramanujan_j", {})
     if isinstance(rr, dict) and rr.get("available") is True:
         print(
-            "- Rogersâ€“Ramanujan: j(u=R^5) identity verified to q^%d: %s"
+            "- Rogers-Ramanujan: j(u=R^5) identity verified to q^%d: %s"
             % (rr.get("n_terms_verified"), rr.get("verified")),
         )
     print("- Interpretation:", out["interpretation"])
