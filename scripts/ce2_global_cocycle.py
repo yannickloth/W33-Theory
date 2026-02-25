@@ -619,6 +619,79 @@ def predict_simple_family_sign_closed_form(c_i: int, match_i: int, other_i: int)
     return int(eps) * _f3_chi((int(zsum) + int(c0)) % 3)
 
 
+def explain_simple_family_sign_closed_form(
+    c_i: int, match_i: int, other_i: int
+) -> dict[str, object]:
+    """Explain the metaplectic/Weil closed-form sign(c,match,other).
+
+    This returns intermediate invariants so "repairs" can be reported as a
+    canonical Weil lift, rather than as a table lookup.
+    """
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    uc1, uc2, zc = e6id_to_vec[int(c_i)]
+    um1, um2, zm = e6id_to_vec[int(match_i)]
+    uo1, uo2, zo = e6id_to_vec[int(other_i)]
+
+    t = 1 if (int(um1), int(um2)) == (int(uo1), int(uo2)) else 2
+    d1 = (int(um1) - int(uc1)) % 3
+    d2 = (int(um2) - int(uc2)) % 3
+    d = (int(d1), int(d2))
+    if d == (0, 0):
+        raise ValueError("unexpected: d == 0 in CE2 simple-family sign")
+
+    w = int(_f3_omega((uc1, uc2), d))
+    s = int(_f3_dot((uc1, uc2), d))
+    k_dir = int(_f3_k_of_direction(d))
+    constant_line = (d1 != 0) and (int(w) == k_dir)
+
+    base: dict[str, object] = {
+        "inputs": {
+            "c": int(c_i),
+            "match": int(match_i),
+            "other": int(other_i),
+            "c_heisenberg": {"u": [int(uc1), int(uc2)], "z": int(zc)},
+            "match_heisenberg": {"u": [int(um1), int(um2)], "z": int(zm)},
+            "other_heisenberg": {"u": [int(uo1), int(uo2)], "z": int(zo)},
+        },
+        "invariants": {
+            "t": int(t),
+            "d": [int(d1), int(d2)],
+            "s": int(s),
+            "w": int(w),
+            "k_dir": int(k_dir),
+            "constant_line": bool(constant_line),
+        },
+    }
+
+    if constant_line:
+        table = _SIMPLE_FAMILY_WEIL_CONST_SIGN[int(t)][(int(d1), int(d2))]
+        sign = int(table[int(s) % 3])
+        base["constant_line_rule"] = {
+            "table_s_to_sign": [int(table[0]), int(table[1]), int(table[2])],
+            "sign": int(sign),
+        }
+        return base
+
+    c0_coeff = _SIMPLE_FAMILY_WEIL_C0_COEFF[int(t)][(int(d1), int(d2))]
+    e_coeff = _SIMPLE_FAMILY_WEIL_E_COEFF[int(t)][(int(d1), int(d2))]
+    c0 = int(_eval_f3_poly_sw(int(s), int(w), c0_coeff))
+    e = int(_eval_f3_poly_sw(int(s), int(w), e_coeff))
+    eps = int(_f3_chi(int(e)))
+    zsum = int((int(zm) + int(zo)) % 3)
+    chi_z = int(_f3_chi(int((zsum + c0) % 3)))
+    sign = int(eps) * int(chi_z)
+
+    base["generic_rule"] = {
+        "c0": int(c0),
+        "e": int(e),
+        "eps": int(eps),
+        "zsum": int(zsum),
+        "chi_zsum_plus_c0": int(chi_z),
+        "sign": int(sign),
+    }
+    return base
+
+
 def predict_simple_family_sign(c_i: int, match_i: int, other_i: int) -> int:
     """Return sign(c,match,other) ∈ {+1,-1} for the CE2 simple family.
 
@@ -767,6 +840,85 @@ def predict_ce2_uv(
     if uv is not None:
         return uv
     return predict_simple_family_uv(a, b, c)
+
+
+def explain_predict_ce2_uv(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> dict[str, object]:
+    """Explain the global CE2 predictor decision for a specific (a,b,c) triple.
+
+    The output is JSON-serializable and intended for obstruction-report scripts.
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    uv_fiber = predict_fiber_family_uv((a_i, a_j), (b_i, b_j), (c_i, c_j))
+    if uv_fiber is not None:
+        return {
+            "available": True,
+            "family": "fiber",
+            "inputs": {"a": [a_i, a_j], "b": [b_i, b_j], "c": [c_i, c_j]},
+            "uv": {
+                "U": [(int(i), str(v)) for i, v in uv_fiber.U],
+                "V": [(int(i), str(v)) for i, v in uv_fiber.V],
+            },
+        }
+
+    # Simple-family explanation (the dominant rule).
+    uv_simple = predict_simple_family_uv((a_i, a_j), (b_i, b_j), (c_i, c_j))
+    if uv_simple is None:
+        return {
+            "available": False,
+            "reason": "triple does not match simple or fiber CE2 families",
+            "inputs": {"a": [a_i, a_j], "b": [b_i, b_j], "c": [c_i, c_j]},
+        }
+
+    # Recover match/other and side to expose the Heisenberg support location.
+    if a_j == c_j and b_j != c_j:
+        match_i, other_i = a_i, b_i
+        side = "V"
+    elif b_j == c_j and a_j != c_j:
+        match_i, other_i = b_i, a_i
+        side = "U"
+    else:
+        # Should not happen if uv_simple is not None.
+        match_i, other_i = a_i, b_i
+        side = "U"
+
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    v_row = _vec_sub(
+        _vec_add(e6id_to_vec[int(match_i)], e6id_to_vec[int(other_i)]),
+        e6id_to_vec[int(c_i)],
+    )
+    row = int(vec_to_e6id[v_row])
+    col = int(other_i)
+    flat = int(row) * 27 + int(col)
+
+    sign_expl = explain_simple_family_sign_closed_form(int(c_i), int(match_i), int(other_i))
+    # Extract sign (constant-line or generic rule) without duplicating logic.
+    sign = None
+    if isinstance(sign_expl.get("constant_line_rule"), dict):
+        sign = int(sign_expl["constant_line_rule"]["sign"])
+    if sign is None and isinstance(sign_expl.get("generic_rule"), dict):
+        sign = int(sign_expl["generic_rule"]["sign"])
+    if sign not in (-1, 1):
+        # Fallback: compute directly (should not happen).
+        sign = int(predict_simple_family_sign(int(c_i), int(match_i), int(other_i)))
+
+    return {
+        "available": True,
+        "family": "simple",
+        "inputs": {"a": [a_i, a_j], "b": [b_i, b_j], "c": [c_i, c_j]},
+        "match_other": {"match_i": int(match_i), "other_i": int(other_i), "side": str(side)},
+        "support": {"row_e6id": int(row), "col_e6id": int(col), "flat_e6": int(flat)},
+        "coeff": str(Fraction(int(sign), 54)),
+        "sign_explanation": sign_expl,
+        "uv": {
+            "U": [(int(i), str(v)) for i, v in uv_simple.U],
+            "V": [(int(i), str(v)) for i, v in uv_simple.V],
+        },
+    }
 
 
 def transport_ce2_uv_under_e6_monomial(

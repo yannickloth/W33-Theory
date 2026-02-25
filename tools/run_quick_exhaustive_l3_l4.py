@@ -46,69 +46,10 @@ linfty = build.LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0
 # attach symbolic l4 (if present)
 symp = ROOT / "artifacts" / "l4_symbolic_constants.json"
 if symp.exists():
-    linfty.attach_l4_from_symbolic_constants(symp)
+    linfty.attach_l4_from_symbolic_constants(symp, load_ce2_artifact=False)
 
-# ensure CE2 coboundary is attached (explicit fallback)
-ce2p = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
-if ce2p.exists():
-    ce2 = json.loads(ce2p.read_text(encoding="utf-8"))
-
-    from fractions import Fraction
-
-    def flat_to_e8(vec_flat):
-        N = 27 * 27
-        e6 = vec_flat[:N].reshape((27, 27)).astype(np.complex128)
-        off = N
-        sl3 = vec_flat[off : off + 9].reshape((3, 3)).astype(np.complex128)
-        off += 9
-        g1 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-        off += 81
-        g2 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-        return toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-    from tools.exhaustive_homotopy_check_rationalized_l3 import (
-        basis_elem_g1,
-        basis_elem_g2,
-    )
-
-    def alpha_global(a, b):
-        acc = toe.E8Z3.zero()
-        for k, e in ce2.items():
-            a_idx = tuple(e["a"])
-            b_idx = tuple(e["b"])
-            c_idx = tuple(e["c"])
-            U_rats = [Fraction(s) if s != "0" else None for s in e.get("U_rats", [])]
-            V_rats = [Fraction(s) if s != "0" else None for s in e.get("V_rats", [])]
-            U_num = np.array(
-                [float(fr) if fr is not None else 0.0 for fr in U_rats],
-                dtype=np.complex128,
-            )
-            V_num = np.array(
-                [float(fr) if fr is not None else 0.0 for fr in V_rats],
-                dtype=np.complex128,
-            )
-            U_e8 = flat_to_e8(U_num)
-            V_e8 = flat_to_e8(V_num)
-
-            if np.allclose(a.g1, basis_elem_g1(toe, b_idx).g1) and np.allclose(
-                b.g2, basis_elem_g2(toe, c_idx).g2
-            ):
-                acc = acc + U_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
-                b.g2, basis_elem_g2(toe, b_idx).g2
-            ):
-                acc = acc - U_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, a_idx).g1) and np.allclose(
-                b.g2, basis_elem_g2(toe, c_idx).g2
-            ):
-                acc = acc + V_e8
-            if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
-                b.g2, basis_elem_g2(toe, a_idx).g2
-            ):
-                acc = acc - V_e8
-        return acc
-
-    linfty.attach_l4_from_ce2(alpha_global)
+# Use the global metaplectic/Weil predictor for the CE2 coboundary (fast, no lookup).
+linfty.enable_ce2_global_predictor()
 
 # quick exhaustive checks (only triples where Jacobi(l2) != 0 are tested)
 from tools.exhaustive_homotopy_check_l3_l4 import (

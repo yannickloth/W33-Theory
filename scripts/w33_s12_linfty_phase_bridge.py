@@ -40,7 +40,7 @@ for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from ce2_global_cocycle import predict_ce2_uv
+from ce2_global_cocycle import explain_predict_ce2_uv, predict_ce2_uv
 
 
 def max_abs(e) -> float:
@@ -236,11 +236,9 @@ def main() -> None:
     print(f"  ||J+l3||_inf      = {max_abs(residual_no_ce2):.6g}")
     assert max_abs(residual_no_ce2) > 1e-10
 
-    # Load a representative sparse rational CE2 entry and attach it as an
-    # explicit cocycle/phase correction.
-    #
-    # Prefer the commit-friendly sparse artifact (if available) so this script
-    # is portable. Fall back to the large, ignored artifact otherwise.
+    # Demonstrate the CE2 correction as a canonical Weil/metaplectic lift:
+    #   - compute it from the global predictor (no per-triple lookup),
+    #   - optionally cross-check against the committed sparse artifact.
     ce2_key = "0,0:17,1:3,0"
     sparse_path = ROOT / "committed_artifacts" / "ce2_sparse_local_solutions.json"
     U_nz: list[tuple[int, str]] = []
@@ -252,7 +250,7 @@ def main() -> None:
                 U_nz = [(int(i), str(v)) for i, v in rec.get("U", [])]
                 V_nz = [(int(i), str(v)) for i, v in rec.get("V", [])]
                 break
-    else:
+    elif (ROOT / "artifacts" / "ce2_rational_local_solutions.json").exists():
         ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
         first = _load_first_ce2_entry(ce2_path)
         payload = first["payload"]
@@ -267,8 +265,6 @@ def main() -> None:
         U_nz = [(i, str(s)) for i, s in enumerate(U_rats) if str(s) != "0"]
         V_nz = [(i, str(s)) for i, s in enumerate(V_rats) if str(s) != "0"]
 
-    # This entry is built around the canonical mixed triple:
-    #   (0,0) : (17,1) : (3,0)
     print(f"  CE2 sample key: {ce2_key}")
     print(f"  U nonzeros: {len(U_nz)}")
     print(f"  V nonzeros: {len(V_nz)}")
@@ -276,41 +272,38 @@ def main() -> None:
         idx0, val0 = V_nz[0]
         i0, j0 = idx0 // 27, idx0 % 27
         print(f"  V[flat={idx0}] = {val0}  (e6[{i0},{j0}] in flattened layout)")
-    assert (len(U_nz), len(V_nz)) == (0, 1)
-    assert V_nz[0][1] == "1/54" and V_nz[0][0] == 179
+    if U_nz or V_nz:
+        assert (len(U_nz), len(V_nz)) == (0, 1)
+        assert V_nz[0][1] == "1/54" and V_nz[0][0] == 179
+    else:
+        print("  NOTE: No CE2 artifact entry loaded; using predictor only")
 
-    # The last remaining "mystery sign" is now an explicit degree-≤4 GF(2)
-    # phase polynomial on the full Heisenberg (u,z) data.
-    from ce2_global_cocycle import (
-        _simple_family_sign_poly_coeff_mask,
-        predict_simple_family_sign,
-    )
-
-    coeff_mask = _simple_family_sign_poly_coeff_mask()
-    if coeff_mask is not None:
-        # For key "0,0:17,1:3,0", the sign lookup key is (c_i=3, match_i=0, other_i=17).
-        sgn = predict_simple_family_sign(3, 0, 17)
-        print(
-            "  CE2 sign polynomial: weight=%d, sign(c=3,match=0,other=17)=%+d"
-            % (int(coeff_mask).bit_count(), int(sgn))
-        )
-
-    # Verify the same sparse CE2 entry is reproduced by the *global* Heisenberg law.
+    # Explain and compute the CE2 entry using the global Weil/metaplectic rule.
     a_s, b_s, c_s = ce2_key.split(":")
     a_pair = tuple(int(x) for x in a_s.split(","))  # type: ignore[assignment]
     b_pair = tuple(int(x) for x in b_s.split(","))  # type: ignore[assignment]
     c_pair = tuple(int(x) for x in c_s.split(","))  # type: ignore[assignment]
     if len(a_pair) != 2 or len(b_pair) != 2 or len(c_pair) != 2:
         raise AssertionError("Unexpected CE2 key parsing failure.")
+
+    expl = explain_predict_ce2_uv(a_pair, b_pair, c_pair)
+    assert expl.get("available") is True
+    print(f"  CE2 predictor family: {expl.get('family')}")
+    if expl.get("family") == "simple":
+        print(f"  Support: {expl.get('support')}")
+        print(f"  Coefficient: {expl.get('coeff')}")
+        inv = (expl.get('sign_explanation') or {}).get('invariants', {})
+        print(f"  Weil invariants: {inv}")
     pred = predict_ce2_uv(a_pair, b_pair, c_pair)
     assert pred is not None
     pred_U_nz = [(int(i), str(v)) for i, v in pred.U]
     pred_V_nz = [(int(i), str(v)) for i, v in pred.V]
     print(f"  Predicted U nonzeros: {len(pred_U_nz)}")
     print(f"  Predicted V nonzeros: {len(pred_V_nz)}")
-    assert sorted(U_nz) == sorted(pred_U_nz)
-    assert sorted(V_nz) == sorted(pred_V_nz)
-    print("  OK: Global Heisenberg law reproduces CE2 sparse entry exactly")
+    if U_nz or V_nz:
+        assert sorted(U_nz) == sorted(pred_U_nz)
+        assert sorted(V_nz) == sorted(pred_V_nz)
+        print("  OK: Global predictor reproduces CE2 sparse entry exactly")
 
     # ---------------------------------------------------------------------
     # §4. Hessian 648-group: the diagonal "missing cocycle" is the same phase

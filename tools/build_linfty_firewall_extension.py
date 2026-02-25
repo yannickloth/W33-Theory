@@ -96,7 +96,14 @@ class LInftyE8Extension:
       l_3 = confinement 3-bracket (supported on 9 fiber triads)
     """
 
-    def __init__(self, tool, proj, all_triads, bad9, l3_scale: float = 1.0):
+    def __init__(
+        self,
+        tool,
+        proj,
+        all_triads,
+        bad9,
+        l3_scale: float | list[float] | tuple[float, ...] = 1.0,
+    ):
         self.tool = tool
         self.proj = proj
         self.all_triads = all_triads
@@ -145,6 +152,13 @@ class LInftyE8Extension:
             for T in self.fiber_triads
         ]
 
+        # Validate per-fiber coefficient vectors (when provided).
+        if isinstance(self.l3_scale, (list, tuple, np.ndarray)):
+            if len(self.l3_scale) != len(self.br_fibers):
+                raise ValueError(
+                    f"expected l3_scale length {len(self.br_fibers)} (got {len(self.l3_scale)})"
+                )
+
     def l2(self, x, y):
         """The 2-bracket (firewall-filtered Lie bracket)."""
         return self.br_l2.bracket(x, y)
@@ -159,6 +173,30 @@ class LInftyE8Extension:
         total = self.tool.E8Z3.zero()
 
         # sum the single-triad S_T = j1+j2+j3+f1+f2+f3+ff1+ff2+ff3 for each fiber triad
+        if isinstance(self.l3_scale, (list, tuple, np.ndarray)):
+            coeffs = [float(c) for c in self.l3_scale]
+            for brf, c in zip(self.br_fibers, coeffs):
+                if abs(float(c)) < 1e-15:
+                    continue
+                j1 = brf.bracket(x, self.br_l2.bracket(y, z))
+                j2 = brf.bracket(y, self.br_l2.bracket(z, x))
+                j3 = brf.bracket(z, self.br_l2.bracket(x, y))
+
+                f1 = self.br_l2.bracket(brf.bracket(x, y), z)
+                f2 = self.br_l2.bracket(brf.bracket(y, z), x)
+                f3 = self.br_l2.bracket(brf.bracket(z, x), y)
+
+                ff1 = brf.bracket(x, brf.bracket(y, z))
+                ff2 = brf.bracket(y, brf.bracket(z, x))
+                ff3 = brf.bracket(z, brf.bracket(x, y))
+
+                S = j1 + j2 + j3 + f1 + f2 + f3 + ff1 + ff2 + ff3
+                total = total + S.scale(-float(c))
+            return total
+
+        c = float(self.l3_scale)
+        if abs(c) < 1e-15:
+            return total
         for brf in self.br_fibers:
             j1 = brf.bracket(x, self.br_l2.bracket(y, z))
             j2 = brf.bracket(y, self.br_l2.bracket(z, x))
@@ -173,7 +211,7 @@ class LInftyE8Extension:
             ff3 = brf.bracket(z, brf.bracket(x, y))
 
             S = j1 + j2 + j3 + f1 + f2 + f3 + ff1 + ff2 + ff3
-            total = total + S.scale(-self.l3_scale)
+            total = total + S.scale(-c)
 
         return total
 
@@ -640,7 +678,9 @@ class LInftyE8Extension:
             except Exception:
                 pass
 
-    def attach_l4_from_symbolic_constants(self, json_path: str | Path):
+    def attach_l4_from_symbolic_constants(
+        self, json_path: str | Path, *, load_ce2_artifact: bool = True
+    ):
         """Attach an l4 bracket from a JSON file of symbolic/sparse structure constants.
 
         Expected JSON shape: {"keys": {"a:b:c:d": ["r1","r2",...], ...}}
@@ -651,7 +691,18 @@ class LInftyE8Extension:
         p = Path(json_path)
         if not p.exists():
             raise FileNotFoundError(p)
-        data = json.loads(p.read_text(encoding="utf-8"))
+        raw = p.read_text(encoding="utf-8")
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as err:
+            # Some generated artifacts historically started with an empty JSON object
+            # prefix ("{}") before the real table. Tolerate that format so older
+            # snapshots remain loadable.
+            raw2 = raw.lstrip()
+            if raw2.startswith("{}"):
+                data = json.loads(raw2[2:].lstrip())
+            else:
+                raise err
         table = data if isinstance(data, dict) else data.get("keys", {})
 
         # convert stored flatten-Fraction arrays back into numeric E8Z3 elements
@@ -742,17 +793,21 @@ class LInftyE8Extension:
             return self.tool.E8Z3.zero()
 
         self._l4_fn = l4_from_table
-        # Attempt to register a coboundary callback automatically if a
-        # CE2 assembled artifact is available.  This makes
+        # Attempt to register a coboundary callback automatically if an
+        # assembled CE2 artifact is available.  This makes
         # `attach_l4_from_symbolic_constants` a convenient one-step loader
-        # (symbolic table + numeric coboundary) when `ce2_rational_local_solutions.json`
-        # exists alongside the l4 symbol file.
+        # (symbolic table + numeric coboundary) when
+        # `ce2_rational_local_solutions.json` exists.
+        #
+        # For "canonical lift" reporting (metaplectic/Weil closed-form CE2),
+        # callers may set load_ce2_artifact=False and instead rely on the global
+        # predictor via `enable_ce2_global_predictor()`.
         self._l4_coboundary_on_triple = None
 
         # look for assembled CE2 artifact and attach its coboundary if present
-        try:
-            ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
-            if ce2_path.exists():
+        if bool(load_ce2_artifact):
+            try:
+                ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
                 from fractions import Fraction
 
                 from tools.exhaustive_homotopy_check_rationalized_l3 import (
@@ -888,9 +943,9 @@ class LInftyE8Extension:
                 self._l4_coboundary_on_triple = l4_coboundary
 
                 self._l4_coboundary_on_triple = l4_coboundary
-        except Exception:
-            # best-effort: silently ignore if we can't locate/parse the CE2 artifact
-            pass
+            except Exception:
+                # best-effort: silently ignore if we can't locate/parse the CE2 artifact
+                pass
 
     def homotopy_jacobi(self, x, y, z):
         """

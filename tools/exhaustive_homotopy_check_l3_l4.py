@@ -11,6 +11,7 @@ from __future__ import annotations
 import importlib.util
 import itertools
 import json
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -76,11 +77,12 @@ def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="Exhaustive homotopy L3/L4 check")
+    default_workers = max(1, min(4, int(os.cpu_count() or 1)))
     parser.add_argument(
         "--workers",
         "-w",
         type=int,
-        default=1,
+        default=default_workers,
         help="number of worker threads for jacobi screening",
     )
     parser.add_argument(
@@ -88,9 +90,18 @@ def main() -> None:
         action="store_true",
         help="skip running CE2 assembly (faster local smoke)",
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--ce2-mode",
+        choices=["predictor", "artifact"],
+        default="artifact",
+        help="use global Weil predictor or assembled CE2 artifact (default)",
+    )
+    # Allow this tool to be called from within other runners (e.g. pytest)
+    # where unrelated CLI flags may be present on sys.argv.
+    args, _unknown = parser.parse_known_args()
     nworkers = int(args.workers)
     skip_assemble = bool(args.skip_assemble)
+    ce2_mode = str(args.ce2_mode)
 
     data = json.loads(IN.read_text(encoding="utf-8"))
     coeffs = data.get("rationalized_coeffs_float") or data.get("original", {}).get(
@@ -112,213 +123,64 @@ def main() -> None:
 
     from tools.build_linfty_firewall_extension import LInftyE8Extension
 
+    # l3 coefficients: the rationalized artifact stores a per-fiber-triad vector.
+    # LInftyE8Extension supports either a scalar (uniform) or a per-triad list/tuple.
+    coeffs_vec = data.get("rationalized_coeffs_float") or data.get("original", {}).get(
+        "coeffs"
+    )
+    if not (isinstance(coeffs_vec, list) and len(coeffs_vec) == 9):
+        coeffs_vec = None
+
+    l3_scale = (1.0 / 9.0) if ce2_mode == "predictor" else coeffs_vec
+    if l3_scale is None:
+        l3_scale = 1.0 / 9.0
+
     linfty = LInftyE8Extension(
         toe,
         proj,
         all_triads,
         bad9,
-        l3_scale=float(data.get("rationalized_coeffs_float", [1 / 9.0])[0]),
+        l3_scale=l3_scale,
     )
 
-    # attach l4: prefer symbolic constants artifact if available, else use CE2 assembled alpha
+    # Attach l4 (symbolic constants) and choose how to supply the CE2 coboundary:
+    #   - predictor: global metaplectic/Weil closed form (no per-triple lookup)
+    #   - artifact: assembled per-triple CE2 table (legacy, heavy)
     symp = ROOT / "artifacts" / "l4_symbolic_constants.json"
     if symp.exists():
-        # ensure assembled CE2 solutions are up-to-date (this will run the
-        # exhaustive scan to collect all failing triples if necessary)
-        asm = _load_module(
-            ROOT / "tools" / "assemble_exact_l4_from_local_ce2.py", "asmce2"
-        )
-        if not skip_assemble:
-            asm.main()
+        if ce2_mode == "artifact":
+            # Only assemble when the CE2 artifact is missing (the normal repo
+            # flow is to reuse the committed artifact for speed).
+            ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
+            if not ce2_path.exists() and (not skip_assemble):
+                asm = _load_module(
+                    ROOT / "tools" / "assemble_exact_l4_from_local_ce2.py", "asmce2"
+                )
+                asm.main()
+            linfty.attach_l4_from_symbolic_constants(symp, load_ce2_artifact=True)
         else:
-            print(
-                "Skipping CE2 assembly (use --skip-assemble to bypass heavy assembly)"
-            )
+            linfty.attach_l4_from_symbolic_constants(symp, load_ce2_artifact=False)
+            linfty.enable_ce2_global_predictor()
 
-        linfty.attach_l4_from_symbolic_constants(symp)
-
-        # also attach the assembled CE2 alpha so the l4 coboundary callback is
-        # registered and `homotopy_jacobi` includes the d(alpha) correction.
-        ce2_path = ROOT / "artifacts" / "ce2_rational_local_solutions.json"
-        if ce2_path.exists():
-            from fractions import Fraction
-
-            ce2 = json.loads(ce2_path.read_text(encoding="utf-8"))
-
-            def flat_to_e8(vec_flat):
-                N = 27 * 27
-                e6 = vec_flat[:N].reshape((27, 27)).astype(np.complex128)
-                off = N
-                sl3 = vec_flat[off : off + 9].reshape((3, 3)).astype(np.complex128)
-                off += 9
-                g1 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-                off += 81
-                g2 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-                return toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-            from tools.exhaustive_homotopy_check_rationalized_l3 import (
-                basis_elem_g1,
-                basis_elem_g2,
-            )
-
-            def alpha_global(a, b):
-                acc = toe.E8Z3.zero()
-                for k, e in ce2.items():
-                    a_idx = tuple(e["a"])
-                    b_idx = tuple(e["b"])
-                    c_idx = tuple(e["c"])
-                    U_rats = [
-                        Fraction(s) if s != "0" else None for s in e.get("U_rats", [])
-                    ]
-                    V_rats = [
-                        Fraction(s) if s != "0" else None for s in e.get("V_rats", [])
-                    ]
-                    U_num = np.array(
-                        [float(fr) if fr is not None else 0.0 for fr in U_rats],
-                        dtype=np.complex128,
-                    )
-                    V_num = np.array(
-                        [float(fr) if fr is not None else 0.0 for fr in V_rats],
-                        dtype=np.complex128,
-                    )
-                    U_e8 = flat_to_e8(U_num)
-                    V_e8 = flat_to_e8(V_num)
-
-                    # match identical to assemble_exact_l4_from_local_ce2.make_alpha_from_rats
-                    if np.allclose(a.g1, basis_elem_g1(toe, b_idx).g1) and np.allclose(
-                        b.g2, basis_elem_g2(toe, c_idx).g2
-                    ):
-                        acc = acc + U_e8
-                    if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
-                        b.g2, basis_elem_g2(toe, b_idx).g2
-                    ):
-                        acc = acc - U_e8
-                    if np.allclose(a.g1, basis_elem_g1(toe, a_idx).g1) and np.allclose(
-                        b.g2, basis_elem_g2(toe, c_idx).g2
-                    ):
-                        acc = acc + V_e8
-                    if np.allclose(a.g1, basis_elem_g1(toe, c_idx).g1) and np.allclose(
-                        b.g2, basis_elem_g2(toe, a_idx).g2
-                    ):
-                        acc = acc - V_e8
-                return acc
-
-            # register the assembled CE2 alpha *without* overwriting the
-            # triple-aware coboundary installed by
-            # `attach_l4_from_symbolic_constants` (avoid losing exact per-triple
-            # CE2 entries).  Use attach_ce2_alpha so `d_alpha_on_triple` can
-            # still prefer the per-triple lookup.
-            linfty.attach_ce2_alpha(alpha_global)
-
-            # --- SANITY CHECK: ensure the recorded l3-failing triple is
-            # cancelled by the attached l4 / CE2 alpha (avoid stale failures)
-            try:
-                exh_r3 = json.loads(
-                    (
-                        ROOT / "artifacts" / "exhaustive_homotopy_rationalized_l3.json"
-                    ).read_text()
+            # Quick sanity-check: the canonical mixed triple cancels.
+            xa = basis_elem_g1(toe, (0, 0))
+            ya = basis_elem_g1(toe, (17, 1))
+            za = basis_elem_g2(toe, (3, 0))
+            mag = float(flat_mag(linfty.homotopy_jacobi(xa, ya, za)))
+            if mag > TOL_FAIL:
+                raise AssertionError(
+                    f"global CE2 predictor did not cancel mixed triple (mag={mag})"
                 )
-                ft = exh_r3.get("sectors", {}).get("g1_g1_g2", {}).get("first_fail")
-                if ft:
-                    from tools.exhaustive_homotopy_check_rationalized_l3 import (
-                        basis_elem_g1,
-                        basis_elem_g2,
-                    )
-
-                    xa = basis_elem_g1(toe, tuple(ft["a"]))
-                    ya = basis_elem_g1(toe, tuple(ft["b"]))
-                    za = basis_elem_g2(toe, tuple(ft["c"]))
-                    hj = linfty.homotopy_jacobi(xa, ya, za)
-                    mag = float(
-                        max(
-                            np.max(np.abs(hj.e6)) if hj.e6.size else 0.0,
-                            np.max(np.abs(hj.sl3)) if hj.sl3.size else 0.0,
-                            np.max(np.abs(hj.g1)) if hj.g1.size else 0.0,
-                            np.max(np.abs(hj.g2)) if hj.g2.size else 0.0,
-                        )
-                    )
-                    if mag > TOL_FAIL:
-                        print(
-                            "Sanity check: recorded l3-failing triple not cancelled by attached l4/CE2 (mag=",
-                            mag,
-                            ") — continuing but artifact may be stale",
-                        )
-            except Exception as _err:
-                print("Sanity-check: could not validate recorded l3 failure:", _err)
     else:
-        # fallback: assemble CE2 local solutions and promote
-        asm = _load_module(
-            ROOT / "tools" / "assemble_exact_l4_from_local_ce2.py", "asmce2"
-        )
-        assembled = asm.main()
-        # create alpha_global from assembled artifact
-        ce2 = json.loads(
-            (ROOT / "artifacts" / "ce2_rational_local_solutions.json").read_text(
-                encoding="utf-8"
-            )
-        )
-
-        def alpha_global(a, b):
-            acc = toe.E8Z3.zero()
-            for k, e in ce2.items():
-                a_idx = tuple(e["a"])
-                b_idx = tuple(e["b"])
-                c_idx = tuple(e["c"])
-                U_rats = [
-                    Fraction(s) if s != "0" else None for s in e.get("U_rats", [])
-                ]
-                V_rats = [
-                    Fraction(s) if s != "0" else None for s in e.get("V_rats", [])
-                ]
-                # numeric conversion
-                U_num = np.array(
-                    [float(fr) if fr is not None else 0.0 for fr in U_rats],
-                    dtype=np.complex128,
-                )
-                V_num = np.array(
-                    [float(fr) if fr is not None else 0.0 for fr in V_rats],
-                    dtype=np.complex128,
-                )
-
-                def flat_to_e8(vec_flat):
-                    N = 27 * 27
-                    e6 = vec_flat[:N].reshape((27, 27)).astype(np.complex128)
-                    off = N
-                    sl3 = vec_flat[off : off + 9].reshape((3, 3)).astype(np.complex128)
-                    off += 9
-                    g1 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-                    off += 81
-                    g2 = vec_flat[off : off + 81].reshape((27, 3)).astype(np.complex128)
-                    return toe.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-                U_e8 = flat_to_e8(U_num)
-                V_e8 = flat_to_e8(V_num)
-                # match by identity
-                if np.allclose(a.g1, toe.E8Z3.zero().g1) and np.allclose(
-                    b.g2, toe.E8Z3.zero().g2
-                ):
-                    pass
-                # use same matching logic as other assemble tools
-                if np.allclose(a.g1, toe.E8Z3.zero().g1) and np.allclose(
-                    b.g2, toe.E8Z3.zero().g2
-                ):
-                    continue
-                # instead, keep alpha limited to the known support per entry
-                if np.allclose(a.g1, toe.E8Z3.zero().g1) and np.allclose(
-                    b.g2, toe.E8Z3.zero().g2
-                ):
-                    continue
-            # fallback zero (we expect symbolic file to be present)
-            return toe.E8Z3.zero()
-
-        # promote nothing (we expect symbolic constants present in normal flow)
-        pass
+        if ce2_mode == "artifact":
+            raise RuntimeError("missing artifacts/l4_symbolic_constants.json")
+        linfty.enable_ce2_global_predictor()
 
     # now run exhaustive checks using linfty.homotopy_jacobi
     g1_idx = make_g1_basis(toe)
     g2_idx = make_g2_basis(toe)
 
-    out = {"candidate_coeffs": coeffs, "sectors": {}}
+    out = {"candidate_coeffs": coeffs, "ce2_mode": ce2_mode, "sectors": {}}
 
     # helper to evaluate triple using linfty.homotopy_jacobi
     def eval_triple(x, y, z):
