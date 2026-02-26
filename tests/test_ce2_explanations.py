@@ -17,6 +17,14 @@ def test_simple_family_sign_explanation_matches_predictor() -> None:
     ]
     for c, m, o in samples:
         expl = explain_simple_family_sign_closed_form(c, m, o)
+
+        # tag and pattern should be present and well-formed
+        tag = expl.get("tag")
+        assert isinstance(tag, (list, tuple)) and len(tag) == 3
+        pattern = expl.get("pattern")
+        assert isinstance(pattern, (list, tuple)) and len(pattern) == 3
+        assert all(s in (-1, 1) for s in pattern)
+
         sign = expl.get("constant_line_rule", {}).get("sign")
         if sign is None:
             sign = expl.get("generic_rule", {}).get("sign")
@@ -41,3 +49,16 @@ def test_predict_ce2_uv_explanation_consistency() -> None:
 
     assert normalize(expl["uv"]["U"]) == normalize(uv.U)
     assert normalize(expl["uv"]["V"]) == normalize(uv.V)
+
+
+def test_simple_family_tag_helper_consistency() -> None:
+    from scripts.ce2_global_cocycle import compute_simple_family_tag
+    # pick a random sample and ensure tag matches explanation
+    c, m, o = 3, 0, 17
+    expl = explain_simple_family_sign_closed_form(c, m, o)
+    tag1 = tuple(expl.get("tag"))
+    tag2 = compute_simple_family_tag(c, m, o)
+    assert tag1 == tag2
+    # ensure pattern from explanation is one of the 8 allowed
+    patt = expl.get("pattern")
+    assert patt in [(-1,-1,-1),(-1,-1,1),(-1,1,-1),(-1,1,1),(1,-1,-1),(1,-1,1),(1,1,-1),(1,1,1)]
