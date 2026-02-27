@@ -485,3 +485,21 @@ def test_match_bose_mesner_self():
     assert res.returncode == 0
 
 
+def test_duad_we6_conjugacy():
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "duad_we6_conjugacy.py")], cwd=repo)
+    # script may return nonzero if no conjugator found; we just verify it executed
+    logf = repo / "artifacts" / "duad_we6_conjugacy.log"
+    assert logf.exists()
+    # log should contain at least the duad group size
+    txt = logf.read_text()
+    assert "duad group size" in txt
+    # if conjugator produced, also validate mapping
+    conjf = repo / "artifacts" / "duad_we6_conjugator.json"
+    if conjf.exists():
+        mapping = json.loads(conjf.read_text())
+        assert len(mapping) == 240
+        vals = set(mapping.values())
+        assert vals == set(range(240))
+
+

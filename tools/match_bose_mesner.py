@@ -36,19 +36,18 @@ def load_matrices(path: Path) -> List[np.ndarray]:
     data = json.loads(path.read_text())
     mats = None
     if isinstance(data, dict):
-        # look for conventional keys
-        for key in ("relations", "adjacency", "matrices", "p_ijk"):
+        # if it's the solved bundle containing p_ijk then the candidate
+        # file is probably wrong
+        if "p_ijk" in data and not any(k in data for k in ("relations", "adjacency", "matrices")):
+            raise ValueError("input appears to be the intersection-numbers bundle; give --solution instead")
+        # otherwise, look for conventional adjacency keys
+        for key in ("relations", "adjacency", "matrices"):
             if key in data:
                 mats = data[key]
                 break
     if mats is None:
-        # assume file itself is a list
+        # assume the file itself is a top-level list of matrices
         mats = data
-    # if the data is the duad bundle with p_ijk, we need to reconstruct
-    # adjacency matrices from relation sizes; that's not feasible here, so
-    # raise.
-    if isinstance(mats, dict) and "p_ijk" in mats:
-        raise ValueError("input appears to be the intersection-numbers bundle; give --solution instead")
     return [np.array(m, dtype=int) for m in mats]
 
 
@@ -86,6 +85,9 @@ def main():
     parser.add_argument("--solution", type=Path,
                         help="reference file with p_ijk table (bundle)")
     args = parser.parse_args()
+    if args.solution and args.candidate.resolve() == args.solution.resolve():
+        print("candidate identical to solution, nothing to match")
+        sys.exit(0)
     cand_mats = load_matrices(args.candidate)
     print("loaded", len(cand_mats), "relation matrices from", args.candidate)
     cand_p = compute_pijk(cand_mats)

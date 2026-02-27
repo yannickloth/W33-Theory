@@ -146,6 +146,9 @@ def find_invariant(mats: List[np.ndarray], dim_target: int) -> np.ndarray:
 
 
 def decompose(mats: List[np.ndarray]) -> List[int]:
+    # seed numpy/random for reproducibility (important for tests)
+    np.random.seed(0)
+    random.seed(0)
     dims: List[int] = []
     current = mats
     m = current[0].shape[0]
