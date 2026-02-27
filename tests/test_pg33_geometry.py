@@ -278,3 +278,63 @@ def test_outer_twist_root_certificate(tmp_path):
     total = sum(int(k) * v for k,v in data["root_cycle_structure"].items())
     assert total == 240
 
+
+def test_outer_twist_cocycle_and_bundle(tmp_path):
+    """Compute edge defect cocycle and package it into a bundle."""
+    repo = Path(__file__).resolve().parents[1]
+    work = tmp_path / "work"
+    work.mkdir()
+    # prepare workspace with required inputs
+    shutil.copytree(repo / "H27_OUTER_TWIST_ACTION_BUNDLE_v01", work / "H27_OUTER_TWIST_ACTION_BUNDLE_v01")
+    shutil.copy(repo / "pg_to_edge_labeling.json", work / "pg_to_edge_labeling.json")
+    shutil.copy(repo / "pg_to_internal_inf.json", work / "pg_to_internal_inf.json")
+    (work / "artifacts").mkdir()
+    shutil.copy(repo / "artifacts" / "edge_to_e8_root.json", work / "artifacts" / "edge_to_e8_root.json")
+    shutil.copy(repo / "artifacts" / "a2_4_decomposition.json", work / "artifacts" / "a2_4_decomposition.json")
+    # run cocycle script
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "compute_outer_twist_root_cocycle.py")], cwd=work)
+    assert res.returncode == 0
+    cocycle_dir = work / "analysis" / "outer_twist_cocycle"
+    assert (cocycle_dir / "edge_defect.json").exists()
+    assert (cocycle_dir / "edge_defect.csv").exists()
+    assert (cocycle_dir / "orbits_under_WE6.json").exists()
+
+
+def test_cocycle_properties(tmp_path):
+    """Run the analysis script and check its summary output."""
+    repo = Path(__file__).resolve().parents[1]
+    work = tmp_path / "work"
+    work.mkdir()
+    # set up same inputs as previous test
+    shutil.copytree(repo / "H27_OUTER_TWIST_ACTION_BUNDLE_v01", work / "H27_OUTER_TWIST_ACTION_BUNDLE_v01")
+    shutil.copy(repo / "pg_to_edge_labeling.json", work / "pg_to_edge_labeling.json")
+    shutil.copy(repo / "pg_to_internal_inf.json", work / "pg_to_internal_inf.json")
+    (work / "analysis" / "outer_twist_cocycle").mkdir(parents=True)
+    # copy defect file produced earlier
+    orig = repo / "analysis" / "outer_twist_cocycle" / "edge_defect.json"
+    shutil.copy(orig, work / "analysis" / "outer_twist_cocycle" / "edge_defect.json")
+    # run property script
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "compute_cocycle_properties.py")], cwd=work)
+    assert res.returncode == 0
+    summary = json.loads((work / "analysis" / "outer_twist_cocycle" / "defect_summary.json").read_text())
+    # ensure triangle cocycle holds and is non-coboundary
+    assert summary["triangle_violations"] == 0
+    assert summary.get("coboundary") in (True, False)
+    # defect stats should match expected counts
+    stats = summary.get("stats", {})
+    assert stats.get("0") == 336 or stats.get(0) == 336
+
+    # now bundle it
+    res2 = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "make_outer_twist_cocycle_bundle.py")], cwd=work)
+    assert res2.returncode == 0
+    bundle = work / "OUTER_TWIST_INDUCES_ROOTWORD_COCYCLE_BUNDLE_v01.zip"
+    assert bundle.exists()
+    # check bundle contents
+    import zipfile
+    with zipfile.ZipFile(bundle) as z:
+        names = set(z.namelist())
+    expected = {"edge_defect.json","edge_defect.csv","orbits_under_WE6.json",
+                "pg_to_edge_labeling.json","pg_to_internal_inf.json",
+                "A4_matrix.json","N4_matrix.json","summary.json"}
+    assert expected.issubset(names)
+

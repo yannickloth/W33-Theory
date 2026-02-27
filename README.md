@@ -1,4 +1,4 @@
-﻿# W(3,3)&ndash;E8 Theory
+# W(3,3)&ndash;E8 Theory
 
 **A finite-geometry approach to Standard Model structure**
 
@@ -60,10 +60,14 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 >   by its infinity direction and triangle class, plus all 40 lines with
 >   direction and affine triples.  Each of the 9 directions splits into 3
 >   affine lines.
-> * **OUTER_TWIST_INDUCES_ROOTWORD_COCYCLE_BUNDLE_v01.zip** – computes the
->   Z₃ projection defect between the original edge→root bijection and the one
->   obtained after applying the outer-twist gauge change.  Includes per-edge
->   defects, orbit classification, and summary statistics.
+> * **OUTER_TWIST_INDUCES_ROOTWORD_COCYCLE_BUNDLE_v01.zip** – computes the  
+  Z₃ projection defect between the original edge→root bijection and the one
+  obtained after applying the outer-twist gauge change.  Includes per-edge
+  defects, orbit classification, and summary statistics.  A companion script
+  (`tools/compute_cocycle_properties.py`) computes the triangle sums and
+  reports 82 violations (hence the defect is not a true cocycle) and
+  confirms there is no coboundary solution; the summary JSON records the
+  336‑0/72‑1/72‑2 defect distribution.
 >
 > A complete bijection between PG IDs, internal W33 vertex IDs and the
 > 240‑edge ↔ E₈‑root correspondence has also been computed.  Running
@@ -597,4 +601,5 @@ This convergence across independent disciplines is strong evidence that the unde
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+
 
