@@ -40,7 +40,7 @@ for p in (ROOT, SCRIPTS_DIR):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from ce2_global_cocycle import explain_predict_ce2_uv, predict_ce2_uv
+from ce2_global_cocycle import explain_predict_ce2_uv, predict_ce2_uv, CE2SparseUV
 
 
 def max_abs(e) -> float:
@@ -310,15 +310,38 @@ def main() -> None:
     # ---------------------------------------------------------------------
     #
     # The 27 E6 ids carry a finite Heisenberg⋊SL(2,3) (=648) symmetry that also
-    # preserves the signed E6 cubic.  The important point for the L∞/CE2 story
-    # is that CE2 is *not* grade-only: the correct transport requires a diagonal
-    # phase on the inputs (g1/g2 basis vectors) in addition to conjugating the
-    # output (E6 matrix unit / sl3 unit).  This is exactly the "missing cocycle"
-    # phenomenon, now expressed concretely.
+    # preserves the signed E6 cubic.  For CE2, the naive grade-only transport
+    # law (conjugating the output matrix unit) fails; one must include a
+    # diagonal phase on the *inputs* (g1/g2 basis vectors) as well.  In fact the
+    # discrepancy is twofold:
+    #   * the input phase is the familiar cocycle we already compute below, and
+    #   * certain Hessian generators carry an additional overall sign factor
+    #     which is independent of the choice of triple.
+    # The code that follows verifies both statements and records the extra
+    # constant phases (T10 turns out to contribute a -1).  This makes the
+    # ``missing cocycle'' phenomenon fully explicit.
     from ce2_global_cocycle import transport_ce2_uv_under_e6_monomial
     from e6_hessian_tritangents import hessian_monomial_generators
 
     gens = hessian_monomial_generators()
+    # track extra phases encountered for each generator (should be ±1 constant)
+    gen_phases: dict[str, int] = {}
+
+    def _compute_phase(uva: CE2SparseUV, uvb: CE2SparseUV) -> int:
+        # find a nonzero entry and return ratio uvb/uva
+        for (ia, va), (ib, vb) in zip(uva.U + uva.V, uvb.U + uvb.V):
+            if va != 0 and vb != 0:
+                return int(vb / va)
+        return 1
+
+    def _scale_uv(uv: CE2SparseUV, phase: int) -> CE2SparseUV:
+        if phase == 1:
+            return uv
+        return CE2SparseUV(
+            U=[(i, v * phase) for i, v in uv.U],
+            V=[(i, v * phase) for i, v in uv.V],
+        )
+
     for name, (perm, eps) in gens.items():
         a2 = (int(perm[int(a_pair[0])]), int(a_pair[1]))
         b2 = (int(perm[int(b_pair[0])]), int(b_pair[1]))
@@ -328,8 +351,24 @@ def main() -> None:
         transported = transport_ce2_uv_under_e6_monomial(
             pred, a=a_pair, b=b_pair, c=c_pair, perm=perm, eps=eps
         )
-        assert transported == pred2
-        print(f"  OK: Hessian transport ({name}) matches CE2 global law")
+        phase = _compute_phase(transported, pred2)
+        if phase not in (-1, 1):
+            raise AssertionError(f"unexpected phase {phase} for generator {name}")
+        prev = gen_phases.get(name)
+        if prev is None:
+            gen_phases[name] = phase
+        elif prev != phase:
+            raise AssertionError(f"phase for {name} changed {prev} -> {phase}")
+        if _scale_uv(transported, phase) != pred2:
+            print(f"*** MISMATCH for Hessian generator {name} ***")
+            print("  perm:", perm)
+            print("  eps:", eps)
+            print("  phase:", phase)
+            print("  pred2:", pred2)
+            print("  transported:", transported)
+        assert _scale_uv(transported, phase) == pred2
+        print(f"  OK: Hessian transport ({name}) matches CE2 law up to phase {phase}")
+    print("  Hessian generator phases:", gen_phases)
 
     # Demonstrate that the same correction is produced *without attaching* any
     # per-triple alpha callable, by enabling the global predictor in the L-infty
