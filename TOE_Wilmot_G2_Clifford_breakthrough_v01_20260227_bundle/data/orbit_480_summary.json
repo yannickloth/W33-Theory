@@ -1,0 +1,9 @@
+{
+  "signed_perm_group_order": 645120,
+  "stabilizer_order": 1344,
+  "orbit_size_distinct_tables": 480,
+  "factorization": {
+    "stabilizer": "1344 = 168*8",
+    "orbit": "480"
+  }
+}

@@ -175,6 +175,89 @@ def solve_derivations(mult, quick=False):
     return {'rank': rankA, 'null_dim': null_dim, 'fix_dim': fix_dim}, basis
 
 
+def solve_g2_so7(triples):
+    """Build derivations of the 7-dimensional imaginary octonions inside so(7).
+
+    Returns a tuple (info, basis) where info contains 'rank', 'null_dim',
+    and 'fix_dim' (fixing unit 7), and basis is a list of 7x7 integer
+    matrices spanning the solution space.
+    """
+    m = 7
+    # build cross-product lookup from oriented Fano triples
+    # convert from 1-based imaginary indices to 0-based positions
+    cp = {}
+    for (a, b, c) in triples:
+        ai, bi, ci = a-1, b-1, c-1
+        cp[(ai, bi)] = (1, ci)
+        cp[(bi, ci)] = (1, ai)
+        cp[(ci, ai)] = (1, bi)
+        cp[(bi, ai)] = (-1, ci)
+        cp[(ci, bi)] = (-1, ai)
+        cp[(ai, ci)] = (-1, bi)
+    # variables for all entries of a 7x7 matrix
+    vars_ = []
+    var_index = {}
+    for i in range(m):
+        for j in range(m):
+            sym = sp.Symbol(f'd{i}_{j}')
+            vars_.append(sym)
+            var_index[(i, j)] = sym
+    eqs = []
+    # enforce skew-symmetry D_{ji} + D_{ij} = 0
+    for i in range(m):
+        for j in range(i + 1, m):
+            eqs.append(var_index[(i, j)] + var_index[(j, i)])
+    # derivation constraints for each ordered pair with nonzero cross product
+    for i in range(m):
+        for j in range(m):
+            if i == j:
+                continue
+            sign_k, k = cp.get((i, j), (0, None))
+            if sign_k == 0:
+                continue
+            # left side: D(e_i x e_j) = sign_k * D_k
+            Dk = [var_index[(p, k)] for p in range(m)]
+            left = [sign_k * Dk[t] for t in range(m)]
+            # right side: D(e_i) x e_j + e_i x D(e_j)
+            Di = [var_index[(p, i)] for p in range(m)]
+            Dj = [var_index[(p, j)] for p in range(m)]
+            right1 = [0] * m
+            for p in range(m):
+                coef = Di[p]
+                if coef == 0:
+                    continue
+                s2, k2 = cp.get((p, j), (0, None))
+                if s2:
+                    right1[k2] += coef * s2
+            right2 = [0] * m
+            for p in range(m):
+                coef = Dj[p]
+                if coef == 0:
+                    continue
+                s2, k2 = cp.get((i, p), (0, None))
+                if s2:
+                    right2[k2] += coef * s2
+            for t in range(m):
+                eqs.append(left[t] - (right1[t] + right2[t]))
+    # linear solve
+    A, _ = sp.linear_eq_to_matrix(eqs, vars_)
+    rankA = A.rank()
+    null_dim = len(vars_) - rankA
+    nulls = A.nullspace()
+    basis = []
+    for v in nulls:
+        iv = [int(x) for x in v]
+        mat = np.array(iv).reshape(m, m).tolist()
+        basis.append(mat)
+    # compute fix-dimension for last unit (index 6)
+    if basis:
+        Maxis = sp.Matrix([[basis[i][r][6] for i in range(len(basis))] for r in range(m)])
+        fix_dim = len(basis) - Maxis.rank()
+    else:
+        fix_dim = 0
+    return {'rank': rankA, 'null_dim': null_dim, 'fix_dim': fix_dim}, basis
+
+
 def main():
     import argparse
     ap = argparse.ArgumentParser()
@@ -192,6 +275,19 @@ def main():
         stats['orbit_size'] = 480
     deriv_info, basis = solve_derivations(mult, quick=args.quick)
     stats.update(deriv_info)
+    # compute so7/g2 data as well regardless of quick (fast)
+    g2_info, g2_basis = solve_g2_so7([
+        (1,2,3),
+        (1,4,5),
+        (1,7,6),
+        (2,4,6),
+        (2,5,7),
+        (3,4,7),
+        (3,6,5),
+    ])
+    stats['so7_rank'] = g2_info['rank']
+    stats['so7_null_dim'] = g2_info['null_dim']
+    stats['so7_fix_dim'] = g2_info['fix_dim']
     # compute simple Killing form as trace of product in the 8-dim module
     K = []
     for i, Bi in enumerate(basis):
@@ -205,6 +301,8 @@ def main():
         json.dump(stats, f)
     with open(cwd / 'octonion_derivations.json', 'w') as f:
         json.dump({'basis': basis, 'killing_form': K, **deriv_info}, f)
+    with open(cwd / 'octonion_g2_so7.json', 'w') as f:
+        json.dump({'basis7': g2_basis, **g2_info}, f)
     print('done', stats, 'killing_form_rank', np.linalg.matrix_rank(np.array(K)))
 
 

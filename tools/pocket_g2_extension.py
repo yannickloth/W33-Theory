@@ -171,6 +171,10 @@ def main():
     ap.add_argument("--tri_zip", required=True)
     ap.add_argument("--edge_zip", required=True)
     ap.add_argument("--full_basis", help="path to full_derivations_basis.json")
+    ap.add_argument("--verify_lift", action="store_true",
+                    help="compute pocket sl3+axis-mover closure dimensions")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="when verifying lift, only process first N pockets (0=all)")
     args = ap.parse_args()
 
     mult = build_36_mult(args.tri_zip, args.edge_zip)
@@ -230,21 +234,160 @@ def main():
             # compute closure dimension if we have both fix basis and shift candidates
             if info.get('fix_dim') is not None:
                 all_mats = [np.array(M, dtype=int) for M in fix_basis] + [np.array(D, dtype=int) for D in cand]
-                closure_set = list(all_mats)
-                changed = True
-                while changed:
-                    changed = False
-                    for X in list(closure_set):
-                        for Y in list(closure_set):
-                            C = X @ Y - Y @ X
-                            if not any(np.array_equal(C, Z) for Z in closure_set):
-                                closure_set.append(C)
-                                changed = True
-                cl_dim = np.linalg.matrix_rank(np.array([M.reshape(-1) for M in closure_set], dtype=float))
-                info['closure_dim'] = int(cl_dim)
+                # linear-independence based closure dimension
+                gens = list(all_mats)
+                if gens:
+                    B = np.vstack([M.reshape(-1) for M in gens])
+                    rank = np.linalg.matrix_rank(B.astype(float))
+                else:
+                    B = np.zeros((0, 36))
+                    rank = 0
+                idx2 = 0
+                while idx2 < len(gens):
+                    X = gens[idx2]
+                    for Y in gens[idx2+1:]:
+                        C = X @ Y - Y @ X
+                        v = C.reshape(-1)
+                        R = np.linalg.matrix_rank(np.vstack([B, v]).astype(float))
+                        if R > rank:
+                            rank = R
+                            B = np.vstack([B, v])
+                            gens.append(C)
+                    idx2 += 1
+                info['closure_dim'] = int(rank)
         with open('axis_shift_summary.json', 'w') as f:
             json.dump(axis_summary, f)
         print('axis summary saved; candidates written for', list(axis_candidates.keys()))
+    
+    if args.verify_lift:
+        # for each pocket compute its local sl3 derivation algebra and test closure
+        def compute_pocket_deriv(pocket, mult36):
+            loc = sorted(pocket)
+            m = len(loc)
+            idx = {g: i for i, g in enumerate(loc)}
+            # build restricted mult table
+            mL = [[None] * m for _ in range(m)]
+            for ig in loc:
+                for jg in loc:
+                    if ig == jg:
+                        continue
+                    mg = mult36[ig][jg]
+                    if mg is not None and mg[1] in pocket:
+                        sign, kg = mg
+                        mL[idx[ig]][idx[jg]] = (sign, idx[kg])
+            # set up derivation variables
+            vars_ = []
+            var_index = {}
+            for p in range(m):
+                for q in range(m):
+                    sym = sp.Symbol(f'd{p}_{q}')
+                    vars_.append(sym)
+                    var_index[(p, q)] = sym
+            def D_of(q):
+                return [var_index[(p, q)] for p in range(m)]
+            def mult_vec(vec, j, left=True):
+                out = [0] * m
+                for p, coeff in enumerate(vec):
+                    if coeff == 0:
+                        continue
+                    prod = mL[p][j] if left else mL[j][p]
+                    if prod is not None:
+                        sign, k = prod
+                        out[k] += coeff * sign
+                return out
+            eqs = []
+            for i in range(m):
+                for j in range(m):
+                    prod = mL[i][j]
+                    left = [0] * m
+                    if prod is not None:
+                        sign, k = prod
+                        Dk = D_of(k)
+                        for t in range(m):
+                            left[t] += sign * Dk[t]
+                    Di = D_of(i); Dj = D_of(j)
+                    right1 = mult_vec(Di, j, left=True)
+                    right2 = mult_vec(Dj, i, left=False)
+                    right = [right1[t] + right2[t] for t in range(m)]
+                    for t in range(m):
+                        expr = left[t] - right[t]
+                        if expr != 0:
+                            eqs.append(expr)
+            A, _ = sp.linear_eq_to_matrix(eqs, vars_)
+            nulls = A.nullspace()
+            basis_mats = []
+            for v in nulls:
+                iv = [int(x) for x in v]
+                M = np.array(iv, dtype=int).reshape((m, m), order="F")
+                basis_mats.append(M)
+            return basis_mats
+
+        def semisimple_basis(basis_mats):
+            m = basis_mats[0].shape[0] if basis_mats else 0
+            def flat(M):
+                return sp.Matrix(np.array(M, dtype=int).reshape(m * m, order="F"))
+            comms = []
+            for i in range(len(basis_mats)):
+                for j in range(i + 1, len(basis_mats)):
+                    C = basis_mats[i] @ basis_mats[j] - basis_mats[j] @ basis_mats[i]
+                    comms.append(flat(C))
+            if not comms:
+                return [], 0
+            Cmat = sp.Matrix.hstack(*comms)
+            cs = Cmat.columnspace()
+            mats = []
+            for v in cs:
+                mats.append(np.array(v, dtype=int).reshape((m, m), order="F"))
+            return mats, len(cs)
+
+        lift_results = []
+        seq = pockets if args.limit <= 0 else pockets[:args.limit]
+        for p in seq:
+            sb = compute_pocket_deriv(p, mult)
+            semi, dim8 = semisimple_basis(sb)
+            silent = silent_map[tuple(p)]
+            # create axis-movers
+            m = len(p)
+            sidx = sb and silent is not None and sorted(p).index(silent)
+            axis_movers = []
+            if sidx is not None:
+                for t in range(m):
+                    if t == sidx:
+                        continue
+                    M = np.zeros((m, m), dtype=int)
+                    M[sidx, t] = 1
+                    M[t, sidx] = -1
+                    axis_movers.append(M)
+            # compute closure dimension by tracking linear independence
+            gens = [M.copy() for M in semi] + axis_movers.copy()
+            if gens:
+                B = np.vstack([M.reshape(-1) for M in gens])
+                rank = np.linalg.matrix_rank(B.astype(float))
+            else:
+                B = np.zeros((0, m*m))
+                rank = 0
+            idx2 = 0
+            while idx2 < len(gens):
+                X = gens[idx2]
+                for Y in gens[idx2+1:]:
+                    C = X @ Y - Y @ X
+                    v = C.reshape(-1)
+                    R = np.linalg.matrix_rank(np.vstack([B, v]).astype(float))
+                    if R > rank:
+                        rank = R
+                        B = np.vstack([B, v])
+                        gens.append(C)
+                idx2 += 1
+            cl_dim = rank
+            lift_results.append({
+                'pocket': sorted(p),
+                'silent': silent,
+                'sl3_dim': dim8,
+                'closure_dim': int(cl_dim)
+            })
+        with open('pocket_lift_results.json', 'w') as f:
+            json.dump(lift_results, f)
+        print('lift verification complete; wrote pocket_lift_results.json')
 
 
 if __name__ == '__main__':

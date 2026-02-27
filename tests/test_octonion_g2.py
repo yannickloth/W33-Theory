@@ -23,3 +23,15 @@ def test_octonion_g2(tmp_path):
     deriv = json.loads(deriv_file.read_text())
     assert deriv.get('null_dim') == 14
     assert deriv.get('fix_dim') == 8
+    # also verify the so7-specific output
+    so7_file = repo / 'octonion_g2_so7.json'
+    assert so7_file.exists()
+    so7 = json.loads(so7_file.read_text())
+    assert so7.get('null_dim') == 14
+    assert so7.get('fix_dim') == 8
+    assert len(so7.get('basis7', [])) == 14
+    # check skew-symmetry of each 7x7 basis matrix
+    for M in so7['basis7']:
+        for i in range(7):
+            for j in range(7):
+                assert M[i][j] == -M[j][i]

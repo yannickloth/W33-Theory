@@ -1,0 +1,40 @@
+{
+  "description": "Oriented Fano triples matching Cayley\u2013Dickson basis e1..e7=(i,j,k,l,il,jl,kl).",
+  "triples": [
+    [
+      1,
+      2,
+      3
+    ],
+    [
+      1,
+      5,
+      4
+    ],
+    [
+      1,
+      7,
+      6
+    ],
+    [
+      2,
+      5,
+      7
+    ],
+    [
+      2,
+      6,
+      4
+    ],
+    [
+      3,
+      6,
+      5
+    ],
+    [
+      3,
+      7,
+      4
+    ]
+  ]
+}

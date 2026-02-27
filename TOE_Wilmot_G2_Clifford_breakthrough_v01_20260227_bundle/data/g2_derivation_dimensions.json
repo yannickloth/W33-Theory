@@ -1,0 +1,5 @@
+{
+  "derivation_dim_full": 14,
+  "derivation_dim_fix_e7": 8,
+  "notes": "Computed as nullity of derivation constraint linear system over GF(p) for several primes; fix_e7 adds D(e7)=0 constraints."
+}
