@@ -40,6 +40,14 @@ invariant = {
     "orbit_sizes": sorted(len(o) for o in orbits),
 }
 
+# if GL23 representation data exists, summarise its decomposition
+rep_path = ROOT / "artifacts" / "gl23_rep.json"
+if rep_path.exists():
+    rep = json.loads(rep_path.read_text())
+    subs = rep.get("invariant_subspaces", {})
+    invariant["gl23_sub1_dim"] = len(subs.get("sub1", []))
+    invariant["gl23_sub2_dim"] = len(subs.get("sub2", []))
+
 out_txt = ROOT / "artifacts" / "phi_lift_subgroup_summary.txt"
 with open(out_txt, "w") as f:
     f.write("Lift subgroup analysis\n")
