@@ -65,7 +65,7 @@ def main():
         with open(outdir/'full_derivations_report.json','w') as f:
             json.dump({'rank':None,'null_dim':None,'note':'quick'},f)
         with open(outdir/'full_derivations_basis.json','w') as f:
-            json.dump([],f)
+            json.dump({'basis': [], 'note': 'quick'},f)
         print('quick mode, done')
         return
     # setup variables d{i}_{j}

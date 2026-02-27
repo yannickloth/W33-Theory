@@ -34,3 +34,23 @@ def test_pocket_g2_extension_geometry(tmp_path):
     assert geom['total_pockets'] == 540
     assert len(geom['by_silent_counts']) == 36
     assert geom['twin_pairs_count'] == 270
+
+    # now run with a quick full_basis to exercise axis_shift logic
+    subprocess.run([
+        ".venv\Scripts\python.exe",
+        str(repo / 'tools' / 'compute_full_derivations.py'),
+        '--tri_zip', str(tri_zip),
+        '--edge_zip', str(edge_zip),
+        '--quick'
+    ], cwd=repo)
+    res2 = subprocess.run([
+        ".venv\Scripts\python.exe",
+        str(repo / 'tools' / 'pocket_g2_extension.py'),
+        '--tri_zip', str(tri_zip),
+        '--edge_zip', str(edge_zip),
+        '--full_basis', str(repo / 'full_derivations_basis.json')
+    ], cwd=repo)
+    assert res2.returncode == 0, res2.stderr
+    summary = json.loads(Path('axis_shift_summary.json').read_text())
+    assert len(summary) == 36
+    assert all('fix_dim' in info for info in summary.values())

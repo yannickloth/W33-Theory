@@ -123,18 +123,28 @@ def choose_silent(pocket, mult):
 
 def analyze_axis_shifts(basis_mats, silent):
     """Given full derivation basis (list of 36x36 matrices) and a silent index,
-    compute fix_dim and shift_dim as well as explicit candidate matrices.
+    compute fix_dim and shift_dim, return explicit candidate matrices and a
+    basis for the fix-subspace.
     """
     n = 36
     K = len(basis_mats)
     if K == 0:
-        return {'fix_dim': None, 'shift_dim': None}, []
+        return {'fix_dim': None, 'shift_dim': None}, [], []
     # construct matrix M of shape (n x K) where column i = basis_mats[i][:, silent]
     M = sp.Matrix([[basis_mats[i][r][silent] for i in range(K)] for r in range(n)])
     rankM = M.rank()
     fix_dim = K - rankM
     shift_dim = rankM
-    # find columnspace basis vectors v
+    # compute fix-basis: nullspace of M gives coefficient vectors of combinations
+    nulls = M.nullspace()
+    fix_basis = []
+    for v in nulls:
+        coeffs = [int(c) for c in v]
+        D = np.zeros((n, n), dtype=int)
+        for i in range(K):
+            D += coeffs[i] * np.array(basis_mats[i], dtype=int)
+        fix_basis.append(D.tolist())
+    # find columnspace basis vectors for shift candidates
     col_basis = M.columnspace()
     candidates = []
     for v in col_basis:
@@ -149,12 +159,11 @@ def analyze_axis_shifts(basis_mats, silent):
             coeffs = [int(sol[c]) for c in c_syms]
         else:
             coeffs = [0] * K
-        # build derivation matrix
         D = np.zeros((n, n), dtype=int)
         for i in range(K):
             D += coeffs[i] * np.array(basis_mats[i], dtype=int)
         candidates.append(D.tolist())
-    return {'fix_dim': fix_dim, 'shift_dim': shift_dim}, candidates
+    return {'fix_dim': fix_dim, 'shift_dim': shift_dim}, candidates, fix_basis
 
 
 def main():
@@ -193,29 +202,46 @@ def main():
     if args.full_basis:
         # load basis
         obj = json.loads(Path(args.full_basis).read_text())
-        basis_mats = obj.get('basis') or obj.get('derivation_basis_matrices_colmajor', [])
-        # allow either format: basis list of matrices or colmajor list
-        if not basis_mats and 'derivation_basis_matrices_colmajor' in obj:
-            # convert backwards by reshaping columns
-            colm = obj['derivation_basis_matrices_colmajor']
-            # assume square
-            m = int(math.sqrt(len(colm)))
-            basis_mats = []
-            for matcols in colm:
-                M = np.zeros((m,m), dtype=int)
-                for j, col in enumerate(matcols):
-                    for i, val in enumerate(col):
-                        M[i,j] = val
-                basis_mats.append(M.tolist())
+        # quick files may simply be an empty list
+        if isinstance(obj, list):
+            basis_mats = obj
+        else:
+            basis_mats = obj.get('basis') or obj.get('derivation_basis_matrices_colmajor', [])
+            # allow either format: basis list of matrices or colmajor list
+            if not basis_mats and 'derivation_basis_matrices_colmajor' in obj:
+                colm = obj['derivation_basis_matrices_colmajor']
+                m = int(math.sqrt(len(colm)))
+                basis_mats = []
+                for matcols in colm:
+                    M = np.zeros((m,m), dtype=int)
+                    for j, col in enumerate(matcols):
+                        for i, val in enumerate(col):
+                            M[i,j] = val
+                    basis_mats.append(M.tolist())
         axis_summary = {}
         axis_candidates = {}
         for s in range(36):
-            info, cand = analyze_axis_shifts(basis_mats, s)
+            info, cand, fix_basis = analyze_axis_shifts(basis_mats, s)
             axis_summary[s] = info
             if cand:
                 axis_candidates[s] = cand
                 with open(f'axis_shift_candidates_{s}.json', 'w') as f:
                     json.dump(cand, f)
+            # compute closure dimension if we have both fix basis and shift candidates
+            if info.get('fix_dim') is not None:
+                all_mats = [np.array(M, dtype=int) for M in fix_basis] + [np.array(D, dtype=int) for D in cand]
+                closure_set = list(all_mats)
+                changed = True
+                while changed:
+                    changed = False
+                    for X in list(closure_set):
+                        for Y in list(closure_set):
+                            C = X @ Y - Y @ X
+                            if not any(np.array_equal(C, Z) for Z in closure_set):
+                                closure_set.append(C)
+                                changed = True
+                cl_dim = np.linalg.matrix_rank(np.array([M.reshape(-1) for M in closure_set], dtype=float))
+                info['closure_dim'] = int(cl_dim)
         with open('axis_shift_summary.json', 'w') as f:
             json.dump(axis_summary, f)
         print('axis summary saved; candidates written for', list(axis_candidates.keys()))
