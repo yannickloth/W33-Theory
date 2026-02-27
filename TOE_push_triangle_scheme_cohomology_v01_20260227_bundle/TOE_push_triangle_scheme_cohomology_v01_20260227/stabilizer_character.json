@@ -1,0 +1,13 @@
+{
+  "pair_group_order": 25920,
+  "pair_point_stabilizer_order": 216,
+  "lift_group_order": 25920,
+  "lift_point_stabilizer_order": 108,
+  "pair_stabilizer_order_from_lift": 216,
+  "swap_word_generators": [
+    4,
+    5
+  ],
+  "swap_maps_lift0_to": 1,
+  "deck_extension_order": 51840
+}

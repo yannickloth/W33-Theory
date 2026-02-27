@@ -495,6 +495,51 @@ def test_z2_obstruction(tmp_path):
     assert all(all(x == 0 for x in row) for row in mat)
 
 
+def test_srg_cycle_holonomy(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "compute_srg_cycle_holonomy.py")], cwd=repo)
+    assert res.returncode == 0
+    csvf = repo / "artifacts" / "srg_cycle_holonomy.csv"
+    assert csvf.exists()
+    # read parity values, ensure some odd cycles
+    odd = 0
+    with open(csvf) as f:
+        next(f)
+        for line in f:
+            parts = line.strip().split(',')
+            if parts and parts[-1] == '1':
+                odd += 1
+    assert odd > 0
+    # minimal odd cycle length should be 3 by manual computation
+    # we can check that at least one odd cycle has length 3
+    with open(csvf) as f:
+        next(f)
+        found3 = False
+        for line in f:
+            cyc,par = line.strip().split(',')
+            if par == '1' and len(cyc.split('-')) == 3:
+                found3 = True
+                break
+    assert found3
+
+def test_edge_to_rootpair_mapping(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "build_edge_to_rootpairs.py")], cwd=repo)
+    assert res.returncode == 0
+    jsonf = repo / "artifacts" / "edge_to_rootpair_triple.json"
+    csvf = repo / "artifacts" / "edge_to_rootpair_triple.csv"
+    assert jsonf.exists() and csvf.exists()
+    mapping = json.loads(jsonf.read_text())
+    assert len(mapping) == 240
+    # verify each value is list of three pairs of ints
+    for v in mapping.values():
+        assert isinstance(v, list) and len(v) == 3
+        for pair in v:
+            assert isinstance(pair, list) or isinstance(pair, tuple)
+            assert len(pair) == 2
+            assert all(isinstance(x, int) for x in pair)
+
+
 def test_duad_we6_conjugacy():
     repo = Path(__file__).resolve().parents[1]
     res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "duad_we6_conjugacy.py")], cwd=repo)

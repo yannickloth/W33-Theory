@@ -94,6 +94,48 @@ def build_edges_from_lines(lines: List[List[int]]) -> List[Tuple[int,int]]:
     return edges
 
 
+def build_edge_pairs(edges: List[Tuple[int,int]]) -> Tuple[List[Tuple[Tuple[int,int],Tuple[int,int]]], Dict[Tuple[int,int],int]]:
+    # compute adjacency matrix for edges on the point graph
+    adj = {i: set() for i in range(40)}
+    for a,b in edges:
+        adj[a].add(b)
+        adj[b].add(a)
+    # map each edge to its opposite on the same line (line shares two points)
+    edge_to_pair = {}
+    pairs = []
+    for e in edges:
+        i,j = e
+        # find points common to both endpoints aside from i,j (should be 2 points forming the other edge)
+        common = adj[i] & adj[j]
+        if len(common) != 2:
+            raise RuntimeError(f"edge {e} does not sit on a unique line")
+        a,b = sorted(common)
+        opp = (a,b)
+        pair = tuple(sorted([e, opp]))
+        if pair not in pairs:
+            pairs.append(pair)
+    # assign indices
+    pair_index = {pair: idx for idx,pair in enumerate(pairs)}
+    # build mapping edge->pair index
+    edge_to_pair = {}
+    for pair, idx in pair_index.items():
+        e1,e2 = pair
+        edge_to_pair[e1] = idx
+        edge_to_pair[e2] = idx
+    return pairs, edge_to_pair
+
+
+def edges_to_pair_perms(edge_gens: List[List[int]], edge_to_pair: Dict[Tuple[int,int],int], edges: List[Tuple[int,int]]) -> List[List[int]]:
+    pair_gens = []
+    for perm in edge_gens:
+        pg = []
+        for ei in perm:
+            e = edges[ei]
+            pg.append(edge_to_pair[e])
+        pair_gens.append(pg)
+    return pair_gens
+
+
 def point_perms_to_edge_perms(point_gens: List[List[int]], edges: List[Tuple[int,int]]) -> List[List[int]]:
     # point_gens are lists of length 40, 0-based
     edge_index = {e:i for i,e in enumerate(edges)}
@@ -167,15 +209,15 @@ def load_we6_edge_perms() -> List[List[int]]:
     return perms
 
 
-def load_class_hist(bundle: Path) -> Counter:
-    # read CSV fix_edges240 distribution weighted by class sizes
+def load_fix_hist(bundle: Path, column: str) -> Counter:
+    # read a fixed-point histogram from the conjugacy CSV for given column
     data = read_from_bundle(bundle, "conjugacy_classes_extended_characters_and_fixed_counts.csv")
     text = data.decode()
     hist = Counter()
     rdr = csv.DictReader(text.splitlines())
     for row in rdr:
         size = int(row["size"])
-        fix = int(row["fix_edges240"])
+        fix = int(row[column])
         hist[fix] += size
     return hist
 
@@ -201,48 +243,95 @@ def find_conjugator(duad_edge_gens, we6_edge_gens):
 
 
 def main():
-    bundle = find_bundle("TOE_duad_algebra_v06_20260227_bundle")
-    dbg(f"duad bundle located at {bundle}")
-    # bundle directory contains subfolder; adjust
-    if (bundle / "TOE_duad_algebra_v05_20260227").exists():
-        bundle = bundle / "TOE_duad_algebra_v05_20260227"
-        dbg(f"adjusted bundle path to {bundle}")
+    try:
+        bundle = find_bundle("TOE_duad_algebra_v06_20260227_bundle")
+        dbg(f"duad bundle located at {bundle}")
+        # bundle directory contains subfolder; adjust
+        if (bundle / "TOE_duad_algebra_v05_20260227").exists():
+            bundle = bundle / "TOE_duad_algebra_v05_20260227"
+            dbg(f"adjusted bundle path to {bundle}")
 
-    edges, duad_edge_gens = load_duad_data(bundle)
-    duad_group = closure_of_perms(duad_edge_gens)
-    dbg(f"duad group size on edges {len(duad_group)}")
-    hist_duad = histogram_by_fixed(duad_group)
+        # compute 240-edge action for duel
+        edges, duad_edge_gens = load_duad_data(bundle)
+        duad_group = closure_of_perms(duad_edge_gens)
+        dbg(f"duad group size on edges {len(duad_group)}")
+        hist_duad = histogram_by_fixed(duad_group)
 
-    we6_gens = load_we6_edge_perms()
-    we6_group = closure_of_perms(we6_gens)
-    dbg(f"WE6 group size on edges {len(we6_group)}")
-    hist_we6 = histogram_by_fixed(we6_group)
+        # generate WE6-edge perms and its closure
+        we6_gens = load_we6_edge_perms()
+        we6_group = closure_of_perms(we6_gens)
+        dbg(f"WE6 group size on edges {len(we6_group)}")
+        hist_we6 = histogram_by_fixed(we6_group)
 
-    dbg(f"duad fixed-edge histogram {hist_duad.most_common()}")
-    dbg(f"we6 fixed-edge histogram {hist_we6.most_common()}")
-    dbg("about to load reference histogram")
-    ref_hist = load_class_hist(bundle)
-    dbg(f"reference class histogram {sorted(ref_hist.items())}")
-    dbg("about to compare histograms")
-    if hist_duad == ref_hist:
-        dbg("duad histogram matches reference classes")
-    else:
-        dbg("WARNING: duad histogram differs from reference")
-    
-    if hist_we6 == ref_hist:
-        dbg("WE6 histogram matches reference classes")
-    else:
-        dbg("WARNING: WE6 histogram does NOT match reference")
+        dbg(f"duad fixed-edge histogram {hist_duad.most_common()}")
+        dbg(f"we6 fixed-edge histogram {hist_we6.most_common()}")
 
-    dbg("about to search for conjugator")
-    conj = find_conjugator(duad_edge_gens, we6_gens)
-    if conj is None:
-        dbg("failed to find conjugator between edge actions")
+        dbg("about to load reference edge histogram")
+        ref_edge_hist = load_fix_hist(bundle, "fix_edges240")
+        dbg(f"reference edge histogram {sorted(ref_edge_hist.items())}")
+        dbg("about to compare edge histograms")
+        if hist_duad == ref_edge_hist:
+            dbg("duad edge histogram matches reference classes")
+        else:
+            dbg("WARNING: duad edge histogram differs from reference")
+        if hist_we6 == ref_edge_hist:
+            dbg("WE6 edge histogram matches reference classes")
+        else:
+            dbg("WARNING: WE6 edge histogram does NOT match reference")
+
+        dbg("about to search for conjugator on edges")
+        conj = find_conjugator(duad_edge_gens, we6_gens)
+        if conj is None:
+            dbg("failed to find conjugator between edge actions")
+        else:
+            dbg(f"found edge-level conjugator mapping (first 10 entries): {list(conj.items())[:10]}")
+            (ROOT / "artifacts" / "duad_we6_conjugator_edges.json").write_text(json.dumps(conj))
+
+        # build pair-level data
+        pairs, edge_to_pair = build_edge_pairs(edges)
+        dbg(f"computed {len(pairs)} edge-pairs")
+        duad_pair_gens = edges_to_pair_perms(duad_edge_gens, edge_to_pair, edges)
+        we6_pair_gens = edges_to_pair_perms(we6_gens, edge_to_pair, edges)
+
+        duad_pair_group = closure_of_perms(duad_pair_gens)
+        dbg(f"duad group size on pairs {len(duad_pair_group)}")
+        hist_duad_pairs = histogram_by_fixed(duad_pair_group)
+        dbg(f"duad fixed-pair histogram {hist_duad_pairs.most_common()}")
+
+        we6_pair_group = closure_of_perms(we6_pair_gens)
+        dbg(f"we6 group size on pairs {len(we6_pair_group)}")
+        hist_we6_pairs = histogram_by_fixed(we6_pair_group)
+        dbg(f"we6 fixed-pair histogram {hist_we6_pairs.most_common()}")
+
+        dbg("about to load reference duad histogram")
+        ref_pair_hist = load_fix_hist(bundle, "fix_duads120")
+        dbg(f"reference duad histogram {sorted(ref_pair_hist.items())}")
+
+        if hist_duad_pairs == ref_pair_hist:
+            dbg("duad pair histogram matches reference classes")
+        else:
+            dbg("WARNING: duad pair histogram differs from reference")
+
+        if hist_we6_pairs == ref_pair_hist:
+            dbg("WE6 pair histogram matches reference classes")
+        else:
+            dbg("WARNING: WE6 pair histogram does NOT match reference")
+
+        dbg("about to search for conjugator on pairs")
+        conj_pairs = find_conjugator(duad_pair_gens, we6_pair_gens)
+        if conj_pairs is None:
+            dbg("failed to find conjugator between pair actions")
+            exit(1)
+        else:
+            dbg(f"found pair-level conjugator (first 10 entries): {list(conj_pairs.items())[:10]}")
+            (ROOT / "artifacts" / "duad_we6_conjugator_pairs.json").write_text(json.dumps(conj_pairs))
+            exit(0)
+    except Exception as e:
+        import traceback
+        dbg("exception in main:")
+        tb = traceback.format_exc()
+        dbg(tb)
         exit(1)
-    else:
-        dbg(f"found conjugator mapping (first 10 entries): {list(conj.items())[:10]}")
-        (ROOT / "artifacts" / "duad_we6_conjugator.json").write_text(json.dumps(conj))
-        exit(0)
 
 
 if __name__ == "__main__":

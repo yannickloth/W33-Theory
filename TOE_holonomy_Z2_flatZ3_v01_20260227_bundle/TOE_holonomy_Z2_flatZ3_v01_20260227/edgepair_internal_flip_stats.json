@@ -1,0 +1,6 @@
+{
+  "description": "For each edgepair (two opposite W33 edges), the oriented e6pair triple on the opposite edge is always the reflection of the representative edge's triple (flip=1, rot=0).",
+  "counts": {
+    "1,0": 120
+  }
+}
