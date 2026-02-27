@@ -58,7 +58,8 @@ def find_bundle(pattern: str) -> Path:
     raise FileNotFoundError(pattern)
 
 
-def load_json(bundle: Path, name: str):
+def read_from_bundle(bundle: Path, name: str) -> bytes:
+    """Return raw bytes of a file inside *bundle* which may be a directory or a zip."""
     if bundle.is_file():
         with zipfile.ZipFile(bundle) as z:
             zlist = z.namelist()
@@ -71,9 +72,14 @@ def load_json(bundle: Path, name: str):
                     entry = cand[0]
                 else:
                     raise KeyError(f"{name} not found in archive {bundle}")
-            return json.loads(z.read(entry))
+            return z.read(entry)
     else:
-        return json.loads((bundle / name).read_text())
+        return (bundle / name).read_bytes()
+
+
+def load_json(bundle: Path, name: str):
+    data = read_from_bundle(bundle, name)
+    return json.loads(data)
 
 
 def build_edges_from_lines(lines: List[List[int]]) -> List[Tuple[int,int]]:
@@ -163,14 +169,14 @@ def load_we6_edge_perms() -> List[List[int]]:
 
 def load_class_hist(bundle: Path) -> Counter:
     # read CSV fix_edges240 distribution weighted by class sizes
-    csvp = bundle / "conjugacy_classes_extended_characters_and_fixed_counts.csv"
+    data = read_from_bundle(bundle, "conjugacy_classes_extended_characters_and_fixed_counts.csv")
+    text = data.decode()
     hist = Counter()
-    with open(csvp) as f:
-        rdr = csv.DictReader(f)
-        for row in rdr:
-            size = int(row["size"])
-            fix = int(row["fix_edges240"])
-            hist[fix] += size
+    rdr = csv.DictReader(text.splitlines())
+    for row in rdr:
+        size = int(row["size"])
+        fix = int(row["fix_edges240"])
+        hist[fix] += size
     return hist
 
 
@@ -214,10 +220,10 @@ def main():
 
     dbg(f"duad fixed-edge histogram {hist_duad.most_common()}")
     dbg(f"we6 fixed-edge histogram {hist_we6.most_common()}")
-    
+    dbg("about to load reference histogram")
     ref_hist = load_class_hist(bundle)
     dbg(f"reference class histogram {sorted(ref_hist.items())}")
-    
+    dbg("about to compare histograms")
     if hist_duad == ref_hist:
         dbg("duad histogram matches reference classes")
     else:
@@ -228,6 +234,7 @@ def main():
     else:
         dbg("WARNING: WE6 histogram does NOT match reference")
 
+    dbg("about to search for conjugator")
     conj = find_conjugator(duad_edge_gens, we6_gens)
     if conj is None:
         dbg("failed to find conjugator between edge actions")
