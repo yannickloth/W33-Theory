@@ -475,3 +475,13 @@ def test_meataxe_decompose(tmp_path):
     assert any(d < 8 for d in dims2)
 
 
+def test_match_bose_mesner_self():
+    """Run the matching utility on the reference bundle itself."""
+    repo = Path(__file__).resolve().parents[1]
+    bundle = repo / "TOE_BoseMesner_Algebra_Solution_bundle_v04_20260227" / "duad_intersection_numbers.json"
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "match_bose_mesner.py"),
+                          "--candidate", str(bundle),
+                          "--solution", str(bundle)], cwd=repo)
+    assert res.returncode == 0
+
+
