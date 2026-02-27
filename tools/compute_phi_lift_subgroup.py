@@ -151,6 +151,50 @@ def compute_lift_for_roots(root_list: List[Tuple[int, ...]], return_perms: bool=
         return count, lifts
     return count
 
+
+def edge_action_orbits(root_list: List[Tuple[int, ...]]) -> List[int]:
+    """Return orbit sizes of the group acting on edges for given roots.
+
+    A BFS approach avoids rebuilding a networkx graph on each call, offering
+    orders-of-magnitude speedup when invoked repeatedly during search.
+    """
+    # convert vertex perms into edge perms for this root_list
+    edge_perms: List[List[int]] = []
+    for g in Gperms:
+        g_root = [label_map[g[label_map_inv[i]]] for i in range(40)]
+        perm = [0]*len(edges)
+        for idx,(i,j) in enumerate(edges):
+            ni,nj = g_root[i], g_root[j]
+            if ni < nj:
+                perm[idx] = edge_index[(ni,nj)]
+            else:
+                perm[idx] = edge_index[(nj,ni)]
+        edge_perms.append(perm)
+
+    n = len(edges)
+    seen = [False]*n
+    orbit_sizes: List[int] = []
+    for start in range(n):
+        if seen[start]:
+            continue
+        # BFS queue
+        q = [start]
+        seen[start] = True
+        size = 0
+        qi = 0
+        while qi < len(q):
+            x = q[qi]; qi += 1
+            size += 1
+            # apply all generators
+            for perm in edge_perms:
+                y = perm[x]
+                if not seen[y]:
+                    seen[y] = True
+                    q.append(y)
+        orbit_sizes.append(size)
+    orbit_sizes.sort(reverse=True)
+    return orbit_sizes
+
 # compute using the canonical mapping stored in 'roots' variable
 canonical_lift_size, lift = compute_lift_for_roots(roots, return_perms=True)
 print('canonical lift size', canonical_lift_size)

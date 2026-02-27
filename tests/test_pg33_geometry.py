@@ -443,3 +443,35 @@ def test_classify_w33_edges(tmp_path):
     assert sum(counts.values()) == 240  # there are 240 edges/roots in the bijection
 
 
+def test_sector_physics(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "sector_physics.py")], cwd=repo)
+    assert res.returncode == 0
+    # appearance of output is sufficient; nothing to assert numerically
+
+
+def test_meataxe_decompose(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    # first run on GL23 rep (may be trivial)
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "meataxe_decompose.py"), "--input", str(repo / "artifacts" / "gl23_rep.json")], cwd=repo)
+    assert res.returncode == 0
+    out = repo / "artifacts" / "meataxe_decomp.json"
+    assert out.exists()
+    dims = json.loads(out.read_text())["dims"]
+    assert sum(dims) == 8
+    # now test on a synthetic block-diagonal module (3+5 dims)
+    M1 = np.eye(8, dtype=int)
+    # permutation matrix that swaps first 3 basis elements (cycle of length3)
+    P = np.eye(8, dtype=int)
+    P[[0,1,2]] = P[[1,2,0]]
+    test_json = tmp_path / "test_mats.json"
+    # write JSON manually since json.dump doesn't accept a Path directly
+    test_json.write_text(json.dumps({"matrices": [M1.tolist(), P.tolist()]}))
+    res2 = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "meataxe_decompose.py"), "--input", str(test_json), "--output", str(tmp_path / "out.json")], cwd=repo)
+    assert res2.returncode == 0
+    dims2 = json.loads((tmp_path / "out.json").read_text())["dims"]
+    assert sum(dims2) == 8
+    # expect at least one small block
+    assert any(d < 8 for d in dims2)
+
+

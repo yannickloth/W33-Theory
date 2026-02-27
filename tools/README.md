@@ -39,6 +39,12 @@ Analysis and verification tools for the W33 Theory of Everything project.
 - `classify_e8_roots_dotpair.py` - compute dot-pair classes used in the E6×A2 split
 - `classify_w33_edges_by_rootclass.py` - tag W33 edges according to E8 root classes
 
+### Representation theory / meatAxe
+- `meataxe_decompose.py` - simple GF(3) MeatAxe-style module decomposition, used for GL(2,3) and other small modules
+
+### Physics demonstrations
+- `sector_physics.py` - toy CKM matrix and sector-specific invariant counts
+
 ### Verification
 - `audit_*.py`, `verify_*.py` - Consistency checks
 - `inspect_*.py` - Data inspection utilities
