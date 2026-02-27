@@ -386,3 +386,11 @@ def test_extract_gl23_module(tmp_path):
     assert "sub1" in subs and "sub2" in subs
 
 
+def test_optimize_phi_smoke(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "optimize_phi.py"), "--trials", "10", "--temp", "0.1"], cwd=repo)
+    assert res.returncode == 0
+    # candidate files may or may not exist depending on improvements
+    # just check command completed
+
+
