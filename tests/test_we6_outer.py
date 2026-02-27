@@ -152,3 +152,11 @@ def test_outer_script_end_to_end(tmp_path, capsys):
     for idx in unm:
         assert coords["u_after"][idx] is None
         assert coords["z_after"][idx] is None
+
+    # new: check that H27 permutation artifact exists and has length 27
+    with open("artifacts/we6_outer_h27_perm.json", "r") as f:
+        hperm = json.load(f)
+    assert isinstance(hperm, list) and len(hperm) == 27
+    # entries should be integers in range or -1 for unmapped
+    for v in hperm:
+        assert (isinstance(v, int) and (v == -1 or 0 <= v < 27))

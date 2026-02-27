@@ -1,0 +1,6 @@
+{
+  "outer_twist_action_on_H27.json": "19b71f928733eafcbfb2898c06aad0827c76f661dc811e03c9b4b8094a85ef24",
+  "outer_twist_action_table.csv": "230c71c38f29114db99271189d546d73987b8afac6f008625ff0c7684c7d44f2",
+  "perm40_and_H27_pg_ids.json": "5d566162885a5bbb031cbcdbc0962cb653d2b266a3bb675fbec0dae1866b559f",
+  "verify_outer_twist_on_H27.py": "d1318de61d671a9d6bc47e4432e17474b01eff0daab1fd20f04fe32edf7029de"
+}

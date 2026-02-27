@@ -1,0 +1,73 @@
+{
+  "outer_twist_element": {
+    "h_word_base_to_p_prime": [
+      "T_e1",
+      "B^-1",
+      "T_e4^-1"
+    ],
+    "p_prime": 19,
+    "n5 = h^{-1} g_out (5x5)": [
+      [
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      [
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    ],
+    "comment": "n5 normalizes the point stabilizer P, so conjugation by n5 induces an automorphism of Omega and hence a permutation of the 40 points (cosets Omega/P)."
+  },
+  "induced_map_on_H27_coords": {
+    "u_map_affine": {
+      "A": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "detA": 2,
+      "chi(detA) over F3": -1
+    },
+    "t_map": {
+      "t_prime = 2*t + b(u)": true,
+      "b(u) = 2 + 2x + y": true
+    },
+    "full_formula": "u' = A u + b, with A=[[1,2],[2,0]], b=(0,2);  t' = 2 t + (2 + 2x + y)  (all mod 3)."
+  }
+}

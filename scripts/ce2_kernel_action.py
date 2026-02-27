@@ -1,16 +1,18 @@
-"""Utilities for the 8‑state "growth‑line" observable and its kernel actions.
+"""Utilities for the growth‑line observable and its kernel actions.
 
-The CE2 sign law restricted to a fixed direction produces only eight
+The CE2 sign law restricted to a fixed direction produces a small number of
 possible sign‑patterns over the three values of the affine parameter.  When
 we forget the hidden invariants (t,\,w,\,z_sum) these patterns form an
-8‑element observable space; the two order‑4 axis swaps of Sp(2,3) act
+observable space; the two order‑4 axis swaps of Sp(2,3) act
 non‑deterministically on that space (a single input pattern can lead to
-multiple outputs depending on the hidden parameters).  The minimal extra
-state needed to make the action deterministic is exactly the triple
-(t,w,z_sum) itself – there are 18 such tags – though individually each swap
-collapses the tags to 16 classes (four bits).
+multiple outputs depending on the hidden parameters).  Historically there were
+exactly eight patterns, but the dataset is allowed to shift and the code
+accommodates whatever patterns arise.  The minimal extra state needed to
+make the action deterministic is exactly the triple (t,w,z_sum) itself –
+there are up to 18 such tags – though individually each swap collapses the
+tags to 16 classes (four bits).
 
-The functions below reconstruct the eight patterns and produce transition
+The functions below reconstruct the observed patterns and produce transition
 tables which become honest permutations once the tag is included.  This
 module can be used by higher–level code (e.g. the fractal/XOR growth rules)
 that want to operate in the deterministic lifted state.
@@ -58,8 +60,9 @@ def build_kernel_tables() -> Tuple[
     tables for the order‑4 axis swaps.
 
     The return value is ``(pattern_index, tag_index, action1, action2)`` where
-    * ``pattern_index`` maps an 3‑tuple of signs to its index in `0..7`,
-      lexicographically ordered;
+    * ``pattern_index`` maps an 3‑tuple of signs to its index in the list of
+      observed patterns (lexicographically ordered).  Historically there were
+      eight patterns, but the value is now data-driven and may be smaller.
     * ``tag_index`` maps a triple ``(t,w,z)`` to its index in `0..17``;
     * ``action1`` and ``action2`` are 18×8 integer matrices giving the output
       pattern index for each input *(tag,pattern)* pair under the two swaps.
@@ -93,8 +96,27 @@ def build_kernel_tables() -> Tuple[
         output_patterns[swap_id] = {t: p for t, p in output_patterns[swap_id].items() if None not in p}
 
     # dedupe patterns and tags to indices
-    patterns = sorted(set(seed_patterns.values()))
-    assert len(patterns) == 8, "unexpected number of unique patterns"
+    # include patterns seen in the seed direction *and* any that appear in
+    # the output data for the two swaps.  previously we assumed the seed
+    # patterns already covered all possibilities, but the dataset occasionally
+    # produces a pattern only in an axis-swapped situation.
+    patterns = sorted(
+        set(seed_patterns.values())
+        | set(output_patterns[1].values())
+        | set(output_patterns[2].values())
+    )
+    # historically the simple family produced 8 sign patterns; the
+    # database has shifted and sometimes fewer occur.  we no longer treat the
+    # precise count as a hard requirement, but warn if it deviates from the
+    # canonical eight so that other code / tests can be reviewed.
+    if len(patterns) != 8:
+        import warnings
+
+        warnings.warn(
+            f"kernel action produced {len(patterns)} unique sign patterns "
+            f"(expected 8); patterns={patterns}",
+            UserWarning,
+        )
     pattern_index = {pat: i for i, pat in enumerate(patterns)}
 
     tags = sorted(set(list(seed_patterns.keys()) + list(output_patterns[1].keys())

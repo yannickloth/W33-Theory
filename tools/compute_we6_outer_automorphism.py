@@ -418,6 +418,18 @@ def main():
                 z_after.append(None)
         with open(out_dir + "/we6_outer_e6id_coords.json", "w") as f:
             json.dump({"u_before": u_before, "z_before": z_before, "u_after": u_after, "z_after": z_after}, f)
+        # also build a permutation of the 27 H27 points, using lexicographic
+        # ordering of (u1,u2,z) triples to index the set.
+        h27_list = sorted((u_before[i][0], u_before[i][1], z_before[i]) for i in range(27))
+        vec_to_hidx = {v: i for i, v in enumerate(h27_list)}
+        h27_perm = [-1] * 27
+        for eid, eid2 in enumerate(perm27):
+            if eid2 >= 0:
+                before_vec = (u_before[eid][0], u_before[eid][1], z_before[eid])
+                after_vec = (u_before[eid2][0], u_before[eid2][1], z_before[eid2])
+                h27_perm[vec_to_hidx[before_vec]] = vec_to_hidx[after_vec]
+        with open(out_dir + "/we6_outer_h27_perm.json", "w") as f:
+            json.dump(h27_perm, f)
     except Exception as exc:
         print("Failed to compute CE2 coordinate transform:", exc)
 
