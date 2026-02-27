@@ -1,6 +1,7 @@
 import subprocess
 from pathlib import Path
 import zipfile
+import json
 
 def make_zip(src_dir: Path, dst_zip: Path):
     with zipfile.ZipFile(dst_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
@@ -31,7 +32,14 @@ def test_derive_7pocket_derivations(tmp_path):
     print("stdout:\n", res.stdout)
     print("stderr:\n", res.stderr)
     assert res.returncode == 0, "derive script failed"
-    # we don't insist on output files in unit test environment (may depend on full data)
+    # read report if created and verify expected pocket counts
+    rpt = outdir / 'REPORT.json'
+    if rpt.exists():
+        data = json.loads(rpt.read_text())
+        # there should be 540 pockets (36*15 as discovered)
+        assert data.get('pockets7_count') == 540
+        assert data.get('derivation_dim_Q') == 8 or data.get('derivation_dim_Q') == 7 or data.get('derivation_dim_Q') is not None
+        print('report data:', data)
     # log listing if available
     if outdir.exists():
         print("outputs:", list(outdir.iterdir()))

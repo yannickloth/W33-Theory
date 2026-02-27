@@ -129,10 +129,45 @@ def multiply_monomials(a: Monomial, b: Monomial) -> Tuple[int, Monomial]:
     return sign, tuple(prod)
 
 
+def symplectic_representation(mon: Monomial) -> Tuple[int,int]:
+    """Return symplectic pair (x,z) for Pauli mapping: X^{x}Z^{z}.
+    Here x and z are 24-bit integers with disjoint support such that
+    monomial indices in even positions chosen for X and odd for Z.
+    (This is a crude mapping, purely for demonstration.)
+    """
+    x = 0
+    z = 0
+    for idx in mon:
+        if idx % 2 == 0:
+            x |= 1 << (idx // 2)
+        else:
+            z |= 1 << (idx // 2)
+    return x, z
+
+
+def export_stabilizer(code: List[int], filename: Path) -> None:
+    """Export a 12-generator stabilizer code from the Golay mapping."""
+    monomials = [codeword_to_monomial(w) for w in code]
+    # pick 12 independent even-weight monomials (first 12)
+    gens = [m for m in monomials if len(m) % 2 == 0][:12]
+    with open(filename, "w") as f:
+        f.write("# symplectic stabilizer generators\n")
+        for g in gens:
+            x,z = symplectic_representation(g)
+            f.write(f"{x:012b} {z:012b}\n")
+    print("wrote stabilizer generators to", filename)
+
+
 def main() -> None:
     code = generate_golay_code()
     assert len(code) == 1 << 12
     print("Generated extended Golay code with", len(code), "words")
+
+    # command-line argument handling
+    import argparse
+    parser = argparse.ArgumentParser(description="Golay-Clifford utilities")
+    parser.add_argument("--export-stabilizer", help="path to write stabilizer gens")
+    args = parser.parse_args()
 
     # map to monomials and record multiplication table for a handful
     monomials = [codeword_to_monomial(w) for w in code]
@@ -145,6 +180,40 @@ def main() -> None:
         f.write("word,monomial\n")
         for w, mon in zip(code, monomials):
             f.write(f"{w},{mon}\n")
+
+    # if requested, export stabilizer
+    if args.export_stabilizer:
+        export_stabilizer(code, Path(args.export_stabilizer))
+
+    # construct spin group: even-weight monomial products
+    spin_set: set[Monomial] = set()
+    for a in monomials:
+        for b in monomials:
+            sign, prod = multiply_monomials(a, b)
+            if len(prod) % 2 == 0:  # even weight condition
+                spin_set.add(prod)
+    print("spin group size (unique even monomials seen)", len(spin_set))
+    # ideally this equals 4096
+
+    # sanity-check full closure inside even monomials
+    even_set = {m for m in monomials if len(m) % 2 == 0}
+    closure_ok = all(
+        multiply_monomials(a, b)[1] in even_set for a in even_set for b in even_set
+    )
+    print("full even-monomial closure?", closure_ok)
+
+    # sample random pairs for spin group multiplication
+    import random
+    group_ok = True
+    spin_list = list(spin_set)
+    for _ in range(500):
+        a = random.choice(spin_list)
+        b = random.choice(spin_list)
+        _, p = multiply_monomials(a, b)
+        if p not in spin_set:
+            group_ok = False
+            break
+    print("spin-group closure samples OK?", group_ok)
 
     # quick demonstration: multiply first 10 by each other
     pairs = []
