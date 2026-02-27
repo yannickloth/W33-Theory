@@ -60,6 +60,10 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 >   by its infinity direction and triangle class, plus all 40 lines with
 >   direction and affine triples.  Each of the 9 directions splits into 3
 >   affine lines.
+> * **OUTER_TWIST_INDUCES_ROOTWORD_COCYCLE_BUNDLE_v01.zip** – computes the
+>   Z₃ projection defect between the original edge→root bijection and the one
+>   obtained after applying the outer-twist gauge change.  Includes per-edge
+>   defects, orbit classification, and summary statistics.
 >
 > A complete bijection between PG IDs, internal W33 vertex IDs and the
 > 240‑edge ↔ E₈‑root correspondence has also been computed.  Running
