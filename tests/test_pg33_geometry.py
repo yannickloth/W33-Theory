@@ -1,6 +1,8 @@
 import itertools
 import json
 from pathlib import Path
+import shutil
+import subprocess
 
 import numpy as np
 
@@ -245,4 +247,34 @@ def test_infinity_and_direction_bundles(tmp_path):
         "direction_inf_id_to_3_affine_lines.csv",
     ]:
         assert fname in names2
+
+
+def test_outer_twist_root_certificate(tmp_path):
+    """Run the script that builds the root-action certificate and verify its output."""
+    repo = Path(__file__).resolve().parents[1]
+    work = tmp_path / "work"
+    work.mkdir()
+    # copy needed files: bundles and mapping
+    shutil.copytree(repo / "H27_OUTER_TWIST_ACTION_BUNDLE_v01", work / "H27_OUTER_TWIST_ACTION_BUNDLE_v01")
+    # also need the fusion bridge bundle for PG->internal mapping
+    shutil.copytree(repo / "H27_CE2_FUSION_BRIDGE_BUNDLE_v01", work / "H27_CE2_FUSION_BRIDGE_BUNDLE_v01")
+    # only copy the edge_to_e8_root.json since that's all the script needs
+    (work / "artifacts").mkdir()
+    shutil.copy(repo / "artifacts" / "edge_to_e8_root.json", work / "artifacts" / "edge_to_e8_root.json")
+    shutil.copy(repo / "pg_to_edge_labeling.json", work / "pg_to_edge_labeling.json")
+    shutil.copy(repo / "pg_to_internal_inf.json", work / "pg_to_internal_inf.json")
+    # also copy conjugacy directory for sigma
+    conj_src = repo / "WE6_EVEN_to_PSp43_CONJUGACY_BUNDLE_v01 (1)"
+    if conj_src.exists():
+        shutil.copytree(conj_src, work / conj_src.name)
+    # run script
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "outer_twist_on_roots.py")], cwd=work)
+    assert res.returncode == 0
+    cert = work / "artifacts" / "outer_twist_root_action_certificate.json"
+    assert cert.exists()
+    data = json.loads(cert.read_text())
+    assert "root_cycle_structure" in data
+    # ensure total edges count matches
+    total = sum(int(k) * v for k,v in data["root_cycle_structure"].items())
+    assert total == 240
 
