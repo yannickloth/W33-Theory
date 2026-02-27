@@ -409,3 +409,37 @@ def test_conjugacy_obstruction(tmp_path):
     assert any(x!=0 for x in ln5)
 
 
+def test_verify_orbit_decompositions(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "verify_orbit_decompositions.py")], cwd=repo)
+    assert res.returncode == 0
+    out = repo / "artifacts" / "line_action_orbits.json"
+    assert out.exists()
+    info = json.loads(out.read_text())
+    assert info["edgepair_degree"] == 120
+    assert info["line_degree"] == 120
+    assert info["edgepair_orbit_sizes"] == [120]
+    assert info["line_orbit_sizes"] != [120]
+
+
+def test_classify_dotpair(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "classify_e8_roots_dotpair.py")], cwd=repo)
+    assert res.returncode == 0
+    out = repo / "artifacts" / "e8_dotpair_class_summary.json"
+    assert out.exists()
+    summary = json.loads(out.read_text())
+    assert "class72_size" in summary
+
+
+def test_classify_w33_edges(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "classify_w33_edges_by_rootclass.py")], cwd=repo)
+    assert res.returncode == 0
+    csvf = repo / "artifacts" / "w33_edges_by_rootclass.csv"
+    jsonf = repo / "artifacts" / "w33_edges_by_rootclass_counts.json"
+    assert csvf.exists() and jsonf.exists()
+    counts = json.loads(jsonf.read_text())
+    assert sum(counts.values()) == 240  # there are 240 edges/roots in the bijection
+
+
