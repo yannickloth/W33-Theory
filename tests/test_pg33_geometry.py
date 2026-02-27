@@ -485,21 +485,36 @@ def test_match_bose_mesner_self():
     assert res.returncode == 0
 
 
+def test_z2_obstruction(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "compute_z2_obstruction.py")], cwd=repo)
+    assert res.returncode == 0
+    mat = json.loads((repo / "artifacts" / "z2_cocycle.json").read_text())
+    assert len(mat) == 10
+    # all entries should be zero (we expect a trivial cocycle)
+    assert all(all(x == 0 for x in row) for row in mat)
+
+
 def test_duad_we6_conjugacy():
     repo = Path(__file__).resolve().parents[1]
     res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "duad_we6_conjugacy.py")], cwd=repo)
     # script may return nonzero if no conjugator found; we just verify it executed
     logf = repo / "artifacts" / "duad_we6_conjugacy.log"
     assert logf.exists()
-    # log should contain at least the duad group size
+    # log should contain at least the duad group size on edges and pairs
     txt = logf.read_text()
     assert "duad group size" in txt
-    # if conjugator produced, also validate mapping
-    conjf = repo / "artifacts" / "duad_we6_conjugator.json"
-    if conjf.exists():
-        mapping = json.loads(conjf.read_text())
-        assert len(mapping) == 240
-        vals = set(mapping.values())
-        assert vals == set(range(240))
+    assert "group size on pairs" in txt
+    # check for any conjugator outputs (edge-level or pair-level)
+    conj_edge = repo / "artifacts" / "duad_we6_conjugator_edges.json"
+    conj_pair = repo / "artifacts" / "duad_we6_conjugator_pairs.json"
+    for conjf in (conj_edge, conj_pair):
+        if conjf.exists():
+            mapping = json.loads(conjf.read_text())
+            # should be a permutation of the appropriate size
+            size = 240 if conjf is conj_edge else 120
+            assert len(mapping) == size
+            vals = set(mapping.values())
+            assert vals == set(range(size))
 
 
