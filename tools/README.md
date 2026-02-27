@@ -34,6 +34,11 @@ Analysis and verification tools for the W33 Theory of Everything project.
 - `compute_phi_sign_gauge.py` - solve sign-gauge equations to maximise lift group
 - `extract_gl23_module.py` - build GF(3) matrices for GL(2,3) representation inside E8
 
+### WE6 / E₆×A₂ decomposition
+- `verify_orbit_decompositions.py` - confirm transitivity/intransitivity of 120 actions
+- `classify_e8_roots_dotpair.py` - compute dot-pair classes used in the E6×A2 split
+- `classify_w33_edges_by_rootclass.py` - tag W33 edges according to E8 root classes
+
 ### Verification
 - `audit_*.py`, `verify_*.py` - Consistency checks
 - `inspect_*.py` - Data inspection utilities
