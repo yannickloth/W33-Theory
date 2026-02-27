@@ -88,6 +88,36 @@ while unvisited:
 (bundle_dir / "infinity_neighbors.json").write_text(json.dumps(neighbor_map))
 (bundle_dir / "outer_orbits.json").write_text(json.dumps(orbits))
 
+# compute edge list and orbits under outer twist
+edges = []
+for i in range(40):
+    for j in range(i+1, 40):
+        if adj[i][j]:
+            edges.append([i, j])
+assert len(edges) == 240, f"expected 240 edges, got {len(edges)}"
+# map each edge to its index for orbit computation
+edge_index = {tuple(e): idx for idx, e in enumerate(edges)}
+edge_orbits = []
+unseen = set(range(len(edges)))
+while unseen:
+    start = unseen.pop()
+    orb = [start]
+    idx = start
+    while True:
+        i, j = edges[idx]
+        ni = perm40[i]
+        nj = perm40[j]
+        if ni > nj:
+            ni, nj = nj, ni
+        nxt = edge_index[(ni, nj)]
+        if nxt == start:
+            break
+        orb.append(nxt)
+        unseen.discard(nxt)
+        idx = nxt
+    edge_orbits.append(orb)
+(bundle_dir / "edge_orbits.json").write_text(json.dumps(edge_orbits))
+
 # create zip
 import zipfile
 zip_path = Path("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01.zip")
@@ -95,3 +125,14 @@ with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as z:
     for file in bundle_dir.iterdir():
         z.write(file, arcname=file.name)
 print("wrote", zip_path)
+# also update a directory copy for easier access
+out_dir = Path("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01")
+if out_dir.exists():
+    for f in out_dir.iterdir():
+        f.unlink()
+else:
+    out_dir.mkdir()
+for file in bundle_dir.iterdir():
+    dest = out_dir / file.name
+    dest.write_bytes(file.read_bytes())
+print("updated directory", out_dir)

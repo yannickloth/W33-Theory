@@ -92,12 +92,10 @@ def optimize(
     """Optimize bijection by maximizing triangle exactness and sector alignment.
 
     The function now supports a ``verbose`` flag: when enabled it prints a
-    progress message every 10% of the requested iteration budget and also
-    reports when a trial exceeds the supplied time limit.  This helps diagnose
-    runs that appear to "hang" around the 40–50% mark by giving feedback on
-    the internal loop and showing elapsed time.
-    """
-    """Optimize bijection by maximizing triangle exactness and sector alignment.
+    progress message every 10% of the requested iteration budget (or more
+    frequently for small iteration counts) and also reports when a trial
+    exceeds the supplied time limit.  Each log line is flushed immediately so
+    that the caller sees real‑time progress even when output is redirected.
 
     Objective: score = alpha * exact_frac + beta * sector_pref_fraction
     Where:
@@ -187,13 +185,18 @@ def optimize(
 
     start = time.time()
     it = 0
-    next_log = iterations // 10 if iterations >= 10 else 1
+    # compute log interval (at least every 5% or once per second)
+    log_interval = max(1, iterations // 20)
+    last_log_time = start
+    if verbose:
+        print(f"    optimization started (iters={iterations}, time_limit={time_limit}s)", flush=True)
     while it < iterations and (time.time() - start) < time_limit:
         it += 1
-        if verbose and it == next_log:
+        if verbose and (it % log_interval == 0 or time.time() - last_log_time > 1.0):
             pct = int(100 * it / iterations)
-            print(f"    progress: {pct}% (it={it}/{iterations}, elapsed={time.time()-start:.1f}s)")
-            next_log += iterations // 10
+            elapsed = time.time() - start
+            print(f"    progress: {pct}% (it={it}/{iterations}, elapsed={elapsed:.1f}s)", flush=True)
+            last_log_time = time.time()
         # pick swap candidates
         if restrict_sector:
             sec = rng.choice(["h27", "cross", "h12", "incident"])
@@ -311,7 +314,7 @@ def optimize(
     if verbose:
         elapsed = time.time() - start
         reason = "iterations" if it >= iterations else "time limit"
-        print(f"    optimization terminated after {it} iterations ({reason}), elapsed {elapsed:.2f}s, best_score={best_score:.6f}, best_exact={best_exact}")
+        print(f"    optimization terminated after {it} iterations ({reason}), elapsed {elapsed:.2f}s, best_score={best_score:.6f}, best_exact={best_exact}", flush=True)
     # Final verification on best_bij
     verification = verify_bijection_properties(
         best_bij, edges, roots, z3, edge_decomp, adj, n

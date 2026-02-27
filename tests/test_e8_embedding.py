@@ -1525,6 +1525,37 @@ class TestW33E8Bijection:
         )
         assert best_path.exists(), f"Best bijection file {best_path} missing"
 
+    def test_optimize_verbose_outputs(self, tmp_path, w33):
+        """Running optimize with verbose should produce progress lines."""
+        from scripts.optimize_bijection_cocycle import optimize, load_bijection
+        from pathlib import Path
+        # use a small trial so it returns quickly
+        inpath = Path("checks/PART_CVII_e8_bijection.json")
+        bij_init, _ = load_bijection(inpath)
+        n, vertices, adj, edges = w33
+        # generate roots from the module
+        from e8_embedding_group_theoretic import generate_e8_roots
+        roots = generate_e8_roots()
+        # capture stdout
+        import io, sys
+        buf = io.StringIO()
+        old = sys.stdout
+        sys.stdout = buf
+        try:
+            optimize(
+                bij_init,
+                edges,
+                adj,
+                roots,
+                iterations=100,
+                time_limit=0.5,
+                verbose=True,
+            )
+        finally:
+            sys.stdout = old
+        output = buf.getvalue()
+        assert "progress:" in output, "Expected progress output from optimize()"
+
 
 # =========================================================================
 # TEST CLASS 11: W33 Simplicial Homology

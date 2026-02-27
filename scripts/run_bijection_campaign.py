@@ -53,7 +53,8 @@ def run_campaign(
     for i in range(trials):
         seed = seeds[i] if seeds is not None else (int(time.time() * 1e6) % 2**31) + i
         print(
-            f"Trial {i+1}/{trials} (seed={seed}): running optimize (time={time_per}s, iters={iters})"
+            f"Trial {i+1}/{trials} (seed={seed}): running optimize (time={time_per}s, iters={iters})",
+            flush=True,
         )
         t0 = time.time()
         res = optimize(
@@ -92,7 +93,8 @@ def run_campaign(
         }
         trial_path.write_text(json.dumps(out, indent=2), encoding="utf-8")
         print(
-            f"  Wrote trial artifact: {trial_path} (best_score={trial_obj['best_score']}, best_exact={trial_obj['best_exact']})"
+            f"  Wrote trial artifact: {trial_path} (best_score={trial_obj['best_score']}, best_exact={trial_obj['best_exact']})",
+            flush=True,
         )
 
         trials_results.append(trial_obj)
@@ -123,7 +125,8 @@ def run_campaign(
     best_path.write_text(json.dumps(best_out, indent=2), encoding="utf-8")
 
     print(
-        f"Campaign complete: {summary_path} (best_score={best_overall['best_score']})"
+        f"Campaign complete: {summary_path} (best_score={best_overall['best_score']})",
+        flush=True,
     )
     return {
         "summary": summary,

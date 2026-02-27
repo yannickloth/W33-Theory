@@ -107,6 +107,12 @@ def test_infinity_neighbors_and_orbits():
         neigh = [j for j in infinity if adj[i, j]]
         neighbor_map[i] = neigh
         assert len(neigh) == 4
+    # cross-check with bundle if available
+    pg33_bundle = Path("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01")
+    if pg33_bundle.exists():
+        b_map = json.loads((pg33_bundle / "infinity_neighbors.json").read_text())
+        # convert our int keys to str to match json
+        assert {str(k): v for k, v in neighbor_map.items()} == b_map
     # orbit under outer twist
     N4 = [
         [1, 0, 0, 0],
@@ -132,3 +138,64 @@ def test_infinity_neighbors_and_orbits():
     # expect five orbits of sizes [8,8,8,1,2]
     sizes = sorted(len(o) for o in orbits)
     assert sizes == [1, 2, 8, 8, 8]
+    # verify against bundle file if available
+    pg33_bundle = Path("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01")
+    if pg33_bundle.exists():
+        b_orbits = json.loads((pg33_bundle / "outer_orbits.json").read_text())
+        assert sorted(len(o) for o in b_orbits) == sizes
+
+
+def test_edge_orbits_and_bundle():
+    pts2 = canonical_pg33_points()
+    # recompute adjacency
+    J = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 2, 0, 0], [2, 0, 0, 0]], dtype=int)
+    adj = np.zeros((40, 40), dtype=int)
+    for i, p in enumerate(pts2):
+        for j, q in enumerate(pts2):
+            if i == j:
+                continue
+            val = (np.array(p, dtype=int) @ J @ np.array(q, dtype=int)) % 3
+            if val == 0:
+                adj[i, j] = 1
+    edges = []
+    for i in range(40):
+        for j in range(i + 1, 40):
+            if adj[i, j]:
+                edges.append((i, j))
+    assert len(edges) == 240
+    # compute edge orbits under outer permutation
+    N4 = [
+        [1, 0, 0, 0],
+        [0, 1, 2, 0],
+        [2, 2, 0, 0],
+        [2, 2, 1, 2],
+    ]
+    perm_from_N4 = compute_perm_from_matrix(N4, pts2)
+    edge_index = {e: idx for idx, e in enumerate(edges)}
+    orb_sizes = []
+    unvis = set(range(len(edges)))
+    while unvis:
+        start = unvis.pop()
+        cur = start
+        orb = [start]
+        while True:
+            i, j = edges[cur]
+            ni, nj = perm_from_N4[i], perm_from_N4[j]
+            if ni > nj:
+                ni, nj = nj, ni
+            cur = edge_index[(ni, nj)]
+            if cur == start:
+                break
+            orb.append(cur)
+            unvis.discard(cur)
+        orb_sizes.append(len(orb))
+    orb_sizes.sort()
+    # expect 26 orbits of size 8 and 8 orbits of size 4
+    assert orb_sizes.count(8) == 26
+    assert orb_sizes.count(4) == 8
+    # compare with bundle if present
+    pg33_bundle = Path("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01")
+    if pg33_bundle.exists():
+        b_edge_orbits = json.loads((pg33_bundle / "edge_orbits.json").read_text())
+        assert sorted(len(o) for o in b_edge_orbits) == orb_sizes
+
