@@ -37,25 +37,40 @@ root_list = [tuple(int(x) for x in orig[str(e)]) for e in edges]
 
 # lift size helper delegates to compute_phi_lift_subgroup
 
+from tools.compute_phi_sign_gauge import compute_sign_gauge  # type: ignore
+
 def compute_lift_size(root_list: List[Tuple[int, ...]]) -> int:
-    # the imported helper already knows the graph, Gram, and group generators
+    # raw lift only (faster)
     return compute_lift_for_roots(root_list)
 
-# brute force random swapping heuristic
-best_size = compute_lift_size(root_list)
-print('initial lift size',best_size)
-trials=1000
+# parse optional CLI args
+import argparse
+parser = argparse.ArgumentParser(description="Random search for improved phi")
+parser.add_argument("--trials", type=int, default=1000,
+                    help="number of random swaps to try")
+args = parser.parse_args()
+
+best_raw = compute_lift_size(root_list)
+# also track best gauged size (may equal raw initially)
+best_gauged = best_raw
+print('initial lift size', best_raw)
+trials = args.trials
 for t in range(trials):
     i,j = random.sample(range(len(root_list)),2)
     root_list[i], root_list[j] = root_list[j], root_list[i]
     sz = compute_lift_size(root_list)
-    if sz > best_size:
-        print('found improvement',best_size,'->',sz,'at trial',t)
-        # write candidate mapping to OUTPUT
-        newmap={str(edges[k]): list(root_list[k]) for k in range(len(edges))}
-        OUTPUT.write_text(json.dumps(newmap,indent=2))
-        best_size = sz
+    if sz > best_raw:
+        # raw improvement; check gauge to see if it really pays off
+        signvec, signed_roots, gauged = compute_sign_gauge(root_list)
+        if gauged > best_gauged:
+            print('found gauged improvement', best_gauged, '->', gauged, 'at trial', t)
+            best_gauged = gauged
+            # write candidate mapping (ungauged) and gauge
+            newmap={str(edges[k]): list(root_list[k]) for k in range(len(edges))}
+            OUTPUT.write_text(json.dumps(newmap,indent=2))
+            (ROOT / 'artifacts' / 'sign_gauge_candidate.json').write_text(json.dumps(signvec, indent=2))
+        best_raw = sz
     # revert
     root_list[i], root_list[j] = root_list[j], root_list[i]
 
-print('search complete, best_size',best_size)
+print('search complete, best_raw', best_raw, 'best_gauged', best_gauged)

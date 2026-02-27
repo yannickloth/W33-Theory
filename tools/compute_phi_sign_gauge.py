@@ -42,17 +42,22 @@ from tools.compute_phi_lift_subgroup import (
     Gperms,
 )  # type: ignore
 
-# load canonical root list
-orig_map = json.loads((ROOT / "artifacts" / "edge_to_e8_root.json").read_text())
-edges_sorted = []
-root_list = []
-for k,v in orig_map.items():
-    if not k.startswith("("):
-        continue
-    pair = tuple(int(x.strip()) for x in k.strip()[1:-1].split(","))
-    if pair[0] < pair[1]:
-        edges_sorted.append(pair)
-        root_list.append(tuple(int(x) for x in v))
+def load_root_list(path: Path) -> List[Tuple[int, ...]]:
+    orig_map = json.loads(path.read_text())
+    edges_sorted_local = []
+    roots_local: List[Tuple[int, ...]] = []
+    for k, v in orig_map.items():
+        if not k.startswith("("):
+            continue
+        pair = tuple(int(x.strip()) for x in k.strip()[1:-1].split(","))
+        if pair[0] < pair[1]:
+            edges_sorted_local.append(pair)
+            roots_local.append(tuple(int(x) for x in v))
+    assert len(roots_local) == 240
+    return edges_sorted_local, roots_local
+
+# by default operate on the canonical map
+edges_sorted, root_list = load_root_list(ROOT / "artifacts" / "edge_to_e8_root.json")
 
 m = len(root_list)
 assert m == 240
@@ -177,27 +182,33 @@ def solve_gauge_for_subset(indices: List[int]) -> Optional[List[int]]:
     return solve_basis(basis)
 
 
-# main logic
-if __name__ == "__main__":
-    initial_lift = compute_lift_for_roots(root_list)
-    print("initial lift size", initial_lift)
 
+# wrapper performing full operation for a given root_list
+
+def compute_sign_gauge(root_list_in: List[Tuple[int, ...]]) -> Tuple[List[int], List[Tuple[int, ...]], int]:
+    """Return (sign_vector, signed_roots, new_lift_size)."""
+    global root_list, edges_sorted, m
+    root_list = root_list_in
+    m = len(root_list)
+    assert m == 240
+    # recompute Gram with new roots
+    for a in range(m):
+        for b in range(m):
+            Gram[a, b] = dot(root_list[a], root_list[b])
+
+    initial_lift = compute_lift_for_roots(root_list)
     # attempt full gauge
     all_idxs = list(range(len(Gperms)))
     sol_all = solve_gauge_for_subset(all_idxs)
     if sol_all is not None:
-        print("found common gauge for all {} elements".format(len(Gperms)))
         best_sol = sol_all
         best_set = all_idxs
     else:
-        print("no gauge works for entire group, scanning individual elements")
         good_idxs = []
-        for idx,perm in enumerate(Gperms):
+        for idx, perm in enumerate(Gperms):
             s = solve_gauge_for_permutation(perm)
             if s is not None:
                 good_idxs.append(idx)
-        print("{} elements gauge-liftable individually".format(len(good_idxs)))
-        # greedy combine
         best_set, best_sol = [], []
         for idx in good_idxs:
             candidate = best_set + [idx]
@@ -205,14 +216,30 @@ if __name__ == "__main__":
             if sol is not None:
                 best_set = candidate
                 best_sol = sol
-        print("greedy combined subset size", len(best_set))
     if best_sol:
-        # apply sign gauge to roots
         signed_roots = [tuple(-x if best_sol[i] else x for x in root_list[i]) for i in range(m)]
-        new_map = {str(edges_sorted[i]): list(signed_roots[i]) for i in range(m)}
-        (ROOT / "artifacts" / "edge_to_e8_root_with_sign_gauge.json").write_text(json.dumps(new_map, indent=2))
-        (ROOT / "artifacts" / "sign_gauge.json").write_text(json.dumps(best_sol, indent=2))
         new_lift = compute_lift_for_roots(signed_roots)
+        return best_sol, signed_roots, new_lift
+    else:
+        return [], root_list, initial_lift
+
+# command-line interface
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Compute sign gauge on a phi map")
+    parser.add_argument("--input", help="path to edge->root JSON (default canonical)",
+                        default=str(ROOT / "artifacts" / "edge_to_e8_root.json"))
+    args = parser.parse_args()
+    edges_sorted, root_list = load_root_list(Path(args.input))
+    m = len(root_list)
+    assert m == 240
+
+    best_sol, signed_roots, new_lift = compute_sign_gauge(root_list)
+    print("initial lift size", compute_lift_for_roots(root_list))
+    if best_sol:
+        out_map = {str(edges_sorted[i]): list(signed_roots[i]) for i in range(m)}
+        (ROOT / "artifacts" / "edge_to_e8_root_with_sign_gauge.json").write_text(json.dumps(out_map, indent=2))
+        (ROOT / "artifacts" / "sign_gauge.json").write_text(json.dumps(best_sol, indent=2))
         print("lift size after gauge", new_lift)
     else:
         print("no nontrivial gauge found")

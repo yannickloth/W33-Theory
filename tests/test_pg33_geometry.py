@@ -356,8 +356,8 @@ def test_analyze_lift_subgroup(tmp_path):
 
 def test_search_phi(tmp_path):
     repo = Path(__file__).resolve().parents[1]
-    # perform a short search (only checks script runs)
-    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "search_phi.py")], cwd=repo)
+    # perform a short search (only checks script runs); limit trials so test is quick
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(repo / "tools" / "search_phi.py"), "--trials", "20"], cwd=repo)
     assert res.returncode == 0
 
 
