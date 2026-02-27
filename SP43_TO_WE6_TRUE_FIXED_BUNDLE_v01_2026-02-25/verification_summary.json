@@ -1,0 +1,79 @@
+{
+  "sp43_edgepair_group_order": 25920,
+  "we6_even_line_group_order": 25920,
+  "order_spectrum_equal": true,
+  "root_perm_checks": [
+    {
+      "gen": 0,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 24
+    },
+    {
+      "gen": 1,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 24
+    },
+    {
+      "gen": 2,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 24
+    },
+    {
+      "gen": 3,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 24
+    },
+    {
+      "gen": 4,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 22
+    },
+    {
+      "gen": 5,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 3,
+      "eps_minus_count": 14
+    },
+    {
+      "gen": 6,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 4,
+      "eps_minus_count": 14
+    },
+    {
+      "gen": 7,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 4,
+      "eps_minus_count": 14
+    },
+    {
+      "gen": 8,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 2,
+      "eps_minus_count": 22
+    },
+    {
+      "gen": 9,
+      "antipode_preserved": true,
+      "dot_preserved": true,
+      "line_perm_order": 2,
+      "eps_minus_count": 22
+    }
+  ],
+  "line_sign_cocycle_nontrivial_pairs": 0,
+  "note": "Computed cocycle on canonical line representatives is trivial for these 10 generators under the fixed embedding; earlier inconsistency in repo comes from using the derived sp43_we6_generator_map root perms which do not preserve antipodes or inner products."
+}

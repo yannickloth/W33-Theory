@@ -28,18 +28,6 @@ def mk_case_eq(m: Tuple[int, int, int, int]) -> str:
     return f"M = mk2x2 {a} {b} {c} {d}"
 
 
-def mk_branch(m: Tuple[int, int, int, int], p: Tuple[int, int, int, int]) -> str:
-    """Return Lean branch text for a single case."""
-    a, b, c, d = m
-    p0, p1, p2, p3 = p
-    branch = []
-    branch.append(
-        f"  | Or.inl h =>" if m == ordered[0] else "  | Or.inr " + "(Or.inl h) =>"
-    )
-    # The above line will be fixed up by the caller to chain ors properly; instead we will
-    # generate a canonical sequence using the same pattern used in the hand-written file.
-    return "TODO"
-
 
 def generate(report: dict) -> str:
     rows = report.get("candidates", [])

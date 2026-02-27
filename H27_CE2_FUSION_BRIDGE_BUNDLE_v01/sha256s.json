@@ -1,0 +1,9 @@
+{
+  "pg_point_to_h27_vertex_coords.csv": "0b42aba7d6e46efb6d0a2b82a9a059523b97cf9ba0947c83aa1bfcfc972630a0",
+  "center_orbits_fibers.csv": "a5639efcbbb91a0ea2f72f69a3fccf60403e2c01448eecb679d1d49d0233ac1e",
+  "stabilizer_SL2_and_mu_bridge.json": "8159915ff2df577c771348b425927e9e729d6994d6c28e2c081ece2f73cfa38c",
+  "REPORT.md": "4c0f9bad3ff2c27948c1dba3a934e277047748183868dc554b443dca97bfe886",
+  "verify_fusion.py": "d92fd7e447ec44d179cf9b8683d4b87d545639b8e6ce98ab03f53dc2320fc21b",
+  "H27_v0_0_heisenberg_coords.csv": "b36d9a761824f777a6efcfce5267ba49b6f5dcd1e64e9124888f64c151353967",
+  "H27_v0_0_fibers.csv": "545ed44ed5ee195e2d45016a5515380eed6c85d713a7b2a955dc584497db71e9"
+}

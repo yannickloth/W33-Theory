@@ -1,0 +1,8 @@
+{
+  "heisenberg_U_generators.json": "748bac752715824f187d47908a582fc672919f8d6ad3ae10f860d9f0b271c9f8",
+  "sl2_3_quotient_summary.json": "9112c1a703e88a78b97af465c914338abd6a5a64956707b8dfe16701fd7785f9",
+  "mu_recovery.json": "4eafcb09518d57c35e7442c1238ac3228bc6a394a5b52febaf30076d5a969a20",
+  "outer_twist_on_sl2_layer.json": "3e937a0b28c4c8ef5dafb6686edcfffece1a25eb2501529387c6fa3255200e59",
+  "REPORT.md": "cc7f1456a7b8989b4557f4ae578d30514d1847a623fa3fa9295c3d42322b9f4f",
+  "verify_bridge.py": "5f7a4516b179d21fa21529d07e8f1505a256879c651afe5ce92c60b5110aaa5c"
+}

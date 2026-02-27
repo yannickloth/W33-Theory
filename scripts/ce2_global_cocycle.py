@@ -1,3 +1,51 @@
+#!/usr/bin/env python3
+"""Global (non per-triple) CE2 cocycle rules inferred from sparse local repairs.
+
+This module turns the *structured* CE2 local solutions into a reusable law.
+
+Current status:
+  - Implements the dominant "simple family" (5184 / 5832 sparse entries):
+      * exactly one e6 matrix unit in U or V
+      * coefficient magnitude = 1/54
+  - Support location is fully global/Heisenberg:
+      row = match + other - c   in F3^3 Heisenberg coordinates (u1,u2,z)
+      col = other
+  - Side (U vs V) depends only on which g1 element matches the sl3 index.
+  - Sign is given by a committed explicit GF(2) polynomial (deg ≤ 4),
+    falling back to the compact 864-entry map if needed.
+
+  - Implements the remaining "fiber family" (648 / 5832 sparse entries):
+      * exactly one e6 + one sl3 matrix unit
+      * coefficient magnitude = 1/108
+      * supported exactly on the 9 Heisenberg fibers (bad9) in the E6 27-set
+      * sign is fully explicit from indices (no lookup)
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from dataclasses import dataclass
+from fractions import Fraction
+from functools import lru_cache
+from itertools import combinations
+from pathlib import Path
+from collections import defaultdict
+
+
+# ensure the workspace and scripts directory are on sys.path before importing
+# any project-local modules.  this allows the tests to import this module
+# regardless of the current working directory.
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS_DIR = ROOT / "scripts"
+for p in (ROOT, SCRIPTS_DIR):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+# we need access to the Weil-phase (metaplectic) cochain generator
+from grade_weil_phase import all_symplectic_matrices, compute_phase, apply_matrix
+
+
 def predict_simple_family_phase_closed_form(c_i: int, match_i: int, other_i: int) -> int:
     """Return the full phase class (mod 3) for the CE2 simple-family kernel entry.
 
@@ -51,52 +99,6 @@ def predict_simple_family_phase_closed_form(c_i: int, match_i: int, other_i: int
     # This is the full phase class (mod 3)
     phase = (seed_e + delta_e_val) % 3
     return phase
-#!/usr/bin/env python3
-"""Global (non per-triple) CE2 cocycle rules inferred from sparse local repairs.
-
-This module turns the *structured* CE2 local solutions into a reusable law.
-
-Current status:
-  - Implements the dominant "simple family" (5184 / 5832 sparse entries):
-      * exactly one e6 matrix unit in U or V
-      * coefficient magnitude = 1/54
-  - Support location is fully global/Heisenberg:
-      row = match + other - c   in F3^3 Heisenberg coordinates (u1,u2,z)
-      col = other
-  - Side (U vs V) depends only on which g1 element matches the sl3 index.
-  - Sign is given by a committed explicit GF(2) polynomial (deg ≤ 4),
-    falling back to the compact 864-entry map if needed.
-
-  - Implements the remaining "fiber family" (648 / 5832 sparse entries):
-      * exactly one e6 + one sl3 matrix unit
-      * coefficient magnitude = 1/108
-      * supported exactly on the 9 Heisenberg fibers (bad9) in the E6 27-set
-      * sign is fully explicit from indices (no lookup)
-"""
-
-from __future__ import annotations
-
-import json
-import sys
-from dataclasses import dataclass
-from fractions import Fraction
-from functools import lru_cache
-from itertools import combinations
-from pathlib import Path
-from collections import defaultdict
-
-
-# ensure the workspace and scripts directory are on sys.path before importing
-# any project-local modules.  this allows the tests to import this module
-# regardless of the current working directory.
-ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS_DIR = ROOT / "scripts"
-for p in (ROOT, SCRIPTS_DIR):
-    if str(p) not in sys.path:
-        sys.path.insert(0, str(p))
-
-# we need access to the Weil-phase (metaplectic) cochain generator
-from grade_weil_phase import all_symplectic_matrices, compute_phase, apply_matrix
 
 
 @dataclass(frozen=True)
@@ -1460,12 +1462,38 @@ def explain_simple_family_sign_closed_form(
     }
 
     if constant_line:
-        table = _SIMPLE_FAMILY_WEIL_CONST_SIGN[int(t)][(int(d1), int(d2))]
-        sign = int(table[int(s) % 3])
-        base["constant_line_rule"] = {
-            "table_s_to_sign": [int(table[0]), int(table[1]), int(table[2])],
-            "sign": int(sign),
-        }
+        # constant-line regime has its own small table, but the closed-form
+        # predictor already handles it correctly.  to ensure explanation and
+        # prediction agree, compute the sign/zsum via the generic formula and
+        # store them here rather than relying on the old table.
+        sign = predict_simple_family_sign_closed_form(int(c_i), int(match_i), int(other_i))
+        # compute zsum exactly as the predictor does (including c0 corrections)
+        # we replicate the minimal portion of the closed-form algorithm here.
+        # the predictor has already decoded vectors above.
+        # 1. transport to seed frame
+        A = None
+        for M in all_symplectic_matrices():
+            if apply_matrix(M, d) == (1, 0):
+                A = M
+                break
+        assert A is not None
+        import numpy as _np
+        B = _np.array(matinv(A), dtype=int)
+        seed_c0 = _eval_f3_poly_sw(
+            _f3_dot(apply_matrix(B, (uc1 % 3, uc2 % 3)), (1, 0)),
+            _f3_omega(apply_matrix(B, (uc1 % 3, uc2 % 3)), (1, 0)),
+            _SIMPLE_FAMILY_WEIL_C0_COEFF[t][(1, 0)],
+        )
+        p, q = int(B[0, 0]), int(B[0, 1])
+        r, s_ = int(B[1, 0]), int(B[1, 1])
+        dc0 = _delta_c0_coeffs(p, q, r, s_)
+        delta_c0_val = _eval_f3_poly_sw(s, w, dc0)
+        zsum = int((int(zm) + int(zo) + seed_c0 + delta_c0_val) % 3)
+        tag = (int(t), int(w), zsum)
+        pattern = _SEED_PATTERNS.get((int(t), int(s), zsum))
+        base["constant_line_rule"] = {"sign": int(sign)}
+        base["tag"] = tag
+        base["pattern"] = pattern
         return base
 
     c0_coeff = _SIMPLE_FAMILY_WEIL_C0_COEFF[int(t)][(int(d1), int(d2))]
