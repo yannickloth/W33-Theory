@@ -78,6 +78,8 @@ nul
 bundles/
 .tmp*
 tmp*
+# allow TOE bundles, they're important artifacts
+!TOE_*.zip
 *.zip
 .ci-logs/
 .claude/

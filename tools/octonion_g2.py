@@ -192,12 +192,20 @@ def main():
         stats['orbit_size'] = 480
     deriv_info, basis = solve_derivations(mult, quick=args.quick)
     stats.update(deriv_info)
+    # compute simple Killing form as trace of product in the 8-dim module
+    K = []
+    for i, Bi in enumerate(basis):
+        row = []
+        for j, Bj in enumerate(basis):
+            t = np.trace(np.array(Bi, dtype=int) @ np.array(Bj, dtype=int))
+            row.append(int(t))
+        K.append(row)
     cwd = Path('.').resolve()
     with open(cwd / 'octonion_rep_stats.json', 'w') as f:
         json.dump(stats, f)
     with open(cwd / 'octonion_derivations.json', 'w') as f:
-        json.dump({'basis': basis, **deriv_info}, f)
-    print('done', stats)
+        json.dump({'basis': basis, 'killing_form': K, **deriv_info}, f)
+    print('done', stats, 'killing_form_rank', np.linalg.matrix_rank(np.array(K)))
 
 
 if __name__ == '__main__':
