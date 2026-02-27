@@ -122,6 +122,53 @@ for idx, perm in enumerate(edge_perms):
     M = np.rint(M).astype(int)
     matrices[str(idx)] = (M % 3).tolist()
 
-out = {"basis_indices": basis_idx, "matrices": matrices}
+# attempt to decompose the 8-d module into two 4-d invariant subspaces over GF(3)
+
+# convert matrices dict into list of numpy arrays
+mat_list = [np.array(matrices[k], dtype=int) for k in sorted(matrices.keys(), key=int)]
+
+def find_invariant_subspace(dim_target: int) -> List[int]:
+    """Search for a random vector whose orbit under the group spans the desired dimension."""
+    for attempt in range(200):
+        v = np.random.randint(0, 3, size=(8,))
+        # compute orbit
+        span = [v]
+        changed = True
+        while changed:
+            changed = False
+            for M in mat_list:
+                for w in span:
+                    u = (M @ w) % 3
+                    # reduce modulo 3 and check linear independence
+                    mat = np.vstack(span + [u]).T
+                    if np.linalg.matrix_rank(mat % 3) > len(span):
+                        span.append(u)
+                        changed = True
+        if len(span) == dim_target:
+            # return basis as list of vectors
+            return span
+    return []
+
+sub1 = find_invariant_subspace(4)
+sub2 = []
+if sub1:
+    # compute complement: find basis for nullspace of sub1^T
+    # simple approach: brute force search for 4 linearly independent vectors orthogonal to sub1 span
+    all_vecs = [np.eye(8, dtype=int)[:,i] for i in range(8)]
+    mat1 = np.vstack(sub1).T
+    for vec in all_vecs:
+        if np.linalg.matrix_rank(np.column_stack((mat1, vec)) % 3) > mat1.shape[1]:
+            sub2.append(vec)
+        if len(sub2) == 4:
+            break
+
+out = {
+    "basis_indices": basis_idx,
+    "matrices": matrices,
+    "invariant_subspaces": {
+        "sub1": [v.tolist() for v in sub1],
+        "sub2": [v.tolist() for v in sub2],
+    }
+}
 (ROOT / "artifacts" / "gl23_rep.json").write_text(json.dumps(out, indent=2))
 print("wrote gl23_rep.json with {} generators".format(len(matrices)))

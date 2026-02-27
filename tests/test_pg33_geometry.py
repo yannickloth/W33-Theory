@@ -380,5 +380,9 @@ def test_extract_gl23_module(tmp_path):
     payload = json.loads(out.read_text())
     assert "matrices" in payload
     assert isinstance(payload["matrices"], dict)
+    # verify decomposition fields present (may be empty if lift trivial)
+    assert "invariant_subspaces" in payload
+    subs = payload["invariant_subspaces"]
+    assert "sub1" in subs and "sub2" in subs
 
 
