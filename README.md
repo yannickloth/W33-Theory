@@ -35,6 +35,46 @@ Whether this correspondence extends to a *complete* physical theory that reprodu
 
 ## Core Mathematical Facts
 
+> **Update February 2026:** In the latest development the entire geometry has been
+> rendered *mechanical*.  A canonical model of PG(3,3) with an explicit
+> symplectic form J and outer‑twist matrix N₄ has been constructed so that
+> collinearity in W(3,3) is exactly
+> ````math
+> v\sim w \iff v^T J w \equiv 0 \pmod 3
+> ````
+> and the outer element satisfies
+> ````math
+> N_4^T J N_4 = 2J
+> ````
+> (multiplier λ=2, χ(λ)=−1).  This explicit structure yields a 40‑vertex
+> regular graph with 240 isotropic edges and 40 isotropic lines; H27 appears
+> as an affine 27‑point chart (PG IDs 13..39) with coordinate formula
+> `pg_id = 13 + 9x + 3y + t`.
+>
+> Two reproducible data bundles are now available:
+>
+> * **INFINITY_NEIGHBOR_CHARGE_TABLE_BUNDLE_v01.zip** – contains the 9‑direction
+>   compressed charge table (u→4 infinity neighbours), full 27‑point map,
+>   PG33 coordinates, J/N₄, and orbit summaries under outer/P/N(P).
+> * **W33_DIRECTION_DECOMPOSITION_BUNDLE_v01.zip** – adds every edge labelled
+>   by its infinity direction and triangle class, plus all 40 lines with
+>   direction and affine triples.  Each of the 9 directions splits into 3
+>   affine lines.
+>
+> A complete bijection between PG IDs, internal W33 vertex IDs and the
+> 240‑edge ↔ E₈‑root correspondence has also been computed.  Running
+> ``tools/outer_twist_on_roots.py`` produces an explicit permutation of the
+> 240 roots induced by the outer twist; the certificate
+> `artifacts/outer_twist_root_action_certificate.json` records cycle structure
+> (26 cycles of length 8, 8 cycles of length 4) and may be used as a drop-in
+> for further analysis.
+>
+> All of these constructions are backed by new utility scripts and a fresh
+> integration test (`tests/test_pg33_geometry.py`) that regenerates the
+> bundles and confirms the root action, ensuring the results are fully repeatable.
+
+## Core Mathematical Facts
+
 ### Chevalley basis and H1 projections
 - Eight simple E8 roots correspond to eight distinguished W33 edges.  The Cartan matrix reconstructed from their orbit coordinates is exactly the standard Sage–ordering E8 matrix.
 - Each simple edge's neighbourhood (incident edges, triangles, distances) admits basis-invariant statistics computed from the three 27×27 H1 Gram matrices.  Subspace‑0 values dominate uniformly and the grade‑average means order as `g0_e6 > g2 > g1`, matching the Frobenius weight ratios used in the gauge‑coupling derivation.
