@@ -199,3 +199,50 @@ def test_edge_orbits_and_bundle():
         b_edge_orbits = json.loads((pg33_bundle / "edge_orbits.json").read_text())
         assert sorted(len(o) for o in b_edge_orbits) == orb_sizes
 
+
+# new tests for infinity and direction bundles
+
+def test_infinity_and_direction_bundles(tmp_path):
+    """Run the bundle creation script and verify its output files."""
+    # locate script relative to repository root
+    repo_root = Path(__file__).resolve().parents[1]
+    script = repo_root / "tools" / "make_infinity_charge_table_bundles.py"
+    import subprocess, shutil
+    work = tmp_path / "work"
+    work.mkdir()
+    # copy required input bundles into working directory
+    shutil.copytree("PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01", work / "PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01")
+    shutil.copytree("H27_CE2_FUSION_BRIDGE_BUNDLE_v01", work / "H27_CE2_FUSION_BRIDGE_BUNDLE_v01")
+    # copy the JSON files the script expects
+    for fname in ["neighbor_map.json","orbits_outer.json","orbits_P.json","orbits_NP.json"]:
+        shutil.copy(repo_root / fname, work / fname)
+    # execute script
+    res = subprocess.run([".venv\\Scripts\\python.exe", str(script)], cwd=work)
+    assert res.returncode == 0
+    zip1 = work / "INFINITY_NEIGHBOR_CHARGE_TABLE_BUNDLE_v01.zip"
+    zip2 = work / "W33_DIRECTION_DECOMPOSITION_BUNDLE_v01.zip"
+    assert zip1.exists() and zip2.exists()
+    import zipfile
+    with zipfile.ZipFile(zip1) as z:
+        names = set(z.namelist())
+    expected1 = {
+        "u_to_4_infinity_neighbors_compressed9.csv",
+        "affine_point_to_4_infinity_neighbors_full27.csv",
+        "pg33_point_coordinates.csv",
+        "symplectic_form_and_outer_matrix.json",
+        "W33_collinearity_edges_240.csv",
+        "neighbor_map.json",
+        "orbits_outer.json",
+        "orbits_P.json",
+        "orbits_NP.json",
+    }
+    assert expected1.issubset(names)
+    with zipfile.ZipFile(zip2) as z:
+        names2 = set(z.namelist())
+    for fname in [
+        "edges_with_direction_and_triangle_class.csv",
+        "lines_40_with_direction_and_affine_triples.csv",
+        "direction_inf_id_to_3_affine_lines.csv",
+    ]:
+        assert fname in names2
+
