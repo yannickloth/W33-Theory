@@ -394,3 +394,18 @@ def test_optimize_phi_smoke(tmp_path):
     # just check command completed
 
 
+def test_conjugacy_obstruction(tmp_path):
+    # load precomputed obstruction JSON (generated earlier or by audit template)
+    repo = Path(__file__).resolve().parents[1]
+    data = json.loads((repo / "action_conjugacy_obstruction.json").read_text())
+    ep = data["edgepair"]
+    ln = data["line_fixed"]
+    # ensure order-5 fixed counts differ
+    ep5 = ep["fixed_counts_by_order"].get("5", [])
+    ln5 = ln["fixed_counts_by_order"].get("5", [])
+    assert ep5 and ln5
+    # edgepair has all zeros, line has nonzero
+    assert all(x==0 for x in ep5)
+    assert any(x!=0 for x in ln5)
+
+
