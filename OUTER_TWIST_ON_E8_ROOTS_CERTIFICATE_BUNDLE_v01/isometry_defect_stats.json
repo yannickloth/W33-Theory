@@ -1,0 +1,11 @@
+{
+  "inner_product_values_distribution": {
+    "1": 6720,
+    "-1": 6720,
+    "0": 15120,
+    "-2": 120
+  },
+  "adjacency_ip=-1_pairs_total": 6720,
+  "adjacency_ip=-1_pairs_violated_under_root_perm": 5066,
+  "adjacency_preservation_rate": 0.2461309523809524
+}

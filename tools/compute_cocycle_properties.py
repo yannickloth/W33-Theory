@@ -129,6 +129,8 @@ def main():
         return viol
     viol = tri_check(ud_edges)
     print('triangle violations count', len(viol))
+    if viol:
+        print('sample violations', viol[:5])
     cob, sol = try_solve_coboundary(edges)
     print('coboundary solvable?', cob)
     if cob:
@@ -170,6 +172,7 @@ def main():
     out = {
         'stats': stats,
         'triangle_violations': len(viol),
+        'triangle_violation_samples': viol[:10],
         'coboundary': cob,
         'orbit_lengths': dict(orbits),
     }

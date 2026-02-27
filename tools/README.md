@@ -27,6 +27,13 @@ Analysis and verification tools for the W33 Theory of Everything project.
 ### Bundle Builders
 - `build_*.py` - Generate data bundles for physics predictions
 
+### Lift / φ Analysis
+- `compute_phi_lift_subgroup.py` - classify stabiliser of canonical edge→root bijection
+- `analyze_lift_subgroup.py` - summarise lift subgroup data and orbit structure
+- `search_phi.py` - random heuristic search for improved bijections
+- `compute_phi_sign_gauge.py` - solve sign-gauge equations to maximise lift group
+- `extract_gl23_module.py` - build GF(3) matrices for GL(2,3) representation inside E8
+
 ### Verification
 - `audit_*.py`, `verify_*.py` - Consistency checks
 - `inspect_*.py` - Data inspection utilities
