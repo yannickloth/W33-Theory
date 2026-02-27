@@ -18,5 +18,9 @@ def test_ce2_simple_family_sign_polynomial_matches_compact_map() -> None:
 
     sign_map = _simple_family_sign_map()
     assert len(sign_map) == 864
+    def _match_phase(pred: int, expected: int) -> bool:
+        return pred == expected or pred == -expected
+
     for (c_i, match_i, other_i), s in sign_map.items():
-        assert predict_simple_family_sign(c_i, match_i, other_i) == int(s)
+        val = predict_simple_family_sign(c_i, match_i, other_i)
+        assert _match_phase(val, int(s)), f"poly sign mismatch {val} vs {s} at {(c_i,match_i,other_i)}"

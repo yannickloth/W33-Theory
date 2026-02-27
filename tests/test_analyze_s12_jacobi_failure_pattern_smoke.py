@@ -49,4 +49,5 @@ def test_analyze_s12_jacobi_failure_pattern_cli_smoke(tmp_path: Path) -> None:
     cmd2 = [sys.executable, "-X", "utf8", "scripts/w33_s12_linfty_phase_bridge.py"]
     run2 = subprocess.run(cmd2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     assert run2.returncode == 0, run2.stderr
-    assert "Global Heisenberg law reproduces CE2 sparse entry exactly" in run2.stdout
+    # recent script prints improved confirmation line
+    assert "Global predictor reproduces CE2 sparse entry exactly" in run2.stdout
