@@ -121,6 +121,55 @@ def main():
     # write stats JSON
     open(STAT_JSON, "w").write(json.dumps(stats, indent=2))
     report_stats(stats, summary)
+    # perform additional tomotope computations if summary contains t4 info
+    try:
+        # compute full orbit under tomotope generators for unique flags
+        zf = zipfile.ZipFile(ROOT / "TOE_tomotope_true_flag_model_v02_20260228_bundle.zip")
+        rgens = json.loads(zf.read("tomotope_r_generators_192.json"))
+        r0 = tuple(rgens["r0"]); r1 = tuple(rgens["r1"])
+        r2 = tuple(rgens["r2"]); r3 = tuple(rgens["r3"])
+        # build list of unique flags from refined coords if available else canonical
+        unique_flags = []
+        refined_path = ROOT / "K54_54sheet_coords_refined.csv"
+        csvpath = refined_path if refined_path.exists() else COORD_CSV
+        with open(csvpath) as f2:
+            for row in csv.DictReader(f2):
+                uf = row.get("unique_flag") or row.get("canonical_flag")
+                if uf and uf != "":
+                    unique_flags.append(int(uf))
+        gens = [r0,r1,r2,r3]
+        orb = set(unique_flags)
+        queue = list(unique_flags)
+        while queue:
+            fflag = queue.pop()
+            for g in gens:
+                new = g[fflag]
+                if new not in orb:
+                    orb.add(new); queue.append(new)
+        diagnostics = summary
+        diagnostics["full_orbit_size"] = len(orb)
+        diagnostics["full_orbit_all_flags"] = (len(orb) == 192)
+        # record mapping of flag->representative pocket
+        mapping = {}
+        with open(csvpath) as f3:
+            for row in csv.DictReader(f3):
+                p = int(row["pocket"])
+                uf = int(row.get("unique_flag") or row.get("canonical_flag"))
+                mapping[uf] = p
+        # propagate mapping along orbit (simple BFS)
+        queue = list(mapping.keys())
+        while queue:
+            fflag = queue.pop()
+            for g in gens:
+                new = g[fflag]
+                if new not in mapping:
+                    mapping[new] = mapping[fflag]
+                    queue.append(new)
+        diagnostics["flag_to_pocket_orbit"] = mapping
+        # rewrite summary file with new diagnostics
+        open(SUMMARY_JSON, "w").write(json.dumps(diagnostics, indent=2))
+    except Exception:
+        pass
     # now also compute refined stats if available
     refined_path = ROOT / "K54_54sheet_coords_refined.csv"
     if refined_path.exists():

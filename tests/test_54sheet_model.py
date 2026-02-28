@@ -153,3 +153,16 @@ def test_pillar_bundle_contains_narrative_and_refined():
     names = zf.namelist()
     for need in ["PILLAR_82.md", "K54_54sheet_coords_refined.csv", "pocket_to_unique_flag.json"]:
         assert need in names, f"{need} missing from pillar bundle"
+
+
+def test_summary_orbit_full():
+    summ = json.load(open(repo / "SUMMARY_54sheet.json"))
+    assert summ.get("full_orbit_size") == 192
+    assert summ.get("full_orbit_all_flags") is True
+    fmap = summ.get("flag_to_pocket_orbit", {})
+    # should map exactly 192 flags
+    assert len(fmap) == 192
+    # ensure each pocket appears at least once
+    pockets = set(fmap.values())
+    assert pockets.issubset(set(range(54)))
+    assert len(pockets) >= 27  # covers all twin pairs at least
