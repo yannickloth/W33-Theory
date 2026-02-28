@@ -113,17 +113,25 @@ while queue:
 print("PSp group size", len(all_vperms))
 
 # map each vertex perm to its induced line perm by brute force search for the few gens we need
+# build a lookup of line perms induced by each vertex perm
+line_lookup = {induce_line_perm(vp): vp for vp in all_vperms}
+
+missing = []
 gens_points = []
 for lperm in gens_line:
-    found=None
-    for vp in all_vperms:
-        if induce_line_perm(vp)==lperm:
-            found=vp
-            break
-    if found is None:
-        raise RuntimeError(f"could not lift line perm {lperm}")
-    gens_points.append(found)
-print("lifted to vertex perms by search")
+    vp = line_lookup.get(lperm)
+    if vp is None:
+        missing.append(lperm)
+    else:
+        gens_points.append(vp)
+if missing:
+    print("Warning: the following stabilizer line perms have no corresponding vertex permutation in PSp(4,3):")
+    for m in missing:
+        print("  ", m)
+    print("This suggests the A5 subgroup on lines is not realized inside PSp(4,3)."
+          " Subsequent vertex-based orbits/matrices will be skipped.")
+else:
+    print("lifted to vertex perms by search")
 
 # orbit helper
 
@@ -140,76 +148,77 @@ def orbit_partition(gens, m):
         orbits.append(sorted(orb))
     return orbits
 
-pts_orbs = orbit_partition(gens_points, n)
-line_orbs = orbit_partition(gens_line, 40)
-# directed edges orbits
+# if we successfully lifted all line generators, do full analysis
+if len(gens_points) == len(gens_line):
+    pts_orbs = orbit_partition(gens_points, n)
+    line_orbs = orbit_partition(gens_line, 40)
+    # directed edges orbits
+    de_list=[(u,v) for u,v in edges] + [(v,u) for u,v in edges]
+    de_index={de:i for i,de in enumerate(de_list)}
+    gens_de=[tuple(de_index[(vp[u], vp[v])] for u,v in de_list) for vp in gens_points]
+    de_orbs = orbit_partition(gens_de, len(de_list))
+    # face orbits
+    faces_file = bundle_path("TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle/TOE_E6pair_SRG_triangle_decomp_v01_20260227/triangle_decomposition_120_blocks.json")
+    faces=[]
+    if faces_file.exists():
+        data=json.loads(faces_file.read_text())
+        faces=[tuple(sorted(tri)) for tri in data.get('blocks',[])]
+    face_orbs=[]
+    if faces:
+        visited=set()
+        for i,face in enumerate(faces):
+            if i in visited: continue
+            orb=[]; dq=deque([i])
+            while dq:
+                j=dq.popleft()
+                if j in visited: continue
+                visited.add(j); orb.append(j)
+                for vp in gens_points:
+                    img=tuple(sorted((vp[face[0]], vp[face[1]], vp[face[2]])))
+                    k = faces.index(img)
+                    dq.append(k)
+            face_orbs.append(sorted(orb))
 
-de_list=[(u,v) for u,v in edges] + [(v,u) for u,v in edges]
-de_index={de:i for i,de in enumerate(de_list)}
-gens_de=[tuple(de_index[(vp[u], vp[v])] for u,v in de_list) for vp in gens_points]
-de_orbs = orbit_partition(gens_de, len(de_list))
-# face orbits
-faces_file = bundle_path("TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle/TOE_E6pair_SRG_triangle_decomp_v01_20260227/triangle_decomposition_120_blocks.json")
-faces=[]
-if faces_file.exists():
-    data=json.loads(faces_file.read_text())
-    faces=[tuple(sorted(tri)) for tri in data.get('blocks',[])]
-face_orbs=[]
-if faces:
-    visited=set()
-    for i,face in enumerate(faces):
-        if i in visited: continue
-        orb=[]; dq=deque([i])
-        while dq:
-            j=dq.popleft()
-            if j in visited: continue
-            visited.add(j); orb.append(j)
-            for vp in gens_points:
-                img=tuple(sorted((vp[face[0]], vp[face[1]], vp[face[2]])))
-                k = faces.index(img)
-                dq.append(k)
-        face_orbs.append(sorted(orb))
-
-# compute matrix lifts and orders
-verts = [tuple(v) for v in vertices]
-
-M_vars = sp.symbols('a0:16')
-def perm_to_matrix(vperm):
-    A = sp.Matrix([[M_vars[4*i+j] for j in range(4)] for i in range(4)])
-    eqs=[]
-    for i,v in enumerate(verts):
-        vec=sp.Matrix(v); img=sp.Matrix(verts[vperm[i]])
-        eqs.extend((A*vec - img) % 3)
-    sol=sp.solve(eqs, M_vars, dict=True)
-    if not sol: raise RuntimeError("no matrix solver")
-    sol=sol[0]
-    return sp.Matrix([[sol[M_vars[4*i+j]]%3 for j in range(4)] for i in range(4)])
-
-mat_gens=[perm_to_matrix(vp) for vp in gens_points]
-
-# compute group order by matrix closure
-Gmat={sp.eye(4)}; queue=[sp.eye(4)]
-while queue:
-    X=queue.pop()
-    for g in mat_gens:
-        Y=(X*g)%3
-        if Y not in Gmat:
-            Gmat.add(Y); queue.append(Y)
-
-# export outputs
-pd.DataFrame({"orbit": [o for o in pts_orbs]}).to_csv("w33_points_40_orbits_under_A5.csv", index=False)
-pd.DataFrame({"orbit": [o for o in line_orbs]}).to_csv("w33_lines_40_orbits_under_A5.csv", index=False)
-pd.DataFrame({"orbit": [o for o in de_orbs]}).to_csv("w33_directed_edges_480_orbits_under_A5.csv", index=False)
-pd.DataFrame({"orbit": [o for o in face_orbs]}).to_csv("faces_120_orbits_under_A5.csv", index=False)
-
-json.dump({"point_orbit_sizes":[len(o) for o in pts_orbs],
-           "line_orbit_sizes":[len(o) for o in line_orbs],
-           "directed_edge_orbit_sizes":sorted(len(o) for o in de_orbs),
-           "face_orbit_sizes":[len(o) for o in face_orbs]},
-          open("A5_orbit_decompositions.json","w"), indent=2)
-
-json.dump({"matrix_group_size":len(Gmat),
-           "notes":"should be 120"},
-          open("binary_icosahedral_2A5_in_Sp43_summary.json","w"), indent=2)
-
-print("done exports, matrix group size", len(Gmat))
+    # compute matrix lifts and orders
+    verts = [tuple(v) for v in vertices]
+    M_vars = sp.symbols('a0:16')
+    def perm_to_matrix(vperm):
+        A = sp.Matrix([[M_vars[4*i+j] for j in range(4)] for i in range(4)])
+        eqs=[]
+        for i,v in enumerate(verts):
+            vec=sp.Matrix(v); img=sp.Matrix(verts[vperm[i]])
+            eqs.extend((A*vec - img) % 3)
+        sol=sp.solve(eqs, M_vars, dict=True)
+        if not sol: raise RuntimeError("no matrix solver")
+        sol=sol[0]
+        return sp.Matrix([[sol[M_vars[4*i+j]]%3 for j in range(4)] for i in range(4)])
+    mat_gens=[perm_to_matrix(vp) for vp in gens_points]
+    # compute group order by matrix closure
+    Gmat={sp.eye(4)}; queue=[sp.eye(4)]
+    while queue:
+        X=queue.pop()
+        for g in mat_gens:
+            Y=(X*g)%3
+            if Y not in Gmat:
+                Gmat.add(Y); queue.append(Y)
+    # export outputs
+    pd.DataFrame({"orbit": [o for o in pts_orbs]}).to_csv("w33_points_40_orbits_under_A5.csv", index=False)
+    pd.DataFrame({"orbit": [o for o in line_orbs]}).to_csv("w33_lines_40_orbits_under_A5.csv", index=False)
+    pd.DataFrame({"orbit": [o for o in de_orbs]}).to_csv("w33_directed_edges_480_orbits_under_A5.csv", index=False)
+    pd.DataFrame({"orbit": [o for o in face_orbs]}).to_csv("faces_120_orbits_under_A5.csv", index=False)
+    json.dump({"point_orbit_sizes":[len(o) for o in pts_orbs],
+               "line_orbit_sizes":[len(o) for o in line_orbs],
+               "directed_edge_orbit_sizes":sorted(len(o) for o in de_orbs),
+               "face_orbit_sizes":[len(o) for o in face_orbs]},
+              open("A5_orbit_decompositions.json","w"), indent=2)
+    json.dump({"matrix_group_size":len(Gmat),
+               "notes":"should be 120"},
+              open("binary_icosahedral_2A5_in_Sp43_summary.json","w"), indent=2)
+    print("done exports, matrix group size", len(Gmat))
+else:
+    # cannot lift full set; only export line orbits
+    line_orbs = orbit_partition(gens_line, 40)
+    pd.DataFrame({"orbit": [o for o in line_orbs]}).to_csv("w33_lines_40_orbits_under_A5.csv", index=False)
+    json.dump({"line_orbit_sizes":[len(o) for o in line_orbs]},
+              open("A5_orbit_decompositions.json","w"), indent=2)
+    print("exports completed only for line orbits (lifting failed)")
