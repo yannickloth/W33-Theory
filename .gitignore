@@ -66,6 +66,7 @@ artifacts_run_*/
 artifacts_try_*/
 analysis/w33_bundle_temp/
 notebooks/
+!notebooks/pocket_overlap_analysis.ipynb
 *.vsix
 Claude.txt
 conflicts.txt
