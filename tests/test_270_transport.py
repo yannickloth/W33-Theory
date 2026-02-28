@@ -96,3 +96,46 @@ def test_block_guess_range(table):
     assert all(0 <= b < 48 for b in guesses)
     # we don't insist on covering all 48, but there should be at least half
     assert len(guesses) >= 24, "too few distinct block guesses"
+
+
+def test_analysis_summary_and_serialization(tmp_path):
+    """Run the new analysis module and verify output structure."""
+    from THEORY_PART_CXCV_270_TRANSPORT import load_data, analyze, write_results
+
+    edges, tbl = load_data()
+    summary = analyze(edges, tbl)
+
+    # ensure the main keys exist
+    expected = {
+        "T1_heisenberg_coords",
+        "T2_affine_matrix_counts",
+        "T3_zshift_counts",
+        "T3_qxy_mismatches",
+        "T4_block_guess_values",
+        "T4_block_guess_count",
+        "T4_block_guess_histogram",
+    }
+    assert set(summary.keys()) == expected
+
+    # check Heisenberg coord table
+    assert len(summary["T1_heisenberg_coords"]) == 27
+    assert all(isinstance(k, str) for k in summary["T1_heisenberg_coords"].keys())
+
+    # affine counts should sum to 270
+    total = sum(summary["T2_affine_matrix_counts"].values())
+    assert total == 270
+    assert all(isinstance(k, str) for k in summary["T2_affine_matrix_counts"].keys())
+
+    # zshift keys should also be strings
+    for g, d in summary["T3_zshift_counts"].items():
+        assert all(isinstance(k, str) for k in d.keys())
+
+    # serialization ought to succeed
+    import json
+    json.dumps(summary)
+
+    # writing results should create the expected files in repo root
+    repo = Path(__file__).resolve().parent.parent
+    write_results(summary)
+    assert (repo / "270_transport_analysis_summary.json").exists()
+    assert (repo / "270_transport_report.md").exists()
