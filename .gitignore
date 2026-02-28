@@ -81,6 +81,7 @@ tmp*
 # allow TOE bundles, they're important artifacts
 !TOE_*.zip
 *.zip
+!TOE_edge_orient_map_v01_20260227_bundle.zip
 .ci-logs/
 .claude/
 
