@@ -1,0 +1,63 @@
+{
+  "status": "ok",
+  "T1_DK_order": 27,
+  "T1_DK_order_dist": {
+    "3": 26,
+    "1": 1
+  },
+  "T1_DK_non_abelian": true,
+  "T1_Z_DK_order": 3,
+  "T1_inner_derived_order": 3,
+  "T1_extraspecial": true,
+  "T2_twin_pairs": 27,
+  "T2_DK_on_27_order": 27,
+  "T2_DK_on_27_transitive": true,
+  "T2_DK_on_27_regular": true,
+  "T2_matches_csv": true,
+  "T3_ord_t": 12,
+  "T3_ord_t4": 3,
+  "T3_t4_fixed_flags": 96,
+  "T4_n_blocks": 48,
+  "T4_block_image_size": 3,
+  "T4_each_block_in_triples": 3,
+  "T4_block_graph_degree": 6,
+  "T4_configuration": "(48_3)",
+  "T5_n_sylow2": 3,
+  "T5_sylow2_order": 64,
+  "T5_triality_H_index": 71,
+  "T5_triality_order": 3,
+  "T5_triality_perm_on_sylow2": [
+    1,
+    2,
+    0
+  ],
+  "T5_triality_cycles_all": true,
+  "T6_pairwise_intersections": [
+    [
+      64,
+      32,
+      32
+    ],
+    [
+      32,
+      64,
+      32
+    ],
+    [
+      32,
+      32,
+      64
+    ]
+  ],
+  "T6_off_diagonal": 32,
+  "T6_intersections_normal": true,
+  "summary": {
+    "K_structure": "Heis(3^1+2) extension of order 162",
+    "DK_is_extraspecial_3_group": true,
+    "twin_pairs_27": true,
+    "tomotope_triality_t4": "ord=3, fixes 96 flags",
+    "48_block_configuration": "(48_3) symmetric",
+    "H_sylow2_triality": "3 Sylow-2 of order 64, cycled by weld element",
+    "note": "The Z3 weld voltage on 270 Schreier edges is the same triality element (H-index 71) that cyclically permutes the 3 Sylow-2 sectors of H. The tomotope's internal t^4 = (r1r2)^4 implements the same triality on its 48 incidence blocks."
+  }
+}
