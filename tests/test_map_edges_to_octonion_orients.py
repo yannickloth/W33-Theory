@@ -63,3 +63,6 @@ def test_real_mapping_bundle():
     assert len(data['edge_to_orient']) == 240
     # orientations list should still have length 480
     assert len(data.get('orientations', [])) == 480
+    # expect nearly all edges to receive an orientation index
+    nonnull = sum(1 for v in data['edge_to_orient'] if v is not None)
+    assert nonnull >= 230, f"too few oriented edges ({nonnull})"

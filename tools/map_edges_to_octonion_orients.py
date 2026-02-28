@@ -195,15 +195,24 @@ def pocket_orientation_index(pocket, mult, orients):
 
 def edge_orientation_index(triple_vertices, pocket, orients):
     """Return an orientation index consistent with just the triple inside `pocket`.
-    triple_vertices should be a tuple/list (a,b,c) representing ordered block.
+    The triple may represent any cyclic or reversed order; we test all six permutations
+    against the canonical Fano triples after assigning pocket vertices.
     """
     a,b,c = triple_vertices
     for oi,o in enumerate(orients):
         perm, sign = o
         assign = orient_assignment(o, pocket)
         ia, ib, ic = assign[a], assign[b], assign[c]
-        # check whether (ia,ib,ic) is one of the Fano triples
-        if (ia, ib, ic) in FANO_TRIPLES:
+        # generate all rotations and reversals of the triple
+        candidates = [
+            (ia, ib, ic),
+            (ib, ic, ia),
+            (ic, ia, ib),
+            (ia, ic, ib),
+            (ic, ib, ia),
+            (ib, ia, ic),
+        ]
+        if any(t in FANO_TRIPLES for t in candidates):
             return oi
     return None
 
