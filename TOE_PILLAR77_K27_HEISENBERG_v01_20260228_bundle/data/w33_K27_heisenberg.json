@@ -1,0 +1,460 @@
+{
+  "status": "ok",
+  "part": "CLXXXV",
+  "pillar": 77,
+  "inputs": {
+    "weld_bundle": "TOE_tomotope_triality_weld_v01_20260228_bundle.zip",
+    "weld_base": "TOE_tomotope_triality_weld_v01_20260228"
+  },
+  "K": {
+    "generators": [
+      "g2",
+      "g3",
+      "g5",
+      "g8",
+      "g9"
+    ],
+    "order_on_54": 162,
+    "order_on_27": 162,
+    "orbit_size_on_54": 54,
+    "orbit_size_on_27": 27,
+    "stabilizer_size_on_54": 3,
+    "stabilizer_size_on_27": 6
+  },
+  "twin_pairing": {
+    "pair_count": 27,
+    "intersection_size": 6,
+    "qid_ordering": "lex(core6)"
+  },
+  "Heisenberg": {
+    "derived_order": 27,
+    "center_order": 3,
+    "commutator_order": 3,
+    "g2_is_central": true,
+    "presentation_law": "(x,y,z)*(x',y',z')=(x+x', y+y', z+z' - y*x') mod 3",
+    "basis_choice": {
+      "a": "g5",
+      "c": "g2^2",
+      "b": "lex-smallest with [a,b]=c"
+    },
+    "a_perm": [
+      12,
+      21,
+      19,
+      15,
+      11,
+      20,
+      18,
+      16,
+      10,
+      2,
+      13,
+      23,
+      22,
+      8,
+      3,
+      14,
+      24,
+      1,
+      25,
+      9,
+      26,
+      17,
+      0,
+      4,
+      7,
+      6,
+      5
+    ],
+    "b_perm": [
+      1,
+      5,
+      8,
+      6,
+      3,
+      0,
+      4,
+      2,
+      7,
+      26,
+      18,
+      20,
+      19,
+      22,
+      24,
+      12,
+      11,
+      14,
+      21,
+      15,
+      16,
+      10,
+      23,
+      13,
+      17,
+      9,
+      25
+    ],
+    "c_perm": [
+      6,
+      4,
+      1,
+      8,
+      2,
+      3,
+      7,
+      0,
+      5,
+      17,
+      20,
+      19,
+      18,
+      26,
+      13,
+      10,
+      12,
+      23,
+      16,
+      21,
+      15,
+      11,
+      25,
+      9,
+      22,
+      24,
+      14
+    ]
+  },
+  "stabilizer_C6": {
+    "size": 6,
+    "order_distribution": {
+      "3": 2,
+      "1": 1,
+      "6": 2,
+      "2": 1
+    },
+    "is_abelian": true,
+    "structure_guess": "C6",
+    "generator_order6": {
+      "perm": [
+        0,
+        8,
+        3,
+        2,
+        5,
+        4,
+        6,
+        7,
+        1,
+        16,
+        25,
+        23,
+        14,
+        15,
+        20,
+        22,
+        26,
+        12,
+        13,
+        9,
+        24,
+        17,
+        11,
+        18,
+        21,
+        19,
+        10
+      ],
+      "A": [
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "q_xy": {
+        "0,0": 0,
+        "0,1": 2,
+        "0,2": 1,
+        "1,0": 1,
+        "1,1": 0,
+        "1,2": 2,
+        "2,0": 1,
+        "2,1": 0,
+        "2,2": 2
+      }
+    }
+  },
+  "generators_affine": {
+    "g2": {
+      "t_xyz": [
+        0,
+        0,
+        2
+      ],
+      "s_order": 1,
+      "s_matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "s_zshift": [
+        0,
+        0
+      ]
+    },
+    "g3": {
+      "t_xyz": [
+        0,
+        2,
+        1
+      ],
+      "s_order": 3,
+      "s_matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "s_zshift": [
+        0,
+        0
+      ]
+    },
+    "g5": {
+      "t_xyz": [
+        1,
+        0,
+        0
+      ],
+      "s_order": 1,
+      "s_matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "s_zshift": [
+        0,
+        0
+      ]
+    },
+    "g8": {
+      "t_xyz": [
+        1,
+        1,
+        2
+      ],
+      "s_order": 2,
+      "s_matrix": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "s_zshift": [
+        2,
+        2
+      ]
+    },
+    "g9": {
+      "t_xyz": [
+        1,
+        1,
+        2
+      ],
+      "s_order": 2,
+      "s_matrix": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "s_zshift": [
+        2,
+        2
+      ]
+    }
+  },
+  "K_generators_27": {
+    "g2": [
+      7,
+      2,
+      4,
+      5,
+      1,
+      8,
+      0,
+      6,
+      3,
+      23,
+      15,
+      21,
+      16,
+      14,
+      26,
+      20,
+      18,
+      9,
+      12,
+      11,
+      10,
+      19,
+      24,
+      17,
+      25,
+      22,
+      13
+    ],
+    "g3": [
+      3,
+      6,
+      0,
+      2,
+      7,
+      4,
+      8,
+      5,
+      1,
+      17,
+      18,
+      20,
+      19,
+      26,
+      13,
+      12,
+      11,
+      23,
+      21,
+      15,
+      16,
+      10,
+      25,
+      9,
+      22,
+      24,
+      14
+    ],
+    "g5": [
+      12,
+      21,
+      19,
+      15,
+      11,
+      20,
+      18,
+      16,
+      10,
+      2,
+      13,
+      23,
+      22,
+      8,
+      3,
+      14,
+      24,
+      1,
+      25,
+      9,
+      26,
+      17,
+      0,
+      4,
+      7,
+      6,
+      5
+    ],
+    "g8": [
+      19,
+      18,
+      12,
+      15,
+      16,
+      20,
+      21,
+      11,
+      10,
+      22,
+      8,
+      7,
+      2,
+      13,
+      14,
+      3,
+      4,
+      25,
+      1,
+      0,
+      5,
+      6,
+      9,
+      24,
+      23,
+      17,
+      26
+    ],
+    "g9": [
+      19,
+      18,
+      12,
+      15,
+      16,
+      20,
+      21,
+      11,
+      10,
+      22,
+      8,
+      7,
+      2,
+      13,
+      14,
+      3,
+      4,
+      25,
+      1,
+      0,
+      5,
+      6,
+      9,
+      24,
+      23,
+      17,
+      26
+    ]
+  },
+  "artifacts": {
+    "K54_to_K27_twin_map_csv": "K54_to_K27_twin_map.csv",
+    "K27_heisenberg_coords_csv": "K27_heisenberg_coords.csv",
+    "K54_edges_with_coords_voltage_csv": "K54_edges_with_coords_voltage.csv"
+  },
+  "summary": {
+    "K27_structure": "Heisenberg(3) \u22ca C6, order 27*6 = 162",
+    "key_fact": "Derived subgroup acts regularly on 27; stabilizer at 0 is cyclic order 6.",
+    "generators": "g2,g5 translations; g8=g9 involution (-I); g3 carries the unique order-3 stabilizer component."
+  }
+}
