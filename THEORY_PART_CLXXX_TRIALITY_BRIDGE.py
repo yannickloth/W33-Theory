@@ -348,10 +348,14 @@ def build_triality_bridge_report() -> dict:
     # For each block b, compute set of image blocks under t^4
     block_image_sizes: list[int] = []
     block_triples: list[frozenset] = []
+    # also build single-valued map block -> block_t4 (first flag representative)
+    block_t4: dict[int,int] = {}
     for bid, block in enumerate(blocks):
         img_blocks = {block_orb[t4[f]] for f in block}
         block_image_sizes.append(len(img_blocks))
         block_triples.append(frozenset(img_blocks))
+        # choose representative mapping via first flag
+        block_t4[bid] = block_orb[t4[block[0]]]
 
     assert all(s == 3 for s in block_image_sizes), (
         f"Block image sizes: {Counter(block_image_sizes)}"
@@ -428,6 +432,30 @@ def build_triality_bridge_report() -> dict:
         f"Expected exactly six distinct qids across spa blocks, got {len(union_qids)}"
     )
     print("T4b: spa blocks partition into six qids", union_qids, "OK")
+
+    # prepare central-shift helper for T4c
+    CENTRAL = (0, 0, 1)
+    def diff(a, b):
+        return tuple((a[i] - b[i]) % 3 for i in range(3))
+
+    # ==================================================================
+    # T4c: identify blocks where t^4 acts as central Heisenberg shift
+    # ==================================================================
+    pairs = {}
+    for b, qs in block2qids.items():
+        b4 = block_t4[b]
+        if b4 not in block2qids:
+            continue
+        good = []
+        for q in qs:
+            for q4 in block2qids[b4]:
+                if diff(qid2coords[q4], qid2coords[q]) == CENTRAL:
+                    good.append((q, q4))
+        pairs[b] = {"b4": b4, "spa": spa[b], "pairs": good}
+    out["T4c_translation_pairs"] = pairs
+    good_blocks = [b for b,info in pairs.items() if info["pairs"]]
+    out["T4c_supported_blocks"] = good_blocks
+    print("T4c: blocks supporting central translation", good_blocks)
 
     # ==================================================================
     # T5: H has 3 Sylow-2 subgroups of order 64 cycled by triality element

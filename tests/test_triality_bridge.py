@@ -163,7 +163,6 @@ class TestT4bHeisTranslation:
     def test_block_qids_exist(self, report):
         """Report records the qid set attached to each spa block."""
         assert "T4b_block_qids" in report
-        # there should be 24 spa blocks with associated sets
         assert len(report["T4b_block_qids"]) == 24
 
     def test_unique_qid_count(self, report):
@@ -172,6 +171,26 @@ class TestT4bHeisTranslation:
     def test_each_block_two_qids(self, report):
         for qs in report["T4b_block_qids"].values():
             assert len(qs) == 2
+
+
+class TestT4cTranslationSupport:
+    def test_translation_pairs_field(self, report):
+        assert "T4c_translation_pairs" in report
+        assert isinstance(report["T4c_translation_pairs"], dict)
+
+    def test_supported_blocks_list(self, report):
+        blocks = report.get("T4c_supported_blocks")
+        assert isinstance(blocks, list)
+        # we expect at least one block supports translation
+        assert len(blocks) > 0
+
+    def test_translation_pairs_nonempty_match(self, report):
+        pairs = report.get("T4c_translation_pairs")
+        for b, info in pairs.items():
+            if info["pairs"]:
+                # check spa0 preference or similar
+                assert info["spa"] == 0
+                break
 
 
 # ---------------------------------------------------------------------------
