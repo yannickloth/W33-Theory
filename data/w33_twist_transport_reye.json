@@ -1,0 +1,103 @@
+{
+  "status": "ok",
+  "T1_pi_fixed_points": 50,
+  "T1_pi_cycle_structure": {
+    "1": 50,
+    "4": 1,
+    "9": 2,
+    "27": 2,
+    "66": 1
+  },
+  "T1_pi_is_permutation": true,
+  "T1_r0_r3_fixed": true,
+  "T1_r1_r2_twisted": true,
+  "T2_coxeter_orders": {
+    "r0r1": 3,
+    "r1r2": 12,
+    "r2r3": 4,
+    "r0r2": 2,
+    "r0r3": 2,
+    "r1r3": 2
+  },
+  "T2_all_generators_involutions": true,
+  "T2_tomotope_coxeter_holds": true,
+  "T3_d1_order": 150,
+  "T3_d1_fixed_points": 0,
+  "T3_d1_cycle_structure": {
+    "2": 4,
+    "6": 4,
+    "15": 4,
+    "25": 4
+  },
+  "T3_d2_order": 46,
+  "T3_d2_fixed_points": 0,
+  "T3_d2_cycle_structure": {
+    "2": 4,
+    "46": 4
+  },
+  "T4_P_order": 96,
+  "T4_P_order_distribution": {
+    "1": 1,
+    "2": 27,
+    "3": 32,
+    "4": 36
+  },
+  "T4_P_generators_involutions": true,
+  "T4_P_2subset_signature": [
+    48,
+    6,
+    6,
+    6
+  ],
+  "T4_P_2subset_orbit_count": 4,
+  "T5_3subset_orbit_sizes": [
+    48,
+    48,
+    48,
+    16,
+    16,
+    16,
+    16,
+    12
+  ],
+  "T5_size16_orbit_count": 4,
+  "T5_reye_configs_valid": 4,
+  "T5_reye_point_count": 12,
+  "T5_reye_line_count": 16,
+  "T5_reye_point_degree": 4,
+  "T5_reye_max_intersection": 1,
+  "T6_tomotope_P_signature": [
+    48,
+    6,
+    6,
+    6
+  ],
+  "T6_axis_index2_count": 3,
+  "T6_all_axis_signatures": [
+    [
+      48,
+      12,
+      6
+    ],
+    [
+      48,
+      12,
+      6
+    ],
+    [
+      48,
+      12,
+      6
+    ]
+  ],
+  "T6_obstruction_confirmed": true,
+  "T6_tomotope_not_axis_model": true,
+  "summary": {
+    "pi_bijection": "pi has 50 fixed points, cycle struct {1:50,4:1,9:2,27:2,66:1}; fixes r0,r3 exactly; twists r1,r2",
+    "coxeter_diagram": "transported r0..r3 satisfy tomotope Coxeter (3,12,4,2,2,2); all involutions",
+    "twist_elements": "d1 order=150 cycles {2:4,6:4,15:4,25:4}; d2 order=46 cycles {2:4,46:4}; both have 0 fixed points",
+    "edge_group_P": "|P|=96; order dist {1:1,2:27,3:32,4:36}; 2-subset signature [48,6,6,6]",
+    "reye_configs": "P has 4 orbits of size 16 on 3-subsets; each is a valid Reye (12,16) config",
+    "hard_obstruction": "all 3 axis-192 index-2 subgroups have 2-subset signature [48,12,6] != [48,6,6,6]; tomotope != axis-192 model"
+  }
+}
