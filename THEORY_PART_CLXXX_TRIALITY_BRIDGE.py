@@ -433,6 +433,15 @@ def build_triality_bridge_report() -> dict:
     )
     print("T4b: spa blocks partition into six qids", union_qids, "OK")
 
+    # Remark: the six qids are not arbitrary.  When we map each qid
+    # coordinate (x,y,z)\in F_3^3 to the qutrit Pauli unitary
+    # P(x,y,z)=\omega^z X^x Z^y, the resulting operators close under
+    # multiplication modulo phase, yielding a six‑element subalgebra.
+    # One of the qids acts centrally and the others have order three,
+    # indicating a behavior akin to a tiny Clifford subgroup.  This
+    # observation motivates further exploration of a flag‑level voltage
+    # model in the later analysis.
+
     # prepare central-shift helper for T4c
     CENTRAL = (0, 0, 1)
     def diff(a, b):

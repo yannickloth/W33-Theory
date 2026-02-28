@@ -181,8 +181,8 @@ class TestT4cTranslationSupport:
     def test_supported_blocks_list(self, report):
         blocks = report.get("T4c_supported_blocks")
         assert isinstance(blocks, list)
-        # we expect at least one block supports translation
-        assert len(blocks) > 0
+        # we expect exactly the five spa-0 blocks found by analysis
+        assert set(blocks) == {4, 5, 6, 7, 46}
 
     def test_translation_pairs_nonempty_match(self, report):
         pairs = report.get("T4c_translation_pairs")
