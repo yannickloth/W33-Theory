@@ -1,0 +1,78 @@
+{
+  "status": "ok",
+  "T1_Hplus_order": 96,
+  "T1_Hplus_order_distribution": {
+    "1": 1,
+    "2": 15,
+    "3": 32,
+    "4": 24,
+    "8": 24
+  },
+  "T1_weld_elements_in_Hplus": true,
+  "T1_weld_sign_products_plus1": true,
+  "T2_N16_order": 16,
+  "T2_N16_order_distribution": {
+    "1": 1,
+    "2": 3,
+    "4": 12
+  },
+  "T2_N16_structure": "Z4xZ4",
+  "T2_quotient_coset_count": 6,
+  "T2_quotient_order_distribution": {
+    "1": 1,
+    "2": 3,
+    "3": 2
+  },
+  "T2_quotient_is_S3": true,
+  "T3_P_order": 96,
+  "T3_P_order_distribution": {
+    "1": 1,
+    "2": 27,
+    "3": 32,
+    "4": 36
+  },
+  "T3_P_derived_order": 48,
+  "T3_P_abelianization_order": 2,
+  "T3_P_2core_order": 16,
+  "T3_P_2core_structure": "Z2^4",
+  "T3_P_quotient_coset_count": 6,
+  "T3_P_quotient_order_distribution": {
+    "1": 1,
+    "2": 3,
+    "3": 2
+  },
+  "T3_P_quotient_is_S3": true,
+  "T4_P_involutions": 27,
+  "T4_P_order8_count": 0,
+  "T4_Hplus_involutions": 15,
+  "T4_Hplus_order8_count": 24,
+  "T4_P_normal16_structure": "Z2^4",
+  "T4_Hplus_normal16_structure": "Z4xZ4",
+  "T4_P_Hplus_nonisomorphic": true,
+  "T5_schreier_edges": 270,
+  "T5_gen_count": 5,
+  "T5_edges_per_gen": 54,
+  "T5_cocycle_exp0_count": 201,
+  "T5_cocycle_exp1_count": 33,
+  "T5_cocycle_exp2_count": 36,
+  "T5_nontrivial_edges": 69,
+  "T5_W_E6": 51840,
+  "T5_W_D4": 192,
+  "T5_W_E6_over_W_D4": 270,
+  "T5_schreier_matches_quotient": true,
+  "T6_weld_C3_size": 3,
+  "T6_id_r_stab_index": 7,
+  "T6_sigma_r_stab_index": 399,
+  "T6_sigma_inv_r_stab_index": 246,
+  "T6_weld_order_preserving": true,
+  "T6_weld_monomorphism": true,
+  "T6_all_weld_in_Hplus": true,
+  "summary": {
+    "Hplus_structure": "|H+|=96; order dist {1:1,2:15,3:32,4:24,8:24}; C3 weld elements {r7,r399,r246} in H+",
+    "Hplus_N16": "H+ has normal N16=Z4xZ4 (order dist {1:1,2:3,4:12}); quotient H+/N16=S3",
+    "P_2core": "P has normal 2-core Z2^4 (order 16); quotient P/2core=S3; derived=48; abelian=2",
+    "P_vs_Hplus": "P (27 inv, 0 ord-8, Z2^4 normal-16) != H+ (15 inv, 24 ord-8, Z4xZ4 normal-16)",
+    "schreier": "270 Schreier edges = |W(E6)|/|W(D4)| = 51840/192; cocycle: 201 trivial + 33 exp=1 + 36 exp=2",
+    "C3_weld": "id->r(7), sigma->r(399) order 3, sigma_inv->r(246) order 3; order-preserving group monomorphism C3 -> H+"
+  }
+}
