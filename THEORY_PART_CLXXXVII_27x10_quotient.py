@@ -90,11 +90,15 @@ def build_27x10():
         qid, twin_bit = twin_map[u]
         orient_index = twin_bit * len(GENS) + gi  # 0..9
 
+        # compute qid/twin for the target vertex as well
+        qid_v, twin_v = twin_map[edge["v"]]
         row = {
             "qid": qid,
             "twin_bit": twin_bit,
             "gen": gen,
             "orient_index": orient_index,
+            "target_qid": qid_v,
+            "target_twin": twin_v,
             "v": edge["v"],
             "sheet_id": sheet_ids[u],
         }

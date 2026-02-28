@@ -30,6 +30,11 @@ def table():
             r["qid"] = int(r["qid"])
             r["twin_bit"] = int(r["twin_bit"])
             r["orient_index"] = int(r["orient_index"])
+            # optional fields
+            if "target_qid" in r:
+                r["target_qid"] = int(r["target_qid"])
+            if "target_twin" in r:
+                r["target_twin"] = int(r["target_twin"])
             rows.append(r)
 
     # load json table
@@ -61,6 +66,9 @@ def test_orient_indices(table):
     # ensure orient_index in 0..9
     for _, oi in seen:
         assert 0 <= oi < 10
+    # ensure target qid exists and is a number 0..26
+    for r in rows:
+        assert 0 <= r.get("target_qid", -1) < 27
 
 
 def test_twin_balance(table):
