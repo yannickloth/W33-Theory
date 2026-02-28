@@ -1,0 +1,54 @@
+{
+  "t4_order": 3,
+  "t4_factorization": {
+    "n_idx": 0,
+    "p_idx": 13
+  },
+  "cycle_length_distribution_on_N_indices": {
+    "1": 96,
+    "3": 32
+  },
+  "p_coaction_dist_size": 32,
+  "p_coaction_top": [
+    [
+      13,
+      6
+    ],
+    [
+      51,
+      6
+    ],
+    [
+      42,
+      6
+    ],
+    [
+      11,
+      6
+    ],
+    [
+      34,
+      6
+    ],
+    [
+      21,
+      6
+    ],
+    [
+      39,
+      6
+    ],
+    [
+      17,
+      6
+    ],
+    [
+      50,
+      6
+    ],
+    [
+      85,
+      6
+    ]
+  ]
+}

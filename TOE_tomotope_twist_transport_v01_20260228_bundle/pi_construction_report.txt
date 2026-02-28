@@ -1,0 +1,3 @@
+constructed pi
+r0 fixed, r3 matched
+transported r1,r2 stored in transported_r_generators.json

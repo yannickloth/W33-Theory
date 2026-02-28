@@ -1,0 +1,14 @@
+{
+  "axis_r1_delta_patterns": {
+    "(True, True, True, True)": 124,
+    "(False, True, True, True)": 66,
+    "(False, True, True, False)": 2
+  },
+  "axis_r2_delta_patterns": {
+    "(True, True, True, True)": 136,
+    "(False, True, True, True)": 44,
+    "(True, True, False, False)": 6,
+    "(False, True, False, False)": 2,
+    "(False, False, True, True)": 4
+  }
+}

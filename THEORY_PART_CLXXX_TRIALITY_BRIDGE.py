@@ -389,6 +389,47 @@ def build_triality_bridge_report() -> dict:
     )
 
     # ==================================================================
+    # T4b: record Heisenberg qid subsets attached to spa blocks
+    # ==================================================================
+    # load Heisenberg coordinates (for later reference, though we don't
+    # assert a direct translation here)
+    with zipfile.ZipFile(K27_BUNDLE) as zf:
+        coords_csv = zf.read(
+            "TOE_K27_HEISENBERG_S3_v01_20260228/K27_heisenberg_coords.csv"
+        ).decode()
+    qid2coords = {
+        int(r["qid"]): (int(r["x"]), int(r["y"]), int(r["z"]))
+        for r in csv.DictReader(coords_csv.splitlines())
+    }
+
+    # block→qid mapping uses pocket_to_qid constructed earlier in T2
+    raw_block2p = json.load(open('block_to_pockets.json'))
+    block2p = {int(k): v for k, v in raw_block2p.items()}
+    spa_data = json.load(open('spa_triality_summary.json'))
+    spa = spa_data['spa']
+    spa_blocks = [i for i, v in enumerate(spa) if v is not None]
+
+    # build mapping from each spa block to the set of qids it contains
+    block2qids: dict[int, set[int]] = {}
+    for bi in spa_blocks:
+        ps = block2p.get(bi, [])
+        qs = {pocket_to_qid[p] for p in ps if p in pocket_to_qid}
+        assert qs, f"spa block {bi} has no associated qids"
+        block2qids[bi] = qs
+
+    union_qids = set().union(*block2qids.values())
+    out["T4b_block_qids"] = {str(b): sorted(list(qs)) for b, qs in block2qids.items()}
+    out["T4b_total_unique_qids"] = len(union_qids)
+    # sanity checks
+    assert all(len(qs) == 2 for qs in block2qids.values()), (
+        "Each spa block should carry exactly two qids"
+    )
+    assert len(union_qids) == 6, (
+        f"Expected exactly six distinct qids across spa blocks, got {len(union_qids)}"
+    )
+    print("T4b: spa blocks partition into six qids", union_qids, "OK")
+
+    # ==================================================================
     # T5: H has 3 Sylow-2 subgroups of order 64 cycled by triality element
     # ==================================================================
     H_elems, H_mul, identity_H, H_idx = _load_H()

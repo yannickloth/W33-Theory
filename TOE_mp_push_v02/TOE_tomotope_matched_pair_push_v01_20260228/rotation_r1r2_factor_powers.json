@@ -1,0 +1,98 @@
+[
+  {
+    "k": 1,
+    "n_idx": 180,
+    "p_idx": 81,
+    "n_order": 4,
+    "p_order": 4,
+    "n_V4": 1
+  },
+  {
+    "k": 2,
+    "n_idx": 101,
+    "p_idx": 11,
+    "n_order": 2,
+    "p_order": 3,
+    "n_V4": 0
+  },
+  {
+    "k": 3,
+    "n_idx": 160,
+    "p_idx": 78,
+    "n_order": 4,
+    "p_order": 4,
+    "n_V4": 1
+  },
+  {
+    "k": 4,
+    "n_idx": 0,
+    "p_idx": 13,
+    "n_order": 1,
+    "p_order": 3,
+    "n_V4": 0
+  },
+  {
+    "k": 5,
+    "n_idx": 180,
+    "p_idx": 55,
+    "n_order": 4,
+    "p_order": 2,
+    "n_V4": 1
+  },
+  {
+    "k": 6,
+    "n_idx": 101,
+    "p_idx": 25,
+    "n_order": 2,
+    "p_order": 2,
+    "n_V4": 0
+  },
+  {
+    "k": 7,
+    "n_idx": 160,
+    "p_idx": 69,
+    "n_order": 4,
+    "p_order": 2,
+    "n_V4": 1
+  },
+  {
+    "k": 8,
+    "n_idx": 0,
+    "p_idx": 94,
+    "n_order": 1,
+    "p_order": 3,
+    "n_V4": 0
+  },
+  {
+    "k": 9,
+    "n_idx": 180,
+    "p_idx": 4,
+    "n_order": 4,
+    "p_order": 4,
+    "n_V4": 1
+  },
+  {
+    "k": 10,
+    "n_idx": 101,
+    "p_idx": 45,
+    "n_order": 2,
+    "p_order": 3,
+    "n_V4": 0
+  },
+  {
+    "k": 11,
+    "n_idx": 160,
+    "p_idx": 74,
+    "n_order": 4,
+    "p_order": 4,
+    "n_V4": 1
+  },
+  {
+    "k": 12,
+    "n_idx": 0,
+    "p_idx": 0,
+    "n_order": 1,
+    "p_order": 1,
+    "n_V4": 0
+  }
+]

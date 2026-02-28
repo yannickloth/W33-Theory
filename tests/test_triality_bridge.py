@@ -159,6 +159,21 @@ class TestT4BlockConfiguration:
         assert report["T4_each_block_in_triples"] == 3
 
 
+class TestT4bHeisTranslation:
+    def test_block_qids_exist(self, report):
+        """Report records the qid set attached to each spa block."""
+        assert "T4b_block_qids" in report
+        # there should be 24 spa blocks with associated sets
+        assert len(report["T4b_block_qids"]) == 24
+
+    def test_unique_qid_count(self, report):
+        assert report.get("T4b_total_unique_qids") == 6
+
+    def test_each_block_two_qids(self, report):
+        for qs in report["T4b_block_qids"].values():
+            assert len(qs) == 2
+
+
 # ---------------------------------------------------------------------------
 # T5: 3 Sylow-2 subgroups cycled by triality element
 # ---------------------------------------------------------------------------

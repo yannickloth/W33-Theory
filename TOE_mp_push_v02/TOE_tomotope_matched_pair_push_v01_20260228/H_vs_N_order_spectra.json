@@ -1,0 +1,18 @@
+{
+  "H_order_distribution": {
+    "2": 43,
+    "1": 1,
+    "4": 36,
+    "3": 32,
+    "6": 32,
+    "8": 48
+  },
+  "N_order_distribution": {
+    "1": 1,
+    "2": 43,
+    "4": 84,
+    "6": 32,
+    "3": 32
+  },
+  "note": "H and N share counts at orders 1,2,3,6; the 48 order-8 elements in H are replaced by 48 additional order-4 elements in N."
+}
