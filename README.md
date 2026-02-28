@@ -2,9 +2,9 @@
 
 **A finite-geometry approach to Standard Model structure**
 
-> Latest tag in this repo: `v2026-02-21-fieldtheory`. Main branch currently has **71 pillars** and **882 tests**.
+> Latest tag in this repo: `v2026-02-27-480weld`. Main branch currently has **74 pillars** and **937 tests**.
 >
-> Previous release tag: `v2026-02-16-pillars-58-60` — Pillars 58-60 (p-adic AdS/CFT, string worldsheet, TQFT).
+> Previous release tag: `v2026-02-21-fieldtheory` — 71 pillars, 882 tests.
 
 ---
 
@@ -21,7 +21,7 @@ The central observation is a chain of exact numerical coincidences that admit ri
 - Eight simple E8 roots align with eight distinguished edges of W33.  Projections of nearby 1-chains onto the three 27-dimensional H1 subspaces produce basis-invariant statistics (means, variances, triangle counts) that correlate with the theoretical gauge beta weights; these Chevalley invariants are codified in `scripts/chevalley_simple_edge_analysis.py` and enforced by automated tests.
 - The SRG eigenvalue formula gives **sin&sup2;&theta;<sub>W</sub> = 3/8 uniquely for q = 3** &mdash; the standard SU(5) GUT boundary condition &mdash; without any free parameter.
 
-**Seventy-one combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
+**Seventy-four combinatorial and topological theorems** (pillars) supporting these claims are proved and verified by an automated test suite. A handful of small helper scripts used during development have since been removed; all enduring code lives under `scripts/` and `tests/`.  A recent extension adds eight further invariants related to the Chevalley simple-root edges, H1 projection statistics, triangle counts and variances; these are checked by `tests/test_simple_edge_invariants.py`.  Each pillar is a mathematical statement about W(3,3) or its relationship to known algebraic structures; each has an executable verification script.
 
 ### What is proved
 
@@ -359,6 +359,14 @@ phase space, hence 2.Suz cannot act through a simple 2×2 representation.
 | 69 | Hessian/Heisenberg symmetry | The 45 E6 cubic triads split 36+9 and are invariant under Heisenberg⋊SL(2,3) of order 648 acting on H27 &cong; F<sub>3</sub><sup>2</sup>&times;F<sub>3</sub> | [e6_hessian_tritangents.py](scripts/e6_hessian_tritangents.py) |
 | 70 | Mixed-sector Weil lift (CE2/L&infin; firewall) | The mixed-sector CE2 sign/phase is a canonical metaplectic/Weil lift (not a lookup table): obstruction reports can print the closed-form Weil invariants and support locations that explain each repair | [w33_s12_linfty_phase_bridge.py](scripts/w33_s12_linfty_phase_bridge.py) + [ce2_global_cocycle.py](scripts/ce2_global_cocycle.py) |
 | 71 | Monster Ogg prime-ratio indices | Cross-checked table across Ogg primes/classes: r<sub>p</sub> = n/p lands in a recognized cofactor permutation degree and equals an index [H:K]; best (2X,3Y) pairs ranked by mass vs structure hits | [w33_monster_rp_index_table.py](scripts/w33_monster_rp_index_table.py) |
+
+### SRG(36) Triangle Fibration &amp; 480-Weld (Pillars 72&ndash;74)
+
+| # | Theorem | Key result | Script |
+|---|---------|------------|--------|
+| 72 | SRG(36) triangle fibration | SRG(36,20,10,12) has 1200 triangles; 120 face-blocks all hol=1; exactly **240** odd non-face triangles fiber over **40** special faces (= W33 lines) with fiber size **6** = \|S<sub>3</sub>\|; 240 = 40 &times; 6 = \|Roots(E8)\| | [w33_srg36_triangle_fibration.py](scripts/w33_srg36_triangle_fibration.py) |
+| 73 | 480-weld | W33 has **480** directed edges; Sp(4,3) acts **transitively** with stabilizer order 54; octonion orbit = 645120/1344 = **480**; canonical weld between W33 directed edges and octonion multiplication tables | [w33_480_weld.py](scripts/w33_480_weld.py) |
+| 74 | Weyl(A<sub>2</sub>) fiber structure | Each 6-fiber has 18 vertices, 0 face overlap; each fiber vertex adjacent to exactly 2 of 3 face vertices; non-adjacency map gives 2 permutation types (transposition + 3-cycle); fiber group = S<sub>3</sub> &cong; Weyl(A<sub>2</sub>) | [w33_weyl_fiber_labeling.py](scripts/w33_weyl_fiber_labeling.py) |
 
 ---
 

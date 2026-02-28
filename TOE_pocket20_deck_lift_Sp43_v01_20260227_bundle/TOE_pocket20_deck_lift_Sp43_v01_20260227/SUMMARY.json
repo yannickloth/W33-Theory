@@ -1,0 +1,39 @@
+{
+  "source_files": {
+    "pocket_geometry": "/mnt/data/TOE_WELD_480S_v01_20260227/pocket_geometry.json",
+    "sp43_generators_on_e6pairs_36": "/mnt/data/TOE_E6pair_SRG_triangle_decomp_v01_20260227/sp43_generators_on_e6pairs_36.json",
+    "pocket20_edgepair_cover": "/mnt/data/TOE_pocket20_K5_edgepair_cover_v01_20260227/pocket20_edgepair_cover.csv",
+    "pocket_glue_summary": "/mnt/data/TOE_WELD_480S_v01_20260227/pocket_glue_summary.json"
+  },
+  "groups": {
+    "PSp43_order_on_36": 25920,
+    "stab20_order_PSp": 720
+  },
+  "pocket20_cover": {
+    "covered_pockets": 90,
+    "edgepairs": 45,
+    "fiber_size": 2
+  },
+  "orbit10_lines": {
+    "orbit10_line_ids": [
+      3,
+      6,
+      8,
+      10,
+      14,
+      16,
+      22,
+      26,
+      32,
+      34
+    ],
+    "stabilizer_action_order_on_orbit10_lines": 720
+  },
+  "deck_extension": {
+    "deck_flip_in_PSp_action": false,
+    "central_deck_flip_commutes_with_stab20": true,
+    "stab20_action_on_90_order": 720,
+    "extended_group_with_deck_order": 1440
+  },
+  "global_character_gauge_fix_possible": false
+}

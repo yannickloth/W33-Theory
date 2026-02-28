@@ -1,0 +1,7 @@
+{
+  "signature": {
+    "60": 6,
+    "20": 6
+  },
+  "note": "Empirically, every A5 found in PSp(4,3) on W33 directed edges has this orbit signature (single conjugacy class)."
+}

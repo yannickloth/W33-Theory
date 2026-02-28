@@ -1,0 +1,19 @@
+{
+  "generators_on_5_vertices": [
+    [
+      4,
+      0,
+      2,
+      3,
+      1
+    ],
+    [
+      0,
+      3,
+      4,
+      1,
+      2
+    ]
+  ],
+  "note": "Via isomorphism comp10 \u2245 L(K5), stabilizer generators induce even permutations on 5 vertices (A5)."
+}

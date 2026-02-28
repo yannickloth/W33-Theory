@@ -1,0 +1,23 @@
+{
+  "triangles_total": 1200,
+  "faces_chosen": 120,
+  "holonomy_counts": {
+    "chosen_faces_hol1": 120,
+    "nonface_hol1": 240,
+    "nonface_hol0": 840
+  },
+  "face_preimage_map_degree": 10,
+  "special_faces_count": 40,
+  "special_face_profile": {
+    "odd_nonface": 6,
+    "even_nonface": 3,
+    "self": 1
+  },
+  "ordinary_faces_count": 80,
+  "ordinary_face_profile": {
+    "odd_nonface": 0,
+    "even_nonface": 9,
+    "self": 1
+  },
+  "interpretation": "Odd non-face triangles (240) fiber over special faces (40) with fiber size 6; special faces are exactly one per W33 line (40 lines)."
+}

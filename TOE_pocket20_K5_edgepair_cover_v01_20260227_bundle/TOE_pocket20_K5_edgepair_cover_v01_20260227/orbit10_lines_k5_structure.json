@@ -1,0 +1,230 @@
+{
+  "orbit10_lines_sorted": [
+    3,
+    6,
+    8,
+    10,
+    14,
+    16,
+    22,
+    26,
+    32,
+    34
+  ],
+  "orbit10_line_to_k5_edge_and_special_face": [
+    {
+      "orbit10_index": 0,
+      "line_id": 3,
+      "k5_edge": [
+        0,
+        1
+      ],
+      "special_face_vertices": [
+        8,
+        20,
+        22
+      ],
+      "face_idx": 10
+    },
+    {
+      "orbit10_index": 1,
+      "line_id": 6,
+      "k5_edge": [
+        0,
+        2
+      ],
+      "special_face_vertices": [
+        7,
+        20,
+        23
+      ],
+      "face_idx": 17
+    },
+    {
+      "orbit10_index": 2,
+      "line_id": 8,
+      "k5_edge": [
+        1,
+        3
+      ],
+      "special_face_vertices": [
+        6,
+        20,
+        24
+      ],
+      "face_idx": 26
+    },
+    {
+      "orbit10_index": 3,
+      "line_id": 10,
+      "k5_edge": [
+        2,
+        3
+      ],
+      "special_face_vertices": [
+        5,
+        20,
+        25
+      ],
+      "face_idx": 30
+    },
+    {
+      "orbit10_index": 4,
+      "line_id": 14,
+      "k5_edge": [
+        3,
+        4
+      ],
+      "special_face_vertices": [
+        0,
+        20,
+        32
+      ],
+      "face_idx": 43
+    },
+    {
+      "orbit10_index": 5,
+      "line_id": 16,
+      "k5_edge": [
+        1,
+        2
+      ],
+      "special_face_vertices": [
+        9,
+        20,
+        21
+      ],
+      "face_idx": 54
+    },
+    {
+      "orbit10_index": 6,
+      "line_id": 22,
+      "k5_edge": [
+        2,
+        4
+      ],
+      "special_face_vertices": [
+        2,
+        20,
+        29
+      ],
+      "face_idx": 66
+    },
+    {
+      "orbit10_index": 7,
+      "line_id": 26,
+      "k5_edge": [
+        1,
+        4
+      ],
+      "special_face_vertices": [
+        3,
+        20,
+        28
+      ],
+      "face_idx": 76
+    },
+    {
+      "orbit10_index": 8,
+      "line_id": 32,
+      "k5_edge": [
+        0,
+        3
+      ],
+      "special_face_vertices": [
+        4,
+        20,
+        26
+      ],
+      "face_idx": 101
+    },
+    {
+      "orbit10_index": 9,
+      "line_id": 34,
+      "k5_edge": [
+        0,
+        4
+      ],
+      "special_face_vertices": [
+        1,
+        20,
+        30
+      ],
+      "face_idx": 107
+    }
+  ],
+  "k5_cliques_edges_as_LK5_vertices": [
+    [
+      0,
+      1,
+      8,
+      9
+    ],
+    [
+      0,
+      2,
+      5,
+      7
+    ],
+    [
+      1,
+      3,
+      5,
+      6
+    ],
+    [
+      2,
+      3,
+      4,
+      8
+    ],
+    [
+      4,
+      6,
+      7,
+      9
+    ]
+  ],
+  "edge_orbit10index_to_k5_edge": {
+    "0": [
+      0,
+      1
+    ],
+    "1": [
+      0,
+      2
+    ],
+    "2": [
+      1,
+      3
+    ],
+    "3": [
+      2,
+      3
+    ],
+    "4": [
+      3,
+      4
+    ],
+    "5": [
+      1,
+      2
+    ],
+    "6": [
+      2,
+      4
+    ],
+    "7": [
+      1,
+      4
+    ],
+    "8": [
+      0,
+      3
+    ],
+    "9": [
+      0,
+      4
+    ]
+  }
+}

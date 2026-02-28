@@ -1,0 +1,1 @@
+Deck flip commutes with all 720 elements of Stab(20): True

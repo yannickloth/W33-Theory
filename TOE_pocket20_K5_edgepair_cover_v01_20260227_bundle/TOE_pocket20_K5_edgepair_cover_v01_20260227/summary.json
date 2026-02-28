@@ -1,0 +1,14 @@
+{
+  "center_vertex": 20,
+  "num_pockets_total": 540,
+  "num_pockets_containing_center": 105,
+  "num_pockets_center_with_4_labeled_vertices": 90,
+  "num_edgepairs": 45,
+  "edgepair_count_check_expected_45": 45,
+  "each_edgepair_has_two_completions": true,
+  "shared_endpoints_hist": {
+    "1": 60,
+    "0": 30
+  },
+  "note": "Orbit10 special faces form a K5 edge-system around SRG36 vertex 20. Center-20 pockets with 4 orbit10-labeled vertices are a 2-sheeted cover over unordered pairs of K5 edges."
+}
