@@ -453,7 +453,7 @@ def theorem6_golay_pure_symplectic():
         "phi_is_zero": bool(nf.get("phi_is_zero")),
         "c_addition_holds": bool(nf.get("c_addition_holds")),
         "bracket_form": "[E_{g,c}, E_{h,d}] = omega(g,h) * E_{g+h, c+d}",
-        "structure": "L = L0 ⊗ F3[C3], dim L0 = 8, dim fiber = 3",
+        "structure": "L = L0 x F3[C3], dim L0 = 8, dim fiber = 3",
         "dim_outer_derivations": int(dim_out),
         "dim_derivations": int(dim_der),
         "outer_decomposition": "3 (fiber Der) + 6 (grade Out(L0) x fiber)",
@@ -483,37 +483,37 @@ def main():
     print(f"  Fixed points of R in H27 = {r1['n_fixed_points']}")
     print(f"  3-element orbits = {r1['n_3element_orbits']}")
     print(f"  Grade eigenspace dims = {r1['grade_eigenspace_dims']} (each = 9)")
-    print(f"  Projectors complete P₀+P₁+P₂=I: {r1['projectors_complete']}")
+    print(f"  Projectors complete P0+P1+P2=I: {r1['projectors_complete']}")
     print(f"  All orbits size-3: {r1['all_orbits_size3']}")
     assert r1["n_fixed_points"] == 0
     assert r1["n_3element_orbits"] == 9
     assert r1["grade_eigenspace_dims"] == [9, 9, 9]
     assert r1["projectors_complete"]
-    print("  ✓ H27 = 9 orbits × 3 vertices, grade-g dim = 9 each")
+    print("  OK: H27 = 9 orbits x 3 vertices, grade-g dim = 9 each")
 
     # T2
     print("\nT2: Exact Z3 Yukawa Texture")
     r2 = theorem2_yukawa_texture()
-    print(f"  Formula: T[a,b,v] = 0 for v ∈ grade-g unless g = -(a+b) mod 3")
-    print(f"  Total checks: {r2['total_checks']}  (6 pairs × 3 grades × 9 vecs)")
+    print(f"  Formula: T[a,b,v] = 0 for v in grade-g unless g = -(a+b) mod 3")
+    print(f"  Total checks: {r2['total_checks']}  (6 pairs x 3 grades x 9 vecs)")
     print(f"  Violations: {r2['violations']}")
     print(f"  Exact zeros: {r2['exact_zeros']}")
     assert r2["violations"] == 0
     assert r2["theorem_exact"]
-    print(f"  ✓ EXACT THEOREM: 0 of {r2['total_checks']} checks violated")
+    print(f"  OK: EXACT THEOREM: 0 of {r2['total_checks']} checks violated")
 
     # T3
     print("\nT3: Form Factor Bounds")
     r3 = theorem3_form_factor_bounds()
     print(f"  Grade-0 eigenspace dim = {r3['grade0_eigenspace_dim']}")
-    print(f"  f₀₀ (T[0,0,ê]) range: [{r3['f00_min']:.5f}, {r3['f00_max']:.5f}]")
-    print(f"  f₁₂ (T[1,2,ê]) range: [{r3['f12_min']:.5f}, {r3['f12_max']:.5f}]")
-    print(f"  Ratio f₁₂/f₀₀ range: [{r3['ratio_f12_f00_min']:.4f}, {r3['ratio_f12_f00_max']:.4f}]")
-    print(f"  Max ratio ≈ √15 = {np.sqrt(15):.4f}: {r3['max_ratio_approx_sqrt15']}")
+    print(f"  f00 (T[0,0,e_hat]) range: [{r3['f00_min']:.5f}, {r3['f00_max']:.5f}]")
+    print(f"  f12 (T[1,2,e_hat]) range: [{r3['f12_min']:.5f}, {r3['f12_max']:.5f}]")
+    print(f"  Ratio f12/f00 range: [{r3['ratio_f12_f00_min']:.4f}, {r3['ratio_f12_f00_max']:.4f}]")
+    print(f"  Max ratio ~ sqrt(15) = {np.sqrt(15):.4f}: {r3['max_ratio_approx_sqrt15']}")
     print(f"  W33 geometry splits form factors by factor: {r3['geometry_splits_by_factor']:.2f}")
     assert r3["grade0_eigenspace_dim"] == 9
     assert r3["max_ratio_approx_sqrt15"]
-    print(f"  ✓ W33 geometry produces form-factor hierarchy up to √15 ≈ 3.87")
+    print(f"  OK: W33 geometry produces form-factor hierarchy up to sqrt(15) ~ 3.87")
 
     # T4
     print("\nT4: Higgs VEV Grade Fractions")
@@ -528,7 +528,7 @@ def main():
         print("  Interpretation: grade hierarchy of Higgs = fermion mass hierarchy")
         assert abs(sum(uf) - 1.0) < 1e-8
         assert abs(sum(df) - 1.0) < 1e-8
-        print("  ✓ Grade fractions sum to 1 ✓")
+        print("  OK: Grade fractions sum to 1")
 
     # T5
     print("\nT5: GUT-Scale Mass Texture")
@@ -539,12 +539,12 @@ def main():
             sv = np.array(tx["singular_values"])
             print(f"  Y_{label}: SVs = [{sv[0]:.5f}, {sv[1]:.5f}, {sv[2]:.5f}]"
                   f"  ratios = {tx['ratio_sv1_sv2']:.2f}:{tx['ratio_sv1_sv3']:.2f}:1 (r21:r31:1)")
-        print("  ✓ W33 texture gives hierarchical GUT-scale Yukawa couplings")
+        print("  OK: W33 texture gives hierarchical GUT-scale Yukawa couplings")
 
     # T6
     print("\nT6: Golay Algebra Pure Symplectic Normal Form")
     r6 = theorem6_golay_pure_symplectic()
-    print(f"  φ = 0 (no cocycle twist): {r6['phi_is_zero']}")
+    print(f"  phi = 0 (no cocycle twist): {r6['phi_is_zero']}")
     print(f"  Fiber index adds: {r6['c_addition_holds']}")
     print(f"  Bracket: {r6['bracket_form']}")
     print(f"  Structure: {r6['structure']}")
@@ -552,7 +552,7 @@ def main():
     assert r6["phi_is_zero"]
     assert r6["c_addition_holds"]
     assert r6["dim_outer_derivations"] == 9
-    print(f"  ✓ Pure symplectic current algebra; 9 outer derivations = CKM/PMNS generators")
+    print(f"  OK: Pure symplectic current algebra; 9 outer derivations = CKM/PMNS generators")
 
     # Summary
     elapsed = time.time() - t0
@@ -561,21 +561,21 @@ def main():
     print("=" * 70)
     print("""
   RESULT 1 (Exact theorem): The Z3 Yukawa texture is exact.
-    T[a,b,v] = 0 for any v ∈ grade-g eigenspace of R unless g ≡ -(a+b) mod 3.
+    T[a,b,v] = 0 for any v in grade-g eigenspace of R unless g = -(a+b) mod 3.
     Verified: 0 of 162 checks violated.
 
   RESULT 2 (Geometry): H27 = 9 three-element orbits, no fixed points.
-    Grade-g eigenspace is 9-dimensional for each g ∈ {0,1,2}.
-    W33 form-factor hierarchy: f₁₂/f₀₀ ∈ [0.10, 3.87] with max ≈ √15.
+    Grade-g eigenspace is 9-dimensional for each g in {0,1,2}.
+    W33 form-factor hierarchy: f12/f00 in [0.10, 3.87] with max ~ sqrt(15).
 
   RESULT 3 (Physics): Grade hierarchy of Higgs VEV = fermion mass hierarchy.
-    CKM-optimal v_up: grade-0=42.5%, grade-2=50.2% → SVs ≈ 10:5:1.
-    CKM-optimal v_dn: grade-0=57.5%, grade-1=14.5% → SVs ≈ 6:2:1.
+    CKM-optimal v_up: grade-0=42.5%, grade-2=50.2% -> SVs ~ 10:5:1.
+    CKM-optimal v_dn: grade-0=57.5%, grade-1=14.5% -> SVs ~ 6:2:1.
     This is the GUT-scale W33 prediction for Yukawa coupling ratios.
 
   RESULT 4 (Algebra): Golay algebra = pure symplectic current algebra.
-    L = L₀ ⊗ F₃[C₃] with bracket [E_{g,c}, E_{h,d}] = ω(g,h)E_{g+h,c+d}, φ=0.
-    9 outer derivations = CKM/PMNS mixing operators (grade-shifting in F₃²×F₃).
+    L = L0 x F3[C3] with bracket [E_{g,c}, E_{h,d}] = omega(g,h) E_{g+h,c+d}, phi=0.
+    9 outer derivations = CKM/PMNS mixing operators (grade-shifting in F3^2 x F3).
 """)
     print(f"  Computation time: {elapsed:.1f}s")
 

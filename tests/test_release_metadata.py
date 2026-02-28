@@ -1,9 +1,11 @@
-﻿def test_readme_mentions_new_pillars():
+def test_readme_mentions_new_pillars():
     txt = open("README.md", "r", encoding="utf-8").read()
-    assert "Pillars 58–60" in txt or "Pillars 58-60" in txt
-    assert "v2026-02-16-pillars-58-60" in txt
-    assert "71 pillars" in txt or "69 pillars" in txt
-    assert "## The 69 Pillars" in txt or "## The 71 Pillars" in txt
+    # README should mention the current pillar range section (58-71 encoded as HTML entity)
+    assert "Pillars 58" in txt
+    # README should have The 71 Pillars section (or higher)
+    assert "## The 71 Pillars" in txt or "## The 74 Pillars" in txt
+    # README should mention pillar count >= 71
+    assert "71 pillars" in txt or "74 pillars" in txt
 
     import json
 

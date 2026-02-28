@@ -1,0 +1,104 @@
+{
+  "count": 3,
+  "elements": [
+    {
+      "sigma": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "exp": 0,
+      "octonion_r_stab_index": 7,
+      "octonion_r_perm": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "octonion_r_signs": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "octonion_r_order": 1,
+      "right_mult_perm_matches_sigma_action": true
+    },
+    {
+      "sigma": [
+        1,
+        3,
+        5,
+        0,
+        2,
+        4,
+        6
+      ],
+      "exp": 1,
+      "octonion_r_stab_index": 399,
+      "octonion_r_perm": [
+        3,
+        1,
+        2,
+        5,
+        6,
+        4,
+        7
+      ],
+      "octonion_r_signs": [
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        1
+      ],
+      "octonion_r_order": 3,
+      "right_mult_perm_matches_sigma_action": true
+    },
+    {
+      "sigma": [
+        3,
+        0,
+        4,
+        1,
+        5,
+        2,
+        6
+      ],
+      "exp": 2,
+      "octonion_r_stab_index": 246,
+      "octonion_r_perm": [
+        2,
+        3,
+        1,
+        6,
+        4,
+        5,
+        7
+      ],
+      "octonion_r_signs": [
+        1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1
+      ],
+      "octonion_r_order": 3,
+      "right_mult_perm_matches_sigma_action": true
+    }
+  ]
+}

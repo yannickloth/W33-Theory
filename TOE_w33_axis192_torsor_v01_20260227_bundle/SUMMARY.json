@@ -1,0 +1,58 @@
+{
+  "base_pocket_vertices_36": [
+    0,
+    1,
+    2,
+    14,
+    15,
+    17,
+    27
+  ],
+  "silent_local_index": 6,
+  "constraints_count": 24,
+  "octonion_reference_triples": [
+    [
+      1,
+      2,
+      3
+    ],
+    [
+      1,
+      4,
+      5
+    ],
+    [
+      1,
+      7,
+      6
+    ],
+    [
+      2,
+      4,
+      6
+    ],
+    [
+      2,
+      5,
+      7
+    ],
+    [
+      3,
+      4,
+      7
+    ],
+    [
+      3,
+      6,
+      5
+    ]
+  ],
+  "phi_solutions": 168,
+  "embedding_solutions_phi_bits": 2688,
+  "unique_local_tables": 2,
+  "embeddings_per_table": 1344,
+  "axis_fixed_embeddings_per_table": 192,
+  "octonion_stabilizer_size": 1344,
+  "axis_line_stabilizer_size": 192,
+  "torsor_verified": true
+}
