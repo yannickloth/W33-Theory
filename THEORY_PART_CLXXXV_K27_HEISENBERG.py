@@ -14,10 +14,11 @@ stabilizer, giving K = Heisenberg(27) ⋊ S3 as an affine group:
       Group law: (x,y,z)*(x',y',z') = (x+x', y+y', z+z' - y*x') mod 3.
       Center has order 3; derived subgroup equals center.
 
-  T3  Stabilizer of the base twin-pair (qid=0) is S3 (order 6); its 6
+  T3  Stabilizer of the base twin-pair (qid=0) has order 6; its 6
       elements act by GL(2,3)-matrices on the (x,y) coordinates with a
-      quadratic z-correction.  The element orders are {1, 2, 2, 2, 3, 3}
-      — the S3 signature.
+      quadratic z-correction.  Permutation order distribution on K27 is
+      {1:1, 2:1, 3:2, 6:2} — matching Z6 (the bundle REPORT incorrectly
+      labelled this as S3; S3 has distribution {1:1, 2:3, 3:2}).
 
   T4  Affine decomposition: every K-generator decomposes uniquely as a
       Heisenberg translation followed by an S3 automorphism.
@@ -196,13 +197,18 @@ def build_k27_heisenberg_report() -> dict:
     for s_perm in stab_elems_raw:
         assert s_perm[0] == 0, f"Stabilizer element does not fix qid=0: {s_perm[:3]}..."
 
+    # The bundle REPORT incorrectly labelled the stabilizer as S3.
+    # The actual permutation order distribution {1:1, 2:1, 3:2, 6:2} matches Z6
+    # (cyclic of order 6); S3 would give {1:1, 2:3, 3:2}.
+    stab_is_Z6 = (stab_orders == Counter({1: 1, 2: 1, 3: 2, 6: 2}))
+
     out["T3_stabilizer_order"] = 6
-    out["T3_stabilizer_is_S3"] = True
+    out["T3_stabilizer_is_Z6"] = stab_is_Z6
     out["T3_stabilizer_order_dist"] = dict(stab_orders)
     out["T3_stabilizer_fixes_qid0"] = True
     print(
         "T3: Stabilizer of qid=0 has order 6, order dist "
-        f"{dict(stab_orders)} = S3; GL(2,3) matrix action  OK"
+        f"{dict(stab_orders)} = Z6 (not S3); GL(2,3) matrix action  OK"
     )
 
     # ==================================================================
@@ -349,10 +355,10 @@ def build_k27_heisenberg_report() -> dict:
     out["summary"] = {
         "twin_pair_collapse": "54 pockets -> 27 twin-pairs (6-core each)",
         "Heisenberg_regular": "[K,K]=Heis(27) acts regularly on K27; center=Z3",
-        "stabilizer_S3": "Stab(qid=0)=S3 (order 6); GL(2,3) matrix action",
-        "affine_decomp": "g=translation*S3; only g3 has nontrivial S3 (order 3)",
-        "K_structure": "K=Heis(27) x| S3, order=162=27*6",
-        "Pillar76_bridge": "s_{g3}=c^2 in C3 law <-> g3 S3-component of order 3",
+        "stabilizer_order6": "Stab(qid=0) order=6 (perm orders {1,2,3,6}=Z6); GL(2,3) matrix action",
+        "affine_decomp": "g=translation*rotation; only g3 has nontrivial rotation (order 3)",
+        "K_structure": "K=Heis(27) x| Z6, order=162=27*6",
+        "Pillar76_bridge": "s_{g3}=c^2 in C3 law <-> g3 rotation-component of order 3",
     }
     return out
 

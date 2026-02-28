@@ -79,8 +79,9 @@ class TestT3Stabilizer:
     def test_stabilizer_order(self, report):
         assert report["T3_stabilizer_order"] == 6
 
-    def test_is_S3(self, report):
-        assert report["T3_stabilizer_is_S3"] is True
+    def test_is_Z6(self, report):
+        """Perm order dist {1,2,3,6} = Z6 (bundle REPORT incorrectly said S3)."""
+        assert report["T3_stabilizer_is_Z6"] is True
 
     def test_order_distribution(self, report):
         # exact distribution may exhibit order-6 elements due to action on 27
@@ -179,7 +180,7 @@ class TestK27HeisSummary:
         assert "Heis(27)" in report["summary"]["Heisenberg_regular"]
 
     def test_summary_stab(self, report):
-        assert "S3" in report["summary"]["stabilizer_S3"]
+        assert "6" in report["summary"]["stabilizer_order6"]
 
     def test_summary_affine(self, report):
         assert "translation" in report["summary"]["affine_decomp"]

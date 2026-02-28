@@ -19,7 +19,7 @@
     "6": 2
   },
   "T3_stabilizer_order": 6,
-  "T3_stabilizer_is_S3": true,
+  "T3_stabilizer_is_Z6": true,
   "T3_stabilizer_fixes_qid0": true,
   "T4_g2_pure_translation": true,
   "T4_g5_pure_translation": true,
@@ -47,9 +47,9 @@
   "summary": {
     "twin_pair_collapse": "54 pockets -> 27 twin-pairs (6-core each)",
     "Heisenberg_regular": "[K,K]=Heis(27) acts regularly on K27; center=Z3",
-    "stabilizer_S3": "Stab(qid=0)=S3 (order 6); GL(2,3) matrix action",
-    "affine_decomp": "g=translation*S3; only g3 has nontrivial S3 (order 3)",
-    "K_structure": "K=Heis(27) x| S3, order=162=27*6",
-    "Pillar76_bridge": "s_{g3}=c^2 in C3 law <-> g3 S3-component of order 3"
+    "stabilizer_order6": "Stab(qid=0) order=6 (perm orders {1,2,3,6}=Z6); GL(2,3) matrix action",
+    "affine_decomp": "g=translation*rotation; only g3 has nontrivial rotation (order 3)",
+    "K_structure": "K=Heis(27) x| Z6, order=162=27*6",
+    "Pillar76_bridge": "s_{g3}=c^2 in C3 law <-> g3 rotation-component of order 3"
   }
 }
