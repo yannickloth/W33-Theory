@@ -139,3 +139,8 @@ def test_analysis_summary_and_serialization(tmp_path):
     write_results(summary)
     assert (repo / "270_transport_analysis_summary.json").exists()
     assert (repo / "270_transport_report.md").exists()
+
+
+def test_pillar_89_narrative_exists():
+    repo = Path(__file__).resolve().parent.parent
+    assert (repo / "PILLAR_89.md").exists(), "narrative PILLAR_89.md should be created"
