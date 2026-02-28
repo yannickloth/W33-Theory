@@ -89,13 +89,15 @@ def build_27x10():
         gi = GEN_INDEX[gen]
         qid, twin_bit = twin_map[u]
         orient_index = twin_bit * len(GENS) + gi  # 0..9
-
+        e = edge["cocycle_Z3_exp"]
         # compute qid/twin for the target vertex as well
         qid_v, twin_v = twin_map[edge["v"]]
         row = {
+            "u": u,
             "qid": qid,
             "twin_bit": twin_bit,
             "gen": gen,
+            "cocycle_Z3_exp": e,
             "orient_index": orient_index,
             "target_qid": qid_v,
             "target_twin": twin_v,

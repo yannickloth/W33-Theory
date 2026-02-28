@@ -35,6 +35,12 @@ def table():
                 r["target_qid"] = int(r["target_qid"])
             if "target_twin" in r:
                 r["target_twin"] = int(r["target_twin"])
+            if "u" in r:
+                r["u"] = int(r["u"])
+            if "v" in r:
+                r["v"] = int(r["v"])
+            if "cocycle_Z3_exp" in r:
+                r["cocycle_Z3_exp"] = int(r["cocycle_Z3_exp"])
             rows.append(r)
 
     # load json table
@@ -80,3 +86,29 @@ def test_twin_balance(table):
         counts[q][r["twin_bit"]] += 1
     for q, d in counts.items():
         assert d[0] == 5 and d[1] == 5, f"qid {q} has {d}"
+
+
+def test_sheet_transport_from_report(table):
+    """Verify that the S3 sheet transport law previously computed still holds
+    when we look at the directed edges entries produced by the 27×10 script.
+    """
+    rows, _ = table
+    # load the transport report to obtain L_table and s_g
+    report_path = repo_root / "data" / "w33_S3_sheet_transport.json"
+    assert report_path.exists(), "Missing sheet transport data file"
+    with open(report_path) as f:
+        report = json.load(f)
+    L = report["L_table_canonical"]
+    s_g = report["s_g_minimal"]
+    # cycle c = (1,2,0)
+    def comp(p, q):
+        return [p[i] for i in q]
+    c = [1, 2, 0]
+    c_pow = {0: [0, 1, 2], 1: c, 2: [2, 0, 1]}
+
+    for r in rows:
+        u = r["u"]
+        v = r["v"]
+        gen = r["gen"]
+        exp = comp(s_g[gen], comp(L[u], c_pow[r.get("cocycle_Z3_exp", 0)]))
+        assert exp == L[v], f"edge {u}->{v} failed transport: {exp} vs {L[v]}"
