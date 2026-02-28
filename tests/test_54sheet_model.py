@@ -166,3 +166,27 @@ def test_summary_orbit_full():
     pockets = set(fmap.values())
     assert pockets.issubset(set(range(54)))
     assert len(pockets) >= 27  # covers all twin pairs at least
+
+
+def test_flag_word_map_consistency():
+    # verify that applying word to base flag yields target
+    import json
+    fmap = json.load(open(repo / "flag_word_map.json"))
+    # load generators
+    gens = json.load(open(repo / "axis_bundle_content/TOE_tomotope_axis_block_twist_v02_20260228/tomotope_r_generators_in_axis_coords.json"))
+    r0 = tuple(gens['r0']); r1 = tuple(gens['r1']); r2 = tuple(gens['r2']); r3 = tuple(gens['r3'])
+    G = [r0,r1,r2,r3]
+    # load refined coords for base flags
+    base = {}
+    with open(repo / "K54_54sheet_coords_refined.csv") as f:
+        for r in csv.DictReader(f):
+            p = int(r['pocket'])
+            uf = int(r['unique_flag'])
+            base[p] = uf
+    for flag, (p, word) in fmap.items():
+        p = int(p); flag = int(flag)
+        # apply word starting from base[p]
+        cur = base[p]
+        for gi in word:
+            cur = G[gi][cur]
+        assert cur == flag, f"word {word} from pocket {p} leads to {cur}, expected {flag}"
