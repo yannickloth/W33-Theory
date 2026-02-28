@@ -65,4 +65,5 @@ def test_real_mapping_bundle():
     assert len(data.get('orientations', [])) == 480
     # expect nearly all edges to receive an orientation index
     nonnull = sum(1 for v in data['edge_to_orient'] if v is not None)
-    assert nonnull >= 230, f"too few oriented edges ({nonnull})"
+    # two edges appear to be unorientable by the available triple data
+    assert nonnull >= 236, f"too few oriented edges ({nonnull}); expected at least 236"
