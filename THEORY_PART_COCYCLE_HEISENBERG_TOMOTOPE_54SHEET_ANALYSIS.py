@@ -37,15 +37,18 @@ BUNDLE_DIR = ROOT / "next_pillar_bundle"
 BUNDLE_ZIP = ROOT / "TOE_54sheet_pillar82_bundle.zip"
 
 
-def load_coords():
+def load_coords(refined=False):
+    path = ROOT / ("K54_54sheet_coords_refined.csv" if refined else "K54_54sheet_coords.csv")
     rows = []
-    with open(COORD_CSV) as f:
+    with open(path) as f:
         for r in csv.DictReader(f):
             for k in ("pocket","qid","twin_bit","L","canonical_flag","canonical_block"):
-                if r[k] != "":
+                if r.get(k) != "":
                     r[k] = int(r[k])
                 else:
                     r[k] = None
+            if refined and r.get("unique_flag") != "":
+                r["unique_flag"] = int(r["unique_flag"])
             rows.append(r)
     return rows
 
@@ -103,16 +106,33 @@ def make_bundle():
     with zipfile.ZipFile(BUNDLE_ZIP, "w") as zf:
         for path in sorted(BUNDLE_DIR.iterdir()):
             zf.write(str(path), path.name)
+        # also include refined files if present
+        for extra in (ROOT / "K54_54sheet_coords_refined.csv", ROOT / "pocket_to_unique_flag.json", ROOT / "PILLAR_82.md"):
+            if extra.exists():
+                zf.write(str(extra), extra.name)
     print(f"Created next pillar bundle: {BUNDLE_ZIP}")
 
 
 def main():
-    coords = load_coords()
+    # analyse original coords
+    coords = load_coords(refined=False)
     stats = analyze_coords(coords)
     summary = load_summary()
     # write stats JSON
     open(STAT_JSON, "w").write(json.dumps(stats, indent=2))
     report_stats(stats, summary)
+    # now also compute refined stats if available
+    refined_path = ROOT / "K54_54sheet_coords_refined.csv"
+    if refined_path.exists():
+        rcoords = load_coords(refined=True)
+        rstats = analyze_coords(rcoords)
+        with open(ROOT / "54sheet_coord_stats_refined.json", "w") as f:
+            json.dump(rstats, f, indent=2)
+        # append to report
+        with open(REPORT_MD, "a", encoding="utf-8") as f:
+            f.write("\n\n## Refined unique-flag statistics\n")
+            f.write(f"blocks seen refined: {dict(rstats['block_coverage'])}\n")
+            f.write(f"flags seen refined: {len(rstats['flag_coverage'])} unique\n")
     make_bundle()
 
 if __name__ == '__main__':

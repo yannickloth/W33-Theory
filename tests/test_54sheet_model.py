@@ -113,3 +113,43 @@ def test_all_pockets_have_flags(load_all):
     # at least one pocket should have a flag; others may be missing
     flags = [c["canonical_flag"] for c in coords]
     assert any(f is not None for f in flags), "no pocket was assigned a flag"
+
+
+def test_unique_flag_assignment():
+    # read refined coords
+    coords = []
+    with open(repo / "K54_54sheet_coords_refined.csv") as f:
+        for r in csv.DictReader(f):
+            if r["unique_flag"] != "":
+                coords.append(int(r["unique_flag"]))
+    assert len(coords) == 54
+    assert len(set(coords)) == 54, "unique_flag values are not all distinct"
+
+
+def test_refined_flag_within_candidates():
+    # ensure each unique_flag was a candidate
+    cands = json.load(open(repo / "pocket_to_flags.json"))
+    with open(repo / "K54_54sheet_coords_refined.csv") as f:
+        for r in csv.DictReader(f):
+            p = int(r["pocket"])
+            uf = int(r["unique_flag"])
+            if str(p) in cands:
+                assert uf in cands[str(p)]
+            else:
+                # pocket had no candidates, accept any flag
+                continue
+
+
+def test_matching_summary():
+    summ = json.load(open(repo / "SUMMARY_matching.json"))
+    assert summ.get("matched") == 54
+    assert summ.get("unmatched_pockets") == []
+
+
+def test_pillar_bundle_contains_narrative_and_refined():
+    # check that bundle includes narrative and refined files
+    import zipfile
+    zf = zipfile.ZipFile(repo / "TOE_54sheet_pillar82_bundle.zip")
+    names = zf.namelist()
+    for need in ["PILLAR_82.md", "K54_54sheet_coords_refined.csv", "pocket_to_unique_flag.json"]:
+        assert need in names, f"{need} missing from pillar bundle"
