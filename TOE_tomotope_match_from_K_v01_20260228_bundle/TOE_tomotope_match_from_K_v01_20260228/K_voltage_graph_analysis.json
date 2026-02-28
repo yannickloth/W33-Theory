@@ -1,0 +1,68 @@
+{
+  "K_summary": {
+    "inputs": {
+      "holonomy_bundle": "TOE_holonomy_Z2_flatZ3_v01_20260227_bundle.zip (nested E6pair + edge_to_oriented_rootpairs zips)",
+      "pocket_geometry": "TOE_pocket_transport_glue_orbit480_v01_20260227_bundle.zip::pocket_geometry.json",
+      "torsor_bundle": "TOE_w33_axis192_torsor_v01_20260227_bundle.zip"
+    },
+    "K_generators_indices_in_sp43_generators_on_e6pairs_36": [
+      2,
+      3,
+      5,
+      8,
+      9
+    ],
+    "K_order_on_SRG36_vertices": 162,
+    "K_order_on_pocket_orbit_54": 162,
+    "base_pocket": [
+      0,
+      1,
+      2,
+      14,
+      15,
+      17,
+      27
+    ],
+    "base_pocket_axis_vertex": 27,
+    "K_orbit_pockets_size": 54,
+    "K_stabilizer_of_base_pocket_size": 3,
+    "cocycle_sigma_values": [
+      "(0, 1, 2, 3, 4, 5, 6)",
+      "(1, 3, 5, 0, 2, 4, 6)",
+      "(3, 0, 4, 1, 5, 2, 6)"
+    ],
+    "deck_flip_present_in_K": false,
+    "key_fact": "For every stabilizer element sigma (perm of 7 pocket indices) appearing in K, the induced permutation on the 192 axis-fixed torsor equals RIGHT multiplication by the corresponding octonion axis-stabilizer element r(sigma)."
+  },
+  "schreier_edges_count": 270,
+  "gens": [
+    "g2",
+    "g3",
+    "g5",
+    "g8",
+    "g9"
+  ],
+  "cocycle_exact": false,
+  "fundamental_cycle_discrepancy_counts": {
+    "0": 148,
+    "1": 33,
+    "2": 36
+  },
+  "cover_group_order": 162,
+  "cover_is_connected": true,
+  "cover_is_regular_action_group": true,
+  "K_group_order_from_cover": 162,
+  "K_3Sylow_order": 81,
+  "K_3Sylow_order_spectrum": {
+    "1": 1,
+    "3": 44,
+    "9": 36
+  },
+  "K_3Sylow_center_order": 3,
+  "K_3Sylow_commutator_order": 9,
+  "numerology": {
+    "W_E6_over_W_D4": 270,
+    "schreier_edges_54x5": 270,
+    "note": "Matches PART_CXIV_tomotope_connection.json: W(E6)/W(D4)=270, while K-locus produces exactly 270 directed Schreier edges."
+  }
+}

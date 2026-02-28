@@ -281,6 +281,28 @@ def _signed_cubic_triad_sign_data() -> tuple[list[Triad], list[int], dict[Triad,
     return triads, signs, sign_by
 
 
+@lru_cache(maxsize=1)
+def _heisenberg_signed_cubic_triad_sign_data() -> tuple[list[Triad], list[int], dict[Triad, int]]:
+    """Return (triads, signs, sign_by_triad) for the Heisenberg cubic on H27.
+
+    The Heisenberg cubic has 45 triads: 9 fiber triads (constant u in F3^2) and
+    36 affine triads (one per u-line per z-shift b).  All signs are +1 because
+    the Heisenberg⋊SL(2,3) generators are pure permutation automorphisms of this
+    cubic (no diagonal phase is needed).
+    """
+    model = load_heisenberg_model()
+    fiber = _extract_fiber_triads(model)
+    affine = _extract_affine_triads(model)
+    triads: list[Triad] = list(fiber) + list(affine)
+    if len(triads) != 45:
+        raise ValueError(f"expected 45 Heisenberg cubic triads, got {len(triads)}")
+    signs: list[int] = [1] * 45
+    sign_by = {t: 1 for t in triads}
+    if len(sign_by) != 45:
+        raise ValueError("unexpected Heisenberg cubic triad duplication")
+    return triads, signs, sign_by
+
+
 def _gf2_solve_min_weight(*, rows: list[int], rhs: list[int], n_vars: int) -> int | None:
     """Solve A x = b over GF(2), choosing the minimum-weight solution.
 
@@ -421,6 +443,51 @@ def signed_cubic_sign_lift_for_perm(perm: Perm) -> Tuple[int, ...]:
     return eps
 
 
+@lru_cache(maxsize=2048)
+def signed_heisenberg_cubic_sign_lift_for_perm(perm: Perm) -> Tuple[int, ...]:
+    """Return the {+-1} diagonal sign lift for perm against the Heisenberg cubic.
+
+    Identical to signed_cubic_sign_lift_for_perm but uses the Heisenberg 45-triad
+    cubic (fiber triads + affine Heisenberg line triads, all with sign +1) instead of
+    the canonical SU(3)-gauge cubic.  The Heisenberg generators are pure permutation
+    automorphisms of this cubic, so the returned eps is always all-+1.
+    """
+    if len(perm) != 27:
+        raise ValueError("expected perm of length 27")
+    if sorted(perm) != list(range(27)):
+        raise ValueError("expected perm to be a permutation of 0..26")
+
+    triads, signs, sign_by = _heisenberg_signed_cubic_triad_sign_data()
+    rows: list[int] = []
+    rhs: list[int] = []
+    for (i, j, k), s in zip(triads, signs, strict=True):
+        img = tuple(sorted((perm[i], perm[j], perm[k])))
+        s_img = int(sign_by[img])
+        ratio = int(s_img * s)
+        b = 0 if ratio == 1 else 1
+        mask = (1 << int(perm[i])) | (1 << int(perm[j])) | (1 << int(perm[k]))
+        rows.append(int(mask))
+        rhs.append(int(b))
+
+    rows.append(1 << 0)
+    rhs.append(0)
+
+    sol = _gf2_solve_min_weight(rows=rows, rhs=rhs, n_vars=27)
+    if sol is None:
+        raise ValueError("no Heisenberg-cubic sign lift exists for this permutation")
+
+    eps = tuple((-1 if ((sol >> i) & 1) else 1) for i in range(27))
+
+    for (i, j, k), s in zip(triads, signs, strict=True):
+        img = tuple(sorted((perm[i], perm[j], perm[k])))
+        s_img = int(sign_by[img])
+        prod = int(eps[perm[i]] * eps[perm[j]] * eps[perm[k]])
+        if int(s_img) != int(s) * prod:
+            raise AssertionError("Heisenberg-cubic sign lift verification failed")
+
+    return eps
+
+
 @lru_cache(maxsize=1)
 def hessian_heisenberg_generators() -> Dict[str, Perm]:
     """Return canonical generators of Heisenberg⋊SL(2,3) as permutations of H27."""
@@ -441,9 +508,15 @@ def hessian_heisenberg_generators() -> Dict[str, Perm]:
 
 @lru_cache(maxsize=1)
 def hessian_monomial_generators() -> Dict[str, Tuple[Perm, Tuple[int, ...]]]:
-    """Return canonical lifted generators (perm, eps) preserving the *signed* cubic."""
+    """Return canonical lifted generators (perm, eps) preserving the *signed* cubic.
+
+    Uses the Heisenberg cubic (fiber + affine Heisenberg line triads, all signs +1)
+    rather than the canonical SU(3)-gauge cubic, because the Heisenberg⋊SL(2,3)
+    generators preserve the Heisenberg triad structure, not the canonical triad
+    structure.  The resulting eps is all-+1 for all generators.
+    """
     gens = hessian_heisenberg_generators()
-    return {k: (p, signed_cubic_sign_lift_for_perm(p)) for k, p in gens.items()}
+    return {k: (p, signed_heisenberg_cubic_sign_lift_for_perm(p)) for k, p in gens.items()}
 
 
 def analyze_hessian_heisenberg_group(

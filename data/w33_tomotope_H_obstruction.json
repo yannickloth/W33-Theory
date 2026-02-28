@@ -1,0 +1,50 @@
+{
+  "status": "ok",
+  "T1_fvector": {
+    "V": 4,
+    "E": 12,
+    "F": 16,
+    "C": 8
+  },
+  "T1_flags": 192,
+  "T1_cell_type": "hemioctahedron",
+  "T2_monodromy_order": 18432,
+  "T2_P_order": 96,
+  "T2_H_order": 192,
+  "T2_product_check": true,
+  "T3_stab_flag0_order": 96,
+  "T3_stab_order_dist": {
+    "1": 1,
+    "3": 32,
+    "4": 36,
+    "2": 27
+  },
+  "T3_matches_P": true,
+  "T4_H_center_size": 1,
+  "T4_H_center_trivial": true,
+  "T4_P_not_quotient_of_H": true,
+  "T5_D4_subgroups_in_H": 66,
+  "T5_obstruction_confirmed_all": true,
+  "T5_obstruction_count": 66,
+  "T5_H_cannot_host_4_12_16_8": true,
+  "T6_H_order8_count": 48,
+  "T6_Gamma_order8_count": 3456,
+  "T6_P_order8_count": 0,
+  "T6_H_not_isomorphic_to_monodromy": true,
+  "numerological_connection": {
+    "flags": 192,
+    "H_order": 192,
+    "W_D4_order": 192,
+    "note": "192 = |tomotope flags| = |H| = |W(D4)| is a numerological coincidence",
+    "structural_connection": false,
+    "actual_monodromy_order": 18432
+  },
+  "coxeter_orders": {
+    "|r0r1|": 3,
+    "|r1r2|": 12,
+    "|r2r3|": 4,
+    "|r0r2|": 2,
+    "|r0r3|": 2,
+    "|r1r3|": 2
+  }
+}

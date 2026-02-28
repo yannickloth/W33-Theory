@@ -1,0 +1,115 @@
+{
+  "source": "octonion_stabilizer_1344.json axis-line stabilizer perm[6]=7 (size 192)",
+  "group_order": 192,
+  "order_distribution": {
+    "1": 1,
+    "2": 43,
+    "3": 32,
+    "4": 36,
+    "6": 32,
+    "8": 48
+  },
+  "commutator_subgroup_order": 48,
+  "abelianization_order": 4,
+  "index2_subgroups": {
+    "count": 3,
+    "subgroups": [
+      {
+        "id": "H_idx2_1_axisSignPlus",
+        "order_distribution": {
+          "1": 1,
+          "2": 15,
+          "3": 32,
+          "4": 24,
+          "8": 24
+        }
+      },
+      {
+        "id": "H_idx2_2",
+        "order_distribution": {
+          "1": 1,
+          "2": 19,
+          "3": 32,
+          "4": 12,
+          "6": 32
+        }
+      },
+      {
+        "id": "H_idx2_3",
+        "order_distribution": {
+          "1": 1,
+          "2": 15,
+          "3": 32,
+          "4": 24,
+          "8": 24
+        }
+      }
+    ]
+  },
+  "triality_element_r": {
+    "stab_index_399": {
+      "perm": [
+        3,
+        1,
+        2,
+        5,
+        6,
+        4,
+        7
+      ],
+      "signs": [
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        1
+      ],
+      "order": 3
+    },
+    "stab_index_246": {
+      "perm": [
+        2,
+        3,
+        1,
+        6,
+        4,
+        5,
+        7
+      ],
+      "signs": [
+        1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1
+      ],
+      "order": 3
+    },
+    "stab_index_7": {
+      "perm": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "signs": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "order": 1
+    },
+    "note": "These are the exact r, r^{-1}, id used in the C3 local weld."
+  }
+}
