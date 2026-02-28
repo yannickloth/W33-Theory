@@ -1,0 +1,89 @@
+{
+  "status": "ok",
+  "T1_n_blocks": 48,
+  "T1_tomotope_edges": 12,
+  "T1_tomotope_faces": 16,
+  "T1_blocks_per_tomotope_edge": 4,
+  "T1_blocks_per_tomotope_face": 3,
+  "T1_ef_pairs_unique": true,
+  "T2_axis_edges": 16,
+  "T2_axis_faces": 12,
+  "T2_blocks_per_axis_edge": 3,
+  "T2_blocks_per_axis_face": 4,
+  "T2_axef_pairs_unique": true,
+  "T2_each_block_one_axis_edge": true,
+  "T2_each_block_one_axis_face": true,
+  "T3_tomotope_fvector": {
+    "V": 4,
+    "E": 12,
+    "F": 16,
+    "C": 8
+  },
+  "T3_axis_fvector": {
+    "V": 1,
+    "E": 16,
+    "F": 12,
+    "C": 4
+  },
+  "T3_edge_face_swap": true,
+  "T3_shared_flags": 192,
+  "T4_axis_r0_in_G": true,
+  "T4_axis_r3_in_G": true,
+  "T4_axis_r1_not_in_G": true,
+  "T4_axis_r2_not_in_G": true,
+  "T4_r0_r3_shared": true,
+  "T5_tomo_r1_keepE": 0,
+  "T5_tomo_r1_keepVFC": 192,
+  "T5_tomo_r2_keepF": 0,
+  "T5_tomo_r2_keepVEC": 192,
+  "T5_axis_r1_keepE_tomo": 0,
+  "T5_axis_r1_keepF_tomo": 0,
+  "T5_axis_r2_keepE_tomo": 4,
+  "T5_axis_r2_keepF_tomo": 8,
+  "T5_generators_twisted": true,
+  "T6_inverse_tests_ok": 200,
+  "T6_gen_orders": {
+    "g2": 3,
+    "g3": 3,
+    "g5": 3,
+    "g8": 2,
+    "g9": 2
+  },
+  "T6_g8_g9_mostly_voltage0": true,
+  "T6_order3_gens_carry_voltage": true,
+  "T6_exp_dist": {
+    "g2": {
+      "0": 42,
+      "2": 6,
+      "1": 6
+    },
+    "g3": {
+      "0": 30,
+      "2": 12,
+      "1": 12
+    },
+    "g5": {
+      "0": 33,
+      "1": 9,
+      "2": 12
+    },
+    "g8": {
+      "0": 48,
+      "2": 3,
+      "1": 3
+    },
+    "g9": {
+      "0": 48,
+      "2": 3,
+      "1": 3
+    }
+  },
+  "summary": {
+    "block_as_tomotope_ef_pair": "4 blocks/edge, 3 blocks/face",
+    "block_as_axis_ef_pair": "3 blocks/axis-edge, 4 blocks/axis-face",
+    "edge_face_swap": "E_tomo=12=F_axis, F_tomo=16=E_axis",
+    "shared_generators": "r0, r3",
+    "twisted_generators": "axis r1, r2 not in tomotope G",
+    "K_voltage_structure": "order-3 gens g2,g3,g5 carry nontrivial Z3 voltage"
+  }
+}
