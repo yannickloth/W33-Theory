@@ -21,9 +21,13 @@ def test_orbit_and_normaliser():
     summ = analyze()
     assert summ["Gamma_order"] == 18432
     assert summ["Aut_order"] == 96
-    # according to computation, the automorphism subgroup is normal in Gamma
+    # the intersection with Gamma should be trivial
+    assert summ.get("Gamma_intersect_Aut") == 1
+    # computation shows the conjugacy orbit is trivial and normaliser = Gamma
     assert summ["orbit_size"] == 1
     assert summ["normaliser_size"] == summ["Gamma_order"]
+    # in fact every element of Gamma commutes with each automorphism
+    assert summ.get("commute_with_Gamma") is True
     # normaliser size times orbit size equals Gamma order
     assert summ["orbit_size"] * summ["normaliser_size"] == summ["Gamma_order"]
 

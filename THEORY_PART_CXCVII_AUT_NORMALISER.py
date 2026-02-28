@@ -111,6 +111,8 @@ def analyze() -> dict:
 
     autos = load_automorphisms()
     assert len(autos) == 96
+    # count how many automorphisms actually lie in Gamma (should be 1: identity)
+    inter = sum(1 for h in autos if h in set(Gamma))
 
     # orbit of Aut under conjugation by Gamma
     base = frozenset(autos)
@@ -143,12 +145,23 @@ def analyze() -> dict:
                     seen.add(cur)
                     cur = h[cur]; length += 1
                 cycle_counts[length] += 1
+    # test commutativity of Gamma and automorphisms
+    commute = True
+    for g in Gamma:
+        for h in autos:
+            if compose(g, h) != compose(h, g):
+                commute = False
+                break
+        if not commute:
+            break
     return {
         "Gamma_order": len(Gamma),
         "Aut_order": len(autos),
+        "Gamma_intersect_Aut": inter,
         "orbit_size": orbit_size,
         "normaliser_size": normaliser_size,
         "cycle_distribution_total": dict(cycle_counts),
+        "commute_with_Gamma": commute,
     }
 
 
@@ -163,11 +176,13 @@ def write_results(summary: dict):
 
 def main():
     summary = analyze()
-    # sanity checks: automorphism subgroup turns out to be normal in Gamma
+    # sanity checks: the orbit is trivial, and the normaliser equals Gamma
     assert summary["orbit_size"] == 1, "unexpected orbit size"
     assert summary["normaliser_size"] == summary["Gamma_order"], "normaliser should equal Gamma"
+    # verify commuting behaviour
+    assert summary.get("commute_with_Gamma") is True, "automorphisms did not commute with Gamma"
     write_results(summary)
-    print("aut orbit", summary["orbit_size"], "normaliser", summary["normaliser_size"])
+    print("aut orbit", summary["orbit_size"], "normaliser", summary["normaliser_size"], "commute", summary["commute_with_Gamma"])
 
 
 if __name__ == "__main__":
