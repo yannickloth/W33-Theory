@@ -1,0 +1,59 @@
+{
+  "status": "ok",
+  "T1_total_edges": 270,
+  "T1_qid_count": 27,
+  "T1_orient_count": 10,
+  "T1_edges_per_qid": 10,
+  "T1_edges_per_orient": 27,
+  "T1_sources_per_pocket": 5,
+  "T1_orient_0_4_from_twin0": true,
+  "T1_orient_5_9_from_twin1": true,
+  "T2_all_generators_pair_stable": true,
+  "T2_gen_stable": {
+    "g2": true,
+    "g3": true,
+    "g5": true,
+    "g8": true,
+    "g9": true
+  },
+  "T3_flip_counts": {
+    "g2": 0,
+    "g3": 6,
+    "g5": 6,
+    "g8": 15,
+    "g9": 15
+  },
+  "T3_g2_no_flip": true,
+  "T3_g3_g5_flip_6": true,
+  "T3_g8_g9_flip_15": true,
+  "T4_twin0_nontriv": 24,
+  "T4_twin1_nontriv": 45,
+  "T4_total_nontriv": 69,
+  "T4_twin0_edges": 135,
+  "T4_twin1_edges": 135,
+  "T4_ratio_note": "24:45 = 8:15 split between twin_bit=0 and twin_bit=1",
+  "T5_self_loop_count": 12,
+  "T5_g8_self_loops": 6,
+  "T5_g9_self_loops": 6,
+  "T5_quotient_degree_distribution": {
+    "5": 9,
+    "6": 6,
+    "7": 12
+  },
+  "T5_weighted_degree_sum": 165,
+  "T5_sheet_count": 6,
+  "T5_pockets_per_sheet": 9,
+  "T5_uniform_sheets": true,
+  "T6_same_sheet_pairs": 7,
+  "T6_diff_sheet_pairs": 20,
+  "T6_total_pairs": 27,
+  "T6_partition_exact": true,
+  "summary": {
+    "table_structure": "270 edges = 27 qids x 10 orient-indices; orient 0-4 from twin_bit=0, orient 5-9 from twin_bit=1",
+    "pair_stability": "All 5 generators (g2,g3,g5,g8,g9) map both twins of each pair to same target qid",
+    "twin_flip_pattern": "g2: 0 flips; g3,g5: 6 flips each; g8,g9: 15 flips each (of 27)",
+    "cocycle_split": "twin_bit=0: 24/135 nontrivial; twin_bit=1: 45/135 nontrivial; total 69/270",
+    "quotient_graph": "27-node quotient: degree dist {5:9, 6:6, 7:12}; 6 sheets x 9 pockets",
+    "sheet_assignment": "7/27 twin-pairs intra-sheet; 20/27 inter-sheet"
+  }
+}
