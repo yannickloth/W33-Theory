@@ -1,0 +1,43 @@
+{
+  "T1_Cl2_dim": 4,
+  "T1_e0_squared": "1",
+  "T1_e1_squared": "1",
+  "T1_e0e1": "e01",
+  "T1_e1e0": "2*e01",
+  "T1_anticommute": true,
+  "T2_unit_vectors_F3_2": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      2,
+      0
+    ]
+  ],
+  "T2_num_unit_vectors": 4,
+  "T2_Pin2_F3_order": 8,
+  "T4_Spin_orders_F3": {
+    "2": 4,
+    "3": 24,
+    "4": 576,
+    "5": 51840
+  },
+  "T4_N_embeds_in": [
+    4,
+    5
+  ],
+  "T4_smallest_embedding_dim": 4,
+  "T5_full_symmetry_order": 1769472,
+  "T5_N_order": 192,
+  "T5_index_in_Spin4": 3,
+  "T5_N_fraction_of_Spin4": "192/576 = 1/3"
+}

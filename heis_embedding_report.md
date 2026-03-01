@@ -1,0 +1,41 @@
+# N Embedding and Algebra Report
+
+{
+  "T1_embedding_degree": 192,
+  "T3_block_action_degree": 48,
+  "T3_block_kernel_order": 2,
+  "T3_block_kernel_ord_dist": {
+    "1": 1,
+    "2": 1
+  },
+  "T3_quotient_order": 96,
+  "T4_num_conjugacy_classes": 14,
+  "T4_class_equation": {
+    "1": 1,
+    "3": 1,
+    "4": 1,
+    "6": 2,
+    "12": 5,
+    "24": 2,
+    "32": 2
+  },
+  "T4_class_sizes": [
+    1,
+    3,
+    4,
+    6,
+    6,
+    12,
+    12,
+    12,
+    12,
+    12,
+    24,
+    24,
+    32,
+    32
+  ],
+  "T4_num_involutions": 43,
+  "T4_num_squares": 48,
+  "T4_num_cubes": 128
+}

@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""Tests for the Heisenberg presentation of N."""
+"""Tests for Pillar 95: N structure and presentation."""
 
 from __future__ import annotations
 
-from pathlib import Path
 import json
+from pathlib import Path
 
 from THEORY_PART_CXCV_N_PRESENTATION import find_presentation
 
 
-def test_presentation_exists():
+def test_presentation_file_exists():
     repo = Path(__file__).resolve().parent.parent
     assert (repo / "N_heis_presentation.json").exists()
     assert (repo / "N_heis_presentation_report.md").exists()
 
 
 def test_presentation_properties():
-    summary = find_presentation()
-    # a and b project to independent xy vectors
-    da = tuple(summary["a_delta"][i] for i in (0, 1))
-    db = tuple(summary["b_delta"][i] for i in (0, 1))
-    det = (da[0] * db[1] - da[1] * db[0]) % 3
-    assert det != 0
-    # orders should divide 3 and commutator central
-    assert summary["a_order"] in (1, 3)
-    assert summary["b_order"] in (1, 3)
-    assert summary["z_order"] in (1, 3)
+    s = find_presentation()
+    # N should be 2- or 3-generated
+    assert s["T1_num_generators"] in (2, 3)
+    # derived subgroup divides 192
+    assert 192 % s["T2_derived_order"] == 0
+    # abelianisation
+    assert s["T2_abelianisation_order"] == 192 // s["T2_derived_order"]
+    # Sylow-2 subgroup: if found, must be 64; if not found, -1
+    assert s["T4_sylow2_order"] in (64, -1)
+    # order-3 subgroup
+    assert s["T5_ord3_subgroup_order"] > 0

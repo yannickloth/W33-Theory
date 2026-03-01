@@ -1,0 +1,23 @@
+{
+  "T1_num_generators": 2,
+  "T1_generator_orders": [
+    4,
+    6
+  ],
+  "T2_derived_order": 48,
+  "T2_abelianisation_order": 4,
+  "T4_sylow2_order": 64,
+  "T4_sylow2_normal": false,
+  "T4_sylow2_ord_dist": {
+    "1": 1,
+    "2": 27,
+    "4": 36
+  },
+  "T5_ord3_subgroup_order": 48,
+  "T5_ord3_subgroup_normal": true,
+  "T5_ord3_subgroup_ord_dist": {
+    "1": 1,
+    "2": 15,
+    "3": 32
+  }
+}
