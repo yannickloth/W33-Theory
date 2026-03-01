@@ -1,0 +1,195 @@
+{
+  "schlafli_n": 27,
+  "schlafli_degree": [
+    10
+  ],
+  "schlafli_lambda": [
+    1
+  ],
+  "schlafli_mu": [
+    5
+  ],
+  "schlafli_edges": 135,
+  "schlafli_triangles": 45,
+  "schlafli_directed_edges": 270,
+  "schlafli_tris_per_line": [
+    5
+  ],
+  "cascade": {
+    "WE6": 51840,
+    "WD5": 1920,
+    "WF4": 1152,
+    "G384": 384,
+    "WD4": 192,
+    "N": 192,
+    "index_27_lines": 27,
+    "index_45_tritangent": 45,
+    "index_135_edges": 135,
+    "index_270_dir_edges": 270,
+    "WD5_over_N": 10,
+    "WF4_over_N": 6,
+    "G384_over_N": 2,
+    "WD5_over_G384": 5,
+    "WF4_over_G384": 3,
+    "WD4_equals_N": true,
+    "WD4_order": 192
+  },
+  "Q8_order": 8,
+  "Q8_aut_order": 24,
+  "Q8_aut_is_S4": true,
+  "Q8_center_order": 2,
+  "C2Q8_order": 16,
+  "C2Q8_center_order": 4,
+  "C2Q8_center_structure": "V₄ = C₂ × C₂",
+  "C2Q8_derived_order": 2,
+  "cayley_dickson": {
+    "chain": [
+      [
+        "R",
+        1
+      ],
+      [
+        "C",
+        2
+      ],
+      [
+        "H",
+        4
+      ],
+      [
+        "O",
+        8
+      ],
+      [
+        "S",
+        16
+      ]
+    ],
+    "dimensions": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "normed_division": [
+      [
+        "R",
+        1
+      ],
+      [
+        "C",
+        2
+      ],
+      [
+        "H",
+        4
+      ],
+      [
+        "O",
+        8
+      ]
+    ],
+    "last_normed_dim": 8,
+    "sedenion_dim": 16,
+    "sedenion_dim_equals_C2Q8": true,
+    "Q8_order_equals_octonion_dim": true,
+    "all_powers_of_2": true
+  },
+  "d4_triality": {
+    "WD4": 192,
+    "WD4_equals_N": true,
+    "out_D4": 6,
+    "out_D4_is_S3": true,
+    "WF4": 1152,
+    "WF4_equals_WD4_times_outD4": true,
+    "d4_is_trident": true,
+    "num_leg_permutations": 6,
+    "roots_D4": 24,
+    "roots_G2": 12,
+    "N_decomposition": {
+      "C2_4_order": 16,
+      "D6_order": 12,
+      "product": 192,
+      "matches_N": true,
+      "S3_in_D6": "D₆ = S₃ × C₂ contains S₃ = Out(D₄)"
+    },
+    "QID_physics": {
+      "8_dim_Q8": "Q₈ → quaternions → |Q₈| = 8 = dim(O)",
+      "24_aut_Q8": "|Aut(Q₈)| = 24 = |S₄| = tetrahedral group",
+      "192_factorization": "192 = 8 × 24 = |Q₈| × |Aut(Q₈)|"
+    }
+  },
+  "gf2_mirror": {
+    "GF2_8_total": 256,
+    "zero_vectors": 1,
+    "singular_nonzero": 135,
+    "nonsingular": 120,
+    "sum_check": true,
+    "PSp43_order": 25920,
+    "PSp43_over_N": 135,
+    "PSp43_over_N_equals_135": true,
+    "WE6_over_N": 270,
+    "directed_to_undirected": 135,
+    "undirected_equals_singular": true,
+    "135_triple_identity": true
+  },
+  "R1_SRG_27_10_1_5": true,
+  "R2_edges_135": true,
+  "R2_triangles_45": true,
+  "R2_directed_270": true,
+  "R3_cascade_all": true,
+  "R4_WD4_equals_N": true,
+  "R5_S3_in_N": true,
+  "R6_cayley_dickson": true,
+  "R6_C2Q8_sedenion": true,
+  "R6_Q8_octonion": true,
+  "R7_five_tris_per_line": true,
+  "R8_135_triple": true,
+  "R9_Q8_times_AutQ8_is_N": true,
+  "R9_aut_is_S4": true,
+  "R10_WF4_decomp": true,
+  "IC1_WD5_N_10": true,
+  "IC2_WF4_N_6": true,
+  "IC3_G384_N_2": true,
+  "IC4_WD5_G384_5": true,
+  "IC5_WF4_G384_3": true,
+  "rosetta": {
+    "192_is": [
+      "|Aut(C₂ × Q₈)|",
+      "|W(D₄)|",
+      "|Q₈| × |Aut(Q₈)| = 8 × 24",
+      "Stab(directed edge in complement Schläfli)",
+      "C₂⁴ ⋊ (S₃ × C₂) = translations ⋊ triality×conjugation",
+      "51840 / 270 = |W(E₆)| / |directed edges|"
+    ],
+    "27_is": [
+      "lines on smooth cubic surface",
+      "QIDs of tomotope",
+      "dim J₃(O) = exceptional Jordan algebra",
+      "weights of fundamental E₆ representation",
+      "|W(E₆)| / |W(D₅)| = 51840/1920",
+      "charges of M-theory on T⁶ (6+15+6)"
+    ],
+    "135_is": [
+      "undirected meeting-edges in complement Schläfli",
+      "singular nonzero vectors in GF(2)⁸ homology",
+      "|PSp(4,3)| / |N| = 25920/192",
+      "incident (line, tritangent) pairs: 27×5/1 = 45×3/1",
+      "|W(E₆)| / 384 = stabilizer index of line-in-tritangent"
+    ],
+    "45_is": [
+      "tritangent planes on cubic surface",
+      "triangles in complement Schläfli SRG(27,10,1,5)",
+      "|W(E₆)| / |W(F₄)| = 51840/1152",
+      "27 × 5 / 3 (lines × tris-per-line / lines-per-tri)",
+      "135 / 3 (edges / edges-per-triangle)"
+    ],
+    "6_is": [
+      "|S₃| = |Out(D₄)| = triality group order",
+      "|W(F₄)| / |N| = 1152/192",
+      "directed edges in one tritangent triangle",
+      "exceptional divisors / conics in blow-up P² at 6 pts"
+    ]
+  }
+}
