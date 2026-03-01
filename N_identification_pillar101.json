@@ -1,0 +1,175 @@
+{
+  "identification": "N iso Aut(C2 x Q8)",
+  "SmallGroup_ID": [
+    192,
+    955
+  ],
+  "all_invariants_match": true,
+  "matches": {
+    "order": true,
+    "center_order": true,
+    "derived_order": true,
+    "second_derived_order": true,
+    "num_conjugacy_classes": true,
+    "conjugacy_class_fingerprint": true,
+    "element_orders": true
+  },
+  "aut_fingerprint": {
+    "order": 192,
+    "center_order": 1,
+    "derived_order": 48,
+    "second_derived_order": 16,
+    "num_conjugacy_classes": 14,
+    "conjugacy_class_fingerprint": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        3,
+        32
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        24
+      ],
+      [
+        4,
+        24
+      ],
+      [
+        6,
+        32
+      ]
+    ],
+    "element_orders": {
+      "1": 1,
+      "2": 43,
+      "3": 32,
+      "4": 84,
+      "6": 32
+    }
+  },
+  "N_fingerprint": {
+    "order": 192,
+    "center_order": 1,
+    "derived_order": 48,
+    "second_derived_order": 16,
+    "num_conjugacy_classes": 14,
+    "conjugacy_class_fingerprint": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        3,
+        32
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        4,
+        24
+      ],
+      [
+        4,
+        24
+      ],
+      [
+        6,
+        32
+      ]
+    ],
+    "element_orders": {
+      "1": 1,
+      "2": 43,
+      "3": 32,
+      "4": 84,
+      "6": 32
+    }
+  },
+  "structure_description": {
+    "semidirect": "C₂⁴ ⋊ D₆",
+    "D6_action": "faithful on F₂⁴ ≅ F₄²",
+    "O2": "C₂² ≀ C₂ (SmallGroup 32,27)",
+    "derived_series": "192 → 48 → 16 → 1",
+    "abelianization": "C₂²"
+  },
+  "E6_connection": {
+    "W_E6_order": 51840,
+    "index_N_in_WE6": 270,
+    "interpretation": "N = stabilizer of directed Schläfli edge",
+    "schlafli_valence": 10,
+    "num_lines": 27
+  }
+}

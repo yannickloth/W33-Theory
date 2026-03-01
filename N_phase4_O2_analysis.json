@@ -1,0 +1,138 @@
+{
+  "O2_order": 32,
+  "O2_fingerprint": {
+    "order": 32,
+    "abelian": false,
+    "exponent": 4,
+    "center_order": 4,
+    "derived_order": 4,
+    "frattini_order": 4,
+    "num_conjugacy_classes": 14,
+    "element_orders": {
+      "2": 19,
+      "4": 12,
+      "1": 1
+    },
+    "conjugacy_class_fingerprint": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "nilpotency_class": 1
+  },
+  "O2_is_intersection_of_sylows": true,
+  "C24_subset_of_O2": true,
+  "O2_cap_derived": 16,
+  "quotient_order": 6,
+  "O2_conjugacy_classes": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      4,
+      4
+    ]
+  ]
+}

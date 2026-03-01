@@ -1,0 +1,41 @@
+{
+  "A1_uniform_degree_10": true,
+  "A1_degree_set": [
+    10
+  ],
+  "A1_num_vertices": 27,
+  "A2_WE6_over_N": 270,
+  "A2_equals_transport_edges": true,
+  "A2_WE6": 51840,
+  "A2_N_order": 192,
+  "A3_WD5": 1920,
+  "A3_schlafli_valence": 10,
+  "A3_valence_match": true,
+  "A4_transitive_on_27": true,
+  "A4_orbit_sizes": [
+    27
+  ],
+  "A5_self_loop_qids": [
+    13,
+    14,
+    26
+  ],
+  "A5_clique_complete": true,
+  "A5_num_self_loops": 3,
+  "A6_multiplicity_distribution": {
+    "2": 78,
+    "4": 24,
+    "6": 3
+  },
+  "A6_total_check": 270,
+  "A7_flags": 192,
+  "A7_edges": 270,
+  "A7_qids": 27,
+  "architecture": {
+    "192_flags": "= |Aut(C2 x Q8)| = |N|",
+    "270_edges": "= |W(E6)| / |N| = cosets",
+    "27_qids": "= lines on cubic surface",
+    "10_valence": "= |W(D5)| / |N| = Schlafli degree",
+    "3_tritangent": "= distinguished self-loop clique"
+  }
+}

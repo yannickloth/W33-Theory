@@ -1,0 +1,74 @@
+{
+  "order": 192,
+  "exponent": 12,
+  "centre": 1,
+  "derived_series": "192 > 48 > 16 > 1",
+  "derived_length": 3,
+  "abelianisation": "C2^2",
+  "conjugacy_classes": 14,
+  "class_fingerprint": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      3,
+      32
+    ],
+    [
+      4,
+      12
+    ],
+    [
+      4,
+      12
+    ],
+    [
+      4,
+      12
+    ],
+    [
+      4,
+      24
+    ],
+    [
+      4,
+      24
+    ],
+    [
+      6,
+      32
+    ]
+  ],
+  "num_involutions": 43,
+  "num_ord3": 32,
+  "num_ord4": 84,
+  "num_ord6": 32,
+  "structure": "C2^4 : D6 (faithful action)",
+  "quotient_N/C2^4": "D6 = S3 x C2",
+  "num_Sylow3_subgroups": 16
+}
