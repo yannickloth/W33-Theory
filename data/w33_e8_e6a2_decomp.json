@@ -1,0 +1,60 @@
+{
+  "T1_n_classes": 13,
+  "T1_class_sizes": [
+    72,
+    27,
+    27,
+    27,
+    27,
+    27,
+    27,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "T1_total_roots": 240,
+  "T1_correct": true,
+  "T2_e6_size": 72,
+  "T2_e6_key": [
+    0,
+    0
+  ],
+  "T2_e6_correct": true,
+  "T3_a2_total": 6,
+  "T3_all_singletons": true,
+  "T3_n_singleton_classes": 6,
+  "T3_a2_correct": true,
+  "T4_mixed_total": 162,
+  "T4_all_27": true,
+  "T4_n_mixed_classes": 6,
+  "T4_mixed_correct": true,
+  "T4_total_check": true,
+  "T5_ep_orbit_sizes": [
+    120
+  ],
+  "T5_line_orbit_sizes": [
+    36,
+    27,
+    27,
+    27,
+    1,
+    1,
+    1
+  ],
+  "T5_ep_transitive": true,
+  "T5_line_intransitive": true,
+  "T5_non_conjugate": true,
+  "T6_e6_lines": 36,
+  "T6_a2_lines": 3,
+  "T6_matter_lines_per_gen": 27,
+  "T6_n_generations": 3,
+  "T6_total_lines_check": 120,
+  "T6_line_36_count": 1,
+  "T6_line_27_count": 3,
+  "T6_line_1_count": 3,
+  "T6_structure_correct": true,
+  "T6_correct": true
+}
