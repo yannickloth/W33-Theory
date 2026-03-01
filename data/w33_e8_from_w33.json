@@ -1,0 +1,98 @@
+{
+  "T1_dim_H": 8,
+  "T1_size_H": 256,
+  "T1_H_from_W33_adjacency": true,
+  "T2_orbit_zero_size": 1,
+  "T2_orbit_singular_size": 135,
+  "T2_orbit_nonsingular_size": 120,
+  "T2_total_256": 256,
+  "T2_partition_correct": true,
+  "T3_dynkin_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      6
+    ]
+  ],
+  "T3_is_E8_Dynkin": true,
+  "T3_num_dynkin_edges": 7,
+  "T3_branching_node": 2,
+  "T3_branch_node_degree": 3,
+  "T3_simple_root_H_ints": [
+    4,
+    64,
+    1,
+    2,
+    23,
+    102,
+    31,
+    177
+  ],
+  "T3_srg_vertex_ids": [
+    3,
+    24,
+    0,
+    1,
+    11,
+    43,
+    15,
+    81
+  ],
+  "T3_all_simple_roots_nonsingular": true,
+  "T4_s_orders": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+  ],
+  "T4_all_involutions": true,
+  "T4_all_coxeter_correct": true,
+  "T4_adj_order_dist": {
+    "3": 7
+  },
+  "T4_nonadj_order_dist": {
+    "2": 21
+  },
+  "T4_all_adj_order_3": true,
+  "T4_all_nonadj_order_2": true,
+  "T4_num_pairs_checked": 28,
+  "T5_cartan_correct": true,
+  "T5_bilinear_matches_dynkin": true,
+  "T6_simple_roots_span_dim": 8,
+  "T6_spans_H": true,
+  "T6_coxeter_satisfied": true,
+  "T6_orbit_sizes": [
+    1,
+    135,
+    120
+  ],
+  "T6_three_orbits": true,
+  "T6_key_fact": "Reflections in these 8 roots generate transitive actions on q=1 orbit (120) and q=0 nonzero orbit (135)."
+}
