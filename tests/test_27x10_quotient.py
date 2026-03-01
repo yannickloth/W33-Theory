@@ -1,113 +1,257 @@
-#!/usr/bin/env python3
-"""Tests for Pillar 88 (Part CXCIV): 27x10 Heisenberg-Quotient of the K-Schreier Graph."""
+"""Tests for Pillar 104 (Part CCIV): 27x10 Heisenberg-Orient Quotient."""
 
 from __future__ import annotations
-import json, os
+
+import json
+import sys
+from pathlib import Path
+
 import pytest
 
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-DATA_FILE = os.path.join(repo_root, "data", "w33_27x10_quotient.json")
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from THEORY_PART_CCIV_27x10_QUOTIENT import analyze
+
 
 @pytest.fixture(scope="module")
-def report():
-    assert os.path.exists(DATA_FILE), f"Missing: {DATA_FILE}\nRun THEORY_PART_CXCIV_27x10_QUOTIENT.py first."
-    with open(DATA_FILE) as f:
-        return json.load(f)
+def summary():
+    return analyze()
 
-class TestT127x10Table:
-    def test_status_ok(self, report): assert report["status"] == "ok"
-    def test_total_edges(self, report): assert report["T1_total_edges"] == 270
-    def test_qid_count(self, report): assert report["T1_qid_count"] == 27
-    def test_orient_count(self, report): assert report["T1_orient_count"] == 10
-    def test_edges_per_qid(self, report): assert report["T1_edges_per_qid"] == 10
-    def test_edges_per_orient(self, report): assert report["T1_edges_per_orient"] == 27
-    def test_sources_per_pocket(self, report): assert report["T1_sources_per_pocket"] == 5
-    def test_product_check(self, report): assert report["T1_qid_count"] * report["T1_orient_count"] == 270
-    def test_orient_0_4_from_twin0(self, report): assert report["T1_orient_0_4_from_twin0"] is True
-    def test_orient_5_9_from_twin1(self, report): assert report["T1_orient_5_9_from_twin1"] is True
 
-class TestT2PairStability:
-    def test_all_generators_pair_stable(self, report): assert report["T2_all_generators_pair_stable"] is True
-    def test_g2_stable(self, report): assert report["T2_gen_stable"]["g2"] is True
-    def test_g3_stable(self, report): assert report["T2_gen_stable"]["g3"] is True
-    def test_g5_stable(self, report): assert report["T2_gen_stable"]["g5"] is True
-    def test_g8_stable(self, report): assert report["T2_gen_stable"]["g8"] is True
-    def test_g9_stable(self, report): assert report["T2_gen_stable"]["g9"] is True
-    def test_all_5_gens_in_stable_dict(self, report):
-        assert set(report["T2_gen_stable"].keys()) == {"g2", "g3", "g5", "g8", "g9"}
+# ---------------------------------------------------------------------------
+# T1: Bijectivity
+# ---------------------------------------------------------------------------
 
-class TestT3TwinBitFlip:
-    def test_g2_no_flip(self, report): assert report["T3_flip_counts"]["g2"] == 0
-    def test_g3_flip_6(self, report): assert report["T3_flip_counts"]["g3"] == 6
-    def test_g5_flip_6(self, report): assert report["T3_flip_counts"]["g5"] == 6
-    def test_g8_flip_15(self, report): assert report["T3_flip_counts"]["g8"] == 15
-    def test_g9_flip_15(self, report): assert report["T3_flip_counts"]["g9"] == 15
-    def test_g2_no_flip_flag(self, report): assert report["T3_g2_no_flip"] is True
-    def test_g3_g5_flag(self, report): assert report["T3_g3_g5_flip_6"] is True
-    def test_g8_g9_flag(self, report): assert report["T3_g8_g9_flip_15"] is True
-    def test_total_flips_sum(self, report):
-        flips = report["T3_flip_counts"]
-        assert sum(flips.values()) == 42
+class TestT1Bijectivity:
+    """T1: (qid, orient_index) bijects with the 270 directed edges."""
 
-class TestT4CocycleSplit:
-    def test_twin0_nontriv(self, report): assert report["T4_twin0_nontriv"] == 24
-    def test_twin1_nontriv(self, report): assert report["T4_twin1_nontriv"] == 45
-    def test_total_nontriv(self, report): assert report["T4_total_nontriv"] == 69
-    def test_twin0_edges(self, report): assert report["T4_twin0_edges"] == 135
-    def test_twin1_edges(self, report): assert report["T4_twin1_edges"] == 135
-    def test_total_edges_check(self, report):
-        assert report["T4_twin0_edges"] + report["T4_twin1_edges"] == 270
-    def test_nontriv_sum_correct(self, report):
-        assert report["T4_twin0_nontriv"] + report["T4_twin1_nontriv"] == 69
-    def test_nontrivial_asymmetry(self, report):
-        assert report["T4_twin1_nontriv"] > report["T4_twin0_nontriv"]
+    def test_total_edges(self, summary):
+        """270 directed K-Schreier edges."""
+        assert summary["T1_total_edges"] == 270
 
-class TestT5QuotientGraph:
-    def test_self_loop_count(self, report): assert report["T5_self_loop_count"] == 12
-    def test_g8_self_loops(self, report): assert report["T5_g8_self_loops"] == 6
-    def test_g9_self_loops(self, report): assert report["T5_g9_self_loops"] == 6
-    def test_g8_g9_self_loops_sum(self, report):
-        assert report["T5_g8_self_loops"] + report["T5_g9_self_loops"] == 12
-    def test_degree_5_count(self, report):
-        assert report["T5_quotient_degree_distribution"]["5"] == 9
-    def test_degree_6_count(self, report):
-        assert report["T5_quotient_degree_distribution"]["6"] == 6
-    def test_degree_7_count(self, report):
-        assert report["T5_quotient_degree_distribution"]["7"] == 12
-    def test_degree_distribution_sum(self, report):
-        total = sum(report["T5_quotient_degree_distribution"].values())
-        assert total == 27
-    def test_weighted_degree_sum(self, report): assert report["T5_weighted_degree_sum"] == 165
-    def test_sheet_count(self, report): assert report["T5_sheet_count"] == 6
-    def test_pockets_per_sheet(self, report): assert report["T5_pockets_per_sheet"] == 9
-    def test_total_pockets(self, report):
-        assert report["T5_sheet_count"] * report["T5_pockets_per_sheet"] == 54
-    def test_uniform_sheets(self, report): assert report["T5_uniform_sheets"] is True
+    def test_unique_pairs(self, summary):
+        """270 unique (qid, orient_index) pairs."""
+        assert summary["T1_unique_qid_orient_pairs"] == 270
 
-class TestT6SheetAssignment:
-    def test_same_sheet_pairs(self, report): assert report["T6_same_sheet_pairs"] == 7
-    def test_diff_sheet_pairs(self, report): assert report["T6_diff_sheet_pairs"] == 20
-    def test_total_pairs(self, report): assert report["T6_total_pairs"] == 27
-    def test_partition_sum(self, report):
-        assert report["T6_same_sheet_pairs"] + report["T6_diff_sheet_pairs"] == 27
-    def test_partition_exact(self, report): assert report["T6_partition_exact"] is True
-    def test_inter_sheet_majority(self, report):
-        assert report["T6_diff_sheet_pairs"] > report["T6_same_sheet_pairs"]
+    def test_bijective(self, summary):
+        """Map is a bijection onto Z_27 x Z_10."""
+        assert summary["T1_bijective"] is True
 
-class Test27x10QuotientSummary:
-    def test_summary_present(self, report): assert "summary" in report
-    def test_summary_table(self, report):
-        assert "270" in report["summary"]["table_structure"]
-        assert "27" in report["summary"]["table_structure"]
-    def test_summary_pair_stability(self, report):
-        assert "pair" in report["summary"]["pair_stability"]
-    def test_summary_twin_flip(self, report):
-        assert "15" in report["summary"]["twin_flip_pattern"]
-    def test_summary_cocycle(self, report):
-        assert "24" in report["summary"]["cocycle_split"]
-        assert "45" in report["summary"]["cocycle_split"]
-    def test_summary_quotient(self, report):
-        assert "27" in report["summary"]["quotient_graph"]
-    def test_summary_sheet(self, report):
-        assert "7" in report["summary"]["sheet_assignment"]
-        assert "20" in report["summary"]["sheet_assignment"]
+    def test_270_equals_27_times_10(self, summary):
+        """270 = 27 qids x 10 orient slots."""
+        assert summary["T1_total_edges"] == 27 * 10
+
+
+# ---------------------------------------------------------------------------
+# T2: Orient split
+# ---------------------------------------------------------------------------
+
+class TestT2OrientSplit:
+    """T2: Orient indices 0-4 = twin_bit=0; 5-9 = twin_bit=1."""
+
+    def test_orient_split_consistent(self, summary):
+        """Each orient index consistently maps to one twin_bit and one gen."""
+        assert summary["T2_orient_split_consistent"] is True
+
+    def test_tb0_orient_indices(self, summary):
+        """Twin_bit=0 uses orient indices 0-4."""
+        assert summary["T2_tb0_orient_indices"] == [0, 1, 2, 3, 4]
+
+    def test_tb1_orient_indices(self, summary):
+        """Twin_bit=1 uses orient indices 5-9."""
+        assert summary["T2_tb1_orient_indices"] == [5, 6, 7, 8, 9]
+
+    def test_gen_order_tb0(self, summary):
+        """Generator order for twin_bit=0: g2,g3,g5,g8,g9."""
+        assert summary["T2_gen_order_tb0"] == ["g2", "g3", "g5", "g8", "g9"]
+
+    def test_gen_order_tb1(self, summary):
+        """Generator order for twin_bit=1: g2,g3,g5,g8,g9."""
+        assert summary["T2_gen_order_tb1"] == ["g2", "g3", "g5", "g8", "g9"]
+
+    def test_270_equals_27_times_5_times_2(self, summary):
+        """270 = 27 qids x 5 generators x 2 twin_bits."""
+        assert summary["T1_total_edges"] == 27 * 5 * 2
+
+
+# ---------------------------------------------------------------------------
+# T3: Fixed trio
+# ---------------------------------------------------------------------------
+
+class TestT3FixedTrio:
+    """T3: Exactly 3 qids (13, 14, 26) are fixed by both g8 and g9."""
+
+    def test_fixed_trio_members(self, summary):
+        """Fixed trio is {13, 14, 26}."""
+        assert summary["T3_fixed_trio"] == [13, 14, 26]
+
+    def test_fixed_trio_correct(self, summary):
+        """Fixed trio matches expected set."""
+        assert summary["T3_fixed_trio_correct"] is True
+
+    def test_self_loop_count(self, summary):
+        """Exactly 12 self-loop edges: 3 qids x 2 gens x 2 twin_bits."""
+        assert summary["T3_self_loop_count"] == 12
+
+    def test_self_loop_gen_dist(self, summary):
+        """Self-loops come only from g8 and g9, 6 each."""
+        assert summary["T3_self_loop_gen_dist"] == {"g8": 6, "g9": 6}
+
+    def test_no_g2_g3_g5_self_loops(self, summary):
+        """Generators g2, g3, g5 produce no self-loops."""
+        dist = summary["T3_self_loop_gen_dist"]
+        assert "g2" not in dist
+        assert "g3" not in dist
+        assert "g5" not in dist
+
+    def test_three_fixed_qids(self, summary):
+        """Exactly 3 fixed qids."""
+        assert len(summary["T3_fixed_trio"]) == 3
+
+
+# ---------------------------------------------------------------------------
+# T4: Cocycle asymmetry
+# ---------------------------------------------------------------------------
+
+class TestT4CocycleAsymmetry:
+    """T4: g8 and g9 from twin_bit=0 have all-trivial cocycle."""
+
+    def test_g8_tb0_all_trivial(self, summary):
+        """g8 from twin_bit=0: 0 non-trivial cocycle edges."""
+        assert summary["T4_g8_tb0_all_trivial"] is True
+
+    def test_g9_tb0_all_trivial(self, summary):
+        """g9 from twin_bit=0: 0 non-trivial cocycle edges."""
+        assert summary["T4_g9_tb0_all_trivial"] is True
+
+    def test_g8_tb1_has_nontrivial(self, summary):
+        """g8 from twin_bit=1: 6 non-trivial cocycle edges."""
+        assert summary["T4_g8_tb1_nontrivial"] == 6
+
+    def test_g9_tb1_has_nontrivial(self, summary):
+        """g9 from twin_bit=1: 6 non-trivial cocycle edges."""
+        assert summary["T4_g9_tb1_nontrivial"] == 6
+
+    def test_g3_tb0_nontrivial(self, summary):
+        """g3 from twin_bit=0: 9 non-trivial edges."""
+        assert summary["T4_gen_twin_nontrivial"]["g3_tb0"] == 9
+
+    def test_g3_tb1_most_nontrivial(self, summary):
+        """g3 from twin_bit=1 has most non-trivial edges (15)."""
+        assert summary["T4_gen_twin_nontrivial"]["g3_tb1"] == 15
+
+    def test_g2_symmetric(self, summary):
+        """g2 has 6 non-trivial edges on both twin_bits."""
+        nt = summary["T4_gen_twin_nontrivial"]
+        assert nt["g2_tb0"] == 6
+        assert nt["g2_tb1"] == 6
+
+    def test_total_nontrivial_is_69(self, summary):
+        """Total non-trivial cocycle edges = 69 (matches Pillar 83/103)."""
+        total = sum(summary["T4_gen_twin_nontrivial"].values())
+        assert total == 69
+
+    def test_twin_bit_symmetry_breaking_for_diagonal_gens(self, summary):
+        """g8 and g9 break twin_bit symmetry: 0 nontrivial for tb0, 6 for tb1."""
+        nt = summary["T4_gen_twin_nontrivial"]
+        assert nt["g8_tb0"] == 0 and nt["g8_tb1"] > 0
+        assert nt["g9_tb0"] == 0 and nt["g9_tb1"] > 0
+
+
+# ---------------------------------------------------------------------------
+# T5: Sheet equidistribution
+# ---------------------------------------------------------------------------
+
+class TestT5SheetEquidistribution:
+    """T5: All 6 sheets receive exactly 45 = 270/6 directed edges."""
+
+    def test_six_sheets_present(self, summary):
+        """Exactly 6 sheets."""
+        assert len(summary["T5_sheet_dist"]) == 6
+
+    def test_each_sheet_has_45(self, summary):
+        """Each sheet has exactly 45 edges."""
+        for sh, cnt in summary["T5_sheet_dist"].items():
+            assert cnt == 45, f"Sheet {sh} has {cnt} edges, not 45"
+
+    def test_edges_per_sheet(self, summary):
+        """Expected edges per sheet is 45."""
+        assert summary["T5_edges_per_sheet"] == 45
+
+    def test_equidistributed(self, summary):
+        """Sheet equidistribution flag is True."""
+        assert summary["T5_equidistributed"] is True
+
+    def test_total_edges_from_sheets(self, summary):
+        """Sum over sheets = 270."""
+        assert sum(summary["T5_sheet_dist"].values()) == 270
+
+    def test_45_is_270_div_6(self, summary):
+        """45 = 270/6 (edges / sheets)."""
+        assert summary["T5_edges_per_sheet"] == summary["T1_total_edges"] // 6
+
+
+# ---------------------------------------------------------------------------
+# T6: L-label split
+# ---------------------------------------------------------------------------
+
+class TestT6LLabelSplit:
+    """T6: L-label distribution splits between the two twin_bits."""
+
+    def test_L_dist_tb0(self, summary):
+        """Twin_bit=0 L-distribution: {0:13, 1:4, 2:10}."""
+        assert summary["T6_L_dist_tb0"] == {0: 13, 1: 4, 2: 10}
+
+    def test_L_dist_tb1(self, summary):
+        """Twin_bit=1 L-distribution: {0:4, 1:7, 2:16}."""
+        assert summary["T6_L_dist_tb1"] == {0: 4, 1: 7, 2: 16}
+
+    def test_L_dist_tb0_sums_to_27(self, summary):
+        """Twin_bit=0 L-distribution covers 27 pockets."""
+        assert sum(summary["T6_L_dist_tb0"].values()) == 27
+
+    def test_L_dist_tb1_sums_to_27(self, summary):
+        """Twin_bit=1 L-distribution covers 27 pockets."""
+        assert sum(summary["T6_L_dist_tb1"].values()) == 27
+
+    def test_L_merged_recovers_pillar103(self, summary):
+        """Merged L-distribution recovers Pillar 103 T1: {0:17, 1:11, 2:26}."""
+        assert summary["T6_L_merged"] == {0: 17, 1: 11, 2: 26}
+
+    def test_sum_recovers_pillar103_flag(self, summary):
+        """T6 recovery flag is True."""
+        assert summary["T6_sum_recovers_pillar103"] is True
+
+    def test_tb1_c2_dominated(self, summary):
+        """Twin_bit=1 pockets are c2-dominated (L=2 is most common)."""
+        dist = summary["T6_L_dist_tb1"]
+        assert dist[2] > dist[0] and dist[2] > dist[1]
+
+    def test_tb0_identity_dominated(self, summary):
+        """Twin_bit=0 pockets are identity-dominated (L=0 is most common)."""
+        dist = summary["T6_L_dist_tb0"]
+        assert dist[0] > dist[1] and dist[0] > dist[2]
+
+
+# ---------------------------------------------------------------------------
+# Output file
+# ---------------------------------------------------------------------------
+
+class TestOutputFile:
+    def test_json_exists(self):
+        assert (ROOT / "data" / "w33_27x10_quotient.json").exists()
+
+    def test_json_has_required_keys(self):
+        data = json.loads((ROOT / "data" / "w33_27x10_quotient.json").read_text())
+        required = [
+            "T1_total_edges", "T1_unique_qid_orient_pairs", "T1_bijective",
+            "T2_orient_split_consistent", "T2_tb0_orient_indices", "T2_tb1_orient_indices",
+            "T3_fixed_trio", "T3_fixed_trio_correct", "T3_self_loop_count",
+            "T4_g8_tb0_all_trivial", "T4_g9_tb0_all_trivial",
+            "T4_gen_twin_nontrivial",
+            "T5_sheet_dist", "T5_equidistributed",
+            "T6_L_dist_tb0", "T6_L_dist_tb1", "T6_L_merged", "T6_sum_recovers_pillar103",
+        ]
+        for key in required:
+            assert key in data, f"Missing key: {key}"
