@@ -1,0 +1,57 @@
+{
+  "T1_num_W33_points": 40,
+  "T1_num_W33_lines": 40,
+  "T1_pts_per_line": {
+    "4": 40
+  },
+  "T1_lines_per_pt": {
+    "4": 40
+  },
+  "T2_quadric_satisfied_count": 40,
+  "T2_all_on_quadric": true,
+  "T2_quadric_equation": "p01*p23 + p02*p31 + 2*p03^2 == 0 over F3",
+  "T3_klein_map_length": 40,
+  "T3_klein_bijective": true,
+  "T4_num_Q_lines": 40,
+  "T4_Q_line_sizes": {
+    "4": 40
+  },
+  "T4_Qlines_per_Qpt": {
+    "4": 40
+  },
+  "T4_duality_isomorphism": true,
+  "T5_num_generators": 6,
+  "T5_generator_names": [
+    "T_e1",
+    "T_e2",
+    "T_e3",
+    "T_e4",
+    "A",
+    "B"
+  ],
+  "T5_Sp43_all_preserve_omega": true,
+  "T5_SO53_all_preserve_S": true,
+  "T5_Sp43_individual": {
+    "T_e1": true,
+    "T_e2": true,
+    "T_e3": true,
+    "T_e4": true,
+    "A": true,
+    "B": true
+  },
+  "T5_SO53_individual": {
+    "T_e1": true,
+    "T_e2": true,
+    "T_e3": true,
+    "T_e4": true,
+    "A": true,
+    "B": true
+  },
+  "T6_parameter_symmetry": true,
+  "T6_shared_params": {
+    "points": 40,
+    "lines": 40,
+    "pts_per_line": 4,
+    "lines_per_pt": 4
+  }
+}
