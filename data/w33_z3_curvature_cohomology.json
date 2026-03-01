@@ -1,0 +1,46 @@
+{
+  "T1_n_vertices": 40,
+  "T1_degree": 27,
+  "T1_total_edges": 540,
+  "T1_single_edge_orbit": true,
+  "T1_edge_orbit_size": 540,
+  "T1_edge_orbit_matches": true,
+  "T1_srg_params": {
+    "n": 40,
+    "k": 27,
+    "lambda_": 18,
+    "mu": 18
+  },
+  "T2_total_triangles": 3240,
+  "T2_num_triangle_orbits": 2,
+  "T2_orbit_sizes": [
+    360,
+    2880
+  ],
+  "T2_flat_count": 360,
+  "T2_curved_count": 2880,
+  "T2_correct": true,
+  "T3_flat_count_csv": 360,
+  "T3_flat_from_lines": 360,
+  "T3_flat_count_correct": true,
+  "T3_interpretation": "Orbit size 360 corresponds to non-isotropic PG(3,3) line triples (flat, F=0). Orbit size 2880 is the complementary set (curved, F=nonzero).",
+  "T4_F_dist": {
+    "0": 360,
+    "1": 1432,
+    "2": 1448
+  },
+  "T4_total_triangles": 3240,
+  "T4_curved_count": 2880,
+  "T4_curved_correct": true,
+  "T4_F1_count": 1432,
+  "T4_F2_count": 1448,
+  "T5_n_variables": 540,
+  "T5_n_equations": 3240,
+  "T5_rank_delta": 501,
+  "T5_rank_augmented": 502,
+  "T5_non_exact": true,
+  "T5_conclusion": "No Z3-valued 1-cochain on edges has coboundary equal to the curvature cochain F (non-exactness).",
+  "T6_defect": 1,
+  "T6_gauge_freedom": 39,
+  "T6_obstruction_rank": 1
+}
