@@ -1,0 +1,53 @@
+{
+  "T1_n": 120,
+  "T1_rank": 5,
+  "T1_val_sum": 120,
+  "T1_mult_sum": 120,
+  "T1_group_order": 25920,
+  "T1_stab_order": 216,
+  "T1_gelfand": true,
+  "T1_val_correct": true,
+  "T1_mult_correct": true,
+  "T1_bundle_vals_match": true,
+  "T2_products_verified": 10,
+  "T2_total_products": 25,
+  "T2_all_correct": true,
+  "T2_num_failures": 0,
+  "T3_pq_is_nI": true,
+  "T3_e0_eigenvalues": true,
+  "T3_col_orth": true,
+  "T3_spec_match": true,
+  "T4_q_col0_correct": true,
+  "T4_q_row0_correct": true,
+  "T4_q_has_fractions": true,
+  "T5_rank_sum": 120,
+  "T5_rank_sum_correct": true,
+  "T5_e0_correct": true,
+  "T5_all_ranks_correct": true,
+  "T5_idem_rank_check": {
+    "E0": true,
+    "E1": true,
+    "E2": true,
+    "E3": true,
+    "E4": true
+  },
+  "T6_all_correct": true,
+  "T6_minpoly_checks": {
+    "A1": true,
+    "A2": true,
+    "A3": true,
+    "A4": true
+  },
+  "T6_degrees": {
+    "A1": 2,
+    "A2": 4,
+    "A3": 4,
+    "A4": 5
+  },
+  "T6_num_distinct_evals": {
+    "A1": 2,
+    "A2": 4,
+    "A3": 4,
+    "A4": 5
+  }
+}

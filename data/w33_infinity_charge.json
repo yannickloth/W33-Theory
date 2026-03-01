@@ -1,0 +1,67 @@
+{
+  "T1_n_pg33": 40,
+  "T1_n_affine": 27,
+  "T1_n_infinity": 13,
+  "T1_n_edges": 240,
+  "T1_degree_dist": {
+    "12": 40
+  },
+  "T1_all_degree_12": true,
+  "T1_correct": true,
+  "T2_n_affine_rows": 27,
+  "T2_all_4_neighbors": true,
+  "T2_all_in_infinity": true,
+  "T2_total_incidences": 108,
+  "T2_correct": true,
+  "T3_charge_dist": {
+    "0": 9,
+    "1": 9,
+    "2": 9,
+    "3": 9,
+    "5": 9,
+    "6": 9,
+    "7": 9,
+    "8": 9,
+    "9": 9,
+    "10": 9,
+    "11": 9,
+    "12": 9
+  },
+  "T3_num_charged": 12,
+  "T3_num_zero": 1,
+  "T3_all_charge_9": true,
+  "T3_total_charge": 108,
+  "T3_zero_charge_pts": [
+    4
+  ],
+  "T3_one_zero": true,
+  "T3_special_pt": 4,
+  "T3_correct": true,
+  "T4_np_orbit_sizes": [
+    12,
+    27
+  ],
+  "T4_np_two_orbits": true,
+  "T4_np_total": 39,
+  "T4_np_orbit12_exists": true,
+  "T4_np_orbit27_exists": true,
+  "T4_correct": true,
+  "T5_num_orbits": 5,
+  "T5_total_affine": 27,
+  "T5_outer_size_dist": {
+    "8": 3,
+    "1": 1,
+    "2": 1
+  },
+  "T5_size_dist_correct": true,
+  "T5_one_fixed": true,
+  "T5_one_pair": true,
+  "T5_three_8orbits": true,
+  "T5_correct": true,
+  "T6_orbit0_affine_count": 9,
+  "T6_orbit0_each_xy_has_3_t": true,
+  "T6_J_is_4x4": true,
+  "T6_N4_is_4x4": true,
+  "T6_multiplier": 2,
+  "T6_correct": true
+}
