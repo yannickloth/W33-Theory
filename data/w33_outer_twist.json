@@ -1,0 +1,75 @@
+{
+  "T1_order_p": 8,
+  "T1_computed_order_p": 8,
+  "T1_order_p_matches": true,
+  "T1_not_symplectic": true,
+  "T1_twisted_form_correct": true,
+  "T2_order_a": 6,
+  "T2_Q_isomorphism_correct": true,
+  "T3_vertex_cycle_struct": {
+    "6": 5,
+    "3": 2,
+    "2": 1,
+    "1": 2
+  },
+  "T3_total_pts": 40,
+  "T3_fixed_count": 2,
+  "T3_correct": true,
+  "T3_fixed_vertices": [
+    26,
+    36
+  ],
+  "T3_two_cycle_vertices": [
+    [
+      5,
+      16
+    ]
+  ],
+  "T4_root_cycle_struct": {
+    "3": 10,
+    "6": 34,
+    "1": 2,
+    "2": 2
+  },
+  "T4_total_roots": 240,
+  "T4_fixed_root_count": 2,
+  "T4_correct": true,
+  "T4_fixed_root_vectors": [
+    [
+      -2,
+      -3,
+      -3,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1
+    ],
+    [
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      0,
+      0,
+      0
+    ]
+  ],
+  "T5_num_affine_orbits": 5,
+  "T5_total_affine_pts": 27,
+  "T5_affine_orbit_size_dist": {
+    "1": 1,
+    "2": 1,
+    "8": 3
+  },
+  "T5_correct": true,
+  "T6_num_edge_orbits": 34,
+  "T6_total_edges": 240,
+  "T6_edge_size_dist": {
+    "4": 8,
+    "8": 26
+  },
+  "T6_correct": true,
+  "adjacency_preservation_rate": 0.2461309523809524
+}
