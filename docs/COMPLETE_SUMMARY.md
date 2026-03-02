@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 44/44 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 53/53 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -291,6 +291,14 @@ Unification gap: **0.0%** at M_GUT ≈ 2.2 × 10¹⁶ GeV.
 | sin²θ₂₃ (PMNS) | Φ₆/Φ₃ | 7/13=0.5385 | 0.546±0.021 | 0.36σ |
 | δ_CP (PMNS) | 2π·Φ₆/Φ₃ | 14π/13=194° | 197°±25° | 0.13σ |
 | Rᵥ = Δm²ₐₜₘ/Δm²ₛₒₗ | 2Φ₃+Φ₆ | 33 | 32.6±0.9 | 0.47σ |
+| g (Weyl fermions/gen) | eig multiplicity of s=−4 | 15 | 15 | Exact |
+| String dims | k, k−1, k−λ, v−k−λ | 12,11,10,26 | exact | Exact |
+| dim(E₈×E₈) | vk+r(k−μ) | 496 | 496 | Exact |
+| SM gauge | (k−μ)+q+(q−λ) | 8+3+1=12 | 12 | Exact |
+| dim(SO(10)) | q×g | 45 | 45 | Exact |
+| Exc. fund reps | G₂→E₈ | 7,26,27,56,248 | all | Exact |
+| Exc. adj reps | G₂→E₈ via TKK | 14,52,78,133,248 | all | Exact |
+| β₀(QCD) | (33−4q)/3 = Φ₆ | 7 | 7 | Exact |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 Φ₃(q) = q²+q+1 = 13, Φ₆(q) = q²−q+1 = 7 (cyclotomic polynomials).
@@ -310,6 +318,49 @@ All three PMNS angles within 0.4σ of experiment!
 
 **Testable relation:** sin²θ₂₃ = sin²θ_W + sin²θ₁₂
 Requires: 2q+1 = q²-q+1 ⇒ q(q-3) = 0 ⇒ **q=3** (8th uniqueness condition!)
+
+### SM Gauge Decomposition
+
+The Standard Model gauge group emerges directly from SRG parameters:
+```
+k = dim(SU(3)_c) + dim(SU(2)_L) + dim(U(1)_Y)
+  = (k-μ) + q + (q-λ)
+  = 8 + 3 + 1 = 12
+```
+Identity 2q = μ+λ holds automatically in W(q,q) since μ=q+1, λ=q-1.
+
+### Complete Exceptional Lie Algebra Chain
+
+ALL 5 exceptional Lie algebras have BOTH fundamental and adjoint representations
+computed from graph parameters — 10 numbers, 10 exact matches:
+
+**Fundamental representations:**
+```
+dim(fund G₂) = Φ₆ = 7
+dim(fund F₄) = v-1-Φ₃ = 26
+dim(fund E₆) = v-1-k = 27
+dim(fund E₇) = v+k+μ = 56    (= 2(v-1-k)+2, Freudenthal triple system)
+dim(fund E₈) = |E|+(k-μ) = 248
+```
+
+**Adjoint representations:**
+```
+dim(adj G₂) = 2Φ₆ = 14
+dim(adj F₄) = v+k = 52       (= Aut(J₃(𝕆)), Albert algebra automorphisms)
+dim(adj E₆) = Φ₃(Φ₆-1) = 78 (= Str(J₃(𝕆)), structure group)
+dim(adj E₇) = 2(v-1-k)+Φ₃(Φ₆-1)+1 = 133  (Tits-Kantor-Koecher construction!)
+dim(adj E₈) = |E|+(k-μ) = 248
+```
+
+E₇ adjoint via TKK: dim = 2×dim(J) + dim(Str₀) + 1 = 2×27 + 78 + 1 = 133.
+
+**GUT chain:** SU(5)[24=f] → SO(10)[45=q×g] → E₆[78] → E₇[133] → E₈[248]
+
+### QCD Beta Function: β₀ = Φ₆ = 7
+
+1-loop QCD: b₀ = (11×3 − 2nf)/3 where nf = 2q = 6 quark flavors.
+Solving (33−4q)/3 = q²−q+1 gives 3q²+q−30 = 0, unique positive root **q = 3**.
+(9th uniqueness condition!)
 
 ### Fermion Mass Relations
 
@@ -340,6 +391,7 @@ Eight independent conditions all select q = 3:
 6. Gauss-Bonnet: Eκ = v forces q=3
 7. H₀ tension = 2q = 6 km/s/Mpc fixes q=3
 8. sin²θ₂₃ = sin²θ_W + sin²θ₁₂ forces q(q-3)=0 → q=3
+9. QCD β₀ = (33−4q)/3 = Φ₆ forces 3q²+q−30=0 → q=3
 
 **Hubble tension = 2q = 6 km/s/Mpc.**
 
