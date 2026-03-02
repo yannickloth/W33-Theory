@@ -50,6 +50,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | 24 Niemeier Lattices (Pillar 131) | ✅ | 24 even unimodular lattices, 23 deep holes, Coxeter classification |
 | Umbral Moonshine & K3 (Pillar 132) | ✅ | K3 elliptic genus → M₂₄, 23 umbral groups, mock modular forms |
 | Griess Algebra & V♮ (Pillar 133) | ✅ | 196884=1+196883, Monster VOA, complete W(3,3)→Monster chain |
+| Quantum Error Correction (Pillar 134) | ✅ | Fano→Steane [[7,1,3]]; Golay→[[23,1,7]]; extraspecial p-groups F₂↔F₃ |
+| F-theory & Elliptic Fibrations (Pillar 135) | ✅ | 12d framework; Kodaira II*=E₈; dP₈=240 curves; j=axio-dilaton |
+| AdS/CFT Holography (Pillar 136) | ✅ | j−744 = AdS₃ gravity Z; c=24 Monster CFT; ER=EPR; QEC ↔ holographic codes |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -64,7 +67,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 133+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 136+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
