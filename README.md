@@ -59,6 +59,11 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Borcherds & Monster Lie Algebra (Pillar 140) | ✅ | GKM algebras; Monster Lie algebra rank 2; denominator formula; no-ghost d=26; Fields 1998 |
 | Topological Phases & Anyons (Pillar 141) | ✅ | Topological order; FQH; anyons; toric code GSD=4; E₈ QH c=8; braiding → TQC |
 | Arithmetic Geometry & Motives (Pillar 142) | ✅ | Weil conjectures 4/4; étale cohomology; motives; L-functions; Langlands; F₃ zeta |
+| Mirror Symmetry & Calabi-Yau (Pillar 143) | ✅ | CY manifolds; Hodge diamond; quintic 2875 lines; HMS Kontsevich; SYZ; 27 lines W(E₆) |
+| Information Geometry (Pillar 144) | ✅ | Fisher metric; Chentsov uniqueness; Ryu-Takayanagi; holographic QEC; ER=EPR |
+| Spectral Geometry (Pillar 145) | ✅ | Weyl law; heat kernel; Kac drum; Selberg trace; Milnor E₈⊕E₈ vs D₁₆⁺; spectral action |
+| Noncommutative Geometry (Pillar 146) | ✅ | Connes NCG; spectral triple; A_F=C⊕H⊕M₃(C)→SM+gravity; cyclic cohomology; Fields 1982 |
+| Twistor Theory & Amplituhedron (Pillar 147) | ✅ | Penrose twistors; Witten twistor string; BCFW; amplituhedron; emergent spacetime; Nobel 2020 |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -66,16 +71,16 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 
 `ash
 pip install numpy sympy networkx pytest
-python -m pytest tests/ -q          # ~1000 tests
+python -m pytest tests/ -q          # ~1800 tests
 `
 
 ## Repository Structure
 
 `
 W33-Theory/
-├── pillars/        # 142+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 147+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 1000+ automated tests
+├── tests/          # 1800+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
