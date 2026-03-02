@@ -81,6 +81,10 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Modular Tensor Categories (Pillar 162) | ✅ | Reshetikhin-Turaev TQFT; Verlinde formula; Fibonacci anyons; Kitaev QC; Drinfeld center |
 | Geometric Quantization (Pillar 163) | ✅ | Kostant-Souriau prequantization; Kirillov orbits↔irreps; [Q,R]=0; Bohr-Sommerfeld; Spin^c |
 | Derived Categories II (Pillar 164) | ✅ | Verdier localization; Fourier-Mukai; HMS; D-branes; Bridgeland stability; DG/A∞; Lurie ∞-cat |
+| Noncommutative Geometry (Pillar 165) | ✅ | Connes NCG; spectral triples (A,H,D); spectral action; NCG Standard Model; Bost-Connes; Moyal ★ |
+| Motivic Integration (Pillar 166) | ✅ | Kontsevich-Denef-Loeser; arc spaces; Grothendieck ring K₀(Var); stringy invariants; McKay |
+| The Langlands Program (Pillar 167) | ✅ | Reciprocity Galois↔automorphic; L-functions; Ngô (Fields 2010); Gaitsgory 2024; ^L E₈=E₈ |
+| Quantum Groups (Pillar 168) | ✅ | Drinfeld-Jimbo U_q(g); Yang-Baxter; Jones polynomial; Kashiwara crystals; roots of unity→TQFT |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -95,9 +99,9 @@ python -m pytest tests/ -q          # ~2000 tests
 
 `
 W33-Theory/
-├── pillars/        # 164+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 168+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 2400+ automated tests
+├── tests/          # 2500+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
