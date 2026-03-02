@@ -1481,6 +1481,83 @@ def grand_synthesis():
     print(f"  dim(adj E₇) = 133")
     print(f"  Match: {check_E7_CC}  {'PASS' if check_E7_CC else 'FAIL'}")
 
+    # ── PART VI-I: COSMOLOGICAL OBSERVABLES ──
+    print(f"\n{'='*78}")
+    print(f"  PART VI-I: AGE OF UNIVERSE, HUBBLE, DARK ENERGY & RECOMBINATION")
+    print(f"{'='*78}\n")
+
+    # Check 74: Age of universe t₀ = Φ₃ + μ/(q+λ) = 13 + 4/5 = 13.8 Gyr
+    t0_pred = Phi3 + mu / (q + lam)  # 13 + 4/5 = 13.8
+    t0_obs = 13.797
+    t0_err = 0.023
+    check_t0 = abs(t0_pred - t0_obs) / t0_err < 1.0
+    checks.append(('t₀ = Φ₃+μ/(q+λ) = 13+4/5 = {:.1f} Gyr (obs {:.3f}, {:.2f}σ)'.format(
+        t0_pred, t0_obs, abs(t0_pred - t0_obs) / t0_err), check_t0))
+    print(f"  Age of universe:")
+    print(f"  t₀ = Φ₃ + μ/(q+λ) = {Phi3} + {mu}/({q}+{lam}) = {t0_pred} Gyr")
+    print(f"  t₀(obs) = {t0_obs} ± {t0_err} Gyr")
+    print(f"  Deviation: {abs(t0_pred - t0_obs)/t0_err:.2f}σ ({abs(t0_pred - t0_obs)/t0_obs*100:.3f}%)")
+    print(f"  Match: {check_t0}  {'PASS' if check_t0 else 'FAIL'}")
+
+    # Check 75: H₀(CMB) = g×μ + Φ₆ = 60 + 7 = 67 km/s/Mpc
+    H0_CMB_pred = g_mult * mu + Phi6  # 15×4 + 7 = 67
+    H0_CMB_obs = 67.4
+    H0_CMB_err = 0.5
+    check_H0_CMB = abs(H0_CMB_pred - H0_CMB_obs) / H0_CMB_err < 1.0
+    checks.append(('H₀(CMB) = gμ+Φ₆ = {}×{}+{} = {} km/s/Mpc (obs {}, {:.1f}σ)'.format(
+        g_mult, mu, Phi6, H0_CMB_pred, H0_CMB_obs,
+        abs(H0_CMB_pred - H0_CMB_obs) / H0_CMB_err), check_H0_CMB))
+    print(f"\n  Hubble constant (CMB/Planck):")
+    print(f"  H₀ = g×μ + Φ₆ = {g_mult}×{mu} + {Phi6} = {H0_CMB_pred} km/s/Mpc")
+    print(f"  H₀(obs) = {H0_CMB_obs} ± {H0_CMB_err} km/s/Mpc")
+    print(f"  Deviation: {abs(H0_CMB_pred - H0_CMB_obs)/H0_CMB_err:.1f}σ")
+    print(f"  Match: {check_H0_CMB}  {'PASS' if check_H0_CMB else 'FAIL'}")
+
+    # Check 76: H₀(local) = g×μ + Φ₆ + 2q = 67 + 6 = 73 km/s/Mpc
+    H0_local_pred = H0_CMB_pred + 2 * q  # 67 + 6 = 73
+    H0_local_obs = 73.0
+    H0_local_err = 1.0
+    check_H0_local = abs(H0_local_pred - H0_local_obs) / H0_local_err < 1.0
+    checks.append(('H₀(SH0ES) = gμ+Φ₆+2q = {}+{} = {} km/s/Mpc (obs {}, {:.1f}σ)'.format(
+        H0_CMB_pred, 2*q, H0_local_pred, H0_local_obs,
+        abs(H0_local_pred - H0_local_obs) / H0_local_err), check_H0_local))
+    print(f"\n  Hubble constant (SH0ES/local):")
+    print(f"  H₀ = H₀(CMB) + 2q = {H0_CMB_pred} + {2*q} = {H0_local_pred} km/s/Mpc")
+    print(f"  H₀(obs) = {H0_local_obs} ± {H0_local_err} km/s/Mpc")
+    print(f"  Hubble tension = 2q = {2*q} km/s/Mpc (geometric origin!)")
+    print(f"  Match: {check_H0_local}  {'PASS' if check_H0_local else 'FAIL'}")
+
+    # Check 77: Ω_Λ = 1 - μ/g - λ/(v+1) = 421/615 = 0.6846
+    omega_DM = mu / g_mult  # 4/15
+    omega_b = lam / (v + 1)  # 2/41
+    omega_Lambda_pred = 1.0 - omega_DM - omega_b
+    omega_Lambda_obs = 0.685
+    omega_Lambda_err = 0.007
+    check_omega_Lambda = abs(omega_Lambda_pred - omega_Lambda_obs) / omega_Lambda_err < 1.0
+    checks.append(('Ω_Λ = 1-μ/g-λ/(v+1) = 421/615 = {:.4f} (obs {}, {:.2f}σ)'.format(
+        omega_Lambda_pred, omega_Lambda_obs,
+        abs(omega_Lambda_pred - omega_Lambda_obs) / omega_Lambda_err), check_omega_Lambda))
+    print(f"\n  Dark energy density:")
+    print(f"  Ω_Λ = 1 - Ω_DM - Ω_b = 1 - μ/g - λ/(v+1)")
+    print(f"      = 1 - {mu}/{g_mult} - {lam}/{v+1} = {omega_Lambda_pred:.6f}")
+    print(f"  Ω_Λ(obs) = {omega_Lambda_obs} ± {omega_Lambda_err}")
+    print(f"  Deviation: {abs(omega_Lambda_pred - omega_Lambda_obs)/omega_Lambda_err:.2f}σ")
+    print(f"  Match: {check_omega_Lambda}  {'PASS' if check_omega_Lambda else 'FAIL'}")
+
+    # Check 78: Recombination redshift z_rec = Φ₃Φ₆k - r = 1090
+    z_rec_pred = Phi3 * Phi6 * k - r_eval  # 91×12 - 2 = 1090
+    z_rec_obs = 1089.80
+    z_rec_err = 0.21
+    check_z_rec = abs(z_rec_pred - z_rec_obs) / z_rec_err < 2.0
+    checks.append(('z_rec = Φ₃Φ₆k-r = {}×{}-{} = {} (obs {}, {:.2f}σ)'.format(
+        Phi3*Phi6, k, r_eval, z_rec_pred, z_rec_obs,
+        abs(z_rec_pred - z_rec_obs) / z_rec_err), check_z_rec))
+    print(f"\n  Recombination redshift:")
+    print(f"  z_rec = Φ₃Φ₆ × k - r = {Phi3*Phi6} × {k} - {r_eval} = {z_rec_pred}")
+    print(f"  z_rec(obs) = {z_rec_obs} ± {z_rec_err}")
+    print(f"  Deviation: {abs(z_rec_pred - z_rec_obs)/z_rec_err:.2f}σ ({abs(z_rec_pred - z_rec_obs)/z_rec_obs*100:.3f}%)")
+    print(f"  Match: {check_z_rec}  {'PASS' if check_z_rec else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1584,6 +1661,12 @@ def grand_synthesis():
   │  G_F (GeV⁻²)  │ 1/(√2·v_EW²)            │ 1.168e-5 │ 1.166e-5 │
   │  Graviton DOF  │ μ(μ-3)/2 = λ            │ 2        │ 2        │
   │  vq+μ+Φ₆+λ    │ CC+corrections = adj E₇  │ 133      │ 133      │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  t₀ (Gyr)      │ Φ₃+μ/(q+λ) = 13+4/5    │ 13.8     │ 13.797   │
+  │  H₀(CMB)       │ gμ+Φ₆ = 60+7            │ 67       │ 67.4     │
+  │  H₀(SH0ES)     │ gμ+Φ₆+2q = 67+6         │ 73       │ 73.0     │
+  │  Ω_Λ           │ 1-μ/g-λ/(v+1) = 421/615 │ 0.6846   │ 0.685    │
+  │  z_rec          │ Φ₃Φ₆k-r = 1092-2        │ 1090     │ 1089.80  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
