@@ -1021,6 +1021,36 @@ def grand_synthesis():
     print(f"  Observed: {sin2_12_obs:.3f} + {0.23122:.5f} = {sin2_12_obs + 0.23122:.3f} vs {sin2_23_obs:.3f}")
     print(f"  Match: {check_relation}  {'PASS' if check_relation else 'FAIL'}")
 
+    # Check 43: Neutrino mass ratio R = Δm²_atm/Δm²_sol = 2Φ₃ + Φ₆ = 33
+    dm2_sol = 7.53e-5    # eV² (±0.18e-5)
+    dm2_atm = 2.453e-3   # eV² (±0.033e-3)
+    R_nu_obs = dm2_atm / dm2_sol  # = 32.58
+    R_nu_err = R_nu_obs * np.sqrt((0.033/2.453)**2 + (0.18/7.53)**2)  # = 0.89
+    R_nu_pred = 2 * Phi3 + Phi6   # = 2*13 + 7 = 33
+    R_nu_sigma = abs(R_nu_pred - R_nu_obs) / R_nu_err
+    check_Rnu = (R_nu_sigma < 1.0)
+    checks.append(('Neutrino R = Δm²_atm/Δm²_sol = 2Φ₃+Φ₆ = 33 (0.47σ)', check_Rnu))
+    print(f"\n  R_ν = Δm²_atm/Δm²_sol")
+    print(f"  Predicted: 2Φ₃ + Φ₆ = 2×{Phi3} + {Phi6} = {R_nu_pred}")
+    print(f"  Observed: {R_nu_obs:.2f} ± {R_nu_err:.2f}")
+    print(f"  Deviation: {R_nu_sigma:.2f}σ")
+    print(f"  Match: {check_Rnu}  {'PASS' if check_Rnu else 'FAIL'}")
+
+    # Check 44: PMNS CP phase δ = 2π sin²θ₂₃ = 14π/13 ≈ 194°
+    delta_PMNS_pred = 2 * np.pi * Phi6 / Phi3  # = 14π/13
+    delta_PMNS_deg = np.degrees(delta_PMNS_pred)
+    delta_PMNS_obs = 197.0   # degrees (NuFIT 5.3, NO)
+    delta_PMNS_err = 25.0    # degrees (asymmetric, approximate)
+    delta_PMNS_sigma = abs(delta_PMNS_deg - delta_PMNS_obs) / delta_PMNS_err
+    check_dPMNS = (delta_PMNS_sigma < 1.0)
+    checks.append(('PMNS δ_CP = 2π·sin²θ₂₃ = 14π/13 ≈ 194° (obs 197°, 0.13σ)', check_dPMNS))
+    print(f"\n  δ_CP(PMNS) = 2π · sin²θ₂₃ = 2π · Φ₆/Φ₃ = 14π/13")
+    print(f"  = {delta_PMNS_deg:.2f}°")
+    print(f"  Observed: {delta_PMNS_obs}° ± {delta_PMNS_err}° (NuFIT 5.3, NO)")
+    print(f"  Deviation: {delta_PMNS_sigma:.2f}σ")
+    print(f"  Self-consistency: δ = 2π × (7/13) links CP phase to atmospheric angle")
+    print(f"  Match: {check_dPMNS}  {'PASS' if check_dPMNS else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
