@@ -56,6 +56,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Sporadic Landscape (Pillar 137) | ✅ | 26 sporadics = 20 Happy Family + 6 Pariahs; Thompson dim 248 = E₈ via F₃ |
 | Modular Forms Bridge (Pillar 138) | ✅ | E₄=θ_{E₈}; Δ=η²⁴; j=E₄³/Δ→moonshine; Ramanujan τ; Langlands; 744=3×248 |
 | Cobordism & TQFT (Pillar 139) | ✅ | Atiyah-Segal axioms; 2D TQFT↔Frobenius; CS E₈ c=8; Verlinde; cobordism hyp |
+| Borcherds & Monster Lie Algebra (Pillar 140) | ✅ | GKM algebras; Monster Lie algebra rank 2; denominator formula; no-ghost d=26; Fields 1998 |
+| Topological Phases & Anyons (Pillar 141) | ✅ | Topological order; FQH; anyons; toric code GSD=4; E₈ QH c=8; braiding → TQC |
+| Arithmetic Geometry & Motives (Pillar 142) | ✅ | Weil conjectures 4/4; étale cohomology; motives; L-functions; Langlands; F₃ zeta |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -70,7 +73,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 139+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 142+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
