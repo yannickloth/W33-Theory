@@ -75,6 +75,12 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Higher Algebra (Pillar 156) | ✅ | Operads E_n; factorization algebras; Lurie HA (1553 pp); Koszul duality Lie↔Comm |
 | Arithmetic Topology (Pillar 157) | ✅ | Primes=knots; number fields=3-manifolds; Borromean primes (13,61,937); Alexander↔Iwasawa |
 | Tropical Geometry (Pillar 158) | ✅ | Tropical semiring min/+; Mikhalkin correspondence; ReLU=tropical; Gross-Siebert mirror |
+| Floer Homology (Pillar 159) | ✅ | Infinite-dim Morse theory; Arnold conjecture; HF≅SWF≅ECH; Fukaya→HMS; Manolescu 2013 |
+| Vertex Operator Algebras (Pillar 160) | ✅ | Borcherds VOA; Monster V♮ c=24; E₈ lattice VOA; Sugawara; Zhu modular; Huang MTC |
+| Spectral Sequences (Pillar 161) | ✅ | Leray 1946; exact couples; Serre/Adams/Grothendieck SS; Atiyah-Hirzebruch; Bott periodicity |
+| Modular Tensor Categories (Pillar 162) | ✅ | Reshetikhin-Turaev TQFT; Verlinde formula; Fibonacci anyons; Kitaev QC; Drinfeld center |
+| Geometric Quantization (Pillar 163) | ✅ | Kostant-Souriau prequantization; Kirillov orbits↔irreps; [Q,R]=0; Bohr-Sommerfeld; Spin^c |
+| Derived Categories II (Pillar 164) | ✅ | Verdier localization; Fourier-Mukai; HMS; D-branes; Bridgeland stability; DG/A∞; Lurie ∞-cat |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -89,9 +95,9 @@ python -m pytest tests/ -q          # ~2000 tests
 
 `
 W33-Theory/
-├── pillars/        # 158+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 164+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 2200+ automated tests
+├── tests/          # 2400+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
