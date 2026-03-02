@@ -111,6 +111,12 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Factorization Algebras (Pillar 192) | ✅ | Beilinson-Drinfeld; Costello-Gwilliam BV; factorization homology; chiral algebras; E_n operads |
 | Quantum Gravity & Spin Foams (Pillar 193) | ✅ | Ashtekar; LQG; spin networks; EPRL; BH entropy; causal sets; CDT; group field theory |
 | Motivic Integration (Pillar 194) | ✅ | Kontsevich motivic measure; arc spaces; Denef-Loeser zeta; motivic DT; A¹-homotopy; Ngô lemma |
+| Operads & Modular Operads (Pillar 195) | ✅ | May (1972); Stasheff; Koszul duality; modular operads (Getzler-Kapranov); Kontsevich formality; properads |
+| Persistent Homology & TDA (Pillar 196) | ✅ | Barcodes; stability theorem; Ripser; multiparameter persistence; protein structure; cosmic web |
+| Quantum Channels & Info (Pillar 197) | ✅ | CPTP; Kraus; Stinespring; Choi; PPT; Knill-Laflamme QEC; resource theories; magic states |
+| Floer Homology (Pillar 198) | ✅ | Floer (1988); Arnold conjecture; Fukaya category; Heegaard Floer; Manolescu pin(2); Atiyah-Floer |
+| Symplectic Field Theory (Pillar 199) | ✅ | Eliashberg-Givental-Hofer; contact homology; Chekanov DGA; polyfolds; Kuranishi structures |
+| Geometric Langlands (Pillar 200) 🌟 | ✅ | Langlands (1967); Arinkin-Gaitsgory; Fargues-Scholze; Kapustin-Witten; AGT; Sp(6)↔SO(7) duality |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -125,9 +131,9 @@ python -m pytest tests/ -q          # ~2000 tests
 
 `
 W33-Theory/
-├── pillars/        # 194+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 200+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 3200+ automated tests
+├── tests/          # 3400+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
