@@ -44,6 +44,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Binary Golay Code (Pillar 125) | ✅ | [24,12,8] code, 759 octads, S(5,8,24), M₂₄ |
 | Monstrous Moonshine (Pillar 126) | ✅ | McKay Ê₈, j-decomposition, 744=3·248 |
 | Heterotic String (Pillar 127) | ✅ | E₈×E₈ (496 dim), 3 generations, E₄²=E₈ |
+| Exceptional Jordan J₃(𝕆) (Pillar 128) | ✅ | 27-dim algebra, Aut=F₄(52), Str=E₆(78), magic square |
+| Anomaly Cancellation (Pillar 129) | ✅ | Green-Schwarz n=496, I₁₂ factorization, perfect number |
+| W(3,3) Master Dictionary (Pillar 130) | ✅ | Complete invariant→physics map, all verified |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -58,7 +61,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 127+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 130+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
