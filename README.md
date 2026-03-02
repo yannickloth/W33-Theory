@@ -53,6 +53,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Quantum Error Correction (Pillar 134) | ✅ | Fano→Steane [[7,1,3]]; Golay→[[23,1,7]]; extraspecial p-groups F₂↔F₃ |
 | F-theory & Elliptic Fibrations (Pillar 135) | ✅ | 12d framework; Kodaira II*=E₈; dP₈=240 curves; j=axio-dilaton |
 | AdS/CFT Holography (Pillar 136) | ✅ | j−744 = AdS₃ gravity Z; c=24 Monster CFT; ER=EPR; QEC ↔ holographic codes |
+| Sporadic Landscape (Pillar 137) | ✅ | 26 sporadics = 20 Happy Family + 6 Pariahs; Thompson dim 248 = E₈ via F₃ |
+| Modular Forms Bridge (Pillar 138) | ✅ | E₄=θ_{E₈}; Δ=η²⁴; j=E₄³/Δ→moonshine; Ramanujan τ; Langlands; 744=3×248 |
+| Cobordism & TQFT (Pillar 139) | ✅ | Atiyah-Segal axioms; 2D TQFT↔Frobenius; CS E₈ c=8; Verlinde; cobordism hyp |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -67,7 +70,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 136+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 139+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
