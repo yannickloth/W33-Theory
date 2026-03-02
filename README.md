@@ -89,6 +89,10 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Cluster Algebras (Pillar 170) | ✅ | Fomin-Zelevinsky (2002); mutations; Laurent phenomenon; finite type=Dynkin; E₈: 25080 clusters |
 | Persistent Homology (Pillar 171) | ✅ | Edelsbrunner-Zomorodian; filtrations & barcodes; stability theorem; TDA; Ripser; E₈ root persistence |
 | Information Geometry (Pillar 172) | ✅ | Rao-Amari; Fisher-Rao metric; dual α-connections; natural gradient; KL=Bregman; quantum Fisher |
+| Algebraic K-Theory (Pillar 173) | ✅ | Grothendieck K₀; Bass K₁; Milnor K₂; Quillen +-construction; Waldhausen; Bloch-Kato; THH/TC; D-brane charges |
+| Symplectic Geometry (Pillar 174) | ✅ | Darboux; Hamiltonian mechanics; Arnold conjecture; Gromov non-squeezing; Floer; Fukaya; HMS |
+| Tropical Geometry (Pillar 175) | ✅ | Tropical semiring (min,+); Mikhalkin; Baker-Norine R-R; tropical Grassmannian; Gross-Siebert |
+| Categorification (Pillar 176) | ✅ | Khovanov homology; Soergel bimodules; KLR algebras; knot Floer; cobordism hypothesis; Nakajima |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -103,9 +107,9 @@ python -m pytest tests/ -q          # ~2000 tests
 
 `
 W33-Theory/
-├── pillars/        # 172+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 176+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 2600+ automated tests
+├── tests/          # 2700+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
