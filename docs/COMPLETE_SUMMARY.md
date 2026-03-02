@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 183/183 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 197/197 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -806,3 +806,26 @@ Wolfenstein parameterization from W(3,3):
 - **η̄ = 2λ√(q/5) = 0.3484** (obs: 0.348±0.010, essentially exact!)
 - **ρ̄ = λ√(q/5) = 0.1742** (obs: 0.159±0.010)
 Note: q²+q+1 = 13 = |PG(2,q)| = number of points in the projective plane of order q.
+
+
+## Spectral Invariants & Complement Duality (Checks 184-197)
+
+The graph complement of W(3,3) reveals a profound duality:
+
+| Property | W(3,3) | Complement |
+|----------|--------|------------|
+| Parameters | SRG(40,12,2,4) | SRG(40,27,18,18) |
+| Non-trivial eigs | {2, -4} | {+3, -3} = {±q} |
+| Energy | 120 = E/2 | 144 = k² |
+| Degree | 12 = gauge | 27 = matter |
+
+**Key identities:**
+- Energy ratio: 120/144 = 5/6 = κ₁+κ₂ (sum of Ollivier-Ricci curvatures!)
+- Energy difference: 144−120 = 24 = f = gauge multiplicity
+- Energy sum: 120+144 = 264 = (k−1)×f = 11×24
+- Complement is CP-symmetric: |r'| = |s'| = q = 3
+- Eigenvalue discriminant = (2q)² = 36 → integer eigenvalues forced
+- Clique number ω = q+1 = 4 = μ (Hoffman bound TIGHT)
+- Spectral gap = k−r = 10 = dim(SO(10) vector)
+- Diameter = 2, girth = 3, vertex connectivity = k = 12
+- E + E' = 240 + 540 = 780 = C(40,2) = dim(Sp(40))
