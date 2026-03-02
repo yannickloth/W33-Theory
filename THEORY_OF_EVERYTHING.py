@@ -1702,6 +1702,82 @@ def grand_synthesis():
     print(f"  E₈×E₈ ↔ SO(32) heterotic string duality!")
     print(f"  Match: {check_duality}  {'PASS' if check_duality else 'FAIL'}")
 
+    # ── PART VI-L: SM DOF COUNTING, g*, PLANCK MASS ──
+    print(f"\n{'='*78}")
+    print(f"  PART VI-L: SM DOF COUNTING, g*, & PLANCK MASS HIERARCHY")
+    print(f"{'='*78}\n")
+
+    # Check 89: SM bosonic DOF = v - k = 28
+    #   1(H) + 2(γ) + 16(8g) + 6(W±) + 3(Z) = 28
+    sm_bosonic_dof = 1 + 2 + 16 + 6 + 3  # 28
+    check_bosonic = (v - k == sm_bosonic_dof)
+    checks.append(('SM bosonic DOF = v−k = {}−{} = {} = 1H+2γ+16g+6W+3Z'.format(
+        v, k, v - k), check_bosonic))
+    print(f"  Standard Model bosonic degrees of freedom:")
+    print(f"  Higgs: 1, photon: 2, 8 gluons: 16, W±: 6, Z: 3")
+    print(f"  Total = 1+2+16+6+3 = {sm_bosonic_dof}")
+    print(f"  v−k = {v}−{k} = {v-k}")
+    print(f"  Match: {check_bosonic}  {'PASS' if check_bosonic else 'FAIL'}")
+
+    # Check 90: g* = (v-k) + 7/8 × 2qg = 106.75 (EXACT)
+    #   Fermionic DOF: 6 quarks×3c×2s×2(p+ap) + 3 leptons×2s×2(p+ap) + 3ν×1s×2(p+ap) = 72+12+6 = 90
+    fermion_dof = 2 * q * g_mult  # 2×3×15 = 90
+    g_star = (v - k) + (7.0/8.0) * fermion_dof  # 28 + 78.75 = 106.75
+    g_star_obs = 106.75
+    check_gstar = abs(g_star - g_star_obs) < 0.01
+    checks.append(('g* = (v−k)+7/8×2qg = {}+7/8×{} = {} (obs {}, EXACT!)'.format(
+        v-k, fermion_dof, g_star, g_star_obs), check_gstar))
+    print(f"\n  SM degrees of freedom (relativistic):")
+    print(f"  Bosonic: v−k = {v-k}")
+    print(f"  Fermionic: 2qg = 2×{q}×{g_mult} = {fermion_dof}")
+    print(f"  g* = (v−k) + 7/8 × 2qg = {v-k} + 7/8 × {fermion_dof} = {g_star}")
+    print(f"  g*(obs) = {g_star_obs}")
+    print(f"  Match: {check_gstar}  {'PASS' if check_gstar else 'FAIL'}")
+
+    # Check 91: sin²θ_W running: Δsin²θ = g/(8Φ₃)
+    sin2_GUT = 3.0 / 8.0
+    sin2_EW = q / Phi3  # 3/13
+    delta_sin2 = sin2_GUT - sin2_EW  # 15/104
+    delta_graph = g_mult / (8.0 * Phi3)  # 15/104
+    check_running = abs(delta_sin2 - delta_graph) < 1e-10
+    checks.append(('Δsin²θ_W = 3/8−3/13 = 15/104 = g/(8Φ₃) = {:.6f}'.format(
+        delta_graph), check_running))
+    print(f"\n  Running of weak mixing angle:")
+    print(f"  sin²θ_W(GUT) = 3/8 = {sin2_GUT}")
+    print(f"  sin²θ_W(EW) = q/Φ₃ = {q}/{Phi3} = {sin2_EW:.6f}")
+    print(f"  Δ = 15/104 = g/(8Φ₃) = {g_mult}/(8×{Phi3}) = {delta_graph:.6f}")
+    print(f"  Match: {check_running}  {'PASS' if check_running else 'FAIL'}")
+
+    # Check 92: M_Pl/M_GUT = 2×dim(E₈) = 496
+    dim_E8 = E + (k - mu)  # 240+8 = 248
+    ratio_pred = 2 * dim_E8  # 496
+    M_GUT_val = vEW_pred * 10**(2 * Phi6)
+    M_Pl_obs = 1.2209e19  # GeV
+    ratio_obs = M_Pl_obs / M_GUT_val
+    check_Pl_ratio = abs(ratio_obs - ratio_pred) / ratio_pred < 0.01
+    checks.append(('M_Pl/M_GUT = 2×dim(E₈) = 2×{} = {} (obs {:.1f}, {:.1f}%)'.format(
+        dim_E8, ratio_pred, ratio_obs,
+        abs(ratio_obs - ratio_pred) / ratio_pred * 100), check_Pl_ratio))
+    print(f"\n  Planck-to-GUT hierarchy:")
+    print(f"  M_GUT = v_EW × 10^(2Φ₆) = {vEW_pred} × 10^{2*Phi6} = {M_GUT_val:.2e} GeV")
+    print(f"  M_Pl/M_GUT = 2×dim(E₈) = 2×{dim_E8} = {ratio_pred}")
+    print(f"  M_Pl/M_GUT(obs) = {M_Pl_obs:.4e}/{M_GUT_val:.4e} = {ratio_obs:.1f}")
+    print(f"  Match: {check_Pl_ratio}  {'PASS' if check_Pl_ratio else 'FAIL'}")
+
+    # Check 93: M_Pl(pred) = v_EW × 10^(2Φ₆) × 496
+    M_Pl_pred = vEW_pred * 10**(2 * Phi6) * ratio_pred
+    check_Planck = abs(M_Pl_pred - M_Pl_obs) / M_Pl_obs < 0.01
+    checks.append(('M_Pl = v_EW×10^(2Φ₆)×496 = {:.4e} GeV (obs {:.4e}, {:.2f}%)'.format(
+        M_Pl_pred, M_Pl_obs,
+        abs(M_Pl_pred - M_Pl_obs) / M_Pl_obs * 100), check_Planck))
+    print(f"\n  Planck mass prediction:")
+    print(f"  M_Pl = v_EW × 10^(2Φ₆) × 2×dim(E₈)")
+    print(f"       = {vEW_pred} × 10^{2*Phi6} × {ratio_pred}")
+    print(f"       = {M_Pl_pred:.4e} GeV")
+    print(f"  M_Pl(obs) = {M_Pl_obs:.4e} GeV")
+    print(f"  Diff: {abs(M_Pl_pred - M_Pl_obs)/M_Pl_obs*100:.2f}%")
+    print(f"  Match: {check_Planck}  {'PASS' if check_Planck else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1823,6 +1899,12 @@ def grand_synthesis():
   │  r_s (Mpc)     │ vμ-Φ₃ = 160-13          │ 147      │ 147.09   │
   │  log₁₀(S_univ) │ v+2f = 40+48            │ 88       │ ~88      │
   │  SO(32)↔E₈²   │ 2×248 = 32·31/2         │ 496      │ 496      │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  SM bosonic DOF│ v-k = 28                │ 28       │ 28       │
+  │  g* (total DOF)│ (v-k)+7/8×2qg           │ 106.75   │ 106.75   │
+  │  Δsin²θ_W     │ g/(8Φ₃) = 15/104        │ 0.14423  │ 0.14423  │
+  │  M_Pl/M_GUT   │ 2×dim(E₈) = 496         │ 496      │ 496.3    │
+  │  M_Pl (GeV)   │ v_EW×10^14×496           │ 1.220e19 │ 1.221e19 │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
