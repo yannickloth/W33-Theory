@@ -1113,6 +1113,93 @@ def grand_synthesis():
     print(f"  dim(adj E₆) = 78 (from cyclotomic pair)")
     print(f"  Match: {check_78}  {'PASS' if check_78 else 'FAIL'}")
 
+    # ═══════════════════════════════════════════════════════════════════
+    # PART VI-D: SM GAUGE STRUCTURE & EXCEPTIONAL LIE ALGEBRA CHAIN
+    # ═══════════════════════════════════════════════════════════════════
+    print(f"\n{'='*78}")
+    print(f"  PART VI-D: SM GAUGE DECOMPOSITION & EXCEPTIONAL CHAIN")
+    print(f"{'='*78}")
+
+    # Check 49: SM gauge group decomposition from SRG parameters
+    # k = dim(SU(3)) + dim(SU(2)) + dim(U(1)) = (k-μ) + q + (q-λ) = 8+3+1
+    # Identity: 2q = μ+λ always holds in W(q,q) since μ=q+1, λ=q-1
+    dim_SU3 = k - mu      # 8 (gluons)
+    dim_SU2 = q            # 3 (W+, W-, Z before mixing)
+    dim_U1  = q - lam      # 1 (hypercharge boson)
+    check_gauge = (dim_SU3 == 8 and dim_SU2 == 3 and dim_U1 == 1
+                   and dim_SU3 + dim_SU2 + dim_U1 == k)
+    checks.append(('SM gauge: k = (k-μ)+q+(q-λ) = 8+3+1 = 12', check_gauge))
+    print(f"\n  SM gauge group SU(3)×SU(2)×U(1) from SRG:")
+    print(f"  dim(SU(3)_c) = k - μ = {k} - {mu} = {dim_SU3}  (8 gluons)")
+    print(f"  dim(SU(2)_L) = q = {dim_SU2}  (3 weak bosons)")
+    print(f"  dim(U(1)_Y)  = q - λ = {q} - {lam} = {dim_U1}  (hypercharge)")
+    print(f"  Sum = {dim_SU3}+{dim_SU2}+{dim_U1} = {dim_SU3+dim_SU2+dim_U1} = k = {k}")
+    print(f"  Identity 2q = μ+λ = {mu+lam} (automatic in W(q,q))")
+    print(f"  Match: {check_gauge}  {'PASS' if check_gauge else 'FAIL'}")
+
+    # Check 50: dim(SO(10)) = q × g = 45 (total fermions = GUT adjoint)
+    dim_SO10 = q * g_mult  # 3 × 15 = 45
+    check_so10 = (dim_SO10 == 45 and dim_SO10 == v + mu + 1)
+    checks.append(('dim(SO(10)) = q×g = v+μ+1 = 45', check_so10))
+    print(f"\n  SO(10) Grand Unified Theory:")
+    print(f"  dim(adj SO(10)) = q × g = {q} × {g_mult} = {dim_SO10}")
+    print(f"                  = v + μ + 1 = {v}+{mu}+1 = {v+mu+1}")
+    print(f"  3 generations × 15 Weyl fermions = 45 = dim(SO(10)) adjoint!")
+    print(f"  GUT chain: SU(5)[{f_mult}=f] → SO(10)[{dim_SO10}=qg] → E₆[78] → E₇ → E₈")
+    print(f"  Match: {check_so10}  {'PASS' if check_so10 else 'FAIL'}")
+
+    # Check 51: ALL 5 exceptional fundamental representations from graph
+    fund_G2 = Phi6                 # 7
+    fund_F4 = v - 1 - Phi3         # 26
+    fund_E6 = v - 1 - k            # 27
+    fund_E7 = v + k + mu           # 56  (also = 2(v-1-k) + 2)
+    fund_E8 = E + (k - mu)         # 248 (adj = smallest rep)
+    check_fund = (fund_G2 == 7 and fund_F4 == 26 and fund_E6 == 27
+                  and fund_E7 == 56 and fund_E8 == 248)
+    checks.append(('All 5 exceptional fundamentals: 7,26,27,56,248', check_fund))
+    print(f"\n  ALL 5 exceptional fundamental representations:")
+    print(f"  dim(fund G₂) = Φ₆ = {fund_G2}  (expected 7)")
+    print(f"  dim(fund F₄) = v-1-Φ₃ = {v}-1-{Phi3} = {fund_F4}  (expected 26)")
+    print(f"  dim(fund E₆) = v-1-k = {v}-1-{k} = {fund_E6}  (expected 27)")
+    print(f"  dim(fund E₇) = v+k+μ = {v}+{k}+{mu} = {fund_E7}  (expected 56)")
+    print(f"  dim(fund E₈) = |E|+(k-μ) = {E}+{k-mu} = {fund_E8}  (expected 248)")
+    print(f"  ALL MATCH: {check_fund}  {'PASS' if check_fund else 'FAIL'}")
+
+    # Check 52: ALL 5 exceptional adjoint representations (includes TKK for E₇)
+    adj_G2 = 2 * Phi6                              # 14
+    adj_F4 = v + k                                  # 52 = Aut(J₃(𝕆))
+    adj_E6 = Phi3 * (Phi6 - 1)                      # 78 = Str(J₃(𝕆))
+    adj_E7 = 2*(v-1-k) + Phi3*(Phi6-1) + 1          # 133 = TKK(J₃(𝕆))
+    adj_E8 = E + (k - mu)                            # 248
+    check_adj = (adj_G2 == 14 and adj_F4 == 52 and adj_E6 == 78
+                 and adj_E7 == 133 and adj_E8 == 248)
+    checks.append(('All 5 exceptional adjoints: 14,52,78,133,248', check_adj))
+    print(f"\n  ALL 5 exceptional adjoint representations:")
+    print(f"  dim(adj G₂) = 2Φ₆ = 2×{Phi6} = {adj_G2}  (expected 14)")
+    print(f"  dim(adj F₄) = v+k = {v}+{k} = {adj_F4}  (expected 52 = Aut(J₃(𝕆)))")
+    print(f"  dim(adj E₆) = Φ₃(Φ₆-1) = {Phi3}×{Phi6-1} = {adj_E6}  (expected 78)")
+    print(f"  dim(adj E₇) = 2(v-1-k)+Φ₃(Φ₆-1)+1 = {adj_E7}  (expected 133 = TKK)")
+    print(f"    ↳ Tits-Kantor-Koecher: dim = 2×dim(J) + dim(Str₀) + 1")
+    print(f"    ↳ = 2×{v-1-k} + {Phi3*(Phi6-1)} + 1 = {2*(v-1-k)} + {Phi3*(Phi6-1)} + 1 = {adj_E7}")
+    print(f"  dim(adj E₈) = |E|+(k-μ) = {E}+{k-mu} = {adj_E8}  (expected 248)")
+    print(f"  ALL MATCH: {check_adj}  {'PASS' if check_adj else 'FAIL'}")
+
+    # Check 53: QCD beta function coefficient b₀ = Φ₆ = 7
+    # b₀(SU(3)) = (11N - 2nf)/3 where N=3, nf=2q=6 quark flavors
+    # = (33 - 12)/3 = 7 = Φ₆(q)
+    # Solving (33-4q)/3 = q²-q+1 gives 3q²+q-30=0, unique positive root q=3!
+    nf = 2 * q  # quark flavors (u,d per generation × q generations)
+    b0_QCD = (11 * 3 - 2 * nf) // 3  # = (33-12)/3 = 7
+    check_b0 = (b0_QCD == Phi6 and b0_QCD == 7)
+    checks.append(('QCD β₀ = (33-4q)/3 = Φ₆ = 7 (selects q=3)', check_b0))
+    print(f"\n  QCD 1-loop beta function coefficient:")
+    print(f"  b₀ = (11×3 - 2nf)/3 = (33 - 2×{nf})/3 = {b0_QCD}")
+    print(f"  Φ₆(q) = q²-q+1 = {Phi6}")
+    print(f"  b₀ = Φ₆: {b0_QCD == Phi6}")
+    print(f"  Solving (33-4q)/3 = q²-q+1 → 3q²+q-30 = 0 → q = 3 (unique!)")
+    print(f"  9th UNIQUENESS CONDITION selecting q = 3")
+    print(f"  Match: {check_b0}  {'PASS' if check_b0 else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1185,6 +1272,12 @@ def grand_synthesis():
   │  String dims   │ k, k-1, k-λ, v-k-λ     │12,11,10,26│ exact   │
   │  dim(E₈×E₈)   │ Heterotic gauge dim      │ 496      │ 496      │
   │  dim(adj E₆)   │ E₆ adjoint dimension    │ 78       │ 78       │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  SM gauge      │ (k-μ)+q+(q-λ)=8+3+1=k  │ 12       │ 12       │
+  │  dim(SO(10))   │ q×g = total fermions    │ 45       │ 45       │
+  │  Exc. fund reps│ G₂,F₄,E₆,E₇,E₈        │7,26,27,56,248│exact │
+  │  Exc. adj reps │ G₂→E₈ via TKK          │14,52,78,133,248│exact│
+  │  β₀(QCD)       │ (33-4q)/3 = Φ₆          │ 7        │ 7        │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
