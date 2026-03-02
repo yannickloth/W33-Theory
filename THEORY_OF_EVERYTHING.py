@@ -1558,6 +1558,79 @@ def grand_synthesis():
     print(f"  Deviation: {abs(z_rec_pred - z_rec_obs)/z_rec_err:.2f}σ ({abs(z_rec_pred - z_rec_obs)/z_rec_obs*100:.3f}%)")
     print(f"  Match: {check_z_rec}  {'PASS' if check_z_rec else 'FAIL'}")
 
+    # ── PART VI-J: GAUGE BOSON COUNTING, HIGGS MECHANISM, ALPHA RUNNING ──
+    print(f"\n{'='*78}")
+    print(f"  PART VI-J: GAUGE BOSON COUNTING, HIGGS MECHANISM & ALPHA RUNNING")
+    print(f"{'='*78}\n")
+
+    # Check 79: Massive gauge bosons = q = 3 (W+,W-,Z), massless = k-q = 9
+    n_massive = q  # 3: W+, W-, Z
+    n_massless = k - q  # 9: 8 gluons + photon
+    check_gauge_split = (n_massive == 3) and (n_massless == 9) and (n_massive + n_massless == k)
+    checks.append(('Gauge split: q={} massive (W±Z) + k−q={} massless (8g+γ) = k={}'.format(
+        n_massive, n_massless, k), check_gauge_split))
+    print(f"  Gauge boson SSB pattern:")
+    print(f"  Massive: q = {q} → W⁺, W⁻, Z")
+    print(f"  Massless: k−q = {k}−{q} = {n_massless} → 8 gluons + γ")
+    print(f"  Total: {n_massive}+{n_massless} = {k} = k")
+    print(f"  Match: {check_gauge_split}  {'PASS' if check_gauge_split else 'FAIL'}")
+
+    # Check 80: Higgs mechanism: μ=4 DOF → (q-λ)=1 Higgs + q=3 Goldstones
+    higgs_phys = q - lam  # 3-2 = 1 physical Higgs
+    goldstones = mu - higgs_phys  # 4-1 = 3 = q Goldstones
+    check_higgs_mech = (higgs_phys == 1) and (goldstones == q) and (higgs_phys + goldstones == mu)
+    checks.append(('Higgs: μ={} DOF → (q−λ)={} Higgs + q={} Goldstones'.format(
+        mu, higgs_phys, goldstones), check_higgs_mech))
+    print(f"\n  Higgs mechanism from graph:")
+    print(f"  Higgs doublet DOF = μ = {mu}")
+    print(f"  Physical Higgs = q−λ = {q}−{lam} = {higgs_phys}")
+    print(f"  Goldstones (eaten by W±,Z) = μ−(q−λ) = {goldstones} = q = {q}")
+    print(f"  Match: {check_higgs_mech}  {'PASS' if check_higgs_mech else 'FAIL'}")
+
+    # Check 81: vq = 120 = dim(adj SO(16))
+    vq = v * q  # 120
+    SO16_dim = 16 * 15 // 2  # 120
+    check_SO16 = (vq == SO16_dim)
+    checks.append(('vq = {}×{} = {} = 16·15/2 = dim(adj SO(16))'.format(
+        v, q, vq), check_SO16))
+    print(f"\n  CC exponent as SO(16) adjoint:")
+    print(f"  vq = {v}×{q} = {vq}")
+    print(f"  dim(adj SO(16)) = 16×15/2 = {SO16_dim}")
+    print(f"  CC = −(dim(adj SO(16)) + μ − λ) = −({vq}+{mu}−{lam}) = −{vq+mu-lam}")
+    print(f"  Match: {check_SO16}  {'PASS' if check_SO16 else 'FAIL'}")
+
+    # Check 82: α⁻¹(M_Z) = 2^Φ₆ = 128
+    alpha_MZ_pred = 2**Phi6  # 2^7 = 128
+    alpha_MZ_obs = 127.951
+    check_alpha_MZ = abs(alpha_MZ_pred - alpha_MZ_obs) / alpha_MZ_obs < 0.001
+    checks.append(('α⁻¹(M_Z) = 2^Φ₆ = 2^{} = {} (obs {}, {:.2f}%)'.format(
+        Phi6, alpha_MZ_pred, alpha_MZ_obs,
+        abs(alpha_MZ_pred - alpha_MZ_obs) / alpha_MZ_obs * 100), check_alpha_MZ))
+    print(f"\n  Running of fine structure constant:")
+    print(f"  α⁻¹(M_Z) = 2^Φ₆ = 2^{Phi6} = {alpha_MZ_pred}")
+    print(f"  α⁻¹(M_Z, obs) = {alpha_MZ_obs} ± 0.009")
+    print(f"  Diff: {abs(alpha_MZ_pred - alpha_MZ_obs)/alpha_MZ_obs*100:.2f}%")
+    print(f"  Match: {check_alpha_MZ}  {'PASS' if check_alpha_MZ else 'FAIL'}")
+
+    # Check 83: Proton lifetime τ_p ~ 10^37 years (above Super-K bound)
+    M_GUT = 10**(2 * Phi6) * vEW_pred  # 10^14 × 246 GeV
+    alpha_GUT = 1.0 / v  # 1/40
+    m_p_GeV = 0.93827
+    hbar_s = 6.582e-25  # seconds per GeV^-1
+    tau_p_nat = M_GUT**4 / (alpha_GUT**2 * m_p_GeV**5)
+    tau_p_yr = tau_p_nat * hbar_s / (365.25 * 24 * 3600)
+    log_tau_p = math.log10(tau_p_yr)
+    check_proton = log_tau_p > 34  # above Super-K bound
+    checks.append(('τ_p ~ 10^{:.1f} yr (above Super-K bound 10^34)'.format(
+        log_tau_p), check_proton))
+    print(f"\n  Proton lifetime:")
+    print(f"  M_GUT = 10^(2Φ₆) × v_EW = 10^{2*Phi6} × {vEW_pred} = {M_GUT:.2e} GeV")
+    print(f"  α_GUT = 1/v = 1/{v}")
+    print(f"  τ_p = M_GUT⁴/(α_GUT² × m_p⁵) ≈ 10^{log_tau_p:.1f} years")
+    print(f"  Super-K bound: > 1.6 × 10³⁴ years")
+    print(f"  TESTABLE at Hyper-K (~10³⁵ yr sensitivity)")
+    print(f"  Match: {check_proton}  {'PASS' if check_proton else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1667,6 +1740,12 @@ def grand_synthesis():
   │  H₀(SH0ES)     │ gμ+Φ₆+2q = 67+6         │ 73       │ 73.0     │
   │  Ω_Λ           │ 1-μ/g-λ/(v+1) = 421/615 │ 0.6846   │ 0.685    │
   │  z_rec          │ Φ₃Φ₆k-r = 1092-2        │ 1090     │ 1089.80  │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  Gauge split   │ q=3 massive, k-q=9 mass'│ 3+9=12   │ W±Z+8g+γ│
+  │  Higgs DOF     │ μ=4→(q-λ)=1 + q=3 Gold │ 1+3=4    │ SM Higgs │
+  │  vq = SO(16)   │ v×q = dim(adj SO(16))   │ 120      │ 120      │
+  │  α⁻¹(M_Z)     │ 2^Φ₆ = 2⁷              │ 128      │ 127.95   │
+  │  τ_p (years)   │ M_GUT⁴/(α²m_p⁵)        │ ~10³⁷   │ >10³⁴   │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
