@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 100/100 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 107/107 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -347,6 +347,13 @@ Unification gap: **0.0%** at M_GUT ≈ 2.2 × 10¹⁶ GeV.
 | T_QCD (MeV) | Φ₃×k = 13×12 | 156 | 155±5 | 0.2σ |
 | N_gen (CY) | |χ(CY₃)|/2 = q | 3 | 3 | Exact |
 | Spectral gap | k−r = 12−2 | 10 | dim(SO(10) vector) | Exact |
+| ρ parameter | M_W²/(M_Z²cos²θ) = 1 | 1.000000 | 1.0000 (custodial SU(2)) | Exact |
+| α_GUT⁻¹ | f = 24 | 24 | ~24-25 (MSSM coupling) | 0-4% |
+| dim(adj SU(5)) | f = 5²−1 = 24 | 24 | 24 (Georgi-Glashow) | Exact |
+| z_eq | v(Φ₃Φ₆−2q) = 40×85 | 3400 | 3402±26 | 0.08σ! |
+| Charge quant | e/q = e/3 | 1/3 | 1/3 (quark charges) | Exact |
+| Weak isospin | λ/μ = 2/4 | 1/2 | 1/2 (SU(2)_L) | Exact |
+| SM Weyl ferm | q·2^μ = v+k−μ | 48 | 48 | Exact |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 Φ₃(q) = q²+q+1 = 13, Φ₆(q) = q²−q+1 = 7 (cyclotomic polynomials).
