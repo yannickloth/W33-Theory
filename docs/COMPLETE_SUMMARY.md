@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 114/114 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 121/121 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -363,6 +363,13 @@ Unification gap: **0.0%** at M_GUT ≈ 2.2 × 10¹⁶ GeV.
 | T_reh (GeV) | 10^g = 10^15 | 10¹⁵ | ~10¹⁵ (post-inflation) | Match |
 | Fermion flavors | 4q = k = 12 | 12 | 12 (6q + 6l) | Exact |
 | Quark flavors | 2q = 6 | 6 | u,d,s,c,b,t | Exact |
+| c (superstring) | g = 15 | 15 | 15 (central charge) | Exact |
+| N=1 SUSY | μ = 4 supercharges | 4 | 4 (Weyl spinor) | Exact |
+| C, P, T | q = 3 discrete symm | 3 | 3 | Exact |
+| Weinberg d | q+λ = 5 | 5 | d=5 operator LLHH/Λ | Exact |
+| Accidental | μ = 4 (B,L_e,L_μ,L_τ) | 4 | 4 global symmetries | Exact |
+| Max SUSY | 2×2^μ = 32 | 32 | 32 (N=8 in 4D) | Exact |
+| SM multiplets | q+λ = 5 per gen | 5 | 5 (Q_L,u_R,d_R,L_L,e_R) | Exact |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 Φ₃(q) = q²+q+1 = 13, Φ₆(q) = q²−q+1 = 7 (cyclotomic polynomials).
