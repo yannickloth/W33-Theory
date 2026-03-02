@@ -38,6 +38,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | PMNS matrix | ✅ | Error **0.006** — |V_e3| = 0.148 (exp 0.149) |
 | Grand Architecture (Pillar 120) | ✅ | Rosetta Stone: W(E₆) → 27 lines → Q₈ → E₆ loop |
 | G₂ Triality Fano Bridge (Pillar 121) | ✅ | D₄→G₂ fold, Der(𝕆)=G₂(14), Fano plane |
+| Cayley Integer Unit Chain (Pillar 122) | ✅ | Q₈(8)⊂Hurwitz(24)⊂Cayley(240)=E₈ roots |
+| E₈ Theta Series (Pillar 123) | ✅ | Θ_{E₈}=E₄, a(n)=240·σ₃(n), j-invariant |
+| Leech Lattice Moonshine (Pillar 124) | ✅ | 196884=196560+4·81, Λ₂₄→Co₀→Monster chain |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -52,7 +55,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 121+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 124+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities

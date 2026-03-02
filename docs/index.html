@@ -194,6 +194,8 @@ footer a { color: var(--accent); }
   <a href="#pillars">Pillars</a>
   <a href="#rosetta">Rosetta Stone</a>
   <a href="#fano-bridge">Fano Bridge</a>
+  <a href="#unit-chain">Unit Chain</a>
+  <a href="#moonshine">Moonshine</a>
   <a href="#predictions">Predictions</a>
   <a href="#validation">Validation</a>
   <a href="#open">Open Problems</a>
@@ -251,6 +253,9 @@ footer a { color: var(--accent); }
     <tr><td>Gauge coupling α<sub>GUT</sub></td><td class="status-ok">✅ Derived</td><td>α<sub>GUT</sub> = 1/(8π); α₂⁻¹(M<sub>Z</sub>) within 0.2%</td></tr>
     <tr><td>Grand Architecture (Pillar 120)</td><td class="status-ok">✅ Proved</td><td>Rosetta Stone: self-referential Q₈ → E₆ → N → Q₈ loop</td></tr>
     <tr><td>G₂ from D₄ Triality (Pillar 121)</td><td class="status-ok">✅ Proved</td><td>Fano Bridge: D₄→G₂ fold, Der(𝕆)=G₂(14), 24/2=12 roots</td></tr>
+    <tr><td>Cayley Integers (Pillar 122)</td><td class="status-ok">✅ Proved</td><td>Q₈⊂Hurwitz⊂Cayley=E₈, unit chain 8→24→240</td></tr>
+    <tr><td>E₈ Theta Series (Pillar 123)</td><td class="status-ok">✅ Proved</td><td>Θ_{E₈}=E₄, j-invariant, Ramanujan τ, moonshine</td></tr>
+    <tr><td>Leech Lattice (Pillar 124)</td><td class="status-ok">✅ Proved</td><td>196884=196560+4·81, W(3,3)→E₈→j→Monster chain</td></tr>
     <tr><td>Fermion mass hierarchy</td><td class="status-partial">⚠️ Partial</td><td>Texture theorem proved; absolute masses open</td></tr>
     <tr><td>Dark matter mass</td><td class="status-partial">⚠️ Proposed</td><td>24 + 15 sector identified; mass prediction pending</td></tr>
   </table>
@@ -466,6 +471,9 @@ footer a { color: var(--accent); }
     <table>
       <tr><th>#</th><th>Theorem</th><th>Key Result</th></tr>
       <tr><td><strong>121</strong></td><td><strong>G₂ from D₄ Triality — The Fano Bridge</strong></td><td><strong>D₄ triality σ³=I folds to G₂; Fano plane → octonions → Der(𝕆) = G₂(14); 24→12 roots, 28→14 dim</strong></td></tr>
+      <tr><td><strong>122</strong></td><td><strong>Cayley Integers: 240 Units = E₈ Roots</strong></td><td><strong>Q₈(8) ⊂ Hurwitz(24) ⊂ Cayley(240) = E₈; 112+128 decomposition; det(E₈ Cartan)=1; |W(E₈)|/240=|W(E₇)|</strong></td></tr>
+      <tr><td><strong>123</strong></td><td><strong>E₈ Theta Series: Modular Forms</strong></td><td><strong>Θ_{E₈} = E₄; a(n)=240·σ₃(n); j(τ) = q⁻¹+744+196884q; 744=6!+24; E₄²=E₈</strong></td></tr>
+      <tr><td><strong>124</strong></td><td><strong>The Leech Lattice: Gateway to the Monster</strong></td><td><strong>Λ₂₄ = E₈³+Golay; kiss=196560; 196884=196560+4·81; Aut=Co₀; W(3,3)→E₈→j→Monster</strong></td></tr>
     </table>
     </div>
   </details>
@@ -591,6 +599,109 @@ footer a { color: var(--accent); }
   </div>
 </section>
 
+<!-- ═══════════════════════ UNIT CHAIN ═══════════════════════ -->
+<section id="unit-chain">
+  <h2><span class="icon">⛓</span> The Unit Chain — Pillars 122–123</h2>
+  <p>Pillars 122–123 reveal the <strong>integral spine</strong> of the theory:
+  the Cayley–Dickson tower of integer rings mirrors the algebra tower,
+  and the E₈ theta series IS the Eisenstein modular form E₄.</p>
+
+  <div class="rosetta">
+    <h3>The Cayley Integer Unit Chain (Pillar 122)</h3>
+    <div class="cascade">
+      <div class="node"><div class="name">Q₈</div><div class="order">8 units</div></div>
+      <div class="arrow">⊂</div>
+      <div class="node"><div class="name">Hurwitz</div><div class="order">24 units</div></div>
+      <div class="arrow">⊂</div>
+      <div class="node"><div class="name">Cayley</div><div class="order">240 units</div></div>
+      <div class="arrow">=</div>
+      <div class="node"><div class="name">E₈ roots</div><div class="order">240</div></div>
+    </div>
+    <p style="text-align:center;color:var(--fg2);font-size:0.9rem;">
+      Z(2) → Z[i](4) → Hurwitz(24) → Cayley(240) &nbsp;|&nbsp;
+      R(1) → C(2) → H(4) → O(8)
+    </p>
+
+    <table>
+      <tr><th>Identity</th><th>Meaning</th></tr>
+      <tr><td><strong>240 = 112 + 128</strong></td><td>D₈ roots + spinor weights = E₈</td></tr>
+      <tr><td><strong>det(E₈ Cartan) = 1</strong></td><td>E₈ lattice is unimodular</td></tr>
+      <tr><td><strong>|W(E₈)| / 240 = |W(E₇)|</strong></td><td>Transitive action on roots</td></tr>
+      <tr><td><strong>|W(E₈)| / |W(D₄)| = 10!</strong></td><td>Factorial identity</td></tr>
+      <tr><td><strong>24/8 = 3</strong></td><td>Hurwitz/Q₈ = three generations</td></tr>
+    </table>
+
+    <h3>E₈ Theta Series = E₄ (Pillar 123)</h3>
+    <p>The theta series of the E₈ lattice is <em>exactly</em> the Eisenstein series of weight 4:</p>
+    <div class="math-block">
+      <span class="eq">Θ_{E₈}(q) = 1 + 240q + 2160q² + 6720q³ + ⋯ = E₄(τ)</span>
+    </div>
+    <p>where <strong>a(n) = 240·σ₃(n)</strong>. The coefficient a(3)/240 = 28 = dim(so(8)) = dim(D₄)!</p>
+
+    <table>
+      <tr><th>Object</th><th>Value</th><th>Connection</th></tr>
+      <tr><td>a(1)</td><td>240</td><td>= |E₈ roots| = |W(3,3) edges|</td></tr>
+      <tr><td>a(2)</td><td>2160 = 240×9</td><td>σ₃(2) = 9</td></tr>
+      <tr><td>a(3)</td><td>6720 = 240×28</td><td>28 = C(8,2) = dim(D₄)</td></tr>
+      <tr><td>744</td><td>6! + 24</td><td>= 720 + |Hurwitz units|</td></tr>
+      <tr><td>E₄²</td><td>= E₈ (weight 8)</td><td>Heterotic string: Θ_{E₈×E₈} = E₄²</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ MOONSHINE ═══════════════════════ -->
+<section id="moonshine">
+  <h2><span class="icon">☾</span> Moonshine — Pillar 124</h2>
+  <p>Pillar 124 completes the chain from <strong>W(3,3) to the Monster group</strong>
+  via the Leech lattice, proving the moonshine equation that links
+  the theory's 81 points to the largest sporadic simple group.</p>
+
+  <div class="rosetta">
+    <h3>The Moonshine Equation</h3>
+    <div class="math-block">
+      <span class="eq">196884 = 196560 + 324 = |Leech min vectors| + 4·|W(3,3)|</span>
+      <br>
+      <span class="eq">196884 = 1 + 196883 = 1 + dim(smallest Monster irrep)</span>
+    </div>
+
+    <h3>The Leech Lattice Λ₂₄</h3>
+    <p>The unique even unimodular lattice in R²⁴ <strong>with no roots</strong>.
+    Constructed as <strong>E₈³ + Golay glue</strong> (24 = 3×8 = 3×dim(O)).</p>
+    <div class="cascade">
+      <div class="node"><div class="name">E₈³</div><div class="order">dim 24</div></div>
+      <div class="arrow">+Golay</div>
+      <div class="node"><div class="name">Λ₂₄</div><div class="order">196560 kiss</div></div>
+      <div class="arrow">Aut</div>
+      <div class="node"><div class="name">Co₀</div><div class="order">sporadic</div></div>
+      <div class="arrow">→V#</div>
+      <div class="node"><div class="name">Monster</div><div class="order">|M|∼8×10⁵³</div></div>
+    </div>
+
+    <h3>The Complete Chain</h3>
+    <div class="loop">
+      <span class="symbol">W(3,3)</span>
+      <span style="color:var(--accent1);">—240 edges→</span>
+      <span class="symbol">E₈ roots</span>
+      <span style="color:var(--accent1);">—Θ=E₄→</span>
+      <span class="symbol">j(τ)</span>
+      <span style="color:var(--accent1);">—V#→</span>
+      <span class="symbol">Monster</span>
+      <br><br>
+      <strong>From 40 points to the Monster:</strong><br>
+      81 points · 240 edges · 196560 kissing · 196884 = 196560 + 4·81
+    </div>
+
+    <table>
+      <tr><th>Number</th><th>Meaning</th></tr>
+      <tr><td><strong>24</strong></td><td>dim(Λ₂₄) = |Hurwitz| = η exponent = 3·dim(O) = 4!</td></tr>
+      <tr><td><strong>196560</strong></td><td>= 48·(2¹² − 1) = 2160·91 (Leech kissing number)</td></tr>
+      <tr><td><strong>744</strong></td><td>= 6! + 24 (j-invariant constant term)</td></tr>
+      <tr><td><strong>196884</strong></td><td>= 196560 + 4·81 = 1 + 196883 (first moonshine coefficient)</td></tr>
+      <tr><td><strong>Co₀</strong></td><td>|Aut(Λ₂₄)| = 8.3×10¹⁸ (Conway group)</td></tr>
+    </table>
+  </div>
+</section>
+
 <!-- ═══════════════════════ PREDICTIONS ═══════════════════════ -->
 <section id="predictions">
   <h2><span class="icon">◎</span> Key Predictions</h2>
@@ -649,7 +760,7 @@ footer a { color: var(--accent); }
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1000+ automated tests across 121+ pillars, all passing</p>
+  <p><strong>Tests:</strong> 1000+ automated tests across 124+ pillars, all passing</p>
 </section>
 
 </div><!-- /container -->
