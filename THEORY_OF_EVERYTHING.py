@@ -1200,6 +1200,75 @@ def grand_synthesis():
     print(f"  9th UNIQUENESS CONDITION selecting q = 3")
     print(f"  Match: {check_b0}  {'PASS' if check_b0 else 'FAIL'}")
 
+    # ═══════════════════════════════════════════════════════════════════
+    # PART VI-E: ELECTROWEAK VEV, COSMOLOGICAL FRACTIONS, RAMANUJAN
+    # ═══════════════════════════════════════════════════════════════════
+    print(f"\n{'='*78}")
+    print(f"  PART VI-E: ELECTROWEAK VEV & COSMOLOGICAL PARAMETERS")
+    print(f"{'='*78}")
+
+    # Check 54: Electroweak VEV = |E| + 2q = 240 + 6 = 246 GeV
+    E = len(edges)
+    vEW_pred = E + 2 * q  # 240 + 6 = 246
+    vEW_obs = 246.22  # GeV (from G_F)
+    check_vEW = abs(vEW_pred - vEW_obs) / vEW_obs < 0.001  # within 0.1%
+    checks.append(('EW VEV = |E|+2q = 246 GeV (obs 246.22, 0.09%)', check_vEW))
+    print(f"\n  Electroweak vacuum expectation value:")
+    print(f"  v_EW = |E| + 2q = {E} + 2×{q} = {vEW_pred} GeV")
+    print(f"  Observed: {vEW_obs} GeV (from G_F = 1.1664×10⁻⁵ GeV⁻²)")
+    print(f"  Diff: {abs(vEW_pred - vEW_obs):.2f} GeV ({abs(vEW_pred - vEW_obs)/vEW_obs*100:.2f}%)")
+    print(f"  Match: {check_vEW}  {'PASS' if check_vEW else 'FAIL'}")
+
+    # Check 55: Dark matter fraction Ω_DM = μ/g = 4/15
+    Omega_DM_pred = mu / g_mult  # 4/15 = 0.2667
+    Omega_DM_obs = 0.265
+    Omega_DM_err = 0.007
+    check_DM = abs(Omega_DM_pred - Omega_DM_obs) / Omega_DM_err < 1.0  # within 1σ
+    checks.append(('Ω_DM = μ/g = 4/15 = 0.267 (obs 0.265±0.007, 0.24σ)', check_DM))
+    print(f"\n  Dark matter density fraction:")
+    print(f"  Ω_DM = μ/g = {mu}/{g_mult} = {Omega_DM_pred:.4f}")
+    print(f"  Observed: {Omega_DM_obs} ± {Omega_DM_err}")
+    print(f"  Deviation: {abs(Omega_DM_pred - Omega_DM_obs)/Omega_DM_err:.2f}σ")
+    print(f"  Match: {check_DM}  {'PASS' if check_DM else 'FAIL'}")
+
+    # Check 56: Baryon fraction Ω_b = λ/(v+1) = 2/41
+    Omega_b_pred = lam / (v + 1)  # 2/41 = 0.04878
+    Omega_b_obs = 0.0493
+    Omega_b_err = 0.0006
+    check_baryon = abs(Omega_b_pred - Omega_b_obs) / Omega_b_err < 1.0
+    checks.append(('Ω_b = λ/(v+1) = 2/41 = 0.0488 (obs 0.0493±0.0006, 0.87σ)', check_baryon))
+    print(f"\n  Baryon density fraction:")
+    print(f"  Ω_b = λ/(v+1) = {lam}/{v+1} = {Omega_b_pred:.4f}")
+    print(f"  Observed: {Omega_b_obs} ± {Omega_b_err}")
+    print(f"  Deviation: {abs(Omega_b_pred - Omega_b_obs)/Omega_b_err:.2f}σ")
+    print(f"  Ω_DM/Ω_b = μ(v+1)/(gλ) = {mu}×{v+1}/({g_mult}×{lam}) = {mu*(v+1)/(g_mult*lam):.4f}")
+    print(f"  Observed: {Omega_DM_obs/Omega_b_obs:.4f}")
+    print(f"  Match: {check_baryon}  {'PASS' if check_baryon else 'FAIL'}")
+
+    # Check 57: Baryon asymmetry log₁₀(η_B) = -|E|/(v-k-λ) = -9.23
+    log_eta_pred = -E / (v - k - lam)  # -240/26 = -9.231
+    log_eta_obs = np.log10(6.1e-10)     # = -9.215
+    check_eta = abs(log_eta_pred - log_eta_obs) < 0.05
+    checks.append(('log₁₀(η_B) = -|E|/(v-k-λ) = -9.23 (obs -9.21, 0.2%)', check_eta))
+    print(f"\n  Baryon asymmetry of universe:")
+    print(f"  log₁₀(η_B) = -|E|/(v-k-λ) = -{E}/{v-k-lam} = {log_eta_pred:.4f}")
+    print(f"  Observed: η_B ≈ 6.1×10⁻¹⁰ → log₁₀ = {log_eta_obs:.4f}")
+    print(f"  Diff: {abs(log_eta_pred - log_eta_obs):.4f} ({abs(log_eta_pred - log_eta_obs)/abs(log_eta_obs)*100:.1f}%)")
+    print(f"  Match: {check_eta}  {'PASS' if check_eta else 'FAIL'}")
+
+    # Check 58: W(3,3) is a Ramanujan graph
+    ramanujan_bound = 2 * np.sqrt(k - 1)  # 2√11 ≈ 6.633
+    is_ramanujan = (abs(r_eval) <= ramanujan_bound and abs(s_eval) <= ramanujan_bound)
+    check_ramanujan = is_ramanujan
+    checks.append(('W(3,3) is Ramanujan: |r|,|s| ≤ 2√(k-1)', check_ramanujan))
+    print(f"\n  Ramanujan property (optimal spectral gap):")
+    print(f"  Bound: 2√(k-1) = 2√{k-1} = {ramanujan_bound:.4f}")
+    print(f"  |r| = {abs(r_eval)} ≤ {ramanujan_bound:.4f}: {abs(r_eval) <= ramanujan_bound}")
+    print(f"  |s| = {abs(s_eval)} ≤ {ramanujan_bound:.4f}: {abs(s_eval) <= ramanujan_bound}")
+    print(f"  Ramanujan graphs have optimal expansion → information spreads maximally")
+    print(f"  Physical: optimal communication between sectors (no information trapping)")
+    print(f"  Match: {check_ramanujan}  {'PASS' if check_ramanujan else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1278,6 +1347,12 @@ def grand_synthesis():
   │  Exc. fund reps│ G₂,F₄,E₆,E₇,E₈        │7,26,27,56,248│exact │
   │  Exc. adj reps │ G₂→E₈ via TKK          │14,52,78,133,248│exact│
   │  β₀(QCD)       │ (33-4q)/3 = Φ₆          │ 7        │ 7        │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  v_EW (GeV)    │ |E|+2q = 240+6          │ 246      │ 246.22   │
+  │  Ω_DM          │ μ/g = 4/15              │ 0.267    │ 0.265    │
+  │  Ω_b           │ λ/(v+1) = 2/41          │ 0.0488   │ 0.0493   │
+  │  log₁₀(η_B)   │ -|E|/(v-k-λ)           │ -9.23    │ -9.21    │
+  │  Ramanujan     │ |r|,|s| ≤ 2√(k-1)      │ 2,4≤6.63 │ optimal  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
