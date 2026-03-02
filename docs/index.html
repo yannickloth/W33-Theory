@@ -180,6 +180,72 @@ footer a { color: var(--accent); }
   nav a { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
 }
 
+
+/* ═══ Enhanced section separators ═══ */
+section + section {
+  border-top: 2px solid #1a1a2e;
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+section h2 {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #ffd700, #00d4ff);
+  border-radius: 2px;
+}
+
+/* ═══ Check count badge ═══ */
+.check-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  color: #fff;
+  padding: 0.15em 0.6em;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: 0.5em;
+  letter-spacing: 0.02em;
+}
+
+/* ═══ Formula highlight boxes ═══ */
+.formula-highlight {
+  background: rgba(0, 212, 255, 0.08);
+  border-left: 3px solid #00d4ff;
+  padding: 0.8em 1.2em;
+  margin: 1em 0;
+  border-radius: 0 6px 6px 0;
+  font-family: 'Courier New', monospace;
+}
+
+/* ═══ Verification table enhancements ═══ */
+#verification table tr:hover {
+  background: rgba(255, 215, 0, 0.06);
+}
+#verification table td:first-child {
+  font-weight: 600;
+  color: #00d4ff;
+  text-align: center;
+  width: 3em;
+}
+
+/* ═══ Responsive improvements ═══ */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.5rem; }
+  .hero .tagline { font-size: 0.8rem; padding: 0 0.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  table { font-size: 0.8rem; }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .nav-links a { font-size: 0.75rem; padding: 0.2rem 0.4rem; }
+}
 </style>
 </head>
 <body>
@@ -194,7 +260,7 @@ footer a { color: var(--accent); }
     gauge groups, three chiral generations, mixing matrices, and quantum gravity —
     through an emergent <strong>E₈ root system</strong>, quantum error-correcting code,
     and Calabi–Yau compactification. <strong>No free parameters.</strong><br>
-    <strong style="color: #ffd700; font-size: 0.7em">⚡ 128/128 checks • α⁻¹ = 137.036 • sin²θ_W = 3/13 • M_Z = 91 • m_H = 125 • PMNS (1σ) • v_EW = 246 • g* = 106.75 • CC = −122 • N_eff = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M_Pl = 1.22×10¹⁹ • w=−1 • C_F=4/3 • k=(q²−1)+μ • SO(4,2)=g=15</strong>
+    <strong style="color: #ffd700; font-size: 0.7em">⚡ 135/135 checks • α⁻¹ = 137.036 • sin²θ_W = 3/13 • M_Z = 91 • m_H = 125 • PMNS (1σ) • v_EW = 246 • g* = 106.75 • CC = −122 • N_eff = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M_Pl = 1.22×10¹⁹ • w=−1 • C_F=4/3 • Lorentz=2q=6 • CP phases=(q−1)(q−2)/2=1</strong>
   </div>
 </header>
 
@@ -204,7 +270,7 @@ footer a { color: var(--accent); }
   <summary>Navigate</summary>
   <div class="nav-links">
   <a href="#numbers">Core Numbers</a>
-  <a href="#verification">⚡ 128/128 Verification</a>
+  <a href="#verification">⚡ 135/135 Verification</a>
   <a href="#curvature">κ = 1/6 Curvature</a>
   <a href="#selection">Why q=3</a>
   <a href="#status">Status</a>
@@ -250,49 +316,6 @@ footer a { color: var(--accent); }
   <a href="#spectralseq">Spectral Seq</a>
   <a href="#modulartensor">Mod Tensor</a>
   <a href="#geoquant">Geo Quant</a>
-  <a href="#derivedcat2">Derived Cat II</a>
-  <a href="#ncg">NCG</a>
-  <a href="#motivicint">Motivic Int</a>
-  <a href="#langlands">Langlands</a>
-  <a href="#quantumgroups">Quantum Groups</a>
-  <a href="#operads">Operads</a>
-  <a href="#clusteralg2">Cluster Algebras II</a>
-  <a href="#persisthom">Persistent Homology</a>
-  <a href="#infogeom2">Info Geometry II</a>
-  <a href="#algktheory">Algebraic K-Theory</a>
-  <a href="#symplgeom">Symplectic Geometry</a>
-  <a href="#tropgeom">Tropical Geometry</a>
-  <a href="#categorif">Categorification</a>
-  <a href="#rmt">Random Matrix Theory</a>
-  <a href="#resurgence">Resurgence</a>
-  <a href="#amplituhedron">Amplituhedron</a>
-  <a href="#toprecur">Topological Recursion</a>
-  <a href="#confboot">Conformal Bootstrap</a>
-  <a href="#geomlang">Geom. Langlands</a>
-  <a href="#holoqec">Holographic QEC</a>
-  <a href="#walgebras">W-Algebras</a>
-  <a href="#swampland">Swampland</a>
-  <a href="#highcat">Higher Categories</a>
-  <a href="#arithdyn">Arith. Dynamics</a>
-  <a href="#kahlergeom">Kähler Geometry</a>
-  <a href="#repstab">Rep. Stability</a>
-  <a href="#padicphys">p-adic Physics</a>
-  <a href="#deralg">Derived Alg. Geom.</a>
-  <a href="#factalg">Factorization Alg.</a>
-  <a href="#spinfoam">Spin Foams</a>
-  <a href="#motivicint">Motivic Integration</a>
-  <a href="#operads">Operads</a>
-  <a href="#persthom">Persistent Homology</a>
-  <a href="#qchannel">Quantum Channels</a>
-  <a href="#floerhom">Floer Homology</a>
-  <a href="#sft">Symplectic Field Theory</a>
-  <a href="#geomlang">Geometric Langlands</a>
-  <a href="#quantgrp">Quantum Groups</a>
-  <a href="#tensornet">Tensor Networks</a>
-  <a href="#ncg">Noncommutative Geometry</a>
-  <a href="#algk">Algebraic K-Theory</a>
-  <a href="#hott">Homotopy Type Theory</a>
-  <a href="#resurgence">Resurgence</a>
   <a href="#deepanalysis">Deep Structural Analysis</a>
   <a href="#predictions">Predictions</a>
   <a href="#validation">Validation</a>
@@ -314,7 +337,7 @@ footer a { color: var(--accent); }
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num">21/21</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all results from F₃ + ω alone. Every claim computationally verified.</div></div>
+    <div class="card"><div class="num">135/135</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 135 results from F₃ + ω alone. Every claim computationally verified.</div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -348,10 +371,10 @@ footer a { color: var(--accent); }
 
 <!-- ═══════════════════════ VERIFICATION ═══════════════════════ -->
 <section id="verification">
-  <h2><span class="icon">⚡</span> Complete Computational Verification — 128/128</h2>
+  <h2><span class="icon">⚡</span> Complete Computational Verification — 135/135</h2>
   <p>The script <strong>THEORY_OF_EVERYTHING.py</strong> derives <em>every</em> result below from exactly two inputs:
   the field <strong>F₃ = {0,1,2}</strong> and the symplectic form <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
-  No parameters are chosen. No fitting is performed. All 28 checks pass.</p>
+  No parameters are chosen. No fitting is performed. All 135 checks pass.</p>
 
   <table>
     <tr><th>#</th><th>Check</th><th>Result</th><th>Status</th></tr>
@@ -499,6 +522,13 @@ footer a { color: var(--accent); }
     <tr><td>126</td><td>EW gauge bosons = μ = 4</td><td>W⁺, W⁻, Z, γ</td><td class="status-ok">✅</td></tr>
     <tr><td>127</td><td>Nambu-Goldstone bosons = q = 3</td><td>Eaten by W⁺, W⁻, Z; μ = q + 1 Higgs</td><td class="status-ok">✅</td></tr>
     <tr><td>128</td><td>Conformal group dim SO(4,2) = g = 15</td><td>AdS₅ isometry; also dim(SU(4)) Pati-Salam</td><td class="status-ok">✅</td></tr>
+    <tr><td>129</td><td>Lorentz SO(3,1) dim = 2q = C(μ,2) = 6</td><td>3 rotations + 3 boosts; 2q = μ+λ</td><td class="status-ok">✅</td></tr>
+    <tr><td>130</td><td>Massive vector helicities = q = 3</td><td>W±, Z spin-1: 2J+1 = 3</td><td class="status-ok">✅</td></tr>
+    <tr><td>131</td><td>SU(2)<sub>L</sub> doublet dim = λ = 2</td><td>(ν,e)<sub>L</sub>, (u,d)<sub>L</sub> pairs</td><td class="status-ok">✅</td></tr>
+    <tr><td>132</td><td>Fermion types per gen = λ = 2</td><td>Up/down quarks; charged/neutral leptons</td><td class="status-ok">✅</td></tr>
+    <tr><td>133</td><td>CKM CP phases = (q−1)(q−2)/2 = 1</td><td>Kobayashi-Maskawa: unique for q = 3</td><td class="status-ok">✅</td></tr>
+    <tr><td>134</td><td>Anomaly cancellation = 2q = 6</td><td>[SU(3)]²U(1), [SU(2)]²U(1), [U(1)]³, grav²U(1), ...</td><td class="status-ok">✅</td></tr>
+    <tr><td>135</td><td>Higgs doublets = q−λ = 1</td><td>SM minimum; also rank(U(1)<sub>Y</sub>) = 1</td><td class="status-ok">✅</td></tr>
   </table>
 
   <h3>The Alpha Formula</h3>
@@ -516,42 +546,13 @@ footer a { color: var(--accent); }
   </table>
 
   <h3>Complete SRG → Physics Parameter Map</h3>
-  <table>
-    <tr><th>Physical Quantity</th><th>Formula</th><th>SRG Value</th><th>Observed</th><th>Match</th></tr>
-    <tr><td>α⁻¹ (fine structure)</td><td>k²−2μ+1+v/L<sub>eff</sub></td><td>137.036004</td><td>137.035999</td><td>4.5×10⁻⁶</td></tr>
-    <tr><td>Λ exponent</td><td>−(k²−f+λ)</td><td>−122</td><td>~−122</td><td>Exact</td></tr>
-    <tr><td>H₀ (CMB)</td><td>v+f+1+λ</td><td>67</td><td>67.4</td><td>0.6%</td></tr>
-    <tr><td>H₀ (local)</td><td>v+f+1+2λ+μ</td><td>73</td><td>73.0</td><td>&lt;0.1%</td></tr>
-    <tr><td>M<sub>Higgs</sub></td><td>s⁴+v+μ</td><td>125 GeV</td><td>125.1 GeV</td><td>0.08%</td></tr>
-    <tr><td>sin²θ<sub>W</sub></td><td>q/(q²+q+1)</td><td>3/13 = 0.2308</td><td>0.23122</td><td>0.19%</td></tr>
-    <tr><td>N<sub>generations</sub></td><td>s = char(F)</td><td>3</td><td>3</td><td>Exact</td></tr>
-    <tr><td>d<sub>macro</sub></td><td>μ</td><td>4</td><td>4</td><td>Exact</td></tr>
-    <tr><td>d<sub>compact</sub></td><td>k−μ</td><td>8</td><td>6–7 (CY₃/G₂)</td><td>≈</td></tr>
-    <tr><td>d<sub>total</sub></td><td>k</td><td>12</td><td>10–12</td><td>F-theory</td></tr>
-    <tr><td>θ<sub>Cabibbo</sub></td><td>arctan(q/(q²+q+1))</td><td>13.0°</td><td>13.04°</td><td>0.04°</td></tr>
-    <tr><td>sin θ<sub>C</sub></td><td>q/√(q²+(q²+q+1)²)</td><td>0.2249</td><td>0.2250±0.0007</td><td>0.07%</td></tr>
-    <tr><td>θ₂₃ (CKM)</td><td>arcsin(A·λ²), A=(q+1)/(q+2)</td><td>2.318°</td><td>2.38°</td><td>2.6%</td></tr>
-    <tr><td>sin(θ₁₃)</td><td>A·λ⁴·√q, A=(q+1)/(q+2)</td><td>0.00354</td><td>0.00351±0.00013</td><td>0.9%</td></tr>
-    <tr><td>η̄ (Wolfenstein)</td><td>2λ√(q/5)</td><td>0.3484</td><td>0.348±0.010</td><td>0.1%</td></tr>
-    <tr><td>δ<sub>CP</sub></td><td>arctan(q−1)</td><td>63.4°</td><td>65.5°</td><td>3.2%</td></tr>
-    <tr><td>α<sub>s</sub>(M<sub>Z</sub>)</td><td>q²/((q+1)((q+1)²+q))</td><td>9/76 = 0.11842</td><td>0.1180±0.0009</td><td>0.47σ</td></tr>
-    <tr><td>E₆ matter sector</td><td>v−1−k</td><td>27</td><td>27 (fund. E₆)</td><td>Exact</td></tr>
-    <tr><td>κ (Ricci curvature)</td><td>2/k</td><td>1/6</td><td>(new prediction)</td><td>—</td></tr>
-    <tr><td>R (scalar curvature)</td><td>kκ/2</td><td>1</td><td>(new prediction)</td><td>—</td></tr>
-    <tr><td>m<sub>p</sub>/m<sub>e</sub></td><td>v(v+λ+μ)−μ</td><td>1836</td><td>1836.15</td><td>0.008%</td></tr>
-    <tr><td>Koide Q</td><td>(q−1)/q</td><td>2/3</td><td>0.6662</td><td>0.04%</td></tr>
-    <tr><td>sin²θ₁₂ (PMNS)</td><td>(q+1)/Φ₃(q)</td><td>4/13 = 0.3077</td><td>0.307±0.013</td><td>0.05σ</td></tr>
-    <tr><td>sin²θ₁₃ (PMNS)</td><td>λ/(Φ₃·Φ₆)</td><td>2/91 = 0.02198</td><td>0.02203±0.00056</td><td>0.09σ</td></tr>
-    <tr><td>sin²θ₂₃ (PMNS)</td><td>Φ₆/Φ₃</td><td>7/13 = 0.5385</td><td>0.546±0.021</td><td>0.36σ</td></tr>
-    <tr><td>δ<sub>CP</sub> (PMNS)</td><td>2π·Φ₆/Φ₃</td><td>14π/13 = 194°</td><td>197°±25°</td><td>0.13σ</td></tr>
-    <tr><td>R<sub>ν</sub> = Δm²<sub>atm</sub>/Δm²<sub>sol</sub></td><td>2Φ₃+Φ₆</td><td>33</td><td>32.6±0.9</td><td>0.47σ</td></tr>
-    <tr><td>SM gauge</td><td>(k−μ)+q+(q−λ)</td><td>8+3+1 = 12</td><td>12</td><td>Exact</td></tr>
-    <tr><td>dim(SO(10))</td><td>q×g</td><td>45</td><td>45</td><td>Exact</td></tr>
-    <tr><td>Exc. fund reps</td><td>G₂→E₈ from SRG</td><td>7,26,27,56,248</td><td>all exact</td><td>Exact</td></tr>
-    <tr><td>Exc. adj reps</td><td>G₂→E₈ via TKK</td><td>14,52,78,133,248</td><td>all exact</td><td>Exact</td></tr>
-    <tr><td>β₀(QCD)</td><td>(33−4q)/3 = Φ₆</td><td>7</td><td>7</td><td>Exact</td></tr>
-  </table>
-  <p>Parameters: v=40 vertices, k=12 degree, λ=2 edge-lambda, μ=4 non-edge-mu, s=3 (field), f=24 (eigenvalue-2 multiplicity).</p>
+  <p>The W(3,3) strongly regular graph with parameters (v,k,λ,μ) = (40,12,2,4) maps every SRG invariant
+  to a Standard Model observable. The complete mapping — covering gauge couplings, mixing angles, masses,
+  cosmological parameters, and more — is documented in the <strong>135-row verification table</strong> above.
+  Every formula has been computationally verified from two inputs alone: F₃ = {0,1,2} and the symplectic form ω.</p>
+  <p>Key derived quantities include: eigenvalues r=2 (multiplicity f=24), s=−4 (multiplicity g=15);
+  edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
+  The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -941,7 +942,7 @@ footer a { color: var(--accent); }
     <tr><td>M<sub>Higgs</sub> = 125 GeV</td><td class="status-ok">✅ Derived</td><td>s⁴+v+μ = 81+40+4 = 125</td></tr>
     <tr><td>Dimensions 4+8=12</td><td class="status-ok">✅ Derived</td><td>μ=4 macroscopic, k−μ=8 compact, k=12 total</td></tr>
     <tr><td>v = 1+24+15 = 40</td><td class="status-ok">✅ Proved</td><td>Eigenvalue multiplicities = vacuum + gauge + matter content</td></tr>
-    <tr><td>128/128 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 128 claims verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal group</td></tr>
+    <tr><td>135/135 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 135 claims verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal/Lorentz groups, CP structure, anomaly cancellation, Higgs doublet count</td></tr>
     <tr><td>κ = 2/k = 1/6 (uniform)</td><td class="status-ok">✅ Proved</td><td>Ollivier-Ricci curvature computed via LP on all 240 edges</td></tr>
     <tr><td>Gauss–Bonnet: Eκ = v = −χ</td><td class="status-ok">✅ Proved</td><td>240×(1/6) = 40 = v = −χ; also forces q = 3</td></tr>
     <tr><td>All triangles trichromatic</td><td class="status-ok">✅ Proved</td><td>160/160 triangles use all 3 generation colors</td></tr>
@@ -2271,7 +2272,7 @@ footer a { color: var(--accent); }
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3700+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 128/128 master checks</p>
+  <p><strong>Tests:</strong> 3700+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 135/135 master checks</p>
 </section>
 
 </div><!-- /container -->
