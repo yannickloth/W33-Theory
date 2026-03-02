@@ -797,6 +797,18 @@ def grand_synthesis():
     checks.append(('Laplacian 10×16 = 160 = triangles', check_product))
     print(f"  10 × 16 = {10*16} = {T} triangles: {check_product}  {'✓' if check_product else '✗'}")
     
+    # Cabibbo angle: θ_C = arctan(q/(q²+q+1)) = arctan(3/13) = 12.995°
+    # Observed: 13.04° ± 0.05°
+    q = 3
+    theta_C_pred = np.degrees(np.arctan(q / (q**2 + q + 1)))  # arctan(3/13)
+    theta_C_obs = 13.04
+    check_cabibbo = abs(theta_C_pred - theta_C_obs) < 0.1  # within 0.1°
+    checks.append(('Cabibbo angle arctan(q/(q²+q+1)) = 13.0° (obs 13.04°)', check_cabibbo))
+    sin_C_pred = q / np.sqrt(q**2 + (q**2+q+1)**2)
+    print(f"  θ_C = arctan({q}/{q**2+q+1}) = arctan(3/13) = {theta_C_pred:.3f}° (obs: {theta_C_obs}°)")
+    print(f"  sin(θ_C) = {sin_C_pred:.5f} (obs: 0.22500 ± 0.00065)")
+    print(f"  Match within 0.1°: {check_cabibbo}  {'✓' if check_cabibbo else '✗'}")
+    
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -849,6 +861,9 @@ def grand_synthesis():
   │  H₀(local)     │ Hubble (SH0ES)          │ 73       │ 73.0     │
   │  M_H            │ Higgs mass (GeV)        │ 125      │ 125.1    │
   │  sin²θ_W       │ Weinberg angle          │ 0.25     │ 0.231    │
+  │  θ_C            │ Cabibbo angle           │ 13.0°    │ 13.04°   │
+  │  κ              │ Ollivier-Ricci curvature│ 1/6      │ (new)    │
+  │  R              │ Scalar curvature/vertex │ 1        │ (new)    │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
