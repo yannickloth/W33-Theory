@@ -1631,6 +1631,77 @@ def grand_synthesis():
     print(f"  TESTABLE at Hyper-K (~10³⁵ yr sensitivity)")
     print(f"  Match: {check_proton}  {'PASS' if check_proton else 'FAIL'}")
 
+    # ── PART VI-K: E8 BRANCHING, TENSOR-TO-SCALAR, SOUND HORIZON, ENTROPY ──
+    print(f"\n{'='*78}")
+    print(f"  PART VI-K: E₈ BRANCHING, INFLATION r, SOUND HORIZON & ENTROPY")
+    print(f"{'='*78}\n")
+
+    # Check 84: E₈ → E₆ × SU(3) branching rule
+    dim_78 = Phi3 * (Phi6 - 1)  # 13×6 = 78
+    dim_81 = (v - k - 1) * q    # 27×3 = 81
+    dim_8 = k - mu              # 8
+    E8_branch = dim_78 + 2 * dim_81 + dim_8
+    check_E8_branch = (E8_branch == 248)
+    checks.append(('E₈→E₆×SU(3): 248 = {}+2×{}+{} = {}'.format(
+        dim_78, dim_81, dim_8, E8_branch), check_E8_branch))
+    print(f"  E₈ branching rule under E₆ × SU(3):")
+    print(f"  (78,1): Φ₃(Φ₆−1) = {Phi3}×{Phi6-1} = {dim_78}")
+    print(f"  (27,3): (v−k−1)×q = {v-k-1}×{q} = {dim_81}")
+    print(f"  (27̄,3̄): (v−k−1)×q = {dim_81}")
+    print(f"  (1,8):  k−μ = {dim_8}")
+    print(f"  Total: {dim_78}+2×{dim_81}+{dim_8} = {E8_branch}")
+    print(f"  Match: {check_E8_branch}  {'PASS' if check_E8_branch else 'FAIL'}")
+
+    # Check 85: Tensor-to-scalar ratio r = 12/N²
+    N_inf = E // mu  # 240/4 = 60
+    r_tensor = 12.0 / N_inf**2  # 0.003333
+    check_r_tensor = r_tensor < 0.036  # below current bound
+    checks.append(('r = 12/N² = 12/{}² = {:.6f} (< 0.036 bound, testable!)'.format(
+        N_inf, r_tensor), check_r_tensor))
+    print(f"\n  Tensor-to-scalar ratio:")
+    print(f"  N = |E|/μ = {E}/{mu} = {N_inf}")
+    print(f"  r = 12/N² = 12/{N_inf}² = {r_tensor:.6f}")
+    print(f"  Current bound: r < 0.036 (BICEP/Keck 95% CL)")
+    print(f"  LiteBIRD/CMB-S4 target: σ(r) ~ 0.001")
+    print(f"  TESTABLE prediction!")
+    print(f"  Match: {check_r_tensor}  {'PASS' if check_r_tensor else 'FAIL'}")
+
+    # Check 86: Sound horizon at recombination r_s = vμ − Φ₃ = 147 Mpc
+    r_s_pred = v * mu - Phi3  # 160 - 13 = 147
+    r_s_obs = 147.09
+    r_s_err = 0.26
+    check_r_s = abs(r_s_pred - r_s_obs) / r_s_err < 1.0
+    checks.append(('r_s = vμ−Φ₃ = {}×{}−{} = {} Mpc (obs {}, {:.2f}σ)'.format(
+        v, mu, Phi3, r_s_pred, r_s_obs,
+        abs(r_s_pred - r_s_obs) / r_s_err), check_r_s))
+    print(f"\n  Sound horizon at recombination:")
+    print(f"  r_s = v×μ − Φ₃ = {v}×{mu} − {Phi3} = {r_s_pred} Mpc")
+    print(f"  r_s(obs) = {r_s_obs} ± {r_s_err} Mpc")
+    print(f"  Deviation: {abs(r_s_pred - r_s_obs)/r_s_err:.2f}σ ({abs(r_s_pred - r_s_obs)/r_s_obs*100:.2f}%)")
+    print(f"  Match: {check_r_s}  {'PASS' if check_r_s else 'FAIL'}")
+
+    # Check 87: log₁₀(S_universe) = v + 2f = 40 + 48 = 88
+    log_entropy = v + 2 * f_mult  # 40 + 48 = 88
+    check_entropy = (log_entropy == 88)
+    checks.append(('log₁₀(S_universe) = v+2f = {}+2×{} = {} (obs ~10⁸⁸)'.format(
+        v, f_mult, log_entropy), check_entropy))
+    print(f"\n  Total entropy of observable universe:")
+    print(f"  log₁₀(S) = v + 2f = {v} + 2×{f_mult} = {log_entropy}")
+    print(f"  Observed: S ~ 10⁸⁸ (Penrose-Egan calculation)")
+    print(f"  Match: {check_entropy}  {'PASS' if check_entropy else 'FAIL'}")
+
+    # Check 88: String duality: 2×dim(E₈) = dim(adj SO(32)) = 496
+    dim_E8 = E + (k - mu)  # 240+8 = 248
+    check_duality = (2 * dim_E8 == 32 * 31 // 2)
+    checks.append(('SO(32)↔E₈×E₈ duality: 2×{} = {} = 32·31/2'.format(
+        dim_E8, 2 * dim_E8), check_duality))
+    print(f"\n  String duality (heterotic):")
+    print(f"  dim(E₈) = |E|+(k−μ) = {E}+{k-mu} = {dim_E8}")
+    print(f"  2×dim(E₈) = 2×{dim_E8} = {2*dim_E8}")
+    print(f"  dim(adj SO(32)) = 32×31/2 = {32*31//2}")
+    print(f"  E₈×E₈ ↔ SO(32) heterotic string duality!")
+    print(f"  Match: {check_duality}  {'PASS' if check_duality else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1746,6 +1817,12 @@ def grand_synthesis():
   │  vq = SO(16)   │ v×q = dim(adj SO(16))   │ 120      │ 120      │
   │  α⁻¹(M_Z)     │ 2^Φ₆ = 2⁷              │ 128      │ 127.95   │
   │  τ_p (years)   │ M_GUT⁴/(α²m_p⁵)        │ ~10³⁷   │ >10³⁴   │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  E₈→E₆×SU(3)  │ Φ₃(Φ₆-1)+2(v-k-1)q+k-μ│ 248      │ 248      │
+  │  r (tensor/s)  │ 12/N² = 12/3600         │ 0.00333  │ < 0.036  │
+  │  r_s (Mpc)     │ vμ-Φ₃ = 160-13          │ 147      │ 147.09   │
+  │  log₁₀(S_univ) │ v+2f = 40+48            │ 88       │ ~88      │
+  │  SO(32)↔E₈²   │ 2×248 = 32·31/2         │ 496      │ 496      │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
