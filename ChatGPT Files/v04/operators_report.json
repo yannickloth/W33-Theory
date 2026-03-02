@@ -1,0 +1,93 @@
+{
+  "counts": {
+    "nv": 40,
+    "ne": 240,
+    "nt": 160
+  },
+  "vacuum_split_40": {
+    "vacuum": 1,
+    "gauge_neighbors": 12,
+    "matter_nonneighbors": 27
+  },
+  "gauge_decomposition": {
+    "k": 12,
+    "k_minus_mu": 8,
+    "q": 3,
+    "q_minus_lambda": 1
+  },
+  "matter_27_spectrum": {
+    "-4": 6,
+    "-1": 8,
+    "2": 12,
+    "8": 1
+  },
+  "matter_generation_triples_global": [
+    [
+      4,
+      5,
+      6
+    ],
+    [
+      7,
+      8,
+      9
+    ],
+    [
+      10,
+      11,
+      12
+    ],
+    [
+      22,
+      23,
+      24
+    ],
+    [
+      25,
+      26,
+      27
+    ],
+    [
+      28,
+      29,
+      30
+    ],
+    [
+      31,
+      32,
+      33
+    ],
+    [
+      34,
+      35,
+      36
+    ],
+    [
+      37,
+      38,
+      39
+    ]
+  ],
+  "hodge_spectrum_L0": {
+    "0": 1,
+    "10": 24,
+    "16": 15
+  },
+  "hodge_spectrum_L1": {
+    "0": 81,
+    "4": 120,
+    "10": 24,
+    "16": 15
+  },
+  "hodge_spectrum_L2": {
+    "0": 40,
+    "4": 120
+  },
+  "dirac_abs_spectrum": [
+    0.0,
+    2.0,
+    3.162278,
+    4.0
+  ],
+  "trace_L0_equals_480": 480
+}

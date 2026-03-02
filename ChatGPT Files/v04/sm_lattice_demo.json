@@ -1,0 +1,28 @@
+{
+  "sizes": {
+    "nv": 40,
+    "ne": 240,
+    "nt": 160
+  },
+  "actions": {
+    "S_YM": 232.8452017285261,
+    "S_YM_gauge_transformed": 232.8452017285261,
+    "gauge_invariance_abs_err": 0.0,
+    "S_scalar": 501.5450155087792
+  },
+  "kernels": {
+    "trace_L0": 480,
+    "trace_YM_kernel": 480,
+    "trace_L1": 960
+  },
+  "gauge_split": {
+    "SU3": 8,
+    "SU2": 3,
+    "U1": 1,
+    "sum": 12
+  },
+  "notes": [
+    "U(1) YM term is exactly ||d1 A||^2. For SU(N), replace A by link variables U_e and use plaquette holonomy per triangle.",
+    "This shows the *form* of the SM kinetic terms is forced by (B1,B2). The remaining step is selecting the internal algebra/representation (E6\u00d7SU(3) etc)."
+  ]
+}

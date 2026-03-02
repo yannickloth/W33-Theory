@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 169/169 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 183/183 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -441,6 +441,20 @@ Unification gap: **0.0%** at M_GUT ≈ 2.2 × 10¹⁶ GeV.
 | L₁ eigenvalues | {0, μ, k-λ, μ²} | SRG | Pure SRG parameters | Exact |
 | Ramanujan | |r|,|s| ≤ 2√(k-1) | optimal | Max spectral expansion | Exact |
 | Tr(A²,A³,A⁴) | 480, 960, 24960 | walks | Closed walks ↔ topology | Exact |
+| **SM & GR EMERGENCE (OPERATOR CALCULUS)** | | | | |
+| Cochain dim | v+E+T = 440 = (k-1)v | 440 | DK field space | Exact |
+| Chain d²=0 | B₁B₂=0 | exact | Gauge invariance structural | Exact |
+| Hodge L₀,L₁,L₂ | 40², 240², 160² | DEC | D² = L₀⊕L₁⊕L₂ | Exact |
+| Dirac spectrum | {0, √μ, √(k-λ), √(μ²)} | SRG | = {0, 2, √10, 4} | Exact |
+| 40=1+12+27 | vacuum+gauge+matter | E₆ | Matter shell = 27 | Exact |
+| 9 triples | 27/3=9 → 3 generations | SM | μ=0 pairs → triangles | Exact |
+| S_YM | ½g⁻²Aᵀ(B₂B₂ᵀ)A | L₁ | Gauge kinetic derived | Derived |
+| S_scalar | φᵀL₀φ | L₀ | Higgs kinetic derived | Derived |
+| R(v) | kκ = 12×1/6 = 2 | 2 | Vertex scalar curvature | Exact |
+| ΣR(v) | 2v = 80 | 80 | Total scalar curvature | Exact |
+| **S_EH** | **Tr(L₀)=vk=(1/κ)ΣR=480** | **480** | **Einstein-Hilbert (THEOREM)** | **Exact** |
+| **480 = 5 ways** | **2E=3T=Tr(A²)=Tr(L₀)=S_EH** | **480** | **Five convergences** | **Exact** |
+| Spectral dim | d_s ≈ 3.72 → μ = 4 | 4D | CDT: d_UV=2→d_IR=4 | ≈ |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 Φ₃(q) = q²+q+1 = 13, Φ₆(q) = q²−q+1 = 7 (cyclotomic polynomials).
