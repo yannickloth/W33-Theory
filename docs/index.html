@@ -237,6 +237,10 @@ footer a { color: var(--accent); }
   <a href="#motivicint">Motivic Int</a>
   <a href="#langlands">Langlands</a>
   <a href="#quantumgroups">Quantum Groups</a>
+  <a href="#operads">Operads</a>
+  <a href="#clusteralg2">Cluster Algebras II</a>
+  <a href="#persisthom">Persistent Homology</a>
+  <a href="#infogeom2">Info Geometry II</a>
   <a href="#predictions">Predictions</a>
   <a href="#validation">Validation</a>
   <a href="#open">Open Problems</a>
@@ -593,6 +597,10 @@ footer a { color: var(--accent); }
       <tr><td><strong>166</strong></td><td><strong>Motivic Integration</strong></td><td><strong>Kontsevich (1995); Denef-Loeser; arc spaces; Grothendieck ring K₀(Var); motivic measure; stringy invariants; McKay correspondence; Voevodsky motivic cohomology</strong></td></tr>
       <tr><td><strong>167</strong></td><td><strong>The Langlands Program</strong></td><td><strong>Langlands (1967); reciprocity Galois↔automorphic; functoriality; L-functions; Ngô fundamental lemma (Fields 2010); Gaitsgory geometric Langlands (2024); ^L E₈=E₈ self-dual</strong></td></tr>
       <tr><td><strong>168</strong></td><td><strong>Quantum Groups</strong></td><td><strong>Drinfeld-Jimbo (1985); U_q(g) Hopf algebras; Yang-Baxter R-matrix; Jones polynomial; Kashiwara crystals; roots of unity → MTCs → TQFTs; U_q(E₈) 248-dim; Khovanov categorification</strong></td></tr>
+      <tr><td><strong>169</strong></td><td><strong>Operads</strong></td><td><strong>May (1972); Assoc/Comm/Lie operads; Koszul duality Comm^!=Lie; E_n little disks; A∞/L∞/E∞; Kontsevich formality; Deligne conjecture; Swiss-cheese; GT group; factorization algebras</strong></td></tr>
+      <tr><td><strong>170</strong></td><td><strong>Cluster Algebras</strong></td><td><strong>Fomin-Zelevinsky (2002); seeds & mutations; Laurent phenomenon; finite type = Dynkin; E₈: 25080 clusters; cluster categories; Grassmannian; amplituhedron; quantum cluster algebras</strong></td></tr>
+      <tr><td><strong>171</strong></td><td><strong>Persistent Homology</strong></td><td><strong>Edelsbrunner-Zomorodian (2000); filtrations & barcodes; stability theorem; Rips/Čech complexes; TDA pipeline; Ripser; materials/neuro/cosmology; zigzag; E₈ root persistence</strong></td></tr>
+      <tr><td><strong>172</strong></td><td><strong>Information Geometry</strong></td><td><strong>Rao (1945); Amari (1985); Fisher-Rao metric; Chentsov uniqueness; dual α-connections; exponential families; natural gradient; KL=Bregman; quantum Fisher; Ruppeiner thermodynamics</strong></td></tr>
     </table>
     </div>
   </details>
@@ -1476,6 +1484,30 @@ footer a { color: var(--accent); }
   <p><strong>W33 link:</strong> U_q(E₈) deforms the 248-dim Lie algebra; R-matrix solves Yang-Baxter in 248 dimensions; crystal base at q→0 gives combinatorial E₈.</p>
 </section>
 
+<section id="operads">
+  <h2><span class="icon">⊛</span> Pillar 169: Operads</h2>
+  <p>May (1972): operads encode n-ary operations and compositions — Assoc, Comm, Lie operads; Koszul duality Comm^!=Lie, Assoc^!=Assoc; E_n little disks operads; A∞/L∞/E∞ homotopy algebras; Kontsevich formality → deformation quantization; Deligne conjecture; Swiss-cheese; Grothendieck-Teichmüller group.</p>
+  <p><strong>W33 link:</strong> E₈ is an algebra over the Lie operad; Koszul dual Comm encodes E₈ invariant polynomials; operadic composition mirrors W(3,3) multi-input structure.</p>
+</section>
+
+<section id="clusteralg2">
+  <h2><span class="icon">⊛</span> Pillar 170: Cluster Algebras</h2>
+  <p>Fomin-Zelevinsky (2002): seeds, mutations, exchange relations — Laurent phenomenon; finite type = Dynkin diagrams (same as Lie algebras!); cluster categories (2-Calabi-Yau); surfaces & triangulations; Grassmannian Gr(k,n); amplituhedron; quantum cluster algebras; scattering amplitudes in N=4 SYM.</p>
+  <p><strong>W33 link:</strong> E₈ finite-type cluster algebra has 25080 clusters; 128 cluster variables from 120 positive roots + 8 initials; mutation encodes gauge symmetry breaking.</p>
+</section>
+
+<section id="persisthom">
+  <h2><span class="icon">⊛</span> Pillar 171: Persistent Homology</h2>
+  <p>Edelsbrunner-Letscher-Zomorodian (2000): filtrations, barcodes, persistence diagrams — stability theorem (1-Lipschitz); Rips/Čech/alpha complexes; structure theorem (interval decomposition); TDA pipeline; Ripser; applications in materials science, neuroscience, cosmology; zigzag & extended persistence.</p>
+  <p><strong>W33 link:</strong> Persistent homology of E₈ root polytope (240 roots in ℝ⁸) reveals exceptional multi-scale topology; features born at W(3,3) scale persist through E₈.</p>
+</section>
+
+<section id="infogeom2">
+  <h2><span class="icon">⊛</span> Pillar 172: Information Geometry</h2>
+  <p>Rao (1945), Amari (1985): Fisher-Rao metric on statistical manifolds — Chentsov uniqueness theorem; dual α-connections; exponential families = dually flat Hessian geometry; KL = Bregman divergence; natural gradient (Amari 1998); quantum Fisher metric; Ruppeiner thermodynamic geometry; mirror descent.</p>
+  <p><strong>W33 link:</strong> Fisher metric on W(3,3) parameter space defines 9-dim Riemannian manifold; natural gradient flow from W33 to E₈; Killing form = Fisher metric for E₈ adjoint.</p>
+</section>
+
 <!-- ═══════════════════════ OPEN PROBLEMS ═══════════════════════ -->
 <section id="open">
   <h2><span class="icon">?</span> Open Problems</h2>
@@ -1496,7 +1528,7 @@ footer a { color: var(--accent); }
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 2500+ automated tests across 168+ pillars, all passing</p>
+  <p><strong>Tests:</strong> 2600+ automated tests across 172+ pillars, all passing</p>
 </section>
 
 </div><!-- /container -->
