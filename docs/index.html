@@ -193,6 +193,7 @@ footer a { color: var(--accent); }
   <a href="#framework">Framework</a>
   <a href="#pillars">Pillars</a>
   <a href="#rosetta">Rosetta Stone</a>
+  <a href="#fano-bridge">Fano Bridge</a>
   <a href="#predictions">Predictions</a>
   <a href="#validation">Validation</a>
   <a href="#open">Open Problems</a>
@@ -249,6 +250,7 @@ footer a { color: var(--accent); }
     <tr><td>PMNS matrix</td><td class="status-ok">✅ Near-exact</td><td>Error <strong>0.006</strong>; |V<sub>e3</sub>| = 0.148 (exp 0.149)</td></tr>
     <tr><td>Gauge coupling α<sub>GUT</sub></td><td class="status-ok">✅ Derived</td><td>α<sub>GUT</sub> = 1/(8π); α₂⁻¹(M<sub>Z</sub>) within 0.2%</td></tr>
     <tr><td>Grand Architecture (Pillar 120)</td><td class="status-ok">✅ Proved</td><td>Rosetta Stone: self-referential Q₈ → E₆ → N → Q₈ loop</td></tr>
+    <tr><td>G₂ from D₄ Triality (Pillar 121)</td><td class="status-ok">✅ Proved</td><td>Fano Bridge: D₄→G₂ fold, Der(𝕆)=G₂(14), 24/2=12 roots</td></tr>
     <tr><td>Fermion mass hierarchy</td><td class="status-partial">⚠️ Partial</td><td>Texture theorem proved; absolute masses open</td></tr>
     <tr><td>Dark matter mass</td><td class="status-partial">⚠️ Proposed</td><td>24 + 15 sector identified; mass prediction pending</td></tr>
   </table>
@@ -457,6 +459,16 @@ footer a { color: var(--accent); }
     </table>
     </div>
   </details>
+
+  <details class="pillar-group" open>
+    <summary>Beyond the Rosetta Stone (Pillars 121+)</summary>
+    <div class="pillar-content">
+    <table>
+      <tr><th>#</th><th>Theorem</th><th>Key Result</th></tr>
+      <tr><td><strong>121</strong></td><td><strong>G₂ from D₄ Triality — The Fano Bridge</strong></td><td><strong>D₄ triality σ³=I folds to G₂; Fano plane → octonions → Der(𝕆) = G₂(14); 24→12 roots, 28→14 dim</strong></td></tr>
+    </table>
+    </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════ ROSETTA STONE ═══════════════════════ -->
@@ -513,6 +525,69 @@ footer a { color: var(--accent); }
       <tr><td>|W(F₄)| = |W(D₄)| × |Out(D₄)| = 192 × 6</td><td>S₃ = Out(D₄) = triality group inside N</td></tr>
       <tr><td>135 = |PSp(4,3)| / |N| = singular GF(2)⁸</td><td>GF(2) mirror of GF(3) geometry</td></tr>
     </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FANO BRIDGE ═══════════════════════ -->
+<section id="fano-bridge">
+  <h2><span class="icon">⬡</span> The Fano Bridge — Pillar 121</h2>
+  <p>Pillar 121 proves that <strong>G₂ arises as the triality-fixed subalgebra of D₄</strong>,
+  connecting the stabilizer cascade to the Fano plane and octonion algebra through a chain of
+  exact halving identities.</p>
+
+  <div class="rosetta">
+    <h3>D₄ Triality and Dynkin Folding</h3>
+    <p>The triality automorphism σ of D₄ is an explicit 4×4 matrix of order 3 that
+    3-cycles the three legs of the D₄ Dynkin diagram (α₁→α₄→α₃→α₁) while fixing the
+    central node α₂. Folding D₄ by σ produces the G₂ Cartan matrix:</p>
+    <div class="math-block">
+      <span class="eq">A(G₂) = [[2, −1], [−3, 2]]</span> &nbsp;with&nbsp;
+      <span class="eq">||long||² / ||short||² = 3</span>
+    </div>
+
+    <h3>The Halving Chain</h3>
+    <div class="cascade">
+      <div class="node"><div class="name">D₄</div><div class="order">24 roots</div></div>
+      <div class="arrow">→<br><small>÷2</small></div>
+      <div class="node"><div class="name">G₂</div><div class="order">12 roots</div></div>
+      <div class="arrow">&nbsp;</div>
+      <div class="node"><div class="name">D₄</div><div class="order">dim 28</div></div>
+      <div class="arrow">→<br><small>÷2</small></div>
+      <div class="node"><div class="name">G₂</div><div class="order">dim 14</div></div>
+    </div>
+    <p style="text-align:center;color:var(--fg2);font-size:0.9rem;">24 roots → 12 orbits under σ &nbsp;|&nbsp; 28 dimensions → 14 fixed</p>
+
+    <h3>The Fano Plane → Octonions → G₂</h3>
+    <p>The <strong>Fano plane PG(2,2)</strong> — 7 points, 7 lines, 3 points per line —
+    defines the multiplication table of the <strong>octonion algebra 𝕆</strong>.
+    The derivation algebra Der(𝕆) has dimension <strong>14 = dim(G₂)</strong>,
+    computed by Gaussian elimination of the Leibniz rule D(xy) = D(x)y + xD(y).</p>
+
+    <table>
+      <tr><th>Identity</th><th>Meaning</th></tr>
+      <tr><td><strong>24 / 2 = 12</strong></td><td>D₄ roots → G₂ roots under triality fold</td></tr>
+      <tr><td><strong>28 / 2 = 14</strong></td><td>D₄ dimension → G₂ = Der(𝕆) dimension</td></tr>
+      <tr><td><strong>|W(D₄)| = 192 = |N|</strong></td><td>Stabilizer N from Rosetta Stone = Weyl group of D₄</td></tr>
+      <tr><td><strong>|W(F₄)| = 192 × 6 = 1152</strong></td><td>F₄ = D₄ extended by triality S₃</td></tr>
+      <tr><td><strong>14 = 8 + 6</strong></td><td>G₂ ⊃ SL₃: adjoint = sl₃(8) ⊕ (3⊕3̄)(6)</td></tr>
+      <tr><td><strong>Fano: 7 pts, 7 lines</strong></td><td>PG(2,2) defines 𝕆; Der(𝕆) = G₂</td></tr>
+    </table>
+
+    <h3>The Complete Bridge</h3>
+    <div class="loop">
+      <span class="symbol">W(E₆)</span> →
+      stabilizer cascade →
+      <span class="symbol">N = W(D₄)</span> →
+      triality fold →
+      <span class="symbol">G₂ = Der(𝕆)</span> →
+      Fano plane →
+      <span class="symbol">𝕆</span> (octonions) →
+      Cayley-Dickson →
+      <span class="symbol">Q₈</span> →
+      Rosetta loop
+      <br><br>
+      <em>The Fano Bridge completes the D₄ → G₂ → 𝕆 → Q₈ pathway.</em>
+    </div>
   </div>
 </section>
 
@@ -574,7 +649,7 @@ footer a { color: var(--accent); }
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1000+ automated tests across 120+ pillars, all passing</p>
+  <p><strong>Tests:</strong> 1000+ automated tests across 121+ pillars, all passing</p>
 </section>
 
 </div><!-- /container -->

@@ -37,6 +37,7 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | CKM matrix | ✅ | Error **0.0026** — all 9 elements < 3.2% |
 | PMNS matrix | ✅ | Error **0.006** — |V_e3| = 0.148 (exp 0.149) |
 | Grand Architecture (Pillar 120) | ✅ | Rosetta Stone: W(E₆) → 27 lines → Q₈ → E₆ loop |
+| G₂ Triality Fano Bridge (Pillar 121) | ✅ | D₄→G₂ fold, Der(𝕆)=G₂(14), Fano plane |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -51,7 +52,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 120+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 121+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
