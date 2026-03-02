@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>W(3,3)–E₈ Theory — A Finite-Geometry Theory of Everything</title>
-<meta name="description" content="The symplectic polar space W(3,3) over GF(3) encodes the Standard Model gauge structure, three chiral generations, and mixing matrices through an emergent E₈ root system.">
-<style>
+#!/usr/bin/env python3
+"""Build the W(3,3)-E8 Theory GitHub Pages site.
 
+Generates docs/index.html as a beautiful, self-contained single-page site.
+Run:  python docs/build_site.py
+"""
+
+import pathlib
+
+DOCS = pathlib.Path(__file__).parent
+
+CSS = r"""
 :root {
   --bg: #0d1117;
   --bg2: #161b22;
@@ -168,7 +171,17 @@ footer a { color: var(--accent); }
   nav { gap: 0.1rem; }
   nav a { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
 }
+"""
 
+HTML = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W(3,3)–E₈ Theory — A Finite-Geometry Theory of Everything</title>
+<meta name="description" content="The symplectic polar space W(3,3) over GF(3) encodes the Standard Model gauge structure, three chiral generations, and mixing matrices through an emergent E₈ root system.">
+<style>
+""" + CSS + r"""
 </style>
 </head>
 <body>
@@ -586,3 +599,9 @@ footer a { color: var(--accent); }
 
 </body>
 </html>
+"""
+
+# Write the site
+(DOCS / "index.html").write_text(HTML.strip(), encoding="utf-8")
+lines = len(HTML.strip().splitlines())
+print(f"docs/index.html written — {lines} lines")

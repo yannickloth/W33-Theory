@@ -1,0 +1,5 @@
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+C:\Users\wiljd\AppData\Local\Programs\Python\Python311\Lib\threading.py:1139: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+2 skipped in 193.44s (0:03:13)

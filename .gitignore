@@ -86,6 +86,12 @@ tmp*
 !TOE_edge_orient_map_v01_20260227_bundle.zip
 .ci-logs/
 .claude/
+.logs/
+
+# Archived exploration, temp, and bundle directories
+archive/dirs/
+archive/zip/
+archive/misc/
 
 # Claude scratch workspace
 claude_workspace/
@@ -109,7 +115,8 @@ data/*
 !data/atlas/**
 
 # Local scratch (do not commit)
-THEORY_PART_CLXXVI_INFORMATION_STRUCTURE.py
 scripts/find_golay_ideals.py
 scripts/golay_derivations.py
-tests/test_information_structure.py
+
+# Archived temp directories (moved during repo cleanup)
+archive/dirs/

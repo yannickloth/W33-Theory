@@ -1,7 +1,7 @@
 import importlib.util
 import random
 
-spec = importlib.util.spec_from_file_location("the_exact_map", "THE_EXACT_MAP.py")
+spec = importlib.util.spec_from_file_location("the_exact_map", "exploration/THE_EXACT_MAP.py")
 exact = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(exact)
 

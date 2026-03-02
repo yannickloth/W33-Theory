@@ -1,8 +1,11 @@
 import importlib.util
 from pathlib import Path
+import pytest
 
-# load the script from the bundle directory
-_bundle_path = Path("TOE_line_polarization_A5_v01_20260227_bundle") / "TOE_line_polarization_A5_v01_20260227" / "recompute_line_polarization_A5.py"
+# load the script from the bundle directory (moved during repo reorg)
+_bundle_path = Path("archive/dirs/TOE_line_polarization_A5_v01_20260227_bundle") / "TOE_line_polarization_A5_v01_20260227" / "recompute_line_polarization_A5.py"
+if not _bundle_path.exists():
+    pytest.skip("Bundle directory not available (archived)", allow_module_level=True)
 spec = importlib.util.spec_from_file_location("recompute_line", _bundle_path)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)

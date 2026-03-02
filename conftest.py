@@ -1,5 +1,14 @@
 import importlib
+import sys
 from pathlib import Path
+
+# Add pillars/ and exploration/ to import path so test files
+# can import from THEORY_PART_* modules after repo reorganization.
+_root = Path(__file__).resolve().parent
+for _subdir in ("pillars", "exploration"):
+    _p = str(_root / _subdir)
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 # Detect availability of optional heavy dependencies
 _optional_modules = {
