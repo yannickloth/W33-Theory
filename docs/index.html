@@ -196,6 +196,7 @@ footer a { color: var(--accent); }
   <a href="#fano-bridge">Fano Bridge</a>
   <a href="#unit-chain">Unit Chain</a>
   <a href="#moonshine">Moonshine</a>
+  <a href="#heterotic">Heterotic</a>
   <a href="#predictions">Predictions</a>
   <a href="#validation">Validation</a>
   <a href="#open">Open Problems</a>
@@ -256,6 +257,9 @@ footer a { color: var(--accent); }
     <tr><td>Cayley Integers (Pillar 122)</td><td class="status-ok">✅ Proved</td><td>Q₈⊂Hurwitz⊂Cayley=E₈, unit chain 8→24→240</td></tr>
     <tr><td>E₈ Theta Series (Pillar 123)</td><td class="status-ok">✅ Proved</td><td>Θ_{E₈}=E₄, j-invariant, Ramanujan τ, moonshine</td></tr>
     <tr><td>Leech Lattice (Pillar 124)</td><td class="status-ok">✅ Proved</td><td>196884=196560+4·81, W(3,3)→E₈→j→Monster chain</td></tr>
+    <tr><td>Binary Golay Code (Pillar 125)</td><td class="status-ok">✅ Proved</td><td>[24,12,8] code, 759 octads, S(5,8,24), |M₂₄| divides |Co₀|</td></tr>
+    <tr><td>Monstrous Moonshine (Pillar 126)</td><td class="status-ok">✅ Proved</td><td>McKay E₈ obs, j decomposition 196884=1+196883, 744=3·248</td></tr>
+    <tr><td>Heterotic String (Pillar 127)</td><td class="status-ok">✅ Proved</td><td>E₈×E₈ (496 dim), E₄²=E₈, 3 generations from E₈→E₆×SU(3)</td></tr>
     <tr><td>Fermion mass hierarchy</td><td class="status-partial">⚠️ Partial</td><td>Texture theorem proved; absolute masses open</td></tr>
     <tr><td>Dark matter mass</td><td class="status-partial">⚠️ Proposed</td><td>24 + 15 sector identified; mass prediction pending</td></tr>
   </table>
@@ -474,6 +478,9 @@ footer a { color: var(--accent); }
       <tr><td><strong>122</strong></td><td><strong>Cayley Integers: 240 Units = E₈ Roots</strong></td><td><strong>Q₈(8) ⊂ Hurwitz(24) ⊂ Cayley(240) = E₈; 112+128 decomposition; det(E₈ Cartan)=1; |W(E₈)|/240=|W(E₇)|</strong></td></tr>
       <tr><td><strong>123</strong></td><td><strong>E₈ Theta Series: Modular Forms</strong></td><td><strong>Θ_{E₈} = E₄; a(n)=240·σ₃(n); j(τ) = q⁻¹+744+196884q; 744=6!+24; E₄²=E₈</strong></td></tr>
       <tr><td><strong>124</strong></td><td><strong>The Leech Lattice: Gateway to the Monster</strong></td><td><strong>Λ₂₄ = E₈³+Golay; kiss=196560; 196884=196560+4·81; Aut=Co₀; W(3,3)→E₈→j→Monster</strong></td></tr>
+      <tr><td><strong>125</strong></td><td><strong>Binary Golay Code: M₂₄ and 759 Octads</strong></td><td><strong>[24,12,8] self-dual; S(5,8,24); 759=3·253; |M₂₄|=244823040; 24=3·8 generations</strong></td></tr>
+      <tr><td><strong>126</strong></td><td><strong>Monstrous Moonshine: McKay's E₈ Observation</strong></td><td><strong>9 involution classes ↔ affine Ê₈; marks sum=30=h(E₈); 744=3·248; Monster irrep decompositions</strong></td></tr>
+      <tr><td><strong>127</strong></td><td><strong>Heterotic String: E₈×E₈ and 496 Dimensions</strong></td><td><strong>496=2·248 (perfect number); E₄²=E₈; 480=2·240 roots; E₈→E₆×SU(3): three 27-plet generations</strong></td></tr>
     </table>
     </div>
   </details>
@@ -651,7 +658,7 @@ footer a { color: var(--accent); }
 
 <!-- ═══════════════════════ MOONSHINE ═══════════════════════ -->
 <section id="moonshine">
-  <h2><span class="icon">☾</span> Moonshine — Pillar 124</h2>
+  <h2><span class="icon">☾</span> Moonshine — Pillars 124–126</h2>
   <p>Pillar 124 completes the chain from <strong>W(3,3) to the Monster group</strong>
   via the Leech lattice, proving the moonshine equation that links
   the theory's 81 points to the largest sporadic simple group.</p>
@@ -698,6 +705,47 @@ footer a { color: var(--accent); }
       <tr><td><strong>744</strong></td><td>= 6! + 24 (j-invariant constant term)</td></tr>
       <tr><td><strong>196884</strong></td><td>= 196560 + 4·81 = 1 + 196883 (first moonshine coefficient)</td></tr>
       <tr><td><strong>Co₀</strong></td><td>|Aut(Λ₂₄)| = 8.3×10¹⁸ (Conway group)</td></tr>
+      <tr><td><strong>759</strong></td><td>= 3·253 Golay octads; S(5,8,24) Steiner system (Pillar 125)</td></tr>
+      <tr><td><strong>|M₂₄|</strong></td><td>= 244823040 = 2¹⁰·3³·5·7·11·23 (Mathieu group)</td></tr>
+      <tr><td><strong>4372</strong></td><td>= 2¹² + C(24,2) = |Golay| + |pairs| (T_{2A} coeff, Pillar 126)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ HETEROTIC ═══════════════════════ -->
+<section id="heterotic">
+  <h2><span class="icon">⚛</span> Heterotic String — Pillar 127</h2>
+  <p>Pillar 127 connects the W(3,3) theory to the <strong>heterotic string</strong>,
+  showing that the 240 edges generate <em>half</em> the gauge bosons of E₈×E₈,
+  the most phenomenologically promising string theory.</p>
+
+  <div class="rosetta">
+    <h3>The 496-Dimensional Gauge Group</h3>
+    <div class="math-block">
+      <span class="eq">dim(E₈ × E₈) = 248 + 248 = 496 = 2⁴(2⁵ − 1) = third perfect number</span>
+    </div>
+
+    <div class="cascade">
+      <div class="node"><div class="name">W(3,3)</div><div class="order">240 edges</div></div>
+      <div class="arrow">×2</div>
+      <div class="node"><div class="name">E₈×E₈</div><div class="order">480 roots</div></div>
+      <div class="arrow">+16</div>
+      <div class="node"><div class="name">496</div><div class="order">gauge dim</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="name">Heterotic</div><div class="order">string</div></div>
+    </div>
+
+    <h3>Three Generations from E₈ Breaking</h3>
+    <p>E₈ → E₆ × SU(3): <strong>248 = (1,8) + (78,1) + (27,3) + (27̄,3̄)</strong></p>
+    <p>The <strong>(27,3)</strong> gives <em>three copies</em> of the fundamental 27 of E₆ —
+    precisely the three fermion generations. And 27 = number of lines on a cubic surface!</p>
+
+    <table>
+      <tr><th>Identity</th><th>Meaning</th></tr>
+      <tr><td><strong>E₄² = E₈</strong></td><td>Θ_{E₈⊕E₈} = Θ_{D₁₆⁺} (why both heterotic strings exist)</td></tr>
+      <tr><td><strong>26 − 10 = 16</strong></td><td>Compactification dimension = rank(E₈×E₈)</td></tr>
+      <tr><td><strong>τ(2) = −24</strong></td><td>Ramanujan tau = −|Hurwitz units|</td></tr>
+      <tr><td><strong>12 = deg(W(3,3))</strong></td><td>= dim(SU(3)×SU(2)×U(1)) = Standard Model dimension</td></tr>
     </table>
   </div>
 </section>
@@ -760,7 +808,7 @@ footer a { color: var(--accent); }
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1000+ automated tests across 124+ pillars, all passing</p>
+  <p><strong>Tests:</strong> 1000+ automated tests across 127+ pillars, all passing</p>
 </section>
 
 </div><!-- /container -->

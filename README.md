@@ -41,6 +41,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Cayley Integer Unit Chain (Pillar 122) | ✅ | Q₈(8)⊂Hurwitz(24)⊂Cayley(240)=E₈ roots |
 | E₈ Theta Series (Pillar 123) | ✅ | Θ_{E₈}=E₄, a(n)=240·σ₃(n), j-invariant |
 | Leech Lattice Moonshine (Pillar 124) | ✅ | 196884=196560+4·81, Λ₂₄→Co₀→Monster chain |
+| Binary Golay Code (Pillar 125) | ✅ | [24,12,8] code, 759 octads, S(5,8,24), M₂₄ |
+| Monstrous Moonshine (Pillar 126) | ✅ | McKay Ê₈, j-decomposition, 744=3·248 |
+| Heterotic String (Pillar 127) | ✅ | E₈×E₈ (496 dim), 3 generations, E₄²=E₈ |
 | Fermion mass hierarchy | ⚠️ | Texture theorem proved; absolute masses open |
 | Dark matter sector | ⚠️ | 24+15 states identified; mass predictions open |
 
@@ -55,7 +58,7 @@ python -m pytest tests/ -q          # ~1000 tests
 
 `
 W33-Theory/
-├── pillars/        # 124+ pillar verification scripts (THEORY_PART_*.py)
+├── pillars/        # 127+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
 ├── tests/          # 1000+ automated tests
 ├── tools/          # Geometric computation utilities
