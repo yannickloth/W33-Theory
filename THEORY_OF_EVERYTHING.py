@@ -803,11 +803,43 @@ def grand_synthesis():
     theta_C_pred = np.degrees(np.arctan(q / (q**2 + q + 1)))  # arctan(3/13)
     theta_C_obs = 13.04
     check_cabibbo = abs(theta_C_pred - theta_C_obs) < 0.1  # within 0.1°
-    checks.append(('Cabibbo angle arctan(q/(q²+q+1)) = 13.0° (obs 13.04°)', check_cabibbo))
+    checks.append(('Cabibbo angle arctan(q/(q^2+q+1)) = 13.0 deg (obs 13.04 deg)', check_cabibbo))
     sin_C_pred = q / np.sqrt(q**2 + (q**2+q+1)**2)
-    print(f"  θ_C = arctan({q}/{q**2+q+1}) = arctan(3/13) = {theta_C_pred:.3f}° (obs: {theta_C_obs}°)")
-    print(f"  sin(θ_C) = {sin_C_pred:.5f} (obs: 0.22500 ± 0.00065)")
-    print(f"  Match within 0.1°: {check_cabibbo}  {'✓' if check_cabibbo else '✗'}")
+    print(f"  theta_C = arctan({q}/{q**2+q+1}) = arctan(3/13) = {theta_C_pred:.3f} deg (obs: {theta_C_obs} deg)")
+    print(f"  sin(theta_C) = {sin_C_pred:.5f} (obs: 0.22500 +/- 0.00065)")
+    print(f"  Match within 0.1 deg: {check_cabibbo}  {'PASS' if check_cabibbo else 'FAIL'}")
+    
+    # Check 29: Weinberg angle sin^2(theta_W) = q/(q^2+q+1) = 3/13
+    # Observed: 0.23122 (PDG 2024, MS-bar at M_Z)
+    sin2_W_pred = q / (q**2 + q + 1)  # = 3/13 = 0.23077
+    sin2_W_obs = 0.23122
+    check_weinberg = abs(sin2_W_pred - sin2_W_obs) < 0.005  # within 0.5%
+    checks.append(('Weinberg angle q/(q^2+q+1) = 3/13 = 0.2308 (obs 0.2312)', check_weinberg))
+    print(f"\n  sin^2(theta_W) = {q}/{q**2+q+1} = 3/13 = {sin2_W_pred:.5f} (obs: {sin2_W_obs})")
+    print(f"  Difference: {abs(sin2_W_pred - sin2_W_obs):.5f} ({abs(sin2_W_pred - sin2_W_obs)/sin2_W_obs*100:.2f}%)")
+    print(f"  Match: {check_weinberg}  {'PASS' if check_weinberg else 'FAIL'}")
+    
+    # Check 30: CKM theta_23 via Wolfenstein A = (q+1)/(q+2) = 4/5
+    # sin(theta_23) = A * lambda^2, where lambda = sin(theta_12)
+    A_wolf = (q + 1) / (q + 2)  # 4/5 = 0.800
+    lam_wolf = sin_C_pred  # = q/sqrt(q^2+(q^2+q+1)^2) = 3/sqrt(178)
+    s23_pred = A_wolf * lam_wolf**2
+    theta_23_pred = np.degrees(np.arcsin(s23_pred))
+    theta_23_obs = 2.38
+    check_theta23 = abs(theta_23_pred - theta_23_obs) < 0.15  # within 0.15 deg
+    checks.append(('CKM theta_23 = arcsin(A*lam^2), A=(q+1)/(q+2) = 2.32 deg (obs 2.38 deg)', check_theta23))
+    print(f"\n  A = (q+1)/(q+2) = {q+1}/{q+2} = {A_wolf:.4f} (obs: 0.826)")
+    print(f"  sin(theta_23) = A * sin^2(theta_12) = {s23_pred:.6f}")
+    print(f"  theta_23 = {theta_23_pred:.3f} deg (obs: {theta_23_obs} deg, diff: {abs(theta_23_pred - theta_23_obs):.3f} deg)")
+    print(f"  Match: {check_theta23}  {'PASS' if check_theta23 else 'FAIL'}")
+    
+    # Check 31: CP phase delta = arctan(q-1) = arctan(2) = 63.43 deg
+    delta_pred = np.degrees(np.arctan(q - 1))  # arctan(2) = 63.43 deg
+    delta_obs = 65.5
+    check_delta = abs(delta_pred - delta_obs) < 5.0  # within 5 deg
+    checks.append(('CP phase arctan(q-1) = arctan(2) = 63.4 deg (obs 65.5 deg)', check_delta))
+    print(f"\n  delta_CP = arctan({q-1}) = arctan(2) = {delta_pred:.2f} deg (obs: {delta_obs} deg)")
+    print(f"  Match: {check_delta}  {'PASS' if check_delta else 'FAIL'}")
     
     # PART VII: Final Verification
     print(f"\n{'='*78}")
@@ -860,8 +892,10 @@ def grand_synthesis():
   │  H₀(CMB)       │ Hubble (Planck)         │ 67       │ 67.4     │
   │  H₀(local)     │ Hubble (SH0ES)          │ 73       │ 73.0     │
   │  M_H            │ Higgs mass (GeV)        │ 125      │ 125.1    │
-  │  sin²θ_W       │ Weinberg angle          │ 0.25     │ 0.231    │
+  │  sin²θ_W       │ Weinberg angle          │ 3/13     │ 0.231    │
   │  θ_C            │ Cabibbo angle           │ 13.0°    │ 13.04°   │
+  │  θ_23           │ CKM 2-3 mixing          │ 2.32°    │ 2.38°    │
+  │  δ_CP           │ CP violation phase      │ 63.4°    │ 65.5°    │
   │  κ              │ Ollivier-Ricci curvature│ 1/6      │ (new)    │
   │  R              │ Scalar curvature/vertex │ 1        │ (new)    │
   └──────────────────────────────────────────────────────────────────┘

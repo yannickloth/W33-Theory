@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 28/28 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 31/31 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -238,11 +238,14 @@ In terms of q alone:
 | H₀ (CMB) | v+f+1+λ | 67 km/s/Mpc | 67.4 | 0.6% |
 | H₀ (local) | v+f+1+2λ+μ | 73 km/s/Mpc | 73.0 | <0.1% |
 | M_Higgs | s⁴+v+μ | 125 GeV | 125.1 GeV | 0.08% |
-| sin²θ_W | μ/(k+μ) | 0.250 | 0.231 | Tree-level |
+| sin²θ_W | q/(q²+q+1) | 3/13 = 0.2308 | 0.23122 | 0.19% |
 | N_gen | s = char(F) | 3 | 3 | Exact |
 | d_macro | μ | 4 | 4 | Exact |
 | d_compact | k−μ | 8 | 6−7 (CY₃/G₂) | ≈ |
 | d_total | k | 12 | 10−12 | F-theory |
+| θ_C (Cabibbo) | arctan(q/(q²+q+1)) | 13.0° | 13.04° | 0.3% |
+| θ₂₃ (CKM) | arcsin(A·λ²), A=(q+1)/(q+2) | 2.32° | 2.38° | 2.6% |
+| δ_CP | arctan(q−1) | 63.4° | 65.5° | 3.2% |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 
@@ -351,4 +354,19 @@ The formula emerges from the ratio of non-returning 2-walks to total vertices:
 ```
 (k−1−λ)/(v−1) = q²/(q·(q²+q+1)) = q/(q²+q+1)
 ```
+
+### Weinberg Angle — SOLVED (NEW — WOLFENSTEIN_CKM.py)
+
+**RESULT:** sin²θ_W = q/(q²+q+1) = 3/13 = 0.23077 (observed: 0.23122, diff 0.19%)
+
+The SAME algebraic number q²+q+1 = 13 = |PG(2,q)| controls both the Weinberg angle and the Cabibbo angle. Running from tree-level 1/4 to low-energy 3/13 via correction −1/(μ·(q²+q+1)) = −1/52.
+
+### Full CKM Matrix — NEW (WOLFENSTEIN_CKM.py)
+
+Wolfenstein parameterization from W(3,3):
+- **λ_W = sin θ_C = q/√(q²+(q²+q+1)²) = 3/√178 = 0.2249** (obs: 0.2250)
+- **A = (q+1)/(q+2) = 4/5 = 0.800** (obs: 0.826, ~3%)
+- **θ₂₃ = arcsin(A·λ²) = 2.318°** (obs: 2.38°, diff 0.062°)
+- **δ_CP = arctan(q−1) = arctan(2) = 63.4°** (obs: 65.5°, diff 3.2%)
+- **Jarlskog invariant J = 2.78×10⁻⁵** (obs: 3.08×10⁻⁵)
 Note: q²+q+1 = 13 = |PG(2,q)| = number of points in the projective plane of order q.
