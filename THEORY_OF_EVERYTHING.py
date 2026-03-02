@@ -858,6 +858,25 @@ def grand_synthesis():
     print(f"  Wolfenstein eta = 2*lambda*sqrt(q/5) = {2*lam_wolf*np.sqrt(q/5):.4f} (obs: 0.348)")
     print(f"  Match: {check_theta13}  {'PASS' if check_theta13 else 'FAIL'}")
     
+    # Check 33: Strong coupling constant alpha_s(M_Z) = 9/76
+    # alpha_3^{-1} = k - mu + mu/q^2 = 12 - 4 + 4/9 = 76/9
+    # Equivalently: alpha_3 = q^2 / ((q+1)*((q+1)^2 + q)) = 9/(4*19) = 9/76
+    # Tree level: k - mu = 8  (color valence)
+    # 1/q^2 correction: +mu/q^2 = +4/9  (finite geometry correction)
+    alpha3_inv = k - mu + mu / q**2  # = 76/9
+    alpha3_pred = 1.0 / alpha3_inv   # = 9/76
+    alpha3_obs = 0.1180
+    alpha3_err = 0.0009
+    alpha3_sigma = abs(alpha3_pred - alpha3_obs) / alpha3_err
+    check_alpha3 = alpha3_sigma < 2.0  # within 2 sigma
+    checks.append(('Strong coupling alpha_s = 9/76 = 0.11842 (obs 0.1180, 0.47 sigma)', check_alpha3))
+    print(f"\n  alpha_s^{{-1}} = k - mu + mu/q^2 = {k} - {mu} + {mu}/{q**2}")
+    print(f"  = {k - mu} + {mu/q**2:.4f} = {alpha3_inv:.6f} = 76/9")
+    print(f"  alpha_s = 9/76 = {alpha3_pred:.6f}")
+    print(f"  Observed: {alpha3_obs} +/- {alpha3_err}")
+    print(f"  Deviation: {alpha3_sigma:.2f} sigma ({abs(alpha3_pred - alpha3_obs)/alpha3_obs*100:.2f}%)")
+    print(f"  Match: {check_alpha3}  {'PASS - WITHIN EXPERIMENTAL ERROR!' if check_alpha3 else 'FAIL'}")
+    
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -910,6 +929,7 @@ def grand_synthesis():
   │  H₀(local)     │ Hubble (SH0ES)          │ 73       │ 73.0     │
   │  M_H            │ Higgs mass (GeV)        │ 125      │ 125.1    │
   │  sin²θ_W       │ Weinberg angle          │ 3/13     │ 0.231    │
+  │  α_s(M_Z)      │ Strong coupling         │ 9/76     │ 0.1180   │
   │  θ_C            │ Cabibbo angle           │ 13.0°    │ 13.04°   │
   │  θ_23           │ CKM 2-3 mixing          │ 2.32°    │ 2.38°    │
   │  θ_13           │ CKM 1-3 mixing          │ 0.203°   │ 0.201°   │
