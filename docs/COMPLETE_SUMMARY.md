@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 63/63 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 68/68 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -310,6 +310,11 @@ Unification gap: **0.0%** at M_GUT ≈ 2.2 × 10¹⁶ GeV.
 | m_H (GeV) | vq+μ+1 = 120+5 | 125 | 125.10±0.14 | 0.71σ |
 | N_SM params | Φ₃+Φ₆−1 = 13+7−1 | 19 | 19 | Exact |
 | d_UV/d_IR | λ/μ spectral dim | 2→4 | CDT/AS | structural |
+| M_Z (GeV) | Φ₃×Φ₆ = 13×7 | 91 | 91.19 | 0.21% |
+| SO(10) spinor | 2^((k−λ)/2)/2 | 16 | 16 | Exact |
+| N_eff | q+μ/(Φ₃Φ₆) = 3+4/91 | 3.044 | 3.044 | <0.001 |
+| log₁₀(M_GUT/M_EW) | 2Φ₆ = dim(adj G₂) | 14 | 13.96 | 0.3% |
+| m_τ (MeV) | Koide Q=2/3 prediction | 1777.0 | 1776.86 | 0.01% |
 
 Parameters: v=40, k=12, λ=2, μ=4, s=3, f=24 (eigenvalue-2 multiplicity).
 Φ₃(q) = q²+q+1 = 13, Φ₆(q) = q²−q+1 = 7 (cyclotomic polynomials).
@@ -408,6 +413,25 @@ Cosmological constant hierarchy — the "worst prediction in physics" — resolv
   - The 7 extra neutrino parameters (3 masses, 3 angles, 1 phase) = Φ₆
 - **Spectral dimension flow:** d_IR = μ = 4 → d_UV = λ = 2
   - Matches CDT, Hořava-Lifshitz, asymptotic safety, LQG predictions
+
+### Z Mass, N_eff & Koide Prediction
+
+Z boson mass from cyclotomic pair:
+- **M_Z = Φ₃ × Φ₆ = 13 × 7 = 91 GeV** (obs: 91.19, 0.21%)
+
+Effective neutrino species:
+- **N_eff = q + μ/(Φ₃Φ₆) = 3 + 4/91 = 3.044** (SM prediction: 3.044, EXACT!)
+- The 0.044 correction = e⁺e⁻ annihilation heating correction
+
+SO(10) spinor from string compactification dimension:
+- **2^((k-λ)/2)/2 = 2⁵/2 = 16** = one SM generation + right-handed neutrino
+
+GUT-to-EW hierarchy:
+- **log₁₀(M_GUT/M_EW) = 2Φ₆ = 14** = dim(adj G₂) (obs: 13.96)
+
+Koide tau mass prediction:
+- **m_τ(pred) = 1777.0 MeV** (obs: 1776.86 ± 0.12 MeV, **0.01%!**)
+- From Q = (q-1)/q = 2/3 with known m_e, m_μ
 
 ### Fermion Mass Relations
 
