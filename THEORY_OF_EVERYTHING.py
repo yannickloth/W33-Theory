@@ -841,6 +841,23 @@ def grand_synthesis():
     print(f"\n  delta_CP = arctan({q-1}) = arctan(2) = {delta_pred:.2f} deg (obs: {delta_obs} deg)")
     print(f"  Match: {check_delta}  {'PASS' if check_delta else 'FAIL'}")
     
+    # Check 32: CKM theta_13 = arcsin(A * lambda^4 * sqrt(q))
+    # sin(theta_13) = A * sin^4(theta_C) * sqrt(q)
+    # = (4/5) * (3/sqrt(178))^4 * sqrt(3) = 0.003542
+    # Observed: 0.00351 +/- 0.00013 (WITHIN EXPERIMENTAL ERROR!)
+    s13_pred = A_wolf * lam_wolf**4 * np.sqrt(q)
+    s13_obs = 0.00351
+    s13_err = 0.00013
+    theta_13_pred = np.degrees(np.arcsin(s13_pred))
+    check_theta13 = abs(s13_pred - s13_obs) < 2 * s13_err  # within 2 sigma
+    checks.append(('CKM theta_13: sin = A*lam^4*sqrt(q) = 0.00354 (obs 0.00351, 0.9%)', check_theta13))
+    print(f"\n  sin(theta_13) = A * lambda^4 * sqrt(q)")
+    print(f"  = {A_wolf:.3f} * ({lam_wolf:.5f})^4 * sqrt({q})")
+    print(f"  = {s13_pred:.6f} (obs: {s13_obs} +/- {s13_err})")
+    print(f"  theta_13 = {theta_13_pred:.4f} deg (obs: 0.201 deg)")
+    print(f"  Wolfenstein eta = 2*lambda*sqrt(q/5) = {2*lam_wolf*np.sqrt(q/5):.4f} (obs: 0.348)")
+    print(f"  Match: {check_theta13}  {'PASS' if check_theta13 else 'FAIL'}")
+    
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -895,6 +912,7 @@ def grand_synthesis():
   │  sin²θ_W       │ Weinberg angle          │ 3/13     │ 0.231    │
   │  θ_C            │ Cabibbo angle           │ 13.0°    │ 13.04°   │
   │  θ_23           │ CKM 2-3 mixing          │ 2.32°    │ 2.38°    │
+  │  θ_13           │ CKM 1-3 mixing          │ 0.203°   │ 0.201°   │
   │  δ_CP           │ CP violation phase      │ 63.4°    │ 65.5°    │
   │  κ              │ Ollivier-Ricci curvature│ 1/6      │ (new)    │
   │  R              │ Scalar curvature/vertex │ 1        │ (new)    │

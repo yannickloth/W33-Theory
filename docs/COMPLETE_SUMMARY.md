@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 31/31 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 32/32 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -369,4 +369,7 @@ Wolfenstein parameterization from W(3,3):
 - **θ₂₃ = arcsin(A·λ²) = 2.318°** (obs: 2.38°, diff 0.062°)
 - **δ_CP = arctan(q−1) = arctan(2) = 63.4°** (obs: 65.5°, diff 3.2%)
 - **Jarlskog invariant J = 2.78×10⁻⁵** (obs: 3.08×10⁻⁵)
+- **sin(θ₁₃) = A·λ⁴·√q = 0.003542** (obs: 0.00351±0.00013, 0.9%, within experimental error!)
+- **η̄ = 2λ√(q/5) = 0.3484** (obs: 0.348±0.010, essentially exact!)
+- **ρ̄ = λ√(q/5) = 0.1742** (obs: 0.159±0.010)
 Note: q²+q+1 = 13 = |PG(2,q)| = number of points in the projective plane of order q.
