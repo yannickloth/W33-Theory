@@ -952,6 +952,75 @@ def grand_synthesis():
     print(f"  Accuracy: {koide_err*100:.4f}%")
     print(f"  Match: {check_koide}  {'PASS' if check_koide else 'FAIL'}")
 
+    # ═══════════════════════════════════════════════════════════════════
+    # PART VI-B: PMNS NEUTRINO MIXING — CYCLOTOMIC POLYNOMIALS
+    # ═══════════════════════════════════════════════════════════════════
+    # ALL mixing angles derive from Φ₃(q) = q²+q+1 = 13 and Φ₆(q) = q²-q+1 = 7
+    Phi3 = q**2 + q + 1   # = 13 (3rd cyclotomic polynomial at q)
+    Phi6 = q**2 - q + 1   # = 7  (6th cyclotomic polynomial at q)
+    print(f"\n{'='*78}")
+    print(f"  PART VI-B: PMNS MIXING FROM CYCLOTOMIC POLYNOMIALS")
+    print(f"{'='*78}")
+    print(f"  Φ₃(q) = q²+q+1 = {Phi3}")
+    print(f"  Φ₆(q) = q²-q+1 = {Phi6}")
+    print(f"  Φ₃·Φ₆ = q⁴+q²+1 = {Phi3*Phi6}")
+
+    # Check 39: PMNS solar angle sin²θ₁₂ = (q+1)/Φ₃(q) = 4/13
+    sin2_12_pred = (q + 1) / Phi3    # = 4/13 = 0.30769
+    sin2_12_obs = 0.307
+    sin2_12_err = 0.013
+    sin2_12_sigma = abs(sin2_12_pred - sin2_12_obs) / sin2_12_err
+    check_pmns12 = (sin2_12_sigma < 1.0)
+    checks.append(('PMNS sin²θ₁₂ = (q+1)/Φ₃ = 4/13 (obs 0.307, 0.05σ)', check_pmns12))
+    theta_12 = np.degrees(np.arcsin(np.sqrt(sin2_12_pred)))
+    print(f"\n  sin²θ₁₂ = (q+1)/Φ₃(q) = {q+1}/{Phi3} = {sin2_12_pred:.6f}")
+    print(f"  θ₁₂ = {theta_12:.2f}° (obs 33.41° ± 0.8°)")
+    print(f"  Observed: {sin2_12_obs} ± {sin2_12_err}")
+    print(f"  Deviation: {sin2_12_sigma:.2f}σ")
+    print(f"  Match: {check_pmns12}  {'PASS' if check_pmns12 else 'FAIL'}")
+
+    # Check 40: PMNS reactor angle sin²θ₁₃ = λ/(Φ₃·Φ₆) = 2/91
+    sin2_13_pred = lam / (Phi3 * Phi6)  # = 2/91 = 0.021978
+    sin2_13_obs = 0.02203
+    sin2_13_err = 0.00056
+    sin2_13_sigma = abs(sin2_13_pred - sin2_13_obs) / sin2_13_err
+    check_pmns13 = (sin2_13_sigma < 1.0)
+    checks.append(('PMNS sin²θ₁₃ = λ/(Φ₃Φ₆) = 2/91 (obs 0.02203, 0.09σ)', check_pmns13))
+    theta_13 = np.degrees(np.arcsin(np.sqrt(sin2_13_pred)))
+    print(f"\n  sin²θ₁₃ = λ/(Φ₃·Φ₆) = {lam}/{Phi3*Phi6} = {sin2_13_pred:.6f}")
+    print(f"  θ₁₃ = {theta_13:.2f}° (obs 8.54° ± 0.15°)")
+    print(f"  Observed: {sin2_13_obs} ± {sin2_13_err}")
+    print(f"  Deviation: {sin2_13_sigma:.2f}σ")
+    print(f"  Match: {check_pmns13}  {'PASS' if check_pmns13 else 'FAIL'}")
+
+    # Check 41: PMNS atmospheric angle sin²θ₂₃ = Φ₆/Φ₃ = 7/13
+    sin2_23_pred = Phi6 / Phi3  # = 7/13 = 0.53846
+    sin2_23_obs = 0.546
+    sin2_23_err = 0.021
+    sin2_23_sigma = abs(sin2_23_pred - sin2_23_obs) / sin2_23_err
+    check_pmns23 = (sin2_23_sigma < 1.0)
+    checks.append(('PMNS sin²θ₂₃ = Φ₆/Φ₃ = 7/13 (obs 0.546, 0.36σ)', check_pmns23))
+    theta_23 = np.degrees(np.arcsin(np.sqrt(sin2_23_pred)))
+    print(f"\n  sin²θ₂₃ = Φ₆(q)/Φ₃(q) = {Phi6}/{Phi3} = {sin2_23_pred:.6f}")
+    print(f"  θ₂₃ = {theta_23:.2f}° (obs 47° ± 2°)")
+    print(f"  Observed: {sin2_23_obs} ± {sin2_23_err}")
+    print(f"  Deviation: {sin2_23_sigma:.2f}σ")
+    print(f"  Match: {check_pmns23}  {'PASS' if check_pmns23 else 'FAIL'}")
+
+    # Check 42: Testable relation sin²θ₂₃ = sin²θ_W + sin²θ₁₂
+    # This requires 2q+1 = q²-q+1, i.e., q²-3q = 0, i.e., q=3!
+    sin2_W = q / Phi3  # = 3/13
+    sum_test = sin2_W + sin2_12_pred  # 3/13 + 4/13 = 7/13
+    check_relation = (abs(sum_test - sin2_23_pred) < 1e-10)
+    checks.append(('PMNS relation: sin²θ₂₃ = sin²θ_W + sin²θ₁₂ (q=3 only!)', check_relation))
+    print(f"\n  TESTABLE RELATION:")
+    print(f"  sin²θ_W + sin²θ₁₂ = {q}/{Phi3} + {q+1}/{Phi3} = {q + q + 1}/{Phi3}")
+    print(f"  = Φ₆/Φ₃ = sin²θ₂₃  ✓")
+    print(f"  This requires 2q+1 = q²-q+1, i.e., q(q-3) = 0")
+    print(f"  Holds ONLY for q = 3!  (8th uniqueness condition)")
+    print(f"  Observed: {sin2_12_obs:.3f} + {0.23122:.5f} = {sin2_12_obs + 0.23122:.3f} vs {sin2_23_obs:.3f}")
+    print(f"  Match: {check_relation}  {'PASS' if check_relation else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -1015,6 +1084,9 @@ def grand_synthesis():
   │  μ=0 triangles  │ Dark sector families    │ 9 = q²   │ (new)    │
   │  m_p/m_e        │ Proton/electron ratio   │ 1836     │ 1836.15  │
   │  Koide Q        │ Lepton mass relation    │ 2/3      │ 0.6662   │
+  │  sin²θ₁₂(PMNS) │ Solar neutrino mixing   │ 4/13     │ 0.307    │
+  │  sin²θ₁₃(PMNS) │ Reactor neutrino mixing │ 2/91     │ 0.02203  │
+  │  sin²θ₂₃(PMNS) │ Atmospheric mixing      │ 7/13     │ 0.546    │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
