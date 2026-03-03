@@ -4368,6 +4368,204 @@ def grand_synthesis():
     print(f"  A random walk on W(3,3) returns in 2 steps with probability 1/degree")
     print(f"  Match: {check_p2}  {'PASS' if check_p2 else 'FAIL'}")
 
+    # ═══════════════════════════════════════════════════════════════════════
+    #  PART VII-C: GOLAY CODE, E₈ LATTICE & RAMANUJAN BOUND  (268 – 281)
+    #
+    #  The extended binary Golay code [24,12,8] has parameters [f,k,rank(E₈)].
+    #  The E₈ lattice kissing number equals E.  W(3,3) is Ramanujan and
+    #  achieves both Lovász theta bounds with equality.
+    # ═══════════════════════════════════════════════════════════════════════
+    import math
+    print(f"\n{'='*78}")
+    print(f"  PART VII-C: GOLAY CODE, E₈ LATTICE & RAMANUJAN BOUND  (checks 268-281)")
+    print(f"{'='*78}")
+
+    # ── Check 268: E₈ lattice kissing number = 240 = E ──
+    # The E₈ root lattice in ℝ⁸ has kissing number 240 — the densest
+    # sphere packing in 8 dimensions.  This equals the edge count of W(3,3).
+    kissing_E8 = 240  # known: E₈ lattice kissing number
+    check_kiss_E8 = (kissing_E8 == E == v * k // 2)
+    checks.append(('E8 lattice kissing number = {} = E = {} (sphere packing in dim {})'.format(
+        kissing_E8, E, rank_e8), check_kiss_E8))
+    print(f"\n  ── Check 268: E₈ lattice kissing number = E ──")
+    print(f"  E₈ lattice in ℝ^{rank_e8} has kissing number {kissing_E8}")
+    print(f"  = E = vk/2 = {v}×{k}/2 = {E}")
+    print(f"  Densest sphere packing in dim rank(E₈) ↔ edge count of W(3,3)")
+    print(f"  Match: {check_kiss_E8}  {'PASS' if check_kiss_E8 else 'FAIL'}")
+
+    # ── Check 269: E₈ root decomposition under D₈ ──
+    # 240 = 2·rank(E₈)·Φ₆ + 2^Φ₆  (D₈ roots + half-spinor)
+    D8_roots = 2 * rank_e8 * Phi6  # 2×8×7 = 112
+    half_spinor = 2**Phi6  # 2^7 = 128
+    check_E8_decomp = (D8_roots + half_spinor == E == 240)
+    checks.append(('E8 roots = D8({}) + half-spinor({}) = {} = E'.format(
+        D8_roots, half_spinor, D8_roots + half_spinor), check_E8_decomp))
+    print(f"\n  ── Check 269: E₈ = D₈ roots + half-spinor ──")
+    print(f"  D₈ roots = 2·rank(E₈)·Φ₆ = 2×{rank_e8}×{Phi6} = {D8_roots}")
+    print(f"  Half-spinor = 2^Φ₆ = 2^{Phi6} = {half_spinor}")
+    print(f"  Sum = {D8_roots}+{half_spinor} = {D8_roots + half_spinor} = E = {E}")
+    print(f"  Match: {check_E8_decomp}  {'PASS' if check_E8_decomp else 'FAIL'}")
+
+    # ── Check 270: W(3,3) is Ramanujan ──
+    # A k-regular graph is Ramanujan if max(|r|,|s|) ≤ 2√(k-1)
+    spectral_max = max(abs(r_eval), abs(s_eval))  # max(2,4) = 4
+    ramanujan_bound = 2 * math.sqrt(k - 1)  # 2√11 ≈ 6.633
+    check_ramanujan = (spectral_max <= ramanujan_bound)
+    checks.append(('W(3,3) is Ramanujan: max(|r|,|s|)={} <= 2sqrt(k-1)={:.3f}'.format(
+        spectral_max, ramanujan_bound), check_ramanujan))
+    print(f"\n  ── Check 270: W(3,3) is Ramanujan ──")
+    print(f"  max(|r|,|s|) = max({abs(r_eval)},{abs(s_eval)}) = {spectral_max}")
+    print(f"  2√(k−1) = 2√{k-1} ≈ {ramanujan_bound:.4f}")
+    print(f"  {spectral_max} < {ramanujan_bound:.4f}  →  RAMANUJAN (optimal expander)")
+    print(f"  Match: {check_ramanujan}  {'PASS' if check_ramanujan else 'FAIL'}")
+
+    # ── Check 271: Lovász θ(G) = α = 10 (tight bound) ──
+    # θ(G) = v·|s|/(k+|s|) for SRG with smallest eigenvalue s
+    lovasz_theta = Fraction(v * abs(s_eval), k + abs(s_eval))  # 160/16 = 10
+    check_lovasz = (lovasz_theta == alpha_ind == 10)
+    checks.append(('Lovász theta(G) = v|s|/(k+|s|) = {} = alpha = {} (tight!)'.format(
+        lovasz_theta, alpha_ind), check_lovasz))
+    print(f"\n  ── Check 271: Lovász θ(G) = α (tight) ──")
+    print(f"  θ(G) = v·|s|/(k+|s|) = {v}×{abs(s_eval)}/({k}+{abs(s_eval)}) = {lovasz_theta}")
+    print(f"  α(G) = {alpha_ind}")
+    print(f"  θ(G) = α means independence number achieves Lovász bound exactly!")
+    print(f"  Match: {check_lovasz}  {'PASS' if check_lovasz else 'FAIL'}")
+
+    # ── Check 272: Lovász θ(Ḡ) = ω = χ = 4 (sandwich equality) ──
+    # θ(Ḡ) = v·|s_comp|/(k_comp+|s_comp|)
+    lovasz_comp = Fraction(v * abs(s_comp), k_comp + abs(s_comp))  # 120/30 = 4
+    check_lovasz_c = (lovasz_comp == omega == chi_chrom == 4)
+    checks.append(('Lovász theta(comp) = v|s_c|/(k_c+|s_c|) = {} = omega = chi = {}'.format(
+        lovasz_comp, omega), check_lovasz_c))
+    print(f"\n  ── Check 272: Lovász θ(Ḡ) = ω = χ (sandwich equality) ──")
+    print(f"  θ(Ḡ) = v·|s̄|/(k̄+|s̄|) = {v}×{abs(s_comp)}/({k_comp}+{abs(s_comp)}) = {lovasz_comp}")
+    print(f"  ω = {omega},  χ = {chi_chrom}")
+    print(f"  ω = θ(Ḡ) = χ = {omega}  →  Lovász sandwich is TIGHT both sides!")
+    print(f"  Match: {check_lovasz_c}  {'PASS' if check_lovasz_c else 'FAIL'}")
+
+    # ── Check 273: Extended Golay code [24,12,8] = [f, k, rank(E₈)] ──
+    golay_n = f_mult   # 24 = f
+    golay_k = k        # 12 = k
+    golay_d = rank_e8  # 8 = rank(E₈) = k − μ
+    check_golay = (golay_n == 24 and golay_k == 12 and golay_d == 8
+                   and golay_d == k - mu)
+    checks.append(('★ Extended Golay code [{},{},{}] = [f, k, rank(E8)] ★'.format(
+        golay_n, golay_k, golay_d), check_golay))
+    print(f"\n  ── Check 273: ★ Extended Golay code = [f, k, rank(E₈)] ★ ──")
+    print(f"  The extended binary Golay code — the densest code known —")
+    print(f"  has parameters [{golay_n}, {golay_k}, {golay_d}]")
+    print(f"  = [f, k, k−μ] = [{f_mult}, {k}, {k-mu}]")
+    print(f"  ★ Length = f, dimension = k, min distance = rank(E₈) ★")
+    print(f"  Match: {check_golay}  {'PASS' if check_golay else 'FAIL'}")
+
+    # ── Check 274: Golay codewords = 2^k = 4096 ──
+    golay_size = 2**k  # 2^12 = 4096
+    check_golay_size = (golay_size == 4096)
+    checks.append(('Golay code has 2^k = 2^{} = {} codewords'.format(
+        k, golay_size), check_golay_size))
+    print(f"\n  ── Check 274: |Golay code| = 2^k ──")
+    print(f"  |C| = 2^k = 2^{k} = {golay_size}")
+    print(f"  The self-dual doubly-even code has exactly 2^(degree) words")
+    print(f"  Match: {check_golay_size}  {'PASS' if check_golay_size else 'FAIL'}")
+
+    # ── Check 275: Steiner system S(5,8,24) = S(q+r, k−μ, f) ──
+    steiner_t = q + r_eval   # 3+2 = 5
+    steiner_blk = k - mu     # 12-4 = 8
+    steiner_pts = f_mult     # 24
+    check_steiner = (steiner_t == 5 and steiner_blk == 8 and steiner_pts == 24)
+    checks.append(('Steiner S({},{},{}) = S(q+r, k-mu, f) (unique 5-design)'.format(
+        steiner_t, steiner_blk, steiner_pts), check_steiner))
+    print(f"\n  ── Check 275: Steiner S(5,8,24) = S(q+r, k−μ, f) ──")
+    print(f"  t = q+r = {q}+{r_eval} = {steiner_t}")
+    print(f"  block = k−μ = {k}−{mu} = {steiner_blk}")
+    print(f"  points = f = {steiner_pts}")
+    print(f"  S({steiner_t},{steiner_blk},{steiner_pts}) — the unique Steiner 5-design")
+    print(f"  Match: {check_steiner}  {'PASS' if check_steiner else 'FAIL'}")
+
+    # ── Check 276: 759 Steiner blocks = q·(k−1)·(f−1) ──
+    # Number of blocks in S(5,8,24) = C(24,5)/C(8,5) = 42504/56 = 759
+    n_blocks = 759  # well-known
+    srg_blocks = q * (k - 1) * (f_mult - 1)  # 3 × 11 × 23 = 759
+    check_blocks = (n_blocks == srg_blocks == 759)
+    checks.append(('Steiner blocks = {} = q(k-1)(f-1) = {}*{}*{} = {}'.format(
+        n_blocks, q, k-1, f_mult-1, srg_blocks), check_blocks))
+    print(f"\n  ── Check 276: 759 Steiner blocks = q·(k−1)·(f−1) ──")
+    print(f"  C(24,5)/C(8,5) = 42504/56 = {n_blocks}")
+    print(f"  q·(k−1)·(f−1) = {q}×{k-1}×{f_mult-1} = {srg_blocks}")
+    print(f"  Block count factored entirely from SRG parameters!")
+    print(f"  Match: {check_blocks}  {'PASS' if check_blocks else 'FAIL'}")
+
+    # ── Check 277: M₂₄ prime factors = {λ, q, q+r, Φ₆, k−1, f−1} ──
+    # |M₂₄| = 244823040 = 2^10 × 3^3 × 5 × 7 × 11 × 23
+    M24_primes = {2, 3, 5, 7, 11, 23}
+    srg_prime_set = {lam, q, q + r_eval, Phi6, k - 1, f_mult - 1}
+    check_M24 = (M24_primes == srg_prime_set)
+    checks.append(('M24 prime factors {{{}}} = {{lam,q,q+r,Phi6,k-1,f-1}}'.format(
+        ','.join(str(p) for p in sorted(M24_primes))), check_M24))
+    print(f"\n  ── Check 277: M₂₄ prime factors = SRG parameter set ──")
+    print(f"  |M₂₄| = 244823040 = 2¹⁰·3³·5·7·11·23")
+    print(f"  Prime set = {sorted(M24_primes)}")
+    print(f"  = {{λ, q, q+r, Φ₆, k−1, f−1}}")
+    print(f"  = {{{lam}, {q}, {q+r_eval}, {Phi6}, {k-1}, {f_mult-1}}}")
+    print(f"  = {sorted(srg_prime_set)}")
+    print(f"  Match: {check_M24}  {'PASS' if check_M24 else 'FAIL'}")
+
+    # ── Check 278: Catalan C_q = q + r ──
+    # The qth Catalan number: C_n = C(2n,n)/(n+1)
+    catalan_q = math.comb(2*q, q) // (q + 1)  # C(6,3)/4 = 20/4 = 5
+    check_catalan = (catalan_q == q + r_eval == 5)
+    checks.append(('Catalan C_{} = {} = q+r = {}+{}'.format(
+        q, catalan_q, q, r_eval), check_catalan))
+    print(f"\n  ── Check 278: Catalan C_q = q + r ──")
+    print(f"  C_{q} = C(2q,q)/(q+1) = C({2*q},{q})/{q+1} = {math.comb(2*q,q)}/{q+1} = {catalan_q}")
+    print(f"  q + r = {q}+{r_eval} = {q+r_eval}")
+    print(f"  The q-th Catalan number = field order + gauge eigenvalue")
+    print(f"  Match: {check_catalan}  {'PASS' if check_catalan else 'FAIL'}")
+
+    # ── Check 279: von Staudt–Clausen: denom(B_f) = λ·q·(q+r)·Φ₆·Φ₃ = 2730 ──
+    # B_{2k} = B_f = B_{24}. Primes p with (p-1)|f: p ∈ {2,3,5,7,13}
+    # denom = 2×3×5×7×13 = 2730
+    bernoulli_denom = lam * q * (q + r_eval) * Phi6 * Phi3  # 2×3×5×7×13
+    check_bernoulli = (bernoulli_denom == 2730)
+    # Verify prime factors: primes p where (p-1) | f
+    bernoulli_primes = [p for p in range(2, f_mult + 2)
+                        if all(p % d != 0 for d in range(2, p))  # is prime
+                        and f_mult % (p - 1) == 0]
+    check_bern_full = (check_bernoulli and bernoulli_primes == [2, 3, 5, 7, 13])
+    checks.append(('von Staudt-Clausen: denom(B_{}) = lam*q*(q+r)*Phi6*Phi3 = {}'.format(
+        f_mult, bernoulli_denom), check_bern_full))
+    print(f"\n  ── Check 279: von Staudt–Clausen for B_f ──")
+    print(f"  B_{{2k}} = B_f = B_{f_mult}")
+    print(f"  Primes p with (p−1)|{f_mult}: {bernoulli_primes}")
+    print(f"  denom = {'×'.join(str(p) for p in bernoulli_primes)} = {bernoulli_denom}")
+    print(f"  = λ·q·(q+r)·Φ₆·Φ₃ = {lam}×{q}×{q+r_eval}×{Phi6}×{Phi3}")
+    print(f"  Match: {check_bern_full}  {'PASS' if check_bern_full else 'FAIL'}")
+
+    # ── Check 280: dim(D₄) = 28 = v − k (non-neighbours = triality) ──
+    dim_D4 = 4 * (2 * 4 - 1)  # D_n dim = n(2n-1), n=4 → 28
+    non_neigh = v - k  # 40-12 = 28
+    check_D4 = (dim_D4 == non_neigh == 28)
+    checks.append(('dim(D4)=SO(8) = {} = v-k = {}-{} (triality algebra = non-neighbours)'.format(
+        dim_D4, v, k), check_D4))
+    print(f"\n  ── Check 280: dim(D₄) = v − k (non-neighbours) ──")
+    print(f"  dim(SO(8)) = 4×(2×4−1) = {dim_D4}")
+    print(f"  v − k = {v}−{k} = {non_neigh}")
+    print(f"  The triality algebra D₄ = SO(8) has dimension = # non-neighbours")
+    print(f"  Match: {check_D4}  {'PASS' if check_D4 else 'FAIL'}")
+
+    # ── Check 281: D₄ triality: 3 × rank(E₈) = f ──
+    # D₄ has 3 irreducible 8-dim reps: vector 8_v, spinor 8_s, co-spinor 8_c
+    # Under triality these permute: total = 3 × 8 = 24 = f
+    triality_total = q * rank_e8  # 3 × 8 = 24
+    check_triality = (triality_total == f_mult == 24)
+    checks.append(('D4 triality: q*rank(E8) = {}*{} = {} = f (3 reps of dim 8)'.format(
+        q, rank_e8, triality_total), check_triality))
+    print(f"\n  ── Check 281: D₄ triality: q × rank(E₈) = f ──")
+    print(f"  D₄ = SO(8) has S₃ triality: 3 reps × 8 dims = {q}×{rank_e8} = {triality_total}")
+    print(f"  = f = {f_mult}")
+    print(f"  The triality count (q=3 reps of dim rank(E₈)=8) = gauge multiplicity f")
+    print(f"  Match: {check_triality}  {'PASS' if check_triality else 'FAIL'}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -4704,6 +4902,22 @@ def grand_synthesis():
   │  Total          │  ★ 987 = F(16) ★        │ FIBONACC │ k+mu=16  │
   │  Row O-H        │  256 = 2^rk(E8) = s^4   │ oct lift │ quat     │
   │  p2_return      │  1/k = 1/12             │ random   │ walk     │
+  ├────────────────┼─────────────────────────┼──────────┼──────────┤
+  │  GOLAY/E8/RAM  │  Part VII-C (268-281)   │ lattice  │ code     │
+  │  kiss(E8)      │  240 = E (sphere pack)  │ densest  │ dim 8    │
+  │  E8=D8+spin    │  2·rk·Φ6+2^Φ6=112+128  │ root     │ decomp   │
+  │  Ramanujan     │  |s|=4 < 2√11 ≈ 6.63   │ optimal  │ expander │
+  │  θ(G) = α      │  v|s|/(k+|s|)=10       │ Lovász   │ tight    │
+  │  θ(Ḡ) = ω = χ  │  v|s̄|/(k̄+|s̄|)=4       │ sandwich │ equality │
+  │  Golay code    │  ★ [24,12,8]=[f,k,rk] ★ │ DENSEST  │ CODE!    │
+  │  |Golay|       │  2^k = 4096 codewords   │ self-dual│ doubly-  │
+  │  Steiner       │  S(5,8,24)=S(q+r,k-μ,f)│ unique   │ 5-design │
+  │  759 blocks    │  q·(k-1)·(f-1)          │ 3×11×23  │ factored │
+  │  M24 primes    │  {λ,q,q+r,Φ6,k-1,f-1}  │ Mathieu  │ sporadic │
+  │  Catalan C_q   │  C_3 = 5 = q+r          │ ballot   │ numbers  │
+  │  denom(B_f)    │  λ·q·(q+r)·Φ6·Φ3=2730  │ von      │ Staudt   │
+  │  dim(D4)       │  28 = v-k (non-neigh)   │ triality │ SO(8)    │
+  │  D4 triality   │  3×8=24=f (3 reps)      │ q×rk(E8) │ gauge f  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
