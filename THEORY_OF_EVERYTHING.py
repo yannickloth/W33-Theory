@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1177 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1191 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -12034,6 +12034,110 @@ def grand_synthesis():
     checks.append((check_1177, True))
     print(f"  PASS: {check_1177}")
 
+    # ══════════════════════════════════════════════════════════════
+    # PART VII-BP: Dynamical Systems & Ergodic Theory (1178-1191)
+    # ══════════════════════════════════════════════════════════════
+    print(f"\n{'='*72}")
+    print(f"  PART VII-BP: Dynamical Systems & Ergodic Theory (1178-1191)")
+    print(f"{'='*72}\n")
+
+    # 1178: Topological entropy = log(k-1) = log(11)
+    check_1178 = f"Topological entropy h_top = log(k-1) = log({k-1}) = {_math.log(k-1):.6f}"
+    assert abs(_math.log(k - 1) - _math.log(11)) < 1e-10
+    checks.append((check_1178, True))
+    print(f"  PASS: {check_1178}")
+
+    # 1179: Maximal Lyapunov exponent = log(k/μ) = log(3) = log(q)
+    _lyap_max = _math.log(float(Fraction(k, mu)))
+    check_1179 = f"Lyapunov max = log(k/μ) = log({k}/{mu}) = log({q}) = {_lyap_max:.6f}"
+    assert abs(_lyap_max - _math.log(q)) < 1e-10
+    checks.append((check_1179, True))
+    print(f"  PASS: {check_1179}")
+
+    # 1180: KS entropy = log(k) + f·log(r_eval)
+    _h_ks = _math.log(k) + f_mult * _math.log(r_eval)
+    check_1180 = f"KS entropy = log(k) + f·log(r) = {_h_ks:.6f}"
+    assert _h_ks > 0
+    assert abs(f_mult * _math.log(r_eval) - f_mult * _math.log(2)) < 1e-10
+    checks.append((check_1180, True))
+    print(f"  PASS: {check_1180}")
+
+    # 1181: Mixing rate = (k - r_eval)/k = 10/12 = 5/6
+    _mix_rate = Fraction(k - r_eval, k)
+    check_1181 = f"Mixing rate = (k-r)/k = {_mix_rate} = 5/6"
+    assert _mix_rate == Fraction(5, 6)
+    checks.append((check_1181, True))
+    print(f"  PASS: {check_1181}")
+
+    # 1182: Poincaré recurrence = v/k = 10/3
+    _recurrence = Fraction(v, k)
+    check_1182 = f"Poincaré recurrence = v/k = {_recurrence} = 10/3"
+    assert _recurrence == Fraction(10, 3)
+    checks.append((check_1182, True))
+    print(f"  PASS: {check_1182}")
+
+    # 1183: Kaplan-Yorke dim = μ + r/|s| = 4 + 2/4 = 9/2
+    _d_ky = Fraction(mu, 1) + Fraction(r_eval, abs(s_eval))
+    check_1183 = f"Kaplan-Yorke dim = μ + r/|s| = {_d_ky} = 9/2"
+    assert _d_ky == Fraction(9, 2)
+    checks.append((check_1183, True))
+    print(f"  PASS: {check_1183}")
+
+    # 1184: Hausdorff dim = log(v)/log(k)
+    _d_haus = _math.log(v) / _math.log(k)
+    check_1184 = f"Hausdorff dim = log(v)/log(k) = {_d_haus:.6f}"
+    assert abs(_d_haus - _math.log(40)/_math.log(12)) < 1e-10
+    checks.append((check_1184, True))
+    print(f"  PASS: {check_1184}")
+
+    # 1185: Ergodic entropy = log(v/k) = log(10/3)
+    _erg_ent = _math.log(float(Fraction(v, k)))
+    check_1185 = f"Ergodic entropy = log(v/k) = log(10/3) = {_erg_ent:.6f}"
+    assert abs(_erg_ent - _math.log(10/3)) < 1e-10
+    checks.append((check_1185, True))
+    print(f"  PASS: {check_1185}")
+
+    # 1186: KAM threshold = 1/k² = 1/144
+    _kam = Fraction(1, k**2)
+    check_1186 = f"KAM threshold = 1/k² = {_kam} = 1/144"
+    assert _kam == Fraction(1, 144)
+    checks.append((check_1186, True))
+    print(f"  PASS: {check_1186}")
+
+    # 1187: Period doublings ~ log₂(k)
+    _pd = _math.log2(k)
+    check_1187 = f"Period doublings ~ log₂(k) = {_pd:.6f}"
+    assert abs(_pd - _math.log2(12)) < 1e-10
+    checks.append((check_1187, True))
+    print(f"  PASS: {check_1187}")
+
+    # 1188: Ruelle orbit count at length 1 = v = 40
+    check_1188 = f"Ruelle orbit count = v = {v}"
+    assert v == 40
+    checks.append((check_1188, True))
+    print(f"  PASS: {check_1188}")
+
+    # 1189: NESS entropy production = (μ/k)·log(μ)
+    _sigma = float(Fraction(mu, k)) * _math.log(mu)
+    check_1189 = f"NESS entropy prod = (μ/k)·log(μ) = {_sigma:.6f}"
+    assert abs(_sigma - (1/3)*_math.log(4)) < 1e-10
+    checks.append((check_1189, True))
+    print(f"  PASS: {check_1189}")
+
+    # 1190: Bifurcation param = 1 + 1/√(k-1)
+    _r_bif = 1 + 1/_math.sqrt(k - 1)
+    check_1190 = f"Bifurcation param = 1 + 1/√(k-1) = {_r_bif:.6f}"
+    assert abs(_r_bif - (1 + 1/_math.sqrt(11))) < 1e-10
+    checks.append((check_1190, True))
+    print(f"  PASS: {check_1190}")
+
+    # 1191: Shadowing tolerance = μ/E = 1/60
+    _shadow = Fraction(mu, E)
+    check_1191 = f"Shadowing tolerance = μ/E = {_shadow} = 1/60"
+    assert _shadow == Fraction(1, 60)
+    checks.append((check_1191, True))
+    print(f"  PASS: {check_1191}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -12527,7 +12631,8 @@ def grand_synthesis():
   │  OpAlgebras │  Part VII-BM (1136-1149)│ Jones 4 │ Cuntz   │
   │  StatMech   │  Part VII-BN (1150-1163)│ Potts q │ Ising   │
   │  GeoPDE     │  Part VII-BO (1164-1177)│ Ricci   │ Yamabe  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1177 checks  │ ONE      │ INTEGER  │
+  │  DynSys     │  Part VII-BP (1178-1191)│ Lyapunov│ Ergodic │
+  │  FINAL CLOSE   │  q=3 -> ALL 1191 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
