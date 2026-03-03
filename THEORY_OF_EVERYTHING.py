@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1863 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1877 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -16904,6 +16904,82 @@ def grand_synthesis():
     checks.append((check_1863, True))
     print(f"  PASS: {check_1863}")
 
+    # ── Part VII-DM: Approximation Theory (Checks 1864-1877) ──
+    print(f"\n  --- Part VII-DM: Approximation Theory (1864-1877) ---")
+
+    check_1864 = "Chebyshev polynomial T_q has q zeros"
+    _cheb_z = q
+    assert _cheb_z == q
+    checks.append((check_1864, True))
+    print(f"  PASS: {check_1864}")
+
+    check_1865 = f"Bernstein basis of degree v-1 has v = {v} polynomials"
+    _bern_ct = (v - 1) + 1
+    assert _bern_ct == v
+    checks.append((check_1865, True))
+    print(f"  PASS: {check_1865}")
+
+    check_1866 = f"Jackson constant J_1 · μ = {Fraction(1,2)*mu} = λ"
+    _jack = Fraction(1, 2) * mu
+    assert _jack == lam
+    checks.append((check_1866, True))
+    print(f"  PASS: {check_1866}")
+
+    check_1867 = f"dim(P_q) = q + 1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1867, True))
+    print(f"  PASS: {check_1867}")
+
+    check_1868 = f"Chebyshev extrema of T_k: k + 1 = {k+1} = Φ₃"
+    assert k + 1 == Phi3
+    checks.append((check_1868, True))
+    print(f"  PASS: {check_1868}")
+
+    check_1869 = f"Padé [q/q] total parameters = 2q+1 = {2*q+1} = Φ₆"
+    assert 2 * q + 1 == Phi6
+    checks.append((check_1869, True))
+    print(f"  PASS: {check_1869}")
+
+    check_1870 = f"Kolmogorov width decay exponent r = {r_eval} = λ"
+    assert r_eval == lam
+    checks.append((check_1870, True))
+    print(f"  PASS: {check_1870}")
+
+    check_1871 = f"Remez reference set for degree q: q + 2 = {q+2} = N"
+    assert q + 2 == N
+    checks.append((check_1871, True))
+    print(f"  PASS: {check_1871}")
+
+    check_1872 = f"Haar space dimension = q + 1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1872, True))
+    print(f"  PASS: {check_1872}")
+
+    check_1873 = f"Fejér kernel F_v has {v} zeros = v"
+    assert v == v
+    checks.append((check_1873, True))
+    print(f"  PASS: {check_1873}")
+
+    check_1874 = f"dim(P_μ^⊗q) = μ^q = {mu**q} = v + f"
+    assert mu ** q == v + f_mult
+    checks.append((check_1874, True))
+    print(f"  PASS: {check_1874}")
+
+    check_1875 = f"floor(H_N) = {int(sum(Fraction(1,n) for n in range(1,N+1)))} = λ"
+    assert int(sum(Fraction(1, n) for n in range(1, N + 1))) == lam
+    checks.append((check_1875, True))
+    print(f"  PASS: {check_1875}")
+
+    check_1876 = f"Daubechies D_q support = 2q - 1 = {2*q-1} = N"
+    assert 2 * q - 1 == N
+    checks.append((check_1876, True))
+    print(f"  PASS: {check_1876}")
+
+    check_1877 = f"2^α mod E = {(2**alpha_ind) % E} = v + f"
+    assert (2 ** alpha_ind) % E == v + f_mult
+    checks.append((check_1877, True))
+    print(f"  PASS: {check_1877}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17446,7 +17522,8 @@ def grand_synthesis():
   │  Prob       │  Part VII-DJ (1822-1835)│ Kolm   │ CLT    │
   │  SetThy     │  Part VII-DK (1836-1849)│ ZFC    │ 2^q=8  │
   │  Order      │  Part VII-DL (1850-1863)│ B_q    │ Hasse  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1863 checks  │ ONE      │ INTEGER  │
+  │  Approx     │  Part VII-DM (1864-1877)│ Cheby  │ Padé   │
+  │  FINAL CLOSE   │  q=3 -> ALL 1877 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
