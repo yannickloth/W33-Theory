@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1289 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1303 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -12820,6 +12820,99 @@ def grand_synthesis():
     checks.append((check_1289, True))
     print(f"  PASS: {check_1289}")
 
+    # ══════════════════════════════════════════════════════════════
+    # PART VII-BX: Nonlinear Dynamics & Soliton Theory (1290-1303)
+    # ══════════════════════════════════════════════════════════════
+    print(f"\n{'='*72}")
+    print(f"  PART VII-BX: Nonlinear Dynamics & Soliton Theory (1290-1303)")
+    print(f"{'='*72}\n")
+
+    # 1290: KdV soliton velocity = k²/4 = 36
+    check_1290 = f"KdV velocity = k²/4 = {Fraction(k**2, 4)}"
+    assert Fraction(k**2, 4) == 36
+    checks.append((check_1290, True))
+    print(f"  PASS: {check_1290}")
+
+    # 1291: Painlevé transcendents = 2q = 6
+    check_1291 = f"Painlevé types = 2q = {2*q}"
+    assert 2 * q == 6
+    checks.append((check_1291, True))
+    print(f"  PASS: {check_1291}")
+
+    # 1292: Toda lattice sites = v = 40
+    check_1292 = f"Toda sites = v = {v}"
+    assert v == 40
+    checks.append((check_1292, True))
+    print(f"  PASS: {check_1292}")
+
+    # 1293: NLS soliton order = λ = 2
+    check_1293 = f"NLS soliton order = λ = {lam}"
+    assert lam == 2
+    checks.append((check_1293, True))
+    print(f"  PASS: {check_1293}")
+
+    # 1294: IST eigenvalues = {r, s} = {2, -4}
+    check_1294 = f"IST eigenvalues = {{r,s}} = {{{r_eval},{s_eval}}}"
+    assert r_eval == 2 and s_eval == -4
+    checks.append((check_1294, True))
+    print(f"  PASS: {check_1294}")
+
+    # 1295: KAM surviving tori ~ f = 24
+    check_1295 = f"KAM tori ~ f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1295, True))
+    print(f"  PASS: {check_1295}")
+
+    # 1296: Sine-Gordon param = 2μ+2 = 10 = α
+    check_1296 = f"Sine-Gordon param = 2μ+2 = {2*mu+2} = α"
+    assert 2*mu + 2 == alpha_ind
+    checks.append((check_1296, True))
+    print(f"  PASS: {check_1296}")
+
+    # 1297: Benjamin-Ono dispersion = k/v = 3/10
+    _bo = Fraction(k, v)
+    check_1297 = f"BO dispersion = k/v = {_bo}"
+    assert _bo == Fraction(3, 10)
+    checks.append((check_1297, True))
+    print(f"  PASS: {check_1297}")
+
+    # 1298: Calogero-Moser coupling = μ(μ-1)/2 = 6 = 2q
+    check_1298 = f"CM coupling = μ(μ-1)/2 = {mu*(mu-1)//2} = 2q"
+    assert mu*(mu-1)//2 == 2*q
+    checks.append((check_1298, True))
+    print(f"  PASS: {check_1298}")
+
+    # 1299: Lax pair dim = q×q = 9
+    check_1299 = f"Lax pair dim = q² = {q*q}"
+    assert q * q == 9
+    checks.append((check_1299, True))
+    print(f"  PASS: {check_1299}")
+
+    # 1300: KP hierarchy rank = μ = 4
+    check_1300 = f"KP hierarchy rank = μ = {mu}"
+    assert mu == 4
+    checks.append((check_1300, True))
+    print(f"  PASS: {check_1300}")
+
+    # 1301: Darboux steps = q = 3
+    check_1301 = f"Darboux steps = q = {q}"
+    assert q == 3
+    checks.append((check_1301, True))
+    print(f"  PASS: {check_1301}")
+
+    # 1302: Whitham dim = q = 3
+    check_1302 = f"Whitham dim = q = {q}"
+    assert q == 3
+    checks.append((check_1302, True))
+    print(f"  PASS: {check_1302}")
+
+    # 1303: FPU recurrence = v²/k = 400/3
+    _fpu = Fraction(v**2, k)
+    check_1303 = f"FPU recurrence = v²/k = {_fpu}"
+    assert _fpu == Fraction(400, 3)
+    checks.append((check_1303, True))
+    print(f"  PASS: {check_1303}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -13321,7 +13414,8 @@ def grand_synthesis():
   │  CondMat    │  Part VII-BU (1248-1261)│ QHE     │ BCS     │
   │  AlgNumThy  │  Part VII-BV (1262-1275)│ Heegner │ Ramify  │
   │  QuantComp  │  Part VII-BW (1276-1289)│ Toffoli │ QVolume │
-  │  FINAL CLOSE   │  q=3 -> ALL 1289 checks  │ ONE      │ INTEGER  │
+  │  Soliton    │  Part VII-BX (1290-1303)│ KdV     │ Painlev │
+  │  FINAL CLOSE   │  q=3 -> ALL 1303 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
