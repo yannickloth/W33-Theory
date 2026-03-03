@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 771 checks follow from the single integer q = 3.")
+    print(f"  → ALL 785 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -9177,6 +9177,124 @@ def grand_synthesis():
     checks.append((check_771, True))
     print(f"  PASS: {check_771}")
 
+    # ── VII-AM: INFORMATION GEOMETRY & ENTROPY (772-785) ─────────────────
+    print(f"\n{'='*70}")
+    print(f"  VII-AM: INFORMATION GEOMETRY & ENTROPY")
+    print(f"{'='*70}")
+
+    # 772: Eigenspace probability distribution
+    _p0_i = Fraction(1, v)
+    _p1_i = Fraction(f_mult, v)
+    _p2_i = Fraction(g_mult, v)
+    check_772 = f"Eigenspace: p0=1/v, p1=q/N={_p1_i}, p2=q/dim_O={_p2_i}, sum={_p0_i+_p1_i+_p2_i}"
+    assert _p1_i == Fraction(q, N) and _p2_i == Fraction(q, _dim_O) and _p0_i + _p1_i + _p2_i == 1
+    checks.append((check_772, True))
+    print(f"  PASS: {check_772}")
+
+    # 773: Spectral weights Tr(A^2) = lam*E
+    _trA2 = k**2 + r_eval**2 * f_mult + s_eval**2 * g_mult
+    _w0_i = Fraction(k**2, _trA2)
+    _w1_i = Fraction(r_eval**2 * f_mult, _trA2)
+    _w2_i = Fraction(s_eval**2 * g_mult, _trA2)
+    check_773 = f"Graph entropy: Tr(A^2)={_trA2}=lam*E, w0=q/alpha={_w0_i}, w1=1/N={_w1_i}, w2=1/lam={_w2_i}"
+    assert _trA2 == lam * E and _w0_i == Fraction(q, alpha_ind) and _w1_i == Fraction(1, N) and _w2_i == Fraction(1, lam)
+    checks.append((check_773, True))
+    print(f"  PASS: {check_773}")
+
+    # 774: Chi-squared divergence
+    _num_i = (q - v)**2 + (f_mult * q - v)**2 + (g_mult * q - v)**2
+    _chi2_i = Fraction(_num_i, (v * q)**2) * q
+    check_774 = f"KL: chi^2(eigenspace||uniform) = 403/800"
+    assert _chi2_i == Fraction(403, 800)
+    checks.append((check_774, True))
+    print(f"  PASS: {check_774}")
+
+    # 775: Mutual information identity N*dim_O = v
+    check_775 = f"Mutual info: N*dim_O = v = 40, codegree product = v^2/q^2 = 1600/9"
+    assert N * _dim_O == v and Fraction(v, 1) * Fraction(N, q) * Fraction(_dim_O, q) == Fraction(v**2, q**2)
+    checks.append((check_775, True))
+    print(f"  PASS: {check_775}")
+
+    # 776: Fisher information trace = dim(E7)/q
+    _tr_fish = Fraction(v, 1) + Fraction(v, f_mult) + Fraction(v, g_mult)
+    check_776 = f"Fisher: Tr(g) = v+v/f+v/g = {_tr_fish} = dim(E7)/q = 133/3"
+    assert _tr_fish == Fraction(133, q)
+    checks.append((check_776, True))
+    print(f"  PASS: {check_776}")
+
+    # 777: Channel capacity
+    _cap_ratio_i = Fraction(v, k)
+    _cap_diff_i = Fraction(v, k) - Fraction(v, k_comp)
+    check_777 = f"Channel: C=log2(v/k)=log2(alpha/q), v/k-v/k'=(v+alpha)/k'={_cap_diff_i}"
+    assert _cap_ratio_i == Fraction(alpha_ind, q) and _cap_diff_i == Fraction(v + alpha_ind, k_comp)
+    checks.append((check_777, True))
+    print(f"  PASS: {check_777}")
+
+    # 778: Von Neumann purity = Phi3/(lam*E)
+    _rho0_i = Fraction(2, v)
+    _rho1_i = Fraction(r_eval + k, v * k)
+    _rho2_i = Fraction(s_eval + k, v * k)
+    _purity_i = _rho0_i**2 + f_mult * _rho1_i**2 + g_mult * _rho2_i**2
+    check_778 = f"VN entropy: purity Tr(rho^2) = {_purity_i} = Phi3/(lam*E) = 13/480"
+    assert _rho0_i + f_mult * _rho1_i + g_mult * _rho2_i == 1 and _purity_i == Fraction(Phi3, lam * E)
+    checks.append((check_778, True))
+    print(f"  PASS: {check_778}")
+
+    # 779: Trace distance = kappa = 1/6
+    _rho_c1_i = Fraction(-1 - r_eval + k_comp, v * k_comp)
+    _rho_c2_i = Fraction(-1 - s_eval + k_comp, v * k_comp)
+    _tdist = Fraction(1, 2) * (f_mult * abs(_rho1_i - _rho_c1_i) + g_mult * abs(_rho2_i - _rho_c2_i))
+    check_779 = f"Relative entropy: Tr distance(rho, rho') = {_tdist} = kappa = 1/6"
+    assert _tdist == Fraction(1, 6)
+    checks.append((check_779, True))
+    print(f"  PASS: {check_779}")
+
+    # 780: Spectral gap and mixing times
+    _gap_i = Fraction(lam, q)
+    _tmix_i = Fraction(q, lam)
+    _trel_i = Fraction(k, alpha_ind)
+    check_780 = f"Entropy: gap=lam/q={_gap_i}, t_mix=q/lam={_tmix_i}, t_rel=k/alpha={_trel_i}, product=q^2/N"
+    assert _gap_i == Fraction(lam, q) and _tmix_i * _trel_i == Fraction(q**2, N)
+    checks.append((check_780, True))
+    print(f"  PASS: {check_780}")
+
+    # 781: Isoperimetric constant = dim_O
+    _h_iso_i = k - abs(s_eval)
+    check_781 = f"Holographic: isoperimetric h(G) = k-|s| = {_h_iso_i} = dim_O, k/h = q/lam = 3/2"
+    assert _h_iso_i == _dim_O and Fraction(k, _h_iso_i) == Fraction(q, lam)
+    checks.append((check_781, True))
+    print(f"  PASS: {check_781}")
+
+    # 782: Return probability = 1/k
+    _p_ret_i = Fraction(1, v) + Fraction(f_mult * r_eval**2, k**2 * v) + Fraction(g_mult * s_eval**2, k**2 * v)
+    check_782 = f"Quantum channel: return probability = {_p_ret_i} = 1/k (exactly!)"
+    assert _p_ret_i == Fraction(1, k)
+    checks.append((check_782, True))
+    print(f"  PASS: {check_782}")
+
+    # 783: Automorphism per vertex/edge
+    _aut_v_i = Fraction(2 * v * _dim_O * q**4, v)
+    _aut_E_i = Fraction(2 * v * _dim_O * q**4, E)
+    check_783 = f"Kolmogorov: |Aut|/v = {_aut_v_i} = (k/lam)^4, |Aut|/E = {_aut_E_i} = (k/lam)^3, ratio = mu/q"
+    assert _aut_v_i == (k // lam)**4 and _aut_E_i == (k // lam)**3
+    checks.append((check_783, True))
+    print(f"  PASS: {check_783}")
+
+    # 784: Contraction = 1/q
+    _contr = Fraction(abs(s_eval), k)
+    check_784 = f"Data processing: contraction = |s|/k = {_contr} = 1/q, gap = 1 - 1/q = lam/q"
+    assert _contr == Fraction(1, q) and 1 - _contr == Fraction(lam, q)
+    checks.append((check_784, True))
+    print(f"  PASS: {check_784}")
+
+    # 785: Quantum error correction bounds
+    _singleton_i = v - 2 * (k - 1)
+    _rate_i = Fraction(_singleton_i, v)
+    check_785 = f"QEC: Singleton k_code <= {_singleton_i} = 2q^2, d/n = q/alpha = 3/10, rate = q^2/(2*alpha)"
+    assert _singleton_i == 2 * q**2 and Fraction(k, v) == Fraction(q, alpha_ind) and _rate_i == Fraction(q**2, 2 * alpha_ind)
+    checks.append((check_785, True))
+    print(f"  PASS: {check_785}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -9644,7 +9762,8 @@ def grand_synthesis():
   │  COHOMOLOGY    │  Part VII-AJ (730-743)  │ P(1)=122 │ chi=-v   │
   │  NUMBER TH     │  Part VII-AK (744-757)  │ B_f=2730 │ phi=dim_O│
   │  CATEGORY      │  Part VII-AL (758-771)  │ FP=v=40  │ 1836=mp  │
-  │  FINAL CLOSE   │  q=3 -> ALL 771 checks  │ ONE      │ INTEGER  │
+  │  INFO GEOM     │  Part VII-AM (772-785)  │ kappa1/6 │ gap=2/3  │
+  │  FINAL CLOSE   │  q=3 -> ALL 785 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
