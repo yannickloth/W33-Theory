@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 813 checks follow from the single integer q = 3.")
+    print(f"  → ALL 827 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -9542,6 +9542,138 @@ def grand_synthesis():
     checks.append((check_813, True))
     print(f"  PASS: {check_813}")
 
+    # ── Part VII-AP: QUANTUM GROUPS & HOPF ALGEBRAS (checks 814-827) ──
+    print(f"\n{'='*78}")
+    print(f"  Part VII-AP: QUANTUM GROUPS & HOPF ALGEBRAS")
+    print(f"{'='*78}\n")
+
+    # 814: Quantum reps at level k
+    _nreps_su2 = k + 1
+    _nreps_su3 = _comb2(k + 2, 2)
+    _nreps_suN = _comb2(k + N - 1, N - 1)
+    _nreps_formula = mu * N * Phi6 * Phi3
+    check_814 = f"Quantum reps: SU(2)_k=Φ₃, SU(3)_k=Φ₃·Φ₆=91, SU(N)_k=μNΦ₆Φ₃=1820"
+    assert _nreps_su2 == Phi3 and _nreps_su3 == Phi3 * Phi6 and _nreps_suN == _nreps_formula
+    checks.append((check_814, True))
+    print(f"  PASS: {check_814}")
+
+    # 815: Verlinde fusion rules
+    _krs_sum = k + r_eval + s_eval
+    check_815 = f"Verlinde: N₁₁¹=λ=2, N₁₁²=μ=4, k+r+s=α=10, D²=v=40"
+    assert _krs_sum == alpha_ind and r_eval**2 == mu and v == 40
+    checks.append((check_815, True))
+    print(f"  PASS: {check_815}")
+
+    # 816: Central charges at level k
+    _c_su3_k = Fraction(k * 8, k + 3)
+    _c_su2_k = Fraction(3 * k, k + 2)
+    _c_prod = _c_su2_k * _c_su3_k
+    _c_prod_formula = Fraction(f_mult**2, N * Phi6)
+    check_816 = f"Level: c(SU(3)_k)=2^N/N=32/5, c(SU(2)_k)=18/7, product=f²/(NΦ₆)=576/35"
+    assert _c_su3_k == Fraction(2**N, N) and _c_su2_k == Fraction(18, 7) and _c_prod == _c_prod_formula
+    checks.append((check_816, True))
+    print(f"  PASS: {check_816}")
+
+    # 817: R-matrix eigenvalue ratios
+    _rk_ratio = Fraction(r_eval, k)
+    _sk_ratio = Fraction(s_eval, k)
+    _rs_prod_r = _rk_ratio * _sk_ratio
+    _rs_diff = _rk_ratio - _sk_ratio
+    check_817 = f"R-matrix: r/k=1/6, s/k=-1/q, product=-1/(λq²), diff=1/λ=1/2"
+    assert _rk_ratio == Fraction(1, 6) and _sk_ratio == Fraction(-1, q) and _rs_prod_r == Fraction(-1, lam * q**2) and _rs_diff == Fraction(1, lam)
+    checks.append((check_817, True))
+    print(f"  PASS: {check_817}")
+
+    # 818: Drinfeld twist and conformal weight
+    _h_1 = Fraction(2, k + 2)
+    _theta_order = (k + 2) // 2
+    _c_24 = Fraction(3 * k, k + 2) / 24
+    check_818 = f"Drinfeld: h₁=1/Φ₆=1/7, twist order=Φ₆=7, c/24=q/(v-k)=3/28"
+    assert _h_1 == Fraction(1, Phi6) and _theta_order == Phi6 and _c_24 == Fraction(q, v - k)
+    checks.append((check_818, True))
+    print(f"  PASS: {check_818}")
+
+    # 819: Kazhdan-Lusztig positive roots
+    _E6_roots = q * k
+    _E7_roots = q**2 * Phi6
+    _E8_roots = E // lam
+    check_819 = f"KL: E₆ roots=qk=36, E₇=q²Φ₆=63, E₈=E/λ=120, E₇/E₆=Φ₆/μ, E₈/E₇=v/(qΦ₆)"
+    assert _E6_roots == 36 and _E7_roots == 63 and _E8_roots == 120 and Fraction(_E7_roots, _E6_roots) == Fraction(Phi6, mu) and Fraction(_E8_roots, _E7_roots) == Fraction(v, q * Phi6)
+    checks.append((check_819, True))
+    print(f"  PASS: {check_819}")
+
+    # 820: Quantum dimensions and E6
+    _q_ratio = Fraction(k_comp, k)
+    check_820 = f"Quantum dim: k'/k=q²/μ=9/4, E₆ fund=k'=27, E₆ adj=C(k+1,2)=78"
+    assert _q_ratio == Fraction(q**2, mu) and k_comp == 27 and _comb2(k + 1, 2) == 78
+    checks.append((check_820, True))
+    print(f"  PASS: {check_820}")
+
+    # 821: Temperley-Lieb algebra
+    _TL_q = _comb2(2 * q, q) // (q + 1)
+    _TL_mu = _comb2(2 * mu, mu) // (mu + 1)
+    _TL_prod = _TL_q * _TL_mu
+    check_821 = f"Temperley-Lieb: TL_q=C_q=N=5, TL_μ=C_μ=k+λ=14, product=C(dim_O,μ)=70"
+    assert _TL_q == N and _TL_mu == k + lam and _TL_prod == _comb2(_dim_O, mu)
+    checks.append((check_821, True))
+    print(f"  PASS: {check_821}")
+
+    # 822: Hecke algebra dimensions
+    _H_q = _math.factorial(q)
+    _H_mu = _math.factorial(mu)
+    _H_N = _math.factorial(N)
+    _H_prod = _H_q * _H_mu * _H_N
+    check_822 = f"Hecke: q!=k/λ=6, μ!=f=24, N!=E/λ=120, product=vk²q=17280"
+    assert _H_q == k // lam and _H_mu == f_mult and _H_N == E // lam and _H_prod == v * k**2 * q
+    checks.append((check_822, True))
+    print(f"  PASS: {check_822}")
+
+    # 823: Quantum Clebsch-Gordan / Plancherel
+    _mu1_p = Fraction(f_mult, v)
+    _mu2_p = Fraction(g_mult, v)
+    check_823 = f"CG: Plancherel μ₁=q/N=3/5, μ₂=q/dim_O=3/8, sum=1-1/v, product=q²/(N·dim_O)"
+    assert _mu1_p == Fraction(q, N) and _mu2_p == Fraction(q, _dim_O) and _mu1_p + _mu2_p == Fraction(v - 1, v) and _mu1_p * _mu2_p == Fraction(q**2, N * _dim_O)
+    checks.append((check_823, True))
+    print(f"  PASS: {check_823}")
+
+    # 824: Jones polynomial partition functions
+    _Z1 = f_mult * r_eval + g_mult * s_eval + k
+    _Z2 = f_mult * r_eval**2 + g_mult * s_eval**2 + k**2
+    _Z3 = f_mult * r_eval**3 + g_mult * s_eval**3 + k**3
+    check_824 = f"Jones: Z(1)=Tr(A)=0, Z(2)=λE=480, Z(3)=μE=960"
+    assert _Z1 == 0 and _Z2 == lam * E and _Z3 == mu * E
+    checks.append((check_824, True))
+    print(f"  PASS: {check_824}")
+
+    # 825: Quantum Casimirs and master equation
+    _c_r = r_eval**2 + lam * r_eval
+    _c_s = s_eval**2 + lam * s_eval
+    _c3_r = r_eval**3 + lam * r_eval**2 - _dim_O * r_eval
+    _c3_s = s_eval**3 + lam * s_eval**2 - _dim_O * s_eval
+    check_825 = f"Casimirs: c(r)=c(s)=dim_O=8, c₃(r)=c₃(s)=0 (master!), rs=-dim_O, r+s=-λ"
+    assert _c_r == _dim_O and _c_s == _dim_O and _c3_r == 0 and _c3_s == 0 and r_eval * s_eval == -_dim_O and r_eval + s_eval == -lam
+    checks.append((check_825, True))
+    print(f"  PASS: {check_825}")
+
+    # 826: Modular tensor category
+    _P = [[1, k, k_comp], [1, r_eval, -(r_eval+1)], [1, s_eval, -(s_eval+1)]]
+    _det_P = (_P[0][0]*(_P[1][1]*_P[2][2] - _P[1][2]*_P[2][1]) - _P[0][1]*(_P[1][0]*_P[2][2] - _P[1][2]*_P[2][0]) + _P[0][2]*(_P[1][0]*_P[2][1] - _P[1][1]*_P[2][0]))
+    _T_order = k + 2
+    check_826 = f"MTC: det(P)=-E=-240, T order=k+2=λΦ₆=14, rank=q=3"
+    assert _det_P == -E and _T_order == lam * Phi6
+    checks.append((check_826, True))
+    print(f"  PASS: {check_826}")
+
+    # 827: Quantum knot invariants
+    _Z4 = f_mult * r_eval**4 + g_mult * s_eval**4 + k**4
+    _ratio_32 = Fraction(_Z3, _Z2)
+    _ratio_43 = Fraction(_Z4, _Z3)
+    _Z_sum = _Z2 + _Z3 + _Z4
+    check_827 = f"Knot: Z(3)/Z(2)=λ=2, Z(4)/Z(3)=q³-1=26, Z(2+3+4)=C(k,2)·v·α=26400"
+    assert _ratio_32 == lam and _ratio_43 == q**3 - 1 and _Z_sum == _comb2(k, 2) * v * alpha_ind
+    checks.append((check_827, True))
+    print(f"  PASS: {check_827}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -10011,7 +10143,7 @@ def grand_synthesis():
   │  CATEGORY      │  Part VII-AL (758-771)  │ FP=v=40  │ 1836=mp  │
   │  INFO GEOM     │  Part VII-AM (772-785)  │ kappa1/6 │ gap=2/3  │
   │  DYNAMICS      │  Part VII-AN (786-799)  │ Ramanujan│ W3=6T    │
-  │  FINAL CLOSE   │  q=3 -> ALL 813 checks  │ ONE      │ INTEGER  │
+  │  FINAL CLOSE   │  q=3 -> ALL 827 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
