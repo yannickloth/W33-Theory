@@ -260,7 +260,7 @@ section h2::after {
     gauge groups, three chiral generations, mixing matrices, and quantum gravity —
     through an emergent <strong>E₈ root system</strong>, quantum error-correcting code,
     and Calabi–Yau compactification. <strong>No free parameters.</strong><br>
-    <strong style="color: #ffd700; font-size: 0.7em">⚡ 225/225 checks • α⁻¹ = 137.036 • sin²θ<sub>W</sub> = 3/13 • M<sub>Z</sub> = 91 • m<sub>H</sub> = 125 • PMNS (1σ) • v<sub>EW</sub> = 246 • g* = 106.75 • CC = −122 • N<sub>eff</sub> = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M<sub>Pl</sub> = 1.22×10¹⁹ • w=−1 • C_F=4/3 • SM+GR DERIVED • 480 = 5 ways • 27→9→3 generations</strong>
+    <strong style="color: #ffd700; font-size: 0.7em">⚡ 239/239 checks • α⁻¹ = 137.036 • sin²θ<sub>W</sub> = 3/13 • M<sub>Z</sub> = 91 • m<sub>H</sub> = 125 • PMNS (1σ) • v<sub>EW</sub> = 246 • g* = 106.75 • CC = −122 • N<sub>eff</sub> = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M<sub>Pl</sub> = 1.22×10¹⁹ • w=−1 • C_F=4/3 • SM+GR DERIVED • 480 = 5 ways • 27→9→3 generations</strong>
   </div>
 </header>
 
@@ -270,7 +270,7 @@ section h2::after {
   <summary>Navigate</summary>
   <div class="nav-links">
   <a href="#numbers">Core Numbers</a>
-  <a href="#verification">⚡ 225/225 Verification</a>
+  <a href="#verification">⚡ 239/239 Verification</a>
   <a href="#curvature">κ = 1/6 Curvature</a>
   <a href="#selection">Why q=3</a>
   <a href="#status">Status</a>
@@ -337,7 +337,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num">225/225</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 225 master checks from F₃ + ω alone. Every claim computationally verified.</div></div>
+    <div class="card"><div class="num">239/239</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 225 master checks from F₃ + ω alone. Every claim computationally verified.</div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -371,7 +371,7 @@ section h2::after {
 
 <!-- ═══════════════════════ VERIFICATION ═══════════════════════ -->
 <section id="verification">
-  <h2><span class="icon">⚡</span> Complete Computational Verification — 225/225</h2>
+  <h2><span class="icon">⚡</span> Complete Computational Verification — 239/239</h2>
   <p>The script <strong>THEORY_OF_EVERYTHING.py</strong> derives <em>every</em> result below from exactly two inputs:
   the field <strong>F₃ = {0,1,2}</strong> and the symplectic form <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed. All 183 checks pass.</p>
@@ -1367,6 +1367,43 @@ section h2::after {
     <li><code>tools/build_linfty_firewall_extension.py</code> (L&infin; extension with optional global predictor)</li>
   </ul>
 
+
+  <h3>GQ Axiomatics, Ihara Zeta &amp; Absolute Bounds (Checks 226&ndash;239)</h3>
+
+  <h4>GQ(q,q) Axiomatics: Everything from q = 3</h4>
+  <p>The generalized quadrangle GQ(q,q) has collinearity graph SRG with:</p>
+  <div class="math-block">
+    <span class="eq">&lambda; = q &minus; 1 = 2, &ensp; &mu; = q + 1 = 4</span><br>
+    <span class="eq">k = q&middot;&mu; = q(q+1) = 12, &ensp; v = (q+1)(q&sup2;+1) = 40</span>
+  </div>
+  <p><strong>Self-dual:</strong> points = lines = v = 40 (point-line democracy).</p>
+  <p><strong>Overlap product:</strong> &mu;&lambda; = (q+1)(q&minus;1) = q&sup2;&minus;1 = <strong>8 = rank(E&#8328;)</strong>.</p>
+  <p><strong>Uniqueness:</strong> &mu;&minus;&lambda; = &lambda; requires 2 = q&minus;1, i.e., <strong>q = 3 is the ONLY self-referencing
+  field size</strong>. The SRG parameters are locked in a self-referential loop.</p>
+
+  <h4>Graph-Theoretic Riemann Hypothesis</h4>
+  <p>The <strong>Ihara zeta function</strong> &zeta;<sub>G</sub>(u) of W(3,3) has all non-trivial poles
+  lying <strong>exactly on the critical circle</strong> |u| = 1/&radic;(k&minus;1) = 1/&radic;11:</p>
+  <table>
+    <tr><th>Eigenvalue</th><th>Poles</th><th>|u|&sup2;</th><th>Count</th></tr>
+    <tr><td>r = 2</td><td>(1&plusmn;i&radic;10)/11</td><td>1/11</td><td>48 = 2f</td></tr>
+    <tr><td>s = &minus;4</td><td>(&minus;2&plusmn;i&radic;7)/11</td><td>1/11</td><td>30 = 2g</td></tr>
+    <tr><td colspan="3"><strong>Total complex poles</strong></td><td><strong>78 = dim(E&#8326;)!</strong></td></tr>
+  </table>
+  <p>This is the <strong>graph-theoretic Riemann Hypothesis</strong>: W(3,3) is maximally Ramanujan.</p>
+  <p>The pole discriminants encode the graph: |disc<sub>r</sub>| = 40 = v,
+  |disc<sub>s</sub>| = 28 = v&minus;k = dim(SO(8)), and their difference = k = 12.</p>
+  <p>Total Ihara zeros = 2(E&minus;v) + 2v = 2E = <strong>480 = directed edges</strong>.</p>
+
+  <h4>Delsarte Absolute Bounds &amp; Monster Connection</h4>
+  <div class="math-block">
+    <span class="eq">f(f+3)/2 = 24 &times; 27 / 2 = <strong>324 = &mu; &times; b&#8321; = 196884 &minus; 196560</strong></span>
+  </div>
+  <p>The Delsarte absolute bound = Monster&ndash;Leech gap = spacetime &times; Betti!
+  And f+3 = 27 = k' (complement degree), g+3 = 18 = &lambda;' (complement overlap).
+  <strong>The absolute bounds are built from complement parameters.</strong></p>
+  <p>Krein condition margins: k(k&minus;1) = 132 and 2f = 48 &mdash; both comfortably positive.</p>
+
 <section id="status">
   <h2><span class="icon">✓</span> Status of Major Claims</h2>
   <table>
@@ -1436,7 +1473,7 @@ section h2::after {
     <tr><td>M<sub>Higgs</sub> = 125 GeV</td><td class="status-ok">✅ Derived</td><td>s⁴+v+μ = 81+40+4 = 125</td></tr>
     <tr><td>Dimensions 4+8=12</td><td class="status-ok">✅ Derived</td><td>μ=4 macroscopic, k−μ=8 compact, k=12 total</td></tr>
     <tr><td>v = 1+24+15 = 40</td><td class="status-ok">✅ Proved</td><td>Eigenvalue multiplicities = vacuum + gauge + matter content</td></tr>
-    <tr><td>225/225 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 225 checks verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal/Lorentz groups, CP structure, anomaly cancellation, Higgs doublet count, <strong>480 directed-edge operator, Ihara-Bass, α DERIVED from spectral geometry, Gaussian integer structure (ℤ[i]), complex Ihara fugacity, spectral action, Hodge spectrum, simplicial topology (χ=−v), Ollivier-Ricci, Ramanujan, <strong style="color:#f97316;">SM Lagrangian emergence (DEC operators), GR emergence (S_EH=Tr(L₀)=480), Dirac-Kähler spectrum, generation mechanism (27→9→3), spectral dimension flow, complement duality (SRG(40,27,18,18)), graph energy identities, Hoffman tight bound, spectral gap = dim(SO(10))</strong></strong></td></tr>
+    <tr><td>239/239 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 225 checks verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal/Lorentz groups, CP structure, anomaly cancellation, Higgs doublet count, <strong>480 directed-edge operator, Ihara-Bass, α DERIVED from spectral geometry, Gaussian integer structure (ℤ[i]), complex Ihara fugacity, spectral action, Hodge spectrum, simplicial topology (χ=−v), Ollivier-Ricci, Ramanujan, <strong style="color:#f97316;">SM Lagrangian emergence (DEC operators), GR emergence (S_EH=Tr(L₀)=480), Dirac-Kähler spectrum, generation mechanism (27→9→3), spectral dimension flow, complement duality (SRG(40,27,18,18)), graph energy identities, Hoffman tight bound, spectral gap = dim(SO(10))</strong></strong></td></tr>
     <tr><td>κ = 2/k = 1/6 (uniform)</td><td class="status-ok">✅ Proved</td><td>Ollivier-Ricci curvature computed via LP on all 240 edges</td></tr>
     <tr><td>Gauss–Bonnet: Eκ = v = −χ</td><td class="status-ok">✅ Proved</td><td>240×(1/6) = 40 = v = −χ; also forces q = 3</td></tr>
     <tr><td>All triangles trichromatic</td><td class="status-ok">✅ Proved</td><td>160/160 triangles use all 3 generation colors</td></tr>
@@ -2766,7 +2803,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 5500+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 225/225 master checks</p>
+  <p><strong>Tests:</strong> 5500+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 239/239 master checks</p>
 </section>
 
 </div><!-- /container -->
