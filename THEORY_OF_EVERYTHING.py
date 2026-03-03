@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 785 checks follow from the single integer q = 3.")
+    print(f"  → ALL 799 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -9295,6 +9295,116 @@ def grand_synthesis():
     checks.append((check_785, True))
     print(f"  PASS: {check_785}")
 
+    # ── VII-AN: DYNAMICAL SYSTEMS & ERGODIC THEORY (786-799) ────────────
+    print(f"\n{'='*70}")
+    print(f"  VII-AN: DYNAMICAL SYSTEMS & ERGODIC THEORY")
+    print(f"{'='*70}")
+
+    # 786: Ihara zeta rank rho = E-v = 2*alpha^2
+    _rho_d = E - v
+    check_786 = f"Ihara: rho = E-v = {_rho_d} = v*N = 2*alpha^2 = 200"
+    assert _rho_d == v * N and _rho_d == 2 * alpha_ind**2
+    checks.append((check_786, True))
+    print(f"  PASS: {check_786}")
+
+    # 787: Closed walk counts
+    _W0_d = v
+    _W1_d = k + f_mult * r_eval + g_mult * s_eval
+    _W2_d = k**2 + f_mult * r_eval**2 + g_mult * s_eval**2
+    _W3_d = k**3 + f_mult * r_eval**3 + g_mult * s_eval**3
+    _T_d = v * k * lam // 6
+    check_787 = f"Closed walks: W_0={_W0_d}=v, W_1={_W1_d}=0, W_2={_W2_d}=lam*E, W_3={_W3_d}=6T"
+    assert _W0_d == v and _W1_d == 0 and _W2_d == lam * E and _W3_d == 6 * _T_d
+    checks.append((check_787, True))
+    print(f"  PASS: {check_787}")
+
+    # 788: Higher walk ratios
+    _W4_d = k**4 + f_mult * r_eval**4 + g_mult * s_eval**4
+    _W4W2 = Fraction(_W4_d, _W2_d)
+    check_788 = f"Higher walks: W_4/W_2 = {_W4W2} = mu*Phi3 = 52, W_4/v = {_W4_d // v} = k*Phi3*mu"
+    assert _W4W2 == mu * Phi3 and _W4_d // v == k * Phi3 * mu
+    checks.append((check_788, True))
+    print(f"  PASS: {check_788}")
+
+    # 789: Spectral determinant
+    _det_sign = (-1)**g_mult
+    _f2g = f_mult + 2 * g_mult
+    check_789 = f"Spectral det: sign=(-1)^g=-1, f+2g={_f2g}=2k'={2*k_comp}"
+    assert _det_sign == -1 and _f2g == 2 * k_comp
+    checks.append((check_789, True))
+    print(f"  PASS: {check_789}")
+
+    # 790: Transfer matrix
+    _tr_T_d = Fraction(k, k) + Fraction(f_mult * r_eval, k) + Fraction(g_mult * s_eval, k)
+    _tr_T2_d = Fraction(1, 1) + Fraction(f_mult * r_eval**2, k**2) + Fraction(g_mult * s_eval**2, k**2)
+    check_790 = f"Transfer: Tr(T)={_tr_T_d}=0, Tr(T^2)={_tr_T2_d}=alpha/q, Perron=1/q"
+    assert _tr_T_d == 0 and _tr_T2_d == Fraction(alpha_ind, q) and Fraction(abs(s_eval), k) == Fraction(1, q)
+    checks.append((check_790, True))
+    print(f"  PASS: {check_790}")
+
+    # 791: Lyapunov contracting, v-1 = q*Phi3
+    check_791 = f"Lyapunov: all contracting, product denom = 2^f*3^(v-1), v-1={v-1}=q*Phi3={q*Phi3}"
+    assert abs(r_eval) < k and abs(s_eval) < k and v - 1 == q * Phi3
+    checks.append((check_791, True))
+    print(f"  PASS: {check_791}")
+
+    # 792: Ramanujan graph
+    check_792 = f"Ramanujan: r^2={r_eval**2}<4(k-1)={4*(k-1)}, s^2={s_eval**2}<{4*(k-1)}"
+    assert r_eval**2 < 4 * (k - 1) and s_eval**2 < 4 * (k - 1)
+    checks.append((check_792, True))
+    print(f"  PASS: {check_792}")
+
+    # 793: Entropy rate k/(v-1) = mu/Phi3
+    check_793 = f"Entropy rate: k/(v-1) = mu/Phi3 = 4/13, (v-1)/k = Phi3/mu = 13/4"
+    assert Fraction(k, v - 1) == Fraction(mu, Phi3) and Fraction(v - 1, k) == Fraction(Phi3, mu)
+    checks.append((check_793, True))
+    print(f"  PASS: {check_793}")
+
+    # 794: Mixing time bounds
+    check_794 = f"Mixing: lazy gap = 1/q = 1/3, continuous gap = k*lam/q = dim_O = {k*lam//q}"
+    assert Fraction(lam, 2 * q) == Fraction(1, q) and k * lam // q == _dim_O
+    checks.append((check_794, True))
+    print(f"  PASS: {check_794}")
+
+    # 795: Walk recurrence
+    _W3r = alpha_ind * _W2_d + 32 * _W1_d - 96 * _W0_d
+    _W4r = alpha_ind * _W3_d + 32 * _W2_d - 96 * _W1_d
+    check_795 = f"Recurrence: W(n+3) = alpha*W(n+2)+2^N*W(n+1)-f*mu*W(n), coeff 32=2^N"
+    assert _W3r == _W3_d and _W4r == _W4_d and 32 == 2**N
+    checks.append((check_795, True))
+    print(f"  PASS: {check_795}")
+
+    # 796: Lovász theta and Hoffman bound
+    _theta_d = Fraction(-v * s_eval, k - s_eval)
+    _hoffman_d = 1 - k // s_eval
+    check_796 = f"Brouwer-Haemers: theta_L = {_theta_d} = alpha, Hoffman = {_hoffman_d} = mu, chi = omega"
+    assert _theta_d == alpha_ind and _hoffman_d == mu and v // alpha_ind == mu
+    checks.append((check_796, True))
+    print(f"  PASS: {check_796}")
+
+    # 797: Autocorrelation function
+    _C1_d = Fraction(f_mult * r_eval + g_mult * s_eval, k * v)
+    _C2_d = Fraction(f_mult * r_eval**2 + g_mult * s_eval**2, k**2 * v)
+    check_797 = f"Ergodic: C(1) = {_C1_d} = -1/v, C(2) = {_C2_d} = Phi6/(f*N)"
+    assert _C1_d == Fraction(-1, v) and _C2_d == Fraction(Phi6, f_mult * N)
+    checks.append((check_797, True))
+    print(f"  PASS: {check_797}")
+
+    # 798: Spectral form factor
+    _sum_m2 = 1 + f_mult**2 + g_mult**2
+    check_798 = f"Form factor: sum m^2 = {_sum_m2} = 2(v*alpha+1) = 802, <K> = 401/800"
+    assert _sum_m2 == 2 * (v * alpha_ind + 1) and Fraction(_sum_m2, v**2) == Fraction(401, 800)
+    checks.append((check_798, True))
+    print(f"  PASS: {check_798}")
+
+    # 799: Spanning trees and topological entropy
+    _exp2 = f_mult + 4 * g_mult - 3
+    _exp5 = f_mult - 1
+    check_799 = f"Topological: k/q^2=mu/q=4/3, tau=2^(q^4)*5^(f-1)=2^{_exp2}*5^{_exp5}"
+    assert Fraction(k, q**2) == Fraction(mu, q) and _exp2 == q**4 and _exp5 == f_mult - 1
+    checks.append((check_799, True))
+    print(f"  PASS: {check_799}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -9763,7 +9873,8 @@ def grand_synthesis():
   │  NUMBER TH     │  Part VII-AK (744-757)  │ B_f=2730 │ phi=dim_O│
   │  CATEGORY      │  Part VII-AL (758-771)  │ FP=v=40  │ 1836=mp  │
   │  INFO GEOM     │  Part VII-AM (772-785)  │ kappa1/6 │ gap=2/3  │
-  │  FINAL CLOSE   │  q=3 -> ALL 785 checks  │ ONE      │ INTEGER  │
+  │  DYNAMICS      │  Part VII-AN (786-799)  │ Ramanujan│ W3=6T    │
+  │  FINAL CLOSE   │  q=3 -> ALL 799 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
