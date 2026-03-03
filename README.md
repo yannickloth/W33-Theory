@@ -1,4 +1,4 @@
-# W(3,3)–E₈ Theory
+# W(3,3)–E<sub>8</sub> Theory
 
 **A finite-geometry Theory of Everything**
 
@@ -8,7 +8,7 @@
 
 ---
 
-The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) encode the complete gauge-geometric skeleton of the Standard Model — gauge groups, three chiral generations, mixing matrices, and quantum gravity — through an emergent E₈ root system, quantum error-correcting code, and Calabi–Yau compactification. **No free parameters are introduced.**
+The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) encode the complete gauge-geometric skeleton of the Standard Model — gauge groups, three chiral generations, mixing matrices, and quantum gravity — through an emergent E<sub>8</sub> root system, quantum error-correcting code, and Calabi–Yau compactification. **No free parameters are introduced.**
 
 📖 **[Full documentation → wilcompute.github.io/W33-Theory](https://wilcompute.github.io/W33-Theory/)**
 
@@ -16,21 +16,46 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 
 | W(3,3) property | Value | Physical parallel |
 |:---|:---:|:---|
-| Edges of collinearity graph | **240** | Roots of E₈ |
-| Automorphism group | **Sp(4,3) ≅ W(E₆)** | Weyl group of E₆, order 51,840 |
-| First homology H₁ | **ℤ⁸¹** | 3 generations: 81 = 27 + 27 + 27 |
-| Hodge spectrum | **0⁸¹ 4¹²⁰ 10²⁴ 16¹⁵** | Matter / gauge / X-bosons / Y-bosons |
+| Edges of collinearity graph | **240** | Roots of E<sub>8</sub> |
+| Automorphism group | **Sp(4,3) ≅ W(E<sub>6</sub>)** | Weyl group of E<sub>6</sub>, order 51,840 |
+| First homology H<sub>1</sub> | **ℤ<sup>81</sup>** | 3 generations: 81 = 27 + 27 + 27 |
+| Hodge spectrum | **0<sup>81</sup> 4<sup>120</sup> 10<sup>24</sup> 16<sup>15</sup>** | Matter / gauge / X-bosons / Y-bosons |
 | Weinberg angle | **sin²θ<sub>W</sub> = 3/13** | EW value (runs from GUT **3/8** for SU(5)) |
 | QEC code | **[240, 81, ≥3]** | Quantum error-correcting code over GF(3) |
 | Gauge coupling | **α<sub>GUT</sub> = 1/(8π)** | ≈ 1/25.1, within 3.6% of MSSM value |
+
+## Monster Ogg-Prime Pipeline (2×3 triangle scan)
+
+The repo includes a deterministic, offline pipeline that scans Monster class-algebra support for triangle groups Δ(2,3,p) at the **Ogg primes** and extracts a “prime ratio signature”
+
+`r_p := n_{2X,3Y}^{pZ} / p`,
+
+then tests whether `r_p` lands in degree spectra of the centralizer cofactor `H` where `|C_M(pZ)| = p·|H|`.
+
+- Pipeline: `scripts/w33_monster_ogg_pipeline.py`
+- Cross-checked index table: `scripts/w33_monster_rp_index_table.py`
+
+| pZ | H (cofactor) | signature pair | r<sub>p</sub> | meaning |
+|:---:|:---|:---:|---:|:---|
+| 5A | HN | 2A×3A | 1,140,000 | r<sub>5</sub> = [HN:K] (perm index) |
+| 7A | He | 2A×3A | 2,058 | r<sub>7</sub> = [He:K] (perm index) |
+| 11A | M12 | 2A×3B | 144 | r<sub>11</sub> = [M12:PSL(2,11)] and **144 ∈ deg(M12)** |
+| 13A | PSL(3,3) | 2A×3B | 156 | r<sub>13</sub> = [PSL(3,3):K] (perm index) |
+| 13B | 13²:2A4 | 2A×3C | 104 | r<sub>13</sub> = [H:K] (perm index) |
+| 17A | PSL(2,7) | 2A×3B | 14 | r<sub>17</sub> = [PSL(2,7):A4] (perm index) |
+| 23A | S4 | 2A×3B | 4 | r<sub>23</sub> = [S4:S3] (perm index) |
+| 23B | S4 | 2A×3B | 4 | r<sub>23</sub> = [S4:S3] (perm index) |
+| 29A | C3 | 2A×3B | 3 | r<sub>29</sub> = [C3:1] (perm index) |
+| 71A | 1 | 2A×3B | 1 | trivial cofactor |
+| 71B | 1 | 2A×3B | 1 | trivial cofactor |
 
 ## Status
 
 | Claim | | Notes |
 |:---|:---:|:---|
-| 240 edges ↔ E₈ roots | ✅ | Exact combinatorial identity |
+| 240 edges ↔ E<sub>8</sub> roots | ✅ | Exact combinatorial identity |
 | Aut(W33) ≅ W(E₆) | ✅ | Order 51,840 confirmed |
-| H₁ = ℤ⁸¹, three generations | ✅ | All 800 order-3 elements give 27+27+27 |
+| H<sub>1</sub> = ℤ<sup>81</sup>, three generations | ✅ | All 800 order-3 elements give 27+27+27 |
 | Hodge spectrum & mass gap | ✅ | Δ = 4 separates matter from gauge |
 | sin²θ<sub>W</sub> = 3/13 | ✅ | Derived: q/(q²+q+1) with q=3 (EW); runs from GUT 3/8 |
 | θ<sub>QCD</sub> = 0, proton stable | ✅ | Topological selection rules |

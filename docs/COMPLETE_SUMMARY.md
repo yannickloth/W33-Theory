@@ -717,6 +717,7 @@ Each GQ line (K₄) has 3 perfect matchings, each contributing 2 edges:
 - 744 = 3 × 248 = q × dim(E₈)
 - 196884 = 240 × 819 + 4 × 81 = E₈_roots × 819 + μ × H₁
 - det(A) = −3 × 2⁵⁶
+- **Monster Ogg-prime pipeline (Δ(2,3,p) scan):** r₁₁(11A; 2A×3B)=144 lands in deg(M12) with C_M(11A)=11·M12 (see `scripts/w33_monster_ogg_pipeline.py`, `scripts/w33_monster_rp_index_table.py`).
 
 ### Grand Summary
 ```
@@ -926,3 +927,17 @@ b₁ = 81 = q⁴ connects FOUR independent domains:
 2. **E₆**: 81 = 27 × 3 (E₆ fund × generations)
 3. **Kirchhoff**: τ = 2^81 · 5²³ (spanning tree exponent)
 4. **Monster**: 196884 − 196560 = μ × 81 = 324
+
+### The CE2 / L∞ Phase Lift (Heisenberg → Weil → firewall repair)
+
+The same “missing cocycle” mechanism appears twice in the repo:
+
+1. **s12 universal algebra (Golay / sl(27) grade-only laws):** keeping only grade-level coefficients produces a finite Jacobi obstruction set.
+2. **E₈ Z₃ / L∞ firewall:** l₃ supported on the 9 Heisenberg fibers (“bad9”) cancels the pure-sector Jacobi anomaly, but a mixed-sector obstruction remains.
+
+In both cases, the repair is canonical: upgrade grade-only coefficients to an honest **Weyl–Heisenberg algebra**, where the commutator bracket satisfies Jacobi automatically, and interpret the needed correction as a **metaplectic/Weil phase** (a 2-cocycle / CE-2 coboundary `d(α)`), not a lookup table.
+
+Reproducible reference scripts:
+- `scripts/w33_s12_linfty_phase_bridge.py` (end-to-end bridge + regression triple)
+- `scripts/ce2_global_cocycle.py` (global CE2 predictor in closed form)
+- `tools/build_linfty_firewall_extension.py` (L∞ extension with optional global predictor)
