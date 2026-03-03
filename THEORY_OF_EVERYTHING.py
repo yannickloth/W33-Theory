@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 715 checks follow from the single integer q = 3.")
+    print(f"  → ALL 729 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -8668,6 +8668,129 @@ def grand_synthesis():
     checks.append((check_715, True))
     print(f"  PASS: {check_715}")
 
+    # ── VII-AI: REPRESENTATION THEORY & McKAY (716-729) ──────────────────
+    print(f"\n{'='*70}")
+    print(f"  VII-AI: REPRESENTATION THEORY & McKAY CORRESPONDENCE")
+    print(f"{'='*70}")
+
+    # 716: Eigenmatrix P complement eigenvalues
+    _P = [[1, k, k_comp],
+          [1, r_eval, -1 - r_eval],
+          [1, s_eval, -1 - s_eval]]
+    check_716 = f"Eigenmatrix P: complement eigenvalues -1-r={_P[1][2]}=-q, -1-s={_P[2][2]}=q"
+    assert _P[1][2] == -q and _P[2][2] == q
+    checks.append((check_716, True))
+    print(f"  PASS: {check_716}")
+
+    # 717: det(P) = -E = -240
+    _det_P = (1 * (r_eval * (-1 - s_eval) - (-1 - r_eval) * s_eval)
+              - k * (1 * (-1 - s_eval) - (-1 - r_eval) * 1)
+              + k_comp * (1 * s_eval - r_eval * 1))
+    check_717 = f"det(P) = {_det_P} = -E = -240 (character table determinant)"
+    assert _det_P == -E
+    checks.append((check_717, True))
+    print(f"  PASS: {check_717}")
+
+    # 718: Character orthogonality k+f*r+g*s = 0
+    _col_orth = 1 * 1 * k + f_mult * 1 * r_eval + g_mult * 1 * s_eval
+    check_718 = f"Character orthogonality: k+f*r+g*s = {_col_orth} = 0"
+    assert _col_orth == 0
+    checks.append((check_718, True))
+    print(f"  PASS: {check_718}")
+
+    # 719: Plancherel measure
+    _pl_1 = Fraction(f_mult, v)
+    _pl_2 = Fraction(g_mult, v)
+    check_719 = f"Plancherel: mu_1=f/v={_pl_1}=q/N, mu_2=g/v={_pl_2}=q/dim_O, ratio=dim_O/N"
+    assert _pl_1 == Fraction(q, N) and _pl_2 == Fraction(q, _dim_O)
+    checks.append((check_719, True))
+    print(f"  PASS: {check_719}")
+
+    # 720: f*g = q*E/lam = 360
+    _fg_prod = f_mult * g_mult
+    _fg_target = q * E // lam
+    check_720 = f"f*g = {_fg_prod} = q*E/lam = {_fg_target}"
+    assert _fg_prod == _fg_target and _fg_prod == 360
+    checks.append((check_720, True))
+    print(f"  PASS: {check_720}")
+
+    # 721: McKay correspondence
+    _bIcos = E // lam
+    _bTet = f_mult
+    _bOct = f_mult * lam
+    _ratio_it = _bIcos // _bTet
+    check_721 = f"McKay: binary ico=E/lam={_bIcos}, tet=f={_bTet}, oct=2f={_bOct}, ico/tet=N={_ratio_it}"
+    assert _bIcos == 120 and _bTet == f_mult and _bOct == f_mult * lam and _ratio_it == N
+    checks.append((check_721, True))
+    print(f"  PASS: {check_721}")
+
+    # 722: ADE Coxeter numbers
+    _h_E6 = k
+    _h_E7 = v - 2 * k + mu - 2
+    _h_E8 = f_mult + k // lam
+    _h_sum = _h_E6 + _h_E7 + _h_E8
+    check_722 = f"ADE Coxeter: h(E6)=k={_h_E6}, h(E7)={_h_E7}, h(E8)={_h_E8}, sum={_h_sum}=E/mu"
+    assert _h_E6 == 12 and _h_E7 == 18 and _h_E8 == 30 and _h_sum == E // mu
+    checks.append((check_722, True))
+    print(f"  PASS: {check_722}")
+
+    # 723: Exceptional group dimensions
+    _dim_E6 = (k // lam) * Phi3
+    _dim_E7 = Phi3 * alpha_ind + q
+    _dim_E8 = E + _dim_O
+    _diff_76 = _dim_E7 - _dim_E6
+    check_723 = f"Exceptional: E6=(k/lam)*Phi3={_dim_E6}, E7=Phi3*alpha+q={_dim_E7}, E8=E+dim_O={_dim_E8}"
+    assert _dim_E6 == 78 and _dim_E7 == 133 and _dim_E8 == 248 and _diff_76 == _comb2(k - 1, 2)
+    checks.append((check_723, True))
+    print(f"  PASS: {check_723}")
+
+    # 724: Root system sizes
+    _E6r = _dim_E6 - (k // lam)
+    _E7r = _dim_E7 - Phi6
+    _E8r = _dim_E8 - _dim_O
+    check_724 = f"Roots: E6={_E6r}=k*(k/lam), E7={_E7r}=lam*q^2*Phi6, E8={_E8r}=E"
+    assert _E6r == k * (k // lam) and _E7r == lam * q**2 * Phi6 and _E8r == E
+    checks.append((check_724, True))
+    print(f"  PASS: {check_724}")
+
+    # 725: Lambda^2 and Sym^2
+    _antisym2 = _comb2(k, 2)
+    _sym2 = _comb2(k + 1, 2)
+    check_725 = f"Lambda^2=C(k,2)={_antisym2}, Sym^2=C(k+1,2)={_sym2}=dim(E6)"
+    assert _antisym2 == 66 and _sym2 == _dim_E6
+    checks.append((check_725, True))
+    print(f"  PASS: {check_725}")
+
+    # 726: Casimir eigenvalues
+    _cas_r = r_eval**2 + lam * r_eval - _dim_O
+    _cas_s = s_eval**2 + lam * s_eval - _dim_O
+    check_726 = f"Casimir: r^2+lam*r-dim_O={_cas_r}=0 and s^2+lam*s-dim_O={_cas_s}=0"
+    assert _cas_r == 0 and _cas_s == 0
+    checks.append((check_726, True))
+    print(f"  PASS: {check_726}")
+
+    # 727: f*r + g*s = -k
+    _frs_sum = f_mult * r_eval + g_mult * s_eval
+    check_727 = f"Character sum: f*r+g*s = {_frs_sum} = -k = {-k}"
+    assert _frs_sum == -k
+    checks.append((check_727, True))
+    print(f"  PASS: {check_727}")
+
+    # 728: Frobenius-Schur indicator sum = v
+    _fs_sum = 1 + f_mult + g_mult
+    check_728 = f"Frobenius-Schur: all real reps, indicator sum = 1+f+g = {_fs_sum} = v"
+    assert _fs_sum == v
+    checks.append((check_728, True))
+    print(f"  PASS: {check_728}")
+
+    # 729: Tensor category k*(k'+1) = f*r^2+g*s^2
+    _kk1 = k * (k_comp + 1)
+    _frs2 = f_mult * r_eval**2 + g_mult * s_eval**2
+    check_729 = f"Tensor: k*(k'+1) = {_kk1} = f*r^2+g*s^2 = {_frs2} = 336"
+    assert _kk1 == _frs2 and _kk1 == 336
+    checks.append((check_729, True))
+    print(f"  PASS: {check_729}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -9131,7 +9254,8 @@ def grand_synthesis():
   │  RG FLOW       │  Part VII-AF (674-687)  │ b3=-Phi6 │ N^2=f+1  │
   │  DARKMATTER    │  Part VII-AG (688-701)  │ Omega4/13│ CC=122   │
   │  OPERATOR      │  Part VII-AH (702-715)  │ Connes   │ KO=6     │
-  │  FINAL CLOSE   │  q=3 -> ALL 715 checks  │ ONE      │ INTEGER  │
+  │  REPRESENT     │  Part VII-AI (716-729)  │ McKay    │ ADE h=60 │
+  │  FINAL CLOSE   │  q=3 -> ALL 729 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     

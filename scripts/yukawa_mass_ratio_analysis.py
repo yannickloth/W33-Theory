@@ -18,10 +18,23 @@ parameters from `data/w33_yukawa_optimization.json` if available.
 
 from __future__ import annotations
 import argparse, json, os
+from pathlib import Path
 import numpy as np
 
 from w33_complex_yukawa import build_z3_complex_profiles, build_dominant_profiles
 from w33_ckm_from_vev import cubic_form_on_h27
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+# CKM target used across optimization scripts in this repository.
+V_CKM_exp = np.array(
+    [
+        [0.97373, 0.2243, 0.00382],
+        [0.2210, 0.9870, 0.0410],
+        [0.0080, 0.0388, 1.0130],
+    ]
+)
 
 
 def build_yukawa_tensor():
@@ -202,6 +215,18 @@ def main():
                         help="run gradient-based mass ratio optimization")
     parser.add_argument("--combined", action="store_true",
                         help="optimize CKM mixing and mass ratios together")
+    parser.add_argument(
+        "--combined-restarts",
+        type=int,
+        default=8,
+        help="number of multi-start attempts for --combined",
+    )
+    parser.add_argument(
+        "--mass-weight",
+        type=float,
+        default=1.0,
+        help="mass penalty weight in combined objective",
+    )
     args = parser.parse_args()
 
     print("Building Yukawa tensor...")
@@ -271,11 +296,39 @@ def main():
                     method="L-BFGS-B", options={"maxiter":2000, "ftol":1e-12},
                 )
                 return res.fun, res.x
-            best_comb_err, best_comb_params = run_combined(initial, weight=1.0)
-            print(f"Combined objective = {best_comb_err}")
+
+            best_comb_err = float("inf")
+            best_comb_params = None
+            rng_starts = np.random.default_rng(20260303)
+            for k in range(max(1, args.combined_restarts)):
+                if k == 0 and initial is not None:
+                    start = initial
+                else:
+                    start = rng_starts.normal(size=108)
+                cur_err, cur_params = run_combined(start, weight=args.mass_weight)
+                if cur_err < best_comb_err:
+                    best_comb_err = cur_err
+                    best_comb_params = cur_params
+
+            print(
+                f"Combined objective (best of {max(1, args.combined_restarts)} starts) = {best_comb_err}"
+            )
             # display CKM and mass errors separately
-            c_err = ckm_and_mass_objective(best_comb_params, T, V_CKM_exp, r_up, r_dn, weight_mass=0.0)
-            m_err = ckm_and_mass_objective(best_comb_params, T, V_CKM_exp, r_up, r_dn, weight_mass=1.0) - c_err
+            c_err = ckm_and_mass_objective(
+                best_comb_params, T, V_CKM_exp, r_up, r_dn, weight_mass=0.0
+            )
+            total_w = ckm_and_mass_objective(
+                best_comb_params,
+                T,
+                V_CKM_exp,
+                r_up,
+                r_dn,
+                weight_mass=args.mass_weight,
+            )
+            if args.mass_weight > 0:
+                m_err = (total_w - c_err) / args.mass_weight
+            else:
+                m_err = 0.0
             print(f"  CKM error component {c_err:.6f}")
             print(f"  mass error component {m_err:.6e}")
             # breakdown actual ratios
@@ -286,6 +339,32 @@ def main():
             sv_u, ratios_u = singular_value_ratios(yukawa_from_vev(T, v_up_c))
             sv_d, ratios_d = singular_value_ratios(yukawa_from_vev(T, v_dn_c))
             print("  up ratios", ratios_u, "down ratios", ratios_d)
+
+            # write optimization artifact for downstream analysis
+            out = {
+                "combined_objective": float(best_comb_err),
+                "ckm_error": float(c_err),
+                "mass_error": float(m_err),
+                "mass_weight": float(args.mass_weight),
+                "combined_restarts": int(max(1, args.combined_restarts)),
+                "target_ratios": {
+                    "up": [float(r_up[0]), float(r_up[1])],
+                    "down": [float(r_dn[0]), float(r_dn[1])],
+                },
+                "achieved_ratios": {
+                    "up": [float(ratios_u[0]), float(ratios_u[1])],
+                    "down": [float(ratios_d[0]), float(ratios_d[1])],
+                },
+                "singular_values": {
+                    "up": [float(x) for x in sv_u.tolist()],
+                    "down": [float(x) for x in sv_d.tolist()],
+                },
+                "params": [float(x) for x in best_comb_params.tolist()],
+            }
+            out_path = ROOT / "artifacts" / "w33_combined_ckm_mass_optimization.json"
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(json.dumps(out, indent=2), encoding="utf-8")
+            print(f"  wrote {out_path}")
 
 if __name__ == "__main__":
     main()

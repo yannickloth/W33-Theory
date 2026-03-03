@@ -9,14 +9,18 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 import time
 from pathlib import Path
 from typing import Dict
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    # Allow direct execution as `python scripts/w33_pdg_compare.py`
+    sys.path.insert(0, str(ROOT))
+
 from scripts.w33_mass_synthesis import derive_yukawas_from_triads
 from scripts.w33_rg_flow import integrate_rg
-
-ROOT = Path(__file__).resolve().parents[1]
 
 # PDG reference (representative values; keep conservative tolerances)
 PDG = {

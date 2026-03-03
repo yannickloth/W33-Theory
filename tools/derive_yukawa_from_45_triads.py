@@ -50,8 +50,17 @@ H27_idx = {p: i for i, p in enumerate(H27)}
 # =============================================================================
 
 
+def is_collinear_ag23(u0, u1, u2):
+    """Return True iff three AG(2,3) points are collinear."""
+    x0, y0 = u0
+    x1, y1 = u1
+    x2, y2 = u2
+    det = x0 * (y1 - y2) + x1 * (y2 - y0) + x2 * (y0 - y1)
+    return det % 3 == 0
+
+
 def find_cubic_triads(H27):
-    """Find all 45 cubic triads with z₀+z₁+z₂ ≡ 0 (mod 3)."""
+    """Find the 45 cubic triads with z₀+z₁+z₂ ≡ 0 (mod 3)."""
     triads = set()
 
     for p0 in H27:
@@ -74,10 +83,22 @@ def find_cubic_triads(H27):
                         triad = tuple(sorted([p0, p1, p2]))
                         triads.add(triad)
 
-                # Case 2: Affine triad (all u's distinct)
+                # Case 2: Affine triad (all u's distinct and collinear in AG(2,3))
                 elif len(set(us)) == 3:
-                    triad = tuple(sorted([p0, p1, p2]))
-                    triads.add(triad)
+                    if is_collinear_ag23(u0, u1, u2):
+                        # Canonical affine triads: after sorting points by u,
+                        # z-values must follow one of the 3 cyclic patterns
+                        # (z0, z0+1, z0+2). This yields 3 triads per affine line.
+                        ordered = sorted([(u0, z0), (u1, z1), (u2, z2)], key=lambda t: t[0])
+                        z_ord = [ordered[0][1], ordered[1][1], ordered[2][1]]
+                        keep = False
+                        for z_base in F3:
+                            if z_ord == [z_base, (z_base + 1) % 3, (z_base + 2) % 3]:
+                                keep = True
+                                break
+                        if keep:
+                            triad = tuple(ordered)
+                            triads.add(triad)
 
     return triads
 
@@ -375,8 +396,12 @@ results = {
     "total_triads": len(triads),
     "affine_triads": len(affine_triads),
     "fiber_triads": len(fiber_triads),
-    "gen_patterns_affine": dict(gen_patterns_affine),
-    "gen_patterns_fiber": dict(gen_patterns_fiber),
+    "gen_patterns_affine": {
+        "-".join(str(x) for x in k): v for k, v in gen_patterns_affine.items()
+    },
+    "gen_patterns_fiber": {
+        "-".join(str(x) for x in k): v for k, v in gen_patterns_fiber.items()
+    },
     "lambda": float(lambda_val),
     "Y_predictions": {
         "Y_t": Y_t,
