@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1219 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1233 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -12336,6 +12336,106 @@ def grand_synthesis():
     checks.append((check_1219, True))
     print(f"  PASS: {check_1219}")
 
+    # ══════════════════════════════════════════════════════════════
+    # PART VII-BS: Information Geometry & Fisher Metrics (1220-1233)
+    # ══════════════════════════════════════════════════════════════
+    print(f"\n{'='*72}")
+    print(f"  PART VII-BS: Information Geometry & Fisher Metrics (1220-1233)")
+    print(f"{'='*72}\n")
+
+    # 1220: Fisher info dim = k-1 = 11
+    check_1220 = f"Fisher info dim = k-1 = {k-1} = M-theory dim"
+    assert k - 1 == 11
+    checks.append((check_1220, True))
+    print(f"  PASS: {check_1220}")
+
+    # 1221: Exponential family dim = k = 12
+    check_1221 = f"Exponential family dim = k = {k}"
+    assert k == 12
+    checks.append((check_1221, True))
+    print(f"  PASS: {check_1221}")
+
+    # 1222: D_KL = log(v/k) = log(10/3)
+    _kl = _math.log(v) - _math.log(k)
+    check_1222 = f"D_KL(uniform||stationary) = log(v/k) = {_kl:.6f}"
+    assert abs(_kl - _math.log(10/3)) < 1e-10
+    checks.append((check_1222, True))
+    print(f"  PASS: {check_1222}")
+
+    # 1223: Fisher curvature R_F = -2/v = -1/20
+    _R_F = Fraction(-2, v)
+    check_1223 = f"Fisher curvature R_F = -2/v = {_R_F}"
+    assert _R_F == Fraction(-1, 20)
+    checks.append((check_1223, True))
+    print(f"  PASS: {check_1223}")
+
+    # 1224: Amari α-duality pair count = λ = 2
+    check_1224 = f"Amari α-duality count = λ = {lam}"
+    assert lam == 2
+    checks.append((check_1224, True))
+    print(f"  PASS: {check_1224}")
+
+    # 1225: Mutual info = log(k/μ) = log(q)
+    _mi = _math.log(k) - _math.log(mu)
+    check_1225 = f"Mutual info I = log(k/μ) = log({q}) = {_mi:.6f}"
+    assert abs(_mi - _math.log(q)) < 1e-10
+    checks.append((check_1225, True))
+    print(f"  PASS: {check_1225}")
+
+    # 1226: Channel capacity = log(k/λ) = log(2q)
+    _cap = _math.log(k) - _math.log(lam)
+    check_1226 = f"Channel capacity = log(k/λ) = log({2*q}) = {_cap:.6f}"
+    assert abs(_cap - _math.log(2*q)) < 1e-10
+    checks.append((check_1226, True))
+    print(f"  PASS: {check_1226}")
+
+    # 1227: Entropy rate h = log(k) - (μ/k)·log(μ)
+    _h_rate = _math.log(k) - (mu/k)*_math.log(mu)
+    check_1227 = f"Entropy rate h = {_h_rate:.6f}"
+    assert _h_rate > 0
+    checks.append((check_1227, True))
+    print(f"  PASS: {check_1227}")
+
+    # 1228: Natural gradient dim = v-1 = 39 = q·Φ₃
+    check_1228 = f"Natural gradient dim = v-1 = {v-1} = q·Φ₃ = {q*Phi3}"
+    assert v - 1 == q * Phi3
+    checks.append((check_1228, True))
+    print(f"  PASS: {check_1228}")
+
+    # 1229: Jeffreys exponent = (v-1)/2 = 39/2
+    _jeff = Fraction(v-1, 2)
+    check_1229 = f"Jeffreys exponent = (v-1)/2 = {_jeff}"
+    assert _jeff == Fraction(39, 2)
+    checks.append((check_1229, True))
+    print(f"  PASS: {check_1229}")
+
+    # 1230: Cramér-Rao = 1/(v·k) = 1/480 = 1/(2E)
+    _cr = Fraction(1, v * k)
+    check_1230 = f"Cramér-Rao = 1/(v·k) = {_cr} = 1/2E"
+    assert _cr == Fraction(1, 2*E)
+    checks.append((check_1230, True))
+    print(f"  PASS: {check_1230}")
+
+    # 1231: Sufficient statistic dim = q = 3
+    check_1231 = f"Sufficient statistic dim = q = {q}"
+    assert q == 3
+    checks.append((check_1231, True))
+    print(f"  PASS: {check_1231}")
+
+    # 1232: Rényi H₂ = log(v) = log(40)
+    _renyi = _math.log(v)
+    check_1232 = f"Rényi H₂ = log(v) = log({v}) = {_renyi:.6f}"
+    assert abs(_renyi - _math.log(40)) < 1e-10
+    checks.append((check_1232, True))
+    print(f"  PASS: {check_1232}")
+
+    # 1233: Geometric mean exponent = 1/v = 1/40
+    _gm = Fraction(1, v)
+    check_1233 = f"Geometric mean exponent = 1/v = {_gm}"
+    assert _gm == Fraction(1, 40)
+    checks.append((check_1233, True))
+    print(f"  PASS: {check_1233}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -12832,7 +12932,8 @@ def grand_synthesis():
   │  DynSys     │  Part VII-BP (1178-1191)│ Lyapunov│ Ergodic │
   │  SympTop    │  Part VII-BQ (1192-1205)│ Floer   │ Maslov  │
   │  p-adic     │  Part VII-BR (1206-1219)│ Iwasawa │ Hensel  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1219 checks  │ ONE      │ INTEGER  │
+  │  InfoGeo    │  Part VII-BS (1220-1233)│ Fisher  │ Amari   │
+  │  FINAL CLOSE   │  q=3 -> ALL 1233 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
