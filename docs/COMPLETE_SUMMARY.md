@@ -208,7 +208,7 @@ structure with exactly 2 types (transposition + 3-cycle).
 
 ---
 
-## COMPLETE VERIFICATION (March 2026) — 281/281 Checks Pass
+## COMPLETE VERIFICATION (March 2026) — 295/295 Checks Pass
 
 ### THEORY_OF_EVERYTHING.py
 A single script derives ALL results from exactly two inputs:
@@ -1063,4 +1063,34 @@ The densest known binary code has parameters that ARE the W(3,3) parameters:
 - von Staudt–Clausen: denom(B_f) = λ·q·(q+r)·Φ₆·Φ₃ = 2730
 - dim(D₄) = SO(8) = 28 = v−k (non-neighbours per vertex)
 - D₄ triality: 3 reps × dim 8 = q × rank(E₈) = 24 = f
+
+
+---
+
+## PART VII-D: Leech Lattice, Partition Function & Information Theory (checks 282-295)
+
+### Leech Lattice Λ₂₄
+- Lives in **ℝ^f = ℝ^24** — the unique even unimodular rootless lattice
+- **Kissing number = 196560 = E·q²·Φ₃·Φ₆** = 240×9×13×7
+- Leech/v = 4914 = λ·q³·Φ₆·Φ₃
+- Monster–Leech gap: 196884 − 196560 = **324 = μ·b₁ = Delsarte abs bound**
+
+### Shannon Capacity
+- **Θ(G) = α = v/χ = 10** — tight Lovász bound achieved
+
+### Partition Numbers
+| p(n) | Value | W(3,3) expression |
+|------|-------|--------------------|
+| p(k)=p(12) | 77 | dim(E₆) − 1 |
+| p(g)=p(15) | 176 | (k−1)(k+μ) |
+| p(f)=p(24) | 1575 | g²·Φ₆ |
+
+### Ramanujan Tau Function
+- **τ(q) = τ(3) = 252 = E + k** = k·dim(C₃) from magic square
+- **τ(λ) = τ(2) = −24 = −f**
+
+### Modular Forms
+- **η^f = η²⁴ = Δ**, weight(Δ) = k = 12
+- **E₄**: weight = μ = 4, leading coeff = E = 240
+- **E₆**: weight = k/λ = 6, coeff = −k(v+λ) = −504
 
