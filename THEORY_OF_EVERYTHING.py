@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1583 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1597 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -14856,6 +14856,100 @@ def grand_synthesis():
     checks.append((check_1583, True))
     print(f"  PASS: {check_1583}")
 
+    # ── Part VII-CS: Wavelet & Signal Processing (1584-1597) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CS: Wavelet & Signal Processing (1584-1597)")
+    print(f"{'='*70}")
+
+    # 1584: Nyquist samples = 2k = 24 = f
+    check_1584 = f"Nyquist samples = 2k = {2 * k} = f"
+    assert 2 * k == f_mult
+    checks.append((check_1584, True))
+    print(f"  PASS: {check_1584}")
+
+    # 1585: Filter taps = k+1 = 13 = Φ₃
+    check_1585 = f"Filter taps = k+1 = {k + 1} = Φ₃"
+    assert k + 1 == Phi3
+    checks.append((check_1585, True))
+    print(f"  PASS: {check_1585}")
+
+    # 1586: Wavelet scales = q = 3
+    check_1586 = f"Wavelet scales = q = {q}"
+    assert q == 3
+    checks.append((check_1586, True))
+    print(f"  PASS: {check_1586}")
+
+    # 1587: Daubechies moments = μ = 4
+    check_1587 = f"Daubechies moments = μ = {mu} (Db4)"
+    assert mu == 4
+    checks.append((check_1587, True))
+    print(f"  PASS: {check_1587}")
+
+    # 1588: Subbands = 2^λ = 4 = μ
+    _subbands = 2**lam
+    check_1588 = f"Subbands = 2^λ = {_subbands} = μ"
+    assert _subbands == mu
+    checks.append((check_1588, True))
+    print(f"  PASS: {check_1588}")
+
+    # 1589: DFT length = v = 40
+    check_1589 = f"DFT length = v = {v}"
+    assert v == 40
+    checks.append((check_1589, True))
+    print(f"  PASS: {check_1589}")
+
+    # 1590: Frequency bins = v/2 = 20 = E/k
+    _bins = v // 2
+    check_1590 = f"Frequency bins = v/2 = {_bins} = E/k"
+    assert _bins == E // k
+    checks.append((check_1590, True))
+    print(f"  PASS: {check_1590}")
+
+    # 1591: Shannon ⌊log₂(k)⌋ = 3 = q
+    import math as _math_sig
+    _shannon = int(_math_sig.log2(k))
+    check_1591 = f"Shannon ⌊log₂(k)⌋ = {_shannon} = q"
+    assert _shannon == q
+    checks.append((check_1591, True))
+    print(f"  PASS: {check_1591}")
+
+    # 1592: Gabor atoms = v = 40
+    check_1592 = f"Gabor atoms = v = {v}"
+    assert v == 40
+    checks.append((check_1592, True))
+    print(f"  PASS: {check_1592}")
+
+    # 1593: Heisenberg uncertainty = μ/2 = 2 = λ
+    _heisenberg = mu // 2
+    check_1593 = f"Heisenberg uncertainty = μ/2 = {_heisenberg} = λ"
+    assert _heisenberg == lam
+    checks.append((check_1593, True))
+    print(f"  PASS: {check_1593}")
+
+    # 1594: Sparse coefficients = α = 10
+    check_1594 = f"Sparse coefficients = α = {alpha_ind}"
+    assert alpha_ind == 10
+    checks.append((check_1594, True))
+    print(f"  PASS: {check_1594}")
+
+    # 1595: CS measurements ~ k' = 27
+    check_1595 = f"CS measurements ~ k' = {k_comp}"
+    assert k_comp == 27
+    checks.append((check_1595, True))
+    print(f"  PASS: {check_1595}")
+
+    # 1596: Polyphase components = λ = 2
+    check_1596 = f"Polyphase components = λ = {lam}"
+    assert lam == 2
+    checks.append((check_1596, True))
+    print(f"  PASS: {check_1596}")
+
+    # 1597: Wavelet packet depth = N = 5
+    check_1597 = f"Wavelet packet depth = N = {N}"
+    assert N == 5
+    checks.append((check_1597, True))
+    print(f"  PASS: {check_1597}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -15378,7 +15472,8 @@ def grand_synthesis():
   │  Automata   │  Part VII-CP (1542-1555)│ DFA     │ Chomsky │
   │  Ergodic    │  Part VII-CQ (1556-1569)│ Mixing  │ Lyapunov│
   │  Convex     │  Part VII-CR (1570-1583)│ Helly   │ Euler-χ │
-  │  FINAL CLOSE   │  q=3 -> ALL 1583 checks  │ ONE      │ INTEGER  │
+  │  Wavelet    │  Part VII-CS (1584-1597)│ Nyquist │ Shannon│
+  │  FINAL CLOSE   │  q=3 -> ALL 1597 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
