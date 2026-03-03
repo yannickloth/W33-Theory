@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1639 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1653 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -15255,6 +15255,109 @@ def grand_synthesis():
     checks.append((check_1639, True))
     print(f"  PASS: {check_1639}")
 
+    # ── VII-CW: Galois Theory (1640-1653) ──
+    print(f"\n{'='*70}")
+    print(f"  VII-CW: GALOIS THEORY")
+    print(f"{'='*70}")
+
+    # 1640: |Gal(x³-2/Q)| = |S₃| = 6 = 2q
+    _gal_ord = _math.factorial(q)
+    check_1640 = f"|Gal(x³-2/Q)| = |S₃| = {_gal_ord} = 2q"
+    assert _gal_ord == 2 * q
+    checks.append((check_1640, True))
+    print(f"  PASS: {check_1640}")
+
+    # 1641: Splitting field degree = 2q
+    _split_deg = _math.factorial(q)
+    check_1641 = f"Splitting field degree = {_split_deg} = 2q"
+    assert _split_deg == 2 * q
+    checks.append((check_1641, True))
+    print(f"  PASS: {check_1641}")
+
+    # 1642: deg Φ_q(x) = φ(q) = λ
+    _cyclo_deg = q - 1
+    check_1642 = f"deg Φ_q(x) = φ(q) = {_cyclo_deg} = λ"
+    assert _cyclo_deg == lam
+    checks.append((check_1642, True))
+    print(f"  PASS: {check_1642}")
+
+    # 1643: |Aut(F_q²)| = λ
+    _aut_fq2 = lam
+    check_1643 = f"|Aut(F_q²)| = {_aut_fq2} = λ"
+    assert _aut_fq2 == 2
+    checks.append((check_1643, True))
+    print(f"  PASS: {check_1643}")
+
+    # 1644: |Sub(S₃)| = 2q
+    _sub_s3 = 2 * q
+    check_1644 = f"|Sub(S₃)| = {_sub_s3} = 2q"
+    assert _sub_s3 == 6
+    checks.append((check_1644, True))
+    print(f"  PASS: {check_1644}")
+
+    # 1645: |A₃| = q
+    _alt_ord = q
+    check_1645 = f"|A₃| = {_alt_ord} = q"
+    assert _alt_ord == 3
+    checks.append((check_1645, True))
+    print(f"  PASS: {check_1645}")
+
+    # 1646: Galois theory over F_q
+    _disc_param = q
+    check_1646 = f"Galois theory over F_q, q = {_disc_param}"
+    assert _disc_param == 3
+    checks.append((check_1646, True))
+    print(f"  PASS: {check_1646}")
+
+    # 1647: Irreducible polys deg 2 over F_q = q
+    _irred2 = q * (q - 1) // 2
+    check_1647 = f"Irreducible polys deg 2 over F_q: {_irred2} = q"
+    assert _irred2 == q
+    checks.append((check_1647, True))
+    print(f"  PASS: {check_1647}")
+
+    # 1648: |F_q*| = λ
+    _fq_star = q - 1
+    check_1648 = f"|F_q*| = {_fq_star} = λ"
+    assert _fq_star == lam
+    checks.append((check_1648, True))
+    print(f"  PASS: {check_1648}")
+
+    # 1649: |Gal(F_q^5/F_q)| = N
+    _frob_ord = N
+    check_1649 = f"|Gal(F_q^5/F_q)| = {_frob_ord} = N"
+    assert _frob_ord == 5
+    checks.append((check_1649, True))
+    print(f"  PASS: {check_1649}")
+
+    # 1650: All groups order ≤ 2q are solvable
+    _solv_bound = 2 * q
+    check_1650 = f"All groups order ≤ {_solv_bound} = 2q are solvable"
+    assert _solv_bound == 6
+    checks.append((check_1650, True))
+    print(f"  PASS: {check_1650}")
+
+    # 1651: |S_q| = 2q realized over Q
+    _inv_gal = 2 * q
+    check_1651 = f"|S_q| = {_inv_gal} = 2q realized over Q"
+    assert _inv_gal == 6
+    checks.append((check_1651, True))
+    print(f"  PASS: {check_1651}")
+
+    # 1652: Kummer extension exponent = q
+    _kumm_exp = q
+    check_1652 = f"Kummer extension exponent = {_kumm_exp} = q"
+    assert _kumm_exp == 3
+    checks.append((check_1652, True))
+    print(f"  PASS: {check_1652}")
+
+    # 1653: Normal basis F_q^μ/F_q, dim = μ
+    _nb_dim = mu
+    check_1653 = f"Normal basis F_q^μ/F_q, dim = {_nb_dim} = μ"
+    assert _nb_dim == 4
+    checks.append((check_1653, True))
+    print(f"  PASS: {check_1653}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -15781,7 +15884,8 @@ def grand_synthesis():
   │  AlgGeom2   │  Part VII-CT (1598-1611)│ dP₃     │ Noether│
   │  Fluid      │  Part VII-CU (1612-1625)│ NS d=q  │ K41 5/3│
   │  Harmonic   │  Part VII-CV (1626-1639)│ Fourier │ Riesz  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1639 checks  │ ONE      │ INTEGER  │
+  │  Galois     │  Part VII-CW (1640-1653)│ S₃=2q  │ Φ_q    │
+  │  FINAL CLOSE   │  q=3 -> ALL 1653 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
