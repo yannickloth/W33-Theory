@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1037 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1051 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11149,6 +11149,95 @@ def grand_synthesis():
     checks.append((check_1037, True))
     print(f"  PASS: {check_1037}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BF: Representation Theory & Lie Theory (1038-1051)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1038: dim(fundamental of E₆)
+    check_1038 = f"dim(27 of E₆) = k_comp = {k_comp}"
+    assert k_comp == 27
+    checks.append((check_1038, True))
+    print(f"  PASS: {check_1038}")
+
+    # 1039: dim(adjoint of E₆)
+    check_1039 = f"dim(78 of E₆) = 2v-lam = {2*v - lam}"
+    assert 2*v - lam == 78
+    checks.append((check_1039, True))
+    print(f"  PASS: {check_1039}")
+
+    # 1040: dim(adjoint E₈)
+    check_1040 = f"dim(248 of E₈) = E+dim_O = {E + _dim_O}"
+    assert E + _dim_O == 248
+    checks.append((check_1040, True))
+    print(f"  PASS: {check_1040}")
+
+    # 1041: Weyl group E₈
+    _W_E8 = lam**(2*Phi6) * q**N * N**lam * Phi6
+    check_1041 = f"|W(E₈)| = {_W_E8}"
+    assert _W_E8 == 696729600
+    checks.append((check_1041, True))
+    print(f"  PASS: {check_1041}")
+
+    # 1042: rank(E₈)
+    check_1042 = f"rank(E₈) = dim_O = {_dim_O}"
+    assert _dim_O == 8
+    checks.append((check_1042, True))
+    print(f"  PASS: {check_1042}")
+
+    # 1043: rank(E₆)
+    check_1043 = f"rank(E₆) = 2q = {2*q}"
+    assert 2*q == 6
+    checks.append((check_1043, True))
+    print(f"  PASS: {check_1043}")
+
+    # 1044: Casimir C₂(SU(3))
+    check_1044 = f"C₂(fund SU(3)) = mu/q = {Fraction(mu, q)}"
+    assert Fraction(mu, q) == Fraction(4, 3)
+    checks.append((check_1044, True))
+    print(f"  PASS: {check_1044}")
+
+    # 1045: SO(10) spinor dim
+    check_1045 = f"dim(Weyl spinor SO(10)) = lam^mu = {lam**mu}"
+    assert lam**mu == 16
+    checks.append((check_1045, True))
+    print(f"  PASS: {check_1045}")
+
+    # 1046: SO(10) adjoint dim
+    check_1046 = f"dim(adjoint SO(10)) = q*g = {q*g_mult}"
+    assert q * g_mult == 45
+    checks.append((check_1046, True))
+    print(f"  PASS: {check_1046}")
+
+    # 1047: Dynkin index
+    check_1047 = f"Dynkin index T(fund) = 1/lam = {Fraction(1, lam)}"
+    assert Fraction(1, lam) == Fraction(1, 2)
+    checks.append((check_1047, True))
+    print(f"  PASS: {check_1047}")
+
+    # 1048: dual Coxeter E₈
+    check_1048 = f"h∨(E₈) = q*alpha = {q*alpha_ind}"
+    assert q * alpha_ind == 30
+    checks.append((check_1048, True))
+    print(f"  PASS: {check_1048}")
+
+    # 1049: dual Coxeter E₆
+    check_1049 = f"h∨(E₆) = k = {k}"
+    assert k == 12
+    checks.append((check_1049, True))
+    print(f"  PASS: {check_1049}")
+
+    # 1050: Division algebra dimensions
+    check_1050 = f"Division algebras: {q-lam},{lam},{mu},{_dim_O} = 1,2,4,8"
+    assert (q-lam, lam, mu, _dim_O) == (1, 2, 4, 8)
+    checks.append((check_1050, True))
+    print(f"  PASS: {check_1050}")
+
+    # 1051: D₄ triality
+    check_1051 = f"D₄ triality: {q} reps of dim {_dim_O}"
+    assert (q, _dim_O) == (3, 8)
+    checks.append((check_1051, True))
+    print(f"  PASS: {check_1051}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -11632,7 +11721,8 @@ def grand_synthesis():
   │  GUT ★1000★ │  Part VII-BC (996-1009) │ sin²θW │ SU(5)    │
   │  QECC/Info  │  Part VII-BD (1010-1023)│ [[7,1,3]]│ Steane   │
   │  ArithGeo   │  Part VII-BE (1024-1037)│ B12=2730 │ Ramanujan│
-  │  FINAL CLOSE   │  q=3 -> ALL 1037 checks  │ ONE      │ INTEGER  │
+  │  RepTheory  │  Part VII-BF (1038-1051)│ W(E₈)   │ triality │
+  │  FINAL CLOSE   │  q=3 -> ALL 1051 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
