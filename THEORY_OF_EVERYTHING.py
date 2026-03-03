@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1107 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1121 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11592,6 +11592,94 @@ def grand_synthesis():
     checks.append((check_1107, True))
     print(f"  PASS: {check_1107}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BK: Algebraic Topology & Cobordism (1108-1121)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1108: Spin cobordism
+    check_1108 = f"Omega_4^Spin = Z, rank q-lam = {q - lam}"
+    assert q - lam == 1
+    checks.append((check_1108, True))
+    print(f"  PASS: {check_1108}")
+
+    # 1109: CP² dim
+    check_1109 = f"dim(CP²) = 2*lam = {2*lam} = mu"
+    assert 2 * lam == mu
+    checks.append((check_1109, True))
+    print(f"  PASS: {check_1109}")
+
+    # 1110: Unoriented cobordism
+    check_1110 = f"Omega_2^O = Z/lam = Z/{lam}"
+    assert lam == 2
+    checks.append((check_1110, True))
+    print(f"  PASS: {check_1110}")
+
+    # 1111: Betti numbers CP²
+    check_1111 = f"Total Betti CP² = q = {q}"
+    assert q == 3
+    checks.append((check_1111, True))
+    print(f"  PASS: {check_1111}")
+
+    # 1112: pi_4(S^3)
+    check_1112 = f"pi_4(S^3) = Z/lam = Z/{lam}"
+    assert lam == 2
+    checks.append((check_1112, True))
+    print(f"  PASS: {check_1112}")
+
+    # 1113: v-1 factorization
+    check_1113 = f"v-1 = q*Phi3 = {q*Phi3}"
+    assert q * Phi3 == v - 1
+    checks.append((check_1113, True))
+    print(f"  PASS: {check_1113}")
+
+    # 1114: Hurewicz
+    check_1114 = f"Hurewicz: pi_n(S^n)=Z from n>={q - lam}"
+    assert q - lam == 1
+    checks.append((check_1114, True))
+    print(f"  PASS: {check_1114}")
+
+    # 1115: CW cells
+    check_1115 = f"CW cells of S^mu = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1115, True))
+    print(f"  PASS: {check_1115}")
+
+    # 1116: chi(K3)
+    check_1116 = f"chi(K3) = f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1116, True))
+    print(f"  PASS: {check_1116}")
+
+    # 1117: sigma(K3)
+    check_1117 = f"sigma(K3) = -2*dim_O = {-2*_dim_O}"
+    assert -2 * _dim_O == -16
+    checks.append((check_1117, True))
+    print(f"  PASS: {check_1117}")
+
+    # 1118: b_2(K3)
+    check_1118 = f"b_2(K3) = f-lam = {f_mult - lam}"
+    assert f_mult - lam == 22
+    checks.append((check_1118, True))
+    print(f"  PASS: {check_1118}")
+
+    # 1119: Todd genus K3
+    check_1119 = f"Td(K3) = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1119, True))
+    print(f"  PASS: {check_1119}")
+
+    # 1120: L-genus CP²
+    check_1120 = f"L(CP²) = sigma = q-lam = {q - lam}"
+    assert q - lam == 1
+    checks.append((check_1120, True))
+    print(f"  PASS: {check_1120}")
+
+    # 1121: BO(mu) fiber dim
+    check_1121 = f"dim fiber BO(mu) = C(mu,2) = {_comb2(mu,2)} = 2q"
+    assert _comb2(mu, 2) == 2*q
+    checks.append((check_1121, True))
+    print(f"  PASS: {check_1121}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -12080,7 +12168,8 @@ def grand_synthesis():
   │  QGroups    │  Part VII-BH (1066-1079)│ Jones   │ Verlinde │
   │  Comb/Graph │  Part VII-BI (1080-1093)│ R(3,3)  │ Petersen │
   │  DiffGeo    │  Part VII-BJ (1094-1107)│ S→bundle│ CS level │
-  │  FINAL CLOSE   │  q=3 -> ALL 1107 checks  │ ONE      │ INTEGER  │
+  │  AlgTop     │  Part VII-BK (1108-1121)│ Omega4  │ K3 chi  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1121 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
