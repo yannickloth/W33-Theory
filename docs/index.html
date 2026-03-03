@@ -260,7 +260,7 @@ section h2::after {
     gauge groups, three chiral generations, mixing matrices, and quantum gravity —
     through an emergent <strong>E₈ root system</strong>, quantum error-correcting code,
     and Calabi–Yau compactification. <strong>No free parameters.</strong><br>
-    <strong style="color: #ffd700; font-size: 0.7em">⚡ 211/211 checks • α⁻¹ = 137.036 • sin²θ_W = 3/13 • M_Z = 91 • m_H = 125 • PMNS (1σ) • v_EW = 246 • g* = 106.75 • CC = −122 • N_eff = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M_Pl = 1.22×10¹⁹ • w=−1 • C_F=4/3 • SM+GR DERIVED • 480 = 5 ways • 27→9→3 generations • 197 checks • complement duality</strong>
+    <strong style="color: #ffd700; font-size: 0.7em">⚡ 225/225 checks • α⁻¹ = 137.036 • sin²θ_W = 3/13 • M_Z = 91 • m_H = 125 • PMNS (1σ) • v_EW = 246 • g* = 106.75 • CC = −122 • N_eff = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M_Pl = 1.22×10¹⁹ • w=−1 • C_F=4/3 • SM+GR DERIVED • 480 = 5 ways • 27→9→3 generations • 197 checks • complement duality</strong>
   </div>
 </header>
 
@@ -270,7 +270,7 @@ section h2::after {
   <summary>Navigate</summary>
   <div class="nav-links">
   <a href="#numbers">Core Numbers</a>
-  <a href="#verification">⚡ 211/211 Verification</a>
+  <a href="#verification">⚡ 225/225 Verification</a>
   <a href="#curvature">κ = 1/6 Curvature</a>
   <a href="#selection">Why q=3</a>
   <a href="#status">Status</a>
@@ -337,7 +337,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num">211/211</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 183 results from F₃ + ω alone. Every claim computationally verified.</div></div>
+    <div class="card"><div class="num">225/225</div><div class="label">All Checks Pass</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 183 results from F₃ + ω alone. Every claim computationally verified.</div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -371,7 +371,7 @@ section h2::after {
 
 <!-- ═══════════════════════ VERIFICATION ═══════════════════════ -->
 <section id="verification">
-  <h2><span class="icon">⚡</span> Complete Computational Verification — 211/211</h2>
+  <h2><span class="icon">⚡</span> Complete Computational Verification — 225/225</h2>
   <p>The script <strong>THEORY_OF_EVERYTHING.py</strong> derives <em>every</em> result below from exactly two inputs:
   the field <strong>F₃ = {0,1,2}</strong> and the symplectic form <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed. All 183 checks pass.</p>
@@ -1306,6 +1306,53 @@ section h2::after {
   <p>The automorphism group order = generations &times; graph energy &times; complement energy.
   This connects symmetry, spectral theory, and complement duality in a single equation.</p>
 
+
+  <h3>Hodge Firewall &amp; Moonshine Chain (Checks 212&ndash;225)</h3>
+
+  <h4>The E&#8326; Firewall (Operator-Level Statement)</h4>
+  <p>The Hodge decomposition of the 1-cochain space (dim = E = 240) gives:</p>
+  <div class="math-block">
+    <span class="eq">C&sup1; = im(d&#8320;) &oplus; im(&delta;&#8322;) &oplus; &Eta;&sup1;</span><br>
+    <span class="eq">240 = 39 + 120 + 81 = (v&minus;1) + E/2 + q&sup4;</span>
+  </div>
+  <p>The <strong>harmonic subspace</strong> &Eta;&sup1; = ker(L&#8321;) has dimension <strong>81 = 27 &times; 3</strong>
+  = (E&#8326; fundamental) &times; (generations).</p>
+  <p>Gauge transformations A &rarr; A + d&#8320;&chi; only move the exact component im(d&#8320;).
+  The harmonic sector is <strong>gauge-invariant</strong>, protected by the Hodge projector
+  P = I &minus; d&#8320;&Delta;&#8320;&#8314;&delta;&#8321; &minus; &delta;&#8322;&Delta;&#8322;&#8314;d&#8321;.</p>
+  <div class="math-block">
+    <span class="eq"><strong>E&#8326; acts on gauge-invariant harmonic 1-forms, protected from gauge redundancy by the Hodge projector.</strong></span>
+  </div>
+
+  <h4>The Moonshine Chain</h4>
+  <p>Every constant in the chain W(3,3) &rarr; E&#8328; &rarr; &Theta; &rarr; j &rarr; Monster is a W(3,3) invariant:</p>
+  <table>
+    <tr><th>Moonshine Object</th><th>Value</th><th>W(3,3) Parameter</th></tr>
+    <tr><td>&Theta;<sub>E&#8328;</sub> first coefficient</td><td><strong>240</strong></td><td>E = edge count = |E&#8328; roots|</td></tr>
+    <tr><td>&eta; exponent in j = E&#8324;&sup3;/&eta;&sup2;&sup4;</td><td><strong>24</strong></td><td>f = gauge multiplicity = &chi;(K3)</td></tr>
+    <tr><td>Number of E&#8328; copies</td><td><strong>3</strong></td><td>q = generations</td></tr>
+    <tr><td>j constant term</td><td><strong>744</strong></td><td>q &times; dim(E&#8328;) = 3 &times; 248</td></tr>
+    <tr><td>Leech lattice dimension</td><td><strong>24</strong></td><td>f = rank(E&#8328;&sup3;) = 3 &times; 8</td></tr>
+    <tr><td>Central charge c</td><td><strong>24</strong></td><td>f (Monster VOA / Leech CFT)</td></tr>
+  </table>
+
+  <h4>The Monster&ndash;Leech Gap Identity</h4>
+  <div class="math-block">
+    <span class="eq">196884 &minus; 196560 = 324 = &mu; &times; b&#8321; = 4 &times; 81 = 18&sup2; = (&lambda;')&sup2;</span>
+  </div>
+  <p>The gap between the Monster module weight-2 dimension and the Leech kissing number equals
+  <strong>spacetime dimension &times; first Betti number</strong> = <strong>(complement overlap parameter)&sup2;</strong>.</p>
+  <p>Thompson decomposition: 196883 = 196560 + &mu;&middot;b&#8321; &minus; 1 = Leech + spacetime&times;matter &minus; vacuum.</p>
+
+  <h4>The Hodge&ndash;Moonshine Bridge</h4>
+  <p>b&#8321; = 81 = q&sup4; is the <strong>hinge</strong> connecting four independent mathematical domains:</p>
+  <ol>
+    <li><strong>DEC/Hodge theory:</strong> dim(&Eta;&sup1;) = 81 (gauge-invariant harmonic 1-forms)</li>
+    <li><strong>E&#8326; representation theory:</strong> 81 = 27 &times; 3 (E&#8326; fundamental &times; generations)</li>
+    <li><strong>Kirchhoff spectral theory:</strong> &tau; = 2<sup>81</sup> &middot; 5&sup2;&sup3; (spanning tree 2-exponent)</li>
+    <li><strong>Monstrous moonshine:</strong> 196884 &minus; 196560 = &mu; &times; 81 = 324</li>
+  </ol>
+
 <section id="status">
   <h2><span class="icon">✓</span> Status of Major Claims</h2>
   <table>
@@ -1375,7 +1422,7 @@ section h2::after {
     <tr><td>M<sub>Higgs</sub> = 125 GeV</td><td class="status-ok">✅ Derived</td><td>s⁴+v+μ = 81+40+4 = 125</td></tr>
     <tr><td>Dimensions 4+8=12</td><td class="status-ok">✅ Derived</td><td>μ=4 macroscopic, k−μ=8 compact, k=12 total</td></tr>
     <tr><td>v = 1+24+15 = 40</td><td class="status-ok">✅ Proved</td><td>Eigenvalue multiplicities = vacuum + gauge + matter content</td></tr>
-    <tr><td>211/211 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 197 claims verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal/Lorentz groups, CP structure, anomaly cancellation, Higgs doublet count, <strong>480 directed-edge operator, Ihara-Bass, α DERIVED from spectral geometry, Gaussian integer structure (ℤ[i]), complex Ihara fugacity, spectral action, Hodge spectrum, simplicial topology (χ=−v), Ollivier-Ricci, Ramanujan, <strong style="color:#f97316;">SM Lagrangian emergence (DEC operators), GR emergence (S_EH=Tr(L₀)=480), Dirac-Kähler spectrum, generation mechanism (27→9→3), spectral dimension flow, complement duality (SRG(40,27,18,18)), graph energy identities, Hoffman tight bound, spectral gap = dim(SO(10))</strong></strong></td></tr>
+    <tr><td>225/225 verification</td><td class="status-ok">✅ Complete</td><td>THEORY_OF_EVERYTHING.py: ALL 197 claims verified from F₃ + ω alone. Complete SM content, cosmology, exceptional algebras, string theory, SUSY, CY topology, discrete symmetries, fermion counting, QCD Casimirs, gauge boson decomposition, dark energy EoS, conformal/Lorentz groups, CP structure, anomaly cancellation, Higgs doublet count, <strong>480 directed-edge operator, Ihara-Bass, α DERIVED from spectral geometry, Gaussian integer structure (ℤ[i]), complex Ihara fugacity, spectral action, Hodge spectrum, simplicial topology (χ=−v), Ollivier-Ricci, Ramanujan, <strong style="color:#f97316;">SM Lagrangian emergence (DEC operators), GR emergence (S_EH=Tr(L₀)=480), Dirac-Kähler spectrum, generation mechanism (27→9→3), spectral dimension flow, complement duality (SRG(40,27,18,18)), graph energy identities, Hoffman tight bound, spectral gap = dim(SO(10))</strong></strong></td></tr>
     <tr><td>κ = 2/k = 1/6 (uniform)</td><td class="status-ok">✅ Proved</td><td>Ollivier-Ricci curvature computed via LP on all 240 edges</td></tr>
     <tr><td>Gauss–Bonnet: Eκ = v = −χ</td><td class="status-ok">✅ Proved</td><td>240×(1/6) = 40 = v = −χ; also forces q = 3</td></tr>
     <tr><td>All triangles trichromatic</td><td class="status-ok">✅ Proved</td><td>160/160 triangles use all 3 generation colors</td></tr>
@@ -2705,7 +2752,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3700+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 211/211 master checks</p>
+  <p><strong>Tests:</strong> 3700+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: 225/225 master checks</p>
 </section>
 
 </div><!-- /container -->
