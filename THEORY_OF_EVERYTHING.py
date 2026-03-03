@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1051 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1065 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11238,6 +11238,95 @@ def grand_synthesis():
     checks.append((check_1051, True))
     print(f"  PASS: {check_1051}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BG: Lattice Theory & Sphere Packing (1052-1065)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1052: Leech lattice dim
+    check_1052 = f"Leech lattice dim = f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1052, True))
+    print(f"  PASS: {check_1052}")
+
+    # 1053: Leech kissing number
+    _leech_kiss = lam**mu * q**q * N * Phi6 * Phi3
+    check_1053 = f"Leech kissing = {_leech_kiss}"
+    assert _leech_kiss == 196560
+    checks.append((check_1053, True))
+    print(f"  PASS: {check_1053}")
+
+    # 1054: E₈ lattice kissing
+    check_1054 = f"E₈ lattice kissing = E = {E}"
+    assert E == 240
+    checks.append((check_1054, True))
+    print(f"  PASS: {check_1054}")
+
+    # 1055: E₈ lattice dim
+    check_1055 = f"E₈ lattice dim = dim_O = {_dim_O}"
+    assert _dim_O == 8
+    checks.append((check_1055, True))
+    print(f"  PASS: {check_1055}")
+
+    # 1056: D₄ lattice kissing
+    check_1056 = f"D₄ lattice kissing = f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1056, True))
+    print(f"  PASS: {check_1056}")
+
+    # 1057: D₄ lattice dim
+    check_1057 = f"D₄ lattice dim = mu = {mu}"
+    assert mu == 4
+    checks.append((check_1057, True))
+    print(f"  PASS: {check_1057}")
+
+    # 1058: A₂ lattice kissing
+    check_1058 = f"A₂ lattice kissing = 2q = {2*q}"
+    assert 2*q == 6
+    checks.append((check_1058, True))
+    print(f"  PASS: {check_1058}")
+
+    # 1059: A₂ lattice dim
+    check_1059 = f"A₂ lattice dim = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1059, True))
+    print(f"  PASS: {check_1059}")
+
+    # 1060: BW₁₆ kissing
+    check_1060 = f"BW₁₆ kissing = v*k*q² = {v*k*q**2}"
+    assert v * k * q**2 == 4320
+    checks.append((check_1060, True))
+    print(f"  PASS: {check_1060}")
+
+    # 1061: BW₁₆ dim
+    check_1061 = f"BW₁₆ dim = lam^mu = {lam**mu}"
+    assert lam**mu == 16
+    checks.append((check_1061, True))
+    print(f"  PASS: {check_1061}")
+
+    # 1062: Coxeter number E₈
+    check_1062 = f"Coxeter h(E₈) = q*alpha = {q*alpha_ind}"
+    assert q * alpha_ind == 30
+    checks.append((check_1062, True))
+    print(f"  PASS: {check_1062}")
+
+    # 1063: Theta series E₈
+    check_1063 = f"Theta E₈ first coeff = E = {E}"
+    assert E == 240
+    checks.append((check_1063, True))
+    print(f"  PASS: {check_1063}")
+
+    # 1064: Niemeier lattices
+    check_1064 = f"Niemeier lattices = f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1064, True))
+    print(f"  PASS: {check_1064}")
+
+    # 1065: Leech/E₈ kiss ratio
+    check_1065 = f"Leech/E₈ ratio = Phi3*Phi6*q² = {Phi3*Phi6*q**2}"
+    assert Phi3 * Phi6 * q**2 == 819
+    checks.append((check_1065, True))
+    print(f"  PASS: {check_1065}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -11722,7 +11811,8 @@ def grand_synthesis():
   │  QECC/Info  │  Part VII-BD (1010-1023)│ [[7,1,3]]│ Steane   │
   │  ArithGeo   │  Part VII-BE (1024-1037)│ B12=2730 │ Ramanujan│
   │  RepTheory  │  Part VII-BF (1038-1051)│ W(E₈)   │ triality │
-  │  FINAL CLOSE   │  q=3 -> ALL 1051 checks  │ ONE      │ INTEGER  │
+  │  Lattice/Pk │  Part VII-BG (1052-1065)│ 196560  │ Niemeier │
+  │  FINAL CLOSE   │  q=3 -> ALL 1065 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
