@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 379 checks follow from the single integer q = 3.")
+    print(f"  → ALL 393 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -5933,6 +5933,138 @@ def grand_synthesis():
     print(f"  = E/2 = {E//2} = |binary icosahedral| = 120")
     print(f"  PASS: {check_379}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # PART VII-K: THE MASTER EQUATION — Division Algebra Physics
+    # ══════════════════════════════════════════════════════════════════
+
+    # ── Check 380: Master equation A^2 + lam*A - (k-mu)*I = mu*J ──
+    # Standard SRG identity (Bose-Mesner algebra defining relation)
+    master_lhs_at_k = k**2 + lam*k - (k - mu)
+    master_rhs = mu * v
+    check_380 = (master_lhs_at_k == master_rhs)
+    checks.append(('Master eqn: A^2+lam*A-(k-mu)I = mu*J, at k: LHS=RHS', check_380))
+    print(f"\n  -- Check 380: Master equation --")
+    print(f"  A^2 + {lam}A - {k-mu}I = {mu}J")
+    print(f"  At eigenvalue k: {k}^2 + {lam}*{k} - {k-mu} = {master_lhs_at_k} = mu*v = {master_rhs}")
+    print(f"  PASS: {check_380}")
+
+    # ── Check 381: r is root of t^2 + lam*t - (k-mu) = 0 ──
+    r_mass_shell = r_eval**2 + lam * r_eval - (k - mu)
+    check_381 = (r_mass_shell == 0)
+    checks.append(('Mass-shell: r^2 + lam*r - (k-mu) = 0', check_381))
+    print(f"\n  -- Check 381: Matter mass-shell --")
+    print(f"  r^2 + lam*r - (k-mu) = {r_eval**2} + {lam*r_eval} - {k-mu} = {r_mass_shell}")
+    print(f"  PASS: {check_381}")
+
+    # ── Check 382: s is root of t^2 + lam*t - (k-mu) = 0 ──
+    s_mass_shell = s_eval**2 + lam * s_eval - (k - mu)
+    check_382 = (s_mass_shell == 0)
+    checks.append(('Mass-shell: s^2 + lam*s - (k-mu) = 0', check_382))
+    print(f"\n  -- Check 382: Heavy mass-shell --")
+    print(f"  s^2 + lam*s - (k-mu) = {s_eval**2} + {lam*s_eval} - {k-mu} = {s_mass_shell}")
+    print(f"  PASS: {check_382}")
+
+    # ── Check 383: Division algebra form: dim(C),dim(O),dim(H) ──
+    div_alg_check = (lam == 2 and (k - mu) == 8 and mu == 4)
+    check_383 = div_alg_check
+    checks.append(('Division algebra: A^2+dim(C)A-dim(O)I=dim(H)J', check_383))
+    print(f"\n  -- Check 383: Division algebra master equation --")
+    print(f"  A^2 + dim(C)*A - dim(O)*I = dim(H)*J")
+    print(f"  lam={lam}=dim(C), k-mu={k-mu}=dim(O), mu={mu}=dim(H)")
+    print(f"  PASS: {check_383}")
+
+    # ── Check 384: g*s^2 = E = 240 ──
+    gs2 = g_mult * s_eval**2
+    check_384 = (gs2 == E)
+    checks.append(('g*s^2 = E = 240 (heavy modes = edge energy)', check_384))
+    print(f"\n  -- Check 384: Heavy eigenspace energy --")
+    print(f"  g*s^2 = {g_mult}*{s_eval**2} = {gs2} = E = {E}")
+    print(f"  Heavy modes carry exactly the edge energy!")
+    print(f"  PASS: {check_384}")
+
+    # ── Check 385: f*r^2 = mu*f = 96 ──
+    fr2 = f_mult * r_eval**2
+    muf = mu * f_mult
+    check_385 = (fr2 == muf)
+    checks.append(('f*r^2 = mu*f = 96 (matter-spacetime)', check_385))
+    print(f"\n  -- Check 385: Matter-spacetime coupling --")
+    print(f"  f*r^2 = {f_mult}*{r_eval**2} = {fr2} = mu*f = {mu}*{f_mult} = {muf}")
+    print(f"  PASS: {check_385}")
+
+    # ── Check 386: Discriminant = (k/lam)^2 = 36 ──
+    disc_val = lam**2 + 4 * (k - mu)
+    perf_sq = (k // lam)**2
+    check_386 = (disc_val == perf_sq and disc_val == 36)
+    checks.append(('Discriminant lam^2+4(k-mu) = (k/lam)^2 = 36', check_386))
+    print(f"\n  -- Check 386: Spectral discriminant --")
+    print(f"  lam^2 + 4(k-mu) = {lam**2} + {4*(k-mu)} = {disc_val}")
+    print(f"  = (k/lam)^2 = ({k//lam})^2 = {perf_sq}")
+    print(f"  sqrt = {k//lam} = r - s = mass gap = 1st perfect number")
+    print(f"  PASS: {check_386}")
+
+    # ── Check 387: r*s = -(k-mu) = -8 = -dim(O) ──
+    rs_prod = r_eval * s_eval
+    check_387 = (rs_prod == -(k - mu))
+    checks.append(('r*s = -(k-mu) = -dim(O) = -8', check_387))
+    print(f"\n  -- Check 387: Eigenvalue product --")
+    print(f"  r*s = {r_eval}*{s_eval} = {rs_prod} = -(k-mu) = -{k-mu} = -dim(O)")
+    print(f"  PASS: {check_387}")
+
+    # ── Check 388: r+s = -lam = -dim(C) = -2 ──
+    rs_sum = r_eval + s_eval
+    check_388 = (rs_sum == -lam)
+    checks.append(('r+s = -lam = -dim(C) = -2', check_388))
+    print(f"\n  -- Check 388: Eigenvalue sum --")
+    print(f"  r+s = {r_eval}+{s_eval} = {rs_sum} = -lam = -{lam} = -dim(C)")
+    print(f"  PASS: {check_388}")
+
+    # ── Check 389: Tr(A^2) = vk = 2E = 480 ──
+    moment2 = k**2 + f_mult * r_eval**2 + g_mult * s_eval**2
+    check_389 = (moment2 == v * k and moment2 == 2 * E)
+    checks.append(('Tr(A^2) = vk = 2E = 480', check_389))
+    print(f"\n  -- Check 389: Second moment = 2E --")
+    print(f"  Tr(A^2) = {k**2}+{f_mult*r_eval**2}+{g_mult*s_eval**2} = {moment2}")
+    print(f"  = vk = {v*k} = 2E = {2*E}")
+    print(f"  PASS: {check_389}")
+
+    # ── Check 390: k/mu = q = 3 (edge balance) ──
+    check_390 = (k == q * mu)
+    checks.append(('k/mu = q = 3 (nn internal=external balance)', check_390))
+    print(f"\n  -- Check 390: Edge balance --")
+    print(f"  k/mu = {k}/{mu} = {k//mu} = q = {q}")
+    print(f"  Non-neighbor internal edges = external edges = k'*mu = {k_comp*mu}")
+    print(f"  H mediates observed sector, O governs hidden dynamics")
+    print(f"  PASS: {check_390}")
+
+    # ── Check 391: nn edges = k'*(k-mu)/2 = k'*mu = 108 ──
+    nn_int = k_comp * (k - mu) // 2
+    nn_ext = k_comp * mu
+    check_391 = (nn_int == nn_ext and nn_int == 108)
+    checks.append(("nn edges = k'(k-mu)/2 = k'*mu = 108", check_391))
+    print(f"\n  -- Check 391: Non-neighbor edge balance --")
+    print(f"  Interior: k'(k-mu)/2 = {k_comp}*{k-mu}/2 = {nn_int}")
+    print(f"  Exterior: k'*mu = {k_comp}*{mu} = {nn_ext}")
+    print(f"  Both = 108 (because k = 3*mu = q*mu)")
+    print(f"  PASS: {check_391}")
+
+    # ── Check 392: Vacuum eigenvalue k^2+lam*k-(k-mu) = mu*v = 160 ──
+    vac_eig = k**2 + lam * k - (k - mu)
+    check_392 = (vac_eig == mu * v and vac_eig == 160)
+    checks.append(('Vacuum: k^2+lam*k-(k-mu) = mu*v = 160', check_392))
+    print(f"\n  -- Check 392: Vacuum energy --")
+    print(f"  k^2 + lam*k - (k-mu) = {k**2}+{lam*k}-{k-mu} = {vac_eig}")
+    print(f"  = mu*v = {mu}*{v} = {mu*v} = dim(H)*|PG(3,3)|")
+    print(f"  PASS: {check_392}")
+
+    # ── Check 393: 480 = 144 + 96 + 240 = k^2 + mu*f + E ──
+    partition_check = (k**2 + mu * f_mult + E == 2 * E)
+    check_393 = partition_check
+    checks.append(('480 = k^2+mu*f+E = 144+96+240 (Tr(A^2) partition)', check_393))
+    print(f"\n  -- Check 393: Moment partition --")
+    print(f"  k^2 + mu*f + E = {k**2} + {mu*f_mult} + {E} = {k**2+mu*f_mult+E}")
+    print(f"  = 2E = {2*E} = vk = gravity + matter + edges")
+    print(f"  PASS: {check_393}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -6355,7 +6487,10 @@ def grand_synthesis():
   │  BB^T = A+(q+1)│  discrete EYM equation  │ gauge+   │ gravity  │
   │  ker(BB^T)=g   │  15 pure gauge modes    │ line-    │ space    │
   │  gen overlap   │  -1/(q+1) democratic    │ S_3 sym  │ CKM      │
-  │  FINAL CLOSE   │  q=3 -> ALL 379 checks  │ ONE      │ INTEGER  │
+  │  MASTER EQN    │  Part VII-K (380-393)   │ A^2+2A   │ -8I=4J   │
+  │  mass-shell    │  t^2+dim(C)t-dim(O)=0  │ r=2,s=-4 │ roots    │
+  │  g*s^2 = E     │  15*16 = 240 = edges   │ heavy    │ energy   │
+  │  FINAL CLOSE   │  q=3 -> ALL 393 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
