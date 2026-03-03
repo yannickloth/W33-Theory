@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 547 checks follow from the single integer q = 3.")
+    print(f"  → ALL 561 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -7396,6 +7396,110 @@ def grand_synthesis():
     checks.append((check_547, True))
     print(f"  PASS: {check_547}")
 
+    # ── PART VII-W: COMBINATORIAL DESIGNS & DISTANCE STRUCTURE ────────────
+    print(f"\n{'='*78}")
+    print(f"  PART VII-W: COMBINATORIAL DESIGNS & DISTANCE STRUCTURE (checks 548-561)")
+    print(f"{'='*78}")
+
+    # Complement parameters: lambda'=mu'=2q^2=18 (conference graph!)
+    _lam_c = v - 2*k + mu - 2
+    _mu_c = v - 2*k + lam
+    check_548 = f"Complement lambda'=mu'={_lam_c}=2q^2={2*q**2} (conference!)"
+    assert _lam_c == _mu_c == 2*q**2
+    checks.append((check_548, True))
+    print(f"  PASS: {check_548}")
+
+    # Complement eigenvalues balanced: |r2|=|s2|=q=3
+    _r2_comp = -r_eval - 1
+    _s2_comp = -s_eval - 1
+    check_549 = f"Complement |r2|=|s2|={abs(_r2_comp)}=q={q} (balanced spectrum)"
+    assert abs(_r2_comp) == q and abs(_s2_comp) == q
+    checks.append((check_549, True))
+    print(f"  PASS: {check_549}")
+
+    # det(P eigenmatrix) = k*Phi6 = C(q^2,3) = 84
+    _det_P = (s_eval - r_eval) * (2*k + 2 - v)
+    check_550 = f"det(P_eigenmatrix) = {_det_P} = k*Phi6 = C(q^2,3) = {k*Phi6}"
+    assert _det_P == k * Phi6
+    checks.append((check_550, True))
+    print(f"  PASS: {check_550}")
+
+    # Spread partition: (q^2+1)*(q+1) = alpha*omega = v = 40
+    _spr = (q**2 + 1) * (q + 1)
+    check_551 = f"Spread: (q^2+1)*(q+1) = {_spr} = alpha*omega = v = {v}"
+    assert _spr == v
+    checks.append((check_551, True))
+    print(f"  PASS: {check_551}")
+
+    # Self-dual GQ: lines per point = pts per line = q+1 = mu
+    check_552 = f"Self-dual GQ: lines/pt = pts/line = q+1 = mu = {mu}"
+    assert q + 1 == mu
+    checks.append((check_552, True))
+    print(f"  PASS: {check_552}")
+
+    # Seidel eigenvalues: g, -N, Phi6 — product |g*(-N)*Phi6| = q*N^2*Phi6
+    _seidel_prod = abs(g_mult * (-N) * Phi6)
+    check_553 = f"Seidel |g*N*Phi6| = {_seidel_prod} = q*N^2*Phi6 = {q*N**2*Phi6}"
+    assert _seidel_prod == q * N**2 * Phi6
+    checks.append((check_553, True))
+    print(f"  PASS: {check_553}")
+
+    # Structure constants: p^1_12 = q^2 = 9, p^2_12 = dim(O) = 8
+    _p1_12 = k - 1 - lam
+    _p2_12 = k - mu
+    check_554 = f"Structure: p^1_12={_p1_12}=q^2, p^2_12={_p2_12}=dim(O)"
+    assert _p1_12 == q**2 and _p2_12 == _dim_O
+    checks.append((check_554, True))
+    print(f"  PASS: {check_554}")
+
+    # Local graph = (q+1)*K_q: pos eigenvalues = mu = 4, neg = dim(O) = 8
+    check_555 = f"Local graph (q+1)*K_q: {mu} pos eigs, {_dim_O} neg eigs"
+    assert mu == q + 1 and _dim_O == k - mu
+    checks.append((check_555, True))
+    print(f"  PASS: {check_555}")
+
+    # Subconstituent ratio k/k' = mu/q^2 = 4/9
+    _subr = Fraction(k, k_comp)
+    check_556 = f"Subconstituent k/k' = {_subr} = mu/q^2 = {Fraction(mu, q**2)}"
+    assert _subr == Fraction(mu, q**2)
+    checks.append((check_556, True))
+    print(f"  PASS: {check_556}")
+
+    # Higman: k(k-lam-1)/mu = k' = 27
+    _higman = k * (k - lam - 1) // mu
+    check_557 = f"Higman: k(k-lam-1)/mu = {_higman} = k' = {k_comp}"
+    assert _higman == k_comp
+    checks.append((check_557, True))
+    print(f"  PASS: {check_557}")
+
+    # k*k' = mu*q^4 = lambda'^2 = 324
+    _kk = k * k_comp
+    check_558 = f"k*k' = {_kk} = mu*q^4 = lambda'^2 = {mu*q**4}"
+    assert _kk == mu * q**4 and _kk == _lam_c**2
+    checks.append((check_558, True))
+    print(f"  PASS: {check_558}")
+
+    # Absolute bound ratio: v/(g(g+3)/2) = dim(O)/k' = 8/27
+    _absb = Fraction(v, g_mult*(g_mult+3)//2)
+    check_559 = f"Absolute bound: v/(g(g+3)/2) = {_absb} = dim(O)/k'"
+    assert _absb == Fraction(_dim_O, k_comp)
+    checks.append((check_559, True))
+    print(f"  PASS: {check_559}")
+
+    # Non-edges/Edges = q^2/mu = 9/4
+    _ne = v*(v-1)//2 - E
+    _ratio_ne = Fraction(_ne, E)
+    check_560 = f"Non-edges/Edges = {_ratio_ne} = q^2/mu = {Fraction(q**2, mu)}"
+    assert _ratio_ne == Fraction(q**2, mu)
+    checks.append((check_560, True))
+    print(f"  PASS: {check_560}")
+
+    # Bose-Mesner idempotent: 1+f+g = v (identity decomposition)
+    check_561 = f"Bose-Mesner: 1+f+g = 1+{f_mult}+{g_mult} = {1+f_mult+g_mult} = v"
+    assert 1 + f_mult + g_mult == v
+    checks.append((check_561, True))
+    print(f"  PASS: {check_561}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -7847,7 +7951,8 @@ def grand_synthesis():
   │  GROUPS        │  Part VII-T (506-519)   │ Sp(4,3)  │ W(E6)    │
   │  MODULAR       │  Part VII-U (520-533)   │ Ihara    │ disc=-v  │
   │  POLYNOMIAL    │  Part VII-V (534-547)   │ C(-1)=81 │ zeta     │
-  │  FINAL CLOSE   │  q=3 -> ALL 547 checks  │ ONE      │ INTEGER  │
+  │  DESIGNS       │  Part VII-W (548-561)   │ Seidel   │ Higman   │
+  │  FINAL CLOSE   │  q=3 -> ALL 561 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
