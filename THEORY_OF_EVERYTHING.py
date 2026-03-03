@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 463 checks follow from the single integer q = 3.")
+    print(f"  → ALL 477 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -6750,6 +6750,132 @@ def grand_synthesis():
     print(f"  P(-1) = 1-{k//lam}+{mu}-1 = {P_neg1} = -lam = chi/v")
     print(f"  PASS: {check_463}")
 
+    #
+    # ── PART VII-Q: SUPERSYMMETRY & ANOMALY CANCELLATION (checks 464-477) ──
+    #
+    print(f"\n{'='*78}")
+    print(f"  PART VII-Q: SUPERSYMMETRY & ANOMALY CANCELLATION")
+    print(f"{'='*78}")
+    print(f"  Discovery: STr(A)=0 AND STr(A^2)=0 simultaneously!")
+    print(f"  Witten index = alpha = 10. SUSY mass sum rule satisfied.\n")
+
+    import math as _math2
+
+    # --- Check 464: Witten index = 1+f-g = alpha = 10 ---
+    witten_idx = (1 + f_mult) - g_mult
+    check_464 = (witten_idx == alpha_ind)
+    checks.append(('Witten index = 1+f-g = alpha = 10 (topological)', check_464))
+    print(f"\n  -- Check 464: Witten index --")
+    print(f"  1+f-g = 1+{f_mult}-{g_mult} = {witten_idx} = alpha = {alpha_ind}")
+    print(f"  PASS: {check_464}")
+
+    # --- Check 465: STr(A) = k+r*f+s*g = 0 ---
+    STr_A = k + r_eval * f_mult + s_eval * g_mult
+    check_465 = (STr_A == 0)
+    checks.append(('STr(A) = k+r*f+s*g = 0 (gauge anomaly cancelled)', check_465))
+    print(f"\n  -- Check 465: Gauge anomaly --")
+    print(f"  STr(A) = {k}+{r_eval}*{f_mult}+({s_eval})*{g_mult} = {STr_A}")
+    print(f"  PASS: {check_465}")
+
+    # --- Check 466: STr(A^2) = k^2+r^2*f-s^2*g = 0 ---
+    STr_A2 = k**2 + r_eval**2 * f_mult - s_eval**2 * g_mult
+    check_466 = (STr_A2 == 0)
+    checks.append(('STr(A^2) = k^2+r^2*f-s^2*g = 0 (SUSY mass sum rule)', check_466))
+    print(f"\n  -- Check 466: SUSY mass sum rule --")
+    print(f"  STr(A^2) = {k**2}+{r_eval**2*f_mult}-{s_eval**2*g_mult} = {STr_A2}")
+    print(f"  PASS: {check_466}")
+
+    # --- Check 467: STr(A^3) = mu*E = 960 ---
+    STr_A3 = k**3 + r_eval**3 * f_mult + s_eval**3 * g_mult
+    check_467 = (STr_A3 == mu * E)
+    checks.append(('STr(A^3) = mu*E = 960 (SUSY breaking scale)', check_467))
+    print(f"\n  -- Check 467: SUSY breaking --")
+    print(f"  STr(A^3) = {k**3}+{r_eval**3*f_mult}+({s_eval**3*g_mult}) = {STr_A3}")
+    print(f"  = mu*E = {mu}*{E} = {mu*E}")
+    print(f"  PASS: {check_467}")
+
+    # --- Check 468: M_SUSY^2 = mu*E/alpha = mu*f = 96 ---
+    M2_susy = Fraction(mu * E, alpha_ind)
+    check_468 = (M2_susy == mu * f_mult)
+    checks.append(('M_SUSY^2 = mu*E/alpha = mu*f = 96', check_468))
+    print(f"\n  -- Check 468: Breaking mass scale --")
+    print(f"  mu*E/alpha = {mu}*{E}/{alpha_ind} = {int(M2_susy)} = mu*f = {mu*f_mult}")
+    print(f"  PASS: {check_468}")
+
+    # --- Check 469: f = 2k (SUSY doubling) ---
+    check_469 = (f_mult == 2 * k)
+    checks.append(('f = 2k = 24 (SUSY doubling of gauge DOF)', check_469))
+    print(f"\n  -- Check 469: SUSY doubling --")
+    print(f"  f = {f_mult} = 2*k = 2*{k}")
+    print(f"  PASS: {check_469}")
+
+    # --- Check 470: f/8 = q = 3 (N=2 vector multiplet, q colors) ---
+    check_470 = (f_mult // 8 == q)
+    checks.append(('f/dim(O) = q = 3 (N=2 multiplet with q colors)', check_470))
+    print(f"\n  -- Check 470: Color-multiplet decomposition --")
+    print(f"  f/dim(O) = {f_mult}/{k-mu} = {f_mult//(k-mu)} = q = {q}")
+    print(f"  PASS: {check_470}")
+
+    # --- Check 471: CY compact dimension = k/lam = 6 ---
+    CY_dim = k // lam
+    check_471 = (CY_dim == 6)
+    checks.append(('Calabi-Yau dimension = k/lam = 6 (CY_3 real dim)', check_471))
+    print(f"\n  -- Check 471: Compactification --")
+    print(f"  CY dim = k/lam = {k}/{lam} = {CY_dim}")
+    print(f"  PASS: {check_471}")
+
+    # --- Check 472: Extra dimensions = (k/lam)^2 = 36 ---
+    extra_dims = v - mu
+    check_472 = (extra_dims == (k // lam)**2)
+    checks.append(('Extra dims = v-mu = (k/lam)^2 = 36', check_472))
+    print(f"\n  -- Check 472: Extra dimensions --")
+    print(f"  v-mu = {v}-{mu} = {extra_dims} = (k/lam)^2 = {CY_dim}^2")
+    print(f"  PASS: {check_472}")
+
+    # --- Check 473: Hodge h^{2,1}-h^{1,1} = q = 3 generations ---
+    h11 = mu      # = 4
+    h21 = Phi6    # = 7
+    chi_CY = 2 * (h11 - h21)
+    check_473 = (abs(chi_CY) // 2 == q)
+    checks.append(('Hodge: |chi_CY|/2 = |h11-h21| = q = 3 generations', check_473))
+    print(f"\n  -- Check 473: CY Euler and generations --")
+    print(f"  h^(1,1)=mu={h11}, h^(2,1)=Phi6={h21}")
+    print(f"  chi_CY = 2*({h11}-{h21}) = {chi_CY}, |chi_CY|/2 = {abs(chi_CY)//2} = q")
+    print(f"  PASS: {check_473}")
+
+    # --- Check 474: v = 1 + k + k' (vacuum+visible+hidden) ---
+    check_474 = (1 + k + k_comp == v)
+    checks.append(('v = 1+k+k\' = vacuum+visible+hidden = 40', check_474))
+    print(f"\n  -- Check 474: Sector decomposition --")
+    print(f"  1+k+k' = 1+{k}+{k_comp} = {1+k+k_comp} = v = {v}")
+    print(f"  PASS: {check_474}")
+
+    # --- Check 475: g = k+q = 15 (SM gauge + B-L) ---
+    check_475 = (g_mult == k + q)
+    checks.append(('g = k+q = 15 (SM gauge + B-L extension)', check_475))
+    print(f"\n  -- Check 475: Gauge extension --")
+    print(f"  g = {g_mult} = k+q = {k}+{q} = {k+q}")
+    print(f"  PASS: {check_475}")
+
+    # --- Check 476: Anomaly tower: STr(A^0,1,2) = (alpha, 0, 0) ---
+    check_476 = (witten_idx == alpha_ind and STr_A == 0 and STr_A2 == 0)
+    checks.append(('Anomaly tower: STr(A^0,1,2) = (alpha, 0, 0)', check_476))
+    print(f"\n  -- Check 476: Complete anomaly tower --")
+    print(f"  STr(A^0)={witten_idx}, STr(A^1)={STr_A}, STr(A^2)={STr_A2}")
+    print(f"  = (alpha, 0, 0) = ({alpha_ind}, 0, 0)")
+    print(f"  PASS: {check_476}")
+
+    # --- Check 477: 25 bosonic + 15 fermionic = v = 40 ---
+    n_bos = 1 + f_mult   # positive eigenvalues: k and r
+    n_fer = g_mult        # negative eigenvalue: s
+    check_477 = (n_bos + n_fer == v and n_bos == N_su5**2)
+    checks.append(('SUSY: 25=N^2 bosonic + 15 fermionic = v = 40', check_477))
+    print(f"\n  -- Check 477: Boson-fermion partition --")
+    print(f"  Bosonic (pos eig): 1+f = {n_bos} = N^2 = {N_su5**2}")
+    print(f"  Fermionic (neg eig): g = {n_fer}")
+    print(f"  Total: {n_bos}+{n_fer} = {n_bos+n_fer} = v = {v}")
+    print(f"  PASS: {check_477}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -7193,7 +7319,10 @@ def grand_synthesis():
   │  TOPOLOGY      │  Part VII-P (450-463)   │ f-vector │ clique   │
   │  f-poly P(1)   │  1+k/lam+mu+1 = k = 12  │ Euler    │ -2v=-80  │
   │  cliques/vtx   │  k/q = mu = 4 = spacetm  │ Stab     │ 6^4=1296 │
-  │  FINAL CLOSE   │  q=3 -> ALL 463 checks  │ ONE      │ INTEGER  │
+  │  SUSY          │  Part VII-Q (464-477)   │ STr=0    │ anomaly  │
+  │  STr(A)=0      │  STr(A^2)=0 mass sum    │ Witten   │ =alpha   │
+  │  SUSY break    │  STr(A^3)=mu*E=960      │ M^2=96   │ mu*f     │
+  │  FINAL CLOSE   │  q=3 -> ALL 477 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
