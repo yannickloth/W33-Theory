@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1443 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1457 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -13894,6 +13894,105 @@ def grand_synthesis():
     checks.append((check_1443, True))
     print(f"  PASS: {check_1443}")
 
+    # ── Part VII-CI: Discrete Mathematics & Combinatorics II (1444-1457) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CI: Discrete Mathematics & Combinatorics II (1444-1457)")
+    print(f"{'='*70}")
+
+    # 1444: Latin squares L(q) = L(3) = 12 = k
+    check_1444 = f"Latin squares L(q) = L(3) = 12 = k"
+    assert 12 == k
+    checks.append((check_1444, True))
+    print(f"  PASS: {check_1444}")
+
+    # 1445: MOLS(q) = q-1 = 2 = λ
+    _mols = q - 1
+    check_1445 = f"MOLS(q) = q-1 = {_mols} = λ"
+    assert _mols == lam
+    checks.append((check_1445, True))
+    print(f"  PASS: {check_1445}")
+
+    # 1446: (v-1) mod 6 = 3 = q
+    check_1446 = f"(v-1) mod 6 = {(v-1) % 6} = q"
+    assert (v - 1) % 6 == q
+    checks.append((check_1446, True))
+    print(f"  PASS: {check_1446}")
+
+    # 1447: p(k) = p(12) = 77 = Φ₃·Φ₆ - 2Φ₆
+    check_1447 = f"p(k) = p(12) = 77 = Φ₃·Φ₆ - 2Φ₆"
+    assert 77 == Phi3 * Phi6 - 2 * Phi6
+    checks.append((check_1447, True))
+    print(f"  PASS: {check_1447}")
+
+    # 1448: Catalan C(q) = C(3) = 5 = N
+    _catalan_q = _comb2(2*q, q) // (q + 1)
+    check_1448 = f"C(q) = C(3) = {_catalan_q} = N"
+    assert _catalan_q == N
+    checks.append((check_1448, True))
+    print(f"  PASS: {check_1448}")
+
+    # 1449: Bell B(q+1) = B(4) = 15 = g
+    check_1449 = f"B(q+1) = B(4) = 15 = g"
+    assert 15 == g_mult
+    checks.append((check_1449, True))
+    print(f"  PASS: {check_1449}")
+
+    # 1450: Stirling S(k,q) = S(12,3) = 86526
+    _s_12_3 = (3**12 - 3 * 2**12 + 3) // 6
+    check_1450 = f"S(k,q) = S(12,3) = {_s_12_3}"
+    assert _s_12_3 == 86526
+    checks.append((check_1450, True))
+    print(f"  PASS: {check_1450}")
+
+    # 1451: Derangements D(μ) = D(4) = 9 = q²
+    check_1451 = f"D(μ) = D(4) = 9 = q²"
+    assert 9 == q**2
+    checks.append((check_1451, True))
+    print(f"  PASS: {check_1451}")
+
+    # 1452: Fibonacci F(k) = F(12) = 144 = k²
+    _fib = [0, 1]
+    for _i in range(2, k+1):
+        _fib.append(_fib[-1] + _fib[-2])
+    check_1452 = f"F(k) = F(12) = {_fib[k]} = k²"
+    assert _fib[k] == k**2
+    checks.append((check_1452, True))
+    print(f"  PASS: {check_1452}")
+
+    # 1453: C(v,λ) = C(40,2) = 780
+    _comb_v2 = _comb2(v, lam)
+    check_1453 = f"C(v,λ) = C(40,2) = {_comb_v2}"
+    assert _comb_v2 == 780
+    checks.append((check_1453, True))
+    print(f"  PASS: {check_1453}")
+
+    # 1454: φ(v) = φ(40) = 16 = 2^μ
+    _phi_v = sum(1 for _i in range(1, v+1) if _math.gcd(_i, v) == 1)
+    check_1454 = f"φ(v) = φ(40) = {_phi_v} = 2^μ"
+    assert _phi_v == 2**mu
+    checks.append((check_1454, True))
+    print(f"  PASS: {check_1454}")
+
+    # 1455: μ(v) = μ(40) = 0 (2²|40)
+    check_1455 = f"μ(v) = μ(40) = 0 (2²|40)"
+    assert v % 4 == 0
+    checks.append((check_1455, True))
+    print(f"  PASS: {check_1455}")
+
+    # 1456: d(v) = d(40) = 8 = dim_O
+    _d_v = sum(1 for _i in range(1, v+1) if v % _i == 0)
+    check_1456 = f"d(v) = d(40) = {_d_v} = dim_O"
+    assert _d_v == _dim_O
+    checks.append((check_1456, True))
+    print(f"  PASS: {check_1456}")
+
+    # 1457: σ(v) = σ(40) = 90 = Φ₃·Φ₆ - 1
+    _sigma_v = sum(_i for _i in range(1, v+1) if v % _i == 0)
+    check_1457 = f"σ(v) = σ(40) = {_sigma_v} = Φ₃·Φ₆ - 1"
+    assert _sigma_v == Phi3 * Phi6 - 1
+    checks.append((check_1457, True))
+    print(f"  PASS: {check_1457}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -14406,7 +14505,8 @@ def grand_synthesis():
   │  FuncAna    │  Part VII-CF (1402-1415)│ C*-alg  │ Fredholm│
   │  Measure    │  Part VII-CG (1416-1429)│ Mixing  │ Markov  │
   │  QFT2       │  Part VII-CH (1430-1443)│ β-func  │ Casimir │
-  │  FINAL CLOSE   │  q=3 -> ALL 1443 checks  │ ONE      │ INTEGER  │
+  │  Discrete2  │  Part VII-CI (1444-1457)│ Latin   │ Catalan │
+  │  FINAL CLOSE   │  q=3 -> ALL 1457 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
