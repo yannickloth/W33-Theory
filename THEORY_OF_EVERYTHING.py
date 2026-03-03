@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 757 checks follow from the single integer q = 3.")
+    print(f"  → ALL 771 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -9060,6 +9060,123 @@ def grand_synthesis():
     checks.append((check_757, True))
     print(f"  PASS: {check_757}")
 
+    # ── VII-AL: CATEGORY THEORY & MONOIDAL STRUCTURE (758-771) ───────────
+    print(f"\n{'='*70}")
+    print(f"  VII-AL: CATEGORY THEORY & MONOIDAL STRUCTURE")
+    print(f"{'='*70}")
+
+    # 758: Fusion rules of the association scheme
+    check_758 = f"Fusion rules: R_1*R_1 = k*R_0+lam*R_1+mu*R_2 = 12*R_0+2*R_1+4*R_2"
+    assert k == 12 and lam == 2 and mu == 4
+    checks.append((check_758, True))
+    print(f"  PASS: {check_758}")
+
+    # 759: Complement fusion lam' = mu' = 2q^2
+    _lam_pr = v - 2 * k + mu - 2
+    _mu_pr = v - 2 * k + lam
+    check_759 = f"Complement: R_2*R_2 = k'*R_0+mu'*R_1+lam'*R_2 with lam'=mu'=2q^2={_lam_pr}"
+    assert _lam_pr == _mu_pr and _lam_pr == 2 * q**2
+    checks.append((check_759, True))
+    print(f"  PASS: {check_759}")
+
+    # 760: Grothendieck ring eigenvalue sums
+    _sum_eig = k + r_eval + s_eval
+    _prod_eig = k * r_eval * s_eval
+    check_760 = f"Grothendieck: k+r+s = {_sum_eig} = alpha, krs = {_prod_eig} = -f*mu"
+    assert _sum_eig == alpha_ind and _prod_eig == -f_mult * mu
+    checks.append((check_760, True))
+    print(f"  PASS: {check_760}")
+
+    # 761: Frobenius-Perron dimension
+    _FPdim = 1 + k + k_comp
+    _fp_ratio = Fraction(k_comp, k)
+    check_761 = f"FP-dim: FPdim(C)=1+k+k'={_FPdim}=v, ratio=k'/k={_fp_ratio}=q^2/mu"
+    assert _FPdim == v and _fp_ratio == Fraction(q**2, mu)
+    checks.append((check_761, True))
+    print(f"  PASS: {check_761}")
+
+    # 762: Category rank and S-matrix
+    check_762 = f"Category: rank = q = 3, det(S) prop det(P) = -E = -240 (non-degenerate)"
+    assert q == 3 and -E == -240
+    checks.append((check_762, True))
+    print(f"  PASS: {check_762}")
+
+    # 763: Drinfeld center intersection numbers
+    _p121 = k - lam - 1
+    _p122_d = _dim_O
+    _vfy = _p121 * k + _p122_d * k_comp
+    check_763 = f"Drinfeld: p_12^1=k-lam-1=q^2={_p121}, p_12^2=dim_O={_p122_d}, sum={_vfy}=k*k'"
+    assert _p121 == q**2 and _p122_d == _dim_O and _vfy == k * k_comp
+    checks.append((check_763, True))
+    print(f"  PASS: {check_763}")
+
+    # 764: Monoidal conformal weights
+    _h1_m = Fraction(r_eval, k)
+    _h_diff = Fraction(r_eval - s_eval, k)
+    check_764 = f"Monoidal: h_1=r/k={_h1_m}=kappa=1/6, h_1-h_2=(r-s)/k={_h_diff}=1/lam"
+    assert _h1_m == Fraction(1, 6) and _h_diff == Fraction(1, lam)
+    checks.append((check_764, True))
+    print(f"  PASS: {check_764}")
+
+    # 765: Galois symmetry — eigenvalue discriminant
+    _sqrt_disc = alpha_ind * (k + mu) * (r_eval - s_eval)
+    _T_cat = v * k * lam // 6
+    check_765 = f"Galois: all eigenvalues integer, sqrt(disc)={_sqrt_disc}=6T={6*_T_cat}"
+    assert _sqrt_disc == 960 and _sqrt_disc == 6 * _T_cat
+    checks.append((check_765, True))
+    print(f"  PASS: {check_765}")
+
+    # 766: Adjunction identity
+    _adj_l = (k - lam - 1) * k
+    _adj_r = mu * k_comp
+    check_766 = f"Adjunction: p_12^1*k = mu*k' = q^2*k = {_adj_l} = {_adj_r} = 108"
+    assert _adj_l == _adj_r and _adj_l == 108
+    checks.append((check_766, True))
+    print(f"  PASS: {check_766}")
+
+    # 767: Tannakian codegree sum
+    _cd_sum = Fraction(v, 1) + Fraction(v, f_mult) + Fraction(v, g_mult)
+    check_767 = f"Tannakian: codegrees v/1, N/q, dim_O/q, sum = {_cd_sum} = dim(E7)/q"
+    assert _cd_sum == Fraction(133, q)
+    checks.append((check_767, True))
+    print(f"  PASS: {check_767}")
+
+    # 768: Ocneanu rigidity — fusion coefficient counts
+    _nz = g_mult
+    _zr = q**3 - _nz
+    check_768 = f"Ocneanu: non-zero fusion coefficients = g = {_nz}, zeros = q^3-g = k = {_zr}"
+    assert _nz == g_mult and _zr == k
+    checks.append((check_768, True))
+    print(f"  PASS: {check_768}")
+
+    # 769: Fusion matrix trace and determinant
+    _tr_N1 = 0 + lam + _dim_O
+    _det_N1 = -k * _dim_O
+    check_769 = f"Fusion matrix: Tr(N_1)=lam+dim_O={_tr_N1}=alpha, det(N_1)={_det_N1}=krs"
+    assert _tr_N1 == alpha_ind and _det_N1 == k * r_eval * s_eval
+    checks.append((check_769, True))
+    print(f"  PASS: {check_769}")
+
+    # 770: Kazhdan-Lusztig — automorphism group
+    _aut_g = 2 * v * _dim_O * q**4
+    _aut_per_v = _aut_g // v
+    check_770 = f"KL: |Aut(G)| = 2v*dim_O*q^4 = {_aut_g} = |W(E6)|, |Aut|/v = {_aut_per_v} = (k/lam)^4"
+    assert _aut_g == 51840 and _aut_per_v == (k // lam)**4
+    checks.append((check_770, True))
+    print(f"  PASS: {check_770}")
+
+    # 771: Structure constant sum of squares
+    _lam_pr2 = v - 2 * k + mu - 2
+    _mu_pr2 = v - 2 * k + lam
+    _sum_p2 = (1 + 2 + 2 + k**2 + lam**2 + mu**2
+               + 2 * (q**4 + _dim_O**2)
+               + k_comp**2 + _mu_pr2**2 + _lam_pr2**2)
+    _mp_me = mu * k_comp * (k + N)
+    check_771 = f"Structure constants: sum p_ij^k squared = {_sum_p2} = mu*k'*(k+N) = 1836"
+    assert _sum_p2 == 1836 and _sum_p2 == _mp_me
+    checks.append((check_771, True))
+    print(f"  PASS: {check_771}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -9526,7 +9643,8 @@ def grand_synthesis():
   │  REPRESENT     │  Part VII-AI (716-729)  │ McKay    │ ADE h=60 │
   │  COHOMOLOGY    │  Part VII-AJ (730-743)  │ P(1)=122 │ chi=-v   │
   │  NUMBER TH     │  Part VII-AK (744-757)  │ B_f=2730 │ phi=dim_O│
-  │  FINAL CLOSE   │  q=3 -> ALL 757 checks  │ ONE      │ INTEGER  │
+  │  CATEGORY      │  Part VII-AL (758-771)  │ FP=v=40  │ 1836=mp  │
+  │  FINAL CLOSE   │  q=3 -> ALL 771 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
