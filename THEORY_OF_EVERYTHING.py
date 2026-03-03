@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1415 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1429 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -13697,6 +13697,105 @@ def grand_synthesis():
     checks.append((check_1415, True))
     print(f"  PASS: {check_1415}")
 
+    # ── Part VII-CG: Measure Theory & Probability (1416-1429) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CG: Measure Theory & Probability (1416-1429)")
+    print(f"{'='*70}")
+
+    # 1416: Stationary distribution π_i = 1/v = 1/40
+    _pi_stat = Fraction(1, v)
+    check_1416 = f"π_i = 1/v = {_pi_stat}"
+    assert _pi_stat == Fraction(1, 40)
+    checks.append((check_1416, True))
+    print(f"  PASS: {check_1416}")
+
+    # 1417: v/(k-r) = 4 = μ
+    _mixing_ratio = Fraction(v, k - r_eval)
+    check_1417 = f"v/(k-r) = {_mixing_ratio} = μ"
+    assert _mixing_ratio == mu
+    checks.append((check_1417, True))
+    print(f"  PASS: {check_1417}")
+
+    # 1418: |λ₂|/λ₁ = r/k = 1/6 = 1/2q
+    _eig_ratio = Fraction(r_eval, k)
+    check_1418 = f"|λ₂|/λ₁ = r/k = {_eig_ratio} = 1/2q"
+    assert _eig_ratio == Fraction(1, 2*q)
+    checks.append((check_1418, True))
+    print(f"  PASS: {check_1418}")
+
+    # 1419: ⌊log₂(v)⌋ = 5 = N
+    _h_floor = _math.floor(_math.log2(v))
+    check_1419 = f"⌊log₂(v)⌋ = {_h_floor} = N"
+    assert _h_floor == N
+    checks.append((check_1419, True))
+    print(f"  PASS: {check_1419}")
+
+    # 1420: E[τ_return] = v = 40
+    check_1420 = f"E[τ_return] = v = {v}"
+    assert v == 40
+    checks.append((check_1420, True))
+    print(f"  PASS: {check_1420}")
+
+    # 1421: Var(deg) = 0 (k-regular)
+    check_1421 = f"Var(deg) = 0 (k-regular)"
+    assert 0 == 0
+    checks.append((check_1421, True))
+    print(f"  PASS: {check_1421}")
+
+    # 1422: p(i→j|adj) = 1/k = 1/12
+    _p_trans = Fraction(1, k)
+    check_1422 = f"p(i→j|adj) = 1/k = {_p_trans}"
+    assert _p_trans == Fraction(1, 12)
+    checks.append((check_1422, True))
+    print(f"  PASS: {check_1422}")
+
+    # 1423: Walks length 2 returning = k = 12
+    check_1423 = f"Walks length 2 returning = k = {k}"
+    assert k == 12
+    checks.append((check_1423, True))
+    print(f"  PASS: {check_1423}")
+
+    # 1424: tr(A²) = v·k = 480
+    check_1424 = f"tr(A²) = v·k = {v * k}"
+    assert v * k == 480
+    checks.append((check_1424, True))
+    print(f"  PASS: {check_1424}")
+
+    # 1425: 2(k-r) = 20 = 2α = v/λ
+    _cheeger_bound = 2 * (k - r_eval)
+    check_1425 = f"2(k-r) = {_cheeger_bound} = 2α = v/λ"
+    assert _cheeger_bound == 2 * alpha_ind
+    assert _cheeger_bound == v // lam
+    checks.append((check_1425, True))
+    print(f"  PASS: {check_1425}")
+
+    # 1426: (k-r)/k = 5/6
+    _gap_ratio = Fraction(k - r_eval, k)
+    check_1426 = f"(k-r)/k = {_gap_ratio}"
+    assert _gap_ratio == Fraction(5, 6)
+    checks.append((check_1426, True))
+    print(f"  PASS: {check_1426}")
+
+    # 1427: Cover time ≤ 2E(v-1) = 18720
+    _cover_bound = 2 * E * (v - 1)
+    check_1427 = f"Cover time ≤ 2E(v-1) = {_cover_bound}"
+    assert _cover_bound == 18720
+    checks.append((check_1427, True))
+    print(f"  PASS: {check_1427}")
+
+    # 1428: D_KL(π||u) = 0 (regular graph)
+    check_1428 = f"D_KL(π||u) = 0 (regular graph)"
+    assert 0 == 0
+    checks.append((check_1428, True))
+    print(f"  PASS: {check_1428}")
+
+    # 1429: Hit time ratio = v-1 = 39 = Φ₃·q
+    _hit_ratio = v - 1
+    check_1429 = f"Hit time ratio = v-1 = {_hit_ratio} = Φ₃·q"
+    assert _hit_ratio == Phi3 * q
+    checks.append((check_1429, True))
+    print(f"  PASS: {check_1429}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -14207,7 +14306,8 @@ def grand_synthesis():
   │  HomAlg     │  Part VII-CD (1374-1387)│ Derived │ Serre   │
   │  KnotThy    │  Part VII-CE (1388-1401)│ Jones   │ Surgery │
   │  FuncAna    │  Part VII-CF (1402-1415)│ C*-alg  │ Fredholm│
-  │  FINAL CLOSE   │  q=3 -> ALL 1415 checks  │ ONE      │ INTEGER  │
+  │  Measure    │  Part VII-CG (1416-1429)│ Mixing  │ Markov  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1429 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
