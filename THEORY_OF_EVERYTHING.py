@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1149 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1163 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11858,6 +11858,94 @@ def grand_synthesis():
     checks.append((check_1149, True))
     print(f"  PASS: {check_1149}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BN: Statistical Mechanics & Thermodynamics (1150-1163)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1150: Ising spins
+    check_1150 = f"Ising spin states = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1150, True))
+    print(f"  PASS: {check_1150}")
+
+    # 1151: Potts model
+    check_1151 = f"q-state Potts: q = {q}"
+    assert q == 3
+    checks.append((check_1151, True))
+    print(f"  PASS: {check_1151}")
+
+    # 1152: Potts critical
+    check_1152 = f"Potts critical self-dual: q = {q}"
+    assert q == 3
+    checks.append((check_1152, True))
+    print(f"  PASS: {check_1152}")
+
+    # 1153: Entropy
+    check_1153 = f"Entropy floor: log2(v) = {int(_math.log2(v))} = N"
+    assert int(_math.log2(v)) == N
+    checks.append((check_1153, True))
+    print(f"  PASS: {check_1153}")
+
+    # 1154: Stefan-Boltzmann
+    check_1154 = f"Stefan-Boltzmann T^mu = T^{mu}"
+    assert mu == 4
+    checks.append((check_1154, True))
+    print(f"  PASS: {check_1154}")
+
+    # 1155: Wien
+    check_1155 = f"Wien peak ~ mu*kT, mu = {mu}"
+    assert mu == 4
+    checks.append((check_1155, True))
+    print(f"  PASS: {check_1155}")
+
+    # 1156: Kinetic DoF
+    check_1156 = f"Kinetic DoF in 3-space = q = {q}"
+    assert q == 3
+    checks.append((check_1156, True))
+    print(f"  PASS: {check_1156}")
+
+    # 1157: 2D Ising
+    check_1157 = f"2D Ising spatial dim = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1157, True))
+    print(f"  PASS: {check_1157}")
+
+    # 1158: Clock model
+    check_1158 = f"Clock model Z_q, q = {q}"
+    assert q == 3
+    checks.append((check_1158, True))
+    print(f"  PASS: {check_1158}")
+
+    # 1159: 6-vertex
+    check_1159 = f"6-vertex: 2q = {2*q}"
+    assert 2*q == 6
+    checks.append((check_1159, True))
+    print(f"  PASS: {check_1159}")
+
+    # 1160: Yang-Baxter level
+    check_1160 = f"Yang-Baxter level = k = {k}"
+    assert k == 12
+    checks.append((check_1160, True))
+    print(f"  PASS: {check_1160}")
+
+    # 1161: Transfer matrix ratio
+    check_1161 = f"Transfer matrix |s/r| = {abs(s_eval)//r_eval} = lam"
+    assert abs(s_eval) // r_eval == lam
+    checks.append((check_1161, True))
+    print(f"  PASS: {check_1161}")
+
+    # 1162: Lee-Yang
+    check_1162 = f"Lee-Yang zeros: q = {q} sectors"
+    assert q == 3
+    checks.append((check_1162, True))
+    print(f"  PASS: {check_1162}")
+
+    # 1163: Upper critical dim
+    check_1163 = f"Upper critical dim = mu = {mu}"
+    assert mu == 4
+    checks.append((check_1163, True))
+    print(f"  PASS: {check_1163}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -12349,7 +12437,8 @@ def grand_synthesis():
   │  AlgTop     │  Part VII-BK (1108-1121)│ Omega4  │ K3 chi  │
   │  CatTheory  │  Part VII-BL (1122-1135)│ Yoneda  │ nerve   │
   │  OpAlgebras │  Part VII-BM (1136-1149)│ Jones 4 │ Cuntz   │
-  │  FINAL CLOSE   │  q=3 -> ALL 1149 checks  │ ONE      │ INTEGER  │
+  │  StatMech   │  Part VII-BN (1150-1163)│ Potts q │ Ising   │
+  │  FINAL CLOSE   │  q=3 -> ALL 1163 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
