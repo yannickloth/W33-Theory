@@ -1335,6 +1335,7 @@ section h2::after {
     <tr><td>Leech lattice dimension</td><td><strong>24</strong></td><td>f = rank(E&#8328;&sup3;) = 3 &times; 8</td></tr>
     <tr><td>Central charge c</td><td><strong>24</strong></td><td>f (Monster VOA / Leech CFT)</td></tr>
   </table>
+  <p><strong>Monster Ogg-prime pipeline (Δ(2,3,p) scan):</strong> the repo also computes prime-order class-algebra support and extracts r<sub>p</sub> signatures against centralizer cofactors. Notably, C<sub>M</sub>(11A) = 11·M12 and r<sub>11</sub>(11A; 2A×3B) = 144 lands in deg(M12). (See <code>scripts/w33_monster_ogg_pipeline.py</code> and <code>scripts/w33_monster_rp_index_table.py</code>.)</p>
 
   <h4>The Monster&ndash;Leech Gap Identity</h4>
   <div class="math-block">
@@ -1352,6 +1353,19 @@ section h2::after {
     <li><strong>Kirchhoff spectral theory:</strong> &tau; = 2<sup>81</sup> &middot; 5&sup2;&sup3; (spanning tree 2-exponent)</li>
     <li><strong>Monstrous moonshine:</strong> 196884 &minus; 196560 = &mu; &times; 81 = 324</li>
   </ol>
+
+  <h4>The CE2 / L&infin; Phase Lift (Heisenberg &rarr; Weil &rarr; firewall repair)</h4>
+  <p>The same &ldquo;missing cocycle&rdquo; mechanism appears twice in the repo:</p>
+  <ol>
+    <li><strong>s12 universal algebra (Golay / sl(27) grade laws):</strong> keeping only grade-level coefficients produces a finite Jacobi obstruction set.</li>
+    <li><strong>E&#8328; Z&#8323; / L&infin; firewall:</strong> l&#8323; supported on the 9 Heisenberg fibers (&ldquo;bad9&rdquo;) cancels the pure-sector anomaly, but a mixed-sector obstruction remains.</li>
+  </ol>
+  <p>In both cases, the repair is canonical: upgrade grade-only coefficients to an honest <strong>Weyl&ndash;Heisenberg algebra</strong> and interpret the correction as a <strong>metaplectic/Weil phase</strong> (a CE-2 coboundary d(&alpha;)), not a lookup table.</p>
+  <ul>
+    <li><code>scripts/w33_s12_linfty_phase_bridge.py</code> (end-to-end bridge + regression triple)</li>
+    <li><code>scripts/ce2_global_cocycle.py</code> (global CE2 predictor in closed form)</li>
+    <li><code>tools/build_linfty_firewall_extension.py</code> (L&infin; extension with optional global predictor)</li>
+  </ul>
 
 <section id="status">
   <h2><span class="icon">✓</span> Status of Major Claims</h2>
