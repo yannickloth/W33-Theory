@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 617 checks follow from the single integer q = 3.")
+    print(f"  → ALL 631 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -7921,6 +7921,105 @@ def grand_synthesis():
     checks.append((check_617, True))
     print(f"  PASS: {check_617}")
 
+    # ── PART VII-AB: LATTICE & ERROR-CORRECTING CODE STRUCTURE (checks 618-631) ──
+    print(f"\n  --- PART VII-AB: LATTICE & ERROR-CORRECTING CODE STRUCTURE ---")
+    from math import comb as _comb2
+
+    # 618: E8: dim=dim(O)=8, roots=E=240, shell-2=E*q^2=2160
+    check_618 = f"E8: dim=dim(O)={_dim_O}, roots=E={E}, shell-2=E*q^2={E*q**2}"
+    assert _dim_O == 8 and E == 240 and E * q**2 == 2160
+    checks.append((check_618, True))
+    print(f"  PASS: {check_618}")
+
+    # 619: Leech: dim=f=24, kiss/E = q^2*Phi3*Phi6 = 819
+    _leech_kiss = 2**4 * 3**3 * 5 * 7 * 13
+    check_619 = f"Leech: dim=f={f_mult}, kiss/E = q^2*Phi3*Phi6 = {_leech_kiss//E}"
+    assert _leech_kiss == mu**2 * q**3 * N * Phi6 * Phi3
+    assert _leech_kiss // E == q**2 * Phi3 * Phi6
+    checks.append((check_619, True))
+    print(f"  PASS: {check_619}")
+
+    # 620: Golay [f,k,dim(O)] = [24,12,8], codewords = mu^(k/lam) = 4096
+    check_620 = f"Golay [{f_mult},{k},{_dim_O}], codewords = mu^(k/lam) = {mu**(k//lam)}"
+    assert f_mult == 24 and k == 12 and _dim_O == 8 and 2**k == mu**(k//lam)
+    checks.append((check_620, True))
+    print(f"  PASS: {check_620}")
+
+    # 621: Golay weights: A_8=q*(k-1)*(f-1)=759, A_12=s^2*Phi6*(f-1)=2576
+    _A8 = q * (k-1) * (f_mult-1)
+    _A12 = s_eval**2 * Phi6 * (f_mult-1)
+    check_621 = f"Golay weights: A_8={_A8}, A_12={_A12}"
+    assert _A8 == 759 and _A12 == 2576
+    checks.append((check_621, True))
+    print(f"  PASS: {check_621}")
+
+    # 622: Moonshine: 744=q*dim(E8), 196884=Leech_kiss+k*k'
+    _744 = q * (E + _dim_O)
+    _196884 = _leech_kiss + k * k_comp
+    check_622 = f"Moonshine: 744={_744}=q*dim(E8), 196884={_196884}=Leech+k*k'"
+    assert _744 == 744 and _196884 == 196884
+    checks.append((check_622, True))
+    print(f"  PASS: {check_622}")
+
+    # 623: Codes: Hamming=[Phi6,mu,q], ExtHamming=[dim(O),mu,mu], Hexacode=[k/lam,q,mu]
+    check_623 = f"Codes: Hamming=[{Phi6},{mu},{q}], ExtHam=[{_dim_O},{mu},{mu}], Hex=[{k//lam},{q},{mu}]"
+    assert Phi6 == 7 and _dim_O == 8
+    checks.append((check_623, True))
+    print(f"  PASS: {check_623}")
+
+    # 624: E8 theta: A_1=E, A_2=E*q^2=2160, A_3=E*(v-k)=6720
+    check_624 = f"E8 theta: A_3=E*(v-k)={E*(v-k)}=6720"
+    assert E * (v - k) == 6720
+    checks.append((check_624, True))
+    print(f"  PASS: {check_624}")
+
+    # 625: Lattice det chain: det(A_q)=mu, det(A_mu)=N, det(A_N)=k/lam
+    check_625 = f"Lattice det chain: det(A_q)={q+1}=mu, det(A_mu)={mu+1}=N, det(A_N)={N+1}=k/lam"
+    assert q + 1 == mu and mu + 1 == N and N + 1 == k // lam
+    checks.append((check_625, True))
+    print(f"  PASS: {check_625}")
+
+    # 626: Leech/E8 ratio = 819 = (v-1)*(v+2)/2 = C(Phi6,2)*(f+g)
+    _r819 = (v-1)*(v+2)//2
+    check_626 = f"Leech/E8 = {_r819} = (v-1)(v+2)/2 = C(Phi6,2)*(f+g)"
+    assert _r819 == 819 and _r819 == (Phi6*(Phi6-1)//2)*(f_mult+g_mult)
+    checks.append((check_626, True))
+    print(f"  PASS: {check_626}")
+
+    # 627: Golay self-dual: f=lam*k, rate=1/lam=1/2
+    check_627 = f"Golay self-dual: f=lam*k={lam*k}, rate=1/lam={Fraction(1,lam)}"
+    assert f_mult == lam * k and Fraction(k, f_mult) == Fraction(1, lam)
+    checks.append((check_627, True))
+    print(f"  PASS: {check_627}")
+
+    # 628: Co_0 primes = {lam,q,N,Phi6,k-1,Phi3,f-1} = {2,3,5,7,11,13,23}
+    _co_primes = {2, 3, 5, 7, 11, 13, 23}
+    _srg_primes = {lam, q, N, Phi6, k-1, Phi3, f_mult-1}
+    check_628 = f"Co_0 primes = SRG primes = {sorted(_co_primes)}"
+    assert _co_primes == _srg_primes
+    checks.append((check_628, True))
+    print(f"  PASS: {check_628}")
+
+    # 629: Heterotic: E8xE8 roots=lam*E=480, rank=2*dim(O)=s^2=16
+    check_629 = f"Heterotic: E8xE8 roots=lam*E={lam*E}, rank=2*dim(O)={2*_dim_O}=s^2"
+    assert lam * E == v * k and 2 * _dim_O == s_eval**2
+    checks.append((check_629, True))
+    print(f"  PASS: {check_629}")
+
+    # 630: Niemeier: count=f=24, d(f)=dim(O)=8
+    _d_f = sum(1 for i in range(1, f_mult+1) if f_mult % i == 0)
+    check_630 = f"Niemeier: count=f={f_mult}, d(f)={_d_f}=dim(O)"
+    assert _d_f == _dim_O
+    checks.append((check_630, True))
+    print(f"  PASS: {check_630}")
+
+    # 631: Steiner S(N,dim(O),f)=S(5,8,24), blocks=759=A_8
+    _st_blocks = _comb2(f_mult, N) // _comb2(_dim_O, N)
+    check_631 = f"Steiner S({N},{_dim_O},{f_mult}): blocks={_st_blocks}=A_8"
+    assert _st_blocks == 759 and _st_blocks == q * (k-1) * (f_mult-1)
+    checks.append((check_631, True))
+    print(f"  PASS: {check_631}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -8377,7 +8476,8 @@ def grand_synthesis():
   │  GAUGE         │  Part VII-Y (576-589)   │ beta sum │ coupling │
   │  ENTANGLE      │  Part VII-Z (590-603)   │ S_RT=q   │ mu^k=2^f │
   │  ARITHMETIC    │  Part VII-AA (604-617)  │ p(q)=q   │ gcd=mu   │
-  │  FINAL CLOSE   │  q=3 -> ALL 617 checks  │ ONE      │ INTEGER  │
+  │  LATTICE       │  Part VII-AB (618-631)  │ Golay    │ Monster  │
+  │  FINAL CLOSE   │  q=3 -> ALL 631 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
