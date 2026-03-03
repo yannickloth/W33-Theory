@@ -1,0 +1,70 @@
+{
+  "title": "W(3,3)-E8 Correspondence Theorem: Standard Model from Finite Geometry",
+  "description": "A computational derivation of the Standard Model from the W(3,3) generalized quadrangle and the E8 Lie algebra correspondence. The project contains 207+ proved pillars (executable verification scripts) and 5500+ automated tests, plus a 225/225 master-check spine (THEORY_OF_EVERYTHING.py). Key derived constants include sin^2(theta_W)=3/13 at electroweak scale (running from 3/8 at SU(5) GUT) and alpha_GUT^{-1}=8pi, with three generations protected by H1=Z^81 and an operator-exact Hodge firewall/matter sector.",
+  "creators": [
+    {
+      "name": "Dahn, Wil",
+      "affiliation": "Independent Researcher"
+    }
+  ],
+  "keywords": [
+    "W(3,3) generalized quadrangle",
+    "finite geometry",
+    "E8 Lie algebra",
+    "Standard Model",
+    "Hodge theory",
+    "spectral geometry",
+    "gauge theory",
+    "particle physics",
+    "quantum error correction",
+    "modular forms",
+    "monstrous moonshine",
+    "sporadic groups"
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-15-qec-mlut",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-16-pillars-54-56",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-16-pillars-58-60",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/wilcompute/W33-Theory/releases/tag/v2026-02-21-fieldtheory",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/wilcompute/W33-Theory",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "subjects": [
+    {
+      "term": "High Energy Physics - Theory",
+      "scheme": "arxiv"
+    },
+    {
+      "term": "Mathematical Physics",
+      "scheme": "arxiv"
+    },
+    {
+      "term": "Combinatorics",
+      "scheme": "arxiv"
+    }
+  ],
+  "notes": "207+ proved pillars, 5500+ automated tests, and 225/225 master checks. Highlights: 240 edges ↔ 240 E8 roots; Aut(W33)=Sp(4,3)≅W(E6) of order 51840; H1(W33;Z)=Z^81 = 27×3 generations (E6 fundamental × generations) protected by the Hodge projector; Moonshine bridge constants expressed in W(3,3) parameters; metaplectic/Weil phase law threads the CE2 corrections through the L∞ firewall."
+}
+

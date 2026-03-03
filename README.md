@@ -20,9 +20,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Automorphism group | **Sp(4,3) ≅ W(E₆)** | Weyl group of E₆, order 51,840 |
 | First homology H₁ | **ℤ⁸¹** | 3 generations: 81 = 27 + 27 + 27 |
 | Hodge spectrum | **0⁸¹ 4¹²⁰ 10²⁴ 16¹⁵** | Matter / gauge / X-bosons / Y-bosons |
-| Weinberg angle | **sin²θ_W = 3/8** | SU(5) GUT boundary — unique to q = 3 |
+| Weinberg angle | **sin²θ<sub>W</sub> = 3/13** | EW value (runs from GUT **3/8** for SU(5)) |
 | QEC code | **[240, 81, ≥3]** | Quantum error-correcting code over GF(3) |
-| Gauge coupling | **α_GUT = 1/(8π)** | ≈ 1/25.1, within 3.6% of MSSM value |
+| Gauge coupling | **α<sub>GUT</sub> = 1/(8π)** | ≈ 1/25.1, within 3.6% of MSSM value |
 
 ## Status
 
@@ -32,14 +32,14 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Aut(W33) ≅ W(E₆) | ✅ | Order 51,840 confirmed |
 | H₁ = ℤ⁸¹, three generations | ✅ | All 800 order-3 elements give 27+27+27 |
 | Hodge spectrum & mass gap | ✅ | Δ = 4 separates matter from gauge |
-| sin²θ_W = 3/8 | ✅ | Derived from SRG eigenvalues |
-| θ_QCD = 0, proton stable | ✅ | Topological selection rules |
+| sin²θ<sub>W</sub> = 3/13 | ✅ | Derived: q/(q²+q+1) with q=3 (EW); runs from GUT 3/8 |
+| θ<sub>QCD</sub> = 0, proton stable | ✅ | Topological selection rules |
 | CKM matrix | ✅ | Error **0.0026** — all 9 elements < 3.2% |
-| PMNS matrix | ✅ | Error **0.006** — |V_e3| = 0.148 (exp 0.149) |
+| PMNS matrix | ✅ | Error **0.006** — |V<sub>e3</sub>| = 0.148 (exp 0.149) |
 | Grand Architecture (Pillar 120) | ✅ | Rosetta Stone: W(E₆) → 27 lines → Q₈ → E₆ loop |
 | G₂ Triality Fano Bridge (Pillar 121) | ✅ | D₄→G₂ fold, Der(𝕆)=G₂(14), Fano plane |
 | Cayley Integer Unit Chain (Pillar 122) | ✅ | Q₈(8)⊂Hurwitz(24)⊂Cayley(240)=E₈ roots |
-| E₈ Theta Series (Pillar 123) | ✅ | Θ_{E₈}=E₄, a(n)=240·σ₃(n), j-invariant |
+| E₈ Theta Series (Pillar 123) | ✅ | Θ<sub>E₈</sub>=E₄, a(n)=240·σ₃(n), j-invariant |
 | Leech Lattice Moonshine (Pillar 124) | ✅ | 196884=196560+4·81, Λ₂₄→Co₀→Monster chain |
 | Binary Golay Code (Pillar 125) | ✅ | [24,12,8] code, 759 octads, S(5,8,24), M₂₄ |
 | Monstrous Moonshine (Pillar 126) | ✅ | McKay Ê₈, j-decomposition, 744=3·248 |
@@ -62,9 +62,9 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Mirror Symmetry & Calabi-Yau (Pillar 143) | ✅ | CY manifolds; Hodge diamond; quintic 2875 lines; HMS Kontsevich; SYZ; 27 lines W(E₆) |
 | Information Geometry (Pillar 144) | ✅ | Fisher metric; Chentsov uniqueness; Ryu-Takayanagi; holographic QEC; ER=EPR |
 | Spectral Geometry (Pillar 145) | ✅ | Weyl law; heat kernel; Kac drum; Selberg trace; Milnor E₈⊕E₈ vs D₁₆⁺; spectral action |
-| Noncommutative Geometry (Pillar 146) | ✅ | Connes NCG; spectral triple; A_F=C⊕H⊕M₃(C)→SM+gravity; cyclic cohomology; Fields 1982 |
+| Noncommutative Geometry (Pillar 146) | ✅ | Connes NCG; spectral triple; A<sub>F</sub>=C⊕H⊕M₃(C)→SM+gravity; cyclic cohomology; Fields 1982 |
 | Twistor Theory & Amplituhedron (Pillar 147) | ✅ | Penrose twistors; Witten twistor string; BCFW; amplituhedron; emergent spacetime; Nobel 2020 |
-| Quantum Groups & Yangians (Pillar 148) | ✅ | Yang-Baxter equation; Drinfeld-Jimbo U_q(g); Jones polynomial; Yangian N=4 SYM; E₈ Toda golden ratio |
+| Quantum Groups & Yangians (Pillar 148) | ✅ | Yang-Baxter equation; Drinfeld-Jimbo U<sub>q</sub>(g); Jones polynomial; Yangian N=4 SYM; E₈ Toda golden ratio |
 | Langlands Program (Pillar 149) | ✅ | Reciprocity; functoriality; E₈ self-dual; Ngo fundamental lemma; geometric Langlands 2024; Kapustin-Witten |
 | Cluster Algebras (Pillar 150) | ✅ | Fomin-Zelevinsky; Laurent phenomenon; finite type=Dynkin; E₈: 128 vars, 25080 clusters; positivity GHKK |
 | Derived Categories & HMS (Pillar 151) | ✅ | Grothendieck-Verdier; Kontsevich HMS; Fourier-Mukai; Bridgeland stability; D-branes = objects |
@@ -72,7 +72,7 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Condensed Mathematics (Pillar 153) | ✅ | Clausen-Scholze; condensed sets; liquid vectors; Lean verified (2022); pyknotic objects |
 | Motivic Homotopy (Pillar 154) | ✅ | Morel-Voevodsky A¹-homotopy; Milnor conjecture; Bloch-Kato; bigraded S^{p,q} |
 | Perfectoid Spaces (Pillar 155) | ✅ | Scholze tilting (Fields 2018); Perf(K)≃Perf(K♭); prismatic cohomology; diamonds |
-| Higher Algebra (Pillar 156) | ✅ | Operads E_n; factorization algebras; Lurie HA (1553 pp); Koszul duality Lie↔Comm |
+| Higher Algebra (Pillar 156) | ✅ | Operads E<sub>n</sub>; factorization algebras; Lurie HA (1553 pp); Koszul duality Lie↔Comm |
 | Arithmetic Topology (Pillar 157) | ✅ | Primes=knots; number fields=3-manifolds; Borromean primes (13,61,937); Alexander↔Iwasawa |
 | Tropical Geometry (Pillar 158) | ✅ | Tropical semiring min/+; Mikhalkin correspondence; ReLU=tropical; Gross-Siebert mirror |
 | Floer Homology (Pillar 159) | ✅ | Infinite-dim Morse theory; Arnold conjecture; HF≅SWF≅ECH; Fukaya→HMS; Manolescu 2013 |
@@ -84,8 +84,8 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Noncommutative Geometry (Pillar 165) | ✅ | Connes NCG; spectral triples (A,H,D); spectral action; NCG Standard Model; Bost-Connes; Moyal ★ |
 | Motivic Integration (Pillar 166) | ✅ | Kontsevich-Denef-Loeser; arc spaces; Grothendieck ring K₀(Var); stringy invariants; McKay |
 | The Langlands Program (Pillar 167) | ✅ | Reciprocity Galois↔automorphic; L-functions; Ngô (Fields 2010); Gaitsgory 2024; ^L E₈=E₈ |
-| Quantum Groups (Pillar 168) | ✅ | Drinfeld-Jimbo U_q(g); Yang-Baxter; Jones polynomial; Kashiwara crystals; roots of unity→TQFT |
-| Operads (Pillar 169) | ✅ | May (1972); Assoc/Comm/Lie; Koszul duality; E_n little disks; A∞/L∞/E∞; Kontsevich formality |
+| Quantum Groups (Pillar 168) | ✅ | Drinfeld-Jimbo U<sub>q</sub>(g); Yang-Baxter; Jones polynomial; Kashiwara crystals; roots of unity→TQFT |
+| Operads (Pillar 169) | ✅ | May (1972); Assoc/Comm/Lie; Koszul duality; E<sub>n</sub> little disks; A∞/L∞/E∞; Kontsevich formality |
 | Cluster Algebras (Pillar 170) | ✅ | Fomin-Zelevinsky (2002); mutations; Laurent phenomenon; finite type=Dynkin; E₈: 25080 clusters |
 | Persistent Homology (Pillar 171) | ✅ | Edelsbrunner-Zomorodian; filtrations & barcodes; stability theorem; TDA; Ripser; E₈ root persistence |
 | Information Geometry (Pillar 172) | ✅ | Rao-Amari; Fisher-Rao metric; dual α-connections; natural gradient; KL=Bregman; quantum Fisher |
@@ -108,7 +108,7 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 | Representation Stability (Pillar 189) | ✅ | FI-modules (Church-Ellenberg-Farb 2015); Noetherianity; multiplicity stability; Sam-Snowden |
 | p-adic Physics (Pillar 190) | ✅ | Ostrowski; p-adic strings (Volovich); Berkovich; perfectoids (Scholze 2018 Fields); condensed math |
 | Derived Algebraic Geometry (Pillar 191) | ✅ | PTVV shifted symplectic; DT invariants; Lurie formal moduli; Koszul duality; Bridgeland stability |
-| Factorization Algebras (Pillar 192) | ✅ | Beilinson-Drinfeld; Costello-Gwilliam BV; factorization homology; chiral algebras; E_n operads |
+| Factorization Algebras (Pillar 192) | ✅ | Beilinson-Drinfeld; Costello-Gwilliam BV; factorization homology; chiral algebras; E<sub>n</sub> operads |
 | Quantum Gravity & Spin Foams (Pillar 193) | ✅ | Ashtekar; LQG; spin networks; EPRL; BH entropy; causal sets; CDT; group field theory |
 | Motivic Integration (Pillar 194) | ✅ | Kontsevich motivic measure; arc spaces; Denef-Loeser zeta; motivic DT; A¹-homotopy; Ngô lemma |
 | Operads & Modular Operads (Pillar 195) | ✅ | May (1972); Stasheff; Koszul duality; modular operads (Getzler-Kapranov); Kontsevich formality; properads |
@@ -129,18 +129,18 @@ The 40 points and 240 edges of the symplectic polar space **W(3,3)** over GF(3) 
 
 ## Quick Start
 
-`ash
+```bash
 pip install numpy sympy networkx pytest
-python -m pytest tests/ -q          # ~2000 tests
-`
+python -m pytest tests/ -q          # 5500+ tests (collect-only)
+```
 
 ## Repository Structure
 
-`
+```text
 W33-Theory/
 ├── pillars/        # 207+ pillar verification scripts (THEORY_PART_*.py)
 ├── scripts/        # Core computation scripts (w33_*.py)
-├── tests/          # 3700+ automated tests
+├── tests/          # 5500+ automated tests
 ├── tools/          # Geometric computation utilities
 ├── exploration/    # Research & exploration scripts
 ├── docs/           # GitHub Pages site source
@@ -148,11 +148,11 @@ W33-Theory/
 ├── archive/        # Historical artifacts, documents, data files
 ├── lib/            # Shared library modules
 └── src/            # Source modules
-`
+```
 
 ## Citation
 
-`ibtex
+```bibtex
 @software{dahn_w33_e8_2026,
   author = {Dahn, Wil and Claude},
   title  = {The {W}(3,3)--{E8} Correspondence:
@@ -161,6 +161,6 @@ W33-Theory/
   url    = {https://github.com/wilcompute/W33-Theory},
   doi    = {10.5281/zenodo.18652825}
 }
-`
+```
 
 **Authors:** Wil Dahn & Claude (Anthropic) · [MIT License](LICENSE)
