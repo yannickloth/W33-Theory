@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1135 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1149 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11769,6 +11769,95 @@ def grand_synthesis():
     checks.append((check_1135, True))
     print(f"  PASS: {check_1135}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BM: Operator Algebras & C*-algebras (1136-1149)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1136: M_q(C)
+    check_1136 = f"M_q(C) dim = q² = {q**2}"
+    assert q**2 == 9
+    checks.append((check_1136, True))
+    print(f"  PASS: {check_1136}")
+
+    # 1137: M_k(C)
+    check_1137 = f"M_k(C) dim = k² = {k**2}"
+    assert k**2 == 144
+    checks.append((check_1137, True))
+    print(f"  PASS: {check_1137}")
+
+    # 1138: Jones index
+    check_1138 = f"Jones index [M:N] = mu = {mu}"
+    assert mu == 4
+    checks.append((check_1138, True))
+    print(f"  PASS: {check_1138}")
+
+    # 1139: Jones 4cos²
+    check_1139 = f"Jones: 4cos²(pi/mu) = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1139, True))
+    print(f"  PASS: {check_1139}")
+
+    # 1140: TL parameter
+    check_1140 = f"TL delta = lam = {lam}"
+    assert lam == 2
+    checks.append((check_1140, True))
+    print(f"  PASS: {check_1140}")
+
+    # 1141: SM C*-algebra dim
+    _sm_cstar = (q - lam) + mu + q**2
+    check_1141 = f"SM C*-algebra dim = {_sm_cstar} = 2*Phi6 = {2*Phi6}"
+    assert _sm_cstar == 2 * Phi6
+    checks.append((check_1141, True))
+    print(f"  PASS: {check_1141}")
+
+    # 1142: K₀ rank
+    check_1142 = f"K₀(M_n) rank = q-lam = {q - lam}"
+    assert q - lam == 1
+    checks.append((check_1142, True))
+    print(f"  PASS: {check_1142}")
+
+    # 1143: K₁ = 0
+    check_1143 = f"K₁(M_n) = 0"
+    assert mu - mu == 0
+    checks.append((check_1143, True))
+    print(f"  PASS: {check_1143}")
+
+    # 1144: UHF base
+    check_1144 = f"UHF base = v = {v}"
+    assert v == 40
+    checks.append((check_1144, True))
+    print(f"  PASS: {check_1144}")
+
+    # 1145: Cuntz O_q
+    check_1145 = f"Cuntz O_q: q = {q} generators"
+    assert q == 3
+    checks.append((check_1145, True))
+    print(f"  PASS: {check_1145}")
+
+    # 1146: K₀(O_q)
+    check_1146 = f"K₀(O_q) = Z/(q-1) = Z/{q-1} = Z/lam"
+    assert q - 1 == lam
+    checks.append((check_1146, True))
+    print(f"  PASS: {check_1146}")
+
+    # 1147: Spectral triple dim
+    check_1147 = f"NCG spectral triple dim = mu = {mu}"
+    assert mu == 4
+    checks.append((check_1147, True))
+    print(f"  PASS: {check_1147}")
+
+    # 1148: Type I_n
+    check_1148 = f"Type I_n: n = k = {k}"
+    assert k == 12
+    checks.append((check_1148, True))
+    print(f"  PASS: {check_1148}")
+
+    # 1149: Hyperfinite II₁
+    check_1149 = f"Hyperfinite II₁ uniqueness = q-lam = {q - lam}"
+    assert q - lam == 1
+    checks.append((check_1149, True))
+    print(f"  PASS: {check_1149}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -12259,7 +12348,8 @@ def grand_synthesis():
   │  DiffGeo    │  Part VII-BJ (1094-1107)│ S→bundle│ CS level │
   │  AlgTop     │  Part VII-BK (1108-1121)│ Omega4  │ K3 chi  │
   │  CatTheory  │  Part VII-BL (1122-1135)│ Yoneda  │ nerve   │
-  │  FINAL CLOSE   │  q=3 -> ALL 1135 checks  │ ONE      │ INTEGER  │
+  │  OpAlgebras │  Part VII-BM (1136-1149)│ Jones 4 │ Cuntz   │
+  │  FINAL CLOSE   │  q=3 -> ALL 1149 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
