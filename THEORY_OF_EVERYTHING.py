@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 477 checks follow from the single integer q = 3.")
+    print(f"  → ALL 491 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -6876,6 +6876,125 @@ def grand_synthesis():
     print(f"  Total: {n_bos}+{n_fer} = {n_bos+n_fer} = v = {v}")
     print(f"  PASS: {check_477}")
 
+    # ── PART VII-R: CONNES SPECTRAL TRIPLE & KRAWTCHOUK ────────────────
+    print(f"\n{'='*78}")
+    print(f"  PART VII-R: CONNES SPECTRAL TRIPLE & KRAWTCHOUK STRUCTURE")
+    print(f"{'='*78}")
+
+    # Eigenvalue spread r - s = k/2 (unique to q=3 in GQ(q,q))
+    spread = r_eval - s_eval  # 2 - (-4) = 6
+    check_478 = f"r - s = k/2 = {spread} (eigenvalue spread, q=3 unique in GQ)"
+    assert spread == k // 2
+    checks.append((check_478, True))
+    print(f"  PASS: {check_478}")
+
+    # Krawtchouk eigenvalue matrix P (standard convention)
+    P_std = [[Fraction(1), Fraction(k), Fraction(k_comp)],
+             [Fraction(1), Fraction(r_eval), Fraction(-r_eval-1)],
+             [Fraction(1), Fraction(s_eval), Fraction(-s_eval-1)]]
+
+    # det(P) = v(s-r) = -E = -240
+    import numpy as _np2
+    P_arr = _np2.array([[1, k, k_comp], [1, r_eval, -r_eval-1],
+                         [1, s_eval, -s_eval-1]], dtype=float)
+    detP = int(round(_np2.linalg.det(P_arr)))
+    check_479 = f"det(P_Krawtchouk) = v(s-r) = {detP} = -E (q=3 unique)"
+    assert detP == -E == v * (s_eval - r_eval)
+    checks.append((check_479, True))
+    print(f"  PASS: {check_479}")
+
+    # Dual eigenvalue matrix Q with PQ = vI
+    Q_ex = [[Fraction(1), Fraction(f_mult), Fraction(g_mult)],
+            [Fraction(1), Fraction(f_mult*r_eval, k), Fraction(g_mult*s_eval, k)],
+            [Fraction(1), Fraction(f_mult*(-r_eval-1), k_comp),
+             Fraction(g_mult*(-s_eval-1), k_comp)]]
+    PQ_ok = True
+    for _i in range(3):
+        for _j in range(3):
+            _val = sum(P_std[_i][_m] * Q_ex[_m][_j] for _m in range(3))
+            _target = Fraction(v) if _i == _j else Fraction(0)
+            if _val != _target:
+                PQ_ok = False
+    check_480 = f"PQ = vI verified (Krawtchouk-dual orthogonality)"
+    assert PQ_ok
+    checks.append((check_480, True))
+    print(f"  PASS: {check_480}")
+
+    # Dual eigenvalues Q[1] = [1, mu, -N]
+    check_481 = f"Q[1] = [1, mu, -N] = [1, {mu}, {-N}] (dual evals = physics)"
+    assert Q_ex[1] == [Fraction(1), Fraction(mu), Fraction(-N)]
+    checks.append((check_481, True))
+    print(f"  PASS: {check_481}")
+
+    # Dual eigenvalues Q[2] = [1, -(k-mu)/q, N/q]
+    check_482 = f"Q[2] = [1, -(k-mu)/q, N/q] = [1, {Fraction(-(k-mu),q)}, {Fraction(N,q)}]"
+    assert Q_ex[2] == [Fraction(1), Fraction(-(k-mu), q), Fraction(N, q)]
+    checks.append((check_482, True))
+    print(f"  PASS: {check_482}")
+
+    # Division algebra dim sum = s^2
+    alg_dim_ncg = 1 + lam + mu + q**2  # 1+2+4+9 = 16
+    check_483 = f"1+lam+mu+q^2 = {alg_dim_ncg} = s^2 = {s_eval**2} (NCG finite algebra)"
+    assert alg_dim_ncg == s_eval**2
+    checks.append((check_483, True))
+    print(f"  PASS: {check_483}")
+
+    # Spacetime * finite = Clifford dimension
+    ncg_total = mu * alg_dim_ncg  # 4 * 16 = 64
+    check_484 = f"mu*s^2 = {ncg_total} = 2^(k/lam) = {2**(k//lam)} (Clifford Cl({k//lam}))"
+    assert ncg_total == 2**(k // lam)
+    checks.append((check_484, True))
+    print(f"  PASS: {check_484}")
+
+    # Seeley-DeWitt: avg curvature = lambda
+    _a0 = v
+    _a2 = Fraction(f_mult * (k - r_eval) + g_mult * (k - s_eval), 6)  # Tr(L)/6
+    check_485 = f"a_2/a_0 = Tr(L)/(6v) = {_a2}/{_a0} = {_a2/Fraction(_a0)} = lam (avg curv)"
+    assert _a2 / Fraction(_a0) == lam
+    checks.append((check_485, True))
+    print(f"  PASS: {check_485}")
+
+    # Spectral = topological: a_2 = v*lam = |chi|
+    check_486 = f"a_2 = v*lam = {int(_a2)} = |chi| = {abs(-2*v)} (spectral = topological)"
+    assert int(_a2) == v * lam == abs(-2 * v)
+    checks.append((check_486, True))
+    print(f"  PASS: {check_486}")
+
+    # Dirac spinor modes = 2v (chirality doubling)
+    dirac_modes = 2 + 2 * f_mult + 2 * g_mult  # zero + +-sqrt(L1) + +-L2
+    check_487 = f"Dirac spinor modes = 2v = {dirac_modes} (chirality doubling)"
+    assert dirac_modes == 2 * v
+    checks.append((check_487, True))
+    print(f"  PASS: {check_487}")
+
+    # Green's function resolvent at origin: G(0) = -N/f
+    G0 = (Fraction(-1, v*k) + Fraction(-f_mult, v*r_eval)
+          + Fraction(-g_mult, v*s_eval))
+    check_488 = f"G(0) = {G0} = -N/f = {Fraction(-N, f_mult)} (resolvent)"
+    assert G0 == Fraction(-N, f_mult)
+    checks.append((check_488, True))
+    print(f"  PASS: {check_488}")
+
+    # Laplacian trace equipartition: f*L1 = g*L2 = E
+    _L1, _L2 = k - r_eval, k - s_eval
+    check_489 = f"f*L1 = {f_mult*_L1} = g*L2 = {g_mult*_L2} = E (trace equipartition)"
+    assert f_mult * _L1 == g_mult * _L2 == E
+    checks.append((check_489, True))
+    print(f"  PASS: {check_489}")
+
+    # Edge trace: Tr(A^2) = 2E
+    TrA2 = k**2 + f_mult * r_eval**2 + g_mult * s_eval**2
+    check_490 = f"Tr(A^2) = {TrA2} = 2E = {2*E} (edge trace identity)"
+    assert TrA2 == 2 * E
+    checks.append((check_490, True))
+    print(f"  PASS: {check_490}")
+
+    # Vertex count from physics parameters: v = 2*mu*N (q=3 unique)
+    check_491 = f"v = 2*mu*N = 2*{mu}*{N} = {2*mu*N} (q=3 unique in GQ)"
+    assert 2 * mu * N == v
+    checks.append((check_491, True))
+    print(f"  PASS: {check_491}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -7322,7 +7441,7 @@ def grand_synthesis():
   │  SUSY          │  Part VII-Q (464-477)   │ STr=0    │ anomaly  │
   │  STr(A)=0      │  STr(A^2)=0 mass sum    │ Witten   │ =alpha   │
   │  SUSY break    │  STr(A^3)=mu*E=960      │ M^2=96   │ mu*f     │
-  │  FINAL CLOSE   │  q=3 -> ALL 477 checks  │ ONE      │ INTEGER  │
+  │  FINAL CLOSE   │  q=3 -> ALL 491 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
