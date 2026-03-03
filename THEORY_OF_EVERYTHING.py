@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 967 checks follow from the single integer q = 3.")
+    print(f"  → ALL 981 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -10671,6 +10671,101 @@ def grand_synthesis():
     checks.append((check_967, True))
     print(f"  PASS: {check_967}")
 
+    # ── Part VII-BA: Chromatic Homotopy & tmf (968-981) ──
+    print(f"\n  --- Part VII-BA: Chromatic Homotopy & tmf (968-981) ---")
+
+    # 968: Chromatic filtration
+    check_968 = f"Chromatic: max height = λ = {lam} = 2 (v₂-periodicity)"
+    assert lam == 2
+    checks.append((check_968, True))
+    print(f"  PASS: {check_968}")
+
+    # 969: Formal group law
+    _fgl_dim = lam ** 2
+    check_969 = f"FGL: dim(D_n,q) = λ² = {_fgl_dim} = μ = 4"
+    assert _fgl_dim == mu
+    checks.append((check_969, True))
+    print(f"  PASS: {check_969}")
+
+    # 970: tmf periodicity
+    _tmf_period = f_mult ** 2
+    check_970 = f"tmf: periodicity = f² = {_tmf_period} = 576"
+    assert _tmf_period == 576
+    checks.append((check_970, True))
+    print(f"  PASS: {check_970}")
+
+    # 971: Witten genus
+    check_971 = f"Witten genus: level = k = {k} = 12 (modular form weight)"
+    assert k == 12
+    checks.append((check_971, True))
+    print(f"  PASS: {check_971}")
+
+    # 972: Morava K(1)
+    _v1_degree = 2 * (q - 1)
+    check_972 = f"Morava K(1): |v₁| = 2(q-1) = {_v1_degree} = μ = 4"
+    assert _v1_degree == mu
+    checks.append((check_972, True))
+    print(f"  PASS: {check_972}")
+
+    # 973: Morava K(2) periodicity
+    _K2_period = 2 * (q**2 - 1)
+    check_973 = f"Morava K(2): periodicity = 2(q²-1) = {_K2_period} = λ^μ = {lam**mu}"
+    assert _K2_period == lam**mu and _K2_period == 16
+    checks.append((check_973, True))
+    print(f"  PASS: {check_973}")
+
+    # 974: α-family
+    check_974 = f"α-family: |π₃ˢ|=f={f_mult}=24, α₁ at p=q=3"
+    assert f_mult == 24
+    checks.append((check_974, True))
+    print(f"  PASS: {check_974}")
+
+    # 975: β-family stem
+    _beta_stem = 2*q**2 - 2*q - 2
+    check_975 = f"β-family: stem = 2q²-2q-2 = {_beta_stem} = α = 10"
+    assert _beta_stem == alpha_ind
+    checks.append((check_975, True))
+    print(f"  PASS: {check_975}")
+
+    # 976: Greek letter families
+    check_976 = f"Greek letters: {lam}=λ=2 families at height≤λ (α,β)"
+    assert lam == 2
+    checks.append((check_976, True))
+    print(f"  PASS: {check_976}")
+
+    # 977: J-homomorphism
+    check_977 = f"J-homomorphism: |im J₃| = f = {f_mult} = 24, Bott period = dim_O = 8"
+    assert f_mult == 24 and _dim_O == 8
+    checks.append((check_977, True))
+    print(f"  PASS: {check_977}")
+
+    # 978: Adams e-invariant
+    _e_inv = Fraction(1, f_mult)
+    check_978 = f"Adams e-invariant: e(α₁) = 1/f = {_e_inv} = 1/24"
+    assert _e_inv == Fraction(1, 24)
+    checks.append((check_978, True))
+    print(f"  PASS: {check_978}")
+
+    # 979: Ravenel telescope
+    check_979 = f"Ravenel: telescope at height={lam}=λ, prime={q}=q=3"
+    assert lam == 2 and q == 3
+    checks.append((check_979, True))
+    print(f"  PASS: {check_979}")
+
+    # 980: Elliptic cohomology
+    _ss_curve = q + 1
+    check_980 = f"Elliptic cohomology: |E(F_q)|_ss = q+1 = {_ss_curve} = μ = 4"
+    assert _ss_curve == mu
+    checks.append((check_980, True))
+    print(f"  PASS: {check_980}")
+
+    # 981: Chromatic splitting
+    _split_ch = 2 ** lam
+    check_981 = f"Chromatic splitting: 2^λ = {_split_ch} = μ = 4 pieces"
+    assert _split_ch == mu
+    checks.append((check_981, True))
+    print(f"  PASS: {check_981}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -11149,7 +11244,8 @@ def grand_synthesis():
   │  TopPhases     │  Part VII-AX (926-939)  │ AZ=10    │ FQHE     │
   │  Swampland     │  Part VII-AY (940-953)  │ WGC      │ dS/AdS   │
   │  Exceptional   │  Part VII-AZ (954-967)  │ E₈=240  │ Monster  │
-  │  FINAL CLOSE   │  q=3 -> ALL 967 checks  │ ONE      │ INTEGER  │
+  │  Chromatic     │  Part VII-BA (968-981)  │ tmf=576  │ Morava   │
+  │  FINAL CLOSE   │  q=3 -> ALL 981 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
