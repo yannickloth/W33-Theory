@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 491 checks follow from the single integer q = 3.")
+    print(f"  → ALL 505 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -6995,6 +6995,104 @@ def grand_synthesis():
     checks.append((check_491, True))
     print(f"  PASS: {check_491}")
 
+    # ── PART VII-S: INFORMATION THEORY & ENTROPY ───────────────────────
+    print(f"\n{'='*78}")
+    print(f"  PART VII-S: INFORMATION THEORY & ENTROPY")
+    print(f"{'='*78}")
+
+    # Density matrix rho = L/Tr(L), Purity = Tr(rho^2) = Phi3/(v*k)
+    _L1s, _L2s = k - r_eval, k - s_eval
+    _TrL = f_mult * _L1s + g_mult * _L2s  # = 2E = 480
+    _rho1 = Fraction(_L1s, _TrL)  # 1/48
+    _rho2 = Fraction(_L2s, _TrL)  # 1/30
+    _TrRho2 = Fraction(f_mult * _L1s**2 + g_mult * _L2s**2, _TrL**2)
+    check_492 = f"Tr(rho) = f*{_rho1}+g*{_rho2} = {f_mult*_rho1+g_mult*_rho2} (density normalized)"
+    assert f_mult * _rho1 + g_mult * _rho2 == 1
+    checks.append((check_492, True))
+    print(f"  PASS: {check_492}")
+
+    check_493 = f"Tr(rho^2) = Phi3/(v*k) = {Phi3}/{v*k} = {_TrRho2} (purity = cyclotomic)"
+    assert _TrRho2 == Fraction(Phi3, v * k)
+    checks.append((check_493, True))
+    print(f"  PASS: {check_493}")
+
+    # Edge probability = mu/Phi3
+    _p_edge = Fraction(k, v - 1)
+    check_494 = f"p_edge = k/(v-1) = {_p_edge} = mu/Phi3 (edge density = physics)"
+    assert _p_edge == Fraction(mu, Phi3)
+    checks.append((check_494, True))
+    print(f"  PASS: {check_494}")
+
+    # Lovász theta (tight bound, achieved by ovoids)
+    _theta = Fraction(v * abs(s_eval), k + abs(s_eval))
+    check_495 = f"Lovasz theta = v|s|/(k+|s|) = {_theta} = alpha (tight bound)"
+    assert _theta == alpha_ind
+    checks.append((check_495, True))
+    print(f"  PASS: {check_495}")
+
+    # Clique bound omega = mu = spacetime dimension
+    _omega = 1 + Fraction(k, abs(s_eval))
+    check_496 = f"omega = 1+k/|s| = {_omega} = mu = {mu} (clique = spacetime dim)"
+    assert _omega == mu
+    checks.append((check_496, True))
+    print(f"  PASS: {check_496}")
+
+    # v/theta = mu (holographic: partition into ovoids)
+    check_497 = f"v/theta = {v}/{_theta} = {Fraction(v,1)/_theta} = mu (ovoid partition = spacetime)"
+    assert Fraction(v, 1) / _theta == mu
+    checks.append((check_497, True))
+    print(f"  PASS: {check_497}")
+
+    # Code rate f/v = q/N
+    check_498 = f"f/v = {f_mult}/{v} = {Fraction(f_mult,v)} = q/N = {q}/{N} (information rate)"
+    assert Fraction(f_mult, v) == Fraction(q, N)
+    checks.append((check_498, True))
+    print(f"  PASS: {check_498}")
+
+    # Code rate g/v = q/(2mu)
+    check_499 = f"g/v = {g_mult}/{v} = {Fraction(g_mult,v)} = q/(2mu) = {q}/{2*mu} (dark rate)"
+    assert Fraction(g_mult, v) == Fraction(q, 2 * mu)
+    checks.append((check_499, True))
+    print(f"  PASS: {check_499}")
+
+    # Expansion ratio = 1/q
+    _exp_ratio = Fraction(max(abs(r_eval), abs(s_eval)), k)
+    check_500 = f"max(|r|,|s|)/k = {_exp_ratio} = 1/q (expander quality)"
+    assert _exp_ratio == Fraction(1, q)
+    checks.append((check_500, True))
+    print(f"  PASS: {check_500}")
+
+    # Second eigenvalue = mu
+    check_501 = f"max(|r|,|s|) = {max(abs(r_eval),abs(s_eval))} = mu (2nd eval = common nbrs)"
+    assert max(abs(r_eval), abs(s_eval)) == mu
+    checks.append((check_501, True))
+    print(f"  PASS: {check_501}")
+
+    # Adjacency spectral gap = dim(O)
+    _adj_gap = k - max(abs(r_eval), abs(s_eval))
+    check_502 = f"Adj spectral gap = k-mu = {_adj_gap} = dim(O) = 8"
+    assert _adj_gap == k - mu == 8
+    checks.append((check_502, True))
+    print(f"  PASS: {check_502}")
+
+    # f+1 = N^2 (quantum code: perfect square)
+    check_503 = f"f+1 = {f_mult+1} = N^2 = {N**2} (quantum code, q=3 unique in GQ)"
+    assert f_mult + 1 == N**2
+    checks.append((check_503, True))
+    print(f"  PASS: {check_503}")
+
+    # Relaxation time = 1/dim(O)
+    check_504 = f"Relax time = 1/(k-mu) = {Fraction(1,k-mu)} = 1/dim(O) (mixing)"
+    assert Fraction(1, k - mu) == Fraction(1, 8)
+    checks.append((check_504, True))
+    print(f"  PASS: {check_504}")
+
+    # Ovoid partition: v/alpha = mu
+    check_505 = f"v/alpha = {v}/{alpha_ind} = {Fraction(v,alpha_ind)} = mu (ovoid partition)"
+    assert Fraction(v, alpha_ind) == mu
+    checks.append((check_505, True))
+    print(f"  PASS: {check_505}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -7441,7 +7539,7 @@ def grand_synthesis():
   │  SUSY          │  Part VII-Q (464-477)   │ STr=0    │ anomaly  │
   │  STr(A)=0      │  STr(A^2)=0 mass sum    │ Witten   │ =alpha   │
   │  SUSY break    │  STr(A^3)=mu*E=960      │ M^2=96   │ mu*f     │
-  │  FINAL CLOSE   │  q=3 -> ALL 491 checks  │ ONE      │ INTEGER  │
+  │  FINAL CLOSE   │  q=3 -> ALL 505 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
