@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 533 checks follow from the single integer q = 3.")
+    print(f"  → ALL 547 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -7289,6 +7289,113 @@ def grand_synthesis():
     checks.append((check_533, True))
     print(f"  PASS: {check_533}")
 
+    # ── PART VII-V: POLYNOMIAL INVARIANTS & ZETA FUNCTIONS ────────────────
+    print(f"\n{'='*78}")
+    print(f"  PART VII-V: POLYNOMIAL INVARIANTS & ZETA FUNCTIONS (checks 534-547)")
+    print(f"{'='*78}")
+    # det(A) = k * r^f * s^g; exponent of 2 is f + (k-mu)*g
+    _dim_O = k - mu  # 8 = dim(octonions)
+    _det_exp = f_mult + _dim_O * g_mult
+    check_534 = f"det(A) 2-exponent: f+(k-mu)*g = {_det_exp} = k^2 = {k**2}"
+    assert _det_exp == k**2
+    checks.append((check_534, True))
+    print(f"  PASS: {check_534}")
+
+    # Tr(A^4)/v = 48*Phi3 (closed 4-walks per vertex from cyclotomic)
+    _tr4 = k**4 + f_mult * r_eval**4 + g_mult * s_eval**4
+    _tr4_pv = _tr4 // v
+    check_535 = f"Tr(A^4)/v = {_tr4_pv} = 48*Phi3 = {48*Phi3}"
+    assert _tr4_pv == 48 * Phi3
+    checks.append((check_535, True))
+    print(f"  PASS: {check_535}")
+
+    # Ihara disc(k) = k^2-4(k-1) = (2N)^2 = 100 (perfect square)
+    _ihara_k = k**2 - 4*(k-1)
+    check_536 = f"Ihara disc(k) = {_ihara_k} = (2N)^2 = {(2*N)**2} (perfect square)"
+    assert _ihara_k == (2*N)**2
+    checks.append((check_536, True))
+    print(f"  PASS: {check_536}")
+
+    # Ihara pole from k: u2 = 1/(k-1) = 1/11
+    _u2_k = Fraction(k - 2*N, 2*(k-1))
+    check_537 = f"Ihara pole from k: u2 = {_u2_k} = 1/(k-1)"
+    assert _u2_k == Fraction(1, k-1)
+    checks.append((check_537, True))
+    print(f"  PASS: {check_537}")
+
+    # Laplacian ratio (k-s)/(k-r) = dim(O)/N = 8/5
+    _lap_ratio = Fraction(k - s_eval, k - r_eval)
+    check_538 = f"Laplacian ratio (k-s)/(k-r) = {_lap_ratio} = dim(O)/N"
+    assert _lap_ratio == Fraction(_dim_O, N)
+    checks.append((check_538, True))
+    print(f"  PASS: {check_538}")
+
+    # Hoffman coeff v/((k-r)(k-s)) = 1/mu (spacetime reciprocal)
+    _hoffman = Fraction(v, (k - r_eval)*(k - s_eval))
+    check_539 = f"Hoffman coeff v/((k-r)(k-s)) = {_hoffman} = 1/mu (spacetime)"
+    assert _hoffman == Fraction(1, mu)
+    checks.append((check_539, True))
+    print(f"  PASS: {check_539}")
+
+    # 4-cliques = v = 40 (self-dual: lines = vertices in GQ)
+    check_540 = f"4-cliques = v = {v} (self-dual GQ: lines = vertices)"
+    # GQ(q,q) has (q+1)(q^2+1) = 4*10 = 40 lines = v vertices
+    _n_lines = (q+1)*(q**2+1)
+    assert _n_lines == v
+    checks.append((check_540, True))
+    print(f"  PASS: {check_540}")
+
+    # C(-1) = 1-v+E-tri+4cl = q^4 = 81 (clique polynomial)
+    _c_neg1 = 1 - v + E + v*mu - v  # 1-40+240-160+40 (using tri=v*mu/... wait)
+    # tri = v*k*lam/6 = 160, 4-cliques = v = 40
+    _n_tri = v*k*lam//6  # 160
+    _c_neg1 = 1 - v + E - _n_tri + v
+    check_541 = f"Clique poly C(-1) = {_c_neg1} = q^4 = {q**4}"
+    assert _c_neg1 == q**4
+    checks.append((check_541, True))
+    print(f"  PASS: {check_541}")
+
+    # alpha * omega = v (perfect graph: independence x clique = vertices)
+    check_542 = f"alpha*omega = {alpha_ind}*{mu} = {alpha_ind*mu} = v (perfect product)"
+    assert alpha_ind * mu == v
+    checks.append((check_542, True))
+    print(f"  PASS: {check_542}")
+
+    # |k*r*s| = mu*f = k*dim(O) = 96 (eigenvalue product)
+    _prod_eig = abs(k * r_eval * s_eval)
+    check_543 = f"|k*r*s| = {_prod_eig} = mu*f = k*dim(O) = {mu*f_mult}"
+    assert _prod_eig == mu * f_mult and _prod_eig == k * _dim_O
+    checks.append((check_543, True))
+    print(f"  PASS: {check_543}")
+
+    # k+r+s = alpha = 10 (eigenvalue sum = independence number!)
+    _sum_eig = k + r_eval + s_eval
+    check_544 = f"k+r+s = {_sum_eig} = alpha = {alpha_ind} (eigenvalue sum)"
+    assert _sum_eig == alpha_ind
+    checks.append((check_544, True))
+    print(f"  PASS: {check_544}")
+
+    # Ramanujan tightness: s^2/(4(k-1)) = mu/(k-1) = 4/11
+    _ram = Fraction(s_eval**2, 4*(k-1))
+    check_545 = f"Ramanujan: s^2/(4(k-1)) = {_ram} = mu/(k-1)"
+    assert _ram == Fraction(mu, k-1)
+    checks.append((check_545, True))
+    print(f"  PASS: {check_545}")
+
+    # zeta_spec(1) = k+f/r+g/s = q^4/mu = 81/4
+    _zspec = Fraction(k,1) + Fraction(f_mult, r_eval) + Fraction(g_mult, s_eval)
+    check_546 = f"zeta_spec(1) = {_zspec} = q^4/mu = {Fraction(q**4, mu)}"
+    assert _zspec == Fraction(q**4, mu)
+    checks.append((check_546, True))
+    print(f"  PASS: {check_546}")
+
+    # Resolvent G(0) = -N^2/q = -25/3 (total trace of A^-1)
+    _G0 = Fraction(-1,k) + Fraction(-f_mult, r_eval) + Fraction(-g_mult, s_eval)
+    check_547 = f"Resolvent G(0) = {_G0} = -N^2/q = {Fraction(-N**2, q)}"
+    assert _G0 == Fraction(-N**2, q)
+    checks.append((check_547, True))
+    print(f"  PASS: {check_547}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -7735,7 +7842,12 @@ def grand_synthesis():
   │  SUSY          │  Part VII-Q (464-477)   │ STr=0    │ anomaly  │
   │  STr(A)=0      │  STr(A^2)=0 mass sum    │ Witten   │ =alpha   │
   │  SUSY break    │  STr(A^3)=mu*E=960      │ M^2=96   │ mu*f     │
-  │  FINAL CLOSE   │  q=3 -> ALL 533 checks  │ ONE      │ INTEGER  │
+  │  KRAWTCHOUK    │  Part VII-R (478-491)   │ PQ=vI    │ Dirac    │
+  │  INFO THEORY   │  Part VII-S (492-505)   │ entropy  │ Lovász   │
+  │  GROUPS        │  Part VII-T (506-519)   │ Sp(4,3)  │ W(E6)    │
+  │  MODULAR       │  Part VII-U (520-533)   │ Ihara    │ disc=-v  │
+  │  POLYNOMIAL    │  Part VII-V (534-547)   │ C(-1)=81 │ zeta     │
+  │  FINAL CLOSE   │  q=3 -> ALL 547 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
