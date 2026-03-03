@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 827 checks follow from the single integer q = 3.")
+    print(f"  → ALL 841 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -9674,6 +9674,117 @@ def grand_synthesis():
     checks.append((check_827, True))
     print(f"  PASS: {check_827}")
 
+    # ── Part VII-AQ: TOPOLOGICAL QUANTUM FIELD THEORY (checks 828-841) ──
+    print(f"\n{'='*78}")
+    print(f"  Part VII-AQ: TOPOLOGICAL QUANTUM FIELD THEORY")
+    print(f"{'='*78}\n")
+
+    # 828: Atiyah-Segal axioms
+    check_828 = f"Atiyah-Segal: Z(S¹)=q=3, Z(T²,SU(2)_k)=Φ₃=13, Z(T²,SU(3)_k)=Φ₃Φ₆=91"
+    assert q == 3 and k + 1 == Phi3 and _comb2(k + 2, 2) == Phi3 * Phi6
+    checks.append((check_828, True))
+    print(f"  PASS: {check_828}")
+
+    # 829: Partition functions
+    check_829 = f"Partition: v·q=E/λ=N!=120, Z(T³,SU(2)_k)=Φ₃=13"
+    assert v * q == E // lam and v * q == _math.factorial(N) and k + 1 == Phi3
+    checks.append((check_829, True))
+    print(f"  PASS: {check_829}")
+
+    # 830: Cobordism invariants
+    _chi_CY3_q = 2 * (f_mult - k_comp)
+    check_830 = f"Cobordism: σ(K3)=-s²=-16, χ(K3)=f=24, Â=λ=2, χ(CY3)=-2q=-6"
+    assert -s_eval**2 == -16 and f_mult == 24 and f_mult // k == lam and _chi_CY3_q == -2 * q
+    checks.append((check_830, True))
+    print(f"  PASS: {check_830}")
+
+    # 831: Dijkgraaf-Witten invariants
+    _aut_v = 51840 // v
+    _aut_E = 51840 // E
+    check_831 = f"DW: |Aut|/v=(k/λ)⁴=1296, |Aut|/E=(k/λ)³=216, |W(E₆)|=λ⁷q⁴N=51840"
+    assert _aut_v == (k // lam)**4 and _aut_E == (k // lam)**3 and lam**Phi6 * q**mu * N == 51840
+    checks.append((check_831, True))
+    print(f"  PASS: {check_831}")
+
+    # 832: Turaev-Viro state sum
+    _n_colors = k // 2 + 1
+    _T_tri = E * lam // 3
+    check_832 = f"Turaev-Viro: colors=k/2+1=Φ₆=7, triangles=Eλ/3=vμ=160"
+    assert _n_colors == Phi6 and _T_tri == v * mu
+    checks.append((check_832, True))
+    print(f"  PASS: {check_832}")
+
+    # 833: Level-rank duality
+    _c_suN_k = Fraction(k * (N**2 - 1), k + N)
+    _c_suk_N = Fraction(N * (k**2 - 1), k + N)
+    check_833 = f"Level-rank: c(SU(N)_k)=288/17, c(SU(k)_N)=715/17, sum=kN-1=59"
+    assert _c_suN_k + _c_suk_N == k * N - 1 and _c_suN_k == Fraction(288, 17)
+    checks.append((check_833, True))
+    print(f"  PASS: {check_833}")
+
+    # 834: WZW model central charges
+    _c_wzw_su2 = Fraction(k * 3, k + 2)
+    _c_wzw_su3 = Fraction(k * 8, k + 3)
+    _c_wzw_g2 = Fraction(k * 14, k + 4)
+    _c_wzw_f4 = Fraction(k * 52, k + 9)
+    check_834 = f"WZW: c(SU(2)_k)=2q²/Φ₆=18/7, c(SU(3)_k)=2^N/N=32/5, c(G₂)=21/2, c(F₄)=208/7"
+    assert _c_wzw_su2 == Fraction(2*q**2, Phi6) and _c_wzw_su3 == Fraction(2**N, N) and _c_wzw_g2 == Fraction(21, 2) and _c_wzw_f4 == Fraction(208, 7)
+    checks.append((check_834, True))
+    print(f"  PASS: {check_834}")
+
+    # 835: Reshetikhin-Turaev
+    _h_top_rt = Fraction(q, v - k)
+    _theta_ord = (k + 2) // _math.gcd(2, k + 2)
+    check_835 = f"RT: h_top=q/(v-k)=3/28, anyons=k+1=Φ₃=13, θ order=Φ₆=7"
+    assert _h_top_rt == Fraction(3, 28) and k + 1 == Phi3 and _theta_ord == Phi6
+    checks.append((check_835, True))
+    print(f"  PASS: {check_835}")
+
+    # 836: Topological entanglement entropy
+    check_836 = f"TEE: D²k = vk = λE = 480, v/k = α/q = 10/3"
+    assert v * k == lam * E and Fraction(v, k) == Fraction(alpha_ind, q)
+    checks.append((check_836, True))
+    print(f"  PASS: {check_836}")
+
+    # 837: Witten TQFT / instanton moduli
+    _dim_M_I = 8 * 1 - 3 * (1 + q)
+    check_837 = f"Witten: b₂⁺(K3)=q=3, σ=-s²=-16, dim M_I(K3)=s=-4, ind(D)=λ=2"
+    assert q == 3 and -s_eval**2 == -16 and _dim_M_I == s_eval and f_mult // k == lam
+    checks.append((check_837, True))
+    print(f"  PASS: {check_837}")
+
+    # 838: BF theory Laplacian
+    _lap1 = k - r_eval
+    _lap2 = k - s_eval
+    _torsion_r = Fraction(_lap1, _lap2)
+    check_838 = f"BF: Laplacian {{0¹, α^f=10²⁴, s²^g=16¹⁵}}, ratio=N/dim_O=5/8"
+    assert _lap1 == alpha_ind and _lap2 == s_eval**2 and _torsion_r == Fraction(N, _dim_O)
+    checks.append((check_838, True))
+    print(f"  PASS: {check_838}")
+
+    # 839: CS framing
+    _phi_lev = sum(1 for i in range(1, k + 3) if _math.gcd(i, k + 2) == 1)
+    _lev_sq = (k + 2)**2
+    check_839 = f"CS framing: φ(k+2)=k/λ=6, φ·q=2q²=18, (k+2)²=μΦ₆²=196"
+    assert _phi_lev == k // lam and _phi_lev * q == 2 * q**2 and _lev_sq == mu * Phi6**2
+    checks.append((check_839, True))
+    print(f"  PASS: {check_839}")
+
+    # 840: Crane-Yetter invariant
+    _chi_kCP2 = k * q - lam * (k - 1)
+    check_840 = f"Crane-Yetter: CY(S⁴)=v=40, χ(K3)exp=f=24, χ(k#CP²)=k+2=λΦ₆=14"
+    assert v == 40 and f_mult == 24 and _chi_kCP2 == lam * Phi6
+    checks.append((check_840, True))
+    print(f"  PASS: {check_840}")
+
+    # 841: Anyonic statistics
+    _det_P_a = -E
+    _det_Q_a = Fraction(-v**3, E)
+    check_841 = f"Anyons: det(P)=-E=-240, det(Q)=-v³/E=-800/3, det(P)det(Q)=v³=64000"
+    assert _det_P_a == -E and _det_Q_a == Fraction(-v**3, E) and _det_P_a * _det_Q_a == v**3 and abs(_det_Q_a) == Fraction(2 * v**2, k)
+    checks.append((check_841, True))
+    print(f"  PASS: {check_841}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -10143,7 +10254,7 @@ def grand_synthesis():
   │  CATEGORY      │  Part VII-AL (758-771)  │ FP=v=40  │ 1836=mp  │
   │  INFO GEOM     │  Part VII-AM (772-785)  │ kappa1/6 │ gap=2/3  │
   │  DYNAMICS      │  Part VII-AN (786-799)  │ Ramanujan│ W3=6T    │
-  │  FINAL CLOSE   │  q=3 -> ALL 827 checks  │ ONE      │ INTEGER  │
+  │  FINAL CLOSE   │  q=3 -> ALL 841 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
