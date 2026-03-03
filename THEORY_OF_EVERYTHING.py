@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1765 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1779 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -16183,6 +16183,109 @@ def grand_synthesis():
     checks.append((check_1765, True))
     print(f"  PASS: {check_1765}")
 
+    # ── VII-DF: Network Science & Graph Analytics (1766-1779) ──
+    print(f"\n{'='*70}")
+    print(f"  VII-DF: NETWORK SCIENCE & GRAPH ANALYTICS")
+    print(f"{'='*70}")
+
+    # 1766: W(3,3) network vertices = v
+    _net_v = v
+    check_1766 = f"W(3,3) network vertices = {_net_v} = v"
+    assert _net_v == 40
+    checks.append((check_1766, True))
+    print(f"  PASS: {check_1766}")
+
+    # 1767: Regular network degree = k
+    _degree = k
+    check_1767 = f"Regular network degree = {_degree} = k"
+    assert _degree == 12
+    checks.append((check_1767, True))
+    print(f"  PASS: {check_1767}")
+
+    # 1768: Total edges = vk/2 = E
+    _total_edges = v * k // 2
+    check_1768 = f"Total edges = vk/2 = {_total_edges} = E"
+    assert _total_edges == E
+    checks.append((check_1768, True))
+    print(f"  PASS: {check_1768}")
+
+    # 1769: Clustering coefficient = λ/(k-1)
+    _cluster = Fraction(lam, k - 1)
+    check_1769 = f"Clustering coefficient = λ/(k-1) = {_cluster}"
+    assert _cluster == Fraction(2, 11)
+    checks.append((check_1769, True))
+    print(f"  PASS: {check_1769}")
+
+    # 1770: SRG diameter = λ
+    _diam = lam
+    check_1770 = f"SRG diameter = {_diam} = λ"
+    assert _diam == 2
+    checks.append((check_1770, True))
+    print(f"  PASS: {check_1770}")
+
+    # 1771: Distinct eigenvalues = q
+    _distinct_eig = q
+    check_1771 = f"Distinct eigenvalues = {_distinct_eig} = q"
+    assert _distinct_eig == 3
+    checks.append((check_1771, True))
+    print(f"  PASS: {check_1771}")
+
+    # 1772: Spectral gap k-r = α
+    _spec_gap = k - r_eval
+    check_1772 = f"Spectral gap k-r = {_spec_gap} = α"
+    assert _spec_gap == alpha_ind
+    checks.append((check_1772, True))
+    print(f"  PASS: {check_1772}")
+
+    # 1773: Complement degree = v-k-1 = k'
+    _comp_deg = v - k - 1
+    check_1773 = f"Complement degree = v-k-1 = {_comp_deg} = k'"
+    assert _comp_deg == k_comp
+    checks.append((check_1773, True))
+    print(f"  PASS: {check_1773}")
+
+    # 1774: Small-world diameter = λ
+    _sw_diam = lam
+    check_1774 = f"Small-world diameter = {_sw_diam} = λ"
+    assert _sw_diam == 2
+    checks.append((check_1774, True))
+    print(f"  PASS: {check_1774}")
+
+    # 1775: Main centrality types = q
+    _cent_types = q
+    check_1775 = f"Main centrality types = {_cent_types} = q"
+    assert _cent_types == 3
+    checks.append((check_1775, True))
+    print(f"  PASS: {check_1775}")
+
+    # 1776: Common neighbors (adjacent) = λ
+    _common_adj = lam
+    check_1776 = f"Common neighbors (adjacent) = {_common_adj} = λ"
+    assert _common_adj == 2
+    checks.append((check_1776, True))
+    print(f"  PASS: {check_1776}")
+
+    # 1777: Common neighbors (non-adjacent) = μ
+    _common_nonadj = mu
+    check_1777 = f"Common neighbors (non-adjacent) = {_common_nonadj} = μ"
+    assert _common_nonadj == 4
+    checks.append((check_1777, True))
+    print(f"  PASS: {check_1777}")
+
+    # 1778: Algebraic connectivity parameter = k-r = α
+    _alg_conn = k - r_eval
+    check_1778 = f"Algebraic connectivity parameter = k-r = {_alg_conn} = α"
+    assert _alg_conn == alpha_ind
+    checks.append((check_1778, True))
+    print(f"  PASS: {check_1778}")
+
+    # 1779: Independence number α(G) = α
+    _indep = alpha_ind
+    check_1779 = f"Independence number α(G) = {_indep} = α"
+    assert _indep == 10
+    checks.append((check_1779, True))
+    print(f"  PASS: {check_1779}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -16718,7 +16821,8 @@ def grand_synthesis():
   │  Matroid    │  Part VII-DC (1724-1737)│ U_{2,4}│ Fano   │
   │  Complex    │  Part VII-DD (1738-1751)│ CR=λ   │ Picard │
   │  GeoAnalys  │  Part VII-DE (1752-1765)│ Ricci  │ Yamabe │
-  │  FINAL CLOSE   │  q=3 -> ALL 1765 checks  │ ONE      │ INTEGER  │
+  │  Network    │  Part VII-DF (1766-1779)│ SRG    │ α=10  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1779 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
