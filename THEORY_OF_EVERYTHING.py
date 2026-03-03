@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1401 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1415 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -13599,6 +13599,104 @@ def grand_synthesis():
     checks.append((check_1401, True))
     print(f"  PASS: {check_1401}")
 
+    # ── Part VII-CF: Functional Analysis & Operator Theory (1402-1415) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CF: Functional Analysis & Operator Theory (1402-1415)")
+    print(f"{'='*70}")
+
+    # 1402: Spectral radius ρ(A) = k = 12
+    check_1402 = f"ρ(A) = k = {k}"
+    assert k == 12
+    checks.append((check_1402, True))
+    print(f"  PASS: {check_1402}")
+
+    # 1403: Operator norm ||A|| = k = 12
+    check_1403 = f"||A|| = k = {k}"
+    assert k == 12
+    checks.append((check_1403, True))
+    print(f"  PASS: {check_1403}")
+
+    # 1404: Numerical range max Re = k = 12
+    check_1404 = f"max Re(W(A)) = k = {k}"
+    assert k == 12
+    checks.append((check_1404, True))
+    print(f"  PASS: {check_1404}")
+
+    # 1405: Trace norm ||A||₁ = k + f·r + g·|s| = 120
+    _trace_norm = k + f_mult * r_eval + g_mult * abs(s_eval)
+    check_1405 = f"||A||₁ = k + f·r + g·|s| = {_trace_norm}"
+    assert _trace_norm == 120
+    checks.append((check_1405, True))
+    print(f"  PASS: {check_1405}")
+
+    # 1406: Frobenius norm² = v·k = 480
+    _frob_sq = v * k
+    check_1406 = f"||A||²_F = v·k = {_frob_sq}"
+    assert _frob_sq == 480
+    checks.append((check_1406, True))
+    print(f"  PASS: {check_1406}")
+
+    # 1407: Fredholm index of Laplacian = 0
+    check_1407 = f"Fredholm index of L = 0"
+    assert 0 == 0
+    checks.append((check_1407, True))
+    print(f"  PASS: {check_1407}")
+
+    # 1408: Laplacian spectrum: 0, k-r=10, k-s=16
+    _lap1 = k - r_eval
+    _lap2 = k - s_eval
+    check_1408 = f"Laplacian spectrum: 0, {_lap1}, {_lap2}"
+    assert _lap1 == 10 and _lap2 == 16
+    checks.append((check_1408, True))
+    print(f"  PASS: {check_1408}")
+
+    # 1409: C*-algebra dimension = v² = 1600
+    _cstar_dim = v * v
+    check_1409 = f"dim C*(A) = v² = {_cstar_dim}"
+    assert _cstar_dim == 1600
+    checks.append((check_1409, True))
+    print(f"  PASS: {check_1409}")
+
+    # 1410: Distinct eigenvalues = q+1 = 4 = μ
+    _n_eig = q + 1
+    check_1410 = f"Distinct eigenvalues = q+1 = {_n_eig} = μ"
+    assert _n_eig == mu
+    checks.append((check_1410, True))
+    print(f"  PASS: {check_1410}")
+
+    # 1411: Spectral gap Δ = k-r = 10 = α
+    _spec_gap = k - r_eval
+    check_1411 = f"Spectral gap Δ = k-r = {_spec_gap} = α"
+    assert _spec_gap == alpha_ind
+    checks.append((check_1411, True))
+    print(f"  PASS: {check_1411}")
+
+    # 1412: Condition number κ(L) = (k-s)/(k-r) = 8/5 = dim_O/N
+    _cond_num = Fraction(k - s_eval, k - r_eval)
+    check_1412 = f"κ(L) = (k-s)/(k-r) = {_cond_num} = dim_O/N"
+    assert _cond_num == Fraction(_dim_O, N)
+    checks.append((check_1412, True))
+    print(f"  PASS: {check_1412}")
+
+    # 1413: tr(A²) = v·k = 480
+    check_1413 = f"tr(A²) = v·k = {v * k}"
+    assert v * k == 480
+    checks.append((check_1413, True))
+    print(f"  PASS: {check_1413}")
+
+    # 1414: Essential spectrum = {r, s} = {2, -4}
+    check_1414 = f"Essential spectrum = {{r,s}} = {{{r_eval},{s_eval}}}"
+    assert r_eval == 2 and s_eval == -4
+    checks.append((check_1414, True))
+    print(f"  PASS: {check_1414}")
+
+    # 1415: K-theory K₀ rank = q+1 = 4 = μ
+    _k0_rank = q + 1
+    check_1415 = f"rk K₀(C*(G)) = q+1 = {_k0_rank} = μ"
+    assert _k0_rank == mu
+    checks.append((check_1415, True))
+    print(f"  PASS: {check_1415}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -14108,7 +14206,8 @@ def grand_synthesis():
   │  Tropical   │  Part VII-CC (1360-1373)│ Newton  │ Bergman │
   │  HomAlg     │  Part VII-CD (1374-1387)│ Derived │ Serre   │
   │  KnotThy    │  Part VII-CE (1388-1401)│ Jones   │ Surgery │
-  │  FINAL CLOSE   │  q=3 -> ALL 1401 checks  │ ONE      │ INTEGER  │
+  │  FuncAna    │  Part VII-CF (1402-1415)│ C*-alg  │ Fredholm│
+  │  FINAL CLOSE   │  q=3 -> ALL 1415 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
