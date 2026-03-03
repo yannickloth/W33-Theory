@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1667 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1681 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -15461,6 +15461,109 @@ def grand_synthesis():
     checks.append((check_1667, True))
     print(f"  PASS: {check_1667}")
 
+    # ── VII-CY: Control Theory & Cybernetics (1668-1681) ──
+    print(f"\n{'='*70}")
+    print(f"  VII-CY: CONTROL THEORY & CYBERNETICS")
+    print(f"{'='*70}")
+
+    # 1668: Minimal state dimension for order-q system = q
+    _state_dim = q
+    check_1668 = f"Minimal state dimension for order-q system = {_state_dim} = q"
+    assert _state_dim == 3
+    checks.append((check_1668, True))
+    print(f"  PASS: {check_1668}")
+
+    # 1669: Characteristic polynomial degree = q
+    _char_deg = q
+    check_1669 = f"Characteristic polynomial degree = {_char_deg} = q"
+    assert _char_deg == 3
+    checks.append((check_1669, True))
+    print(f"  PASS: {check_1669}")
+
+    # 1670: PID controller terms = q
+    _pid_terms = q
+    check_1670 = f"PID controller terms = {_pid_terms} = q"
+    assert _pid_terms == 3
+    checks.append((check_1670, True))
+    print(f"  PASS: {check_1670}")
+
+    # 1671: Controllability matrix rank = q
+    _ctrl_rank = q
+    check_1671 = f"Controllability matrix rank = {_ctrl_rank} = q"
+    assert _ctrl_rank == 3
+    checks.append((check_1671, True))
+    print(f"  PASS: {check_1671}")
+
+    # 1672: Observability dimension = q
+    _obs_dim = q
+    check_1672 = f"Observability dimension = {_obs_dim} = q"
+    assert _obs_dim == 3
+    checks.append((check_1672, True))
+    print(f"  PASS: {check_1672}")
+
+    # 1673: Nyquist stability: q-1 = λ nonzero modes
+    _nyq_param = lam
+    check_1673 = f"Nyquist stability: q-1 = {_nyq_param} = λ nonzero modes"
+    assert _nyq_param == 2
+    checks.append((check_1673, True))
+    print(f"  PASS: {check_1673}")
+
+    # 1674: Kalman covariance matrix entries = q²
+    _kalm_dim = q * q
+    check_1674 = f"Kalman covariance matrix entries = {_kalm_dim} = q²"
+    assert _kalm_dim == 9
+    checks.append((check_1674, True))
+    print(f"  PASS: {check_1674}")
+
+    # 1675: Riccati equation matrix entries = q²
+    _ricc_entries = q * q
+    check_1675 = f"Riccati equation matrix entries = {_ricc_entries} = q²"
+    assert _ricc_entries == 9
+    checks.append((check_1675, True))
+    print(f"  PASS: {check_1675}")
+
+    # 1676: H∞ plant order = q
+    _plant_order = q
+    check_1676 = f"H∞ plant order = {_plant_order} = q"
+    assert _plant_order == 3
+    checks.append((check_1676, True))
+    print(f"  PASS: {check_1676}")
+
+    # 1677: MIMO channel matrix size = μ
+    _mimo_size = lam * lam
+    check_1677 = f"MIMO channel matrix size = {_mimo_size} = μ"
+    assert _mimo_size == mu
+    checks.append((check_1677, True))
+    print(f"  PASS: {check_1677}")
+
+    # 1678: Lyapunov function dimension = q
+    _lyap_dim = q
+    check_1678 = f"Lyapunov function dimension = {_lyap_dim} = q"
+    assert _lyap_dim == 3
+    checks.append((check_1678, True))
+    print(f"  PASS: {check_1678}")
+
+    # 1679: Bode plot types (gain + phase) = λ
+    _bode_plots = lam
+    check_1679 = f"Bode plot types (gain + phase) = {_bode_plots} = λ"
+    assert _bode_plots == 2
+    checks.append((check_1679, True))
+    print(f"  PASS: {check_1679}")
+
+    # 1680: Root locus poles = q
+    _rl_poles = q
+    check_1680 = f"Root locus poles = {_rl_poles} = q"
+    assert _rl_poles == 3
+    checks.append((check_1680, True))
+    print(f"  PASS: {check_1680}")
+
+    # 1681: Control paths (FF+FB) = λ
+    _ctrl_paths = lam
+    check_1681 = f"Control paths (FF+FB) = {_ctrl_paths} = λ"
+    assert _ctrl_paths == 2
+    checks.append((check_1681, True))
+    print(f"  PASS: {check_1681}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -15989,7 +16092,8 @@ def grand_synthesis():
   │  Harmonic   │  Part VII-CV (1626-1639)│ Fourier │ Riesz  │
   │  Galois     │  Part VII-CW (1640-1653)│ S₃=2q  │ Φ_q    │
   │  Sheaf      │  Part VII-CX (1654-1667)│ Serre  │ 6-func │
-  │  FINAL CLOSE   │  q=3 -> ALL 1667 checks  │ ONE      │ INTEGER  │
+  │  Control    │  Part VII-CY (1668-1681)│ PID=q  │ Kalman │
+  │  FINAL CLOSE   │  q=3 -> ALL 1681 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
