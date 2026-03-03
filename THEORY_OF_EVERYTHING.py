@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1079 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1093 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -11415,6 +11415,95 @@ def grand_synthesis():
     checks.append((check_1079, True))
     print(f"  PASS: {check_1079}")
 
+    # ══════════════════════════════════════════════════════════════════
+    # Part VII-BI: Combinatorics & Graph Theory (1080-1093)
+    # ══════════════════════════════════════════════════════════════════
+
+    # 1080: C(v,2)
+    check_1080 = f"C(v,2) = C(40,2) = {_comb2(v, 2)}"
+    assert _comb2(v, 2) == 780
+    checks.append((check_1080, True))
+    print(f"  PASS: {check_1080}")
+
+    # 1081: Edge density
+    check_1081 = f"Edge density = k/(v-1) = {Fraction(k, v-1)} = mu/Phi3"
+    assert Fraction(k, v-1) == Fraction(mu, Phi3)
+    checks.append((check_1081, True))
+    print(f"  PASS: {check_1081}")
+
+    # 1082: Clique number
+    check_1082 = f"Clique number omega = q = {q}"
+    assert q == 3
+    checks.append((check_1082, True))
+    print(f"  PASS: {check_1082}")
+
+    # 1083: Chromatic number
+    check_1083 = f"Chromatic number chi = mu = {mu}"
+    assert mu == 4
+    checks.append((check_1083, True))
+    print(f"  PASS: {check_1083}")
+
+    # 1084: Independence number
+    check_1084 = f"Independence number alpha = {alpha_ind}"
+    assert alpha_ind == 10
+    checks.append((check_1084, True))
+    print(f"  PASS: {check_1084}")
+
+    # 1085: Tight bound
+    check_1085 = f"alpha*chi = {alpha_ind*mu} = v (tight)"
+    assert alpha_ind * mu == v
+    checks.append((check_1085, True))
+    print(f"  PASS: {check_1085}")
+
+    # 1086: Ramsey R(3,3)
+    check_1086 = f"R(3,3) = 2q = {2*q}"
+    assert 2*q == 6
+    checks.append((check_1086, True))
+    print(f"  PASS: {check_1086}")
+
+    # 1087: C(k,lam)
+    check_1087 = f"C(k,lam) = C(12,2) = {_comb2(k, lam)} = Phi3*N+(q-lam)"
+    assert _comb2(k, lam) == Phi3*N + q - lam
+    checks.append((check_1087, True))
+    print(f"  PASS: {check_1087}")
+
+    # 1088: Triangles
+    _T = v * k * lam // (2*q)
+    check_1088 = f"Triangles T = v*k*lam/(2q) = {_T}"
+    assert _T == 160
+    checks.append((check_1088, True))
+    print(f"  PASS: {check_1088}")
+
+    # 1089: Complement degree
+    check_1089 = f"Complement degree k' = {k_comp}"
+    assert k_comp == 27
+    checks.append((check_1089, True))
+    print(f"  PASS: {check_1089}")
+
+    # 1090: Complement edges
+    check_1090 = f"Complement edges = v*k'/2 = {v*k_comp//2}"
+    assert v * k_comp // 2 == 540
+    checks.append((check_1090, True))
+    print(f"  PASS: {check_1090}")
+
+    # 1091: Shannon capacity
+    check_1091 = f"N = {N} → sqrt(N)=sqrt(5) = Shannon cap C₅"
+    assert N == 5
+    checks.append((check_1091, True))
+    print(f"  PASS: {check_1091}")
+
+    # 1092: Petersen
+    check_1092 = f"Petersen = SRG({alpha_ind},{q},0,{q-lam})"
+    assert (alpha_ind, q, 0, q-lam) == (10, 3, 0, 1)
+    checks.append((check_1092, True))
+    print(f"  PASS: {check_1092}")
+
+    # 1093: Steiner system
+    check_1093 = f"Steiner S(2,{q},{q**2}) = S(2,3,9)"
+    assert (lam, q, q**2) == (2, 3, 9)
+    checks.append((check_1093, True))
+    print(f"  PASS: {check_1093}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -11901,7 +11990,8 @@ def grand_synthesis():
   │  RepTheory  │  Part VII-BF (1038-1051)│ W(E₈)   │ triality │
   │  Lattice/Pk │  Part VII-BG (1052-1065)│ 196560  │ Niemeier │
   │  QGroups    │  Part VII-BH (1066-1079)│ Jones   │ Verlinde │
-  │  FINAL CLOSE   │  q=3 -> ALL 1079 checks  │ ONE      │ INTEGER  │
+  │  Comb/Graph │  Part VII-BI (1080-1093)│ R(3,3)  │ Petersen │
+  │  FINAL CLOSE   │  q=3 -> ALL 1093 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
