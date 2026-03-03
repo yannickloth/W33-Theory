@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1331 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1345 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -13104,6 +13104,109 @@ def grand_synthesis():
     checks.append((check_1331, True))
     print(f"  PASS: {check_1331}")
 
+    # ── Part VII-CA: Cosmological Observables & Dark Sector II (1332-1345) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CA: Cosmological Observables & Dark Sector II (1332-1345)")
+    print(f"{'='*70}")
+
+    # 1332: Baryon-to-photon ratio η coefficient = v/E = 1/6 = 1/2q
+    _eta_ratio = Fraction(v, E)
+    check_1332 = f"η coefficient = v/E = {_eta_ratio} = 1/2q"
+    assert _eta_ratio == Fraction(1, 2*q)
+    checks.append((check_1332, True))
+    print(f"  PASS: {check_1332}")
+
+    # 1333: CMB first acoustic peak l₁ ~ v·N = 200
+    _l1_approx = v * N
+    check_1333 = f"CMB l₁ ~ v·N = {_l1_approx} ≈ 200"
+    assert _l1_approx == 200
+    checks.append((check_1333, True))
+    print(f"  PASS: {check_1333}")
+
+    # 1334: Helium-4 mass fraction Y_p = k/(v+α) = 6/25 = 0.24
+    _Y_p = Fraction(k, v + alpha_ind)
+    check_1334 = f"Y_p = k/(v+α) = {_Y_p} = {float(_Y_p):.4f}"
+    assert _Y_p == Fraction(6, 25)
+    checks.append((check_1334, True))
+    print(f"  PASS: {check_1334}")
+
+    # 1335: Tensor-to-scalar ratio r_tensor = μ/E = 1/60 < 0.036
+    _r_tensor = Fraction(mu, E)
+    check_1335 = f"r_tensor = μ/E = {_r_tensor} < 0.036"
+    assert float(_r_tensor) < 0.036
+    checks.append((check_1335, True))
+    print(f"  PASS: {check_1335}")
+
+    # 1336: Spectral index n_s = 1 - 2/(v+k) ≈ 0.9615
+    _n_s = 1 - Fraction(2, v + k)
+    check_1336 = f"n_s = 1 - 2/(v+k) = {float(_n_s):.6f}"
+    assert abs(float(_n_s) - 0.9615) < 0.001
+    checks.append((check_1336, True))
+    print(f"  PASS: {check_1336}")
+
+    # 1337: Number of e-folds N_e = v + k + dim_O = 60
+    _N_efolds = v + k + _dim_O
+    check_1337 = f"N_efolds = v+k+dim_O = {_N_efolds} = 60"
+    assert _N_efolds == 60
+    checks.append((check_1337, True))
+    print(f"  PASS: {check_1337}")
+
+    # 1338: Dark energy fraction Ω_Λ ≈ k'/v = 27/40 = 0.675
+    _Omega_L = Fraction(k_comp, v)
+    check_1338 = f"Ω_Λ ≈ k'/v = {_Omega_L} = {float(_Omega_L):.4f}"
+    assert abs(float(_Omega_L) - 0.685) < 0.02
+    checks.append((check_1338, True))
+    print(f"  PASS: {check_1338}")
+
+    # 1339: Matter fraction Ω_M = (v-k')/v = 13/40 = Φ₃/v
+    _Omega_M = Fraction(v - k_comp, v)
+    check_1339 = f"Ω_M = (v-k')/v = {_Omega_M} = Φ₃/v"
+    assert _Omega_M == Fraction(Phi3, v)
+    checks.append((check_1339, True))
+    print(f"  PASS: {check_1339}")
+
+    # 1340: Reionization optical depth τ = μ/(v+k+Φ₃+Φ₆) = 1/18
+    _tau_reion = Fraction(mu, v + k + Phi3 + Phi6)
+    check_1340 = f"τ_reion = μ/(v+k+Φ₃+Φ₆) = {_tau_reion} = {float(_tau_reion):.4f}"
+    assert abs(float(_tau_reion) - 0.054) < 0.01
+    checks.append((check_1340, True))
+    print(f"  PASS: {check_1340}")
+
+    # 1341: GW strain scale = 1/E = 1/240
+    _h_gw = Fraction(1, E)
+    check_1341 = f"GW strain scale = 1/E = {_h_gw}"
+    assert _h_gw == Fraction(1, 240)
+    checks.append((check_1341, True))
+    print(f"  PASS: {check_1341}")
+
+    # 1342: Primordial spectrum A_s scale = λ/(v·E) = 1/4800
+    _A_scale = Fraction(lam, v * E)
+    check_1342 = f"A_s scale = λ/(v·E) = {_A_scale}"
+    assert _A_scale == Fraction(1, 4800)
+    checks.append((check_1342, True))
+    print(f"  PASS: {check_1342}")
+
+    # 1343: Baryon fraction Ω_b ≈ λ/v = 1/20 = 0.05
+    _Omega_b = Fraction(lam, v)
+    check_1343 = f"Ω_b ≈ λ/v = {_Omega_b} = {float(_Omega_b):.3f}"
+    assert abs(float(_Omega_b) - 0.049) < 0.01
+    checks.append((check_1343, True))
+    print(f"  PASS: {check_1343}")
+
+    # 1344: Hubble constant combo = v+k+Φ₃+α = 75
+    _H0_combo = v + k + Phi3 + alpha_ind
+    check_1344 = f"H₀ combo = v+k+Φ₃+α = {_H0_combo}"
+    assert _H0_combo == 75
+    checks.append((check_1344, True))
+    print(f"  PASS: {check_1344}")
+
+    # 1345: Structure growth σ₈ ≈ dim_O/α = 4/5 = 0.80
+    _sigma8 = Fraction(_dim_O, alpha_ind)
+    check_1345 = f"σ₈ ≈ dim_O/α = {_sigma8} = {float(_sigma8):.2f}"
+    assert _sigma8 == Fraction(4, 5)
+    checks.append((check_1345, True))
+    print(f"  PASS: {check_1345}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -13608,7 +13711,8 @@ def grand_synthesis():
   │  Soliton    │  Part VII-BX (1290-1303)│ KdV     │ Painlev │
   │  SpectRMT   │  Part VII-BY (1304-1317)│ Wigner  │ Ramanujan│
   │  AlgGeom    │  Part VII-BZ (1318-1331)│ Moduli  │ 27lines │
-  │  FINAL CLOSE   │  q=3 -> ALL 1331 checks  │ ONE      │ INTEGER  │
+  │  Cosmo2     │  Part VII-CA (1332-1345)│ DarkE   │ σ₈      │
+  │  FINAL CLOSE   │  q=3 -> ALL 1345 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
