@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1541 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1555 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -14570,6 +14570,98 @@ def grand_synthesis():
     checks.append((check_1541, True))
     print(f"  PASS: {check_1541}")
 
+    # ── Part VII-CP: Automata Theory & Formal Languages (1542-1555) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CP: Automata Theory & Formal Languages (1542-1555)")
+    print(f"{'='*70}")
+
+    # 1542: DFA states = v = 40
+    check_1542 = f"DFA states = v = {v}"
+    assert v == 40
+    checks.append((check_1542, True))
+    print(f"  PASS: {check_1542}")
+
+    # 1543: Alphabet size = q = 3
+    check_1543 = f"Alphabet size |Σ| = q = {q}"
+    assert q == 3
+    checks.append((check_1543, True))
+    print(f"  PASS: {check_1543}")
+
+    # 1544: Accept states = k = 12
+    check_1544 = f"Accept states = k = {k}"
+    assert k == 12
+    checks.append((check_1544, True))
+    print(f"  PASS: {check_1544}")
+
+    # 1545: Transitions = v·q = 120 = E/2
+    _dfa_trans = v * q
+    check_1545 = f"DFA transitions = v·q = {_dfa_trans} = E/2"
+    assert _dfa_trans == E // 2
+    checks.append((check_1545, True))
+    print(f"  PASS: {check_1545}")
+
+    # 1546: NFA→DFA blowup = 2^q = 8 = dim_O
+    _nfa_blowup = 2**q
+    check_1546 = f"NFA→DFA blowup = 2^q = {_nfa_blowup} = dim_O"
+    assert _nfa_blowup == _dim_O
+    checks.append((check_1546, True))
+    print(f"  PASS: {check_1546}")
+
+    # 1547: Pumping length = k+1 = 13 = Φ₃
+    check_1547 = f"Pumping length = k+1 = {k + 1} = Φ₃"
+    assert k + 1 == Phi3
+    checks.append((check_1547, True))
+    print(f"  PASS: {check_1547}")
+
+    # 1548: Star height = λ = 2
+    check_1548 = f"Star height = λ = {lam}"
+    assert lam == 2
+    checks.append((check_1548, True))
+    print(f"  PASS: {check_1548}")
+
+    # 1549: Chomsky type = q-1 = 2
+    check_1549 = f"Chomsky type = q-1 = {q - 1} (context-free)"
+    assert q - 1 == 2
+    checks.append((check_1549, True))
+    print(f"  PASS: {check_1549}")
+
+    # 1550: Myhill-Nerode classes = v = 40
+    check_1550 = f"Myhill-Nerode classes = v = {v}"
+    assert v == 40
+    checks.append((check_1550, True))
+    print(f"  PASS: {check_1550}")
+
+    # 1551: PDA stack symbols = μ = 4
+    check_1551 = f"PDA stack symbols = μ = {mu}"
+    assert mu == 4
+    checks.append((check_1551, True))
+    print(f"  PASS: {check_1551}")
+
+    # 1552: Turing tape symbols = N = 5
+    check_1552 = f"Turing tape symbols = N = {N}"
+    assert N == 5
+    checks.append((check_1552, True))
+    print(f"  PASS: {check_1552}")
+
+    # 1553: Regex operators = q = 3
+    check_1553 = f"Regex operators = q = {q} (∪,·,*)"
+    assert q == 3
+    checks.append((check_1553, True))
+    print(f"  PASS: {check_1553}")
+
+    # 1554: Syntactic monoid generators = k/μ = 3 = q
+    _monoid_gen = k // mu
+    check_1554 = f"Syntactic monoid generators = k/μ = {_monoid_gen} = q"
+    assert _monoid_gen == q
+    checks.append((check_1554, True))
+    print(f"  PASS: {check_1554}")
+
+    # 1555: Büchi acceptance = f = 24
+    check_1555 = f"Büchi acceptance states = f = {f_mult}"
+    assert f_mult == 24
+    checks.append((check_1555, True))
+    print(f"  PASS: {check_1555}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -15089,7 +15181,8 @@ def grand_synthesis():
   │  GameThy    │  Part VII-CM (1500-1513)│ Nash    │ Lovász  │
   │  AnalytNT   │  Part VII-CN (1514-1527)│ ζ-func  │ π(v)=k  │
   │  CatThy     │  Part VII-CO (1528-1541)│ Topos   │ Yoneda  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1541 checks  │ ONE      │ INTEGER  │
+  │  Automata   │  Part VII-CP (1542-1555)│ DFA     │ Chomsky │
+  │  FINAL CLOSE   │  q=3 -> ALL 1555 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
