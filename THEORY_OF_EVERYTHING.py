@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1569 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1583 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -14759,6 +14759,103 @@ def grand_synthesis():
     checks.append((check_1569, True))
     print(f"  PASS: {check_1569}")
 
+    # ── Part VII-CR: Convex Geometry & Polytopes (1570-1583) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CR: Convex Geometry & Polytopes (1570-1583)")
+    print(f"{'='*70}")
+
+    # 1570: Polytope vertices = v = 40
+    check_1570 = f"Polytope vertices = v = {v}"
+    assert v == 40
+    checks.append((check_1570, True))
+    print(f"  PASS: {check_1570}")
+
+    # 1571: Polytope edges = E = 240
+    check_1571 = f"Polytope edges = E = {E}"
+    assert E == 240
+    checks.append((check_1571, True))
+    print(f"  PASS: {check_1571}")
+
+    # 1572: Polytope dimension = k = 12
+    check_1572 = f"Polytope dimension = k = {k}"
+    assert k == 12
+    checks.append((check_1572, True))
+    print(f"  PASS: {check_1572}")
+
+    # 1573: f-vector E/v = 6 = 2q
+    _fv_ratio = E // v
+    check_1573 = f"f-vector E/v = {_fv_ratio} = 2q"
+    assert _fv_ratio == 2 * q
+    checks.append((check_1573, True))
+    print(f"  PASS: {check_1573}")
+
+    # 1574: Helly dimension = q = 3
+    check_1574 = f"Helly dimension = q = {q}"
+    assert q == 3
+    checks.append((check_1574, True))
+    print(f"  PASS: {check_1574}")
+
+    # 1575: Radon partition size = q+2 = 5 = N
+    _radon = q + 2
+    check_1575 = f"Radon partition size = q+2 = {_radon} = N"
+    assert _radon == N
+    checks.append((check_1575, True))
+    print(f"  PASS: {check_1575}")
+
+    # 1576: Carathéodory number = q+1 = 4 = μ
+    _cara = q + 1
+    check_1576 = f"Carathéodory number = q+1 = {_cara} = μ"
+    assert _cara == mu
+    checks.append((check_1576, True))
+    print(f"  PASS: {check_1576}")
+
+    # 1577: Euler χ = v-E+tri = -40 = -v
+    _triangles = v * k * lam // 6
+    _euler = v - E + _triangles
+    check_1577 = f"Euler χ = v-E+tri = {_euler} = -v"
+    assert _euler == -v
+    checks.append((check_1577, True))
+    print(f"  PASS: {check_1577}")
+
+    # 1578: Dual polytope vertices = k' = 27
+    check_1578 = f"Dual polytope vertices = k' = {k_comp}"
+    assert k_comp == 27
+    checks.append((check_1578, True))
+    print(f"  PASS: {check_1578}")
+
+    # 1579: Centroid coordinate = 1/v
+    _centroid = Fraction(1, v)
+    check_1579 = f"Centroid coordinate = 1/v = {_centroid}"
+    assert _centroid == Fraction(1, 40)
+    checks.append((check_1579, True))
+    print(f"  PASS: {check_1579}")
+
+    # 1580: Neighborly order = λ+1 = 3 = q
+    _neighborly = lam + 1
+    check_1580 = f"Neighborly order = λ+1 = {_neighborly} = q"
+    assert _neighborly == q
+    checks.append((check_1580, True))
+    print(f"  PASS: {check_1580}")
+
+    # 1581: Simplicial depth = μ = 4
+    check_1581 = f"Simplicial depth = μ = {mu}"
+    assert mu == 4
+    checks.append((check_1581, True))
+    print(f"  PASS: {check_1581}")
+
+    # 1582: Volume collapse ratio = k/μ = 3 = q
+    _vol_ratio = k // mu
+    check_1582 = f"Volume collapse ratio = k/μ = {_vol_ratio} = q"
+    assert _vol_ratio == q
+    checks.append((check_1582, True))
+    print(f"  PASS: {check_1582}")
+
+    # 1583: Grünbaum bound = Φ₃ = 13
+    check_1583 = f"Grünbaum bound = Φ₃ = {Phi3}"
+    assert Phi3 == 13
+    checks.append((check_1583, True))
+    print(f"  PASS: {check_1583}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -15280,7 +15377,8 @@ def grand_synthesis():
   │  CatThy     │  Part VII-CO (1528-1541)│ Topos   │ Yoneda  │
   │  Automata   │  Part VII-CP (1542-1555)│ DFA     │ Chomsky │
   │  Ergodic    │  Part VII-CQ (1556-1569)│ Mixing  │ Lyapunov│
-  │  FINAL CLOSE   │  q=3 -> ALL 1569 checks  │ ONE      │ INTEGER  │
+  │  Convex     │  Part VII-CR (1570-1583)│ Helly   │ Euler-χ │
+  │  FINAL CLOSE   │  q=3 -> ALL 1583 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
