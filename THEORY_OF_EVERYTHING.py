@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1499 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1513 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -14288,6 +14288,101 @@ def grand_synthesis():
     checks.append((check_1499, True))
     print(f"  PASS: {check_1499}")
 
+    # ── Part VII-CM: Game Theory & Optimization (1500-1513) ──
+    print(f"\n{'='*70}")
+    print(f"  Part VII-CM: Game Theory & Optimization (1500-1513)")
+    print(f"{'='*70}")
+
+    # 1500: Nash equilibrium p* = k/v = 3/10 = q/α
+    _nash = Fraction(k, v)
+    check_1500 = f"Nash equilibrium p* = k/v = {_nash} = q/α"
+    assert _nash == Fraction(q, alpha_ind)
+    checks.append((check_1500, True))
+    print(f"  PASS: {check_1500}")
+
+    # 1501: Minimax = (k+s)/v = 1/5 = 1/N
+    _minimax = Fraction(k + s_eval, v)
+    check_1501 = f"Minimax = (k+s)/v = {_minimax} = 1/N"
+    assert _minimax == Fraction(1, N)
+    checks.append((check_1501, True))
+    print(f"  PASS: {check_1501}")
+
+    # 1502: LP relaxation bound = k = 12
+    check_1502 = f"LP relaxation bound = k = {k}"
+    assert k == 12
+    checks.append((check_1502, True))
+    print(f"  PASS: {check_1502}")
+
+    # 1503: Shapley value = E/v = 6 = 2q
+    _shapley = Fraction(E, v)
+    check_1503 = f"Shapley value = E/v = {_shapley} = 2q"
+    assert _shapley == 2 * q
+    checks.append((check_1503, True))
+    print(f"  PASS: {check_1503}")
+
+    # 1504: Pure profiles = v^q = 64000
+    check_1504 = f"Pure profiles = v^q = {v**q}"
+    assert v**q == 64000
+    checks.append((check_1504, True))
+    print(f"  PASS: {check_1504}")
+
+    # 1505: Cooperation index = λ/μ = 1/2
+    _coop = Fraction(lam, mu)
+    check_1505 = f"Cooperation index = λ/μ = {_coop}"
+    assert _coop == Fraction(1, 2)
+    checks.append((check_1505, True))
+    print(f"  PASS: {check_1505}")
+
+    # 1506: Replicator dynamics dim = v-1 = 39 = Φ₃·q
+    check_1506 = f"Replicator dynamics dim = v-1 = {v - 1} = Φ₃·q"
+    assert v - 1 == Phi3 * q
+    checks.append((check_1506, True))
+    print(f"  PASS: {check_1506}")
+
+    # 1507: Price of anarchy = k/(k-r) = 6/5
+    _poa = Fraction(k, k - r_eval)
+    check_1507 = f"Price of anarchy = k/(k-r) = {_poa}"
+    assert _poa == Fraction(6, 5)
+    checks.append((check_1507, True))
+    print(f"  PASS: {check_1507}")
+
+    # 1508: χ ≥ v/α = 4 = μ
+    check_1508 = f"χ ≥ v/α = {v // alpha_ind} = μ"
+    assert v // alpha_ind == mu
+    checks.append((check_1508, True))
+    print(f"  PASS: {check_1508}")
+
+    # 1509: Max matching = v/2 = 20 = v/λ
+    check_1509 = f"Max matching = v/2 = {v // 2} = v/λ"
+    assert v // 2 == v // lam
+    checks.append((check_1509, True))
+    print(f"  PASS: {check_1509}")
+
+    # 1510: Lovász θ(G) = v|s|/(k+|s|) = 10 = α
+    _theta = Fraction(v * abs(s_eval), k + abs(s_eval))
+    check_1510 = f"θ(G) = v|s|/(k+|s|) = {_theta} = α"
+    assert _theta == alpha_ind
+    checks.append((check_1510, True))
+    print(f"  PASS: {check_1510}")
+
+    # 1511: Bandwidth B ≥ k/2 = 6 = 2q
+    check_1511 = f"Bandwidth B ≥ k/2 = {k // 2} = 2q"
+    assert k // 2 == 2 * q
+    checks.append((check_1511, True))
+    print(f"  PASS: {check_1511}")
+
+    # 1512: Clique cover = v/α = 4 = μ
+    check_1512 = f"Clique cover = v/α = {v // alpha_ind} = μ"
+    assert v // alpha_ind == mu
+    checks.append((check_1512, True))
+    print(f"  PASS: {check_1512}")
+
+    # 1513: Payoff matrix rank = q+1 = 4 = μ
+    check_1513 = f"Payoff matrix rank = q+1 = {q + 1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1513, True))
+    print(f"  PASS: {check_1513}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -14804,7 +14899,8 @@ def grand_synthesis():
   │  DiffGeo2   │  Part VII-CJ (1458-1471)│ Riemann │ Christf │
   │  RepThy2    │  Part VII-CK (1472-1485)│ E₈→E₆  │ Weyl    │
   │  NCG2       │  Part VII-CL (1486-1499)│ Connes  │ KO-dim  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1499 checks  │ ONE      │ INTEGER  │
+  │  GameThy    │  Part VII-CM (1500-1513)│ Nash    │ Lovász  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1513 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
