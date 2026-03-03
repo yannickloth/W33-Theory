@@ -49,6 +49,14 @@ then tests whether `r_p` lands in degree spectra of the centralizer cofactor `H`
 | 71A | 1 | 2A×3B | 1 | trivial cofactor |
 | 71B | 1 | 2A×3B | 1 | trivial cofactor |
 
+## CE2 / L∞ Phase Lift (Heisenberg → Weil → firewall repair)
+
+The repo also closes the “missing cocycle” loop on the algebra side: the same phase/2-cocycle that makes the **Weyl–Heisenberg** commutator associative is the canonical ingredient that cancels the remaining mixed-sector Jacobi anomaly in the **E<sub>8</sub> Z<sub>3</sub>-graded L∞ firewall** construction.
+
+- End-to-end bridge (s12 obstruction → Heisenberg closure → CE2/Weil lift): `scripts/w33_s12_linfty_phase_bridge.py`
+- Global CE2 predictor in closed form (metaplectic/Weil phase, no per-triple lookup): `scripts/ce2_global_cocycle.py`
+- L∞ extension (supports enabling the global predictor): `tools/build_linfty_firewall_extension.py`
+
 ## Status
 
 | Claim | | Notes |
