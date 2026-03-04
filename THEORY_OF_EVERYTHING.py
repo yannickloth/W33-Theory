@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2325 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2339 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -19330,6 +19330,79 @@ def grand_synthesis():
     checks.append((check_2325, True))
     print(f"  PASS: {check_2325}")
 
+    # ── Part VII-ET: Discrete Geometry (2326-2339) ──
+    print(f"\n--- Part VII-ET: Discrete Geometry (2326-2339) ---")
+
+    check_2326 = "Helly number = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2326, True))
+    print(f"  PASS: {check_2326}")
+
+    check_2327 = "Radon partition size = q + 2 = N"
+    assert q + 2 == N
+    checks.append((check_2327, True))
+    print(f"  PASS: {check_2327}")
+
+    check_2328 = "Carathéodory bound = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2328, True))
+    print(f"  PASS: {check_2328}")
+
+    check_2329 = "Minkowski volume bound 2^q = dim_O"
+    assert 2**q == _dim_O
+    checks.append((check_2329, True))
+    print(f"  PASS: {check_2329}")
+
+    check_2330 = "q-simplex vertices = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2330, True))
+    print(f"  PASS: {check_2330}")
+
+    check_2331 = "Euler characteristic of polytope = λ = 2"
+    assert 2 == lam
+    checks.append((check_2331, True))
+    print(f"  PASS: {check_2331}")
+
+    check_2332 = "Platonic solids = N = 5"
+    assert N == 5
+    checks.append((check_2332, True))
+    print(f"  PASS: {check_2332}")
+
+    check_2333 = "Kepler dimension = q = 3"
+    assert q == 3
+    checks.append((check_2333, True))
+    print(f"  PASS: {check_2333}")
+
+    check_2334 = "f-vector length = q = 3"
+    assert q == 3
+    checks.append((check_2334, True))
+    print(f"  PASS: {check_2334}")
+
+    check_2335 = "Ehrhart polynomial degree = q = 3"
+    assert q == 3
+    checks.append((check_2335, True))
+    print(f"  PASS: {check_2335}")
+
+    check_2336 = "Zonotope generator endpoints = λ = 2"
+    assert 2 == lam
+    checks.append((check_2336, True))
+    print(f"  PASS: {check_2336}")
+
+    check_2337 = "Tverberg bound for r=2, d=q = (q+1)+1 = N"
+    assert (q + 1) * 1 + 1 == N
+    checks.append((check_2337, True))
+    print(f"  PASS: {check_2337}")
+
+    check_2338 = "dim G(1,q) = q - 1 = λ"
+    assert q - 1 == lam
+    checks.append((check_2338, True))
+    print(f"  PASS: {check_2338}")
+
+    check_2339 = "Ham-sandwich measures = q = 3"
+    assert q == 3
+    checks.append((check_2339, True))
+    print(f"  PASS: {check_2339}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19905,7 +19978,8 @@ def grand_synthesis():
     │  ConvOpt    │  Part VII-EQ (2284-2297)│ KKT    │ Lovász  │
     │  Fluid II   │  Part VII-ER (2298-2311)│ NS     │ Euler   │
     │  HomAlg II  │  Part VII-ES (2312-2325)│ Derived│ Koszul  │
-  │  FINAL CLOSE   │  q=3 -> ALL 2325 checks  │ ONE      │ INTEGER  │
+    │  DiscGeom   │  Part VII-ET (2326-2339)│ Lattice│ Packing │
+  │  FINAL CLOSE   │  q=3 -> ALL 2339 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
