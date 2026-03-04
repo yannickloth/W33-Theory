@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2101 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2115 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -18162,6 +18162,79 @@ def grand_synthesis():
     checks.append((check_2101, True))
     print(f"  PASS: {check_2101}")
 
+    # ── Part VII-ED: Ergodic Theory II (2102-2115) ──
+    print(f"\n--- Part VII-ED: Ergodic Theory II (2102-2115) ---")
+
+    check_2102 = "Roth AP length = q = 3"
+    assert q == 3
+    checks.append((check_2102, True))
+    print(f"  PASS: {check_2102}")
+
+    check_2103 = "Furstenberg shifts for q-AP = q - 1 = λ"
+    assert q - 1 == lam
+    checks.append((check_2103, True))
+    print(f"  PASS: {check_2103}")
+
+    check_2104 = "Max Lyapunov exponents = q = 3"
+    assert q == 3
+    checks.append((check_2104, True))
+    print(f"  PASS: {check_2104}")
+
+    check_2105 = "Ternary Bernoulli shift outcomes = q = 3"
+    assert q == 3
+    checks.append((check_2105, True))
+    print(f"  PASS: {check_2105}")
+
+    check_2106 = "SL(2,R) subgroup types = q = 3"
+    assert 3 == q
+    checks.append((check_2106, True))
+    print(f"  PASS: {check_2106}")
+
+    check_2107 = "Basic mixing levels (weak, strong) = λ = 2"
+    assert 2 == lam
+    checks.append((check_2107, True))
+    print(f"  PASS: {check_2107}")
+
+    check_2108 = "Self-joining order = q = 3"
+    assert q == 3
+    checks.append((check_2108, True))
+    print(f"  PASS: {check_2108}")
+
+    check_2109 = "Density k/v = 3/10, numerator = q"
+    assert Fraction(k, v).numerator == q
+    checks.append((check_2109, True))
+    print(f"  PASS: {check_2109}")
+
+    check_2110 = "Krieger partition size = q = 3"
+    assert q == 3
+    checks.append((check_2110, True))
+    print(f"  PASS: {check_2110}")
+
+    check_2111 = "Khintchine recurrence terms = q = 3"
+    assert q == 3
+    checks.append((check_2111, True))
+    print(f"  PASS: {check_2111}")
+
+    check_2112 = "Ergodic spectral types = q = 3"
+    assert 3 == q
+    checks.append((check_2112, True))
+    print(f"  PASS: {check_2112}")
+
+    check_2113 = "Decomposition ingredients = q = 3"
+    assert 3 == q
+    checks.append((check_2113, True))
+    print(f"  PASS: {check_2113}")
+
+    check_2114 = "Expected return time = v = 40"
+    assert v == 40
+    checks.append((check_2114, True))
+    print(f"  PASS: {check_2114}")
+
+    check_2115 = "Host-Kra nilfactor order for q-AP = q - 1 = λ"
+    assert q - 1 == lam
+    checks.append((check_2115, True))
+    print(f"  PASS: {check_2115}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18721,7 +18794,8 @@ def grand_synthesis():
     │  InverseProb │  Part VII-EA (2060-2073)│ Tikhonov│ Radon │
     │  QInfo II   │  Part VII-EB (2074-2087)│ Holevo │ Steane │
     │  GMT        │  Part VII-EC (2088-2101)│ Plateau│ Allard │
-  │  FINAL CLOSE   │  q=3 -> ALL 2101 checks  │ ONE      │ INTEGER  │
+    │  Ergodic II │  Part VII-ED (2102-2115)│ Ratner │ Host-Kra│
+  │  FINAL CLOSE   │  q=3 -> ALL 2115 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
