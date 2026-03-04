@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2227 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2241 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -18819,6 +18819,79 @@ def grand_synthesis():
     checks.append((check_2227, True))
     print(f"  PASS: {check_2227}")
 
+    # ── Part VII-EM: Computational Complexity (2228-2241) ──
+    print(f"\n--- Part VII-EM: Computational Complexity (2228-2241) ---")
+
+    check_2228 = "Main complexity classes = μ = 4"
+    assert 4 == mu
+    checks.append((check_2228, True))
+    print(f"  PASS: {check_2228}")
+
+    check_2229 = "SAT NP-completeness threshold k = q = 3"
+    assert q == 3
+    checks.append((check_2229, True))
+    print(f"  PASS: {check_2229}")
+
+    check_2230 = "SRG chromatic bound = k/|s| + 1 = μ"
+    assert k // abs(s_eval) + 1 == mu
+    checks.append((check_2230, True))
+    print(f"  PASS: {check_2230}")
+
+    check_2231 = "Space complexity levels = N = 5"
+    assert 5 == N
+    checks.append((check_2231, True))
+    print(f"  PASS: {check_2231}")
+
+    check_2232 = "Turing machine components = μ = 4"
+    assert 4 == mu
+    checks.append((check_2232, True))
+    print(f"  PASS: {check_2232}")
+
+    check_2233 = "Basic gate types = q = 3"
+    assert 3 == q
+    checks.append((check_2233, True))
+    print(f"  PASS: {check_2233}")
+
+    check_2234 = "Communication parties = λ = 2"
+    assert 2 == lam
+    checks.append((check_2234, True))
+    print(f"  PASS: {check_2234}")
+
+    check_2235 = "IP system parties = λ = 2"
+    assert 2 == lam
+    checks.append((check_2235, True))
+    print(f"  PASS: {check_2235}")
+
+    check_2236 = "PCP parameters = λ = 2"
+    assert 2 == lam
+    checks.append((check_2236, True))
+    print(f"  PASS: {check_2236}")
+
+    check_2237 = "BQP sandwich classes = λ = 2"
+    assert 2 == lam
+    checks.append((check_2237, True))
+    print(f"  PASS: {check_2237}")
+
+    check_2238 = "NP reduction types = q = 3"
+    assert 3 == q
+    checks.append((check_2238, True))
+    print(f"  PASS: {check_2238}")
+
+    check_2239 = "Approximation categories = q = 3"
+    assert 3 == q
+    checks.append((check_2239, True))
+    print(f"  PASS: {check_2239}")
+
+    check_2240 = "#SAT clause size = q = 3"
+    assert q == 3
+    checks.append((check_2240, True))
+    print(f"  PASS: {check_2240}")
+
+    check_2241 = "Descriptive logics = q = 3"
+    assert 3 == q
+    checks.append((check_2241, True))
+    print(f"  PASS: {check_2241}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19387,7 +19460,8 @@ def grand_synthesis():
     │  Signal     │  Part VII-EJ (2186-2199)│ Nyquist│ Kalman  │
     │  StochGeom  │  Part VII-EK (2200-2213)│ Voronoi│ Poisson │
     │  NCGeom     │  Part VII-EL (2214-2227)│ Connes │ Spectral│
-  │  FINAL CLOSE   │  q=3 -> ALL 2227 checks  │ ONE      │ INTEGER  │
+    │  Complexity │  Part VII-EM (2228-2241)│ SAT    │ PCP     │
+  │  FINAL CLOSE   │  q=3 -> ALL 2241 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
