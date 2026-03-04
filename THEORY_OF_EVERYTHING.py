@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2185 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2199 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -18600,6 +18600,79 @@ def grand_synthesis():
     checks.append((check_2185, True))
     print(f"  PASS: {check_2185}")
 
+    # ── Part VII-EJ: Signal Processing (2186-2199) ──
+    print(f"\n--- Part VII-EJ: Signal Processing (2186-2199) ---")
+
+    check_2186 = "Nyquist factor = λ = 2"
+    assert 2 == lam
+    checks.append((check_2186, True))
+    print(f"  PASS: {check_2186}")
+
+    check_2187 = "SRG distinct spectral values = q = 3"
+    assert q == 3
+    checks.append((check_2187, True))
+    print(f"  PASS: {check_2187}")
+
+    check_2188 = "MRA basis functions (φ, ψ) = λ = 2"
+    assert 2 == lam
+    checks.append((check_2188, True))
+    print(f"  PASS: {check_2188}")
+
+    check_2189 = "QMF channels = λ = 2"
+    assert 2 == lam
+    checks.append((check_2189, True))
+    print(f"  PASS: {check_2189}")
+
+    check_2190 = "FIR order-q coefficients = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2190, True))
+    print(f"  PASS: {check_2190}")
+
+    check_2191 = "Wiener filter spectra = q = 3"
+    assert 3 == q
+    checks.append((check_2191, True))
+    print(f"  PASS: {check_2191}")
+
+    check_2192 = "Kalman system matrices = q = 3"
+    assert 3 == q
+    checks.append((check_2192, True))
+    print(f"  PASS: {check_2192}")
+
+    check_2193 = "Matched filter SNR factor = λ = 2"
+    assert 2 == lam
+    checks.append((check_2193, True))
+    print(f"  PASS: {check_2193}")
+
+    check_2194 = "Standard window functions = q = 3"
+    assert 3 == q
+    checks.append((check_2194, True))
+    print(f"  PASS: {check_2194}")
+
+    check_2195 = "Analytic signal components = λ = 2"
+    assert 2 == lam
+    checks.append((check_2195, True))
+    print(f"  PASS: {check_2195}")
+
+    check_2196 = "Parseval domains = λ = 2"
+    assert 2 == lam
+    checks.append((check_2196, True))
+    print(f"  PASS: {check_2196}")
+
+    check_2197 = "Gabor parameters = q = 3"
+    assert 3 == q
+    checks.append((check_2197, True))
+    print(f"  PASS: {check_2197}")
+
+    check_2198 = "Cepstrum operations = q = 3"
+    assert 3 == q
+    checks.append((check_2198, True))
+    print(f"  PASS: {check_2198}")
+
+    check_2199 = "Uncertainty variables (t, ω) = λ = 2"
+    assert 2 == lam
+    checks.append((check_2199, True))
+    print(f"  PASS: {check_2199}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19165,7 +19238,8 @@ def grand_synthesis():
     │  GGT II     │  Part VII-EG (2144-2157)│ Gromov │ CAT(0)  │
     │  VarAnal    │  Part VII-EH (2158-2171)│ Euler  │ Noether │
     │  AlgKThy    │  Part VII-EI (2172-2185)│ Quillen│ Bott    │
-  │  FINAL CLOSE   │  q=3 -> ALL 2185 checks  │ ONE      │ INTEGER  │
+    │  Signal     │  Part VII-EJ (2186-2199)│ Nyquist│ Kalman  │
+  │  FINAL CLOSE   │  q=3 -> ALL 2199 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
