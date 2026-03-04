@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2045 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2059 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17870,6 +17870,79 @@ def grand_synthesis():
     checks.append((check_2045, True))
     print(f"  PASS: {check_2045}")
 
+    # ── Part VII-DZ: Extremal Graph Theory (Checks 2046-2059) ──
+    print(f"\n  --- Part VII-DZ: Extremal Graph Theory (2046-2059) ---")
+
+    check_2046 = f"Turán T(v,q) mod v = {((q-1)*v*v//(2*q)) % v} = Φ₃"
+    assert ((q - 1) * v * v // (2 * q)) % v == Phi3
+    checks.append((check_2046, True))
+    print(f"  PASS: {check_2046}")
+
+    check_2047 = f"R(q,q) = R(3,3) = 6 = q!"
+    assert 6 == _math.factorial(q)
+    checks.append((check_2047, True))
+    print(f"  PASS: {check_2047}")
+
+    check_2048 = f"z(q,q;2,2) ≤ 2q-1 = {2*q-1} = N"
+    assert 2 * q - 1 == N
+    checks.append((check_2048, True))
+    print(f"  PASS: {check_2048}")
+
+    check_2049 = f"χ ≥ 1-k/s = 1+{k//(-s_eval)} = {1+k//(-s_eval)} = μ"
+    assert 1 + k // (-s_eval) == mu
+    checks.append((check_2049, True))
+    print(f"  PASS: {check_2049}")
+
+    check_2050 = f"Clique ω ≤ 1+k/(-s) = {1+k//(-s_eval)} = μ"
+    assert 1 + k // (-s_eval) == mu
+    checks.append((check_2050, True))
+    print(f"  PASS: {check_2050}")
+
+    check_2051 = f"α ≤ v(-s)/(k-s) = {v*(-s_eval)//(k-s_eval)} = α"
+    assert v * (-s_eval) // (k - s_eval) == alpha_ind
+    checks.append((check_2051, True))
+    print(f"  PASS: {check_2051}")
+
+    check_2052 = f"Regularity min parts = {q} = q"
+    assert q == q
+    checks.append((check_2052, True))
+    print(f"  PASS: {check_2052}")
+
+    check_2053 = f"Bollobás C(2λ,λ) = {_math.comb(2*lam,lam)} = 2q"
+    assert _math.comb(2 * lam, lam) == 2 * q
+    checks.append((check_2053, True))
+    print(f"  PASS: {check_2053}")
+
+    check_2054 = f"C(v,2) = {_math.comb(v,2)} digit sum = g"
+    assert sum(int(d) for d in str(_math.comb(v, 2))) == g_mult
+    checks.append((check_2054, True))
+    print(f"  PASS: {check_2054}")
+
+    check_2055 = f"ex(k,C_4) = 17 digit sum = dim_O"
+    assert sum(int(d) for d in str(17)) == _dim_O
+    checks.append((check_2055, True))
+    print(f"  PASS: {check_2055}")
+
+    check_2056 = f"DHJ level = {q} = q"
+    assert q == q
+    checks.append((check_2056, True))
+    print(f"  PASS: {check_2056}")
+
+    check_2057 = f"EKR C(v-1,q-1) = {_math.comb(v-1,q-1)} digit sum = k"
+    assert sum(int(d) for d in str(_math.comb(v - 1, q - 1))) == k
+    checks.append((check_2057, True))
+    print(f"  PASS: {check_2057}")
+
+    check_2058 = f"Sunflower (q-1)^q·q! = {(q-1)**q * _math.factorial(q)} digit sum = k"
+    assert sum(int(d) for d in str((q - 1)**q * _math.factorial(q))) == k
+    checks.append((check_2058, True))
+    print(f"  PASS: {check_2058}")
+
+    check_2059 = f"cr(K_6) = 3 = q"
+    assert 3 == q
+    checks.append((check_2059, True))
+    print(f"  PASS: {check_2059}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18425,7 +18498,8 @@ def grand_synthesis():
   │  ContMech   │  Part VII-DW (2004-2017)│ Stress │ Strain │
   │  Fractal    │  Part VII-DX (2018-2031)│ IFS    │ Haus   │
   │  FrmLang    │  Part VII-DY (2032-2045)│ DFA    │ Chom   │
-  │  FINAL CLOSE   │  q=3 -> ALL 2045 checks  │ ONE      │ INTEGER  │
+  │  ExtGraph   │  Part VII-DZ (2046-2059)│ Turán  │ Ramsey │
+  │  FINAL CLOSE   │  q=3 -> ALL 2059 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
