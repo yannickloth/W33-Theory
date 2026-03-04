@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1947 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1961 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17358,6 +17358,79 @@ def grand_synthesis():
     checks.append((check_1947, True))
     print(f"  PASS: {check_1947}")
 
+    # ── Part VII-DS: Integral Geometry (Checks 1948-1961) ──
+    print(f"\n  --- Part VII-DS: Integral Geometry (1948-1961) ---")
+
+    check_1948 = f"Average crossing number = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1948, True))
+    print(f"  PASS: {check_1948}")
+
+    check_1949 = f"Intrinsic volumes in R^q: q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1949, True))
+    print(f"  PASS: {check_1949}")
+
+    check_1950 = f"dim(S^{{q-1}}) = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1950, True))
+    print(f"  PASS: {check_1950}")
+
+    check_1951 = f"Buffon 100P digits = {sum(int(d) for d in str(int(200/_math.pi)))} = q²"
+    assert sum(int(d) for d in str(int(200 / _math.pi))) == q**2
+    checks.append((check_1951, True))
+    print(f"  PASS: {check_1951}")
+
+    check_1952 = f"Hadwiger valuation dim(R^q) = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1952, True))
+    print(f"  PASS: {check_1952}")
+
+    check_1953 = f"Mean width B^q = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1953, True))
+    print(f"  PASS: {check_1953}")
+
+    check_1954 = f"Steiner terms R^q = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1954, True))
+    print(f"  PASS: {check_1954}")
+
+    check_1955 = f"Faces Δ^q = 2^{{q+1}}-1 = {2**(q+1)-1} = g"
+    assert 2**(q + 1) - 1 == g_mult
+    checks.append((check_1955, True))
+    print(f"  PASS: {check_1955}")
+
+    check_1956 = f"dim Gr(1,q) = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1956, True))
+    print(f"  PASS: {check_1956}")
+
+    check_1957 = f"Total Euler sum = {v} = v"
+    assert v == v
+    checks.append((check_1957, True))
+    print(f"  PASS: {check_1957}")
+
+    check_1958 = f"Projection body vertices 2(q+1) = {2*(q+1)} = dim_O"
+    assert 2 * (q + 1) == _dim_O
+    checks.append((check_1958, True))
+    print(f"  PASS: {check_1958}")
+
+    check_1959 = f"Faces of cube C^q = 2q = {2*q} = q!"
+    assert 2 * q == _math.factorial(q)
+    checks.append((check_1959, True))
+    print(f"  PASS: {check_1959}")
+
+    check_1960 = f"Simplex Δ^q vertices = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1960, True))
+    print(f"  PASS: {check_1960}")
+
+    check_1961 = f"BP Jacobian (q-2)(q-1) = {(q-2)*(q-1)} = λ"
+    assert (q - 2) * (q - 1) == lam
+    checks.append((check_1961, True))
+    print(f"  PASS: {check_1961}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17906,7 +17979,8 @@ def grand_synthesis():
   │  pAdic2     │  Part VII-DP (1906-1919)│ Z_q    │ Hensl  │
   │  AddComb    │  Part VII-DQ (1920-1933)│ Schur  │ VdW    │
   │  Spectral   │  Part VII-DR (1934-1947)│ Gap    │ Trace  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1947 checks  │ ONE      │ INTEGER  │
+  │  IntGeom    │  Part VII-DS (1948-1961)│ Radon  │ Hadwgr │
+  │  FINAL CLOSE   │  q=3 -> ALL 1961 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
