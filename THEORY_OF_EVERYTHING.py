@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2297 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2311 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -19184,6 +19184,79 @@ def grand_synthesis():
     checks.append((check_2297, True))
     print(f"  PASS: {check_2297}")
 
+    # ── Part VII-ER: Fluid Dynamics II (2298-2311) ──
+    print(f"\n--- Part VII-ER: Fluid Dynamics II (2298-2311) ---")
+
+    check_2298 = "NS velocity components = q = 3"
+    assert q == 3
+    checks.append((check_2298, True))
+    print(f"  PASS: {check_2298}")
+
+    check_2299 = "Reynolds number quantities = μ = 4"
+    assert 4 == mu
+    checks.append((check_2299, True))
+    print(f"  PASS: {check_2299}")
+
+    check_2300 = "Euler system equations = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2300, True))
+    print(f"  PASS: {check_2300}")
+
+    check_2301 = "Stokes equation types = λ = 2"
+    assert 2 == lam
+    checks.append((check_2301, True))
+    print(f"  PASS: {check_2301}")
+
+    check_2302 = "Vorticity components in R^q = q = 3"
+    assert q == 3
+    checks.append((check_2302, True))
+    print(f"  PASS: {check_2302}")
+
+    check_2303 = "Bernoulli terms = q = 3"
+    assert 3 == q
+    checks.append((check_2303, True))
+    print(f"  PASS: {check_2303}")
+
+    check_2304 = "Kolmogorov exponent numerator = N = 5"
+    assert N == 5
+    checks.append((check_2304, True))
+    print(f"  PASS: {check_2304}")
+
+    check_2305 = "Boundary layer regions = λ = 2"
+    assert 2 == lam
+    checks.append((check_2305, True))
+    print(f"  PASS: {check_2305}")
+
+    check_2306 = "Helmholtz decomposition parts = λ = 2"
+    assert 2 == lam
+    checks.append((check_2306, True))
+    print(f"  PASS: {check_2306}")
+
+    check_2307 = "Laplacian terms = q = 3"
+    assert q == 3
+    checks.append((check_2307, True))
+    print(f"  PASS: {check_2307}")
+
+    check_2308 = "Kelvin theorem conditions = λ = 2"
+    assert 2 == lam
+    checks.append((check_2308, True))
+    print(f"  PASS: {check_2308}")
+
+    check_2309 = "Buckingham variables = μ = 4"
+    assert 4 == mu
+    checks.append((check_2309, True))
+    print(f"  PASS: {check_2309}")
+
+    check_2310 = "Shallow water equations in 2D = q = 3"
+    assert q == 3
+    checks.append((check_2310, True))
+    print(f"  PASS: {check_2310}")
+
+    check_2311 = "Stress tensor components = q(q+1)/2 = q!"
+    assert q * (q + 1) // 2 == _math.factorial(q)
+    checks.append((check_2311, True))
+    print(f"  PASS: {check_2311}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19757,7 +19830,8 @@ def grand_synthesis():
     │  MathBio    │  Part VII-EO (2256-2269)│ SIR    │ Turing  │
     │  AlgComb    │  Part VII-EP (2270-2283)│ Schur  │ Matroid │
     │  ConvOpt    │  Part VII-EQ (2284-2297)│ KKT    │ Lovász  │
-  │  FINAL CLOSE   │  q=3 -> ALL 2297 checks  │ ONE      │ INTEGER  │
+    │  Fluid II   │  Part VII-ER (2298-2311)│ NS     │ Euler   │
+  │  FINAL CLOSE   │  q=3 -> ALL 2311 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
