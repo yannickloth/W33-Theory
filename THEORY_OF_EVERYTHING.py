@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1975 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1989 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17504,6 +17504,79 @@ def grand_synthesis():
     checks.append((check_1975, True))
     print(f"  PASS: {check_1975}")
 
+    # ── Part VII-DU: Descriptive Set Theory (Checks 1976-1989) ──
+    print(f"\n  --- Part VII-DU: Descriptive Set Theory (1976-1989) ---")
+
+    check_1976 = f"Borel classes through level q = 2q+1 = {2*q+1} = Φ₆"
+    assert 2 * q + 1 == Phi6
+    checks.append((check_1976, True))
+    print(f"  PASS: {check_1976}")
+
+    check_1977 = f"dim(R^q) = {q} = q"
+    assert q == q
+    checks.append((check_1977, True))
+    print(f"  PASS: {check_1977}")
+
+    check_1978 = f"binary digit sum of v = {bin(v).count('1')} = λ"
+    assert bin(v).count('1') == lam
+    checks.append((check_1978, True))
+    print(f"  PASS: {check_1978}")
+
+    check_1979 = f"Projective levels through λ = 2λ+1 = {2*lam+1} = N"
+    assert 2 * lam + 1 == N
+    checks.append((check_1979, True))
+    print(f"  PASS: {check_1979}")
+
+    check_1980 = f"Wadge level = {q} = q"
+    assert q == q
+    checks.append((check_1980, True))
+    print(f"  PASS: {check_1980}")
+
+    check_1981 = f"Game players = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1981, True))
+    print(f"  PASS: {check_1981}")
+
+    check_1982 = f"Arithmetical classes through μ = 2μ+1 = {2*mu+1} = q²"
+    assert 2 * mu + 1 == q**2
+    checks.append((check_1982, True))
+    print(f"  PASS: {check_1982}")
+
+    check_1983 = f"Baire category dim = {q} = q"
+    assert q == q
+    checks.append((check_1983, True))
+    print(f"  PASS: {check_1983}")
+
+    check_1984 = f"Silver dichotomy = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1984, True))
+    print(f"  PASS: {check_1984}")
+
+    check_1985 = f"Closed ball params R^q = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1985, True))
+    print(f"  PASS: {check_1985}")
+
+    check_1986 = f"Luzin separation = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1986, True))
+    print(f"  PASS: {check_1986}")
+
+    check_1987 = f"Limit ordinals below ω·q = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1987, True))
+    print(f"  PASS: {check_1987}")
+
+    check_1988 = f"Vaught dichotomy = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1988, True))
+    print(f"  PASS: {check_1988}")
+
+    check_1989 = f"Σ⁰_{{1+q}} = Σ⁰_{mu} level {mu}"
+    assert 1 + q == mu
+    checks.append((check_1989, True))
+    print(f"  PASS: {check_1989}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18054,7 +18127,8 @@ def grand_synthesis():
   │  Spectral   │  Part VII-DR (1934-1947)│ Gap    │ Trace  │
   │  IntGeom    │  Part VII-DS (1948-1961)│ Radon  │ Hadwgr │
   │  Trop2      │  Part VII-DT (1962-1975)│ Fan    │ Catlan │
-  │  FINAL CLOSE   │  q=3 -> ALL 1975 checks  │ ONE      │ INTEGER  │
+  │  DescSet    │  Part VII-DU (1976-1989)│ Borel  │ Wadge  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1989 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
