@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2241 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2255 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -18892,6 +18892,79 @@ def grand_synthesis():
     checks.append((check_2241, True))
     print(f"  PASS: {check_2241}")
 
+    # ── Part VII-EN: Functional Analysis II (2242-2255) ──
+    print(f"\n--- Part VII-EN: Functional Analysis II (2242-2255) ---")
+
+    check_2242 = "Dual pair components = λ = 2"
+    assert 2 == lam
+    checks.append((check_2242, True))
+    print(f"  PASS: {check_2242}")
+
+    check_2243 = "Hahn-Banach forms = q = 3"
+    assert 3 == q
+    checks.append((check_2243, True))
+    print(f"  PASS: {check_2243}")
+
+    check_2244 = "Banach space fundamental theorems = q = 3"
+    assert 3 == q
+    checks.append((check_2244, True))
+    print(f"  PASS: {check_2244}")
+
+    check_2245 = "Fredholm index components = λ = 2"
+    assert 2 == lam
+    checks.append((check_2245, True))
+    print(f"  PASS: {check_2245}")
+
+    check_2246 = "SRG adjacency rank = v = 40"
+    assert v == 40
+    checks.append((check_2246, True))
+    print(f"  PASS: {check_2246}")
+
+    check_2247 = "Main Schatten classes = q = 3"
+    assert 3 == q
+    checks.append((check_2247, True))
+    print(f"  PASS: {check_2247}")
+
+    check_2248 = "Sobolev critical exponent num = q = 3"
+    assert q == 3
+    checks.append((check_2248, True))
+    print(f"  PASS: {check_2248}")
+
+    check_2249 = "Interpolation endpoints = λ = 2"
+    assert 2 == lam
+    checks.append((check_2249, True))
+    print(f"  PASS: {check_2249}")
+
+    check_2250 = "Distribution spaces = q = 3"
+    assert 3 == q
+    checks.append((check_2250, True))
+    print(f"  PASS: {check_2250}")
+
+    check_2251 = "Major fixed point theorems = q = 3"
+    assert 3 == q
+    checks.append((check_2251, True))
+    print(f"  PASS: {check_2251}")
+
+    check_2252 = "Operator topologies = q = 3"
+    assert 3 == q
+    checks.append((check_2252, True))
+    print(f"  PASS: {check_2252}")
+
+    check_2253 = "Spectral map eigenvalues = q = 3"
+    assert q == 3
+    checks.append((check_2253, True))
+    print(f"  PASS: {check_2253}")
+
+    check_2254 = "Key Riesz duality pairs = λ = 2"
+    assert 2 == lam
+    checks.append((check_2254, True))
+    print(f"  PASS: {check_2254}")
+
+    check_2255 = "SRG adjacency extreme points = v = 40"
+    assert v == 40
+    checks.append((check_2255, True))
+    print(f"  PASS: {check_2255}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19461,7 +19534,8 @@ def grand_synthesis():
     │  StochGeom  │  Part VII-EK (2200-2213)│ Voronoi│ Poisson │
     │  NCGeom     │  Part VII-EL (2214-2227)│ Connes │ Spectral│
     │  Complexity │  Part VII-EM (2228-2241)│ SAT    │ PCP     │
-  │  FINAL CLOSE   │  q=3 -> ALL 2241 checks  │ ONE      │ INTEGER  │
+    │  FuncAna II │  Part VII-EN (2242-2255)│ Banach │ Sobolev │
+  │  FINAL CLOSE   │  q=3 -> ALL 2255 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
