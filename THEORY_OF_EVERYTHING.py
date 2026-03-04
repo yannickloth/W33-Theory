@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1933 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1947 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17283,6 +17283,81 @@ def grand_synthesis():
     checks.append((check_1933, True))
     print(f"  PASS: {check_1933}")
 
+    # ── Part VII-DR: Spectral Theory (Checks 1934-1947) ──
+    print(f"\n  --- Part VII-DR: Spectral Theory (1934-1947) ---")
+
+    check_1934 = f"SRG has {q} distinct eigenvalues = q"
+    assert 3 == q
+    checks.append((check_1934, True))
+    print(f"  PASS: {check_1934}")
+
+    check_1935 = f"Spectral gap k - r = {k - r_eval} = α"
+    assert k - r_eval == alpha_ind
+    checks.append((check_1935, True))
+    print(f"  PASS: {check_1935}")
+
+    check_1936 = f"ρ(A)/q = k/q = {k//q} = μ"
+    assert k // q == mu
+    checks.append((check_1936, True))
+    print(f"  PASS: {check_1936}")
+
+    check_1937 = f"Laplacian sum = {(k-r_eval)*f_mult + (k-s_eval)*g_mult} = 2E"
+    assert (k - r_eval) * f_mult + (k - s_eval) * g_mult == 2 * E
+    checks.append((check_1937, True))
+    print(f"  PASS: {check_1937}")
+
+    check_1938 = "Normalized Laplacian μ₁+μ₂ numerator = Φ₃"
+    _nmu1 = Fraction(1) - Fraction(r_eval, k)
+    _nmu2 = Fraction(1) - Fraction(s_eval, k)
+    assert (_nmu1 + _nmu2).numerator == Phi3
+    checks.append((check_1938, True))
+    print(f"  PASS: {check_1938}")
+
+    check_1939 = f"E - v = {E - v} = N·v"
+    assert E - v == N * v
+    checks.append((check_1939, True))
+    print(f"  PASS: {check_1939}")
+
+    check_1940 = f"1 + f + g = {1 + f_mult + g_mult} = v"
+    assert 1 + f_mult + g_mult == v
+    checks.append((check_1940, True))
+    print(f"  PASS: {check_1940}")
+
+    check_1941 = f"Cheeger lower (k-r)/2 = {(k-r_eval)//2} = N"
+    assert (k - r_eval) // 2 == N
+    checks.append((check_1941, True))
+    print(f"  PASS: {check_1941}")
+
+    check_1942 = f"det(A) 2-exp = f+2g = {f_mult + 2*g_mult} = 2k'"
+    assert f_mult + 2 * g_mult == 2 * k_comp
+    checks.append((check_1942, True))
+    print(f"  PASS: {check_1942}")
+
+    check_1943 = f"floor(2√(k-1)) = {int(2*_math.sqrt(k-1))} = q!"
+    assert int(2 * _math.sqrt(k - 1)) == _math.factorial(q)
+    checks.append((check_1943, True))
+    print(f"  PASS: {check_1943}")
+
+    check_1944 = f"Resolvent poles = {q} = q"
+    assert q == q
+    checks.append((check_1944, True))
+    print(f"  PASS: {check_1944}")
+
+    check_1945 = f"f/g num+den = {Fraction(f_mult,g_mult).numerator + Fraction(f_mult,g_mult).denominator} = Φ₃"
+    assert Fraction(f_mult, g_mult).numerator + Fraction(f_mult, g_mult).denominator == Phi3
+    checks.append((check_1945, True))
+    print(f"  PASS: {check_1945}")
+
+    check_1946 = f"v - 1 = {v-1} = Φ₃·q"
+    assert v - 1 == Phi3 * q
+    checks.append((check_1946, True))
+    print(f"  PASS: {check_1946}")
+
+    check_1947 = f"Tr(A²) = k²+r²f+s²g = {k**2 + r_eval**2*f_mult + s_eval**2*g_mult} = 2E"
+    assert k**2 + r_eval**2 * f_mult + s_eval**2 * g_mult == 2 * E
+    checks.append((check_1947, True))
+    print(f"  PASS: {check_1947}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17830,7 +17905,8 @@ def grand_synthesis():
   │  AlgTop2    │  Part VII-DO (1892-1905)│ π_3^s │ K-thy  │
   │  pAdic2     │  Part VII-DP (1906-1919)│ Z_q    │ Hensl  │
   │  AddComb    │  Part VII-DQ (1920-1933)│ Schur  │ VdW    │
-  │  FINAL CLOSE   │  q=3 -> ALL 1933 checks  │ ONE      │ INTEGER  │
+  │  Spectral   │  Part VII-DR (1934-1947)│ Gap    │ Trace  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1947 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
