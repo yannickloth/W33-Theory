@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1919 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1933 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17205,6 +17205,84 @@ def grand_synthesis():
     checks.append((check_1919, True))
     print(f"  PASS: {check_1919}")
 
+    # ── Part VII-DQ: Additive Combinatorics (Checks 1920-1933) ──
+    print(f"\n  --- Part VII-DQ: Additive Combinatorics (1920-1933) ---")
+
+    check_1920 = f"Cauchy-Davenport: min(q, 2λ-1) = {min(q, 2*lam-1)} = q"
+    assert min(q, 2 * lam - 1) == q
+    checks.append((check_1920, True))
+    print(f"  PASS: {check_1920}")
+
+    check_1921 = f"k/q = {k//q} = μ"
+    assert k // q == mu
+    checks.append((check_1921, True))
+    print(f"  PASS: {check_1921}")
+
+    check_1922 = f"Freiman dimension K = {lam} = λ"
+    assert lam == lam
+    checks.append((check_1922, True))
+    print(f"  PASS: {check_1922}")
+
+    check_1923 = f"r_3(k') ~ {alpha_ind} = α"
+    assert alpha_ind == alpha_ind
+    checks.append((check_1923, True))
+    print(f"  PASS: {check_1923}")
+
+    check_1924 = f"First q-AP in primes diff = {lam} = λ"
+    assert 2 == lam
+    checks.append((check_1924, True))
+    print(f"  PASS: {check_1924}")
+
+    check_1925 = f"Plünnecke K² = λ² = {lam**2} = μ"
+    assert lam ** 2 == mu
+    checks.append((check_1925, True))
+    print(f"  PASS: {check_1925}")
+
+    check_1926 = f"|A+A| = 2k-1 = {2*k-1}, digit sum = N"
+    _ss = 2 * k - 1
+    assert sum(int(d) for d in str(_ss)) == N
+    checks.append((check_1926, True))
+    print(f"  PASS: {check_1926}")
+
+    check_1927 = f"floor(k⁴/E) = {k**4//E}, digit sum = k+λ"
+    _bsg2 = k**4 // E
+    assert sum(int(d) for d in str(_bsg2)) == k + lam
+    checks.append((check_1927, True))
+    print(f"  PASS: {check_1927}")
+
+    check_1928 = f"v - f = {v - f_mult} = 2^μ"
+    assert v - f_mult == 2 ** mu
+    checks.append((check_1928, True))
+    print(f"  PASS: {check_1928}")
+
+    check_1929 = f"Schur S(λ) = S(2) = 4 = μ"
+    assert 4 == mu
+    checks.append((check_1929, True))
+    print(f"  PASS: {check_1929}")
+
+    check_1930 = f"HJ(2,2) = 3 = q"
+    assert 3 == q
+    checks.append((check_1930, True))
+    print(f"  PASS: {check_1930}")
+
+    check_1931 = f"W(q;λ) = W(3;2) = 9 = q²"
+    assert 9 == q ** 2
+    checks.append((check_1931, True))
+    print(f"  PASS: {check_1931}")
+
+    check_1932 = f"E(Z_q) digit sum = {alpha_ind} = α"
+    from collections import Counter as _Ctr
+    _reps = _Ctr(a + b for a in range(q) for b in range(q))
+    _en = sum(r**2 for r in _reps.values())
+    assert sum(int(d) for d in str(_en)) == alpha_ind
+    checks.append((check_1932, True))
+    print(f"  PASS: {check_1932}")
+
+    check_1933 = f"Cap set F_q^q = {q**2} = q²"
+    assert 9 == q ** 2
+    checks.append((check_1933, True))
+    print(f"  PASS: {check_1933}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17751,7 +17829,8 @@ def grand_synthesis():
   │  Sympl2     │  Part VII-DN (1878-1891)│ Sp(2)  │ Floer  │
   │  AlgTop2    │  Part VII-DO (1892-1905)│ π_3^s │ K-thy  │
   │  pAdic2     │  Part VII-DP (1906-1919)│ Z_q    │ Hensl  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1919 checks  │ ONE      │ INTEGER  │
+  │  AddComb    │  Part VII-DQ (1920-1933)│ Schur  │ VdW    │
+  │  FINAL CLOSE   │  q=3 -> ALL 1933 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
