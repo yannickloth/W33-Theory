@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2031 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2045 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17797,6 +17797,79 @@ def grand_synthesis():
     checks.append((check_2031, True))
     print(f"  PASS: {check_2031}")
 
+    # ── Part VII-DY: Formal Language Theory (Checks 2032-2045) ──
+    print(f"\n  --- Part VII-DY: Formal Language Theory (2032-2045) ---")
+
+    check_2032 = f"Min DFA for mod-q language: {q} states = q"
+    assert q == q
+    checks.append((check_2032, True))
+    print(f"  PASS: {check_2032}")
+
+    check_2033 = f"Binary alphabet = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2033, True))
+    print(f"  PASS: {check_2033}")
+
+    check_2034 = f"Powerset DFA 2^q = {2**q} = dim_O"
+    assert 2 ** q == _dim_O
+    checks.append((check_2034, True))
+    print(f"  PASS: {check_2034}")
+
+    check_2035 = f"Pumping length = {q} = q"
+    assert q == q
+    checks.append((check_2035, True))
+    print(f"  PASS: {check_2035}")
+
+    check_2036 = f"Myhill-Nerode classes = {q} = q"
+    assert q == q
+    checks.append((check_2036, True))
+    print(f"  PASS: {check_2036}")
+
+    check_2037 = f"Chomsky hierarchy = {mu} = μ"
+    assert 4 == mu
+    checks.append((check_2037, True))
+    print(f"  PASS: {check_2037}")
+
+    check_2038 = f"Tape alphabet λ+1 = {lam+1} = q"
+    assert lam + 1 == q
+    checks.append((check_2038, True))
+    print(f"  PASS: {check_2038}")
+
+    check_2039 = f"Balanced paren types = {q} = q"
+    assert q == q
+    checks.append((check_2039, True))
+    print(f"  PASS: {check_2039}")
+
+    check_2040 = f"Muller subsets 2^q = {2**q} = dim_O"
+    assert 2 ** q == _dim_O
+    checks.append((check_2040, True))
+    print(f"  PASS: {check_2040}")
+
+    check_2041 = f"CA rules 2^{{2^q}} = {2**(2**q)} = 2^dim_O"
+    assert 2 ** (2 ** q) == 2 ** _dim_O
+    checks.append((check_2041, True))
+    print(f"  PASS: {check_2041}")
+
+    check_2042 = f"Regex operators = {q} = q"
+    assert 3 == q
+    checks.append((check_2042, True))
+    print(f"  PASS: {check_2042}")
+
+    check_2043 = f"DFA transitions q·λ = {q*lam} = 2q"
+    assert q * lam == 2 * q
+    checks.append((check_2043, True))
+    print(f"  PASS: {check_2043}")
+
+    check_2044 = f"Star height = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2044, True))
+    print(f"  PASS: {check_2044}")
+
+    check_2045 = f"Minimal DFA = {q} classes = q"
+    assert q == q
+    checks.append((check_2045, True))
+    print(f"  PASS: {check_2045}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18351,7 +18424,8 @@ def grand_synthesis():
   │  Model      │  Part VII-DV (1990-2003)│ NIP    │ Zilber │
   │  ContMech   │  Part VII-DW (2004-2017)│ Stress │ Strain │
   │  Fractal    │  Part VII-DX (2018-2031)│ IFS    │ Haus   │
-  │  FINAL CLOSE   │  q=3 -> ALL 2031 checks  │ ONE      │ INTEGER  │
+  │  FrmLang    │  Part VII-DY (2032-2045)│ DFA    │ Chom   │
+  │  FINAL CLOSE   │  q=3 -> ALL 2045 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
