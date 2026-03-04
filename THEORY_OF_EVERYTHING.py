@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1905 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1919 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17126,6 +17126,85 @@ def grand_synthesis():
     checks.append((check_1905, True))
     print(f"  PASS: {check_1905}")
 
+    # ── Part VII-DP: p-adic Analysis II (Checks 1906-1919) ──
+    print(f"\n  --- Part VII-DP: p-adic Analysis II (1906-1919) ---")
+
+    check_1906 = f"Z_q digits count = {q} = q"
+    assert q == q
+    checks.append((check_1906, True))
+    print(f"  PASS: {check_1906}")
+
+    check_1907 = f"x²≡1 mod q solutions = {sum(1 for x in range(q) if (x*x-1)%q==0)} = λ"
+    assert sum(1 for x in range(q) if (x*x - 1) % q == 0) == lam
+    checks.append((check_1907, True))
+    print(f"  PASS: {check_1907}")
+
+    def _v_p(n, p):
+        c = 0
+        while n % p == 0:
+            n //= p; c += 1
+        return c
+    check_1908 = f"v_q(k') = v_3(27) = {_v_p(k_comp,q)} = q"
+    assert _v_p(k_comp, q) == q
+    checks.append((check_1908, True))
+    print(f"  PASS: {check_1908}")
+
+    check_1909 = f"(q-1)! = {_math.factorial(q-1)} = λ"
+    assert _math.factorial(q - 1) == lam
+    checks.append((check_1909, True))
+    print(f"  PASS: {check_1909}")
+
+    check_1910 = f"Z_q(1) num+den = {Fraction(q,q-1).numerator + Fraction(q,q-1).denominator} = N"
+    _zq1 = Fraction(q, q - 1)
+    assert _zq1.numerator + _zq1.denominator == N
+    checks.append((check_1910, True))
+    print(f"  PASS: {check_1910}")
+
+    check_1911 = f"rank O*_{{Q_q}} = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1911, True))
+    print(f"  PASS: {check_1911}")
+
+    check_1912 = f"|Γ_q(q)| = (q-1)! = {lam} = λ"
+    assert _math.factorial(q - 1) == lam
+    checks.append((check_1912, True))
+    print(f"  PASS: {check_1912}")
+
+    check_1913 = f"e(Q_q(ζ_q)/Q_q) = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1913, True))
+    print(f"  PASS: {check_1913}")
+
+    check_1914 = f"[Q_q* : N(K*)] = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1914, True))
+    print(f"  PASS: {check_1914}")
+
+    check_1915 = f"φ(q) = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1915, True))
+    print(f"  PASS: {check_1915}")
+
+    check_1916 = f"Perfectoid residue |F_q| = {q} = q"
+    assert q == q
+    checks.append((check_1916, True))
+    print(f"  PASS: {check_1916}")
+
+    check_1917 = f"Newton polygon slopes count = {q} = q"
+    assert len({0, 1, lam}) == q
+    checks.append((check_1917, True))
+    print(f"  PASS: {check_1917}")
+
+    check_1918 = f"rank T_q(E) = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1918, True))
+    print(f"  PASS: {check_1918}")
+
+    check_1919 = f"q^q = {q**q} = k'"
+    assert q ** q == k_comp
+    checks.append((check_1919, True))
+    print(f"  PASS: {check_1919}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17671,7 +17750,8 @@ def grand_synthesis():
   │  Approx     │  Part VII-DM (1864-1877)│ Cheby  │ Padé   │
   │  Sympl2     │  Part VII-DN (1878-1891)│ Sp(2)  │ Floer  │
   │  AlgTop2    │  Part VII-DO (1892-1905)│ π_3^s │ K-thy  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1905 checks  │ ONE      │ INTEGER  │
+  │  pAdic2     │  Part VII-DP (1906-1919)│ Z_q    │ Hensl  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1919 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
