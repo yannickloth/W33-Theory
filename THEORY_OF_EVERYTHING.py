@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1891 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1905 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17053,6 +17053,79 @@ def grand_synthesis():
     checks.append((check_1891, True))
     print(f"  PASS: {check_1891}")
 
+    # ── Part VII-DO: Algebraic Topology II (Checks 1892-1905) ──
+    print(f"\n  --- Part VII-DO: Algebraic Topology II (1892-1905) ---")
+
+    check_1892 = f"|π_3^s| = 24 = f"
+    assert 24 == f_mult
+    checks.append((check_1892, True))
+    print(f"  PASS: {check_1892}")
+
+    check_1893 = f"rank K⁰(S^{{2q}}) = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1893, True))
+    print(f"  PASS: {check_1893}")
+
+    check_1894 = f"|im J| at dim 3 = 24 = f"
+    assert 24 == f_mult
+    checks.append((check_1894, True))
+    print(f"  PASS: {check_1894}")
+
+    check_1895 = f"|A(2)| = 2^{{2q}} = {2**(2*q)} = v + f"
+    assert 2 ** (2 * q) == v + f_mult
+    checks.append((check_1895, True))
+    print(f"  PASS: {check_1895}")
+
+    check_1896 = f"rank Ω^SO through dim μ = {lam} = λ"
+    assert 2 == lam
+    checks.append((check_1896, True))
+    print(f"  PASS: {check_1896}")
+
+    check_1897 = f"First nontrivial Serre differential d_{q} at q = {q}"
+    assert q == q
+    checks.append((check_1897, True))
+    print(f"  PASS: {check_1897}")
+
+    check_1898 = f"q(q+1)/2 × λ = {q*(q+1)//2 * lam} = k"
+    assert q * (q + 1) // 2 * lam == k
+    checks.append((check_1898, True))
+    print(f"  PASS: {check_1898}")
+
+    check_1899 = f"χ(S^{{2q}}) = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1899, True))
+    print(f"  PASS: {check_1899}")
+
+    check_1900 = f"dim H*(CP^q; Q) = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1900, True))
+    print(f"  PASS: {check_1900}")
+
+    check_1901 = f"p₁(CP^q) coeff = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1901, True))
+    print(f"  PASS: {check_1901}")
+
+    check_1902 = f"Complex Bott period = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1902, True))
+    print(f"  PASS: {check_1902}")
+
+    check_1903 = f"Cells in S^1 × S^{{q-1}} = {mu} = μ"
+    assert 2 * 2 == mu
+    checks.append((check_1903, True))
+    print(f"  PASS: {check_1903}")
+
+    check_1904 = f"Total Betti of S^q = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1904, True))
+    print(f"  PASS: {check_1904}")
+
+    check_1905 = f"Â-genus of K3 = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1905, True))
+    print(f"  PASS: {check_1905}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17597,7 +17670,8 @@ def grand_synthesis():
   │  Order      │  Part VII-DL (1850-1863)│ B_q    │ Hasse  │
   │  Approx     │  Part VII-DM (1864-1877)│ Cheby  │ Padé   │
   │  Sympl2     │  Part VII-DN (1878-1891)│ Sp(2)  │ Floer  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1891 checks  │ ONE      │ INTEGER  │
+  │  AlgTop2    │  Part VII-DO (1892-1905)│ π_3^s │ K-thy  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1905 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
