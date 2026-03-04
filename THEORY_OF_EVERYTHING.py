@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2073 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2087 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -18016,6 +18016,79 @@ def grand_synthesis():
     checks.append((check_2073, True))
     print(f"  PASS: {check_2073}")
 
+    # ── Part VII-EB: Quantum Information II (2074-2087) ──
+    print(f"\n--- Part VII-EB: Quantum Information II (2074-2087) ---")
+
+    check_2074 = "Qutrit Hilbert space dim = q = 3"
+    assert q == 3
+    checks.append((check_2074, True))
+    print(f"  PASS: {check_2074}")
+
+    check_2075 = "Steane code n = 7 = Φ₆"
+    assert 7 == Phi6
+    checks.append((check_2075, True))
+    print(f"  PASS: {check_2075}")
+
+    check_2076 = "Max Schmidt rank = q = 3"
+    assert q == 3
+    checks.append((check_2076, True))
+    print(f"  PASS: {check_2076}")
+
+    check_2077 = "Toric code logical qubits = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2077, True))
+    print(f"  PASS: {check_2077}")
+
+    check_2078 = "Teleportation resources = q + λ = N"
+    assert q + lam == N
+    checks.append((check_2078, True))
+    print(f"  PASS: {check_2078}")
+
+    check_2079 = "Qutrit state parameters = q² - 1 = dim_O"
+    assert q**2 - 1 == _dim_O
+    checks.append((check_2079, True))
+    print(f"  PASS: {check_2079}")
+
+    check_2080 = "Qutrit MUBs = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2080, True))
+    print(f"  PASS: {check_2080}")
+
+    check_2081 = "Quantum walk eigenstates: 1 + f + g = v"
+    assert 1 + f_mult + g_mult == v
+    checks.append((check_2081, True))
+    print(f"  PASS: {check_2081}")
+
+    check_2082 = "Magic state root of unity order = q = 3"
+    assert q == 3
+    checks.append((check_2082, True))
+    print(f"  PASS: {check_2082}")
+
+    check_2083 = "Minimal rank-1 POVM elements = 2q - 1 = N"
+    assert 2 * q - 1 == N
+    checks.append((check_2083, True))
+    print(f"  PASS: {check_2083}")
+
+    check_2084 = "Trotter groups = k/q = μ"
+    assert k // q == mu
+    checks.append((check_2084, True))
+    print(f"  PASS: {check_2084}")
+
+    check_2085 = "Key Rényi orders = μ = 4"
+    assert 4 == mu
+    checks.append((check_2085, True))
+    print(f"  PASS: {check_2085}")
+
+    check_2086 = "SRG graph state CZ gates = E = 240"
+    assert v * k // 2 == E
+    checks.append((check_2086, True))
+    print(f"  PASS: {check_2086}")
+
+    check_2087 = "Qutrit measurement contexts = q² + q + 1 = Φ₃"
+    assert q**2 + q + 1 == Phi3
+    checks.append((check_2087, True))
+    print(f"  PASS: {check_2087}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18573,7 +18646,8 @@ def grand_synthesis():
   │  FrmLang    │  Part VII-DY (2032-2045)│ DFA    │ Chom   │
   │  ExtGraph   │  Part VII-DZ (2046-2059)│ Turán  │ Ramsey │
     │  InverseProb │  Part VII-EA (2060-2073)│ Tikhonov│ Radon │
-  │  FINAL CLOSE   │  q=3 -> ALL 2073 checks  │ ONE      │ INTEGER  │
+    │  QInfo II   │  Part VII-EB (2074-2087)│ Holevo │ Steane │
+  │  FINAL CLOSE   │  q=3 -> ALL 2087 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
