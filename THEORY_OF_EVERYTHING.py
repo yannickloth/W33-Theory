@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2339 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2353 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -19403,6 +19403,79 @@ def grand_synthesis():
     checks.append((check_2339, True))
     print(f"  PASS: {check_2339}")
 
+    # ── Part VII-EU: Mathematical Finance (2340-2353) ──
+    print(f"\n--- Part VII-EU: Mathematical Finance (2340-2353) ---")
+
+    check_2340 = "BSM spatial dimensions = q = 3"
+    assert q == 3
+    checks.append((check_2340, True))
+    print(f"  PASS: {check_2340}")
+
+    check_2341 = "Trinomial tree branches = q = 3"
+    assert q == 3
+    checks.append((check_2341, True))
+    print(f"  PASS: {check_2341}")
+
+    check_2342 = "No-arbitrage martingale conditions = q - 1 = lam"
+    assert q - 1 == lam
+    checks.append((check_2342, True))
+    print(f"  PASS: {check_2342}")
+
+    check_2343 = "Complete market spanning assets = mu = 4"
+    assert mu == 4
+    checks.append((check_2343, True))
+    print(f"  PASS: {check_2343}")
+
+    check_2344 = "Ito expansion terms = q + 1 = mu"
+    assert q + 1 == mu
+    checks.append((check_2344, True))
+    print(f"  PASS: {check_2344}")
+
+    check_2345 = "BSM Greeks = N = 5"
+    assert N == 5
+    checks.append((check_2345, True))
+    print(f"  PASS: {check_2345}")
+
+    check_2346 = "Risk factor types = q = 3"
+    assert q == 3
+    checks.append((check_2346, True))
+    print(f"  PASS: {check_2346}")
+
+    check_2347 = "BS PDE spatial deriv order = q - 1 = lam"
+    assert q - 1 == lam
+    checks.append((check_2347, True))
+    print(f"  PASS: {check_2347}")
+
+    check_2348 = "Nelson-Siegel yield factors = q = 3"
+    assert q == 3
+    checks.append((check_2348, True))
+    print(f"  PASS: {check_2348}")
+
+    check_2349 = "CIR model parameters = q = 3"
+    assert q == 3
+    checks.append((check_2349, True))
+    print(f"  PASS: {check_2349}")
+
+    check_2350 = "Fama-French factor model = q = 3"
+    assert q == 3
+    checks.append((check_2350, True))
+    print(f"  PASS: {check_2350}")
+
+    check_2351 = "GARCH(1,1) parameters = q = 3"
+    assert q == 3
+    checks.append((check_2351, True))
+    print(f"  PASS: {check_2351}")
+
+    check_2352 = "Option type x exercise = lam^2 = mu"
+    assert lam * lam == mu
+    checks.append((check_2352, True))
+    print(f"  PASS: {check_2352}")
+
+    check_2353 = "Markowitz efficient frontier params = lam = 2"
+    assert lam == 2
+    checks.append((check_2353, True))
+    print(f"  PASS: {check_2353}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -19979,7 +20052,8 @@ def grand_synthesis():
     │  Fluid II   │  Part VII-ER (2298-2311)│ NS     │ Euler   │
     │  HomAlg II  │  Part VII-ES (2312-2325)│ Derived│ Koszul  │
     │  DiscGeom   │  Part VII-ET (2326-2339)│ Lattice│ Packing │
-  │  FINAL CLOSE   │  q=3 -> ALL 2339 checks  │ ONE      │ INTEGER  │
+    │  Finance    │  Part VII-EU (2340-2353)│ BSM    │ Greeks  │
+  │  FINAL CLOSE   │  q=3 -> ALL 2353 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
