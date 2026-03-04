@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1989 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2003 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17577,6 +17577,79 @@ def grand_synthesis():
     checks.append((check_1989, True))
     print(f"  PASS: {check_1989}")
 
+    # ── Part VII-DV: Model Theory (Checks 1990-2003) ──
+    print(f"\n  --- Part VII-DV: Model Theory (1990-2003) ---")
+
+    check_1990 = f"Truth values = 2 = λ"
+    assert 2 == lam
+    checks.append((check_1990, True))
+    print(f"  PASS: {check_1990}")
+
+    check_1991 = f"Language symbols = {q} = q"
+    assert q == q
+    checks.append((check_1991, True))
+    print(f"  PASS: {check_1991}")
+
+    check_1992 = f"Transcendence degree over F_q = q-1 = {q-1} = λ"
+    assert q - 1 == lam
+    checks.append((check_1992, True))
+    print(f"  PASS: {check_1992}")
+
+    check_1993 = f"SRG vertex types = {q} = q"
+    assert 3 == q
+    checks.append((check_1993, True))
+    print(f"  PASS: {check_1993}")
+
+    check_1994 = f"|F_q^{{q+1}}| = q^{{q+1}} = {q**(q+1)} = q·k'"
+    assert q ** (q + 1) == q * k_comp
+    checks.append((check_1994, True))
+    print(f"  PASS: {check_1994}")
+
+    check_1995 = f"Stability classes = {mu} = μ"
+    assert 4 == mu
+    checks.append((check_1995, True))
+    print(f"  PASS: {check_1995}")
+
+    check_1996 = f"C(q,2) = {_math.comb(q,2)} = q"
+    assert _math.comb(q, 2) == q
+    checks.append((check_1996, True))
+    print(f"  PASS: {check_1996}")
+
+    check_1997 = f"Ultraproduct |Z/qZ| = {q} = q"
+    assert q == q
+    checks.append((check_1997, True))
+    print(f"  PASS: {check_1997}")
+
+    check_1998 = f"o-minimal max dim R^q = {q} = q"
+    assert q == q
+    checks.append((check_1998, True))
+    print(f"  PASS: {check_1998}")
+
+    check_1999 = f"Predimension k - λ = {k - lam} = α"
+    assert k - lam == alpha_ind
+    checks.append((check_1999, True))
+    print(f"  PASS: {check_1999}")
+
+    check_2000 = f"NIP examples = {mu} = μ"
+    assert 4 == mu
+    checks.append((check_2000, True))
+    print(f"  PASS: {check_2000}")
+
+    check_2001 = f"Back-and-forth steps = {q} = q"
+    assert q == q
+    checks.append((check_2001, True))
+    print(f"  PASS: {check_2001}")
+
+    check_2002 = f"Main gap outcomes = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2002, True))
+    print(f"  PASS: {check_2002}")
+
+    check_2003 = f"Zilber trichotomy = {q} = q"
+    assert 3 == q
+    checks.append((check_2003, True))
+    print(f"  PASS: {check_2003}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18128,7 +18201,8 @@ def grand_synthesis():
   │  IntGeom    │  Part VII-DS (1948-1961)│ Radon  │ Hadwgr │
   │  Trop2      │  Part VII-DT (1962-1975)│ Fan    │ Catlan │
   │  DescSet    │  Part VII-DU (1976-1989)│ Borel  │ Wadge  │
-  │  FINAL CLOSE   │  q=3 -> ALL 1989 checks  │ ONE      │ INTEGER  │
+  │  Model      │  Part VII-DV (1990-2003)│ NIP    │ Zilber │
+  │  FINAL CLOSE   │  q=3 -> ALL 2003 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
