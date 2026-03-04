@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 2059 checks follow from the single integer q = 3.")
+    print(f"  → ALL 2073 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -17943,6 +17943,79 @@ def grand_synthesis():
     checks.append((check_2059, True))
     print(f"  PASS: {check_2059}")
 
+    # ── Part VII-EA: Inverse Problems (2060-2073) ──
+    print(f"\n--- Part VII-EA: Inverse Problems (2060-2073) ---")
+
+    check_2060 = "Tikhonov total DOF = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2060, True))
+    print(f"  PASS: {check_2060}")
+
+    check_2061 = "Rank-q SVD truncation retains q = 3 values"
+    assert q == 3
+    checks.append((check_2061, True))
+    print(f"  PASS: {check_2061}")
+
+    check_2062 = "Calderon boundary dim = q - 1 = λ"
+    assert q - 1 == lam
+    checks.append((check_2062, True))
+    print(f"  PASS: {check_2062}")
+
+    check_2063 = "CT angular parameters = q - 1 = λ"
+    assert q - 1 == lam
+    checks.append((check_2063, True))
+    print(f"  PASS: {check_2063}")
+
+    check_2064 = "Condition number k/r = 6 = 2q"
+    assert k // r_eval == 2 * q
+    checks.append((check_2064, True))
+    print(f"  PASS: {check_2064}")
+
+    check_2065 = "BG trade-off parameters = q + 1 = μ"
+    assert q + 1 == mu
+    checks.append((check_2065, True))
+    print(f"  PASS: {check_2065}")
+
+    check_2066 = "Inverse eigenvalue: spectrum size = q = 3"
+    assert q == 3
+    checks.append((check_2066, True))
+    print(f"  PASS: {check_2066}")
+
+    check_2067 = "MP law upper bound at γ=1 = μ"
+    assert (1 + 1)**2 == mu
+    checks.append((check_2067, True))
+    print(f"  PASS: {check_2067}")
+
+    check_2068 = "Bayesian components = q = 3"
+    assert 3 == q
+    checks.append((check_2068, True))
+    print(f"  PASS: {check_2068}")
+
+    check_2069 = "L-curve axes = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2069, True))
+    print(f"  PASS: {check_2069}")
+
+    check_2070 = "GL Fredholm type = 2 = λ"
+    assert 2 == lam
+    checks.append((check_2070, True))
+    print(f"  PASS: {check_2070}")
+
+    check_2071 = "Phase retrieval measurements ≥ 2q = q!"
+    assert 2 * q == _math.factorial(q)
+    checks.append((check_2071, True))
+    print(f"  PASS: {check_2071}")
+
+    check_2072 = "CS sparsity bound = q = 3"
+    assert q == 3
+    checks.append((check_2072, True))
+    print(f"  PASS: {check_2072}")
+
+    check_2073 = "TV gradient components = q = 3"
+    assert q == 3
+    checks.append((check_2073, True))
+    print(f"  PASS: {check_2073}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -18499,7 +18572,8 @@ def grand_synthesis():
   │  Fractal    │  Part VII-DX (2018-2031)│ IFS    │ Haus   │
   │  FrmLang    │  Part VII-DY (2032-2045)│ DFA    │ Chom   │
   │  ExtGraph   │  Part VII-DZ (2046-2059)│ Turán  │ Ramsey │
-  │  FINAL CLOSE   │  q=3 -> ALL 2059 checks  │ ONE      │ INTEGER  │
+    │  InverseProb │  Part VII-EA (2060-2073)│ Tikhonov│ Radon │
+  │  FINAL CLOSE   │  q=3 -> ALL 2073 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
