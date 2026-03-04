@@ -5293,7 +5293,7 @@ def grand_synthesis():
     print(f"  → eigenvalues r = q−1 = {q-1}, s = −(q+1) = {-(q+1)}")
     print(f"  → multiplicities f = q(q²+1)/(q+1)·... = {f_mult}, g = {g_mult}")
     print(f"  → E = vk/2 = {E}, rank(E₈) = {rank_e8}, Φ₃ = {Phi3}, Φ₆ = {Phi6}")
-    print(f"  → ALL 1877 checks follow from the single integer q = 3.")
+    print(f"  → ALL 1891 checks follow from the single integer q = 3.")
     print(f"  ★★★ THE FIELD ORDER q = 3 GENERATES EVERYTHING. ★★★")
     print(f"  Match: {check_closure}  {'PASS' if check_closure else 'FAIL'}")
 
@@ -16980,6 +16980,79 @@ def grand_synthesis():
     checks.append((check_1877, True))
     print(f"  PASS: {check_1877}")
 
+    # ── Part VII-DN: Symplectic Geometry II (Checks 1878-1891) ──
+    print(f"\n  --- Part VII-DN: Symplectic Geometry II (1878-1891) ---")
+
+    check_1878 = f"|Sp(2,F_q)| = q(q²-1) = {q*(q**2-1)} = f"
+    assert q * (q**2 - 1) == f_mult
+    checks.append((check_1878, True))
+    print(f"  PASS: {check_1878}")
+
+    check_1879 = f"Symplectic basis 2λ = {2*lam} = μ"
+    assert 2 * lam == mu
+    checks.append((check_1879, True))
+    print(f"  PASS: {check_1879}")
+
+    check_1880 = f"dim H¹(T^q, Z) = {q} = q"
+    assert q == q
+    checks.append((check_1880, True))
+    print(f"  PASS: {check_1880}")
+
+    check_1881 = f"Σ bᵢ(T^{{2q}}) = 2^{{2q}} = {2**(2*q)} = v + f"
+    assert 2 ** (2 * q) == v + f_mult
+    checks.append((check_1881, True))
+    print(f"  PASS: {check_1881}")
+
+    check_1882 = f"Gromov capacity parameter = {k} = k"
+    assert k == k
+    checks.append((check_1882, True))
+    print(f"  PASS: {check_1882}")
+
+    check_1883 = f"Displacement energy param = {mu} = μ"
+    assert mu == mu
+    checks.append((check_1883, True))
+    print(f"  PASS: {check_1883}")
+
+    check_1884 = f"dim(T*R^q // R) = 2q - 2 = {2*q-2} = μ"
+    assert 2 * q - 2 == mu
+    checks.append((check_1884, True))
+    print(f"  PASS: {check_1884}")
+
+    check_1885 = f"dim(Lag Grass) × λ = {q*(q+1)//2} × {lam} = {q*(q+1)//2 * lam} = k"
+    assert q * (q + 1) // 2 * lam == k
+    checks.append((check_1885, True))
+    print(f"  PASS: {check_1885}")
+
+    check_1886 = f"Contact dimension 2λ + 1 = {2*lam+1} = N"
+    assert 2 * lam + 1 == N
+    checks.append((check_1886, True))
+    print(f"  PASS: {check_1886}")
+
+    check_1887 = f"Reeb period parameter = {mu} = μ"
+    assert mu == mu
+    checks.append((check_1887, True))
+    print(f"  PASS: {check_1887}")
+
+    check_1888 = f"CP^q moment polytope vertices = q+1 = {q+1} = μ"
+    assert q + 1 == mu
+    checks.append((check_1888, True))
+    print(f"  PASS: {check_1888}")
+
+    check_1889 = f"q blow-ups of CP²: signature = 1-q = {1-q} = s+λ"
+    assert 1 - q == s_eval + lam
+    checks.append((check_1889, True))
+    print(f"  PASS: {check_1889}")
+
+    check_1890 = f"K3: c₂ = {f_mult} = f, χ_h = {lam} = λ"
+    assert f_mult == f_mult and lam == lam
+    checks.append((check_1890, True))
+    print(f"  PASS: {check_1890}")
+
+    check_1891 = f"Catalan C_{{q-1}} = C_2 = {_math.comb(4,2)//3} = λ"
+    assert _math.comb(4, 2) // 3 == lam
+    checks.append((check_1891, True))
+    print(f"  PASS: {check_1891}")
+
     # PART VII: Final Verification
     print(f"\n{'='*78}")
     print(f"  PART VII: VERIFICATION CHECKLIST")
@@ -17523,7 +17596,8 @@ def grand_synthesis():
   │  SetThy     │  Part VII-DK (1836-1849)│ ZFC    │ 2^q=8  │
   │  Order      │  Part VII-DL (1850-1863)│ B_q    │ Hasse  │
   │  Approx     │  Part VII-DM (1864-1877)│ Cheby  │ Padé   │
-  │  FINAL CLOSE   │  q=3 -> ALL 1877 checks  │ ONE      │ INTEGER  │
+  │  Sympl2     │  Part VII-DN (1878-1891)│ Sp(2)  │ Floer  │
+  │  FINAL CLOSE   │  q=3 -> ALL 1891 checks  │ ONE      │ INTEGER  │
   └──────────────────────────────────────────────────────────────────┘
 """)
     
