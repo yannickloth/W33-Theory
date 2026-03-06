@@ -1413,6 +1413,47 @@ def test_global_ce2_predictor_cancels_anchor_21_overlap_families() -> None:
     _assert_predictor_cancels_triples(triples)
 
 
+def test_global_ce2_predictor_cancels_anchor_201_line_families() -> None:
+    """Table-driven line families on the anchored a=(2,0,1) orbit."""
+    triples = [
+        ((6, 0), (0, 0), (17, 1)),
+        ((6, 0), (0, 1), (17, 0)),
+        ((6, 0), (1, 0), (8, 1)),
+        ((6, 0), (1, 1), (8, 0)),
+        ((6, 0), (2, 0), (7, 1)),
+        ((6, 0), (2, 1), (7, 0)),
+        ((6, 0), (4, 0), (5, 1)),
+        ((6, 0), (4, 1), (5, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
+def test_global_ce2_predictor_cancels_anchor_201_overlap_families() -> None:
+    """Half-strength overlap families on the anchored a=(2,0,1) orbit."""
+    triples = [
+        ((6, 0), (0, 1), (22, 0)),
+        ((6, 0), (0, 2), (22, 0)),
+        ((6, 0), (1, 1), (23, 0)),
+        ((6, 0), (1, 2), (23, 0)),
+        ((6, 0), (2, 1), (16, 0)),
+        ((6, 0), (2, 2), (16, 0)),
+        ((6, 0), (4, 1), (25, 0)),
+        ((6, 0), (4, 2), (25, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
+def test_global_ce2_predictor_cancels_anchor_201_samefiber_v_families() -> None:
+    """Same-fiber sl3/e6 families on the anchored a=(2,0,1) orbit."""
+    triples = [
+        ((6, 0), (3, 0), (6, 1)),
+        ((6, 0), (3, 0), (6, 2)),
+        ((6, 0), (3, 1), (6, 0)),
+        ((6, 0), (3, 2), (6, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
 def test_global_ce2_predictor_cancels_origin_same_fiber_uv_family() -> None:
     """Half-strength U/V overlap on a same-fiber origin line."""
     toe = _load_bracket_tool()

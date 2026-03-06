@@ -22,6 +22,24 @@ def _decode_g1(entries):
     return sorted(((int(i) - 738) // 3, (int(i) - 738) % 3, str(v)) for i, v in entries)
 
 
+def _decode_sparse(entries):
+    out = []
+    for i, v in entries:
+        idx = int(i)
+        if idx < 729:
+            out.append(("e6", idx // 27, idx % 27, str(v)))
+        elif idx < 738:
+            j = idx - 729
+            out.append(("sl3", j // 3, j % 3, str(v)))
+        elif idx < 819:
+            j = idx - 738
+            out.append(("g1", j // 3, j % 3, str(v)))
+        else:
+            j = idx - 819
+            out.append(("g2", j // 3, j % 3, str(v)))
+    return sorted(out)
+
+
 def test_simple_family_sign_explanation_matches_predictor() -> None:
     # pick a few representative triples (c,match,other) in the simple family
     samples = [
@@ -794,3 +812,56 @@ def test_predict_dual_anchor_21_overlap_sign_flips() -> None:
         assert _decode_g1(uvw.U) == expected_u, triple
         assert _decode_e6(uvw.V) == expected_v, triple
         assert uvw.W == [], triple
+
+
+def test_predict_dual_anchor_201_line_families() -> None:
+    samples = [
+        (((6, 0), (0, 0), (17, 1)), [], [], [(17, 3, "1/54")]),
+        (((6, 0), (0, 1), (17, 0)), [], [(0, 3, "1/54")], []),
+        (((6, 0), (1, 0), (8, 1)), [], [], [(8, 3, "-1/54")]),
+        (((6, 0), (1, 1), (8, 0)), [], [(1, 3, "-1/54")], []),
+        (((6, 0), (2, 0), (7, 1)), [], [], [(7, 3, "1/54")]),
+        (((6, 0), (2, 1), (7, 0)), [], [(2, 3, "1/54")], []),
+        (((6, 0), (4, 0), (5, 1)), [], [], [(5, 3, "-1/54")]),
+        (((6, 0), (4, 1), (5, 0)), [], [(4, 3, "-1/54")], []),
+    ]
+    for triple, expected_u, expected_v, expected_w in samples:
+        uvw = predict_dual_g1g2g2_uvw(*triple)
+        assert uvw is not None, triple
+        assert _decode_g1(uvw.U) == expected_u, triple
+        assert _decode_e6(uvw.V) == expected_v, triple
+        assert _decode_e6(uvw.W) == expected_w, triple
+
+
+def test_predict_dual_anchor_201_overlap_families() -> None:
+    samples = [
+        (((6, 0), (0, 1), (22, 0)), [(21, 2, "1/108")], [(0, 11, "-1/108")]),
+        (((6, 0), (0, 2), (22, 0)), [(21, 1, "-1/108")], [(0, 11, "-1/108")]),
+        (((6, 0), (1, 1), (23, 0)), [(15, 2, "-1/108")], [(1, 18, "-1/108")]),
+        (((6, 0), (1, 2), (23, 0)), [(15, 1, "1/108")], [(1, 18, "-1/108")]),
+        (((6, 0), (2, 1), (16, 0)), [(20, 2, "1/108")], [(2, 12, "1/108")]),
+        (((6, 0), (2, 2), (16, 0)), [(20, 1, "-1/108")], [(2, 12, "1/108")]),
+        (((6, 0), (4, 1), (25, 0)), [(9, 2, "1/108")], [(4, 24, "1/108")]),
+        (((6, 0), (4, 2), (25, 0)), [(9, 1, "-1/108")], [(4, 24, "1/108")]),
+    ]
+    for triple, expected_u, expected_v in samples:
+        uvw = predict_dual_g1g2g2_uvw(*triple)
+        assert uvw is not None, triple
+        assert _decode_g1(uvw.U) == expected_u, triple
+        assert _decode_e6(uvw.V) == expected_v, triple
+        assert uvw.W == [], triple
+
+
+def test_predict_dual_anchor_201_samefiber_v_family() -> None:
+    samples = [
+        (((6, 0), (3, 0), (6, 1)), [], [("sl3", 0, 1, "-1/54")], []),
+        (((6, 0), (3, 0), (6, 2)), [], [("sl3", 0, 2, "-1/54")], []),
+        (((6, 0), (3, 1), (6, 0)), [], [("e6", 3, 3, "1/108"), ("sl3", 1, 1, "1/108")], []),
+        (((6, 0), (3, 2), (6, 0)), [], [("e6", 3, 3, "1/108"), ("sl3", 2, 2, "1/108")], []),
+    ]
+    for triple, expected_u, expected_v, expected_w in samples:
+        uvw = predict_dual_g1g2g2_uvw(*triple)
+        assert uvw is not None, triple
+        assert _decode_g1(uvw.U) == expected_u, triple
+        assert _decode_sparse(uvw.V) == expected_v, triple
+        assert _decode_e6(uvw.W) == expected_w, triple
