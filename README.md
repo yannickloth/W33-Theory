@@ -59,12 +59,12 @@ The repo also closes the “missing cocycle” loop on the algebra side: the sam
 
 ## Latest Frontier (March 2026)
 
-The repo has continued moving after the 2367-check expansion. The newest algebraic work is the dual mixed-sector closure program.
+The findings above are still part of the project. The current live frontier is the dual mixed-sector closure program in the firewall / CE2 / L∞ layer.
 
 - The canonical `SU(3)` gauge and signed `W(E₆)` action on the `27` are exported and verified in fixed conventions.
-- `scripts/ce2_global_cocycle.py` now closes whole dual `g₁,g₂,g₂` families rather than isolated witness triples.
+- `scripts/ce2_global_cocycle.py` now closes whole dual `g₁,g₂,g₂` family slices rather than isolated witness triples.
 - `tools/build_linfty_firewall_extension.py` threads those global predictor families into the firewall / L∞ repair layer.
-- The dual frontier has been pushed through the anchor families `a = (0,1,2)`, `a = (2,0,2)`, and `a = (2,2,1)`.
+- The dual frontier has already been pushed through the anchor families `a = (0,1,2)`, `a = (2,0,2)`, and `a = (2,2,1)`.
 - The current live unresolved sample sits at `a = (2,1,2)` and is tracked by `tools/sample_dual_g1g2g2_frontier.py` plus `artifacts/dual_g1g2g2_frontier_sample.json`.
 
 ## Status
