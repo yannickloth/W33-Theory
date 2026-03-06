@@ -299,6 +299,45 @@ def test_mixed_triple_cancelled_by_l3_plus_ce2chain():
     linfty.detach_l4()
 
 
+def test_dual_mixed_triple_requires_three_pair_ce2_fallback():
+    """The g1_g2_g2 witness closes once the local solver is allowed a W leg."""
+    from tools.build_linfty_firewall_extension import (
+        LInftyE8Extension,
+        _load_bad9,
+        _load_bracket_tool,
+    )
+    from tools.exhaustive_homotopy_check_rationalized_l3 import (
+        basis_elem_g1,
+        basis_elem_g2,
+    )
+
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (0, 0))
+    y = basis_elem_g2(toe, (0, 0))
+    z = basis_elem_g2(toe, (21, 1))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    alpha = linfty.compute_local_ce2_alpha_for_triple(x, y, z)
+    assert alpha is not None
+    assert getattr(alpha, "_ce2_solution_mode", None) == "uvw"
+    assert np.linalg.norm(getattr(alpha, "_ce2_W_flat")) > 1e-12
+
+    linfty.attach_ce2_alpha(alpha)
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
 def test_mixed_triple_cancelled_by_manual_lsq_candidate_3_1():
     """Targeted regression: compute numeric LSQ U/V for the recorded mixed
     failing triple (0,0),(17,1),(3,1), attach the resulting CE2 alpha and

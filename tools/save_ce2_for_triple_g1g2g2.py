@@ -64,7 +64,7 @@ def basis_elem_g2(idx: Tuple[int, int]):
 
 
 x = basis_elem_g1(A)
-y = basis_elem_g1(B)
+y = basis_elem_g2(B)
 z = basis_elem_g2(C)
 
 print("Computing rational CE2 for triple", A, B, C)
@@ -75,6 +75,10 @@ if res is None:
     print("No rational CE2 found; abort")
     raise SystemExit(1)
 alpha_fn, U_flat, V_flat, U_rats, V_rats = res
+W_flat = getattr(alpha_fn, "_ce2_W_flat", np.zeros_like(U_flat))
+W_rats = getattr(alpha_fn, "_ce2_W_rats", None)
+if W_rats is None:
+    W_rats = [None] * len(U_flat)
 
 key = f"{A[0]},{A[1]}:{B[0]},{B[1]}:{C[0]},{C[1]}"
 ce2 = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
@@ -82,10 +86,13 @@ ce2[key] = {
     "a": A,
     "b": B,
     "c": C,
+    "types": ["g1", "g2", "g2"],
     "U_norm": float(np.linalg.norm(U_flat)),
     "V_norm": float(np.linalg.norm(V_flat)),
+    "W_norm": float(np.linalg.norm(W_flat)),
     "U_rats": [str(r) if r is not None else "0" for r in U_rats],
     "V_rats": [str(r) if r is not None else "0" for r in V_rats],
+    "W_rats": [str(r) if r is not None else "0" for r in W_rats],
 }
 OUT.write_text(json.dumps(ce2, indent=2), encoding="utf-8")
 print("Merged CE2 entry for", key, "->", OUT)

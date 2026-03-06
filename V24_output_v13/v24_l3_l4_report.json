@@ -1,0 +1,47 @@
+{
+  "version": "V24",
+  "inputs": {
+    "structure_constants": "C:\\Repos\\Theory of Everything\\artifacts\\e8_structure_constants_w33_discrete.json",
+    "root_metadata": "extracted_v13\\W33-Theory-master\\artifacts\\e8_root_metadata_table.json",
+    "couplings": "extracted_v13\\W33-Theory-master\\artifacts\\e8_g1g1_couplings_cubic_firewall.json",
+    "g1_size": 81,
+    "forbidden_pairs": 162
+  },
+  "l3": {
+    "nonzero": 2592,
+    "support": 72,
+    "max_abs_coeff": 1,
+    "coeff_hist_top": [
+      {
+        "coeff": 1,
+        "count": 1296
+      },
+      {
+        "coeff": -1,
+        "count": 1296
+      }
+    ]
+  },
+  "l4": {
+    "raw_candidates": 202176,
+    "unique_computed": 177552,
+    "nonzero": 25920,
+    "support": 81,
+    "max_abs_coeff": 1,
+    "coeff_hist_top": [
+      {
+        "coeff": -1,
+        "count": 12960
+      },
+      {
+        "coeff": 1,
+        "count": 12960
+      }
+    ]
+  },
+  "paths": {
+    "l3_jsonl": "V24_output_v13\\l3_patch_triples_full.jsonl",
+    "l4_jsonl": "V24_output_v13\\l4_patch_quads_full.jsonl"
+  },
+  "elapsed_seconds": 0.56
+}

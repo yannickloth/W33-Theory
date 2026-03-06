@@ -1,0 +1,756 @@
+{
+  "deltaL5_exact_on_candidates": {
+    "coeff_hist_deltaL5_top": [
+      {
+        "coeff": -1,
+        "count": 291609
+      },
+      {
+        "coeff": 1,
+        "count": 290386
+      },
+      {
+        "coeff": 2,
+        "count": 79968
+      },
+      {
+        "coeff": -2,
+        "count": 79449
+      },
+      {
+        "coeff": -3,
+        "count": 12778
+      },
+      {
+        "coeff": 3,
+        "count": 12673
+      },
+      {
+        "coeff": -4,
+        "count": 4267
+      },
+      {
+        "coeff": 4,
+        "count": 4223
+      },
+      {
+        "coeff": -5,
+        "count": 813
+      },
+      {
+        "coeff": 5,
+        "count": 788
+      },
+      {
+        "coeff": 6,
+        "count": 217
+      },
+      {
+        "coeff": -6,
+        "count": 216
+      }
+    ],
+    "l6_entries": 777495,
+    "l6_output_support_size": 234,
+    "multi_term_records_first50": [],
+    "nonzero_rate_on_candidates": 0.13795486584579297,
+    "output_grade_hist": {
+      "g0": 226283,
+      "g1": 298835,
+      "g2": 252377
+    },
+    "output_i27_hist_top": [
+      {
+        "count": 226283,
+        "i27": -1
+      },
+      {
+        "count": 27802,
+        "i27": 24
+      },
+      {
+        "count": 25192,
+        "i27": 10
+      },
+      {
+        "count": 25066,
+        "i27": 19
+      },
+      {
+        "count": 25052,
+        "i27": 9
+      },
+      {
+        "count": 24994,
+        "i27": 1
+      },
+      {
+        "count": 24462,
+        "i27": 16
+      },
+      {
+        "count": 24351,
+        "i27": 11
+      },
+      {
+        "count": 23269,
+        "i27": 8
+      },
+      {
+        "count": 23131,
+        "i27": 5
+      },
+      {
+        "count": 21715,
+        "i27": 13
+      },
+      {
+        "count": 21680,
+        "i27": 17
+      }
+    ],
+    "output_phase_hist_top": [
+      {
+        "count": 145528,
+        "phase": 0
+      },
+      {
+        "count": 142399,
+        "phase": 4
+      },
+      {
+        "count": 131501,
+        "phase": 5
+      },
+      {
+        "count": 126015,
+        "phase": 3
+      },
+      {
+        "count": 124182,
+        "phase": 2
+      },
+      {
+        "count": 107870,
+        "phase": 1
+      }
+    ],
+    "stats": {
+      "nonzero": 777495,
+      "single": 777495,
+      "zero": 4858370
+    },
+    "termcount_hist": {
+      "1": 777495
+    },
+    "time_s": 23.41,
+    "top_outputs": [
+      {
+        "basis": 87,
+        "count": 8399,
+        "grade": "g2",
+        "i27": 16,
+        "phase_z6": 5
+      },
+      {
+        "basis": 39,
+        "count": 7721,
+        "grade": "g1",
+        "i27": 17,
+        "phase_z6": 4
+      },
+      {
+        "basis": 129,
+        "count": 7630,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 103,
+        "count": 6942,
+        "grade": "g2",
+        "i27": 24,
+        "phase_z6": 1
+      },
+      {
+        "basis": 27,
+        "count": 6936,
+        "grade": "g2",
+        "i27": 2,
+        "phase_z6": 5
+      },
+      {
+        "basis": 65,
+        "count": 6721,
+        "grade": "g2",
+        "i27": 23,
+        "phase_z6": 0
+      },
+      {
+        "basis": 10,
+        "count": 6564,
+        "grade": "g1",
+        "i27": 19,
+        "phase_z6": 4
+      },
+      {
+        "basis": 175,
+        "count": 6491,
+        "grade": "g1",
+        "i27": 5,
+        "phase_z6": 4
+      },
+      {
+        "basis": 98,
+        "count": 6429,
+        "grade": "g2",
+        "i27": 6,
+        "phase_z6": 5
+      },
+      {
+        "basis": 49,
+        "count": 6371,
+        "grade": "g1",
+        "i27": 21,
+        "phase_z6": 4
+      },
+      {
+        "basis": 32,
+        "count": 6339,
+        "grade": "g1",
+        "i27": 26,
+        "phase_z6": 0
+      },
+      {
+        "basis": 55,
+        "count": 6332,
+        "grade": "g2",
+        "i27": 8,
+        "phase_z6": 5
+      },
+      {
+        "basis": 94,
+        "count": 6135,
+        "grade": "g1",
+        "i27": 11,
+        "phase_z6": 0
+      },
+      {
+        "basis": 36,
+        "count": 6082,
+        "grade": "g1",
+        "i27": 10,
+        "phase_z6": 1
+      },
+      {
+        "basis": 187,
+        "count": 5946,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 91,
+        "count": 5863,
+        "grade": "g1",
+        "i27": 19,
+        "phase_z6": 4
+      },
+      {
+        "basis": 124,
+        "count": 5851,
+        "grade": "g1",
+        "i27": 9,
+        "phase_z6": 0
+      },
+      {
+        "basis": 22,
+        "count": 5714,
+        "grade": "g1",
+        "i27": 1,
+        "phase_z6": 0
+      },
+      {
+        "basis": 203,
+        "count": 5570,
+        "grade": "g1",
+        "i27": 10,
+        "phase_z6": 3
+      },
+      {
+        "basis": 30,
+        "count": 5569,
+        "grade": "g1",
+        "i27": 24,
+        "phase_z6": 4
+      }
+    ]
+  },
+  "deltaL6_sample_with_full_l6": {
+    "N7": 500000,
+    "coeff_hist_top": [
+      {
+        "coeff": 1,
+        "count": 300
+      },
+      {
+        "coeff": -1,
+        "count": 270
+      },
+      {
+        "coeff": -2,
+        "count": 143
+      },
+      {
+        "coeff": 2,
+        "count": 141
+      },
+      {
+        "coeff": 3,
+        "count": 28
+      },
+      {
+        "coeff": -3,
+        "count": 27
+      },
+      {
+        "coeff": -4,
+        "count": 22
+      },
+      {
+        "coeff": 4,
+        "count": 20
+      },
+      {
+        "coeff": -6,
+        "count": 5
+      },
+      {
+        "coeff": 5,
+        "count": 3
+      },
+      {
+        "coeff": 6,
+        "count": 2
+      },
+      {
+        "coeff": -5,
+        "count": 1
+      }
+    ],
+    "examples_first15": [
+      {
+        "coeff": 2,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          24,
+          86,
+          132,
+          145,
+          152,
+          166,
+          195
+        ],
+        "out": 119,
+        "phase": 2
+      },
+      {
+        "coeff": -2,
+        "grade": "g2",
+        "i27": 24,
+        "in": [
+          13,
+          101,
+          117,
+          152,
+          163,
+          201,
+          204
+        ],
+        "out": 148,
+        "phase": 1
+      },
+      {
+        "coeff": -6,
+        "grade": "g1",
+        "i27": 17,
+        "in": [
+          22,
+          80,
+          102,
+          146,
+          158,
+          184,
+          191
+        ],
+        "out": 104,
+        "phase": 0
+      },
+      {
+        "coeff": 1,
+        "grade": "g1",
+        "i27": 13,
+        "in": [
+          16,
+          43,
+          67,
+          94,
+          163,
+          186,
+          222
+        ],
+        "out": 20,
+        "phase": 3
+      },
+      {
+        "coeff": 2,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          63,
+          64,
+          104,
+          115,
+          142,
+          186,
+          242
+        ],
+        "out": 200,
+        "phase": 2
+      },
+      {
+        "coeff": -2,
+        "grade": "g1",
+        "i27": 11,
+        "in": [
+          22,
+          39,
+          73,
+          150,
+          160,
+          221,
+          242
+        ],
+        "out": 158,
+        "phase": 4
+      },
+      {
+        "coeff": 1,
+        "grade": "g2",
+        "i27": 0,
+        "in": [
+          32,
+          86,
+          124,
+          146,
+          152,
+          163,
+          189
+        ],
+        "out": 125,
+        "phase": 5
+      },
+      {
+        "coeff": -2,
+        "grade": "g1",
+        "i27": 12,
+        "in": [
+          32,
+          80,
+          122,
+          142,
+          156,
+          189,
+          195
+        ],
+        "out": 156,
+        "phase": 3
+      },
+      {
+        "coeff": 1,
+        "grade": "g2",
+        "i27": 24,
+        "in": [
+          28,
+          51,
+          104,
+          160,
+          166,
+          173,
+          194
+        ],
+        "out": 103,
+        "phase": 1
+      },
+      {
+        "coeff": 1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          94,
+          101,
+          128,
+          153,
+          163,
+          186,
+          194
+        ],
+        "out": 236,
+        "phase": 5
+      },
+      {
+        "coeff": 1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          20,
+          63,
+          64,
+          120,
+          170,
+          186,
+          242
+        ],
+        "out": 107,
+        "phase": 5
+      },
+      {
+        "coeff": -1,
+        "grade": "g1",
+        "i27": 9,
+        "in": [
+          24,
+          101,
+          134,
+          153,
+          163,
+          189,
+          195
+        ],
+        "out": 184,
+        "phase": 3
+      },
+      {
+        "coeff": -2,
+        "grade": "g2",
+        "i27": 22,
+        "in": [
+          15,
+          145,
+          152,
+          158,
+          172,
+          204,
+          221
+        ],
+        "out": 233,
+        "phase": 1
+      },
+      {
+        "coeff": 1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          15,
+          33,
+          94,
+          140,
+          145,
+          189,
+          243
+        ],
+        "out": 100,
+        "phase": 2
+      },
+      {
+        "coeff": 2,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          38,
+          117,
+          140,
+          150,
+          166,
+          171,
+          194
+        ],
+        "out": 196,
+        "phase": 2
+      }
+    ],
+    "nonzero_rate": 0.001926,
+    "output_grade_hist": {
+      "g0": 276,
+      "g1": 354,
+      "g2": 333
+    },
+    "stats": {
+      "nonzero": 963,
+      "single": 963,
+      "zero": 499037
+    },
+    "support_size_sample": 219,
+    "termcount_hist": {
+      "1": 963
+    },
+    "time_s": 2.69,
+    "top_outputs": [
+      {
+        "basis": 173,
+        "count": 12,
+        "grade": "g1",
+        "i27": 13,
+        "phase_z6": 4
+      },
+      {
+        "basis": 49,
+        "count": 12,
+        "grade": "g1",
+        "i27": 21,
+        "phase_z6": 4
+      },
+      {
+        "basis": 25,
+        "count": 11,
+        "grade": "g2",
+        "i27": 8,
+        "phase_z6": 5
+      },
+      {
+        "basis": 39,
+        "count": 11,
+        "grade": "g1",
+        "i27": 17,
+        "phase_z6": 4
+      },
+      {
+        "basis": 203,
+        "count": 11,
+        "grade": "g1",
+        "i27": 10,
+        "phase_z6": 3
+      },
+      {
+        "basis": 88,
+        "count": 10,
+        "grade": "g2",
+        "i27": 4,
+        "phase_z6": 5
+      },
+      {
+        "basis": 187,
+        "count": 10,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 124,
+        "count": 10,
+        "grade": "g1",
+        "i27": 9,
+        "phase_z6": 0
+      },
+      {
+        "basis": 129,
+        "count": 9,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 194,
+        "count": 9,
+        "grade": "g1",
+        "i27": 12,
+        "phase_z6": 2
+      },
+      {
+        "basis": 37,
+        "count": 9,
+        "grade": "g2",
+        "i27": 0,
+        "phase_z6": 5
+      },
+      {
+        "basis": 122,
+        "count": 9,
+        "grade": "g1",
+        "i27": 18,
+        "phase_z6": 0
+      },
+      {
+        "basis": 138,
+        "count": 9,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 170,
+        "count": 9,
+        "grade": "g1",
+        "i27": 6,
+        "phase_z6": 3
+      },
+      {
+        "basis": 172,
+        "count": 9,
+        "grade": "g1",
+        "i27": 16,
+        "phase_z6": 3
+      },
+      {
+        "basis": 60,
+        "count": 9,
+        "grade": "g1",
+        "i27": 18,
+        "phase_z6": 4
+      },
+      {
+        "basis": 43,
+        "count": 9,
+        "grade": "g1",
+        "i27": 24,
+        "phase_z6": 0
+      },
+      {
+        "basis": 148,
+        "count": 8,
+        "grade": "g2",
+        "i27": 24,
+        "phase_z6": 1
+      },
+      {
+        "basis": 107,
+        "count": 8,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 5
+      },
+      {
+        "basis": 171,
+        "count": 8,
+        "grade": "g1",
+        "i27": 11,
+        "phase_z6": 3
+      }
+    ]
+  },
+  "inputs": {
+    "L5_quints": 85429,
+    "L5_support": 234,
+    "candidate_sextuples_unique": 5635865,
+    "sanity_non_candidate_tested": 49118,
+    "sanity_non_candidate_violations": 0,
+    "v06_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v06.zip",
+    "v19_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v19.zip"
+  },
+  "notes": {
+    "why_second_CE_sum_vanishes_on_g1": "For the (filtered) Z3 grading used here, [g1,g1] lands in g2 only, never g1; hence terms requiring l_n([xi,xj],...) with a g1 bracket argument contribute 0 under our restriction to g1 inputs."
+  },
+  "status": "ok"
+}

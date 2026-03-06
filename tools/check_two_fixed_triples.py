@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 spec_toe = importlib.util.spec_from_file_location(
     "toe", ROOT / "tools" / "toe_e8_z3graded_bracket_jacobi.py"

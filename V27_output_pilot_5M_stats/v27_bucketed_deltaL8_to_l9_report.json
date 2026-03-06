@@ -1,0 +1,307 @@
+{
+  "version": "V27",
+  "inputs": {
+    "structure_constants": "C:\\Repos\\Theory of Everything\\artifacts\\e8_structure_constants_w33_discrete.json",
+    "root_metadata": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_root_metadata_table.json",
+    "couplings": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_g1g1_couplings_cubic_firewall.json",
+    "l8_jsonl": "C:\\Repos\\Theory of Everything\\V26_output_v13_full\\l8_patch_octuples_full.jsonl",
+    "g1_size": 81,
+    "g2_size": 81,
+    "forbidden_pairs": 162
+  },
+  "params": {
+    "buckets": 256,
+    "max_lines": 5000000,
+    "stage": "all",
+    "bucket_start": 0,
+    "bucket_end": 0,
+    "keep_buckets": false,
+    "write_jsonl": false,
+    "progress_every": 0
+  },
+  "map": {
+    "stage": "map",
+    "l8_lines": 5000000,
+    "records_written": 118593782,
+    "skipped_due_to_g_in_t8": 5349492,
+    "bad_format_lines": 0,
+    "elapsed_s": 184.83,
+    "bucket_dir": "V27_output_pilot_5M_stats\\l9_buckets",
+    "buckets": 256,
+    "max_lines": 5000000
+  },
+  "reduce": {
+    "stage": "reduce",
+    "bucket_dir": "V27_output_pilot_5M_stats\\l9_buckets",
+    "buckets": 256,
+    "bucket_range": [
+      0,
+      256
+    ],
+    "records_read": 118593782,
+    "unique_t9_seen": 86610785,
+    "nonzero_l9": 86320530,
+    "single_term": 82012914,
+    "multi_term": 4307616,
+    "keys_upgraded_to_dict": 0,
+    "max_abs_coeff": 149,
+    "output_support_size": 86,
+    "coeff_hist_top": [
+      {
+        "coeff": -1,
+        "count": 15946565
+      },
+      {
+        "coeff": 1,
+        "count": 15943584
+      },
+      {
+        "coeff": 2,
+        "count": 13214745
+      },
+      {
+        "coeff": -2,
+        "count": 13204559
+      },
+      {
+        "coeff": -3,
+        "count": 9348487
+      },
+      {
+        "coeff": 3,
+        "count": 9340923
+      },
+      {
+        "coeff": -4,
+        "count": 6034880
+      },
+      {
+        "coeff": 4,
+        "count": 6028057
+      },
+      {
+        "coeff": -6,
+        "count": 3251398
+      },
+      {
+        "coeff": 6,
+        "count": 3248740
+      },
+      {
+        "coeff": 5,
+        "count": 2916087
+      },
+      {
+        "coeff": -5,
+        "count": 2914674
+      },
+      {
+        "coeff": -8,
+        "count": 1234863
+      },
+      {
+        "coeff": 8,
+        "count": 1233109
+      },
+      {
+        "coeff": 7,
+        "count": 1055436
+      },
+      {
+        "coeff": -7,
+        "count": 1054708
+      },
+      {
+        "coeff": 9,
+        "count": 862884
+      },
+      {
+        "coeff": -9,
+        "count": 862825
+      },
+      {
+        "coeff": -12,
+        "count": 642204
+      },
+      {
+        "coeff": 12,
+        "count": 642000
+      },
+      {
+        "coeff": 10,
+        "count": 562714
+      },
+      {
+        "coeff": -10,
+        "count": 560913
+      },
+      {
+        "coeff": 15,
+        "count": 183664
+      },
+      {
+        "coeff": -15,
+        "count": 181941
+      },
+      {
+        "coeff": -11,
+        "count": 156383
+      },
+      {
+        "coeff": 11,
+        "count": 155947
+      },
+      {
+        "coeff": -16,
+        "count": 149367
+      },
+      {
+        "coeff": 16,
+        "count": 147462
+      },
+      {
+        "coeff": -18,
+        "count": 143531
+      },
+      {
+        "coeff": 18,
+        "count": 143318
+      }
+    ],
+    "multi_terms_hist": [
+      {
+        "terms": 2,
+        "count": 101975
+      },
+      {
+        "terms": 3,
+        "count": 99266
+      },
+      {
+        "terms": 4,
+        "count": 102780
+      },
+      {
+        "terms": 5,
+        "count": 157311
+      },
+      {
+        "terms": 6,
+        "count": 363020
+      },
+      {
+        "terms": 7,
+        "count": 1135927
+      },
+      {
+        "terms": 8,
+        "count": 2347337
+      }
+    ],
+    "top_outputs": [
+      {
+        "basis": 6,
+        "count": 4315424
+      },
+      {
+        "basis": 5,
+        "count": 4234188
+      },
+      {
+        "basis": 4,
+        "count": 4143281
+      },
+      {
+        "basis": 3,
+        "count": 4051596
+      },
+      {
+        "basis": 2,
+        "count": 3855242
+      },
+      {
+        "basis": 1,
+        "count": 3753241
+      },
+      {
+        "basis": 0,
+        "count": 3304018
+      },
+      {
+        "basis": 7,
+        "count": 2998769
+      },
+      {
+        "basis": 9,
+        "count": 1536468
+      },
+      {
+        "basis": 8,
+        "count": 1535777
+      },
+      {
+        "basis": 127,
+        "count": 1532920
+      },
+      {
+        "basis": 128,
+        "count": 1525657
+      },
+      {
+        "basis": 246,
+        "count": 1520338
+      },
+      {
+        "basis": 247,
+        "count": 1515678
+      },
+      {
+        "basis": 73,
+        "count": 1022819
+      },
+      {
+        "basis": 82,
+        "count": 1019744
+      },
+      {
+        "basis": 104,
+        "count": 1018130
+      },
+      {
+        "basis": 59,
+        "count": 1018058
+      },
+      {
+        "basis": 69,
+        "count": 1017593
+      },
+      {
+        "basis": 146,
+        "count": 1017274
+      },
+      {
+        "basis": 85,
+        "count": 1017170
+      },
+      {
+        "basis": 105,
+        "count": 1016485
+      },
+      {
+        "basis": 83,
+        "count": 1016441
+      },
+      {
+        "basis": 95,
+        "count": 1016418
+      },
+      {
+        "basis": 43,
+        "count": 1015857
+      }
+    ],
+    "elapsed_s": 245.08,
+    "out_jsonl": null
+  },
+  "elapsed_total_s": 430.0
+}

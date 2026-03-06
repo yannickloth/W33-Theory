@@ -45,7 +45,7 @@ import sys
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Dict, List, Set, Tuple
+from typing import Any, Callable, Dict, List, Set, Tuple
 
 import numpy as np
 
@@ -84,6 +84,39 @@ def _load_heisenberg():
 
 def _max_abs(x: np.ndarray) -> float:
     return float(np.max(np.abs(x))) if x.size else 0.0
+
+
+def _single_basis_index(arr: np.ndarray) -> tuple[int, int] | None:
+    idx = np.argwhere(np.abs(arr) > 0.5)
+    if idx.shape[0] != 1:
+        return None
+    return (int(idx[0, 0]), int(idx[0, 1]))
+
+
+def _typed_basis_key(elem) -> tuple[str, tuple[int, int]] | None:
+    if np.any(elem.g1) and not (np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g2)):
+        ij = _single_basis_index(elem.g1)
+        if ij is None:
+            return None
+        return ("g1", ij)
+    if np.any(elem.g2) and not (np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g1)):
+        ij = _single_basis_index(elem.g2)
+        if ij is None:
+            return None
+        return ("g2", ij)
+    return None
+
+
+def _flat_numeric_to_e8(tool, vec_flat: np.ndarray):
+    Nn = 27 * 27
+    e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
+    offn = Nn
+    sl3 = vec_flat[offn : offn + 9].reshape((3, 3)).astype(np.complex128)
+    offn += 9
+    g1 = vec_flat[offn : offn + 81].reshape((27, 3)).astype(np.complex128)
+    offn += 81
+    g2 = vec_flat[offn : offn + 81].reshape((27, 3)).astype(np.complex128)
+    return tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
 
 
 class LInftyE8Extension:
@@ -228,10 +261,12 @@ class LInftyE8Extension:
         The function should accept two E8Z3 elements and return an E8Z3.
         """
         self._ce2_alpha = alpha_fn
+        self._ce2_alpha_is_artifact_aggregate = False
 
     def detach_ce2_alpha(self):
         """Remove any attached CE 2-cochain."""
         self._ce2_alpha = None
+        self._ce2_alpha_is_artifact_aggregate = False
 
     def enable_ce2_global_predictor(self):
         """Enable a global CE2 predictor inferred from sparse local repairs.
@@ -246,13 +281,18 @@ class LInftyE8Extension:
         scripts_dir = ROOT / "scripts"
         if str(scripts_dir) not in sys.path:
             sys.path.insert(0, str(scripts_dir))
-        from ce2_global_cocycle import predict_ce2_uv
+        from ce2_global_cocycle import (
+            predict_ce2_uv,
+            predict_dual_g1g2g2_uvw,
+        )
 
         self._ce2_global_predictor = predict_ce2_uv
+        self._ce2_global_predictor_dual = predict_dual_g1g2g2_uvw
 
     def disable_ce2_global_predictor(self):
         """Disable the global CE2 predictor (if enabled)."""
         self._ce2_global_predictor = None
+        self._ce2_global_predictor_dual = None
 
     def d_alpha_on_triple(self, a, b, c):
         """Compute (d alpha)(a,b,c) for the attached 2-cochain (if any).
@@ -268,55 +308,23 @@ class LInftyE8Extension:
                 hasattr(self, "_ce2_local_uv_map")
                 and self._ce2_local_uv_map is not None
             ):
-                # attempt exact triple-key lookup using integer basis indices
-                def key_for_elem(elem):
-                    if np.any(elem.g1):
-                        idx = np.argwhere(np.abs(elem.g1) > 0.5)
-                        if idx.size == 0:
-                            return None
-                        return tuple([int(idx[0, 0]), int(idx[0, 1])])
-                    if np.any(elem.g2):
-                        idx = np.argwhere(np.abs(elem.g2) > 0.5)
-                        if idx.size == 0:
-                            return None
-                        return tuple([int(idx[0, 0]), int(idx[0, 1])])
-                    return None
-
-                a_idx = key_for_elem(a)
-                b_idx = key_for_elem(b)
-                c_idx = key_for_elem(c)
+                a_idx = _typed_basis_key(a)
+                b_idx = _typed_basis_key(b)
+                c_idx = _typed_basis_key(c)
                 if (a_idx, b_idx, c_idx) in self._ce2_local_uv_map:
-                    U_num, V_num = self._ce2_local_uv_map[(a_idx, b_idx, c_idx)]
-
-                    def flat_numeric_to_e8(vec_flat: np.ndarray):
-                        Nn = 27 * 27
-                        e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
-                        offn = Nn
-                        sl3 = (
-                            vec_flat[offn : offn + 9]
-                            .reshape((3, 3))
-                            .astype(np.complex128)
-                        )
-                        offn += 9
-                        g1 = (
-                            vec_flat[offn : offn + 81]
-                            .reshape((27, 3))
-                            .astype(np.complex128)
-                        )
-                        offn += 81
-                        g2 = (
-                            vec_flat[offn : offn + 81]
-                            .reshape((27, 3))
-                            .astype(np.complex128)
-                        )
-                        return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-                    U_e8 = flat_numeric_to_e8(U_num)
-                    V_e8 = flat_numeric_to_e8(V_num)
+                    local = self._ce2_local_uv_map[(a_idx, b_idx, c_idx)]
+                    if len(local) == 2:
+                        U_num, V_num = local
+                        W_num = np.zeros_like(U_num)
+                    else:
+                        U_num, V_num, W_num = local
+                    U_e8 = _flat_numeric_to_e8(self.tool, U_num)
+                    V_e8 = _flat_numeric_to_e8(self.tool, V_num)
+                    W_e8 = _flat_numeric_to_e8(self.tool, W_num)
 
                     term1 = self.br_l2.bracket(a, U_e8)
                     term2 = self.br_l2.bracket(b, V_e8).scale(-1.0)
-                    term3 = self.br_l2.bracket(c, self.tool.E8Z3.zero())
+                    term3 = self.br_l2.bracket(c, W_e8)
                     term4 = self.tool.E8Z3.zero()
                     term5 = self.tool.E8Z3.zero()
                     term6 = self.tool.E8Z3.zero()
@@ -328,39 +336,19 @@ class LInftyE8Extension:
         # If no explicit alpha is attached, optionally use the global predictor.
         try:
             if (
-                (not hasattr(self, "_ce2_alpha") or self._ce2_alpha is None)
+                (
+                    not hasattr(self, "_ce2_alpha")
+                    or self._ce2_alpha is None
+                    or getattr(self, "_ce2_alpha_is_artifact_aggregate", False)
+                )
                 and hasattr(self, "_ce2_global_predictor")
                 and self._ce2_global_predictor is not None
             ):
                 # Only trigger on basis-like (g1,g1,g2) triples; avoid accidental
                 # activation on arbitrary superpositions.
-                def typed_key_for_elem(elem):
-                    def single_basis_index(arr: np.ndarray):
-                        idx = np.argwhere(np.abs(arr) > 0.5)
-                        if idx.shape[0] != 1:
-                            return None
-                        return (int(idx[0, 0]), int(idx[0, 1]))
-
-                    # Require a *pure* basis element: exactly one sector present.
-                    if np.any(elem.g1) and not (
-                        np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g2)
-                    ):
-                        ij = single_basis_index(elem.g1)
-                        if ij is None:
-                            return None
-                        return ("g1", ij)
-                    if np.any(elem.g2) and not (
-                        np.any(elem.e6) or np.any(elem.sl3) or np.any(elem.g1)
-                    ):
-                        ij = single_basis_index(elem.g2)
-                        if ij is None:
-                            return None
-                        return ("g2", ij)
-                    return None
-
-                a_t = typed_key_for_elem(a)
-                b_t = typed_key_for_elem(b)
-                c_t = typed_key_for_elem(c)
+                a_t = _typed_basis_key(a)
+                b_t = _typed_basis_key(b)
+                c_t = _typed_basis_key(c)
                 if (
                     a_t is not None
                     and b_t is not None
@@ -377,36 +365,44 @@ class LInftyE8Extension:
                             U_flat[int(idx)] = float(frac)
                         for idx, frac in uv.V:
                             V_flat[int(idx)] = float(frac)
-
-                        def flat_numeric_to_e8(vec_flat: np.ndarray):
-                            Nn = 27 * 27
-                            e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
-                            offn = Nn
-                            sl3 = (
-                                vec_flat[offn : offn + 9]
-                                .reshape((3, 3))
-                                .astype(np.complex128)
-                            )
-                            offn += 9
-                            g1 = (
-                                vec_flat[offn : offn + 81]
-                                .reshape((27, 3))
-                                .astype(np.complex128)
-                            )
-                            offn += 81
-                            g2 = (
-                                vec_flat[offn : offn + 81]
-                                .reshape((27, 3))
-                                .astype(np.complex128)
-                            )
-                            return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-                        U_e8 = flat_numeric_to_e8(U_flat)
-                        V_e8 = flat_numeric_to_e8(V_flat)
+                        U_e8 = _flat_numeric_to_e8(self.tool, U_flat)
+                        V_e8 = _flat_numeric_to_e8(self.tool, V_flat)
 
                         term1 = self.br_l2.bracket(a, U_e8)
                         term2 = self.br_l2.bracket(b, V_e8).scale(-1.0)
                         term3 = self.br_l2.bracket(c, self.tool.E8Z3.zero())
+                        term4 = self.tool.E8Z3.zero()
+                        term5 = self.tool.E8Z3.zero()
+                        term6 = self.tool.E8Z3.zero()
+                        return term1 + term2 + term3 + term4 + term5 + term6
+                if (
+                    a_t is not None
+                    and b_t is not None
+                    and c_t is not None
+                    and a_t[0] == "g1"
+                    and b_t[0] == "g2"
+                    and c_t[0] == "g2"
+                    and hasattr(self, "_ce2_global_predictor_dual")
+                    and self._ce2_global_predictor_dual is not None
+                ):
+                    uvw = self._ce2_global_predictor_dual(a_t[1], b_t[1], c_t[1])
+                    if uvw is not None:
+                        U_flat = np.zeros(900, dtype=np.complex128)
+                        V_flat = np.zeros(900, dtype=np.complex128)
+                        W_flat = np.zeros(900, dtype=np.complex128)
+                        for idx, frac in uvw.U:
+                            U_flat[int(idx)] = float(frac)
+                        for idx, frac in uvw.V:
+                            V_flat[int(idx)] = float(frac)
+                        for idx, frac in uvw.W:
+                            W_flat[int(idx)] = float(frac)
+                        U_e8 = _flat_numeric_to_e8(self.tool, U_flat)
+                        V_e8 = _flat_numeric_to_e8(self.tool, V_flat)
+                        W_e8 = _flat_numeric_to_e8(self.tool, W_flat)
+
+                        term1 = self.br_l2.bracket(a, U_e8)
+                        term2 = self.br_l2.bracket(b, V_e8).scale(-1.0)
+                        term3 = self.br_l2.bracket(c, W_e8)
                         term4 = self.tool.E8Z3.zero()
                         term5 = self.tool.E8Z3.zero()
                         term6 = self.tool.E8Z3.zero()
@@ -443,12 +439,15 @@ class LInftyE8Extension:
         Optional returns:
           - return_uv=True  -> also return the flattened U and V solution arrays
           - rationalize_uv=True -> additionally return rationalized Fraction
-            approximations of U and V using `Fraction.limit_denominator(max_den)`
+            approximations of U and V using `Fraction.limit_denominator(max_den)`;
+            if a third-pair fallback is needed, the extra W data is attached to
+            the returned alpha callable as `_ce2_W_flat` / `_ce2_W_rats`.
 
         Strategy: solve bracket(x, U) - bracket(y, V) = -(J + l3) for unknown
         U,V in the full E8Z3 space by least-squares (proof-of-concept).  If the
         solver finds a sufficiently exact solution, return an alpha function
-        that uses those U,V entries on (x,z) and (z,x).
+        that uses those U,V entries on (x,z) and (z,x). If that minimal ansatz
+        fails, fall back to the full three-pair coboundary [x,U] - [y,V] + [z,W].
 
         This is the same diagnostic used by tools/try_ce_2cochain_solver.py
         but provided here so tests can attach or inspect the resulting alpha
@@ -487,7 +486,7 @@ class LInftyE8Extension:
 
         Nflat = Jflat.size
 
-        # Build action matrices A and B by applying bracket with basis vectors
+        # Build action matrices A and B by applying bracket with basis vectors.
         eye = np.eye(Nflat, dtype=np.complex128)
         A_cols = []
         B_cols = []
@@ -500,32 +499,45 @@ class LInftyE8Extension:
 
         A = np.column_stack(A_cols)
         B = np.column_stack(B_cols)
-        M = np.hstack([A, B])
 
-        # convert to real system and solve (target is -(J + l3) )
-        M_real = np.vstack([np.real(M), np.imag(M)])
         rhs = np.concatenate([np.real(target_flat), np.imag(target_flat)])
-        sol, *_ = np.linalg.lstsq(M_real, rhs, rcond=None)
 
-        # extract u and v (real arrays from lstsq)
+        def solve_real_lstsq(blocks: list[np.ndarray]):
+            M = np.hstack(blocks)
+            M_real = np.vstack([np.real(M), np.imag(M)])
+            sol, *_ = np.linalg.lstsq(M_real, rhs, rcond=None)
+            res_norm = float(np.linalg.norm(M_real.dot(sol) - rhs))
+            return sol, res_norm
+
+        sol, res_norm = solve_real_lstsq([A, B])
         u_real = sol[:Nflat]
         v_real = sol[Nflat:]
-
-        res_norm = float(np.linalg.norm(M_real.dot(sol) - rhs))
+        w_real = np.zeros(Nflat, dtype=np.float64)
+        solve_mode = "uv"
         if res_norm > 1e-8:
-            # solver didn't find a sufficiently exact local 2-cochain
-            return None
+            C_cols = []
+            for i in range(Nflat):
+                vec = flat_to_E8Z3(eye[:, i])
+                C_cols.append(flatten(self.br_l2.bracket(z, vec)))
+            C = np.column_stack(C_cols)
+            sol, res_norm = solve_real_lstsq([A, B, C])
+            if res_norm > 1e-8:
+                return None
+            u_real = sol[:Nflat]
+            v_real = sol[Nflat : 2 * Nflat]
+            w_real = sol[2 * Nflat :]
+            solve_mode = "uvw"
 
         U = flat_to_E8Z3(u_real)
         V = flat_to_E8Z3(v_real)
+        W = flat_to_E8Z3(w_real)
 
         # also keep raw flat arrays for optional return/rationalization
         U_flat = u_real.copy()
         V_flat = v_real.copy()
+        W_flat = w_real.copy()
 
-        # construct alpha function (nonzero only on pairs involving the triple)
-        # we set alpha(y,z)=U and alpha(x,z)=V (skew-symmetric), so
-        # d(alpha)(x,y,z) = [x,U] - [y,V] which matches the solved linear system.
+        # Construct alpha on the three basis pairs of the triple.
         def alpha(a, b):
             # alpha(y, z) = U
             if (
@@ -559,11 +571,28 @@ class LInftyE8Extension:
                 and np.allclose(b.g2, x.g2)
             ):
                 return V.scale(-1.0)
+            # alpha(x, y) = W
+            if (
+                np.allclose(a.g1, x.g1)
+                and np.allclose(a.g2, x.g2)
+                and np.allclose(b.g1, y.g1)
+                and np.allclose(b.g2, y.g2)
+            ):
+                return W
+            # skew: alpha(y, x) = -W
+            if (
+                np.allclose(a.g1, y.g1)
+                and np.allclose(a.g2, y.g2)
+                and np.allclose(b.g1, x.g1)
+                and np.allclose(b.g2, x.g2)
+            ):
+                return W.scale(-1.0)
             return self.tool.E8Z3.zero()
 
         # optional rationalization of flat solutions
         U_rats = None
         V_rats = None
+        W_rats = None
         if rationalize_uv:
             from fractions import Fraction
 
@@ -583,6 +612,23 @@ class LInftyE8Extension:
                 )
                 for val in V_flat
             ]
+            W_rats = [
+                (
+                    Fraction(float(val)).limit_denominator(max_den)
+                    if abs(val) > 1e-15
+                    else None
+                )
+                for val in W_flat
+            ]
+
+        alpha._ce2_solution_mode = solve_mode
+        alpha._ce2_residual_norm = res_norm
+        alpha._ce2_U_flat = U_flat
+        alpha._ce2_V_flat = V_flat
+        alpha._ce2_W_flat = W_flat
+        alpha._ce2_U_rats = U_rats
+        alpha._ce2_V_rats = V_rats
+        alpha._ce2_W_rats = W_rats
 
         if return_uv:
             if rationalize_uv:
@@ -817,119 +863,97 @@ class LInftyE8Extension:
 
                 ce2 = json.loads(ce2_path.read_text(encoding="utf-8"))
 
-                # build per-triple lookup (exact local alpha per recorded triple)
-                pair_U: dict = {}
-                pair_V: dict = {}
+                # Build per-triple and per-pair lookup tables. Older artifacts
+                # are numeric-only and implicitly g1,g1,g2; newer records may
+                # include explicit `types` and a third-pair `W_rats`.
+                pair_alpha: dict = {}
                 triple_uv: dict = {}
+
+                def parse_flat_entry(entry: dict, field: str) -> np.ndarray:
+                    vals = entry.get(field, [])
+                    if not isinstance(vals, list) or len(vals) == 0:
+                        return np.zeros(900, dtype=np.complex128)
+                    rats = [Fraction(s) if s != "0" else None for s in vals]
+                    return np.array(
+                        [float(fr) if fr is not None else 0.0 for fr in rats],
+                        dtype=np.complex128,
+                    )
+
+                def entry_types(entry: dict) -> tuple[str, str, str]:
+                    types = entry.get("types")
+                    if (
+                        isinstance(types, (list, tuple))
+                        and len(types) == 3
+                        and all(str(t) in {"g1", "g2"} for t in types)
+                    ):
+                        return (str(types[0]), str(types[1]), str(types[2]))
+                    return ("g1", "g1", "g2")
+
+                def add_pair(pair_key, vec: np.ndarray):
+                    if not np.any(np.abs(vec) > 1e-15):
+                        return
+                    prev = pair_alpha.get(pair_key)
+                    if prev is None:
+                        pair_alpha[pair_key] = vec.copy()
+                    else:
+                        pair_alpha[pair_key] = prev + vec
+
                 for k, e in ce2.items():
                     a_idx = tuple(e["a"])
                     b_idx = tuple(e["b"])
                     c_idx = tuple(e["c"])
-                    U_rats = [
-                        Fraction(s) if s != "0" else None for s in e.get("U_rats", [])
-                    ]
-                    V_rats = [
-                        Fraction(s) if s != "0" else None for s in e.get("V_rats", [])
-                    ]
-                    U_num = np.array(
-                        [float(fr) if fr is not None else 0.0 for fr in U_rats],
-                        dtype=np.complex128,
-                    )
-                    V_num = np.array(
-                        [float(fr) if fr is not None else 0.0 for fr in V_rats],
-                        dtype=np.complex128,
-                    )
-                    # store per-triple arrays for exact lookup
-                    pair_U[(b_idx, c_idx)] = U_num
-                    pair_V[(a_idx, c_idx)] = V_num
-                    triple_uv[(a_idx, b_idx, c_idx)] = (U_num, V_num)
+                    t_a, t_b, t_c = entry_types(e)
+                    a_t = (t_a, a_idx)
+                    b_t = (t_b, b_idx)
+                    c_t = (t_c, c_idx)
+                    U_num = parse_flat_entry(e, "U_rats")
+                    V_num = parse_flat_entry(e, "V_rats")
+                    W_num = parse_flat_entry(e, "W_rats")
+                    add_pair((b_t, c_t), U_num)
+                    add_pair((a_t, c_t), V_num)
+                    # Do not aggregate W by pair: in the dual g1,g2,g2 sector
+                    # the observed W-lift depends on the third leg c, so folding
+                    # it into alpha(a,b) causes cross-talk on unrelated triples.
+                    triple_uv[(a_t, b_t, c_t)] = (U_num, V_num, W_num)
 
                 # expose per-triple map on the instance so d_alpha_on_triple can prefer it
                 self._ce2_local_uv_map = triple_uv
 
-                def flat_numeric_to_e8(vec_flat: np.ndarray):
-                    Nn = 27 * 27
-                    e6 = vec_flat[:Nn].reshape((27, 27)).astype(np.complex128)
-                    offn = Nn
-                    sl3 = (
-                        vec_flat[offn : offn + 9].reshape((3, 3)).astype(np.complex128)
-                    )
-                    offn += 9
-                    g1 = (
-                        vec_flat[offn : offn + 81]
-                        .reshape((27, 3))
-                        .astype(np.complex128)
-                    )
-                    offn += 81
-                    g2 = (
-                        vec_flat[offn : offn + 81]
-                        .reshape((27, 3))
-                        .astype(np.complex128)
-                    )
-                    return self.tool.E8Z3(e6=e6, sl3=sl3, g1=g1, g2=g2)
-
-                # alpha built from EXACT per-triple CE2 entries (no cross-key aggregation)
+                # alpha built from typed pair data. Exact per-triple lookup is
+                # still preferred below; this aggregated alpha is only a fallback.
                 def alpha_from_ce2(a, b):
-                    acc = self.tool.E8Z3.zero()
-                    if np.any(a.g1) and np.any(b.g2):
-                        # look for a clear basis-index match (require magnitude > 0.5)
-                        idxA_cand = np.argwhere(np.abs(a.g1) > 0.5)
-                        idxB_cand = np.argwhere(np.abs(b.g2) > 0.5)
-                        if idxA_cand.size > 0 and idxB_cand.size > 0:
-                            idxA = tuple(idxA_cand[0].tolist())
-                            idxB = tuple(idxB_cand[0].tolist())
-
-                            # U: alpha(y,z) lookup keyed by (b_idx, c_idx)
-                            Um = pair_U.get((idxA, idxB))
-                            if Um is not None:
-                                acc = acc + flat_numeric_to_e8(Um)
-                            Um2 = pair_U.get((idxB, idxA))
-                            if Um2 is not None:
-                                acc = acc - flat_numeric_to_e8(Um2)
-
-                            # V: alpha(x,z) lookup keyed by (a_idx, c_idx)
-                            Vm = pair_V.get((idxA, idxB))
-                            if Vm is not None:
-                                acc = acc + flat_numeric_to_e8(Vm)
-                            Vm2 = pair_V.get((idxB, idxA))
-                            if Vm2 is not None:
-                                acc = acc - flat_numeric_to_e8(Vm2)
-                        # otherwise leave `acc` as zero (no exact per-triple entry matched)
-
-                    return acc
+                    a_t = _typed_basis_key(a)
+                    b_t = _typed_basis_key(b)
+                    if a_t is None or b_t is None:
+                        return self.tool.E8Z3.zero()
+                    vec = pair_alpha.get((a_t, b_t))
+                    if vec is not None:
+                        return _flat_numeric_to_e8(self.tool, vec)
+                    vec = pair_alpha.get((b_t, a_t))
+                    if vec is not None:
+                        return _flat_numeric_to_e8(self.tool, vec).scale(-1.0)
+                    return self.tool.E8Z3.zero()
 
                 # register CE2 alpha (exact per-triple lookup)
                 self._ce2_alpha = alpha_from_ce2
+                self._ce2_alpha_is_artifact_aggregate = True
 
                 # register coboundary callback that uses the exact per-triple CE2 entry
                 def l4_coboundary(x, y, z):
                     # attempt exact triple-key lookup first
                     try:
-                        # extract integer indices for basis elements
-                        def key_for_elem(elem):
-                            if np.any(elem.g1):
-                                idx = np.argwhere(np.abs(elem.g1) > 0.5)
-                                if idx.size == 0:
-                                    return None
-                                return tuple([int(idx[0, 0]), int(idx[0, 1])])
-                            if np.any(elem.g2):
-                                idx = np.argwhere(np.abs(elem.g2) > 0.5)
-                                if idx.size == 0:
-                                    return None
-                                return tuple([int(idx[0, 0]), int(idx[0, 1])])
-                            return None
-
-                        a_idx = key_for_elem(x)
-                        b_idx = key_for_elem(y)
-                        c_idx = key_for_elem(z)
+                        a_idx = _typed_basis_key(x)
+                        b_idx = _typed_basis_key(y)
+                        c_idx = _typed_basis_key(z)
                         if (a_idx, b_idx, c_idx) in triple_uv:
-                            U_num, V_num = triple_uv[(a_idx, b_idx, c_idx)]
-                            U_e8 = flat_numeric_to_e8(U_num)
-                            V_e8 = flat_numeric_to_e8(V_num)
+                            U_num, V_num, W_num = triple_uv[(a_idx, b_idx, c_idx)]
+                            U_e8 = _flat_numeric_to_e8(self.tool, U_num)
+                            V_e8 = _flat_numeric_to_e8(self.tool, V_num)
+                            W_e8 = _flat_numeric_to_e8(self.tool, W_num)
 
                             term1 = self.br_l2.bracket(x, U_e8)
                             term2 = self.br_l2.bracket(y, V_e8).scale(-1.0)
-                            term3 = self.br_l2.bracket(z, self.tool.E8Z3.zero())
+                            term3 = self.br_l2.bracket(z, W_e8)
                             term4 = self.tool.E8Z3.zero()
                             term5 = self.tool.E8Z3.zero()
                             term6 = self.tool.E8Z3.zero()

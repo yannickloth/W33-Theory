@@ -85,17 +85,28 @@ def basis_elem_g2(idx: Tuple[int, int]):
 # attempt solves
 for sec, a_idx, b_idx, c_idx in fails:
     print("Processing failure:", sec, a_idx, b_idx, c_idx)
-    x = basis_elem_g1(a_idx)
-    y = basis_elem_g1(b_idx)
-    z = (
-        basis_elem_g1(c_idx)
-        if sec == "g1_g1_g1"
-        else (
-            basis_elem_g2(c_idx)
-            if sec in ("g1_g1_g2", "g1_g2_g2")
-            else basis_elem_g1(c_idx)
-        )
-    )
+    if sec == "g1_g1_g1":
+        x = basis_elem_g1(a_idx)
+        y = basis_elem_g1(b_idx)
+        z = basis_elem_g1(c_idx)
+        types = ["g1", "g1", "g1"]
+    elif sec == "g2_g2_g2":
+        x = basis_elem_g2(a_idx)
+        y = basis_elem_g2(b_idx)
+        z = basis_elem_g2(c_idx)
+        types = ["g2", "g2", "g2"]
+    elif sec == "g1_g1_g2":
+        x = basis_elem_g1(a_idx)
+        y = basis_elem_g1(b_idx)
+        z = basis_elem_g2(c_idx)
+        types = ["g1", "g1", "g2"]
+    elif sec == "g1_g2_g2":
+        x = basis_elem_g1(a_idx)
+        y = basis_elem_g2(b_idx)
+        z = basis_elem_g2(c_idx)
+        types = ["g1", "g2", "g2"]
+    else:
+        raise ValueError(f"Unsupported sector {sec!r}")
 
     # try rationalized solver with larger denominator limit
     res = linfty.compute_local_ce2_alpha_for_triple(
@@ -103,6 +114,10 @@ for sec, a_idx, b_idx, c_idx in fails:
     )
     if res is not None:
         alpha_fn, U_flat, V_flat, U_rats, V_rats = res
+        W_flat = getattr(alpha_fn, "_ce2_W_flat", np.zeros_like(U_flat))
+        W_rats = getattr(alpha_fn, "_ce2_W_rats", None)
+        if W_rats is None:
+            W_rats = [None] * len(U_flat)
         key = f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
         # append to CE2 artifact (merge)
         if CE2P.exists():
@@ -113,10 +128,13 @@ for sec, a_idx, b_idx, c_idx in fails:
             "a": a_idx,
             "b": b_idx,
             "c": c_idx,
+            "types": types,
             "U_norm": float(np.linalg.norm(U_flat)),
             "V_norm": float(np.linalg.norm(V_flat)),
+            "W_norm": float(np.linalg.norm(W_flat)),
             "U_rats": [str(r) if r is not None else "0" for r in U_rats],
             "V_rats": [str(r) if r is not None else "0" for r in V_rats],
+            "W_rats": [str(r) if r is not None else "0" for r in W_rats],
         }
         CE2P.write_text(json.dumps(ce2, indent=2), encoding="utf-8")
         print("  -> rational CE2 solution found and appended to artifact:", key)

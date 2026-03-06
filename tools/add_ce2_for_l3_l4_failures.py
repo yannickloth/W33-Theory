@@ -89,9 +89,18 @@ else:
 added = []
 for sec, a_idx, b_idx, c_idx in fails:
     print("Processing failing triple for sector", sec, a_idx, b_idx, c_idx)
-    x = basis_elem_g1(a_idx)
-    y = basis_elem_g1(b_idx)
-    z = basis_elem_g2(c_idx)
+    if sec == "g1_g1_g2":
+        x = basis_elem_g1(a_idx)
+        y = basis_elem_g1(b_idx)
+        z = basis_elem_g2(c_idx)
+        types = ["g1", "g1", "g2"]
+    elif sec == "g1_g2_g2":
+        x = basis_elem_g1(a_idx)
+        y = basis_elem_g2(b_idx)
+        z = basis_elem_g2(c_idx)
+        types = ["g1", "g2", "g2"]
+    else:
+        raise ValueError(f"Unsupported sector {sec!r}")
 
     # skip if already present in artifact (match by indices)
     key = f"{a_idx[0]},{a_idx[1]}:{b_idx[0]},{b_idx[1]}:{c_idx[0]},{c_idx[1]}"
@@ -106,15 +115,22 @@ for sec, a_idx, b_idx, c_idx in fails:
         print("  -> local CE2 solver failed on triple", (a_idx, b_idx, c_idx))
         continue
     alpha_fn, U_flat, V_flat, U_rats, V_rats = res
+    W_flat = getattr(alpha_fn, "_ce2_W_flat", np.zeros_like(U_flat))
+    W_rats = getattr(alpha_fn, "_ce2_W_rats", None)
+    if W_rats is None:
+        W_rats = [None] * len(U_flat)
 
     ce2_data[key] = {
         "a": a_idx,
         "b": b_idx,
         "c": c_idx,
+        "types": types,
         "U_norm": float(np.linalg.norm(U_flat)),
         "V_norm": float(np.linalg.norm(V_flat)),
+        "W_norm": float(np.linalg.norm(W_flat)),
         "U_rats": [str(r) if r is not None else "0" for r in U_rats],
         "V_rats": [str(r) if r is not None else "0" for r in V_rats],
+        "W_rats": [str(r) if r is not None else "0" for r in W_rats],
     }
     added.append(key)
 

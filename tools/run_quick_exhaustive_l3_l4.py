@@ -46,9 +46,9 @@ linfty = build.LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0
 # attach symbolic l4 (if present)
 symp = ROOT / "artifacts" / "l4_symbolic_constants.json"
 if symp.exists():
-    linfty.attach_l4_from_symbolic_constants(symp, load_ce2_artifact=False)
+    linfty.attach_l4_from_symbolic_constants(symp, load_ce2_artifact=True)
 
-# Use the global metaplectic/Weil predictor for the CE2 coboundary (fast, no lookup).
+# Use the global metaplectic/Weil predictor as a fallback for uncovered triples.
 linfty.enable_ce2_global_predictor()
 
 # quick exhaustive checks (only triples where Jacobi(l2) != 0 are tested)

@@ -1,0 +1,220 @@
+{
+  "version": "V25",
+  "inputs": {
+    "structure_constants": "C:\\Repos\\Theory of Everything\\artifacts\\e8_structure_constants_w33_discrete.json",
+    "root_metadata": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_root_metadata_table.json",
+    "couplings": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_g1g1_couplings_cubic_firewall.json",
+    "l6_jsonl": "V24_output_v13_full\\l6_patch_sextuples_full.jsonl",
+    "g1_size": 81,
+    "forbidden_pairs": 162,
+    "max_source_entries": 50000
+  },
+  "l6_stats": {
+    "entries": 2457864,
+    "single_entries": 2389824,
+    "multi_entries": 68040,
+    "max_terms_in_entry": 8,
+    "max_abs_coeff_in_table": 20
+  },
+  "deltaL6_to_l7": {
+    "raw_candidates": 3750000,
+    "computed_attempts": 3491447,
+    "skipped_dedup": 258553,
+    "nonzero": 593405,
+    "single_term": 593405,
+    "multi_term": 0,
+    "nonzero_rate_on_attempts": 0.16995961846191565,
+    "output_support_size": 81,
+    "max_abs_coeff": 10,
+    "coeff_hist_top": [
+      {
+        "coeff": 1,
+        "count": 110269
+      },
+      {
+        "coeff": -1,
+        "count": 109437
+      },
+      {
+        "coeff": -2,
+        "count": 87193
+      },
+      {
+        "coeff": 2,
+        "count": 87001
+      },
+      {
+        "coeff": 3,
+        "count": 55555
+      },
+      {
+        "coeff": -3,
+        "count": 55534
+      },
+      {
+        "coeff": -4,
+        "count": 25942
+      },
+      {
+        "coeff": 4,
+        "count": 25715
+      },
+      {
+        "coeff": 5,
+        "count": 11537
+      },
+      {
+        "coeff": -5,
+        "count": 11289
+      },
+      {
+        "coeff": -6,
+        "count": 4333
+      },
+      {
+        "coeff": 6,
+        "count": 4164
+      },
+      {
+        "coeff": -7,
+        "count": 1698
+      },
+      {
+        "coeff": 7,
+        "count": 1572
+      },
+      {
+        "coeff": -8,
+        "count": 524
+      },
+      {
+        "coeff": 8,
+        "count": 505
+      },
+      {
+        "coeff": 10,
+        "count": 343
+      },
+      {
+        "coeff": -10,
+        "count": 302
+      },
+      {
+        "coeff": -9,
+        "count": 262
+      },
+      {
+        "coeff": 9,
+        "count": 230
+      }
+    ],
+    "multi_term_count_hist": [],
+    "top_outputs": [
+      {
+        "basis": 129,
+        "count": 12491
+      },
+      {
+        "basis": 130,
+        "count": 12416
+      },
+      {
+        "basis": 10,
+        "count": 11143
+      },
+      {
+        "basis": 15,
+        "count": 9613
+      },
+      {
+        "basis": 14,
+        "count": 9544
+      },
+      {
+        "basis": 11,
+        "count": 9466
+      },
+      {
+        "basis": 154,
+        "count": 9464
+      },
+      {
+        "basis": 153,
+        "count": 9462
+      },
+      {
+        "basis": 13,
+        "count": 9458
+      },
+      {
+        "basis": 17,
+        "count": 9426
+      },
+      {
+        "basis": 147,
+        "count": 9358
+      },
+      {
+        "basis": 12,
+        "count": 9353
+      },
+      {
+        "basis": 148,
+        "count": 9348
+      },
+      {
+        "basis": 18,
+        "count": 9303
+      },
+      {
+        "basis": 16,
+        "count": 9298
+      },
+      {
+        "basis": 132,
+        "count": 9267
+      },
+      {
+        "basis": 141,
+        "count": 9261
+      },
+      {
+        "basis": 162,
+        "count": 9233
+      },
+      {
+        "basis": 133,
+        "count": 9230
+      },
+      {
+        "basis": 142,
+        "count": 9227
+      },
+      {
+        "basis": 163,
+        "count": 9202
+      },
+      {
+        "basis": 136,
+        "count": 9138
+      },
+      {
+        "basis": 137,
+        "count": 9102
+      },
+      {
+        "basis": 158,
+        "count": 9098
+      },
+      {
+        "basis": 165,
+        "count": 9083
+      }
+    ],
+    "time_s": 20.04
+  },
+  "paths": {
+    "l7_jsonl": "V25_output_sample\\l7_patch_septuples_full.jsonl"
+  },
+  "elapsed_total_s": 34.46
+}

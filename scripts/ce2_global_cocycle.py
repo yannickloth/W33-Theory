@@ -107,6 +107,13 @@ class CE2SparseUV:
     V: list[tuple[int, Fraction]]
 
 
+@dataclass(frozen=True)
+class CE2SparseUVW:
+    U: list[tuple[int, Fraction]]
+    V: list[tuple[int, Fraction]]
+    W: list[tuple[int, Fraction]]
+
+
 SimpleFamilyUV = CE2SparseUV  # compatibility alias
 
 
@@ -161,6 +168,42 @@ def _heisenberg_vec_maps() -> (
     if len(e6id_to_vec) != 27 or len(vec_to_e6id) != 27:
         raise ValueError("expected full 27-point inverse mapping")
     return e6id_to_vec, vec_to_e6id
+
+
+@lru_cache(maxsize=1)
+def _focus_section_rows_by_focus() -> dict[int, frozenset[int]]:
+    """Load the 27 certified 9-point focus sections keyed by focus E6 id.
+
+    The section-sector certificate stores exactly one closed 9-point section for
+    each focus vertex. For the dual U-family below we use these sections as a
+    global activation mask: the family is supported when the g1 leg lies in the
+    focus section of the missing fiber point, excluding the focus itself.
+    """
+    path = ROOT / "artifacts" / "firewall_filtered_trinification_section_sectors.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    raw = data.get("sectors", {})
+    if not isinstance(raw, dict):
+        raise ValueError("unexpected focus-section JSON format")
+
+    out: dict[int, frozenset[int]] = {}
+    for name, payload in raw.items():
+        if not str(name).startswith("affine_") or not isinstance(payload, dict):
+            continue
+        focus = payload.get("focus_e6id")
+        rows = payload.get("rows")
+        if focus is None or not isinstance(rows, list) or len(rows) != 9:
+            continue
+        key = int(focus)
+        row_set = frozenset(int(x) for x in rows)
+        if len(row_set) != 9:
+            raise ValueError(f"unexpected section size for focus={key}")
+        if key in out and out[key] != row_set:
+            raise ValueError(f"non-unique focus-section rows for focus={key}")
+        out[key] = row_set
+
+    if len(out) != 27:
+        raise ValueError(f"unexpected focus-section count: {len(out)} (expected 27)")
+    return out
 
 
 def _vec_add(a: tuple[int, int, int], b: tuple[int, int, int]) -> tuple[int, int, int]:
@@ -1719,6 +1762,2331 @@ def predict_fiber_family_uv(
     U.sort(key=lambda kv: kv[0])
     V.sort(key=lambda kv: kv[0])
     return CE2SparseUV(U=U, V=V)
+
+
+def predict_dual_diagonal_fiber_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the diagonal 1/108 W-only lift for g1,g2,g2 triples.
+
+    This is the dual mixed-sector family observed after allowing the full
+    three-pair coboundary [x,U] - [y,V] + [z,W]. It occurs when:
+      - the g1 input `a` and the first g2 input `b` have the same (e6id, sl3),
+      - the second g2 input `c` lies in the same Heisenberg fiber, but
+      - `c` differs from `a` both in e6 id and sl3 index.
+
+    Output:
+      - W has exactly two +1/108 diagonal entries:
+          * e6[c_i, c_i]
+          * sl3[c_j, c_j]
+      - U = V = 0
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if (a_i, a_j) != (b_i, b_j):
+        return None
+    if c_i == a_i or c_j == a_j:
+        return None
+
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    u_a = tuple(int(v) for v in e6id_to_vec[a_i][:2])
+    u_c = tuple(int(v) for v in e6id_to_vec[c_i][:2])
+    if u_a != u_c:
+        return None
+
+    W = [
+        (_flat_e6(c_i, c_i), Fraction(1, 108)),
+        (_flat_sl3(c_j, c_j), Fraction(1, 108)),
+    ]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_origin_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the first off-fiber W-only frontier family in the current gauge.
+
+    This is a deliberately conservative rule: it only targets the origin-fiber
+    `a=(0,*)` scan frontier that appears immediately after the focus-section
+    U-family is removed.
+
+    Observed structure:
+      - `a` must sit on the origin fiber at z=0 in the Heisenberg gauge,
+      - `b` and `c` lie on the same affine u-line through the origin, but in
+        different nonzero u-slots and different Heisenberg z-layers (2 then 1),
+      - the sl3 colors satisfy `b_j = a_j` and `c_j != a_j`,
+      - `W` is one off-diagonal e6 matrix unit on `(c_i, d_i)` with coefficient
+        ±1/54, where `d_i` is determined by the projective line direction.
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    ua1, ua2, za = (int(v) for v in e6id_to_vec[a_i])
+    ub1, ub2, zb = (int(v) for v in e6id_to_vec[b_i])
+    uc1, uc2, zc = (int(v) for v in e6id_to_vec[c_i])
+
+    line_data = _predict_dual_origin_line_core(a_i, b_i, c_i)
+    if line_data is None:
+        return None
+    d_i, coeff = line_data
+
+    if b_j != a_j or c_j == a_j:
+        return None
+    W = [(_flat_e6(c_i, d_i), coeff)]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def _predict_dual_origin_line_core(
+    a_i: int, b_i: int, c_i: int
+) -> tuple[int, Fraction] | None:
+    """Shared origin-line lookup for the current gauge-specific off-fiber duals."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    ua1, ua2, za = (int(v) for v in e6id_to_vec[a_i])
+    ub1, ub2, zb = (int(v) for v in e6id_to_vec[b_i])
+    uc1, uc2, zc = (int(v) for v in e6id_to_vec[c_i])
+
+    if (ua1, ua2, za) != (0, 0, 0):
+        return None
+    if (ub1, ub2) == (0, 0) or (uc1, uc2) == (0, 0):
+        return None
+    if (ub1, ub2) == (uc1, uc2):
+        return None
+    if _f3_omega((ub1, ub2), (uc1, uc2)) != 0:
+        return None
+
+    # The current frontier supports both z-orderings:
+    #   (zb,zc) = (2,1) and (1,2).
+    # In both cases the line label is determined by the z=1 leg.
+    if (zb, zc) == (2, 1):
+        one_u = (uc1, uc2)
+        other_u = (ub1, ub2)
+    elif (zb, zc) == (1, 2):
+        one_u = (ub1, ub2)
+        other_u = (uc1, uc2)
+    else:
+        return None
+
+    if one_u[0] != 0:
+        lam = one_u[0] % 3
+        inv = 1 if lam == 1 else 2
+        v = (1, (one_u[1] * inv) % 3)
+        lambda_one = lam
+    else:
+        v = (0, 1)
+        lambda_one = one_u[1] % 3
+    if lambda_one not in (1, 2):
+        return None
+    expect_other = (
+        ((3 - lambda_one) % 3) * v[0] % 3,
+        ((3 - lambda_one) % 3) * v[1] % 3,
+    )
+    if other_u != expect_other:
+        return None
+
+    line_table: dict[tuple[int, int], tuple[dict[int, int], dict[int, int]]] = {
+        (0, 1): ({1: 2, 2: 1}, {1: -1, 2: 1}),
+        (1, 0): ({1: 1, 2: 2}, {1: -1, 2: 1}),
+        (1, 1): ({1: 1, 2: 2}, {1: 1, 2: 1}),
+        (1, 2): ({1: 1, 2: 2}, {1: -1, 2: -1}),
+    }
+    if v not in line_table:
+        return None
+    z_map, sign_map = line_table[v]
+    d_i = vec_to_e6id.get((0, 0, z_map[lambda_one]))
+    if d_i is None:
+        return None
+    coeff = Fraction(sign_map[lambda_one], 54)
+    return (d_i, coeff)
+
+
+def _dual_missing_focus_orientation_sign(focus_i: int) -> int:
+    """Gauge-fixed sign character on the focus fiber for dual U-supports."""
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    focus_u1, focus_u2 = (int(v) for v in e6id_to_vec[int(focus_i)][:2])
+    return 1 if (focus_u2 == 2 and focus_u1 != 2) else -1
+
+
+def _translated_2v_anchor_data(
+    a_i: int,
+) -> tuple[tuple[int, int], int, int, int, int, int, int] | None:
+    """Return gauge data for the translated `a = 2v` branch if active.
+
+    Output:
+      (u_a, origin0_i, origin_shift_i, c_nonzero0_i, a_z1_i, v_z1_i, sign)
+    where `a` must sit at the Heisenberg point `(2*v, z=2)` for some
+    projective direction `v`.
+    """
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    ua1, ua2, za = (int(v) for v in e6id_to_vec[int(a_i)])
+    if za != 2 or (ua1, ua2) == (0, 0):
+        return None
+
+    v_u = ((2 * ua1) % 3, (2 * ua2) % 3)
+    if v_u[0] != 0:
+        inv = 1 if v_u[0] == 1 else 2
+        direction = (1, (v_u[1] * inv) % 3)
+    else:
+        direction = (0, 1)
+
+    sign_table: dict[tuple[int, int], int] = {
+        (0, 1): 1,
+        (1, 0): 1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    origin_shift_table: dict[tuple[int, int], int] = {
+        (0, 1): 2,
+        (1, 0): 1,
+        (1, 1): 1,
+        (1, 2): 1,
+    }
+    if direction not in sign_table:
+        return None
+
+    origin0_i = vec_to_e6id.get((0, 0, 0))
+    origin_shift_i = vec_to_e6id.get((0, 0, origin_shift_table[direction]))
+    c_nonzero0_i = vec_to_e6id.get((v_u[0], v_u[1], 0))
+    a_z1_i = vec_to_e6id.get((ua1, ua2, 1))
+    v_z1_i = vec_to_e6id.get((v_u[0], v_u[1], 1))
+    if None in (origin0_i, origin_shift_i, c_nonzero0_i, a_z1_i, v_z1_i):
+        return None
+    return (
+        (ua1, ua2),
+        int(origin0_i),
+        int(origin_shift_i),
+        int(c_nonzero0_i),
+        int(a_z1_i),
+        int(v_z1_i),
+        int(sign_table[direction]),
+    )
+
+
+def _vertical_z2_anchor_data(a_i: int) -> tuple[int, int, int, int, int, int] | None:
+    """Return the gauge-fixed same-z vertical anchor data if active."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[int(a_i)]) != (0, 2, 2):
+        return None
+
+    b_i = vec_to_e6id.get((0, 1, 2))
+    origin2_i = vec_to_e6id.get((0, 0, 2))
+    b_z0_i = vec_to_e6id.get((0, 1, 0))
+    a_z0_i = vec_to_e6id.get((0, 2, 0))
+    b_z1_i = vec_to_e6id.get((0, 1, 1))
+    origin1_i = vec_to_e6id.get((0, 0, 1))
+    if None in (b_i, origin2_i, b_z0_i, a_z0_i, b_z1_i, origin1_i):
+        return None
+    return (
+        int(b_i),
+        int(origin2_i),
+        int(b_z0_i),
+        int(a_z0_i),
+        int(b_z1_i),
+        int(origin1_i),
+    )
+
+
+def _anchored_nonvertical_z2_line_data(
+    a_i: int, b_i: int
+) -> tuple[int, int, int, int, int, tuple[int, int], tuple[int, int]] | None:
+    """Return affine-line data for the nonvertical z=2 branch through a=(0,2,2)."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    a_vec = tuple(int(v) for v in e6id_to_vec[int(a_i)])
+    b_vec = tuple(int(v) for v in e6id_to_vec[int(b_i)])
+    if a_vec != (0, 2, 2) or b_vec[2] != 2 or b_i == a_i:
+        return None
+
+    ua1, ua2 = a_vec[:2]
+    ub1, ub2 = b_vec[:2]
+    d = ((ub1 - ua1) % 3, (ub2 - ua2) % 3)
+    if d[0] == 0:
+        return None
+    inv = 1 if d[0] == 1 else 2
+    direction = (1, (d[1] * inv) % 3)
+    sign_table: dict[tuple[int, int], int] = {
+        (1, 0): 1,
+        (1, 1): -1,
+        (1, 2): -1,
+    }
+    if direction not in sign_table:
+        return None
+
+    uc = ((-ua1 - ub1) % 3, (-ua2 - ub2) % 3)
+    c_z2_i = vec_to_e6id.get((uc[0], uc[1], 2))
+    a_z1_i = vec_to_e6id.get((ua1, ua2, 1))
+    b_z1_i = vec_to_e6id.get((ub1, ub2, 1))
+    b_z0_i = vec_to_e6id.get((ub1, ub2, 0))
+    c_z1_i = vec_to_e6id.get((uc[0], uc[1], 1))
+    if None in (c_z2_i, a_z1_i, b_z1_i, b_z0_i, c_z1_i):
+        return None
+    if int(c_z2_i) in {int(a_i), int(b_i)}:
+        return None
+    return (
+        int(c_z2_i),
+        int(a_z1_i),
+        int(b_z1_i),
+        int(b_z0_i),
+        int(c_z1_i),
+        (ub1, ub2),
+        direction,
+    )
+
+
+def _anchored_z1_to_z0_line_data(
+    a_i: int, b_i: int
+) -> tuple[int, int, int, int, int, tuple[int, int], tuple[int, int]] | None:
+    """Return the active z=1 -> z=0 affine-line data through a=(0,2,2)."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    a_vec = tuple(int(v) for v in e6id_to_vec[int(a_i)])
+    b_vec = tuple(int(v) for v in e6id_to_vec[int(b_i)])
+    if a_vec != (0, 2, 2) or b_vec[2] != 1 or b_vec[0] != 2:
+        return None
+
+    ua1, ua2 = a_vec[:2]
+    ub1, ub2 = b_vec[:2]
+    d = ((ub1 - ua1) % 3, (ub2 - ua2) % 3)
+    inv = 1 if d[0] == 1 else 2
+    direction = (1, (d[1] * inv) % 3)
+    sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    if direction not in sign_table:
+        return None
+
+    uc = ((-ua1 - ub1) % 3, (-ua2 - ub2) % 3)
+    c_z0_i = vec_to_e6id.get((uc[0], uc[1], 0))
+    a_z0_i = vec_to_e6id.get((ua1, ua2, 0))
+    b_z2_i = vec_to_e6id.get((ub1, ub2, 2))
+    b_z0_i = vec_to_e6id.get((ub1, ub2, 0))
+    c_z1_i = vec_to_e6id.get((uc[0], uc[1], 1))
+    if None in (c_z0_i, a_z0_i, b_z2_i, b_z0_i, c_z1_i):
+        return None
+    return (
+        int(c_z0_i),
+        int(a_z0_i),
+        int(b_z2_i),
+        int(b_z0_i),
+        int(c_z1_i),
+        (ub1, ub2),
+        direction,
+    )
+
+
+def predict_dual_origin_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped dual of the origin-line W-family."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if c_j != a_j or b_j == a_j:
+        return None
+    line_data = _predict_dual_origin_line_core(a_i, b_i, c_i)
+    if line_data is None:
+        return None
+    d_i, coeff = line_data
+    V = [(_flat_e6(b_i, d_i), coeff)]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_origin_same_fiber_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the 1/108 overlap family on the origin line and a nonzero fiber."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    ua1, ua2, za = (int(v) for v in e6id_to_vec[a_i])
+    ub1, ub2, zb = (int(v) for v in e6id_to_vec[b_i])
+    uc1, uc2, zc = (int(v) for v in e6id_to_vec[c_i])
+
+    if (ua1, ua2, za) != (0, 0, 0):
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+    if (ub1, ub2) != (uc1, uc2) or (ub1, ub2) == (0, 0):
+        return None
+    if (zb, zc) not in {(2, 1), (1, 2)}:
+        return None
+
+    # Normalize the shared nonzero fiber u = lambda_u * v.
+    if ub1 != 0:
+        lam = ub1 % 3
+        inv = 1 if lam == 1 else 2
+        v = (1, (ub2 * inv) % 3)
+        lambda_u = lam
+    else:
+        v = (0, 1)
+        lambda_u = ub2 % 3
+    if lambda_u not in (1, 2):
+        return None
+
+    focus_i = vec_to_e6id.get((ub1, ub2, 0))
+    other0_i = vec_to_e6id.get(((2 * ub1) % 3, (2 * ub2) % 3, 0))
+    if focus_i is None or other0_i is None:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    focus_sign = _dual_missing_focus_orientation_sign(focus_i)
+    u_coeff = Fraction(-focus_sign * delta_sign, 108)
+    support_j = (-a_j - b_j) % 3
+
+    v_sign_table: dict[tuple[int, int], dict[int, int]] = {
+        (0, 1): {1: 1, 2: -1},
+        (1, 0): {1: -1, 2: -1},
+        (1, 1): {1: 1, 2: 1},
+        (1, 2): {1: 1, 2: -1},
+    }
+    if v not in v_sign_table:
+        return None
+    v_sign = v_sign_table[v][lambda_u]
+    v_coeff = Fraction(v_sign, 108)
+
+    U = [(27 * 27 + 9 + focus_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, other0_i), v_coeff)]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_translated_2v_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Translated off-fiber W-family with `a` anchored at the `2v,z=2` point."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _translated_2v_anchor_data(a_i)
+    if data is None:
+        return None
+    _u_a, origin0_i, _origin_shift_i, c_nonzero0_i, a_z1_i, _v_z1_i, sign = data
+
+    if b_i != origin0_i or c_i != c_nonzero0_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_translated_2v_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Translated color-swapped V-family with `a` anchored at the `2v,z=2` point."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _translated_2v_anchor_data(a_i)
+    if data is None:
+        return None
+    _u_a, origin0_i, _origin_shift_i, c_nonzero0_i, a_z1_i, _v_z1_i, sign = data
+
+    if b_i != origin0_i or c_i != c_nonzero0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_translated_2v_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength translated overlap with `a` anchored at the `2v,z=2` point."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _translated_2v_anchor_data(a_i)
+    if data is None:
+        return None
+    _u_a, origin0_i, origin_shift_i, _c_nonzero0_i, _a_z1_i, v_z1_i, sign = data
+
+    # In the current gauge the translated overlap uses the origin z=1 point as
+    # the U-support focus and only appears when the second g2 leg stays in the
+    # same sl3 color as `a`.
+    if b_i != origin0_i or c_i != origin_shift_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 21 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(origin0_i, v_z1_i), Fraction(sign, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_vertical_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Gauge-fixed vertical branch with all Heisenberg points anchored in z=2."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _vertical_z2_anchor_data(a_i)
+    if data is None:
+        return None
+    anchor_b_i, origin2_i, _b_z0_i, a_z0_i, _b_z1_i, _origin1_i = data
+
+    if b_i != anchor_b_i or c_i != origin2_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_vertical_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped V dual of the same-z vertical branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _vertical_z2_anchor_data(a_i)
+    if data is None:
+        return None
+    anchor_b_i, origin2_i, _b_z0_i, a_z0_i, _b_z1_i, _origin1_i = data
+
+    if b_i != anchor_b_i or c_i != origin2_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_vertical_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the same-z vertical branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _vertical_z2_anchor_data(a_i)
+    if data is None:
+        return None
+    anchor_b_i, _origin2_i, b_z0_i, _a_z0_i, b_z1_i, origin1_i = data
+
+    if b_i != anchor_b_i or c_i != b_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + b_z1_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, origin1_i), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchored_nonvertical_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Nonvertical z=2 affine-line W-family through the anchor a=(0,2,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_nonvertical_z2_line_data(a_i, b_i)
+    if data is None:
+        return None
+    c_z2_i, a_z1_i, _b_z1_i, _b_z0_i, _c_z1_i, _u_b, direction = data
+
+    if c_i != c_z2_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    sign = 1 if direction == (1, 0) else -1
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchored_nonvertical_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped V dual on the nonvertical z=2 affine-line branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_nonvertical_z2_line_data(a_i, b_i)
+    if data is None:
+        return None
+    c_z2_i, a_z1_i, _b_z1_i, _b_z0_i, _c_z1_i, _u_b, direction = data
+
+    if c_i != c_z2_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    sign = 1 if direction == (1, 0) else -1
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchored_nonvertical_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the active nonvertical z=2 line branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_nonvertical_z2_line_data(a_i, b_i)
+    if data is None:
+        return None
+    _c_z2_i, _a_z1_i, b_z1_i, b_z0_i, c_z1_i, u_b, direction = data
+
+    # In the current gauge the overlap only occurs on the u1=2 half of the
+    # nonvertical pencil through the anchor.
+    if u_b[0] != 2:
+        return None
+    if c_i != b_z1_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    v_sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + b_z0_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, c_z1_i), Fraction(v_sign_table[direction], 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchored_z1_to_z0_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Anchored W-family with the first g2 leg in z=1 and the second in z=0."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_z1_to_z0_line_data(a_i, b_i)
+    if data is None:
+        return None
+    c_z0_i, a_z0_i, _b_z2_i, _b_z0_i, _c_z1_i, _u_b, direction = data
+
+    if c_i != c_z0_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(sign_table[direction], 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchored_z1_to_z0_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped V dual of the anchored z=1 -> z=0 branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_z1_to_z0_line_data(a_i, b_i)
+    if data is None:
+        return None
+    c_z0_i, a_z0_i, _b_z2_i, _b_z0_i, _c_z1_i, _u_b, direction = data
+
+    if c_i != c_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(sign_table[direction], 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchored_z1_to_z0_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the anchored z=1 -> z=0 branch."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_z1_to_z0_line_data(a_i, b_i)
+    if data is None:
+        return None
+    _c_z0_i, _a_z0_i, b_z2_i, b_z0_i, c_z1_i, _u_b, direction = data
+
+    if c_i != b_z2_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + b_z0_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, c_z1_i), Fraction(sign_table[direction], 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchored_nonvertical_z2_complement_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Complementary overlap on the u1=1 half of the anchored z=2 pencil."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchored_nonvertical_z2_line_data(a_i, b_i)
+    if data is None:
+        return None
+    _c_z2_i, _a_z1_i, b_z1_i, b_z0_i, _c_z1_i, u_b, direction = data
+    if u_b[0] != 1:
+        return None
+    if c_i != b_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    ua1, ua2, _za = (int(v) for v in e6id_to_vec[a_i])
+    ub1, ub2 = u_b
+    uc0_i = vec_to_e6id.get(((-ua1 - ub1) % 3, (-ua2 - ub2) % 3, 0))
+    if uc0_i is None:
+        return None
+
+    v_sign_table: dict[tuple[int, int], int] = {
+        (1, 0): 1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    u_sign_table: dict[tuple[int, int], int] = {
+        (1, 0): -1,
+        (1, 1): 1,
+        (1, 2): 1,
+    }
+    support_j = (-a_j - b_j) % 3
+    U = [
+        (
+            27 * 27 + 9 + b_z1_i * 3 + support_j,
+            Fraction(u_sign_table[direction] * delta_sign, 108),
+        )
+    ]
+    V = [(_flat_e6(b_i, int(uc0_i)), Fraction(v_sign_table[direction], 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def _anchor_01_data(
+    a_i: int,
+) -> tuple[int, int, int, int, int, int, int] | None:
+    """Return gauge data for the anchored a=(0,1,2) branch if active."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[int(a_i)]) != (0, 1, 2):
+        return None
+
+    origin0_i = vec_to_e6id.get((0, 0, 0))
+    origin1_i = vec_to_e6id.get((0, 0, 1))
+    origin2_i = vec_to_e6id.get((0, 0, 2))
+    a_z0_i = vec_to_e6id.get((0, 1, 0))
+    a_z1_i = vec_to_e6id.get((0, 1, 1))
+    two_u_z0_i = vec_to_e6id.get((0, 2, 0))
+    two_u_z1_i = vec_to_e6id.get((0, 2, 1))
+    if None in (
+        origin0_i,
+        origin1_i,
+        origin2_i,
+        a_z0_i,
+        a_z1_i,
+        two_u_z0_i,
+        two_u_z1_i,
+    ):
+        return None
+    return (
+        int(origin0_i),
+        int(origin1_i),
+        int(origin2_i),
+        int(a_z0_i),
+        int(a_z1_i),
+        int(two_u_z0_i),
+        int(two_u_z1_i),
+    )
+
+
+def predict_dual_anchor_01_origin_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Origin-line branch for the anchored a=(0,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, two_u_z0_i, _two_u_z1_i = data
+    if b_i != origin0_i or c_i != two_u_z0_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_01_origin_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped origin-line dual for the anchored a=(0,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, two_u_z0_i, _two_u_z1_i = data
+    if b_i != origin0_i or c_i != two_u_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_01_origin_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the origin branch for a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    origin0_i, origin1_i, origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, two_u_z1_i = data
+    if b_i != origin0_i or c_i != origin1_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + origin2_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(origin0_i, two_u_z1_i), Fraction(-1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_01_samefiber_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Same-fiber z=2 branch for the anchored a=(0,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i = data
+    if b_i != 1 or c_i != origin1_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_01_samefiber_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped same-fiber z=2 branch for a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i = data
+    if b_i != 1 or c_i != origin1_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_01_samefiber_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength same-fiber z=2 overlap for a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, origin2_i, _a_z0_i, _a_z1_i, two_u_z0_i, two_u_z1_i = data
+    if b_i != 1 or c_i != two_u_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(-1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + two_u_z1_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, origin2_i), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def _anchor_01_affine_line_data(
+    a_i: int, b_i: int
+) -> tuple[int, int, int, int, int, int, tuple[int, int], int] | None:
+    """Return affine-line data for nonvertical branches through a=(0,1,2)."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[int(a_i)]) != (0, 1, 2):
+        return None
+
+    ub1, ub2, zb = (int(v) for v in e6id_to_vec[int(b_i)])
+    if zb not in (1, 2) or ub1 == 0:
+        return None
+
+    d = (ub1 % 3, (ub2 - 1) % 3)
+    inv = 1 if d[0] == 1 else 2
+    direction = (1, (d[1] * inv) % 3)
+    if direction not in {(1, 0), (1, 1), (1, 2)}:
+        return None
+
+    uc = ((3 - ub1) % 3, (2 - ub2) % 3)
+    if zb == 2:
+        w_c_i = vec_to_e6id.get((uc[0], uc[1], 0))
+        target_i = vec_to_e6id.get((0, 1, 0))
+        uv_c_i = vec_to_e6id.get((ub1, ub2, 1))
+        uv_target_i = vec_to_e6id.get((uc[0], uc[1], 2))
+    else:
+        w_c_i = vec_to_e6id.get((uc[0], uc[1], 1))
+        target_i = vec_to_e6id.get((0, 1, 1))
+        uv_c_i = vec_to_e6id.get((ub1, ub2, 2))
+        uv_target_i = vec_to_e6id.get((uc[0], uc[1], 2))
+    b_z0_i = vec_to_e6id.get((ub1, ub2, 0))
+    if None in (w_c_i, target_i, uv_c_i, uv_target_i, b_z0_i):
+        return None
+    return (
+        int(w_c_i),
+        int(target_i),
+        int(uv_c_i),
+        int(b_z0_i),
+        int(uv_target_i),
+        int(zb),
+        direction,
+        int(ub1),
+    )
+
+
+def predict_dual_anchor_01_affine_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Nonvertical affine-line W-family through a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_affine_line_data(a_i, b_i)
+    if data is None:
+        return None
+    w_c_i, target_i, _uv_c_i, _b_z0_i, _uv_target_i, _zb, direction, _ub1 = data
+    if c_i != w_c_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    sign_table = {(1, 0): 1, (1, 1): -1, (1, 2): -1}
+    W = [(_flat_e6(c_i, target_i), Fraction(sign_table[direction], 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_01_affine_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped affine-line dual through a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_affine_line_data(a_i, b_i)
+    if data is None:
+        return None
+    w_c_i, target_i, _uv_c_i, _b_z0_i, _uv_target_i, _zb, direction, _ub1 = data
+    if c_i != w_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    sign_table = {(1, 0): 1, (1, 1): -1, (1, 2): -1}
+    V = [(_flat_e6(b_i, target_i), Fraction(sign_table[direction], 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_01_affine_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength affine overlap through a=(0,1,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_01_affine_line_data(a_i, b_i)
+    if data is None:
+        return None
+    _w_c_i, _target_i, uv_c_i, b_z0_i, uv_target_i, _zb, direction, ub1 = data
+    if ub1 != 2 or c_i != uv_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    v_sign_table = {(1, 0): 1, (1, 1): -1, (1, 2): 1}
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + b_z0_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, uv_target_i), Fraction(v_sign_table[direction], 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_01_affine_z1_complement_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Complementary z=1 overlap on the u1=1 half of the a=(0,1,2) pencil."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[a_i]) != (0, 1, 2):
+        return None
+    ub1, ub2, zb = (int(v) for v in e6id_to_vec[b_i])
+    if zb != 1 or ub1 != 1:
+        return None
+
+    b_z0_i = vec_to_e6id.get((ub1, ub2, 0))
+    b_z2_i = vec_to_e6id.get((ub1, ub2, 2))
+    uc0_i = vec_to_e6id.get(((2 * ub1) % 3, (-ub2 - 1) % 3, 0))
+    if None in (b_z0_i, b_z2_i, uc0_i):
+        return None
+    if c_i != int(b_z0_i):
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    d = (ub1 % 3, (ub2 - 1) % 3)
+    direction = (1, d[1] % 3)
+    u_sign_table: dict[tuple[int, int], int] = {
+        (1, 0): 1,
+        (1, 1): -1,
+        (1, 2): 1,
+    }
+    if direction not in u_sign_table:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [
+        (
+            27 * 27 + 9 + int(b_z2_i) * 3 + support_j,
+            Fraction(u_sign_table[direction] * delta_sign, 108),
+        )
+    ]
+    V = [(_flat_e6(b_i, int(uc0_i)), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def _anchor_20_data(
+    a_i: int,
+) -> tuple[int, int, int, int, int, int, int, int, int] | None:
+    """Return gauge data for the anchored a=(2,0,2) branch if active."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[int(a_i)]) != (2, 0, 2):
+        return None
+
+    origin0_i = vec_to_e6id.get((0, 0, 0))
+    origin1_i = vec_to_e6id.get((0, 0, 1))
+    origin2_i = vec_to_e6id.get((0, 0, 2))
+    a_z0_i = vec_to_e6id.get((2, 0, 0))
+    a_z1_i = vec_to_e6id.get((2, 0, 1))
+    two_u_z0_i = vec_to_e6id.get((1, 0, 0))
+    two_u_z1_i = vec_to_e6id.get((1, 0, 1))
+    two_u_z2_i = vec_to_e6id.get((1, 0, 2))
+    zero2_u_z2_i = vec_to_e6id.get((0, 2, 2))
+    if None in (
+        origin0_i,
+        origin1_i,
+        origin2_i,
+        a_z0_i,
+        a_z1_i,
+        two_u_z0_i,
+        two_u_z1_i,
+        two_u_z2_i,
+        zero2_u_z2_i,
+    ):
+        return None
+    return (
+        int(origin0_i),
+        int(origin1_i),
+        int(origin2_i),
+        int(a_z0_i),
+        int(a_z1_i),
+        int(two_u_z0_i),
+        int(two_u_z1_i),
+        int(two_u_z2_i),
+        int(zero2_u_z2_i),
+    )
+
+
+def predict_dual_anchor_20_origin_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Origin overlap branch for the anchored a=(2,0,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    origin0_i, origin1_i, origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != origin0_i or c_i != origin1_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + origin2_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(origin0_i, two_u_z1_i), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_samefiber_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Same-fiber z=2 line branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != two_u_z2_i or c_i != origin1_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_samefiber_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped same-fiber z=2 branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != two_u_z2_i or c_i != origin1_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_samefiber_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength same-fiber z=2 overlap for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, origin2_i, _a_z0_i, _a_z1_i, two_u_z0_i, two_u_z1_i, two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != two_u_z2_i or c_i != two_u_z0_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + two_u_z1_i * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, origin2_i), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_zero2_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Affine z=2 branch through b=(0,2,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, zero2_u_z2_i = data
+
+    if b_i != zero2_u_z2_i or c_i != 8:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_zero2_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped affine z=2 branch through b=(0,2,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, zero2_u_z2_i = data
+
+    if b_i != zero2_u_z2_i or c_i != 8:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_zero2_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the b=(0,2,2) affine branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, zero2_u_z2_i = data
+
+    if b_i != zero2_u_z2_i or c_i != 15:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(-1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 23 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 13), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_zero1_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Affine z=2 branch through b=(0,1,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 2 or c_i != 7:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_zero1_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped affine z=2 branch through b=(0,1,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 2 or c_i != 7:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_zero1_z2_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the b=(0,1,2) affine branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 2 or c_i != 20:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 16 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 19), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_two2_z1_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """z=1 affine branch through b=(2,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 4 or c_i != 5:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_two2_z1_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped z=1 affine branch through b=(2,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 4 or c_i != 5:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z1_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_two2_z1_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the b=(2,2,1) branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 4 or c_i != 9:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 25 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 10), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_two1_z2_complement_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Complementary z=2 overlap through b=(2,1,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, _a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 5 or c_i != 24:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 10 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 25), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_one2_z2_complement_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Complementary z=2 overlap through b=(1,2,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    if b_i != 7 or c_i != 12:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(-1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 19 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 16), Fraction(-1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_one1_z1_complement_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Complementary z=1 overlap through b=(1,1,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    if b_i != 8 or c_i != 18:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(-1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 13 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 23), Fraction(-1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_two2_z2_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """z=2 line branch through b=(2,2,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 9 or c_i != 24:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_two2_z2_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped z=2 line branch through b=(2,2,2) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 9 or c_i != 24:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_one2_z1_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """z=1 line branch through b=(1,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 12 or c_i != 20:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_one2_z1_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped z=1 line branch through b=(1,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 12 or c_i != 20:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_one2_z1_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the b=(1,2,1) branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    if b_i != 12 or c_i != 7:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(-1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 19 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 16), Fraction(-1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_20_zero2_z1_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """z=1 line branch through b=(0,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 15 or c_i != 18:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_20_zero2_z1_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped z=1 line branch through b=(0,2,1) for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    _origin0_i, _origin1_i, _origin2_i, a_z0_i, _a_z1_i, _two_u_z0_i, _two_u_z1_i, _two_u_z2_i, _zero2_u_z2_i = data
+
+    if b_i != 15 or c_i != 18:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, a_z0_i), Fraction(-1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_20_zero2_z1_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength overlap on the b=(0,2,1) branch for a=(2,0,2)."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_20_data(a_i)
+    if data is None:
+        return None
+    if b_i != 15 or c_i != 1:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        u_coeff = Fraction(-1, 108)
+    elif delta_b == 2:
+        u_coeff = Fraction(1, 108)
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + 23 * 3 + support_j, u_coeff)]
+    V = [(_flat_e6(b_i, 13), Fraction(1, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+_ANCHOR_22_LINE_CASES: dict[
+    tuple[int, int, int], tuple[tuple[int, int, int], tuple[int, int, int], int]
+] = {
+    (0, 0, 0): ((1, 1, 0), (2, 2, 2), -1),
+    (0, 2, 2): ((1, 2, 1), (2, 2, 2), 1),
+    (0, 1, 2): ((1, 0, 2), (2, 2, 2), -1),
+    (2, 0, 2): ((2, 1, 1), (2, 2, 2), -1),
+    (2, 0, 1): ((2, 1, 0), (2, 2, 0), -1),
+    (1, 2, 2): ((0, 2, 0), (2, 2, 0), -1),
+    (1, 1, 1): ((0, 0, 2), (2, 2, 0), 1),
+    (0, 1, 1): ((1, 0, 0), (2, 2, 0), -1),
+}
+
+_ANCHOR_22_OVERLAP_CASES: dict[int, tuple[int, int, int, int, int]] = {
+    0: (22, 21, 13, 1, -1),
+    1: (23, 15, 19, -1, 1),
+    2: (16, 20, 14, 1, 1),
+    3: (6, 26, 5, 1, 1),
+    7: (12, 19, 15, -1, 1),
+    8: (18, 13, 21, 1, -1),
+    10: (24, 5, 26, 1, 1),
+    11: (17, 14, 20, 1, 1),
+}
+
+
+_ANCHOR_21_LINE_CASES: dict[int, tuple[int, int, int]] = {
+    1: (14, 10, 1),
+    2: (13, 10, -1),
+    3: (25, 24, -1),
+    6: (9, 10, -1),
+    7: (21, 24, -1),
+    8: (20, 24, 1),
+    15: (17, 24, 1),
+}
+
+_ANCHOR_21_OVERLAP_CASES: dict[int, tuple[int, int, int, int, int]] = {
+    0: (21, 22, 12, 1, 1),
+    1: (15, 23, 11, -1, 1),
+    2: (20, 16, 18, 1, -1),
+    3: (6, 26, 4, 1, 1),
+    7: (19, 12, 22, -1, -1),
+    8: (13, 18, 16, 1, -1),
+    9: (25, 4, 26, 1, 1),
+    14: (17, 11, 23, 1, -1),
+}
+
+
+def _anchor_21_active(a_i: int) -> bool:
+    """Return whether the anchored a=(2,1,2) branch is active."""
+    e6id_to_vec, _vec_to_e6id = _heisenberg_vec_maps()
+    return tuple(int(v) for v in e6id_to_vec[int(a_i)]) == (2, 1, 2)
+
+
+def _anchor_22_data(
+    a_i: int,
+) -> tuple[dict[int, tuple[int, int, int]], dict[tuple[int, int, int], int]] | None:
+    """Return Heisenberg maps for the anchored a=(2,2,1) branch if active."""
+    e6id_to_vec, vec_to_e6id = _heisenberg_vec_maps()
+    if tuple(int(v) for v in e6id_to_vec[int(a_i)]) != (2, 2, 1):
+        return None
+
+    required_coords: set[tuple[int, int, int]] = {(2, 2, 1)}
+    for b_vec, (c_vec, target_vec, _sign) in _ANCHOR_22_LINE_CASES.items():
+        required_coords.update((b_vec, c_vec, target_vec))
+    if any(vec_to_e6id.get(coord) is None for coord in required_coords):
+        return None
+    return e6id_to_vec, vec_to_e6id
+
+
+def predict_dual_anchor_22_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Table-driven W-family on the anchored a=(2,2,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_22_data(a_i)
+    if data is None:
+        return None
+    e6id_to_vec, vec_to_e6id = data
+
+    b_vec = tuple(int(v) for v in e6id_to_vec[b_i])
+    c_vec = tuple(int(v) for v in e6id_to_vec[c_i])
+    case = _ANCHOR_22_LINE_CASES.get(b_vec)
+    if case is None:
+        return None
+    line_c_vec, target_vec, sign = case
+    if c_vec != line_c_vec:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    target_i = int(vec_to_e6id[target_vec])
+    W = [(_flat_e6(c_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_22_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped table-driven V-family on the anchored a=(2,2,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_22_data(a_i)
+    if data is None:
+        return None
+    e6id_to_vec, vec_to_e6id = data
+
+    b_vec = tuple(int(v) for v in e6id_to_vec[b_i])
+    c_vec = tuple(int(v) for v in e6id_to_vec[c_i])
+    case = _ANCHOR_22_LINE_CASES.get(b_vec)
+    if case is None:
+        return None
+    line_c_vec, target_vec, sign = case
+    if c_vec != line_c_vec:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    target_i = int(vec_to_e6id[target_vec])
+    V = [(_flat_e6(b_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_22_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength U/V overlap on the anchored a=(2,2,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    data = _anchor_22_data(a_i)
+    if data is None:
+        return None
+    _e6id_to_vec, _vec_to_e6id = data
+
+    case = _ANCHOR_22_OVERLAP_CASES.get(b_i)
+    if case is None:
+        return None
+    overlap_c_i, u_i, v_target_i, u_base_sign, v_sign = case
+    if c_i != overlap_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + u_i * 3 + support_j, Fraction(u_base_sign * delta_sign, 108))]
+    V = [(_flat_e6(b_i, v_target_i), Fraction(v_sign, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_anchor_21_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Table-driven W-family on the anchored a=(2,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_21_active(a_i):
+        return None
+    case = _ANCHOR_21_LINE_CASES.get(b_i)
+    if case is None:
+        return None
+    line_c_i, target_i, sign = case
+    if c_i != line_c_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_21_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped table-driven V-family on the anchored a=(2,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_21_active(a_i):
+        return None
+    case = _ANCHOR_21_LINE_CASES.get(b_i)
+    if case is None:
+        return None
+    line_c_i, target_i, sign = case
+    if c_i != line_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_21_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength U/V overlap on the anchored a=(2,1,2) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_21_active(a_i):
+        return None
+    case = _ANCHOR_21_OVERLAP_CASES.get(b_i)
+    if case is None:
+        return None
+    overlap_c_i, u_i, v_target_i, u_base_sign, v_sign = case
+    if c_i != overlap_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + u_i * 3 + support_j, Fraction(u_base_sign * delta_sign, 108))]
+    V = [(_flat_e6(b_i, v_target_i), Fraction(v_sign, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
+def predict_dual_same_e6id_fiber_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the 1/54 V-only dual family for g1,g2,g2 triples.
+
+    This family occurs when:
+      - the g1 input `a` and the first g2 input `b` share the same E6 id,
+      - the second g2 input `c` shares the same sl3 index as `a`,
+      - all three E6 ids lie in the same Heisenberg fiber, and
+      - both the E6 id and the sl3 index actually change across the two g2 legs.
+
+    Output:
+      - V has a single +1/54 e6 matrix unit E_{a_i, c_i}
+      - U = W = 0
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if b_i != a_i or b_j == a_j:
+        return None
+    if c_j != a_j or c_i == a_i:
+        return None
+
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    u_a = tuple(int(v) for v in e6id_to_vec[a_i][:2])
+    u_b = tuple(int(v) for v in e6id_to_vec[b_i][:2])
+    u_c = tuple(int(v) for v in e6id_to_vec[c_i][:2])
+    if not (u_a == u_b == u_c):
+        return None
+
+    V = [(_flat_e6(a_i, c_i), Fraction(1, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_missing_focus_u_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the 1/54 U-only dual family from the focus-section geometry.
+
+    This family appears when:
+      - the g1 leg `a` and first g2 leg `b` share the same sl3 color,
+      - the two g2 E6 ids lie in the same Heisenberg fiber but have different
+        colors, and
+      - the g1 E6 id lies in the certified 9-point section focused at the
+        missing fiber point, excluding that focus point itself.
+
+    Output:
+      - U has one g1 basis entry on the missing fiber point with the remaining
+        sl3 color and oriented sign ±1/54.
+      - V = W = 0
+    """
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if b_j != a_j or c_j == a_j or b_i == c_i:
+        return None
+
+    e6id_to_vec, _ = _heisenberg_vec_maps()
+    u_b = tuple(int(v) for v in e6id_to_vec[b_i][:2])
+    u_c = tuple(int(v) for v in e6id_to_vec[c_i][:2])
+    if u_b != u_c:
+        return None
+
+    fiber = [
+        e6id
+        for e6id, vec in e6id_to_vec.items()
+        if tuple(int(v) for v in vec[:2]) == u_b
+    ]
+    if len(fiber) != 3:
+        raise ValueError(f"unexpected fiber size for u={u_b}: {len(fiber)}")
+    missing = sorted(set(fiber) - {b_i, c_i})
+    if len(missing) != 1:
+        return None
+    focus_i = int(missing[0])
+
+    focus_rows = _focus_section_rows_by_focus()
+    rows = focus_rows.get(focus_i)
+    if rows is None or a_i == focus_i or a_i not in rows:
+        return None
+
+    support_j = (-a_j - c_j) % 3
+    delta_j = (c_j - a_j) % 3
+    if delta_j == 1:
+        coeff_sign = 1
+    elif delta_j == 2:
+        coeff_sign = -1
+    else:
+        return None
+
+    focus_sign = _dual_missing_focus_orientation_sign(focus_i)
+    coeff = Fraction(focus_sign * coeff_sign, 54)
+
+    U = [(27 * 27 + 9 + focus_i * 3 + support_j, coeff)]
+    return CE2SparseUVW(U=U, V=[], W=[])
+
+
+def predict_dual_g1g2g2_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Predict the current closed-form dual g1,g2,g2 families."""
+    uvw = predict_dual_diagonal_fiber_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_origin_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_origin_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_21_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_21_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_21_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_22_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_22_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_22_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_origin_same_fiber_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_origin_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_origin_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_origin_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_samefiber_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_samefiber_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_samefiber_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_affine_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_affine_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_affine_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_01_affine_z1_complement_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_origin_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_samefiber_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_samefiber_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_samefiber_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero1_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero1_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero1_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two2_z1_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two2_z1_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two2_z1_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two1_z2_complement_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_one2_z2_complement_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_one1_z1_complement_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two2_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_two2_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_one2_z1_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_one2_z1_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_one2_z1_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z1_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z1_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_20_zero2_z1_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_translated_2v_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_translated_2v_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_translated_2v_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_vertical_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_vertical_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_vertical_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_nonvertical_z2_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_nonvertical_z2_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_nonvertical_z2_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_z1_to_z0_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_z1_to_z0_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_z1_to_z0_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchored_nonvertical_z2_complement_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_missing_focus_u_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    return predict_dual_same_e6id_fiber_family_uvw(a, b, c)
 
 
 def predict_ce2_uv(

@@ -1,0 +1,5387 @@
+{
+  "K3_exact_g1_triples": {
+    "cartan_hist_top": [],
+    "coeff_hist_top": [
+      {
+        "count": 300,
+        "key": "1"
+      },
+      {
+        "count": 279,
+        "key": "-1"
+      }
+    ],
+    "examples_first250": [
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          60,
+          242
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          18,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          104,
+          222
+        ],
+        "out": 36,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          17,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          117,
+          222
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          2,
+          16,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          122,
+          221
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          8,
+          18,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          140,
+          180
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          0,
+          3,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          140,
+          194
+        ],
+        "out": 36,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          3,
+          12,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          140,
+          195
+        ],
+        "out": 37,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          3,
+          16,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          10,
+          146,
+          153
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          4,
+          14,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          146,
+          184
+        ],
+        "out": 36,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          9,
+          14,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          146,
+          185
+        ],
+        "out": 37,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          14,
+          19,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          10,
+          156,
+          189
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          12,
+          19,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          158,
+          186
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          11,
+          14,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          163,
+          186
+        ],
+        "out": 56,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          14,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          166,
+          189
+        ],
+        "out": 62,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          2,
+          19,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          189,
+          195
+        ],
+        "out": 91,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          16,
+          19,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          28,
+          242
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          0,
+          24,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          66,
+          180
+        ],
+        "out": 10,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          0,
+          12,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          74,
+          242
+        ],
+        "out": 74,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          7,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          80,
+          180
+        ],
+        "out": 15,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          18,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          102,
+          180
+        ],
+        "out": 22,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          21,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          111,
+          194
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          12,
+          24,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          111,
+          195
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          16,
+          24,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          113,
+          191
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          7,
+          15,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          115,
+          189
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          19,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          117,
+          184
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          2,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          117,
+          185
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          117,
+          203
+        ],
+        "out": 39,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          10,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          117,
+          204
+        ],
+        "out": 40,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          2,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          145,
+          180
+        ],
+        "out": 39,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          8,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          146,
+          180
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          0,
+          14,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          153,
+          171
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          4,
+          11,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          156,
+          180
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          12,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          156,
+          189
+        ],
+        "out": 60,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          12,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          156,
+          194
+        ],
+        "out": 65,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          12,
+          12,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          156,
+          195
+        ],
+        "out": 66,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          12,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          158,
+          170
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          6,
+          11,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          158,
+          171
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          11,
+          11,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          160,
+          180
+        ],
+        "out": 55,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          0,
+          10,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          163,
+          180
+        ],
+        "out": 59,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          3,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          165,
+          195
+        ],
+        "out": 76,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          15,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          166,
+          180
+        ],
+        "out": 62,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          2,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          166,
+          194
+        ],
+        "out": 76,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          2,
+          12,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          171,
+          222
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          11,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          180,
+          195
+        ],
+        "out": 91,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          0,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          180,
+          204
+        ],
+        "out": 98,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          1,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          180,
+          242
+        ],
+        "out": 180,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          0,
+          0,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          180,
+          243
+        ],
+        "out": 184,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          0,
+          1,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          189,
+          195
+        ],
+        "out": 99,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          16,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          73,
+          203
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          10,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          73,
+          204
+        ],
+        "out": 21,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          2,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          74,
+          201
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          4,
+          7,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          96,
+          242
+        ],
+        "out": 107,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          0,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          104,
+          165
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          15,
+          17,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          104,
+          166
+        ],
+        "out": 21,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          2,
+          17,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          104,
+          208
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          5,
+          17,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          132,
+          145
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          8,
+          20,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          142,
+          171
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          11,
+          15,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          145,
+          189
+        ],
+        "out": 60,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          8,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          145,
+          194
+        ],
+        "out": 65,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          8,
+          12,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          145,
+          195
+        ],
+        "out": 66,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          8,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          146,
+          184
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          9,
+          14,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          146,
+          185
+        ],
+        "out": 58,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          14,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          163,
+          173
+        ],
+        "out": 56,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          3,
+          13,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          165,
+          195
+        ],
+        "out": 81,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          15,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          166,
+          194
+        ],
+        "out": 81,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          12,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          171,
+          222
+        ],
+        "out": 107,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          11,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          186,
+          194
+        ],
+        "out": 107,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          12,
+          14,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          15,
+          186,
+          195
+        ],
+        "out": 108,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          14,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          15,
+          189,
+          195
+        ],
+        "out": 110,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          16,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          28,
+          222
+        ],
+        "out": 15,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          20,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          33,
+          222
+        ],
+        "out": 16,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          16,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          43,
+          222
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          16,
+          20,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          60,
+          243
+        ],
+        "out": 79,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          1,
+          18,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          80,
+          175
+        ],
+        "out": 16,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          18,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          90,
+          222
+        ],
+        "out": 45,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          16,
+          20,
+          22
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          91,
+          208
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          5,
+          19,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          91,
+          222
+        ],
+        "out": 46,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          19,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          94,
+          222
+        ],
+        "out": 49,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          11,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          96,
+          201
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          4,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          101,
+          191
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          7,
+          20,
+          22
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          102,
+          191
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          7,
+          20,
+          21
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          102,
+          222
+        ],
+        "out": 64,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          20,
+          21
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          104,
+          188
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          9,
+          17,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          104,
+          222
+        ],
+        "out": 67,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          16,
+          17,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          132,
+          173
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          13,
+          20,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          140,
+          175
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          140,
+          184
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          3,
+          9,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          140,
+          185
+        ],
+        "out": 58,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          142,
+          170
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          6,
+          15,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          142,
+          171
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          11,
+          15,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          142,
+          175
+        ],
+        "out": 43,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          15,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          142,
+          180
+        ],
+        "out": 53,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          0,
+          15,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          142,
+          222
+        ],
+        "out": 84,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          15,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          150,
+          175
+        ],
+        "out": 46,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          7,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          150,
+          208
+        ],
+        "out": 79,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          5,
+          7,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          152,
+          175
+        ],
+        "out": 51,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          5,
+          6,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          152,
+          203
+        ],
+        "out": 79,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          6,
+          10,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          152,
+          204
+        ],
+        "out": 80,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          1,
+          6,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          160,
+          175
+        ],
+        "out": 65,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          5,
+          10,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          160,
+          189
+        ],
+        "out": 79,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          10,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          163,
+          175
+        ],
+        "out": 69,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          3,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          163,
+          186
+        ],
+        "out": 80,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          3,
+          14,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          165,
+          172
+        ],
+        "out": 65,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          15,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          166,
+          172
+        ],
+        "out": 66,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          2,
+          16,
+          20
+        ],
+        "triad_is_bad": true
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          166,
+          175
+        ],
+        "out": 72,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          2,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          166,
+          189
+        ],
+        "out": 83,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          2,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          170,
+          222
+        ],
+        "out": 107,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          6,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          171,
+          222
+        ],
+        "out": 113,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          11,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          172,
+          189
+        ],
+        "out": 89,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          16,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          172,
+          222
+        ],
+        "out": 118,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          173,
+          184
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          9,
+          13,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          173,
+          185
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          13,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          173,
+          222
+        ],
+        "out": 122,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          13,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          175,
+          185
+        ],
+        "out": 91,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          175,
+          186
+        ],
+        "out": 92,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          14,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          175,
+          188
+        ],
+        "out": 94,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          9,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          175,
+          204
+        ],
+        "out": 103,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          1,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          175,
+          243
+        ],
+        "out": 194,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          1,
+          5,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          185,
+          222
+        ],
+        "out": 150,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          188,
+          222
+        ],
+        "out": 151,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          9,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          189,
+          195
+        ],
+        "out": 116,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          16,
+          20,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          191,
+          222
+        ],
+        "out": 153,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          7,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          195,
+          222
+        ],
+        "out": 155,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          16,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          16,
+          201,
+          222
+        ],
+        "out": 158,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          4,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          204,
+          222
+        ],
+        "out": 160,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          16,
+          207,
+          222
+        ],
+        "out": 162,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          0,
+          16,
+          20
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          20,
+          22,
+          242
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          1,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          20,
+          30,
+          185
+        ],
+        "out": 10,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          13,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          20,
+          90,
+          208
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          5,
+          13,
+          22
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          20,
+          102,
+          153
+        ],
+        "out": 20,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          4,
+          13,
+          21
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          20,
+          188,
+          243
+        ],
+        "out": 224,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          1,
+          9,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          20,
+          189,
+          195
+        ],
+        "out": 132,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -3,
+          3
+        ],
+        "triad_i27": [
+          13,
+          16,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          33,
+          222
+        ],
+        "out": 22,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          16,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          60,
+          243
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          1,
+          18
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          66,
+          221
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          8,
+          12
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          66,
+          222
+        ],
+        "out": 34,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          12,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          73,
+          222
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          2,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          80,
+          158
+        ],
+        "out": 16,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          11,
+          18
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          80,
+          201
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          4,
+          18
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          80,
+          222
+        ],
+        "out": 54,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          16,
+          18
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          81,
+          222
+        ],
+        "out": 55,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          16,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          115,
+          222
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          16,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          117,
+          163
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          2,
+          3
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          117,
+          222
+        ],
+        "out": 92,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          2,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          132,
+          156
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          12,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          140,
+          158
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          3,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          142,
+          158
+        ],
+        "out": 43,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          11,
+          15
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          150,
+          158
+        ],
+        "out": 46,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          7,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          150,
+          208
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          5,
+          7
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          152,
+          158
+        ],
+        "out": 51,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          6,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          152,
+          165
+        ],
+        "out": 60,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          6,
+          15
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          152,
+          166
+        ],
+        "out": 61,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          2,
+          6
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          152,
+          194
+        ],
+        "out": 89,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          6,
+          12
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          152,
+          195
+        ],
+        "out": 90,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          6,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          152,
+          203
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          6,
+          10
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          152,
+          204
+        ],
+        "out": 97,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          1,
+          6
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          156,
+          184
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          9,
+          12
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          156,
+          185
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          12,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          156,
+          222
+        ],
+        "out": 122,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          12,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          158,
+          160
+        ],
+        "out": 65,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          10,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          158,
+          163
+        ],
+        "out": 69,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          3,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          158,
+          166
+        ],
+        "out": 72,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          2,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          158,
+          185
+        ],
+        "out": 91,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          11,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          158,
+          186
+        ],
+        "out": 92,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          11,
+          14
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          158,
+          188
+        ],
+        "out": 94,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          9,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          158,
+          204
+        ],
+        "out": 103,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          1,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          158,
+          243
+        ],
+        "out": 194,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          1,
+          11
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          160,
+          189
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          10,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          163,
+          186
+        ],
+        "out": 97,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          3,
+          14
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          163,
+          222
+        ],
+        "out": 138,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          3,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          165,
+          195
+        ],
+        "out": 103,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          1,
+          15,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          166,
+          189
+        ],
+        "out": 100,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          2,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          166,
+          194
+        ],
+        "out": 103,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          1,
+          2,
+          12
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          166,
+          222
+        ],
+        "out": 139,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          2,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          22,
+          195,
+          222
+        ],
+        "out": 172,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          16,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          201,
+          222
+        ],
+        "out": 175,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          4,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          221,
+          222
+        ],
+        "out": 189,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          1,
+          8,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          22,
+          222,
+          242
+        ],
+        "out": 234,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          0,
+          1,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          39,
+          242
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          13,
+          17
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          73,
+          208
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          2,
+          5,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          73,
+          222
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          2,
+          13,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          74,
+          221
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          -3
+        ],
+        "triad_i27": [
+          7,
+          8,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          115,
+          208
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          5,
+          13,
+          19
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          117,
+          142
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          2,
+          13,
+          15
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          117,
+          203
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          2,
+          10,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          117,
+          204
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          1,
+          2,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          122,
+          201
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          4,
+          13,
+          18
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          132,
+          156
+        ],
+        "out": 46,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          12,
+          13,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          134,
+          163
+        ],
+        "out": 56,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          3,
+          13,
+          14
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          134,
+          194
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          12,
+          13,
+          14
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          134,
+          195
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          -1
+        ],
+        "triad_i27": [
+          13,
+          14,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          140,
+          158
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          3,
+          11,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          145,
+          180
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          8,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          146,
+          153
+        ],
+        "out": 57,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          4,
+          13,
+          14
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          156,
+          175
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          5,
+          12,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          156,
+          208
+        ],
+        "out": 122,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          5,
+          12,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          158,
+          173
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          11,
+          13,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          165,
+          171
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          11,
+          13,
+          15
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          165,
+          195
+        ],
+        "out": 120,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -2,
+          1
+        ],
+        "triad_i27": [
+          13,
+          15,
+          16
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          166,
+          171
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          11,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          24,
+          166,
+          189
+        ],
+        "out": 112,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          13,
+          23
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          24,
+          166,
+          194
+        ],
+        "out": 120,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          12,
+          13
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          30,
+          243
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          1,
+          24,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          64,
+          180
+        ],
+        "out": 23,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          22,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          28,
+          64,
+          242
+        ],
+        "out": 114,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          0,
+          22,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          67,
+          208
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          5,
+          6,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          74,
+          180
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          0,
+          7,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          28,
+          101,
+          158
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          11,
+          22,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          101,
+          222
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          22,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          28,
+          113,
+          142
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          15,
+          15,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          122,
+          163
+        ],
+        "out": 56,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          3,
+          18,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          28,
+          165,
+          195
+        ],
+        "out": 130,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          15,
+          16,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          28,
+          166,
+          194
+        ],
+        "out": 130,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          2,
+          12,
+          26
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          51,
+          185
+        ],
+        "out": 23,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          8,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          60,
+          185
+        ],
+        "out": 25,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          18,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          63,
+          184
+        ],
+        "out": 27,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          9,
+          21,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          63,
+          185
+        ],
+        "out": 28,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          21,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          63,
+          203
+        ],
+        "out": 39,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          10,
+          21,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          63,
+          204
+        ],
+        "out": 40,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          1,
+          21,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          67,
+          185
+        ],
+        "out": 29,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          6,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          73,
+          184
+        ],
+        "out": 32,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          2,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          73,
+          185
+        ],
+        "out": 33,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          2,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          73,
+          222
+        ],
+        "out": 70,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          2,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          74,
+          185
+        ],
+        "out": 34,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          7,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          74,
+          221
+        ],
+        "out": 70,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          -2
+        ],
+        "triad_i27": [
+          7,
+          8,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          80,
+          184
+        ],
+        "out": 44,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          9,
+          18,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          91,
+          222
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          16,
+          19,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          120,
+          189
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          17,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          132,
+          140
+        ],
+        "out": 41,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          0,
+          0
+        ],
+        "triad_i27": [
+          3,
+          24,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          132,
+          150
+        ],
+        "out": 46,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          7,
+          24,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          132,
+          185
+        ],
+        "out": 91,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          2,
+          -1
+        ],
+        "triad_i27": [
+          23,
+          24,
+          25
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          140,
+          158
+        ],
+        "out": 70,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          11,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          140,
+          184
+        ],
+        "out": 96,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          3,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          140,
+          185
+        ],
+        "out": 97,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          142,
+          180
+        ],
+        "out": 94,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          0,
+          15,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          142,
+          184
+        ],
+        "out": 98,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          9,
+          15,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          146,
+          153
+        ],
+        "out": 70,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          4,
+          14,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          146,
+          184
+        ],
+        "out": 101,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          9,
+          14,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          146,
+          185
+        ],
+        "out": 102,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          14,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          150,
+          175
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          5,
+          7,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          150,
+          208
+        ],
+        "out": 122,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          5,
+          7,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          152,
+          184
+        ],
+        "out": 107,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          -1,
+          2
+        ],
+        "triad_i27": [
+          6,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          152,
+          185
+        ],
+        "out": 108,
+        "out_grade": "g0",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          6,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          153,
+          172
+        ],
+        "out": 87,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          4,
+          16,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          153,
+          185
+        ],
+        "out": 109,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          4,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          158,
+          185
+        ],
+        "out": 115,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          11,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          163,
+          170
+        ],
+        "out": 88,
+        "out_grade": "g2",
+        "out_kind": "root",
+        "su3_sum": [
+          3,
+          0
+        ],
+        "triad_i27": [
+          3,
+          6,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          163,
+          184
+        ],
+        "out": 120,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          3,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": -1,
+        "in": [
+          30,
+          165,
+          185
+        ],
+        "out": 124,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          15,
+          23,
+          24
+        ],
+        "triad_is_bad": false
+      },
+      {
+        "coeff": 1,
+        "in": [
+          30,
+          166,
+          184
+        ],
+        "out": 124,
+        "out_grade": "g1",
+        "out_kind": "root",
+        "su3_sum": [
+          1,
+          1
+        ],
+        "triad_i27": [
+          2,
+          9,
+          24
+        ],
+        "triad_is_bad": false
+      }
+    ],
+    "out_kind": {
+      "root": 579
+    },
+    "root_grade_hist": {
+      "g0": 155,
+      "g1": 227,
+      "g2": 197
+    },
+    "stats": {
+      "nonzero": 579,
+      "single": 579,
+      "zero": 84741
+    },
+    "su3_sum_hist_top": [
+      {
+        "count": 134,
+        "su3_sum": [
+          0,
+          0
+        ]
+      },
+      {
+        "count": 84,
+        "su3_sum": [
+          1,
+          1
+        ]
+      },
+      {
+        "count": 70,
+        "su3_sum": [
+          -1,
+          2
+        ]
+      },
+      {
+        "count": 70,
+        "su3_sum": [
+          2,
+          -1
+        ]
+      },
+      {
+        "count": 55,
+        "su3_sum": [
+          1,
+          -2
+        ]
+      },
+      {
+        "count": 49,
+        "su3_sum": [
+          -2,
+          1
+        ]
+      },
+      {
+        "count": 40,
+        "su3_sum": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "count": 39,
+        "su3_sum": [
+          -3,
+          3
+        ]
+      },
+      {
+        "count": 27,
+        "su3_sum": [
+          3,
+          0
+        ]
+      },
+      {
+        "count": 11,
+        "su3_sum": [
+          0,
+          -3
+        ]
+      }
+    ],
+    "time_s": 0.22,
+    "triad_bad_hit": {
+      "bad": 3,
+      "good": 576
+    }
+  },
+  "Qpsi_cartan": null,
+  "deltaK3_candidates": {
+    "cartan_hist_top": [],
+    "coeff_hist_top": [],
+    "examples_first40": [],
+    "out_kind": {},
+    "stats": {
+      "zero": 42231
+    },
+    "time_s": 0.54
+  },
+  "deltaK3_random_sample": {
+    "stats": {
+      "zero": 50000
+    },
+    "time_s": 0.45
+  },
+  "inputs": {
+    "bad_triads_i27_count": 9,
+    "candidate_quads_evaluated": 42231,
+    "candidate_quads_total": 42231,
+    "cartan_dim": 8,
+    "forbidden_couplings": 162,
+    "forbidden_pairs": 162,
+    "g1_size": 81,
+    "g1_triples_total": 85320,
+    "rand_deltaK3_samples": 50000,
+    "v06_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v06.zip"
+  },
+  "status": "ok"
+}

@@ -1,0 +1,300 @@
+{
+  "deltaL5_n6_probe": {
+    "coeff_hist_top": [
+      {
+        "coeff": -1,
+        "count": 258
+      },
+      {
+        "coeff": 1,
+        "count": 249
+      },
+      {
+        "coeff": -2,
+        "count": 109
+      },
+      {
+        "coeff": 2,
+        "count": 93
+      },
+      {
+        "coeff": -3,
+        "count": 34
+      },
+      {
+        "coeff": 3,
+        "count": 28
+      },
+      {
+        "coeff": 4,
+        "count": 12
+      },
+      {
+        "coeff": -4,
+        "count": 5
+      },
+      {
+        "coeff": -5,
+        "count": 2
+      },
+      {
+        "coeff": 5,
+        "count": 1
+      },
+      {
+        "coeff": -7,
+        "count": 1
+      }
+    ],
+    "l6_records": 790,
+    "l6_support_size": 205,
+    "nonzero_rate": 0.000792,
+    "sample_size": 1000000,
+    "stats": {
+      "nonzero": 792,
+      "single": 792,
+      "zero": 999208
+    },
+    "support_size": 205,
+    "termcount_hist": {
+      "1": 792
+    },
+    "timing_s": 12.44,
+    "top_outputs": [
+      {
+        "basis": 96,
+        "count": 12,
+        "grade": "g1",
+        "i27": 5,
+        "phase_z6": 0
+      },
+      {
+        "basis": 98,
+        "count": 12,
+        "grade": "g2",
+        "i27": 6,
+        "phase_z6": 5
+      },
+      {
+        "basis": 87,
+        "count": 11,
+        "grade": "g2",
+        "i27": 16,
+        "phase_z6": 5
+      },
+      {
+        "basis": 122,
+        "count": 11,
+        "grade": "g1",
+        "i27": 18,
+        "phase_z6": 0
+      },
+      {
+        "basis": 32,
+        "count": 10,
+        "grade": "g1",
+        "i27": 26,
+        "phase_z6": 0
+      },
+      {
+        "basis": 60,
+        "count": 10,
+        "grade": "g1",
+        "i27": 18,
+        "phase_z6": 4
+      },
+      {
+        "basis": 118,
+        "count": 10,
+        "grade": "g2",
+        "i27": 10,
+        "phase_z6": 5
+      },
+      {
+        "basis": 39,
+        "count": 10,
+        "grade": "g1",
+        "i27": 17,
+        "phase_z6": 4
+      },
+      {
+        "basis": 136,
+        "count": 9,
+        "grade": "g2",
+        "i27": 11,
+        "phase_z6": 1
+      },
+      {
+        "basis": 175,
+        "count": 8,
+        "grade": "g1",
+        "i27": 5,
+        "phase_z6": 4
+      },
+      {
+        "basis": 124,
+        "count": 8,
+        "grade": "g1",
+        "i27": 9,
+        "phase_z6": 0
+      },
+      {
+        "basis": 51,
+        "count": 8,
+        "grade": "g1",
+        "i27": 8,
+        "phase_z6": 2
+      },
+      {
+        "basis": 109,
+        "count": 8,
+        "grade": "g2",
+        "i27": 5,
+        "phase_z6": 1
+      },
+      {
+        "basis": 36,
+        "count": 8,
+        "grade": "g1",
+        "i27": 10,
+        "phase_z6": 1
+      },
+      {
+        "basis": 165,
+        "count": 7,
+        "grade": "g1",
+        "i27": 15,
+        "phase_z6": 3
+      },
+      {
+        "basis": 72,
+        "count": 7,
+        "grade": "g2",
+        "i27": 13,
+        "phase_z6": 3
+      },
+      {
+        "basis": 184,
+        "count": 7,
+        "grade": "g1",
+        "i27": 9,
+        "phase_z6": 3
+      },
+      {
+        "basis": 27,
+        "count": 7,
+        "grade": "g2",
+        "i27": 2,
+        "phase_z6": 5
+      },
+      {
+        "basis": 132,
+        "count": 7,
+        "grade": "g1",
+        "i27": 25,
+        "phase_z6": 0
+      },
+      {
+        "basis": 203,
+        "count": 7,
+        "grade": "g1",
+        "i27": 10,
+        "phase_z6": 3
+      }
+    ]
+  },
+  "deltaL6_n7_probe": {
+    "coeff_hist": {
+      "-2": 1
+    },
+    "nonzero_rate": 3.3333333333333333e-06,
+    "sample_size": 300000,
+    "stats": {
+      "nonzero": 1,
+      "single": 1,
+      "zero": 299999
+    },
+    "support_items": [
+      {
+        "basis": 147,
+        "count": 1,
+        "grade": "g2",
+        "i27": 12,
+        "phase_z6": 4
+      }
+    ],
+    "support_size": 1,
+    "termcount_hist": {
+      "1": 1
+    },
+    "timing_s": 4.69
+  },
+  "inputs": {
+    "H2_support_size": 234,
+    "l4_quads_nonzero": 7675,
+    "v06_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v06.zip",
+    "v15_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v15.zip"
+  },
+  "l5_from_deltaL4": {
+    "coeff_hist_top": [
+      {
+        "coeff": -1,
+        "count": 3311
+      },
+      {
+        "coeff": 1,
+        "count": 3311
+      },
+      {
+        "coeff": 2,
+        "count": 1640
+      },
+      {
+        "coeff": -2,
+        "count": 1626
+      },
+      {
+        "coeff": 3,
+        "count": 313
+      },
+      {
+        "coeff": -3,
+        "count": 305
+      },
+      {
+        "coeff": -4,
+        "count": 137
+      },
+      {
+        "coeff": 4,
+        "count": 129
+      },
+      {
+        "coeff": -6,
+        "count": 22
+      },
+      {
+        "coeff": 5,
+        "count": 19
+      }
+    ],
+    "deltaL4_nonzero_rate": 0.003619,
+    "deltaL4_stats": {
+      "nonzero": 10857,
+      "single": 10857,
+      "zero": 2989143
+    },
+    "l5_records": 10266,
+    "l5_support_size": 234,
+    "sample_size": 3000000,
+    "termcount_hist": {
+      "1": 10857
+    },
+    "timing_s": 27.84
+  },
+  "notes": [
+    "All nonzero \u03b4L4/\u03b4L5/\u03b4L6 encountered were single-term in the basis (no multi-term events in these runs).",
+    "L5 and L6 are sample-based partial patches; increasing coverage should reduce subsequent deltas."
+  ],
+  "status": "ok"
+}

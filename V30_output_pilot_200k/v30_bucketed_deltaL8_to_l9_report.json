@@ -1,0 +1,308 @@
+{
+  "version": "V30",
+  "inputs": {
+    "structure_constants": "C:\\Repos\\Theory of Everything\\artifacts\\e8_structure_constants_w33_discrete.json",
+    "root_metadata": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_root_metadata_table.json",
+    "couplings": "C:\\Repos\\Theory of Everything\\extracted_v13\\W33-Theory-master\\artifacts\\e8_g1g1_couplings_cubic_firewall.json",
+    "l8_jsonl": "C:\\Repos\\Theory of Everything\\V26_output_v13_full\\l8_patch_octuples_full.jsonl",
+    "g1_size": 81,
+    "g2_size": 81,
+    "forbidden_pairs": 162
+  },
+  "params": {
+    "buckets": 256,
+    "max_lines": 200000,
+    "stage": "all",
+    "bucket_start": 0,
+    "bucket_end": 0,
+    "keep_buckets": false,
+    "write_jsonl": false,
+    "progress_every": 0
+  },
+  "map": {
+    "stage": "map",
+    "l8_lines": 200000,
+    "records_written": 4742620,
+    "skipped_due_to_g_in_t8": 218447,
+    "bad_format_lines": 0,
+    "elapsed_s": 3.77,
+    "bucket_dir": "V30_output_pilot_200k\\l9_buckets",
+    "buckets": 256,
+    "max_lines": 200000,
+    "record_size_bytes": 11
+  },
+  "reduce": {
+    "stage": "reduce",
+    "bucket_dir": "V30_output_pilot_200k\\l9_buckets",
+    "buckets": 256,
+    "bucket_range": [
+      0,
+      256
+    ],
+    "records_read": 4742620,
+    "unique_t9_seen": 3569117,
+    "nonzero_l9": 3568035,
+    "single_term": 3379413,
+    "multi_term": 188622,
+    "keys_upgraded_to_dict": 0,
+    "max_abs_coeff": 114,
+    "output_support_size": 86,
+    "coeff_hist_top": [
+      {
+        "coeff": 1,
+        "count": 588785
+      },
+      {
+        "coeff": -1,
+        "count": 588559
+      },
+      {
+        "coeff": 2,
+        "count": 539302
+      },
+      {
+        "coeff": -2,
+        "count": 537561
+      },
+      {
+        "coeff": 3,
+        "count": 404971
+      },
+      {
+        "coeff": -3,
+        "count": 404099
+      },
+      {
+        "coeff": -4,
+        "count": 277129
+      },
+      {
+        "coeff": 4,
+        "count": 276917
+      },
+      {
+        "coeff": -6,
+        "count": 153650
+      },
+      {
+        "coeff": 6,
+        "count": 153461
+      },
+      {
+        "coeff": 5,
+        "count": 138574
+      },
+      {
+        "coeff": -5,
+        "count": 137602
+      },
+      {
+        "coeff": 8,
+        "count": 60340
+      },
+      {
+        "coeff": -8,
+        "count": 60167
+      },
+      {
+        "coeff": 7,
+        "count": 48566
+      },
+      {
+        "coeff": -7,
+        "count": 48381
+      },
+      {
+        "coeff": 9,
+        "count": 39484
+      },
+      {
+        "coeff": -9,
+        "count": 38772
+      },
+      {
+        "coeff": 12,
+        "count": 30619
+      },
+      {
+        "coeff": -12,
+        "count": 30307
+      },
+      {
+        "coeff": 10,
+        "count": 28165
+      },
+      {
+        "coeff": -10,
+        "count": 27118
+      },
+      {
+        "coeff": 15,
+        "count": 8260
+      },
+      {
+        "coeff": -15,
+        "count": 8040
+      },
+      {
+        "coeff": -16,
+        "count": 6923
+      },
+      {
+        "coeff": 16,
+        "count": 6853
+      },
+      {
+        "coeff": -18,
+        "count": 6760
+      },
+      {
+        "coeff": 18,
+        "count": 6570
+      },
+      {
+        "coeff": 14,
+        "count": 6360
+      },
+      {
+        "coeff": -14,
+        "count": 6159
+      }
+    ],
+    "multi_terms_hist": [
+      {
+        "terms": 2,
+        "count": 4372
+      },
+      {
+        "terms": 3,
+        "count": 3969
+      },
+      {
+        "terms": 4,
+        "count": 4222
+      },
+      {
+        "terms": 5,
+        "count": 6465
+      },
+      {
+        "terms": 6,
+        "count": 16172
+      },
+      {
+        "terms": 7,
+        "count": 55881
+      },
+      {
+        "terms": 8,
+        "count": 97541
+      }
+    ],
+    "top_outputs": [
+      {
+        "basis": 6,
+        "count": 190517
+      },
+      {
+        "basis": 5,
+        "count": 186353
+      },
+      {
+        "basis": 4,
+        "count": 182311
+      },
+      {
+        "basis": 3,
+        "count": 178142
+      },
+      {
+        "basis": 2,
+        "count": 169262
+      },
+      {
+        "basis": 1,
+        "count": 165179
+      },
+      {
+        "basis": 0,
+        "count": 143610
+      },
+      {
+        "basis": 7,
+        "count": 125106
+      },
+      {
+        "basis": 9,
+        "count": 66420
+      },
+      {
+        "basis": 8,
+        "count": 66258
+      },
+      {
+        "basis": 128,
+        "count": 66016
+      },
+      {
+        "basis": 127,
+        "count": 65668
+      },
+      {
+        "basis": 247,
+        "count": 57875
+      },
+      {
+        "basis": 246,
+        "count": 57766
+      },
+      {
+        "basis": 43,
+        "count": 47264
+      },
+      {
+        "basis": 62,
+        "count": 45587
+      },
+      {
+        "basis": 78,
+        "count": 45549
+      },
+      {
+        "basis": 63,
+        "count": 45538
+      },
+      {
+        "basis": 53,
+        "count": 45335
+      },
+      {
+        "basis": 59,
+        "count": 45216
+      },
+      {
+        "basis": 76,
+        "count": 45192
+      },
+      {
+        "basis": 77,
+        "count": 45121
+      },
+      {
+        "basis": 72,
+        "count": 44980
+      },
+      {
+        "basis": 73,
+        "count": 44917
+      },
+      {
+        "basis": 69,
+        "count": 44676
+      }
+    ],
+    "elapsed_s": 8.53,
+    "out_jsonl": null
+  },
+  "elapsed_total_s": 12.35
+}

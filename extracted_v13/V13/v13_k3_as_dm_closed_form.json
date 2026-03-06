@@ -1,0 +1,815 @@
+{
+  "consequence": {
+    "cocycle_explanation": "Since full bracket satisfies Jacobi and K3 is exactly the linear CE-type expression in the 2-cochain m (with no quadratic terms), \u03b4K3=0 follows from \u03b4^2=0. This explains the V11 \u03b4K3=0 result.",
+    "why_forbidden_pair_count_can_be_zero": "Even if none of the three input pairs are forbidden, [a,b] (etc.) can contain intermediate g1 terms u such that (u,c) is a forbidden pair, contributing through part2."
+  },
+  "direct_mechanism": {
+    "examples": [
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          166,
+          189
+        ],
+        "out": 62,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          10,
+          189,
+          195
+        ],
+        "out": 91,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          66,
+          180
+        ],
+        "out": 10,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          80,
+          180
+        ],
+        "out": 15,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          102,
+          180
+        ],
+        "out": 22,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          145,
+          180
+        ],
+        "out": 39,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          146,
+          180
+        ],
+        "out": 41,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          156,
+          180
+        ],
+        "out": 49,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          160,
+          180
+        ],
+        "out": 55,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          163,
+          180
+        ],
+        "out": 59,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          165,
+          195
+        ],
+        "out": 76,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          166,
+          180
+        ],
+        "out": 62,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          166,
+          194
+        ],
+        "out": 76,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "in": [
+          13,
+          180,
+          195
+        ],
+        "out": 91,
+        "source_tags": [
+          "ab->c"
+        ]
+      },
+      {
+        "coeff": -1,
+        "in": [
+          13,
+          180,
+          204
+        ],
+        "out": 98,
+        "source_tags": [
+          "ab->c"
+        ]
+      }
+    ],
+    "top_input_forbidden_pairs": [
+      {
+        "count": 22,
+        "pair": [
+          166,
+          189
+        ]
+      },
+      {
+        "count": 22,
+        "pair": [
+          64,
+          142
+        ]
+      },
+      {
+        "count": 21,
+        "pair": [
+          189,
+          195
+        ]
+      },
+      {
+        "count": 20,
+        "pair": [
+          16,
+          222
+        ]
+      },
+      {
+        "count": 18,
+        "pair": [
+          30,
+          185
+        ]
+      },
+      {
+        "count": 17,
+        "pair": [
+          165,
+          195
+        ]
+      },
+      {
+        "count": 17,
+        "pair": [
+          166,
+          194
+        ]
+      },
+      {
+        "count": 17,
+        "pair": [
+          38,
+          132
+        ]
+      },
+      {
+        "count": 16,
+        "pair": [
+          142,
+          180
+        ]
+      },
+      {
+        "count": 15,
+        "pair": [
+          86,
+          153
+        ]
+      }
+    ],
+    "top_removed_outputs": [
+      {
+        "count": 34,
+        "out_basis": 229
+      },
+      {
+        "count": 26,
+        "out_basis": 32
+      },
+      {
+        "count": 22,
+        "out_basis": 226
+      },
+      {
+        "count": 22,
+        "out_basis": 75
+      },
+      {
+        "count": 21,
+        "out_basis": 237
+      },
+      {
+        "count": 20,
+        "out_basis": 79
+      },
+      {
+        "count": 18,
+        "out_basis": 88
+      },
+      {
+        "count": 17,
+        "out_basis": 41
+      },
+      {
+        "count": 16,
+        "out_basis": 191
+      },
+      {
+        "count": 15,
+        "out_basis": 107
+      }
+    ]
+  },
+  "indirect_mechanism": {
+    "distinct_forbidden_pairs_used": 90,
+    "examples": [
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            218,
+            10,
+            49
+          ]
+        ],
+        "in": [
+          10,
+          60,
+          242
+        ],
+        "out": 49,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            205,
+            10,
+            36
+          ]
+        ],
+        "in": [
+          10,
+          104,
+          222
+        ],
+        "out": 36,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            218,
+            10,
+            49
+          ]
+        ],
+        "in": [
+          10,
+          117,
+          222
+        ],
+        "out": 49,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            218,
+            10,
+            49
+          ]
+        ],
+        "in": [
+          10,
+          122,
+          221
+        ],
+        "out": 49,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "ab->c",
+            13,
+            180,
+            27
+          ]
+        ],
+        "in": [
+          10,
+          140,
+          180
+        ],
+        "out": 27,
+        "source_tags": [
+          "ab->c"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            205,
+            10,
+            36
+          ]
+        ],
+        "in": [
+          10,
+          140,
+          194
+        ],
+        "out": 36,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            206,
+            10,
+            37
+          ]
+        ],
+        "in": [
+          10,
+          140,
+          195
+        ],
+        "out": 37,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": -1,
+        "details": [
+          [
+            "ab->c",
+            14,
+            153,
+            20
+          ]
+        ],
+        "in": [
+          10,
+          146,
+          153
+        ],
+        "out": 20,
+        "source_tags": [
+          "ab->c"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            205,
+            10,
+            36
+          ]
+        ],
+        "in": [
+          10,
+          146,
+          184
+        ],
+        "out": 36,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            206,
+            10,
+            37
+          ]
+        ],
+        "in": [
+          10,
+          146,
+          185
+        ],
+        "out": 37,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": -1,
+        "details": [
+          [
+            "bc->a",
+            218,
+            10,
+            49
+          ]
+        ],
+        "in": [
+          10,
+          156,
+          189
+        ],
+        "out": 49,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            218,
+            10,
+            49
+          ]
+        ],
+        "in": [
+          10,
+          158,
+          186
+        ],
+        "out": 49,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "ca->b",
+            25,
+            163,
+            56
+          ]
+        ],
+        "in": [
+          10,
+          163,
+          186
+        ],
+        "out": 56,
+        "source_tags": [
+          "ca->b"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            181,
+            13,
+            28
+          ]
+        ],
+        "in": [
+          13,
+          28,
+          242
+        ],
+        "out": 28,
+        "source_tags": [
+          "bc->a"
+        ]
+      },
+      {
+        "coeff": 1,
+        "details": [
+          [
+            "bc->a",
+            227,
+            13,
+            74
+          ]
+        ],
+        "in": [
+          13,
+          74,
+          242
+        ],
+        "out": 74,
+        "source_tags": [
+          "bc->a"
+        ]
+      }
+    ],
+    "source_term_hist": [
+      {
+        "count": 136,
+        "source": "ab->c"
+      },
+      {
+        "count": 110,
+        "source": "bc->a"
+      },
+      {
+        "count": 74,
+        "source": "ca->b"
+      }
+    ],
+    "top_forbidden_pairs_u_z": [
+      {
+        "count": 10,
+        "pair": [
+          22,
+          222
+        ]
+      },
+      {
+        "count": 10,
+        "pair": [
+          30,
+          184
+        ]
+      },
+      {
+        "count": 9,
+        "pair": [
+          24,
+          197
+        ]
+      },
+      {
+        "count": 9,
+        "pair": [
+          185,
+          197
+        ]
+      },
+      {
+        "count": 8,
+        "pair": [
+          13,
+          180
+        ]
+      },
+      {
+        "count": 8,
+        "pair": [
+          22,
+          158
+        ]
+      },
+      {
+        "count": 8,
+        "pair": [
+          30,
+          185
+        ]
+      },
+      {
+        "count": 8,
+        "pair": [
+          38,
+          132
+        ]
+      },
+      {
+        "count": 7,
+        "pair": [
+          142,
+          180
+        ]
+      },
+      {
+        "count": 7,
+        "pair": [
+          64,
+          180
+        ]
+      }
+    ],
+    "top_intermediate_u": [
+      {
+        "count": 18,
+        "grade": "g1",
+        "u_basis": 180
+      },
+      {
+        "count": 18,
+        "grade": "g2",
+        "u_basis": 197
+      },
+      {
+        "count": 15,
+        "grade": "g0",
+        "u_basis": 18
+      },
+      {
+        "count": 12,
+        "grade": "g1",
+        "u_basis": 22
+      },
+      {
+        "count": 12,
+        "grade": "g1",
+        "u_basis": 30
+      },
+      {
+        "count": 12,
+        "grade": "g0",
+        "u_basis": 26
+      },
+      {
+        "count": 12,
+        "grade": "g0",
+        "u_basis": 167
+      },
+      {
+        "count": 9,
+        "grade": "g0",
+        "u_basis": 176
+      },
+      {
+        "count": 9,
+        "grade": "g2",
+        "u_basis": 159
+      },
+      {
+        "count": 8,
+        "grade": "g2",
+        "u_basis": 147
+      }
+    ],
+    "top_removed_outputs": [
+      {
+        "count": 19,
+        "out_basis": 87
+      },
+      {
+        "count": 14,
+        "out_basis": 32
+      },
+      {
+        "count": 12,
+        "out_basis": 96
+      },
+      {
+        "count": 12,
+        "out_basis": 41
+      },
+      {
+        "count": 12,
+        "out_basis": 236
+      },
+      {
+        "count": 11,
+        "out_basis": 88
+      },
+      {
+        "count": 10,
+        "out_basis": 229
+      },
+      {
+        "count": 9,
+        "out_basis": 224
+      },
+      {
+        "count": 8,
+        "out_basis": 27
+      },
+      {
+        "count": 8,
+        "out_basis": 20
+      }
+    ]
+  },
+  "inputs": {
+    "forbidden_pairs": 162,
+    "forbidden_pairs_used_indirect": 90,
+    "g1_triples_total": 85320,
+    "v06_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v06.zip"
+  },
+  "status": "ok",
+  "theorem": "For the firewall-filtered bracket defined by removing exactly one term m(i,j) from 162 g1\u00d7g1 brackets, the filtered Jacobiator on g1 triples satisfies K3 = J' = Part1 + Part2 with exact match on all triples; Part3 (quadratic m term) is identically zero.",
+  "verification": {
+    "match_rate": 1.0,
+    "mechanism_counts": {
+      "direct_part1_only": 259,
+      "indirect_part2_only": 320,
+      "part3_nonzero": 0
+    },
+    "mechanism_key_meaning": {
+      "part1": "-([m(a,b),c] + [m(b,c),a] + [m(c,a),b])",
+      "part2": "-(m([a,b],c) + m([b,c],a) + m([c,a],b)) with full bracket inside m",
+      "part3": "+ (m(m(a,b),c)+cyc) (vanishes here)"
+    },
+    "stats": {
+      "match": 579,
+      "nonzero": 579,
+      "zero": 84741
+    }
+  }
+}

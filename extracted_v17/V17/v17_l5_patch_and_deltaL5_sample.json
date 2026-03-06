@@ -1,0 +1,915 @@
+{
+  "H3_closure_under_g1_action": {
+    "closed_size": 248,
+    "initial_support_size": 234,
+    "iterations": [
+      {
+        "added": 14,
+        "added_cartan": 8,
+        "added_grade_hist": {
+          "g0": 2,
+          "g1": 2,
+          "g2": 2
+        },
+        "iter": 0
+      },
+      {
+        "added": 0,
+        "iter": 1
+      }
+    ]
+  },
+  "inputs": {
+    "H2_support_size": 234,
+    "N5_build": 1000000,
+    "N6_sample": 300000,
+    "v06_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v06.zip",
+    "v15_bundle": "/mnt/data/W33_BREAKTHROUGH_CERT_BUNDLE_v15.zip"
+  },
+  "l5_patch_from_deltaL4": {
+    "coeff_hist_deltaL4_top": [
+      {
+        "coeff": 1,
+        "count": 1077
+      },
+      {
+        "coeff": -1,
+        "count": 1034
+      },
+      {
+        "coeff": -2,
+        "count": 551
+      },
+      {
+        "coeff": 2,
+        "count": 525
+      },
+      {
+        "coeff": 3,
+        "count": 106
+      },
+      {
+        "coeff": -3,
+        "count": 90
+      },
+      {
+        "coeff": 4,
+        "count": 43
+      },
+      {
+        "coeff": -4,
+        "count": 42
+      },
+      {
+        "coeff": 6,
+        "count": 8
+      },
+      {
+        "coeff": 5,
+        "count": 7
+      }
+    ],
+    "deltaL4_stats": {
+      "nonzero": 3492,
+      "single": 3492,
+      "zero": 996508
+    },
+    "deltaL4_termcount_hist": {
+      "1": 3492
+    },
+    "examples_first15": [
+      {
+        "coeff_deltaL4": -1,
+        "grade": "g1",
+        "i27": 26,
+        "in": [
+          51,
+          81,
+          90,
+          142,
+          173
+        ],
+        "l5_coeff": 1,
+        "out": 28,
+        "phase": 4
+      },
+      {
+        "coeff_deltaL4": -3,
+        "grade": "g1",
+        "i27": 22,
+        "in": [
+          22,
+          33,
+          152,
+          195,
+          222
+        ],
+        "l5_coeff": 3,
+        "out": 90,
+        "phase": 4
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          28,
+          146,
+          156,
+          175,
+          185
+        ],
+        "l5_coeff": -1,
+        "out": 176,
+        "phase": 3
+      },
+      {
+        "coeff_deltaL4": 2,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          13,
+          66,
+          132,
+          156,
+          186
+        ],
+        "l5_coeff": -2,
+        "out": 18,
+        "phase": 5
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g1",
+        "i27": 14,
+        "in": [
+          13,
+          156,
+          166,
+          171,
+          189
+        ],
+        "l5_coeff": -1,
+        "out": 134,
+        "phase": 1
+      },
+      {
+        "coeff_deltaL4": 3,
+        "grade": "g1",
+        "i27": 5,
+        "in": [
+          64,
+          101,
+          142,
+          153,
+          170
+        ],
+        "l5_coeff": -3,
+        "out": 96,
+        "phase": 0
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g1",
+        "i27": 9,
+        "in": [
+          39,
+          80,
+          156,
+          175,
+          185
+        ],
+        "l5_coeff": -1,
+        "out": 124,
+        "phase": 0
+      },
+      {
+        "coeff_deltaL4": -2,
+        "grade": "g1",
+        "i27": 20,
+        "in": [
+          20,
+          90,
+          111,
+          122,
+          163
+        ],
+        "l5_coeff": 2,
+        "out": 15,
+        "phase": 5
+      },
+      {
+        "coeff_deltaL4": -3,
+        "grade": "g2",
+        "i27": 2,
+        "in": [
+          16,
+          30,
+          142,
+          184,
+          189
+        ],
+        "l5_coeff": 3,
+        "out": 27,
+        "phase": 5
+      },
+      {
+        "coeff_deltaL4": -1,
+        "grade": "g1",
+        "i27": 19,
+        "in": [
+          10,
+          140,
+          158,
+          170,
+          195
+        ],
+        "l5_coeff": 1,
+        "out": 91,
+        "phase": 4
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g2",
+        "i27": 3,
+        "in": [
+          15,
+          73,
+          153,
+          171,
+          204
+        ],
+        "l5_coeff": -1,
+        "out": 53,
+        "phase": 0
+      },
+      {
+        "coeff_deltaL4": -1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          15,
+          146,
+          185,
+          203,
+          221
+        ],
+        "l5_coeff": 1,
+        "out": 225,
+        "phase": 1
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g1",
+        "i27": 24,
+        "in": [
+          13,
+          104,
+          115,
+          166,
+          189
+        ],
+        "l5_coeff": -1,
+        "out": 43,
+        "phase": 0
+      },
+      {
+        "coeff_deltaL4": 1,
+        "grade": "g2",
+        "i27": 3,
+        "in": [
+          16,
+          80,
+          132,
+          173,
+          191
+        ],
+        "l5_coeff": -1,
+        "out": 53,
+        "phase": 0
+      },
+      {
+        "coeff_deltaL4": -2,
+        "grade": "g1",
+        "i27": 13,
+        "in": [
+          30,
+          86,
+          142,
+          203,
+          221
+        ],
+        "l5_coeff": 2,
+        "out": 173,
+        "phase": 4
+      }
+    ],
+    "l5_records": 3425,
+    "l5_support_size": 234,
+    "note": "Defined l5 = -\u03b4L4 on the sampled supporting 5-tuples (partial patch). Support size matched H2_support (234).",
+    "support_top": [
+      {
+        "basis": 87,
+        "count": 58,
+        "grade": "g2",
+        "i27": 16,
+        "phase_z6": 5
+      },
+      {
+        "basis": 32,
+        "count": 45,
+        "grade": "g1",
+        "i27": 26,
+        "phase_z6": 0
+      },
+      {
+        "basis": 96,
+        "count": 44,
+        "grade": "g1",
+        "i27": 5,
+        "phase_z6": 0
+      },
+      {
+        "basis": 27,
+        "count": 39,
+        "grade": "g2",
+        "i27": 2,
+        "phase_z6": 5
+      },
+      {
+        "basis": 65,
+        "count": 39,
+        "grade": "g2",
+        "i27": 23,
+        "phase_z6": 0
+      },
+      {
+        "basis": 236,
+        "count": 39,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 5
+      },
+      {
+        "basis": 88,
+        "count": 36,
+        "grade": "g2",
+        "i27": 4,
+        "phase_z6": 5
+      },
+      {
+        "basis": 20,
+        "count": 34,
+        "grade": "g1",
+        "i27": 13,
+        "phase_z6": 3
+      },
+      {
+        "basis": 224,
+        "count": 33,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 5
+      },
+      {
+        "basis": 175,
+        "count": 32,
+        "grade": "g1",
+        "i27": 5,
+        "phase_z6": 4
+      },
+      {
+        "basis": 122,
+        "count": 32,
+        "grade": "g1",
+        "i27": 18,
+        "phase_z6": 0
+      },
+      {
+        "basis": 49,
+        "count": 31,
+        "grade": "g1",
+        "i27": 21,
+        "phase_z6": 4
+      },
+      {
+        "basis": 29,
+        "count": 31,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 4
+      },
+      {
+        "basis": 239,
+        "count": 31,
+        "grade": "g2",
+        "i27": 26,
+        "phase_z6": 3
+      },
+      {
+        "basis": 10,
+        "count": 30,
+        "grade": "g1",
+        "i27": 19,
+        "phase_z6": 4
+      }
+    ]
+  },
+  "n6_obstruction_candidate_deltaL5_sample": {
+    "coeff_hist_top": [
+      {
+        "coeff": -1,
+        "count": 26
+      },
+      {
+        "coeff": 1,
+        "count": 14
+      },
+      {
+        "coeff": -2,
+        "count": 10
+      },
+      {
+        "coeff": 2,
+        "count": 10
+      },
+      {
+        "coeff": -3,
+        "count": 5
+      },
+      {
+        "coeff": 3,
+        "count": 5
+      },
+      {
+        "coeff": 4,
+        "count": 1
+      },
+      {
+        "coeff": -5,
+        "count": 1
+      }
+    ],
+    "examples_first15": [
+      {
+        "coeff": -2,
+        "grade": "g1",
+        "i27": 9,
+        "in": [
+          10,
+          33,
+          160,
+          173,
+          221,
+          222
+        ],
+        "out": 124,
+        "phase": 0
+      },
+      {
+        "coeff": -1,
+        "grade": "g2",
+        "i27": 8,
+        "in": [
+          10,
+          36,
+          128,
+          156,
+          186,
+          189
+        ],
+        "out": 25,
+        "phase": 5
+      },
+      {
+        "coeff": -2,
+        "grade": "g2",
+        "i27": 20,
+        "in": [
+          43,
+          66,
+          150,
+          152,
+          201,
+          208
+        ],
+        "out": 169,
+        "phase": 1
+      },
+      {
+        "coeff": 2,
+        "grade": "g2",
+        "i27": 6,
+        "in": [
+          28,
+          74,
+          163,
+          165,
+          170,
+          171
+        ],
+        "out": 98,
+        "phase": 5
+      },
+      {
+        "coeff": -1,
+        "grade": "g1",
+        "i27": 9,
+        "in": [
+          51,
+          66,
+          96,
+          166,
+          188,
+          194
+        ],
+        "out": 124,
+        "phase": 0
+      },
+      {
+        "coeff": 1,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          24,
+          66,
+          104,
+          140,
+          153,
+          156
+        ],
+        "out": 17,
+        "phase": 0
+      },
+      {
+        "coeff": -2,
+        "grade": "g2",
+        "i27": 16,
+        "in": [
+          60,
+          66,
+          86,
+          113,
+          191,
+          207
+        ],
+        "out": 87,
+        "phase": 5
+      },
+      {
+        "coeff": -1,
+        "grade": "g1",
+        "i27": 16,
+        "in": [
+          16,
+          28,
+          102,
+          175,
+          222,
+          243
+        ],
+        "out": 172,
+        "phase": 3
+      },
+      {
+        "coeff": 1,
+        "grade": "g1",
+        "i27": 23,
+        "in": [
+          22,
+          67,
+          111,
+          128,
+          165,
+          195
+        ],
+        "out": 33,
+        "phase": 0
+      },
+      {
+        "coeff": -1,
+        "grade": "g2",
+        "i27": 26,
+        "in": [
+          113,
+          128,
+          140,
+          165,
+          170,
+          207
+        ],
+        "out": 239,
+        "phase": 3
+      },
+      {
+        "coeff": -3,
+        "grade": "g1",
+        "i27": 11,
+        "in": [
+          16,
+          39,
+          163,
+          171,
+          221,
+          222
+        ],
+        "out": 158,
+        "phase": 4
+      },
+      {
+        "coeff": -3,
+        "grade": "g0",
+        "i27": null,
+        "in": [
+          38,
+          60,
+          91,
+          156,
+          185,
+          242
+        ],
+        "out": 178,
+        "phase": 3
+      },
+      {
+        "coeff": 3,
+        "grade": "g1",
+        "i27": 2,
+        "in": [
+          33,
+          60,
+          113,
+          152,
+          201,
+          204
+        ],
+        "out": 117,
+        "phase": 1
+      },
+      {
+        "coeff": -2,
+        "grade": "g1",
+        "i27": 13,
+        "in": [
+          13,
+          30,
+          73,
+          163,
+          180,
+          222
+        ],
+        "out": 20,
+        "phase": 3
+      },
+      {
+        "coeff": 2,
+        "grade": "g2",
+        "i27": 19,
+        "in": [
+          60,
+          67,
+          90,
+          142,
+          156,
+          171
+        ],
+        "out": 31,
+        "phase": 1
+      }
+    ],
+    "interpretation": "With l5 patched only on sampled \u03b4L4 supports, \u03b4L5 gives a first view of the n=6 layer. Nonzero rate is ~0.024% in the sample (72/300k), still single-term.",
+    "output_grade_hist": {
+      "g0": 24,
+      "g1": 29,
+      "g2": 19
+    },
+    "output_i27_hist_top": [
+      {
+        "count": 24,
+        "i27": -1
+      },
+      {
+        "count": 4,
+        "i27": 8
+      },
+      {
+        "count": 3,
+        "i27": 16
+      },
+      {
+        "count": 3,
+        "i27": 23
+      },
+      {
+        "count": 3,
+        "i27": 26
+      },
+      {
+        "count": 3,
+        "i27": 13
+      },
+      {
+        "count": 3,
+        "i27": 19
+      },
+      {
+        "count": 3,
+        "i27": 5
+      },
+      {
+        "count": 2,
+        "i27": 9
+      },
+      {
+        "count": 2,
+        "i27": 20
+      },
+      {
+        "count": 2,
+        "i27": 10
+      },
+      {
+        "count": 2,
+        "i27": 12
+      }
+    ],
+    "output_phase_hist_top": [
+      {
+        "count": 14,
+        "phase": 0
+      },
+      {
+        "count": 14,
+        "phase": 2
+      },
+      {
+        "count": 13,
+        "phase": 5
+      },
+      {
+        "count": 12,
+        "phase": 3
+      },
+      {
+        "count": 12,
+        "phase": 4
+      },
+      {
+        "count": 7,
+        "phase": 1
+      }
+    ],
+    "stats": {
+      "nonzero": 72,
+      "single": 72,
+      "zero": 299928
+    },
+    "support_size": 66,
+    "termcount_hist": {
+      "1": 72
+    },
+    "top_outputs": [
+      {
+        "basis": 124,
+        "count": 2,
+        "grade": "g1",
+        "i27": 9,
+        "phase_z6": 0
+      },
+      {
+        "basis": 172,
+        "count": 2,
+        "grade": "g1",
+        "i27": 16,
+        "phase_z6": 3
+      },
+      {
+        "basis": 107,
+        "count": 2,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 5
+      },
+      {
+        "basis": 214,
+        "count": 2,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      },
+      {
+        "basis": 72,
+        "count": 2,
+        "grade": "g2",
+        "i27": 13,
+        "phase_z6": 3
+      },
+      {
+        "basis": 39,
+        "count": 2,
+        "grade": "g1",
+        "i27": 17,
+        "phase_z6": 4
+      },
+      {
+        "basis": 25,
+        "count": 1,
+        "grade": "g2",
+        "i27": 8,
+        "phase_z6": 5
+      },
+      {
+        "basis": 169,
+        "count": 1,
+        "grade": "g2",
+        "i27": 20,
+        "phase_z6": 1
+      },
+      {
+        "basis": 98,
+        "count": 1,
+        "grade": "g2",
+        "i27": 6,
+        "phase_z6": 5
+      },
+      {
+        "basis": 17,
+        "count": 1,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 0
+      },
+      {
+        "basis": 87,
+        "count": 1,
+        "grade": "g2",
+        "i27": 16,
+        "phase_z6": 5
+      },
+      {
+        "basis": 33,
+        "count": 1,
+        "grade": "g1",
+        "i27": 23,
+        "phase_z6": 0
+      },
+      {
+        "basis": 239,
+        "count": 1,
+        "grade": "g2",
+        "i27": 26,
+        "phase_z6": 3
+      },
+      {
+        "basis": 158,
+        "count": 1,
+        "grade": "g1",
+        "i27": 11,
+        "phase_z6": 4
+      },
+      {
+        "basis": 178,
+        "count": 1,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 3
+      },
+      {
+        "basis": 117,
+        "count": 1,
+        "grade": "g1",
+        "i27": 2,
+        "phase_z6": 1
+      },
+      {
+        "basis": 20,
+        "count": 1,
+        "grade": "g1",
+        "i27": 13,
+        "phase_z6": 3
+      },
+      {
+        "basis": 31,
+        "count": 1,
+        "grade": "g2",
+        "i27": 19,
+        "phase_z6": 1
+      },
+      {
+        "basis": 55,
+        "count": 1,
+        "grade": "g2",
+        "i27": 8,
+        "phase_z6": 5
+      },
+      {
+        "basis": 200,
+        "count": 1,
+        "grade": "g0",
+        "i27": -1,
+        "phase_z6": 2
+      }
+    ]
+  },
+  "status": "ok"
+}
