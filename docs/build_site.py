@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Build the project landing page.
-
-The generated page is intentionally conservative: it separates the exact
-computational results in this repository from the larger physical claims that
-remain open research work.
-"""
+"""Build the GitHub Pages landing page as a live-paper front end."""
 
 from __future__ import annotations
 
@@ -15,86 +10,149 @@ from textwrap import dedent
 DOCS = Path(__file__).parent
 OUTPUT = DOCS / "index.html"
 REPO_URL = "https://github.com/wilcompute/W33-Theory"
+BLOB = f"{REPO_URL}/blob/main"
 
 
-SUMMARY_CARDS = [
-    ("240", "Explicit roots", "The repository constructs the full E8 root system used throughout the correspondence."),
-    ("40 x 6", "Orbit model", "Coxeter data organizes the root picture into the 40-by-6 model used for W(3,3)."),
-    ("6 x 27", "Family sectors", "Under W(E6), the mixed sector resolves into six 27-orbits plus the 72-root core."),
-    ("45", "Cubic triads", "The E6 cubic support is recovered as 45 tritangent-plane triples with lifted sign data."),
-    ("9", "Firewall triangles", "The 27 bad edges group into nine disjoint 3-cycles and are tracked explicitly."),
+METRICS = [
+    ("240", "Edges = E8 roots", "The SRG(40,12,2,4) collinearity graph carries the same 240-count as the E8 root system."),
+    ("81", "Matter sector", "Homology, Hodge, and Z3-graded Lie data keep returning the 81 = 27 + 27 + 27 sector."),
+    ("51840", "W(E6)", "The canonical signed action on the 27 closes to the expected Weyl-group order."),
+    ("45", "Cubic triads", "The tritangent / cubic-support layer is explicit rather than schematic."),
+    ("9", "Firewall triangles", "The 27 bad edges organize into nine disjoint 3-cycles with exported certificates."),
+    ("137.036", "Alpha hinge", "The repository keeps a concrete alpha story visible on the front page instead of hiding it."),
 ]
 
-SOLVED_ITEMS = [
-    "Explicit E8 root data, W(E6) action, and the 40-by-6 orbit model.",
-    "Schlaefli-graph structure on each 27-orbit, including sixes and double-sixes.",
-    "Firewall decomposition, bad-edge triangles, and supporting combinatorial certificates.",
-    "A deterministic 27-state dynamics harness over the Schlaefli kernel plus firewall edges.",
-    "Canonical SU(3) gauge fixing, E6 cubic-sign artifacts, and generator-level selection reports.",
+PILLARS = [
+    (
+        "Finite geometry",
+        "W(3,3) is built as the SRG(40,12,2,4) collinearity graph, with exact edge, triangle, homology, and spectrum data.",
+    ),
+    (
+        "Exceptional Lie structure",
+        "The repo tracks the 240-root E8 picture, the E6 substructure, six 27-orbits, and the 86 + 81 + 81 Z3 grading.",
+    ),
+    (
+        "27-line cubic geometry",
+        "The Schlaefli graph, 45 cubic/tritangent supports, and the signed E6 cubic layer are tied to explicit artifacts.",
+    ),
+    (
+        "Gauge fixing",
+        "Canonical SU(3) gauge data and signed W(E6) generators on the 27 are fixed in reproducible conventions.",
+    ),
+    (
+        "Firewall sector",
+        "The bad-edge layer is no longer a vague correction term. It is a tracked 27-edge / nine-triangle sector with witness files.",
+    ),
+    (
+        "CE2 / L-infinity repair",
+        "Mixed-sector Jacobi failures are being replaced by global cocycle laws, not brute-force bucketization.",
+    ),
 ]
 
-OPEN_ITEMS = [
-    "A principled action or Hamiltonian with equations of motion.",
-    "A concrete chirality mechanism with anomaly-complete field content.",
-    "Masses, mixing, CP violation, and RG flow from explicit couplings rather than pattern matches.",
-    "Lorentzian spacetime or gravity with observationally meaningful outputs.",
-    "Falsifiable experimental predictions with uncertainties and error budgets.",
+RECENT_BREAKTHROUGHS = [
+    (
+        "Canonical SU(3) gauge solved",
+        "The canonical gauge and cubic-sign artifacts are fixed in one convention, with signed W(E6) action exported on the 27.",
+    ),
+    (
+        "Dual mixed sector moved beyond witness-by-witness repair",
+        "The CE2 predictor now closes whole dual g1,g2,g2 family slices rather than isolated triples.",
+    ),
+    (
+        "Anchor-family closures are now explicit",
+        "The dual frontier has been pushed through anchored families at a = (0,1,2), a = (2,0,2), and a = (2,2,1).",
+    ),
+    (
+        "Current frontier is visible",
+        "The next unresolved dual sample now starts at a = (2,1,2), and the repo ships a dedicated frontier sampler for it.",
+    ),
 ]
 
-WORKSTREAMS = [
+PREDICTION_TRACKS = [
     (
-        "Core correspondence",
-        "The strongest part of the repo is the exact finite-geometry and Lie-theory layer: roots, orbits, Schlaefli structure, gauges, and certificates.",
+        "Couplings and constants",
+        "Alpha, electroweak-angle formulas, and gauge-normalization stories are part of the public narrative, not buried in scratch files.",
     ),
     (
-        "Algebraic extensions",
-        "Several scripts push into cubic tensors, cocycles, CE2 lifts, and firewall-repair style constructions. These are serious algebraic workstreams, not finished phenomenology.",
+        "Flavor and generations",
+        "Three-generation structure, CKM/PMNS experiments, and hierarchy texture work remain central threads in the repo.",
     ),
     (
-        "Physics bridge",
-        "The repo also contains dynamics demos, mass-hierarchy experiments, and broader unification notes. Those remain hypotheses until they are tied to a full action, scales, and data-quality prediction checks.",
+        "Dark sector and cosmology",
+        "Dark matter, cosmological constant, Hubble-scale, and gravity-facing explorations are still active research surfaces here.",
     ),
+    (
+        "Exceptional bridges",
+        "Octonions, Jordan algebras, qutrit/Heisenberg geometry, Golay/Leech, and Vogel/sl27 bridges all remain in scope.",
+    ),
+]
+
+OPEN_FRONTIER = [
+    "Close the remaining dual mixed-sector CE2 frontier beyond the current a = (2,1,2) sample.",
+    "Unify the alpha, electroweak, and mass formulas into one normalization scheme that the site can present without branching.",
+    "Push the algebraic backbone all the way into a single action, chirality mechanism, and spacetime/gravity story.",
+    "Keep numerical phenomenology tied to scripts, tests, and artifacts instead of isolated prose claims.",
 ]
 
 DOC_LINKS = [
-    ("Status and gaps", "STATUS_AND_GAPS.md", "Canonical boundary: what is computed versus what is still physics."),
-    ("Landing page", "index.html", "Generated landing page shipped by GitHub Pages."),
-    ("Site generator", "build_site.py", "Single source that writes docs/index.html."),
-    ("Repository README", f"{REPO_URL}/blob/main/README.md", "Top-level project contract and navigation."),
+    (
+        "Repository README",
+        f"{BLOB}/README.md",
+        "The repo-level live-paper entry point.",
+    ),
+    (
+        "Living paper overview",
+        f"{BLOB}/docs/README_LIVING_PAPER_2026_02_11.md",
+        "Long-form narrative connecting theorems, scripts, tests, and artifacts.",
+    ),
+    (
+        "Master derivation script",
+        f"{BLOB}/THEORY_OF_EVERYTHING.py",
+        "The top-level finite-geometry to physics computation script shipped in the repo.",
+    ),
+    (
+        "CE2 global cocycle",
+        f"{BLOB}/scripts/ce2_global_cocycle.py",
+        "Global mixed-sector predictor families and the current dual closure program.",
+    ),
+    (
+        "Firewall L-infinity extension",
+        f"{BLOB}/tools/build_linfty_firewall_extension.py",
+        "Where the cocycle laws are threaded into the firewall/Jacobi repair layer.",
+    ),
+    (
+        "Dual frontier sampler",
+        f"{BLOB}/tools/sample_dual_g1g2g2_frontier.py",
+        "Utility that writes the live frontier sample used to guide the next closure step.",
+    ),
 ]
 
 REPO_MAP = [
-    ("artifacts/", "generated reports and certificates"),
-    ("data/", "precomputed datasets"),
-    ("docs/", "site source and project narratives"),
-    ("exploration/", "research and scratch investigations"),
-    ("lib/ and src/", "shared code and source modules"),
-    ("tests/", "automated checks"),
-    ("tools/", "analysis and verification scripts"),
+    ("artifacts/", "reports, certificates, and live frontier samples"),
+    ("docs/", "the landing page, living paper, and narrative documents"),
+    ("scripts/", "main theorem and correspondence scripts"),
+    ("tools/", "verification tools, CE2/L-infinity machinery, and frontier probes"),
+    ("tests/", "automated checks for the geometry, algebra, and repair layers"),
+    ("exploration/", "long-form synthesis and theory-development notebooks"),
 ]
 
 
-def render_cards() -> str:
+def render_metric_cards() -> str:
     return "\n".join(
         dedent(
             f"""
-            <article class="card">
-              <div class="card-value">{value}</div>
+            <article class="metric-card">
+              <div class="metric-value">{value}</div>
               <h3>{label}</h3>
               <p>{detail}</p>
             </article>
             """
         ).strip()
-        for value, label, detail in SUMMARY_CARDS
+        for value, label, detail in METRICS
     )
 
 
-def render_list(items: list[str], class_name: str = "plain-list") -> str:
-    inner = "\n".join(f"<li>{item}</li>" for item in items)
-    return f'<ul class="{class_name}">\n{inner}\n</ul>'
-
-
-def render_workstreams() -> str:
+def render_panels(items: list[tuple[str, str]]) -> str:
     return "\n".join(
         dedent(
             f"""
@@ -104,7 +162,7 @@ def render_workstreams() -> str:
             </article>
             """
         ).strip()
-        for title, detail in WORKSTREAMS
+        for title, detail in items
     )
 
 
@@ -140,6 +198,10 @@ def render_repo_map() -> str:
     return '<ul class="link-list repo-list">\n' + "\n".join(rows) + "\n</ul>"
 
 
+def render_frontier_list() -> str:
+    return '<ul class="frontier-list">\n' + "\n".join(f"<li>{item}</li>" for item in OPEN_FRONTIER) + "\n</ul>"
+
+
 HTML = dedent(
     f"""\
     <!DOCTYPE html>
@@ -147,131 +209,99 @@ HTML = dedent(
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>W(3,3)-E8 Research Program</title>
+    <title>W(3,3)-E8 Theory</title>
     <meta
       name="description"
-      content="Finite geometry, Lie theory, and reproducible computation around the W(3,3), E8, and E6 correspondence."
+      content="A live-paper landing page for the W(3,3), E8, E6, firewall, and CE2/L-infinity unification program."
     >
     <style>
     :root {{
-      --paper: #f5efe3;
-      --paper-strong: #ead9bf;
-      --ink: #17232b;
-      --muted: #5d6b73;
-      --teal: #0b5c66;
-      --red: #9f1d20;
-      --amber: #b96c10;
-      --card: rgba(255, 252, 246, 0.78);
-      --line: rgba(23, 35, 43, 0.14);
-      --shadow: 0 20px 60px rgba(23, 35, 43, 0.10);
+      --bg: #09111d;
+      --bg2: #111c2b;
+      --panel: rgba(17, 28, 43, 0.88);
+      --panel2: rgba(14, 25, 38, 0.92);
+      --ink: #edf2ff;
+      --muted: #9eb0c7;
+      --line: rgba(255, 255, 255, 0.10);
+      --blue: #68b0ff;
+      --gold: #f4c96b;
+      --teal: #7de0cf;
+      --red: #ff8b8b;
+      --max: 1160px;
       --radius: 22px;
-      --max: 1120px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
     }}
 
     * {{ box-sizing: border-box; }}
-
     html {{ scroll-behavior: smooth; }}
-
     body {{
       margin: 0;
       color: var(--ink);
-      font-family: "Aptos", "Segoe UI", sans-serif;
-      line-height: 1.6;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      line-height: 1.62;
       background:
-        radial-gradient(circle at top left, rgba(11, 92, 102, 0.14), transparent 34%),
-        radial-gradient(circle at top right, rgba(159, 29, 32, 0.14), transparent 32%),
-        linear-gradient(180deg, #f8f3eb 0%, #f2eadc 44%, #f7f2ea 100%);
+        radial-gradient(circle at top left, rgba(104, 176, 255, 0.14), transparent 34%),
+        radial-gradient(circle at top right, rgba(244, 201, 107, 0.10), transparent 28%),
+        linear-gradient(180deg, #07101a 0%, #0c1624 35%, #09111d 100%);
     }}
 
-    body::before {{
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(23, 35, 43, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(23, 35, 43, 0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 82%);
-    }}
-
-    a {{
-      color: var(--teal);
-      text-decoration: none;
-    }}
-
-    a:hover {{
-      text-decoration: underline;
-    }}
+    a {{ color: var(--blue); text-decoration: none; }}
+    a:hover {{ text-decoration: underline; }}
 
     h1, h2, h3 {{
-      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-      line-height: 1.08;
+      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      line-height: 1.05;
       margin: 0;
     }}
 
-    p {{
-      margin: 0;
-    }}
-
-    code, pre {{
-      font-family: Consolas, "SFMono-Regular", Menlo, monospace;
-    }}
-
-    .shell {{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.4rem 4rem;
-      position: relative;
-      z-index: 1;
-    }}
+    p {{ margin: 0; }}
+    code, pre {{ font-family: Consolas, "SFMono-Regular", monospace; }}
 
     .hero {{
+      padding: 4.8rem 1.4rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }}
+
+    .hero-shell {{
       max-width: var(--max);
       margin: 0 auto;
-      padding: 4.5rem 1.4rem 2.25rem;
       display: grid;
-      gap: 1.4rem;
+      gap: 1.2rem;
     }}
 
     .eyebrow {{
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
       width: fit-content;
-      padding: 0.35rem 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid rgba(125, 224, 207, 0.22);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(11, 92, 102, 0.16);
       color: var(--teal);
-      font-size: 0.83rem;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }}
 
     .hero h1 {{
       max-width: 10.5em;
-      font-size: clamp(2.8rem, 7vw, 5.8rem);
+      font-size: clamp(2.9rem, 7vw, 5.9rem);
       letter-spacing: -0.04em;
     }}
 
-    .hero h1 .accent {{
-      color: var(--red);
-    }}
+    .hero h1 span {{ color: var(--gold); }}
 
-    .lede {{
-      max-width: 54rem;
-      font-size: clamp(1.06rem, 2vw, 1.3rem);
+    .hero-copy {{
+      max-width: 60rem;
+      font-size: clamp(1.04rem, 2vw, 1.24rem);
       color: var(--muted);
     }}
 
     .hero-note {{
-      max-width: 56rem;
+      max-width: 60rem;
       padding: 1rem 1.15rem;
-      border-left: 5px solid var(--red);
-      border-radius: 0 18px 18px 0;
-      background: rgba(255, 255, 255, 0.70);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(17, 28, 43, 0.82);
       box-shadow: var(--shadow);
     }}
 
@@ -285,19 +315,18 @@ HTML = dedent(
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.85rem 1.15rem;
+      padding: 0.9rem 1.15rem;
       border-radius: 999px;
-      background: var(--ink);
-      color: #fff8f1;
-      font-weight: 700;
+      background: var(--gold);
+      color: #09111d;
+      font-weight: 800;
       text-decoration: none;
-      box-shadow: var(--shadow);
     }}
 
     .button.secondary {{
-      background: rgba(255, 255, 255, 0.72);
-      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--line);
+      color: var(--ink);
     }}
 
     .button:hover {{
@@ -308,39 +337,43 @@ HTML = dedent(
     nav {{
       position: sticky;
       top: 0;
-      z-index: 5;
-      margin: 0 auto 1.6rem;
-      max-width: calc(var(--max) + 2.8rem);
-      padding: 0 1.4rem;
+      z-index: 10;
+      padding: 0.9rem 1.4rem;
+      backdrop-filter: blur(16px);
+      background: rgba(9, 17, 29, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }}
 
     .nav-bar {{
+      max-width: var(--max);
+      margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      padding: 0.8rem;
-      border: 1px solid rgba(23, 35, 43, 0.08);
-      border-radius: 999px;
-      background: rgba(255, 252, 246, 0.8);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
+      gap: 0.45rem;
     }}
 
     .nav-bar a {{
-      padding: 0.45rem 0.8rem;
+      padding: 0.42rem 0.78rem;
       border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
       color: var(--ink);
       font-size: 0.92rem;
       font-weight: 600;
     }}
 
     .nav-bar a:hover {{
-      background: rgba(11, 92, 102, 0.10);
+      background: rgba(104, 176, 255, 0.14);
       text-decoration: none;
     }}
 
+    .shell {{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.4rem 4rem;
+    }}
+
     section {{
-      padding: 1.9rem 0 0;
+      padding-top: 2.2rem;
       scroll-margin-top: 5.5rem;
     }}
 
@@ -350,133 +383,126 @@ HTML = dedent(
       margin-bottom: 1.2rem;
     }}
 
-    .section-head p {{
-      max-width: 50rem;
-      color: var(--muted);
-    }}
-
     .section-kicker {{
-      color: var(--amber);
+      color: var(--teal);
       font-size: 0.82rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }}
 
-    .summary-grid,
-    .panel-grid {{
+    .section-head p {{
+      max-width: 54rem;
+      color: var(--muted);
+    }}
+
+    .grid {{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1rem;
     }}
 
-    .card,
+    .metric-card,
     .panel,
-    .split-card {{
+    .statement,
+    .frontier-box {{
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: var(--card);
+      background: var(--panel);
       box-shadow: var(--shadow);
     }}
 
-    .card {{
+    .metric-card {{
       padding: 1.2rem;
-      min-height: 100%;
     }}
 
-    .card-value {{
-      font-size: 2.35rem;
+    .metric-value {{
+      font-size: 2.4rem;
       font-weight: 800;
       letter-spacing: -0.05em;
-      color: var(--red);
+      color: var(--gold);
     }}
 
-    .card h3 {{
+    .metric-card h3 {{
       margin-top: 0.5rem;
       font-size: 1.2rem;
     }}
 
-    .card p {{
-      margin-top: 0.5rem;
+    .metric-card p {{
+      margin-top: 0.45rem;
       color: var(--muted);
     }}
 
-    .split {{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }}
-
-    .split-card {{
-      padding: 1.3rem;
-    }}
-
-    .split-card h3 {{
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-    }}
-
-    .split-card.open h3 {{
-      color: var(--red);
-    }}
-
-    .plain-list,
-    .link-list {{
-      margin: 0;
-      padding-left: 1.1rem;
-    }}
-
-    .plain-list li {{
-      margin: 0.6rem 0;
-      padding-left: 0.2rem;
-    }}
-
     .statement {{
-      padding: 1.35rem 1.45rem;
-      border-radius: var(--radius);
+      padding: 1.3rem 1.4rem;
       background:
-        linear-gradient(135deg, rgba(11, 92, 102, 0.11), transparent 58%),
-        rgba(255, 252, 246, 0.78);
-      border: 1px solid rgba(11, 92, 102, 0.16);
-      box-shadow: var(--shadow);
+        linear-gradient(135deg, rgba(104, 176, 255, 0.08), transparent 55%),
+        rgba(17, 28, 43, 0.90);
     }}
 
     .statement p + p {{
-      margin-top: 0.8rem;
+      margin-top: 0.85rem;
     }}
 
     .panel {{
-      padding: 1.3rem;
+      padding: 1.25rem;
     }}
 
     .panel h3 {{
       font-size: 1.2rem;
       margin-bottom: 0.55rem;
+      color: var(--gold);
     }}
 
     .panel p {{
       color: var(--muted);
     }}
 
+    .two-col {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }}
+
+    .frontier-box {{
+      padding: 1.35rem 1.45rem;
+      background: var(--panel2);
+    }}
+
+    .frontier-box p {{
+      color: var(--muted);
+    }}
+
+    .frontier-list {{
+      margin: 1rem 0 0;
+      padding-left: 1.15rem;
+    }}
+
+    .frontier-list li {{
+      margin: 0.55rem 0;
+      color: var(--ink);
+    }}
+
     .link-list {{
       list-style: none;
       padding: 0;
+      margin: 0;
       display: grid;
       gap: 0.8rem;
     }}
 
     .link-list li {{
       display: grid;
-      gap: 0.15rem;
+      gap: 0.2rem;
       padding: 1rem 1.1rem;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.72);
       border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
       box-shadow: var(--shadow);
     }}
 
     .link-list a {{
-      font-weight: 700;
+      font-weight: 800;
     }}
 
     .link-list span {{
@@ -484,43 +510,26 @@ HTML = dedent(
     }}
 
     .repo-list code {{
+      color: var(--gold);
       font-size: 0.95rem;
       font-weight: 700;
-      color: var(--ink);
-      background: transparent;
-      padding: 0;
-    }}
-
-    pre {{
-      margin: 0;
-      overflow-x: auto;
-      padding: 1rem 1.1rem;
-      border-radius: 18px;
-      border: 1px solid rgba(23, 35, 43, 0.10);
-      background: #142026;
-      color: #f4efe6;
-      box-shadow: var(--shadow);
     }}
 
     footer {{
-      padding: 2.4rem 0 0;
+      padding-top: 2.5rem;
       color: var(--muted);
       font-size: 0.92rem;
     }}
 
     @media (max-width: 820px) {{
-      .split {{
+      .two-col {{
         grid-template-columns: 1fr;
-      }}
-
-      .nav-bar {{
-        border-radius: 28px;
       }}
     }}
 
     @media (max-width: 640px) {{
       .hero {{
-        padding-top: 3.2rem;
+        padding-top: 3.4rem;
       }}
 
       .hero-actions,
@@ -538,141 +547,131 @@ HTML = dedent(
     </head>
     <body>
       <header class="hero">
-        <div class="eyebrow">Finite geometry &middot; Lie theory &middot; reproducible computation</div>
-        <h1>Theory of Everything, <span class="accent">reduced to what the repo actually proves</span></h1>
-        <p class="lede">
-          The repository does establish a nontrivial mathematical program around
-          <strong>W(3,3)</strong>, <strong>E<sub>8</sub></strong>, <strong>W(E<sub>6</sub>)</strong>,
-          and Schlaefli geometry. It does not yet establish a complete physical theory of everything.
-        </p>
-        <div class="hero-note">
-          <strong>Current contract:</strong> exact constructions, orbit data, gauges, sign conventions,
-          and certificates are in scope; a full Lagrangian, mass spectrum, RG flow, spacetime, and
-          experimentally validated phenomenology are still open work.
-        </div>
-        <div class="hero-actions">
-          <a class="button" href="#solved">What is solved</a>
-          <a class="button secondary" href="#open">What remains open</a>
+        <div class="hero-shell">
+          <div class="eyebrow">Live paper | finite geometry | exceptional algebra | CE2 / L-infinity</div>
+          <h1>W(3,3)-<span>E8 Theory</span></h1>
+          <p class="hero-copy">
+            This project develops the finite-geometry route to a theory of everything by treating the repo itself as the paper:
+            the geometry, the Lie theory, the gauge data, the firewall sector, the CE2 repair laws, and the phenomenology-facing
+            claims all stay visible together.
+          </p>
+          <div class="hero-note">
+            <strong>Public stance:</strong> the front page should show the findings. The mathematical backbone is explicit,
+            the gauge/cubic/firewall layers are active and reproducible, and the current frontier is the live CE2/L-infinity closure
+            program rather than a retreat from the theory.
+          </div>
+          <div class="hero-actions">
+            <a class="button" href="#findings">Headline findings</a>
+            <a class="button secondary" href="#frontier">Current frontier</a>
+            <a class="button secondary" href="{REPO_URL}">GitHub repository</a>
+          </div>
         </div>
       </header>
 
       <nav aria-label="Section navigation">
         <div class="nav-bar">
-          <a href="#summary">Summary</a>
-          <a href="#solved">Solved</a>
-          <a href="#entirety">Entirety</a>
-          <a href="#workstreams">Workstreams</a>
-          <a href="#open">Open physics</a>
-          <a href="#reproduce">Reproduce</a>
-          <a href="#documents">Documents</a>
+          <a href="#findings">Findings</a>
+          <a href="#thesis">Thesis</a>
+          <a href="#breakthroughs">Breakthroughs</a>
+          <a href="#predictions">Prediction surface</a>
+          <a href="#frontier">Open frontier</a>
+          <a href="#paper">Read the paper</a>
+          <a href="#map">Repo map</a>
         </div>
       </nav>
 
       <main class="shell">
-        <section id="summary">
+        <section id="findings">
           <div class="section-head">
-            <div class="section-kicker">Summary</div>
-            <h2>Five numbers that survive contact with the code</h2>
+            <div class="section-kicker">Headline findings</div>
+            <h2>The numbers and structures the repo keeps returning to</h2>
             <p>
-              These are structural facts repeatedly used across the repository and consistent with the
-              stricter status document in <a href="STATUS_AND_GAPS.md">STATUS_AND_GAPS.md</a>.
+              These are the figures and objects that define the public face of the project:
+              W(3,3), E8, E6, the 27-line geometry, the firewall sector, and the new CE2/L-infinity closure work.
             </p>
           </div>
-          <div class="summary-grid">
-            {render_cards()}
+          <div class="grid">
+            {render_metric_cards()}
           </div>
         </section>
 
-        <section id="solved">
+        <section id="thesis">
           <div class="section-head">
-            <div class="section-kicker">Solved here</div>
-            <h2>The mathematics program is real</h2>
-            <p>
-              The strongest claims in this codebase are not broad physical slogans. They are exact
-              constructions, decompositions, and exported artifacts.
-            </p>
-          </div>
-          <div class="split">
-            <article class="split-card">
-              <h3>What the repository currently establishes</h3>
-              {render_list(SOLVED_ITEMS)}
-            </article>
-            <article class="split-card open">
-              <h3>What that does not mean</h3>
-              <p>
-                None of the items on the left, by themselves, constitute a finished physical TOE.
-                They show that the combinatorial and algebraic backbone is explicit and reproducible.
-                They do not yet deliver dynamics, scales, or validated phenomenology.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section id="entirety">
-          <div class="section-head">
-            <div class="section-kicker">Entirety</div>
-            <h2>The strongest defensible end-to-end statement</h2>
+            <div class="section-kicker">Thesis</div>
+            <h2>The repo is a live derivation, not a static manifesto</h2>
           </div>
           <div class="statement">
             <p>
-              Taken in entirety, this repository currently solves a <strong>mathematics-and-computation problem</strong>:
-              construct the objects, fix conventions, verify the correspondences, and emit reproducible certificates.
+              The core thesis is that <strong>W(3,3)</strong>, the <strong>E8</strong> root count, the
+              <strong>E6 / 27-line cubic geometry</strong>, and the <strong>firewall / CE2 / L-infinity</strong>
+              layer belong to one computational unification program.
             </p>
             <p>
-              It does <strong>not</strong> yet solve the full <strong>physics problem</strong> of a theory of everything.
-              The gap is not cosmetic. It consists of action principles, chirality, running couplings, spacetime,
-              and falsifiable predictions with uncertainties.
+              The right public presentation is to keep the derivation backbone, the physical interpretation, and the
+              remaining frontier visible on the same page. The repo already contains a substantial computational core,
+              and each new layer should be exposed with scripts, tests, and artifacts as it closes.
             </p>
+          </div>
+          <div class="grid" style="margin-top: 1rem;">
+            {render_panels(PILLARS)}
           </div>
         </section>
 
-        <section id="workstreams">
+        <section id="breakthroughs">
           <div class="section-head">
-            <div class="section-kicker">Workstreams</div>
-            <h2>Three layers of the repo</h2>
+            <div class="section-kicker">Recent breakthroughs</div>
+            <h2>What changed in the newest passes through the repo</h2>
             <p>
-              The codebase is easier to navigate if its strongest results, speculative extensions, and physics-facing
-              experiments are kept distinct.
+              The site should keep the current breakthroughs visible, especially the move from ad hoc witness repair
+              to global mixed-sector cocycle laws.
             </p>
           </div>
-          <div class="panel-grid">
-            {render_workstreams()}
+          <div class="grid">
+            {render_panels(RECENT_BREAKTHROUGHS)}
           </div>
         </section>
 
-        <section id="open">
+        <section id="predictions">
           <div class="section-head">
-            <div class="section-kicker">Open physics</div>
-            <h2>What must still be solved before a physical TOE claim is credible</h2>
+            <div class="section-kicker">Prediction surface</div>
+            <h2>The theory-facing outputs the repo keeps pushing on</h2>
             <p>
-              These are not minor TODOs. They are the actual missing pieces identified by the repository's own
-              stricter status writeup.
+              The public docs should foreground these tracks because they are the reason the finite-geometry program matters.
             </p>
           </div>
-          <article class="split-card open">
-            {render_list(OPEN_ITEMS)}
-          </article>
-        </section>
-
-        <section id="reproduce">
-          <div class="section-head">
-            <div class="section-kicker">Reproduce</div>
-            <h2>Minimal local workflow</h2>
-            <p>
-              The entry points below are enough to inspect the test suite and regenerate this landing page.
-            </p>
+          <div class="grid">
+            {render_panels(PREDICTION_TRACKS)}
           </div>
-          <pre><code>pip install numpy sympy networkx pytest
-python -m pytest tests/ -q        # or: py -3 -m pytest tests/ -q
-python docs/build_site.py         # or: py -3 docs/build_site.py</code></pre>
         </section>
 
-        <section id="documents">
+        <section id="frontier">
           <div class="section-head">
-            <div class="section-kicker">Canonical documents</div>
-            <h2>Read these before making bigger claims</h2>
+            <div class="section-kicker">Open frontier</div>
+            <h2>What the next passes should actually solve</h2>
+          </div>
+          <div class="two-col">
+            <article class="frontier-box">
+              <h3>Live CE2 frontier</h3>
+              <p>
+                The current dual mixed-sector sample has moved to <strong>a = (2,1,2)</strong>. That live frontier is
+                written by <a href="{BLOB}/tools/sample_dual_g1g2g2_frontier.py">tools/sample_dual_g1g2g2_frontier.py</a>
+                and captured in
+                <a href="{BLOB}/artifacts/dual_g1g2g2_frontier_sample.json">artifacts/dual_g1g2g2_frontier_sample.json</a>.
+              </p>
+            </article>
+            <article class="frontier-box">
+              <h3>Next targets</h3>
+              {render_frontier_list()}
+            </article>
+          </div>
+        </section>
+
+        <section id="paper">
+          <div class="section-head">
+            <div class="section-kicker">Read the paper</div>
+            <h2>Canonical entry points</h2>
             <p>
-              The site and README now treat these files as the primary contract for what the project does and does not claim.
+              These are the documents and scripts the public site should send people to when they want the real work rather than a slogan.
             </p>
           </div>
           {render_links()}
@@ -687,7 +686,7 @@ python docs/build_site.py         # or: py -3 docs/build_site.py</code></pre>
         </section>
 
         <footer>
-          Built from <code>docs/build_site.py</code>. Pages output: <code>docs/index.html</code>.
+          Built from <code>docs/build_site.py</code>. Output: <code>docs/index.html</code>.
         </footer>
       </main>
     </body>
@@ -698,8 +697,7 @@ python docs/build_site.py         # or: py -3 docs/build_site.py</code></pre>
 
 def main() -> None:
     OUTPUT.write_text(HTML, encoding="utf-8")
-    line_count = HTML.count("\n") + 1
-    print(f"{OUTPUT} written ({line_count} lines)")
+    print(f"{OUTPUT} written ({HTML.count(chr(10)) + 1} lines)")
 
 
 if __name__ == "__main__":
