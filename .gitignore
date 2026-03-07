@@ -120,3 +120,6 @@ scripts/golay_derivations.py
 
 # Archived temp directories (moved during repo cleanup)
 archive/dirs/
+
+# Large computation output directories (multi-GB binary data)
+V*_output*/
