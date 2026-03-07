@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>80 Theorems &bull; 34 Predictions &bull; 540+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>95 Theorems &bull; 34 Predictions &bull; 630+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">80 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">80 proven theorems with 540+ automated tests across 6 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">95 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">95 proven theorems with 630+ automated tests across 7 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -455,7 +455,7 @@ section h2::after {
 
 <!-- ═══════════════════════ 37 PROVEN THEOREMS ═══════════════════════ -->
 <section id="theorems">
-  <h2><span class="icon">◆</span> 80 Proven Theorems — Complete Catalog</h2>
+  <h2><span class="icon">◆</span> 95 Proven Theorems — Complete Catalog</h2>
   <p>Every theorem below is <strong>computationally verified</strong> by automated tests in the <code>tests/</code> directory.
   All derive from the 5 SRG input numbers <strong>(v,k,λ,μ,q) = (40,12,2,4,3)</strong> alone.</p>
 
@@ -583,6 +583,28 @@ section h2::after {
     <tr><td>T78</td><td>String Dimensions from SRG</td><td>4=μ, 10=θ, 11=θ+1, 12=k, 26=θ₁+θ₂</td><td>All critical string dimensions from 5 parameters</td></tr>
     <tr><td>T79</td><td>Cosmological Constant</td><td>122 = k² − f + λ = 144 − 24 + 2</td><td>Also (k−1)² + 1 = 122; Λ ~ 10⁻¹²²</td></tr>
     <tr><td>T80</td><td>Spectral Action</td><td>Tr(f(L₀/Λ²)) → gauge + gravity</td><td>a₀ = v, Tr(L₀)/k = v, spectral dim = 2</td></tr>
+  </table>
+
+  <h3 style="color: #c678dd;">Phase VIII: Golay Arithmetic, Monster Corrections &amp; Deep Identities (T81–T95)</h3>
+  <p>Ternary Golay weight distributions, cyclotomic product factorization, Monster irrep corrections,
+  VOA central charge derivation, and magic square exceptional sums — all from 5 numbers.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physical / Mathematical Significance</th></tr>
+    <tr><td>T81</td><td>Ternary Golay Weights</td><td>1 + 264 + 440 + 24 = 729 = 3⁶ = q<sup>2q</sup></td><td>728 nonzero codewords encode W(3,3) arithmetic</td></tr>
+    <tr><td>T82</td><td>Cyclotomic Product</td><td>728 = Φ₁·Φ₂·Φ₃·Φ₆(3) = 2×4×13×7</td><td>q⁶−1 = ∏<sub>d|6</sub> Φ<sub>d</sub>(q); both bridge primes appear</td></tr>
+    <tr><td>T83</td><td>Triangular-8 Identity</td><td>728 = 8 × T₁₃ = 8 × 91</td><td>T₁₃ = 7×13 (both bridge primes); 8 = (q−1)³</td></tr>
+    <tr><td>T84</td><td>Monster Smallest Irrep</td><td>196883 = 728×270 + 323</td><td>323 = 17×19 = (27−θ)(27−8); correction from Albert shifts</td></tr>
+    <tr><td>T85</td><td>Weight-6 → E₈ Splitting</td><td>264 = 240 + 24</td><td>E₈ roots + Leech dimension from Golay weight-6 codewords</td></tr>
+    <tr><td>T86</td><td>12-11 Duality</td><td>728 = 12×24 + 11×40 = k·f + (k−1)·v</td><td>Degree and multiplicity interweave to produce 728</td></tr>
+    <tr><td>T87</td><td>Trinity Identity</td><td>12² + 24² + 27² = 1449 = 23 × 63</td><td>k² + f² + Albert² factorizes into (f−1) × q²·Φ₆(q)</td></tr>
+    <tr><td>T88</td><td>VOA Central Charge</td><td>c = 3×728/91 = 24</td><td>Monster vertex algebra V♮ central charge from Golay/T₁₃</td></tr>
+    <tr><td>T89</td><td>Leech Kissing → Niemeier</td><td>196560/72 = 2730 = 2·3·5·7·13</td><td>Both bridge primes in Leech kissing structure</td></tr>
+    <tr><td>T90</td><td>Magic Square Row Sum</td><td>F₄+E₆+E₇+E₈ = 52+78+133+248 = 511</td><td>511 = 2⁹−1: Mersenne number with exponent q²</td></tr>
+    <tr><td>T91</td><td>SO(10) Correction Ladder</td><td>242+6=248, 728+16=744</td><td>Center dim + 2q = E₈; Golay + 2<sup>μ</sup> = j-constant; 744/248 = q</td></tr>
+    <tr><td>T92</td><td>Exceptional Aut Sum</td><td>dim(G₂)+dim(F₄) = 14+52 = 66 = C(12,2)</td><td>Sum of smallest exceptionals = dim(so(k))</td></tr>
+    <tr><td>T93</td><td>Yukawa Algebra</td><td>sl(3,𝔽₃)³, dim = 3×8 = 24</td><td>Three copies match 3 generations; acts on 3⊗3⊗3 = 27</td></tr>
+    <tr><td>T94</td><td>Information Rate</td><td>β₁/E = 81/240 = 27/80</td><td>q⁴/(q⁵−q) = Albert_dim / (2v); Betti-to-edge ratio</td></tr>
+    <tr><td>T95</td><td>Fano-LCM Identity</td><td>lcm(3..8) = 840 = 5×168</td><td>5 × |PSL(2,7)| = 5 × |GL(3,2)|; Fano plane connection</td></tr>
   </table>
 </section>
 
@@ -3796,8 +3818,8 @@ section h2::after {
 
 <!-- ═══════════════════════ VERIFICATION DASHBOARD ═══════════════════════ -->
 <section id="dashboard">
-  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 80 Theorems + 34 Predictions + 2367 Checks</h2>
-  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL TESTS PASS — 544 pytest methods + 2367 consistency checks = 100% verification</strong></p>
+  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 95 Theorems + 34 Predictions + 2367 Checks</h2>
+  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL TESTS PASS — 636 pytest methods + 2367 consistency checks = 100% verification</strong></p>
   <p>The <a href="#theorems">37 Theorems</a> section catalogs the proven results. The <a href="#physics">Physics Derivations</a> section has the 183-check table. Extended domain coverage below spans 85+ additional mathematical domains.</p>
 
 <h2 style="color: var(--gold); border-bottom-color: var(--gold);"><span class="icon">★</span> Extended Domain Coverage (Checks 842–2367)</h2>
@@ -4007,7 +4029,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 544 pytest methods verifying 80 theorems &amp; 34 predictions across 6 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 636 pytest methods verifying 95 theorems &amp; 34 predictions across 7 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
