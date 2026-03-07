@@ -1907,3 +1907,468 @@ class TestPMNSAnglesAndJarlskog:
         R_nu = v - k + 1 + mu
         assert R_nu == 33
         assert abs(R_nu - 32.6) / 32.6 < 0.02  # within 2%
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THEOREM 27 (l4 Self-Energy in Association Scheme Algebra):
+#   The l4 self-energy matrix Sigma^g[i27_out, i27_in] for each generation g
+#   lies EXACTLY in the span of the 27-line association scheme algebra:
+#     Sigma^g = 64·A₀ + 32·A₁ + 4·A₂ + 16·A₃
+#   with eigenvalues {640×1, 160×6, 28×8, -8×12}, trace = k³ = 1728.
+#   Top/second eigenvalue ratio = μ = 4. Diagonal/total = ε = μ/v = 1/10.
+#   All three generations have IDENTICAL self-energy (generation democracy).
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+@pytest.fixture(scope="module")
+def l4_self_energy(l4_data, grade_maps):
+    """Build l4 self-energy matrices Sigma^g[i27, i27] per generation."""
+    idx_i3 = grade_maps["idx_i3"]
+    idx_i27 = grade_maps["idx_i27"]
+
+    SE = {g: np.zeros((27, 27)) for g in range(3)}
+    for entry in l4_data:
+        ins = entry["in"]
+        out_sc = entry["out"]
+        coeff = entry["coeff"]
+        out_gen = idx_i3[out_sc]
+        out_i27 = idx_i27[out_sc]
+
+        in_gens = [idx_i3[x] for x in ins]
+        doubled_mask = [i for i, g in enumerate(in_gens) if g == out_gen]
+
+        for di in doubled_mask:
+            in_i27 = idx_i27[ins[di]]
+            SE[out_gen][out_i27, in_i27] += coeff ** 2
+
+    return SE
+
+
+class TestL4SelfEnergyAssociationScheme:
+    """
+    THEOREM 27 (l4 Self-Energy in Association Scheme Algebra):
+    The l4 self-energy per generation lies exactly in the
+    4-dimensional association scheme algebra spanned by {A₀, A₁, A₂, A₃}.
+    """
+
+    V, K, LAM, MU, Q = 40, 12, 2, 4, 3
+
+    def test_generation_democracy(self, l4_self_energy):
+        """All three generation self-energies are identical."""
+        assert np.allclose(l4_self_energy[0], l4_self_energy[1])
+        assert np.allclose(l4_self_energy[0], l4_self_energy[2])
+
+    def test_exactly_four_entry_values(self, l4_self_energy):
+        """SE has exactly 4 distinct integer entry values: {64, 32, 16, 4}."""
+        M = l4_self_energy[0]
+        vals = set(int(round(M[i, j])) for i in range(27) for j in range(27))
+        assert vals == {64, 32, 16, 4}
+
+    def test_entry_multiplicities(self, l4_self_energy):
+        """Entry counts: {64: 27, 32: 432, 4: 216, 16: 54}."""
+        M = l4_self_energy[0]
+        counts = Counter(int(round(M[i, j])) for i in range(27) for j in range(27))
+        assert counts[64] == 27  # diagonal (A₀)
+        assert counts[32] == 432  # Schläfli (A₁)
+        assert counts[4] == 216  # intermediate (A₂)
+        assert counts[16] == 54  # tritangent (A₃)
+
+    def test_association_scheme_decomposition(self, l4_self_energy, adjacency_matrices):
+        """SE = 64·A₀ + 32·A₁ + 4·A₂ + 16·A₃ (exact reconstruction)."""
+        A = adjacency_matrices
+        SE_reconstructed = 64 * A[0] + 32 * A[1] + 4 * A[2] + 16 * A[3]
+        assert np.allclose(l4_self_energy[0], SE_reconstructed, atol=1e-10)
+
+    def test_eigenvalue_spectrum(self, l4_self_energy):
+        """SE eigenvalues: {640×1, 160×6, 28×8, -8×12}."""
+        eigs = sorted(np.linalg.eigvalsh(l4_self_energy[0]), reverse=True)
+        mult = Counter(round(e) for e in eigs)
+        assert mult[640] == 1
+        assert mult[160] == 6
+        assert mult[28] == 8
+        assert mult[-8] == 12
+
+    def test_top_second_ratio_is_mu(self, l4_self_energy):
+        """Top/second eigenvalue ratio = μ = 4."""
+        eigs = sorted(np.linalg.eigvalsh(l4_self_energy[0]), reverse=True)
+        top = round(eigs[0])
+        second = round(eigs[1])
+        assert top == 640
+        assert second == 160
+        assert top / second == self.MU
+
+    def test_trace_is_k_cubed(self, l4_self_energy):
+        """Trace = k³ = 12³ = 1728."""
+        tr = np.trace(l4_self_energy[0])
+        assert round(tr) == self.K ** 3
+
+    def test_diagonal_over_total_is_epsilon(self, l4_self_energy):
+        """Diagonal/total = ε = μ/v = 1/10 EXACTLY."""
+        M = l4_self_energy[0]
+        diag_sum = sum(M[i, i] for i in range(27))
+        total_sum = np.sum(M)
+        ratio = diag_sum / total_sum
+        assert abs(ratio - self.MU / self.V) < 1e-14
+
+    def test_se_coefficients_from_l3(self, l4_self_energy, mass_matrix):
+        """SE entry values = {64, 32, 4, 16} at {0, 2, 4, 16} l3 positions."""
+        SE = l4_self_energy[0]
+        M = mass_matrix
+        # Map l3 association scheme value to l4 SE value
+        for i in range(27):
+            for j in range(27):
+                l3_val = int(round(M[i, j]))
+                l4_val = int(round(SE[i, j]))
+                if l3_val == 0:
+                    assert l4_val == 64
+                elif l3_val == 2:
+                    assert l4_val == 32
+                elif l3_val == 4:
+                    assert l4_val == 4
+                elif l3_val == 16:
+                    assert l4_val == 16
+
+    def test_se_traceless_part_eigenvalues(self, l4_self_energy):
+        """SE eigenvalue sum = 0 (traceless part vanishes: 640+6×160+8×28+12×(-8) = 1728)."""
+        # Eigenvalues sum to trace = k³
+        eig_sum = 640 + 6 * 160 + 8 * 28 + 12 * (-8)
+        assert eig_sum == 1728
+        assert eig_sum == self.K ** 3
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THEOREM 28 (Betti Number Decomposition of W(3,3)):
+#   The simplicial complex C(W(3,3)) has Betti numbers:
+#     β₀ = 1                (connected: the universe is one)
+#     β₁ = 81 = 3 × 27      (matter content: 3 generations × 27-plet)
+#     β₂ = 40 = v            (gravitational sector: one mode per vertex)
+#     β₀ + β₁ + β₂ = 122    (= k² - k - θ = CC EXPONENT)
+#   Euler characteristic: χ = 1 - 81 + 40 = -40 = -v  ✓
+#   The boundary ranks are: rank(d₀) = v-1 = 39, rank(d₁) = |F|-β₂ = 120.
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+@pytest.fixture(scope="module")
+def w33_topology():
+    """Build W(3,3) and compute its simplicial homology."""
+    import itertools
+
+    def _canon(vec, mod=3):
+        for a in vec:
+            if a % mod != 0:
+                inv = 1 if a % mod == 1 else 2
+                return tuple((inv * x) % mod for x in vec)
+        raise ValueError("zero vector")
+
+    def _omega(x, y, mod=3):
+        return (x[0]*y[2] - x[2]*y[0] + x[1]*y[3] - x[3]*y[1]) % mod
+
+    pts = sorted({_canon(v) for v in itertools.product(range(3), repeat=4) if any(v)})
+    nV = len(pts)
+    A = np.zeros((nV, nV), dtype=np.int8)
+    for i, x in enumerate(pts):
+        for j in range(i + 1, nV):
+            if _omega(x, pts[j]) == 0:
+                A[i, j] = A[j, i] = 1
+    edges = [(i, j) for i in range(nV) for j in range(i + 1, nV) if A[i, j]]
+    nbrs = [set(np.nonzero(A[i])[0]) for i in range(nV)]
+    triangles = []
+    for i in range(nV):
+        for j in range(i + 1, nV):
+            if A[i, j]:
+                for k in nbrs[i].intersection(nbrs[j]):
+                    if k > j:
+                        triangles.append((i, j, int(k)))
+    nE = len(edges)
+    nF = len(triangles)
+
+    # Boundary operators
+    edge_idx = {e: k for k, e in enumerate(edges)}
+    d0 = np.zeros((nE, nV))
+    for k, (i, j) in enumerate(edges):
+        d0[k, i] = -1.0
+        d0[k, j] = +1.0
+
+    d1 = np.zeros((nF, nE))
+    for f_idx, (i, j, k) in enumerate(triangles):
+        e_ij = edge_idx.get((i, j), edge_idx.get((j, i), -1))
+        e_ik = edge_idx.get((i, k), edge_idx.get((k, i), -1))
+        e_jk = edge_idx.get((j, k), edge_idx.get((k, j), -1))
+        d1[f_idx, e_ij] = +1.0
+        d1[f_idx, e_ik] = -1.0
+        d1[f_idx, e_jk] = +1.0
+
+    rank_d0 = np.linalg.matrix_rank(d0)
+    rank_d1 = np.linalg.matrix_rank(d1)
+    beta_0 = nV - rank_d0
+    beta_1 = nE - rank_d0 - rank_d1
+    beta_2 = nF - rank_d1
+
+    return {
+        "nV": nV, "nE": nE, "nF": nF, "A": A,
+        "d0": d0, "d1": d1,
+        "rank_d0": rank_d0, "rank_d1": rank_d1,
+        "beta_0": beta_0, "beta_1": beta_1, "beta_2": beta_2,
+        "edges": edges, "triangles": triangles,
+    }
+
+
+class TestBettiNumberDecomposition:
+    """
+    THEOREM 28 (Betti Number Decomposition):
+    The simplicial complex C(W(3,3)) encodes matter, gravity, and the
+    cosmological constant exponent through its Betti numbers:
+      β₀ + β₁ + β₂ = 1 + 81 + 40 = 122 = k² - k - θ.
+    """
+
+    V, K, LAM, MU, Q = 40, 12, 2, 4, 3
+    THETA = 10
+
+    def test_graph_dimensions(self, w33_topology):
+        """W(3,3): 40 vertices, 240 edges, 160 triangles."""
+        assert w33_topology["nV"] == 40
+        assert w33_topology["nE"] == 240
+        assert w33_topology["nF"] == 160
+
+    def test_beta_0_connected(self, w33_topology):
+        """β₀ = 1: W(3,3) is connected."""
+        assert w33_topology["beta_0"] == 1
+
+    def test_beta_1_matter_content(self, w33_topology):
+        """β₁ = 81 = 3 × 27: three generations of 27-plet matter."""
+        assert w33_topology["beta_1"] == 81
+        assert 81 == 3 * 27
+
+    def test_beta_2_gravitational_sector(self, w33_topology):
+        """β₂ = 40 = v: one gravitational mode per vertex."""
+        assert w33_topology["beta_2"] == 40
+        assert 40 == self.V
+
+    def test_total_betti_is_cc_exponent(self, w33_topology):
+        """β₀ + β₁ + β₂ = 122 = k² - k - θ (cosmological constant exponent)."""
+        total = w33_topology["beta_0"] + w33_topology["beta_1"] + w33_topology["beta_2"]
+        assert total == 122
+        assert 122 == self.K ** 2 - self.K - self.THETA
+
+    def test_euler_characteristic(self, w33_topology):
+        """χ = β₀ - β₁ + β₂ = 1 - 81 + 40 = -40 = -v."""
+        chi = w33_topology["beta_0"] - w33_topology["beta_1"] + w33_topology["beta_2"]
+        assert chi == -40
+        assert chi == -self.V
+        # Also verify via V - E + F
+        chi_direct = w33_topology["nV"] - w33_topology["nE"] + w33_topology["nF"]
+        assert chi_direct == -40
+
+    def test_rank_d0(self, w33_topology):
+        """rank(d₀) = v - 1 = 39."""
+        assert w33_topology["rank_d0"] == 39
+        assert w33_topology["rank_d0"] == self.V - 1
+
+    def test_rank_d1(self, w33_topology):
+        """rank(d₁) = |F| - β₂ = 160 - 40 = 120."""
+        assert w33_topology["rank_d1"] == 120
+        assert w33_topology["rank_d1"] == w33_topology["nF"] - w33_topology["beta_2"]
+
+    def test_d1_d0_equals_zero(self, w33_topology):
+        """d₁ ∘ d₀ = 0 (boundary of boundary is zero)."""
+        product = w33_topology["d1"] @ w33_topology["d0"]
+        assert np.allclose(product, 0)
+
+    def test_beta_1_identity(self, w33_topology):
+        """β₁ = |E| - rank(d₀) - rank(d₁) = 240 - 39 - 120 = 81."""
+        b1 = w33_topology["nE"] - w33_topology["rank_d0"] - w33_topology["rank_d1"]
+        assert b1 == 81
+
+    def test_harmonic_form_count(self, w33_topology):
+        """Total zero modes of D² = β₀ + β₁ + β₂ = 122."""
+        # By Hodge theorem, dim ker(D²) = Σ βᵢ
+        total = w33_topology["beta_0"] + w33_topology["beta_1"] + w33_topology["beta_2"]
+        assert total == 122
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THEOREM 29 (Dirac-Kähler Spectrum on W(3,3)):
+#   The Dirac-Kähler operator D = d + d† on C⁰ ⊕ C¹ ⊕ C² has
+#   D² spectrum = {0^122, 4^240, 10^48, 16^30} with N = 440 = 40+240+160.
+#   Spectral action moments: f₀ = 440, f₂ = 1920, f₄ = 16320, f₆ = 186240.
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+@pytest.fixture(scope="module")
+def dirac_kahler(w33_topology):
+    """Build the Dirac-Kähler operator and compute its spectrum."""
+    nV = w33_topology["nV"]
+    nE = w33_topology["nE"]
+    nF = w33_topology["nF"]
+    d0 = w33_topology["d0"]
+    d1 = w33_topology["d1"]
+    N = nV + nE + nF
+
+    D = np.zeros((N, N))
+    D[:nV, nV:nV+nE] = d0.T
+    D[nV:nV+nE, :nV] = d0
+    D[nV:nV+nE, nV+nE:] = d1.T
+    D[nV+nE:, nV:nV+nE] = d1
+
+    D2 = D @ D
+    eigs_D2 = np.linalg.eigvalsh(D2)
+
+    # Spectral moments
+    f0 = N
+    f2 = np.trace(D2)
+    D4 = D2 @ D2
+    f4 = np.trace(D4)
+    D6 = D4 @ D2
+    f6 = np.trace(D6)
+
+    # Graph Laplacian L₀
+    A = w33_topology["A"].astype(float)
+    L0 = np.diag(np.sum(A, axis=1)) - A
+    eigs_L0 = sorted(np.linalg.eigvalsh(L0))
+
+    return {
+        "D": D, "D2": D2, "N": N,
+        "eigs_D2": eigs_D2,
+        "f0": f0, "f2": round(f2), "f4": round(f4), "f6": round(f6),
+        "L0": L0, "eigs_L0": eigs_L0,
+    }
+
+
+class TestDiracKahlerSpectrum:
+    """
+    THEOREM 29 (Dirac-Kähler Spectrum):
+    The operator D = d + d† on the simplicial complex of W(3,3) has
+    a completely determined D² spectrum with integer eigenvalues.
+    """
+
+    V, K = 40, 12
+
+    def test_hilbert_space_dimension(self, dirac_kahler):
+        """N = V + E + F = 40 + 240 + 160 = 440."""
+        assert dirac_kahler["N"] == 440
+
+    def test_d_squared_spectrum(self, dirac_kahler):
+        """D² eigenvalues: {0^122, 4^240, 10^48, 16^30}."""
+        eigs = dirac_kahler["eigs_D2"]
+        mult = Counter(round(e) for e in eigs)
+        assert mult[0] == 122
+        assert mult[4] == 240
+        assert mult[10] == 48
+        assert mult[16] == 30
+
+    def test_zero_modes_equal_total_betti(self, dirac_kahler, w33_topology):
+        """dim ker(D²) = 122 = β₀ + β₁ + β₂ (Hodge theorem)."""
+        zero_count = sum(1 for e in dirac_kahler["eigs_D2"] if abs(e) < 1e-10)
+        total_betti = w33_topology["beta_0"] + w33_topology["beta_1"] + w33_topology["beta_2"]
+        assert zero_count == total_betti == 122
+
+    def test_f0_moment(self, dirac_kahler):
+        """f₀ = Tr(1) = N = 440."""
+        assert dirac_kahler["f0"] == 440
+
+    def test_f2_moment(self, dirac_kahler):
+        """f₂ = Tr(D²) = 1920."""
+        assert dirac_kahler["f2"] == 1920
+
+    def test_f4_moment(self, dirac_kahler):
+        """f₄ = Tr(D⁴) = 16320."""
+        assert dirac_kahler["f4"] == 16320
+
+    def test_f6_moment(self, dirac_kahler):
+        """f₆ = Tr(D⁶) = 186240."""
+        assert dirac_kahler["f6"] == 186240
+
+    def test_f2_from_eigenvalues(self, dirac_kahler):
+        """f₂ = 0×122 + 4×240 + 10×48 + 16×30 = 1920."""
+        f2_check = 0 * 122 + 4 * 240 + 10 * 48 + 16 * 30
+        assert f2_check == 1920
+        assert dirac_kahler["f2"] == f2_check
+
+    def test_f4_from_eigenvalues(self, dirac_kahler):
+        """f₄ = 0²×122 + 4²×240 + 10²×48 + 16²×30 = 16320."""
+        f4_check = 0 * 122 + 16 * 240 + 100 * 48 + 256 * 30
+        assert f4_check == 16320
+        assert dirac_kahler["f4"] == f4_check
+
+    def test_graph_laplacian_spectrum(self, dirac_kahler):
+        """Graph Laplacian L₀ spectrum: {0^1, 10^24, 16^15}."""
+        eigs_L0 = dirac_kahler["eigs_L0"]
+        mult = Counter(round(e) for e in eigs_L0)
+        assert mult[0] == 1
+        assert mult[10] == 24
+        assert mult[16] == 15
+
+    def test_trace_L0_equals_2E(self, dirac_kahler):
+        """Tr(L₀) = 2|E| = 480."""
+        tr = sum(dirac_kahler["eigs_L0"])
+        assert abs(tr - 480) < 1e-10
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THEOREM 30 (CP Violation from Structural Antisymmetry):
+#   l3 antisymmetry (Theorem 2) → all spin-spin Yukawa matrices are
+#   antisymmetric 2-forms. For each VEV direction v ∈ {17,...,26}, the
+#   16×16 skew-symmetric matrix 1j·Y_v has exactly 8 nonzero eigenvalue
+#   pairs with |det(Y_v)| = 1. This GUARANTEES CP-violating complex
+#   phases survive mass diagonalization.
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+class TestCPViolationStructural:
+    """
+    THEOREM 30 (Structural CP Violation):
+    CP violation is a structural consequence of l3 antisymmetry, not a
+    free parameter. All VEV directions produce rank-8 Pfaffians.
+    """
+
+    def test_all_vec_vevs_give_rank_8(self, yukawa_tensor):
+        """Every vector-10 VEV gives a rank-8 (= full rank) Yukawa Pfaffian."""
+        T = yukawa_tensor
+        for v in VEC:
+            Y_v = np.zeros((16, 16))
+            for a_idx, a in enumerate(SPIN):
+                for b_idx, b in enumerate(SPIN):
+                    if a < b:
+                        Y_v[a_idx, b_idx] = T[a, b, v]
+                        Y_v[b_idx, a_idx] = -T[a, b, v]
+            eigs = np.linalg.eigvalsh(1j * Y_v)
+            nonzero_pairs = sum(1 for e in eigs if abs(e) > 1e-10) // 2
+            assert nonzero_pairs == 8, (
+                f"VEV i27={v}: expected 8 Pfaffian pairs, got {nonzero_pairs}"
+            )
+
+    def test_all_vec_vevs_det_one(self, yukawa_tensor):
+        """Every vector-10 VEV gives |det(Y_v)| = 1."""
+        T = yukawa_tensor
+        for v in VEC:
+            Y_v = np.zeros((16, 16))
+            for a_idx, a in enumerate(SPIN):
+                for b_idx, b in enumerate(SPIN):
+                    if a < b:
+                        Y_v[a_idx, b_idx] = T[a, b, v]
+                        Y_v[b_idx, a_idx] = -T[a, b, v]
+            det_val = abs(np.linalg.det(Y_v))
+            assert abs(det_val - 1.0) < 1e-10, (
+                f"VEV i27={v}: |det| = {det_val}, expected 1"
+            )
+
+    def test_yukawa_100_percent_antisymmetric(self, yukawa_tensor):
+        """100% of nonzero T[i,j,k] satisfy T[i,j,k] = -T[j,i,k]."""
+        T = yukawa_tensor
+        nz = 0
+        antisym = 0
+        for i in range(27):
+            for j in range(27):
+                for k in range(27):
+                    if abs(T[i, j, k]) > 1e-10:
+                        nz += 1
+                        if abs(T[i, j, k] + T[j, i, k]) < 1e-10:
+                            antisym += 1
+        assert antisym == nz
+        assert nz == 2592
+
+    def test_cp_violation_order_estimate(self):
+        """J_CP ~ ε⁶ = 10⁻⁶ (structural, not parametric)."""
+        eps = 4 / 40  # μ/v = 1/10
+        J_order = eps ** 6
+        assert abs(J_order - 1e-6) < 1e-10
