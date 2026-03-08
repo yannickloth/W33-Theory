@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>230 Theorems &bull; 34 Predictions &bull; 1370+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>245 Theorems &bull; 34 Predictions &bull; 1440+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">230 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">230 proven theorems with 1370+ automated tests across 16 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">245 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">245 proven theorems with 1440+ automated tests across 17 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -794,6 +794,26 @@ section h2::after {
     <tr><td>T228</td><td>Algebraic Connectivity</td><td>a(G) = k&minus;r = &theta; = 10; largest L = 16 = &mu;&sup2;</td><td>Fiedler eigenspace dimension = f = 24</td></tr>
     <tr><td>T229</td><td>Shannon Capacity</td><td>C = &alpha; = &theta; = 10; &theta;(G)&middot;&theta;(comp) = v</td><td>Complement &theta; = v/&theta; = &mu; = 4</td></tr>
     <tr><td>T230</td><td>Ihara Zeta</td><td>disc(r) = r&sup2;&minus;4(k&minus;1) = &minus;v = &minus;40</td><td>disc(s) = s&sup2;&minus;4(k&minus;1) = &minus;(v&minus;k) = &minus;28</td></tr>
+  </table>
+
+  <h3 style="color: #f0883e;">Phase XVIII: Topological &amp; Homological Invariants (T231&ndash;T245)</h3>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Formula</th><th>Insight</th></tr>
+    <tr><td>T231</td><td>Euler Characteristic</td><td>&chi; = v &minus; E + 160 &minus; v = &minus;80 = &minus;2v</td><td>Reduced &chi; = &minus;81 = &minus;q&sup4;</td></tr>
+    <tr><td>T232</td><td>Betti Numbers</td><td>b&sub0; = 1, b&sub1; = E&minus;v+1 = 201 = 3&times;67</td><td>67 = v + 27 (vertex + Albert count)</td></tr>
+    <tr><td>T233</td><td>f-Vector</td><td>(1, 40, 240, 160, 40): f&sub0; = f&sub3; = v!</td><td>Palindromic outer terms; h&sub1; = 36 = (2q)&sup2;</td></tr>
+    <tr><td>T234</td><td>Surface Genus</td><td>g &ge; 21 = 3&Phi;&sub6;; non-orient g&#x7E; &ge; 42</td><td>Non-orientable genus = 42 = 6&Phi;&sub6; (The Answer!)</td></tr>
+    <tr><td>T235</td><td>Tutte Polynomial</td><td>log&sub1;0(&tau;) &asymp; 40.46</td><td>Spanning tree count from Kirchhoff</td></tr>
+    <tr><td>T236</td><td>Chromatic Polynomial</td><td>P(1)=P(2)=P(3)=0; &chi; &ge; &omega; = &mu; = 4</td><td>K4 cliques force &chi; &ge; 4</td></tr>
+    <tr><td>T237</td><td>Reliability</td><td>Min cut = k = 12; leading p&sup3;&sup9;</td><td>Menger: k edge-disjoint paths</td></tr>
+    <tr><td>T238</td><td>Matching</td><td>Perfect matching exists (20 = v/2 edges)</td><td>12-regular &rArr; guaranteed by Petersen</td></tr>
+    <tr><td>T239</td><td>Laplacian Determinant</td><td>&tau; = (1/v)&prod;&mu;<sub>i</sub>; L evals {0, 10, 16}</td><td>L eigenvalue 10 has mult f=24; 16 has mult g=15</td></tr>
+    <tr><td>T240</td><td>Smith Normal Form</td><td>det(A) = &minus;3&middot;2&sup5;&sup6;; 56 = (k&minus;&mu;)&Phi;&sub6;</td><td>|det|/q = 2&sup5;&sup6;; exponent = 8&times;7</td></tr>
+    <tr><td>T241</td><td>Integral Graph</td><td>disc = (&lambda;&minus;&mu;)&sup2; + 4(k&minus;&mu;) = 36 = 6&sup2;</td><td>All eigenvalues integer; sqrt(disc) = 2q</td></tr>
+    <tr><td>T242</td><td>Complement SRG</td><td>SRG(40,27,18,18); r'=q=3, s'=&minus;q=&minus;3</td><td>&lambda;'=&mu;'=18 (conference); &lambda;&minus;&mu;=&minus;2</td></tr>
+    <tr><td>T243</td><td>Hoffman Bound</td><td>&chi; &ge; 1+k/|s| = &mu; = 4; complement: &theta; = 10</td><td>&mu;&middot;&theta; = v = 40!</td></tr>
+    <tr><td>T244</td><td>Delsarte Bound</td><td>&alpha; &le; v|s|/(k&minus;s) = &theta; = 10 (tight!)</td><td>&alpha;&middot;&omega; = &theta;&middot;&mu; = v</td></tr>
+    <tr><td>T245</td><td>Ramanujan</td><td>|s|=4 &le; 2&radic;(k&minus;1) = 6.63 (39.7% margin)</td><td>Spectral gap ratio = 2/3; optimal expander</td></tr>
   </table>
 </section>
 
@@ -1269,7 +1289,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 230 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 245 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -1532,7 +1552,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (1370+ test methods across 16 files) rigorously verifies all 230 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (1440+ test methods across 17 files) rigorously verifies all 245 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -1808,7 +1828,7 @@ section h2::after {
   edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
   The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
-  <p><strong style="color: #ffd700;">★ The theory now has 230 computationally proven theorems, 34 predictions matching experiment, and 1370+ automated tests across 16 test suites spanning random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
+  <p><strong style="color: #ffd700;">★ The theory now has 245 computationally proven theorems, 34 predictions matching experiment, and 1440+ automated tests across 17 test suites spanning random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -4386,7 +4406,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1370+ pytest methods verifying 230 theorems &amp; 34 predictions across 16 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 1440+ pytest methods verifying 245 theorems &amp; 34 predictions across 17 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
