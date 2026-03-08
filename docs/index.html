@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>215 Theorems &bull; 34 Predictions &bull; 1290+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>230 Theorems &bull; 34 Predictions &bull; 1370+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">215 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">215 proven theorems with 1290+ automated tests across 15 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">230 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">230 proven theorems with 1370+ automated tests across 16 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -774,6 +774,26 @@ section h2::after {
     <tr><td>T213</td><td>Dual Coxeter</td><td>h*(G&sub2;)=&mu;=4, h*(F&sub4;)=q&sup2;=9</td><td>h/h* = q/&mu; for non-simply-laced</td></tr>
     <tr><td>T214</td><td>E&sub6; Exponents</td><td>{1,4,5,7,8,11}; sum = 36 = (2q)&sup2;</td><td>Palindromic pairing i + (h&minus;i) = h = k = 12</td></tr>
     <tr><td>T215</td><td>Characteristic Poly</td><td>tr(A)=0, tr(A&sup2;)=2E=480, det(A) odd prime</td><td>Power sums and determinant from SRG spectrum</td></tr>
+  </table>
+
+  <h3 style="color: #f0883e;">Phase XVII: Graph Spectra &amp; Algebraic Graph Theory (T216&ndash;T230)</h3>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Formula</th><th>Insight</th></tr>
+    <tr><td>T216</td><td>Distance Matrix</td><td>D = 2(J&minus;I)&minus;A; top eval = 2v&minus;k&minus;2 = 66</td><td>Distance swaps r&harr;s eigenvalues (duality!)</td></tr>
+    <tr><td>T217</td><td>Signless Laplacian</td><td>Q = D+A; evals {2k, k+r, k+s} = {24, 14, 8}</td><td>Gap = k&minus;r = &theta; = 10; smallest = k&minus;&mu;</td></tr>
+    <tr><td>T218</td><td>Normalized Laplacian</td><td>&mu;<sub>i</sub> = 1 &minus; &theta;<sub>i</sub>/k; gap = 5/6</td><td>Spectral gap of normalized Laplacian</td></tr>
+    <tr><td>T219</td><td>Graph Energy</td><td>E(G) = k + f|r| + g|s| = 120 = 5!</td><td>E(G)/v = q = 3; E(G) = E/2 = v&middot;q</td></tr>
+    <tr><td>T220</td><td>Estrada Index</td><td>EE = e<sup>k</sup> + fe<sup>r</sup> + ge<sup>s</sup></td><td>exp(k) dominates by factor 916&times;</td></tr>
+    <tr><td>T221</td><td>Walk Counts</td><td>N&sub3; = 960 = 6&times;160 triangles; N&sub4;/v = k&middot;&Phi;&sub3;&middot;&mu;</td><td>160 = &mu;&middot;v triangles in W(3,3)</td></tr>
+    <tr><td>T222</td><td>Resistance Distance</td><td>Kemeny K = 801/20; Kirchhoff Kf = 801/6</td><td>Effective resistance from Laplacian pseudoinverse</td></tr>
+    <tr><td>T223</td><td>Seidel Matrix</td><td>S evals: 15 = g, &minus;5 = &minus;(q+&lambda;), 7 = &Phi;&sub6;</td><td>Seidel energy = E = 240 (edge count!)</td></tr>
+    <tr><td>T224</td><td>Line Graph</td><td>L(G) evals from k+r&minus;2, k+s&minus;2, &hellip;</td><td>2s&minus;2 = &minus;&theta;; E&minus;v = 200 copies of &minus;2</td></tr>
+    <tr><td>T225</td><td>Automorphism Group</td><td>|Sp(4,3)| = q&sup4;(q&sup4;&minus;1)(q&sup2;&minus;1) = 51840</td><td>Vertex stab = 6&sup4;; edge stab = 6&sup3;</td></tr>
+    <tr><td>T226</td><td>Vertex Connectivity</td><td>&kappa; = k = 12 (optimally connected)</td><td>Brouwer: &mu; &ge; &lambda;+2 ensures &kappa;=k</td></tr>
+    <tr><td>T227</td><td>Edge Connectivity</td><td>&lambda;<sub>e</sub> = k = 12</td><td>Vertex-transitive &rArr; &lambda;<sub>e</sub> = &delta; = k</td></tr>
+    <tr><td>T228</td><td>Algebraic Connectivity</td><td>a(G) = k&minus;r = &theta; = 10; largest L = 16 = &mu;&sup2;</td><td>Fiedler eigenspace dimension = f = 24</td></tr>
+    <tr><td>T229</td><td>Shannon Capacity</td><td>C = &alpha; = &theta; = 10; &theta;(G)&middot;&theta;(comp) = v</td><td>Complement &theta; = v/&theta; = &mu; = 4</td></tr>
+    <tr><td>T230</td><td>Ihara Zeta</td><td>disc(r) = r&sup2;&minus;4(k&minus;1) = &minus;v = &minus;40</td><td>disc(s) = s&sup2;&minus;4(k&minus;1) = &minus;(v&minus;k) = &minus;28</td></tr>
   </table>
 </section>
 
@@ -1249,7 +1269,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 215 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 230 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -1312,6 +1332,30 @@ section h2::after {
     <span class="eq">Golden ratio &phi; = 1.618... &nbsp;(&lt; 1.2% error)</span>
   </div>
   <p>Fibonacci numbers govern phyllotaxis (sunflower spirals, pinecone patterns, leaf arrangements) in biology. The Laplacian eigenvalue ratio approximates the golden ratio using exactly the SRG Fibonacci numbers F&sub6;=8 and F&sub5;=5.</p>
+
+  <h3 id="graph-energy" style="color: #56d364;">Graph Energy = 5! = E/2: The 120 Identity (T219)</h3>
+  <p>The graph energy (sum of absolute eigenvalues) of W(3,3) is a remarkable number:</p>
+  <div class="math-block">
+    <span class="eq">E(G) = k + f|r| + g|s| = 12 + 48 + 60 = <strong>120 = 5!</strong></span><br>
+    <span class="eq">120 = E/2 = v&middot;q = 2E/&mu; = |2I|</span><br>
+    <span class="eq">E(G)/v = <strong>3 = q</strong> (energy per vertex = field characteristic!)</span>
+  </div>
+  <p>The graph energy equals half the edge count, v&times;q, and 5 factorial simultaneously. The energy per vertex is exactly the field characteristic q = 3.</p>
+
+  <h3 id="seidel-energy" style="color: #56d364;">Seidel Energy = E = 240: Edge Count (T223)</h3>
+  <p>The Seidel matrix S = J&minus;I&minus;2A has eigenvalues that are SRG constants:</p>
+  <div class="math-block">
+    <span class="eq">Seidel evals: <strong>15 = g</strong>, &nbsp; <strong>&minus;5 = &minus;(q+&lambda;)</strong>, &nbsp; <strong>7 = &Phi;&sub6;</strong></span><br>
+    <span class="eq">Seidel energy = |15| + 24&times;5 + 15&times;7 = <strong>240 = E</strong> (edge count!)</span>
+  </div>
+
+  <h3 id="distance-duality" style="color: #56d364;">Distance Spectrum Duality: r &harr; s Swap (T216)</h3>
+  <p>The distance matrix D = 2(J&minus;I)&minus;A has a beautiful eigenvalue swap:</p>
+  <div class="math-block">
+    <span class="eq">A eigenvalue r=2 &rarr; distance eigenvalue &minus;2&minus;r = <strong>&minus;4 = s</strong></span><br>
+    <span class="eq">A eigenvalue s=&minus;4 &rarr; distance eigenvalue &minus;2&minus;s = <strong>2 = r</strong></span><br>
+    <span class="eq">Distance spectrum is the <strong>dual</strong> of the adjacency spectrum!</span>
+  </div>
 </section>
 
 <!-- ═══════════════════════ THE THEORY ═══════════════════════ -->
@@ -1488,7 +1532,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (1290+ test methods across 15 files) rigorously verifies all 215 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (1370+ test methods across 16 files) rigorously verifies all 230 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -1764,7 +1808,7 @@ section h2::after {
   edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
   The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
-  <p><strong style="color: #ffd700;">★ The theory now has 215 computationally proven theorems, 34 predictions matching experiment, and 1290+ automated tests across 15 test suites spanning random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
+  <p><strong style="color: #ffd700;">★ The theory now has 230 computationally proven theorems, 34 predictions matching experiment, and 1370+ automated tests across 16 test suites spanning random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -4342,7 +4386,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1290+ pytest methods verifying 215 theorems &amp; 34 predictions across 15 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 1370+ pytest methods verifying 230 theorems &amp; 34 predictions across 16 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
