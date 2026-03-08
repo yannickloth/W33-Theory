@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>185 Theorems &bull; 34 Predictions &bull; 1140+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>200 Theorems &bull; 34 Predictions &bull; 1220+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">185 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">185 proven theorems with 1140+ automated tests across 13 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">200 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">200 proven theorems with 1220+ automated tests across 14 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -455,7 +455,7 @@ section h2::after {
 
 <!-- ═══════════════════════ 37 PROVEN THEOREMS ═══════════════════════ -->
 <section id="theorems">
-  <h2><span class="icon">◆</span> 185 Proven Theorems — Complete Catalog</h2>
+  <h2><span class="icon">◆</span> 200 Proven Theorems — Complete Catalog</h2>
   <p>Every theorem below is <strong>computationally verified</strong> by automated tests in the <code>tests/</code> directory.
   All derive from the 5 SRG input numbers <strong>(v,k,λ,μ,q) = (40,12,2,4,3)</strong> alone.</p>
 
@@ -734,6 +734,26 @@ section h2::after {
     <tr><td>T183</td><td>Cheeger Bound</td><td>k &minus; |s| = dim(O) = 8</td><td>Vertex expansion constant = octonion dimension</td></tr>
     <tr><td>T184</td><td>Divisor&ndash;Totient</td><td>&sigma;(g)=f, &phi;(E)=2<sup>k/&lambda;</sup>, rank<sub>q</sub>=q&Phi;&sub3;</td><td>Number-theoretic functions map SRG values to SRG values</td></tr>
     <tr><td>T185</td><td>Eigenvalue Arithmetic</td><td>r&minus;s=k/&lambda;, k/|s|=q, &Delta;=(k/&lambda;)&sup2;</td><td>Two eigenvalues generate all parameters by arithmetic</td></tr>
+  </table>
+
+  <h3 style="color: #f0883e;">Phase XV: Information &amp; Dynamics &mdash; Random Walks, Resistance &amp; Entropy (T186&ndash;T200)</h3>
+  <table>
+    <tr><th>#</th><th>Name</th><th>Key Identity</th><th>Significance</th></tr>
+    <tr><td>T186</td><td>Kemeny Constant</td><td>K = fk/(k&minus;r) + gk/(k&minus;s) = 801/20</td><td>Expected steps to reach stationarity from any start</td></tr>
+    <tr><td>T187</td><td>Kirchhoff Index</td><td>Kf = v(f/(k&minus;r) + g/(k&minus;s)) = 267/2</td><td>Total effective resistance of the graph</td></tr>
+    <tr><td>T188</td><td>Effective Resistance</td><td>R<sub>adj</sub> = &Phi;&sub3;/(2v), R<sub>non</sub> = &Phi;&sub6;/v</td><td>Adjacent pair resistance involves &Phi;&sub3;; non-adjacent involves &Phi;&sub6;</td></tr>
+    <tr><td>T189</td><td>Return Probability</td><td>P&sub4; = &Phi;&sub3;/((k+|s|)&middot;Albert) = 13/432</td><td>4-step return from vertex via random walk</td></tr>
+    <tr><td>T190</td><td>Spectral Gap &amp; Mixing</td><td>dim(O)/k = 2/3, q/&lambda; = 3/2</td><td>Mixing rate controlled by SRG ratios</td></tr>
+    <tr><td>T191</td><td>Estrada Index</td><td>EE = e<sup>k</sup> + f&middot;e<sup>r</sup> + g&middot;e<sup>s</sup></td><td>Subgraph centrality; folding degree of the graph</td></tr>
+    <tr><td>T192</td><td>Spectral Zeta</td><td>&zeta;(1) = q&sup2;&Phi;&sub6;/&mu;, &zeta;(2) = q(v&minus;q)/&mu;&sup2;</td><td>Adjacency spectral zeta at integer arguments</td></tr>
+    <tr><td>T193</td><td>Transition Eigenvalues</td><td>1, r/k = 1/(k/&lambda;), s/k = &minus;1/q</td><td>Random walk eigenvalues = reciprocal SRG ratios</td></tr>
+    <tr><td>T194</td><td>Vertex Stabilizer</td><td>|GL(2,q)|&middot;Albert = 48&middot;27 = 1296</td><td>Point stabilizer in Aut(W(3,3)) = |W(E&sub6;)|/v</td></tr>
+    <tr><td>T195</td><td>Complement Determinant</td><td>det(&Amacr;) = q<sup>v+&lambda;</sup> = 3<sup>42</sup></td><td>Complement adjacency determinant is pure q-power</td></tr>
+    <tr><td>T196</td><td>Eigenspace Projections</td><td>E&sub1;(adj) = 1/&theta;, E&sub2;(adj) = &minus;1/dim(O)</td><td>Projection matrix entries from SRG spectral data</td></tr>
+    <tr><td>T197</td><td>Resolvent Spectrum</td><td>R(&theta;) = N&sup2;/&Phi;&sub6;, R(dim O) = N</td><td>Graph resolvent at SRG-derived evaluation points</td></tr>
+    <tr><td>T198</td><td>Walk Matrix</td><td>(A&sup3;)<sub>adj</sub> = dim(F&sub4;) = 52, (A&sup3;)<sub>non</sub> = v = 40</td><td>3-walk counts encode exceptional Lie algebra dimensions</td></tr>
+    <tr><td>T199</td><td>R&eacute;nyi Entropy</td><td>H&sub2; = log&sub2;(&lambda;&middot;q&middot;N) = log&sub2;(30)</td><td>Collision entropy of stationary random walk</td></tr>
+    <tr><td>T200</td><td>Wiener Index</td><td>W = v&middot;q&middot;(k&minus;1) = 1320</td><td>Total distance sum; W/v&sup2; = q(k&minus;1)/v = 33/40</td></tr>
   </table>
 </section>
 
@@ -1209,7 +1229,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 185 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 200 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -1425,7 +1445,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (1140+ test methods across 13 files) rigorously verifies all 185 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (1220+ test methods across 14 files) rigorously verifies all 200 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -1701,7 +1721,7 @@ section h2::after {
   edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
   The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
-  <p><strong style="color: #ffd700;">★ The theory now has 185 computationally proven theorems, 34 predictions matching experiment, and 1140+ automated tests across 13 test suites spanning quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
+  <p><strong style="color: #ffd700;">★ The theory now has 200 computationally proven theorems, 34 predictions matching experiment, and 1220+ automated tests across 14 test suites spanning random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -4279,7 +4299,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 929 pytest methods verifying 185 theorems &amp; 34 predictions across 13 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 1220+ pytest methods verifying 200 theorems &amp; 34 predictions across 14 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
