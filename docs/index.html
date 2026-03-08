@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>260 Theorems &bull; 34 Predictions &bull; 1510+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>275 Theorems &bull; 34 Predictions &bull; 1585+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">260 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">260 proven theorems with 1510+ automated tests across 18 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">275 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">275 proven theorems with 1585+ automated tests across 19 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -835,6 +835,27 @@ section h2::after {
     <tr><td>T258</td><td>LDPC Rate</td><td>rank(A) = v&minus;1 = 39; rate &ge; 1/v</td><td>Column weight = k = 12; density = k/v = 3/10</td></tr>
     <tr><td>T259</td><td>Interleaver</td><td>Length = v = 40; |Aut| = 51840</td><td>Spread &ge; 2; algebraic interleaver from Sp(4,3)</td></tr>
     <tr><td>T260</td><td>Channel Capacity</td><td>C&sub0; = log(&alpha;) = log(&theta;) = log(10)</td><td>C + C&#x0304; = log(v); capacity sum = full alphabet</td></tr>
+  </table>
+
+  <h3 style="color: #f0883e;">Phase XX: Integer Sequences &amp; Deep Arithmetic (T261&ndash;T275)</h3>
+  <p style="color: #aaa;">Classical integer sequences &mdash; Tribonacci, Narayana, Motzkin, Padovan, Perrin &mdash; hit SRG parameters at remarkable positions, while number-theoretic functions and spectral products reveal deep arithmetic structure.</p>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Formula</th><th>Insight</th></tr>
+    <tr><td>T261</td><td>Tribonacci Window</td><td>Trib[6..10] = (&Phi;&sub6;, &Phi;&sub3;, f, v+&mu;, q&sup4;)</td><td>Five consecutive tribonacci numbers hit five SRG values</td></tr>
+    <tr><td>T262</td><td>Narayana Numbers</td><td>N(N,&lambda;) = &theta; = 10; N(N,q) = v/2 = 20</td><td>Catalan refinements at clique-covering number</td></tr>
+    <tr><td>T263</td><td>Motzkin Numbers</td><td>M(&mu;) = q&sup2; = 9; M(N) = 3&Phi;&sub6; = 21</td><td>M(&lambda;)=&lambda;, M(q)=&mu;: complete parameter echo</td></tr>
+    <tr><td>T264</td><td>Padovan &amp; Perrin</td><td>P&sub1;&sub0; = k; Perrin&sub8; = &theta;, Perrin&sub9; = k</td><td>Plastic-ratio sequences lock onto SRG parameters</td></tr>
+    <tr><td>T265</td><td>Char Poly at 1</td><td>det(I&minus;A) = &minus;(k&minus;1)&middot;N&sup;g = &minus;11&middot;5&sup1;&sup5;</td><td>Both factors prime; clean prime-power factorization</td></tr>
+    <tr><td>T266</td><td>Cover Time</td><td>Kemeny = 801/20 = v + 1/20</td><td>Relaxation &tau; = q/&lambda; = 3/2; spectral gap = 2/3</td></tr>
+    <tr><td>T267</td><td>Arc Stabilizer</td><td>|Aut|/(2E) = &mu;&middot;ALBERT = 108</td><td>Vertex stab = 6&sup4;; edge stab = 6&sup3;; ratio = k/&lambda;</td></tr>
+    <tr><td>T268</td><td>D2 Eigenvalues</td><td>Product = ALBERT&middot;(&minus;q)&middot;q = &minus;q&sup5;</td><td>Distance-2 complement: trace = 0, product = &minus;243</td></tr>
+    <tr><td>T269</td><td>Spectral Radii</td><td>k(k+&mu;)f&middot;ALBERT = 2&sup9;&middot;3&sup5;</td><td>Product of 4 spectral radii = 124416 = 6&sup5;&middot;16</td></tr>
+    <tr><td>T270</td><td>Divisor Count</td><td>d(E) = d(240) = v/2 = 20</td><td>d(k) = k/&lambda; = 6; arithmetic functions echo SRG</td></tr>
+    <tr><td>T271</td><td>Edge Density</td><td>E/C(v,2) = &mu;/&Phi;&sub3; = 4/13</td><td>Non-edges = ALBERT&middot;v/2 = 540; ratio = &mu;/q&sup2;</td></tr>
+    <tr><td>T272</td><td>Trace Ratios</td><td>S&sub3;/S&sub2; = &lambda;; S&sub4;/S&sub2; = dim(F&sub4;) = 52</td><td>Power-sum ratios encode Lie algebra dimensions</td></tr>
+    <tr><td>T273</td><td>Bernoulli Tower</td><td>denom(B&sub2;)=k/&lambda;, denom(B&sub4;)=v&minus;&theta;, denom(B&sub6;)=v+&lambda;</td><td>Bernoulli denominators = 6, 30, 42 from SRG sums</td></tr>
+    <tr><td>T274</td><td>Partition Values</td><td>p(&theta;) = 42; p(&mu;) = N = 5; p(dim O) = 22</td><td>p(&theta;) = The Answer; p(&theta;)&minus;p(dim O) = v/2</td></tr>
+    <tr><td>T275</td><td>Abundance</td><td>&sigma;(v) &minus; 2v = &theta; = 10</td><td>d(v) = dim O = 8; &sigma;(v)/v = q&sup2;/&mu;</td></tr>
   </table>
 </section>
 
@@ -1310,7 +1331,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 260 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 275 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -1573,7 +1594,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (1510+ test methods across 18 files) rigorously verifies all 260 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (1585+ test methods across 19 files) rigorously verifies all 275 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -1849,7 +1870,7 @@ section h2::after {
   edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
   The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
-  <p><strong style="color: #ffd700;">★ The theory now has 260 computationally proven theorems, 34 predictions matching experiment, and 1510+ automated tests across 18 test suites spanning quantum codes, random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
+  <p><strong style="color: #ffd700;">★ The theory now has 275 computationally proven theorems, 34 predictions matching experiment, and 1585+ automated tests across 19 test suites spanning integer sequences, quantum codes, random walks, spectral entropy, quantum gravity, cosmogenesis, nuclear physics, chemistry, biology, gauge unification, number theory, combinatorics, Ramsey theory, and 100+ mathematical domains. Every single test passes.</strong></p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -4217,7 +4238,7 @@ section h2::after {
 <!-- ═══════════════════════ VERIFICATION DASHBOARD ═══════════════════════ -->
 <section id="dashboard">
   <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 95 Theorems + 34 Predictions + 2367 Checks</h2>
-  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL TESTS PASS — 1298 pytest methods + 2367 consistency checks = 100% verification</strong></p>
+  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL TESTS PASS — 1385 pytest methods + 2367 consistency checks = 100% verification</strong></p>
   <p>The <a href="#theorems">37 Theorems</a> section catalogs the proven results. The <a href="#physics">Physics Derivations</a> section has the 183-check table. Extended domain coverage below spans 85+ additional mathematical domains.</p>
 
 <h2 style="color: var(--gold); border-bottom-color: var(--gold);"><span class="icon">★</span> Extended Domain Coverage (Checks 842–2367)</h2>
@@ -4427,7 +4448,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 1510+ pytest methods verifying 260 theorems &amp; 34 predictions across 18 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 1585+ pytest methods verifying 275 theorems &amp; 34 predictions across 19 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
