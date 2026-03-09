@@ -1,0 +1,16 @@
+V=40, E=240, F=160
+Euler char = V-E+F = 40-240+160 = -40
+
+rank(d0) = 39
+rank(d1) = 120
+
+beta0 = nV - rank(d0) = 40 - 39 = 1
+beta1 = nE - rank(d0) - rank(d1) = 240 - 39 - 120 = 81
+beta2 = nF - rank(d1) = 160 - 120 = 40
+Total zero modes = beta0+beta1+beta2 = 122
+CHECK: Euler char = beta0-beta1+beta2 = -40
+Predicted: -40
+
+KEY: beta1 = 81 = 3 * 27 = q * (v-k-1) = MATTER CONTENT
+KEY: beta2 = 40 = v = GRAVITATIONAL DEGREES OF FREEDOM
+KEY: TOTAL = 122 = k^2-k-theta = 12^2-12-10 = CC EXPONENT

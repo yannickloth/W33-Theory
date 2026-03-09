@@ -1,0 +1,4 @@
+  File "<string>", line 86
+    print(f'  l3={l3v:2d} -> l4={l4vs}  ({'UNIQUE' if len(l4vs)==1 else 'NOT UNIQUE'})')
+                                           ^^^^^^
+SyntaxError: f-string: expecting '}'

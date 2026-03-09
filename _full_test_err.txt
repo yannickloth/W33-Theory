@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "C:\Repos\Theory of Everything\tools\compute_full_derivations.py", line 123, in <module>
+    main()
+  File "C:\Repos\Theory of Everything\tools\compute_full_derivations.py", line 60, in main
+    mult = build_multiplication(args.tri_zip, args.edge_zip)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Repos\Theory of Everything\tools\compute_full_derivations.py", line 34, in build_multiplication
+    tri_obj = load_json_from_zip(tri_zip,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Repos\Theory of Everything\tools\compute_full_derivations.py", line 29, in load_json_from_zip
+    return json.loads(z.read(inner_path).decode("utf-8"))
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wiljd\AppData\Local\Programs\Python\Python311\Lib\zipfile.py", line 1526, in read
+    with self.open(name, "r", pwd) as fp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wiljd\AppData\Local\Programs\Python\Python311\Lib\zipfile.py", line 1563, in open
+    zinfo = self.getinfo(name)
+            ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wiljd\AppData\Local\Programs\Python\Python311\Lib\zipfile.py", line 1492, in getinfo
+    raise KeyError(
+KeyError: "There is no item named 'TOE_E6pair_SRG_triangle_decomp_v01_20260227/triangle_decomposition_120_blocks.json' in the archive"

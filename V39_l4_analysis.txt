@@ -1,0 +1,18 @@
+Trace = 5184
+Total sum = 51840
+Diagonal/Total = 0.1000 = mu/v = 0.1
+Trace = 5184 = k^3 = 1728
+\nEigenvalues: {1920: 1, 480: 6, 84: 8, -24: 12}
+Top/Second = 4.0 = mu = 4
+\nEntry values and multiplicities: {192: 27, 96: 432, 48: 54, 12: 216}
+\nCompare with l3 mass matrix: {0:27, 2:432, 4:216, 16:54}
+l4 has same multiplicities but values {64:27, 32:432, 16:54, 4:216}
+\nl3 val 2 -> l4 val 32: ratio = 16 = k+mu
+l3 val 4 -> l4 val 4: ratio = 1
+l3 val 16 -> l4 val 16: ratio = 1
+Wait, checking positions...
+\nPositional analysis:
+  l3= 0 positions -> l4 values: {192: 27}
+  l3= 2 positions -> l4 values: {96: 432}
+  l3= 4 positions -> l4 values: {12: 216}
+  l3=16 positions -> l4 values: {48: 54}

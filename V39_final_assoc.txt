@@ -1,0 +1,12 @@
+l3=0 (diag) -> l4=64
+l3=2 -> l4=32
+l3=4 -> l4=4
+l3=16 -> l4=16
+SE0 = 64*A0 + 32*A1 + 4*A2 + 16*A3
+Reconstruction exact: True
+Max error: 0.0
+Eigenvalues: {640: 1, 160: 6, 28: 8, -8: 12}
+Top/Second = 4.0 = mu
+Check eigenvalue 0: 64.0 + 16*32.0 + 8*4.0 + 2*16.0 = 640.0
+\nDiag/Total = 0.100000 = 1/10 = mu/v
+Trace = 1728
