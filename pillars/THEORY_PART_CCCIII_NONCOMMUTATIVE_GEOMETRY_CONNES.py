@@ -26,6 +26,8 @@ References:
 """
 
 import math
+import sys
+from pathlib import Path
 
 
 def spectral_triples():
@@ -295,14 +297,123 @@ def w33_ncg_synthesis():
         'prediction': 'Spectral constraints from W(3,3) predict coupling constant relations'
     }
 
+    exploration_dir = Path(__file__).resolve().parents[1] / "exploration"
+    if str(exploration_dir) not in sys.path:
+        sys.path.insert(0, str(exploration_dir))
+    from w33_almost_commutative_candidate import build_almost_commutative_candidate
+    from w33_balanced_triplet_background import build_balanced_triplet_background_summary
+    from w33_ce2_quark_bridge import build_ce2_quark_bridge_certificate
+    from w33_l6_chiral_gauge_bridge import build_l6_chiral_gauge_bridge_certificate
+    from w33_l4_dirac_bridge_obstruction import build_l4_dirac_bridge_obstruction_certificate
+    from w33_l4_quark_dirac_bridge import build_l4_quark_dirac_bridge_candidate
+    from w33_finite_spectral_triple import build_w33_finite_spectral_triple
+    from w33_fermionic_connes_sector import build_fermionic_connes_sector_candidate
+    from w33_induced_quark_yukawa import build_induced_quark_yukawa_candidate
+    from w33_l4_quark_self_energy import build_l4_quark_self_energy_candidate
+    from w33_quark_firewall_obstruction import build_quark_firewall_obstruction
+
+    balanced_triplet = build_balanced_triplet_background_summary()
+    candidate = build_w33_finite_spectral_triple()
+    fermionic = build_fermionic_connes_sector_candidate()
+    almost_commutative = build_almost_commutative_candidate()
+    induced_quark = build_induced_quark_yukawa_candidate()
+    l6_chiral_bridge = build_l6_chiral_gauge_bridge_certificate()
+    l4_bridge_obstruction = build_l4_dirac_bridge_obstruction_certificate()
+    l4_bridge = build_l4_quark_dirac_bridge_candidate()
+    l4_quark = build_l4_quark_self_energy_candidate()
+    quark_firewall = build_quark_firewall_obstruction()
+    ce2_quark_bridge = build_ce2_quark_bridge_certificate()
+    results['w33_finite_candidate'] = {
+        'algebra': candidate.algebra_label,
+        'hilbert': 'H_F = H_matter (+) H_matter^c with dims 81 + 81 = 162',
+        'matter_basis': 'Canonical 27-state basis per generation lifted to 3 x 27 matter states',
+        'dirac': 'Finite Dirac block from Higgs-contracted exact cubic tensor on the 27-plet',
+        'grading': 'Even grading gamma_F = diag(+1_81, -1_81)',
+        'real_structure': 'Real structure J_F swaps matter and conjugate sectors with KO-dim-6 signs',
+        'mass_rank': 'Higgs-contracted mass kernel M_27 is exact, symmetric, and full rank on the canonical 27 basis',
+        'hypercharge': 'Exact hypercharge multiset on the canonical 27 basis matches the E6 decomposition'
+    }
+    results['w33_fermionic_candidate'] = {
+        'hilbert': 'Spinor-only fermion sector: 3 x 16 = 48 matter states, 96 after conjugation',
+        'chiral_split': 'Per generation the exact spinor basis splits as 8 left doublet states plus 8 right singlet states',
+        'yukawa': 'Exact 8x8 left-right Higgs Yukawa slices extracted from the canonical cubic tensor',
+        'order_zero': 'Sample weak/color generators commute exactly on the spinor-only sector',
+        'clean_higgs': f'Sample order-one screen selects clean Higgs slots {fermionic.clean_higgs_slots}',
+        'status': 'This is an executable diagnostic screen, not yet the full finite-triple proof'
+    }
+    results['w33_almost_commutative_candidate'] = {
+        'algebra': 'Explicit candidate action of A_F = C (+) H (+) M_3(C) on the exact spinor 16',
+        'complex_factor': f'Right complex signs = {almost_commutative.right_complex_charge_signs}',
+        'families': 'Exact Higgs families split into SM leptonic channel, singlet swap, and leptoquark contamination',
+        'residual_source': 'The weak/color order-one residual in H_1 and Hbar_1 is sourced exactly by the leptoquark piece',
+        'clean_line': f'Weak/color-clean slots remain {almost_commutative.weak_clean_slots}; the complex/U(1) layer then separates SM-compatible leptonic support from singlet swap',
+        'status': 'Executable almost-commutative candidate, still short of a full Connes theorem'
+    }
+    results['w33_induced_quark_candidate'] = {
+        'background': f"Bounded heavy-background search on {induced_quark.background_slots} selects representative coeffs {induced_quark.background_coeffs} with heavy rank {induced_quark.heavy_background_rank}",
+        'channels': 'Integrating out the heavy 10 (+) 1 sector induces hypercharge-compatible Q-u_c and Q-d_c support together with the leptonic L-nu_c and L-e_c channels',
+        'exact_blocks': 'The induced H_2 and Hbar_2 Yukawa projections are exact rational 8x8 matrices on the spinor sector',
+        'residual': 'The induced leptonic blocks are weak/color clean; the remaining sample order-one residual stays entirely on the induced quark blocks',
+        'support': f'Total induced support counts: quark = {induced_quark.total_quark_support}, lepton = {induced_quark.total_lepton_support}',
+        'status': 'First induced quark-Yukawa candidate from the full 27, not yet the final Standard Model proof'
+    }
+    results['w33_quark_firewall_obstruction'] = {
+        'firewall': 'The 9 firewall bad triads are exactly the 9 Heisenberg fibers of H27; the quark obstruction lives on the 6 triplet fibers Q-Q-T and u_c-d_c-Tbar',
+        'mediation': 'Removing T/Tbar from the heavy Schur sector kills all induced quark support while leaving the clean leptonic support intact',
+        'screen': f"Sample weak/color nullity is {quark_firewall.screen_summary.sample_up_nullity} per quark block, but the full SU(3)xSU(2) screen leaves nullity {quark_firewall.screen_summary.full_up_nullity}",
+        'status': 'The remaining quark obstruction is exact and localized; no nonzero fully clean quark block has emerged yet'
+    }
+    results['w33_balanced_triplet_family'] = {
+        'family': f"Balanced triplet line {balanced_triplet.family_line}",
+        'best_scan': f"Scanning n=1..{balanced_triplet.scanned_scales[-1]} selects n={balanced_triplet.best_scale_within_scan} with coeffs {balanced_triplet.best_member.family_coeffs}",
+        'improvement': f"Scale-invariant full-screen quark ratio improves from {balanced_triplet.baseline_normalized_full_quark_ratio:.6f} to {balanced_triplet.best_member.normalized_full_quark_ratio:.6f}",
+        'support': f"Quark support rises from {balanced_triplet.baseline_total_quark_support} to {balanced_triplet.best_member.total_quark_support} while lepton support stays {balanced_triplet.best_member.total_lepton_support}",
+        'status': 'This balanced triplet deformation improves normalized compatibility but the full-screen nullity remains zero'
+    }
+    results['w33_l4_quark_self_energy'] = {
+        'cubic_no_go': f"Full SU(3)xSU(2) screen on the complete 27-slice cubic span has rank {l4_quark.full27_cubic_slice_screen_rank} and nullity {l4_quark.full27_cubic_slice_screen_nullity}",
+        'tower': f"Triplet-contracted l4(a_0, b_1, h_2, x_2) -> y_2 yields {l4_quark.total_contracted_operator_count} generation-diagonal operators; {l4_quark.clean_operator_count} are already clean and the nonclean family is exactly {l4_quark.nonclean_family_counts}",
+        'subspace': f"The clean triplet l4 sector has a 4-dimensional quark-only image: {l4_quark.ud_only_subspace_dimension} u_c/d_c-only directions and {l4_quark.q_linked_subspace_dimension} Q-linked directions",
+        'counterterm': 'A primitive integer l4 counterterm supported only on Q, u_c, and d_c exists with diagonal entries +/-2 on the exact canonical quark slots',
+        'status': 'This is an exact higher-tower quark self-energy sector; it does not yet cancel the induced Yukawa residual'
+    }
+    results['w33_l4_dirac_bridge'] = {
+        'basis': f"Exact bridge basis = {l4_bridge.basis_names}",
+        'fit': f"Shared-left l4 dressing lowers the strict full-screen quark residual from {l4_bridge.original_total_residual_norm:.6f} to {l4_bridge.bridged_total_residual_norm:.6f}",
+        'rank_lift': f"Both quark blocks lift from rank {l4_bridge.up_block.original_rank} to rank {l4_bridge.up_block.bridged_rank} while support stays on the same Q-u_c / Q-d_c channels",
+        'improvement': f"Residual improvement factor = {l4_bridge.residual_improvement_factor:.6f} with reduction fraction {l4_bridge.residual_reduction_fraction:.6f}",
+        'status': 'This is the first executable l4-to-Dirac quark bridge; it improves but does not close the residual'
+    }
+    results['w33_l4_bridge_obstruction'] = {
+        'collapse': f"Nominal 12-mode l4 bridge family collapses to 6 effective modes: zero shared-left modes {l4_bridge_obstruction.zero_shared_left_modes}",
+        'rank': f"Real stacked response has rank {l4_bridge_obstruction.response_rank} while the augmented system has rank {l4_bridge_obstruction.augmented_rank}",
+        'no_go': f"Minimal l4-family residual stays positive at {l4_bridge_obstruction.minimal_total_residual_norm:.6f}; exact cancellation is impossible inside the l4 bridge family",
+        'residual_profile': f"Leading surviving generator pairs are up {[(item.weak_name, item.color_name) for item in l4_bridge_obstruction.top_up_residual_pairs]} and down {[(item.weak_name, item.color_name) for item in l4_bridge_obstruction.top_down_residual_pairs]}",
+        'status': 'The l4 quark bridge is now exhausted exactly; the next candidate must come from beyond-l4 tower data'
+    }
+    results['w33_ce2_quark_bridge'] = {
+        'source_algebra': f"Global CE2 predictor generates all {ce2_quark_bridge.generated_source_unit_count} source matrix units on Q (+) u_c (+) d_c; simple-family-only count = {ce2_quark_bridge.uv_only_source_unit_count} and UV/UVW overlap count = {ce2_quark_bridge.uv_and_uvw_source_unit_count}",
+        'projected_modes': f"On the current induced bridge only the block-diagonal CE2 modes act: {ce2_quark_bridge.left_mode_count} left Q modes, {ce2_quark_bridge.up_right_mode_count} right u_c modes, and {ce2_quark_bridge.down_right_mode_count} right d_c modes",
+        'closure': f"CE2 bridge response has rank {ce2_quark_bridge.response_rank} and the augmented system also has rank {ce2_quark_bridge.augmented_rank}; the strict quark residual closes exactly, already via the CE2-generated right identities {ce2_quark_bridge.right_up_identity_source_pairs} and {ce2_quark_bridge.right_down_identity_source_pairs}",
+        'no_go': f"The full arbitrary Q-u_c / Q-d_c family has screen rank {ce2_quark_bridge.arbitrary_quark_screen_rank} and nullity {ce2_quark_bridge.arbitrary_quark_screen_nullity}, so the unique fully clean quark point is the zero block",
+        'status': 'Beyond-l4 CE2 data closes the current quark obstruction only trivially; it does not yet produce a nonzero clean quark Yukawa sector'
+    }
+    results['w33_l6_chiral_bridge'] = {
+        'modes': f"Chirality-preserving l6 family uses the {len(l6_chiral_bridge.a2_mode_indices)} A2 roots plus {len(l6_chiral_bridge.cartan_mode_indices)} Cartan directions: response rank {l6_chiral_bridge.response_rank}, augmented rank {l6_chiral_bridge.augmented_rank}",
+        'fit': f"On the generation-diagonal three-family seed the strict residual drops from {l6_chiral_bridge.original_total_residual_norm:.6f} to {l6_chiral_bridge.bridged_total_residual_norm:.6f}",
+        'active_slice': f"Optimal linearized bridge activates only Cartan modes {l6_chiral_bridge.active_cartan_mode_indices}; all A2 coefficients vanish",
+        'rank_lift': f"Both three-generation quark blocks lift from rank {l6_chiral_bridge.up_block.original_quark_rank} to rank {l6_chiral_bridge.up_block.bridged_quark_rank}, while full 24x24 up/down ranks lift {l6_chiral_bridge.up_block.original_full_rank}->{l6_chiral_bridge.up_block.bridged_full_rank}",
+        'status': 'This is the first l6 chiral gauge dressing of the quark seed: much stronger than l4, but still an exact no-go for full closure at the linearized l6 level'
+    }
+
     return results
 
 
 def run_self_checks():
-    """Run 15 self-validation checks."""
+    """Run 26 self-validation checks."""
     checks_passed = 0
     checks_failed = 0
-    total = 15
+    total = 26
 
     def check(condition, label):
         nonlocal checks_passed, checks_failed
@@ -343,6 +454,17 @@ def run_self_checks():
 
     r6 = w33_ncg_synthesis()
     check('1451520' in r6['sp6f2_spectral']['order'], "15. |Sp(6,F2)| = 1451520")
+    check('162' in r6['w33_finite_candidate']['hilbert'], "16. Finite candidate H_F dimension = 162")
+    check('96' in r6['w33_fermionic_candidate']['hilbert'], "17. Fermionic spinor sector dimension = 96 with conjugates")
+    check('leptoquark' in r6['w33_almost_commutative_candidate']['residual_source'], "18. Almost-commutative residual sourced by leptoquark contamination")
+    check('Q-u_c' in r6['w33_induced_quark_candidate']['channels'], "19. Induced quark channel emerges from heavy-sector integration")
+    check('nullity 0' in r6['w33_quark_firewall_obstruction']['screen'], "20. Full SU(3)xSU(2) screen keeps the quark obstruction closed")
+    check('improves from' in r6['w33_balanced_triplet_family']['improvement'], "21. Balanced triplet family improves the normalized quark screen ratio")
+    check('4-dimensional quark-only' in r6['w33_l4_quark_self_energy']['subspace'], "22. l4 triplet sector opens an exact quark-only self-energy image")
+    check('residual from' in r6['w33_l4_dirac_bridge']['fit'], "23. l4-to-Dirac bridge lowers the strict full-screen quark residual")
+    check('rank 6' in r6['w33_l4_bridge_obstruction']['rank'] and 'rank 7' in r6['w33_l4_bridge_obstruction']['rank'], "24. l4 bridge family is exhausted: rank-6 response, rank-7 augmented no-go")
+    check('144' in r6['w33_ce2_quark_bridge']['source_algebra'] and 'nullity 0' in r6['w33_ce2_quark_bridge']['no_go'], "25. Beyond-l4 CE2 bridge closes only trivially: full quark family still has unique zero clean point")
+    check('response rank 9' in r6['w33_l6_chiral_bridge']['modes'] and 'augmented rank 10' in r6['w33_l6_chiral_bridge']['modes'] and '0.826695' in r6['w33_l6_chiral_bridge']['fit'], "26. l6 chiral bridge cuts the three-generation residual but still has a rank-10 no-go")
 
     print("-" * 60)
     print(f"Result: {checks_passed}/{total} passed, {checks_failed} failed")

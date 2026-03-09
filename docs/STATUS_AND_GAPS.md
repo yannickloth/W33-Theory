@@ -71,6 +71,7 @@ Even if the group-/graph-level identifications are correct, turning them into an
 - Masses and mixing: Yukawa textures, CKM/PMNS structure, hierarchy, and CP violation from a concrete coupling rule.
 - Running couplings and scales: RG flow and a match to measured couplings and thresholds.
 - Gravity/spacetime: how Lorentzian geometry and GR (or quantum gravity) emerges, with observationally testable signatures.
+- Continuum bridge: no fixed finite spectrum can by itself produce a genuine 4D Weyl law, zeta pole, or Seeley-DeWitt singular asymptotic. Closing the bridge requires a real refinement family or an almost-commutative product with a 4D continuum geometry.
 - Experimental falsifiability: specific, quantitative predictions (cross sections, decay rates, cosmology) with uncertainties.
 - **Dynkin-lock as a proof artifact:** there are promising “rank-6 Cartan from stabilizer” heuristics, but any claim of a
   score-0 recovered E6 Cartan matrix must be backed by a deterministic, reproducible computation (and is not treated as done).

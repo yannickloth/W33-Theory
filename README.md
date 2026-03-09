@@ -22,11 +22,13 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 ## Current Frontier
 
-The remaining open question is the continuum bridge: whether the discrete spectral action on W(3,3) flows all the way to the full 4D Einstein-Hilbert + Standard Model action in a genuine continuum limit. Phases LXI-LXIII add exact finite evidence in that direction without claiming the bridge is fully closed:
+The remaining open question is the continuum bridge: whether the discrete spectral action on W(3,3) flows all the way to the full 4D Einstein-Hilbert + Standard Model action in a genuine continuum limit. The exact operator-level closure is now on the full 480-dimensional chain complex: the full Dirac/Hodge spectrum, heat traces, and McKean-Singer supertrace are exact. The unresolved point is therefore the refinement/scaling family, not ambiguity in the discrete spectral triple itself. Phases LXI-LXIII add exact finite evidence in that direction without claiming the bridge is fully closed:
 
 - **LXI:** Topological field theory and TQFT invariants on the clique complex (59 tests)
 - **LXII:** Spectral-dimension, Seeley-DeWitt, and spectral-triple continuum indicators (74 tests)
 - **LXIII:** Information-theoretic and holographic consistency bounds on the finite geometry (71 tests)
+
+A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
 The exact fermion mass spectrum is still partially open. The current exact control is on qualitative hierarchy, CKM/PMNS misalignment, anomaly cancellation, and Yukawa-optimization structure; the full 10-order spread still appears to require exact Yukawa boundary conditions from the cubic intersection tensor.
 
