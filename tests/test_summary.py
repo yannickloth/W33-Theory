@@ -18,11 +18,13 @@ def test_desi_present():
     # find any part with desi_dark_energy in key_results
     found = False
     for fname, meta in summaries.items():
-        # open original file
-        partf = ROOT / fname
-        if not partf.exists():
-            continue
-        pdata = json.load(open(partf))
+        if isinstance(meta, dict):
+            pdata = meta
+        else:
+            partf = ROOT / fname
+            if not partf.exists():
+                continue
+            pdata = json.load(open(partf))
         kr = pdata.get("key_results") or {}
         if isinstance(kr, dict) and "desi_dark_energy" in kr:
             found = True

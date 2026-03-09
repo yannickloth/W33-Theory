@@ -1,0 +1,10 @@
+jsonschema
+matplotlib
+mpmath
+networkx
+numba
+numpy
+pandas
+requests
+scipy
+sympy
