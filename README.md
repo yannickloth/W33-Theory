@@ -6,7 +6,6 @@
 A computational proof that the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices — encodes the full structure of the Standard Model, including gauge groups, coupling constants, mixing matrices, mass hierarchies, and cosmological parameters. Every claim is backed by automated tests.
 
 - **Live paper:** [GitHub Pages](https://wilcompute.github.io/W33-Theory/)
-- **Frontier note:** [docs/march_2026_frontier_note.md](docs/march_2026_frontier_note.md)
 
 ## The Theory in One Paragraph
 
