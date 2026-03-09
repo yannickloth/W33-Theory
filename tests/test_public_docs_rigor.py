@@ -10,16 +10,16 @@ def _read(rel: str) -> str:
     return (ROOT / rel).read_text(encoding="utf-8")
 
 
-def test_readme_uses_layered_rigor_language() -> None:
+def test_readme_tracks_current_frontier_and_exact_pmns() -> None:
     text = _read("README.md")
-    assert "Verified Frontier" in text
-    assert "Physics Interpretation (Conjectural)" in text
-    assert "Historical Archive" in text
+    assert "Current Frontier" in text
+    assert "continuum bridge" in text
     assert "4/13" in text
     assert "7/13" in text
     assert "2/91" in text
-    assert "J_max" in text
-    assert "J = J_max sin" in text
+    assert "TQFT invariants" in text
+    assert "Continuum Limit & Spectral Action Convergence" in text
+    assert "Information-Theoretic Closure & Holographic Bound" in text
 
 
 def test_pages_source_uses_layered_rigor_language() -> None:

@@ -385,6 +385,9 @@ section h2::after {
     <div class="card"><div class="num">J_max</div><div class="label">Phase-qualified PMNS</div><div class="detail">Angle-only Jarlskog magnitude is J_max ~= 0.03336. Physical J remains phase dependent: J = J_max sin(delta).</div></div>
   </div>
   <ul class="quick-list">
+    <li><strong>Phase LXI:</strong> <code>tests/test_tqft_invariants.py</code> (59 passing tests) adds finite TQFT invariants on the clique complex.</li>
+    <li><strong>Phase LXII:</strong> <code>tests/test_continuum_limit.py</code> (74 passing tests) adds spectral-dimension, Seeley-DeWitt, and spectral-triple continuum indicators.</li>
+    <li><strong>Phase LXIII:</strong> <code>tests/test_information_holographic_closure.py</code> (71 passing tests) adds finite entropy, cut, and holographic consistency bounds.</li>
     <li><strong>Exact PMNS source:</strong> <code>PMNS_CYCLOTOMIC.py</code></li>
     <li><strong>Exact PMNS tests:</strong> <code>tests/test_master_derivation.py</code> and <code>tests/test_tower_generation_rules.py</code></li>
     <li><strong>Global CE2 predictor:</strong> <code>scripts/ce2_global_cocycle.py</code></li>
@@ -399,8 +402,9 @@ section h2::after {
 <section id="conjectural">
   <h2><span class="icon">∆</span> Physics Interpretation (Conjectural)</h2>
   <p>The exact CE2 data continues to look staged rather than random: transport terms on affine or Hessian lines appear first, gauge companions appear next, and diagonal or source coherence appears only after the transport branch is fixed.</p>
+  <p>The remaining open question is the continuum bridge: whether the discrete spectral action on W(3,3) flows all the way to the full 4D Einstein-Hilbert + Standard Model action in a genuine continuum limit. Phase LXII adds exact finite indicators for that bridge, but not the final theorem.</p>
+  <p>The exact fermion mass spectrum is also still partially open. The current exact control is on hierarchy indicators, anomaly cancellation, CKM/PMNS misalignment, and Yukawa optimization; the full 10-order spread still appears to require exact Yukawa boundary conditions from the cubic intersection tensor.</p>
   <p>The SRG formulas for exceptional dimensions and electroweak quantities may therefore be shadows of a more fundamental Jordan / Freudenthal / TKK / projector mechanism. That interpretation is active research, not yet a finished theorem.</p>
-  <p>The same caution applies to the broader TOE narrative: the project retains a large historical synthesis, but the current rigorous core is narrower than the strongest historical claims.</p>
 </section>
 
 <section id="archive">
