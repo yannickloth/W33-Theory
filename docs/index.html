@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>710 Theorems &bull; 34 Predictions &bull; 3772+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>725 Theorems &bull; 34 Predictions &bull; 3863+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">710 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">710 proven theorems with 3772+ automated tests across 48 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">725 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">725 proven theorems with 3863+ automated tests across 49 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1440,6 +1440,27 @@ section h2::after {
   <p>Fifteen theorems proving <strong>|Aut(W(3,3))| = |W(E&sub6;)| = 51840</strong>. The E&sub6; exponents {1, &mu;, N, &Phi;&sub6;, DIM_O, K&minus;1} encode the SRG anatomy, with Coxeter number h = K = 12. The Weyl chain links E&sub6; &rarr; E&sub7; &rarr; E&sub8; through factors DIM_O&middot;&Phi;&sub6; = 56 and E = 240. Non-neighbor subgraph on ALBERT = 27 vertices echoes the 27 lines on a cubic surface.</p>
 </section>
 <section>
+  <h2>Phase L &mdash; Polynomial Anatomy, Spectral Measure &amp; Special Values (T711&ndash;T725)</h2>
+  <p>Fifteen theorems dissecting the <strong>minimal polynomial m(x) = x&sup3; &minus; ALPHA&middot;x&sup2; &minus; 2<sup>N</sup>&middot;x + Q&middot;2<sup>N</sup></strong>. Every evaluation m(c) at a named graph constant yields another named constant: m(r&minus;s) = &minus;E, m(MU) = &minus;2<sup>&Phi;&sub6;</sup>, m(DIM_O) = &minus;Q&sup2;&middot;2<sup>N</sup>. The factor table closes perfectly. Critical points of m&prime;(x) are DIM_O and &minus;MU/Q. The discriminant = (MU&middot;E)&sup2;. All six eigenvalues {K, R, S, K&#x0304;, &minus;Q, Q} have gaps 1, N, 1, Q&sup2;, G with product ALBERT&middot;N&sup2;. Spectral moments tr(A<sup>n</sup>)/V = Q&middot;2<sup>n</sup>&middot;c<sub>n</sub> always factor this way. Polynomial duality m &harr; m&#x0304; mirrors ALPHA &harr; ALBERT.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
+    <tr><td>T711</td><td>Min Poly Evaluations</td><td>m(r&minus;s) = &minus;E; m(&minus;1) = Q&sup2;&middot;&Phi;&sub3;; m(Q) = &minus;Q&sup2;&middot;&Phi;&sub6;</td><td>Spectral closure</td></tr>
+    <tr><td>T712</td><td>Factor Table</td><td>At each special x, all three factors (x&minus;K), (x&minus;R), (x&minus;S) are named constants</td><td>Algebraic anatomy</td></tr>
+    <tr><td>T713</td><td>Edge Count from Gap</td><td>m(r&minus;s) = (&minus;r_s)(&Omega;)(ALPHA) = &minus;E</td><td>Gap &rarr; edges</td></tr>
+    <tr><td>T714</td><td>Critical Points</td><td>m&prime; = 0 at DIM_O and &minus;MU/Q; disc(m&prime;) = (&Omega;&middot;&Phi;&sub6;)&sup2;</td><td>Spectral extrema</td></tr>
+    <tr><td>T715</td><td>Discriminant</td><td>disc(m) = (MU&middot;E)&sup2; = 16&middot;E&sup2;; &radic;disc = MU&middot;E</td><td>Spectral volume</td></tr>
+    <tr><td>T716</td><td>Char Poly Extended</td><td>p(MU) = &minus;2<sup>72</sup>; p(DIM_O) = &minus;MU&middot;(r&minus;s)<sup>F</sup>&middot;K<sup>G</sup></td><td>Exceptional exponents</td></tr>
+    <tr><td>T717</td><td>Determinant Anatomy</td><td>det(A) = &minus;Q&middot;2<sup>56</sup>; exponent 56 = DIM_O&middot;&Phi;&sub6; = ovoid count</td><td>Ovoid &harr; det</td></tr>
+    <tr><td>T718</td><td>Eigenvalue Pair Arithmetic</td><td>K&middot;R = F; R&middot;S = &minus;DIM_O; K&minus;S = 2<sup>MU</sup></td><td>Pairwise closure</td></tr>
+    <tr><td>T719</td><td>Product Identities</td><td>MU&sup2;&middot;&lambda; = 2<sup>N</sup>; KRS/(KR+KS+RS) = Q</td><td>Vieta ratio</td></tr>
+    <tr><td>T720</td><td>Complement Min Poly</td><td>m&#x0304;(x) = (x&minus;ALBERT)(x&sup2;&minus;Q&sup2;); m&#x0304;(0) = Q<sup>5</sup></td><td>Complement anatomy</td></tr>
+    <tr><td>T721</td><td>Combined 6-Spectrum</td><td>Sum = V&minus;Q; product = Q&sup3;&middot;2<sup>N</sup>&middot;ALBERT</td><td>Graph + complement</td></tr>
+    <tr><td>T722</td><td>Interlacing Gaps</td><td>Gaps: 1, N, 1, Q&sup2;, G; product = ALBERT&middot;N&sup2;</td><td>Spectral interlacing</td></tr>
+    <tr><td>T723</td><td>Spectral Measure</td><td>Weights 1/V, 3/5, 3/8; &mu;&sub4; = K&middot;MU&middot;&Phi;&sub3;</td><td>Probability measure</td></tr>
+    <tr><td>T724</td><td>Trace Ratio Pattern</td><td>tr(A<sup>n</sup>)/V = Q&middot;2<sup>n</sup>&middot;c<sub>n</sub>; c&sub4; = &Phi;&sub3;</td><td>Walk arithmetic</td></tr>
+    <tr><td>T725</td><td>Polynomial Duality</td><td>m &harr; m&#x0304;: ALPHA + ALBERT = V&minus;Q; m(0)&middot;m&#x0304;(0) = Q&sup3;&middot;2<sup>N</sup>&middot;ALBERT</td><td>ALPHA &harr; ALBERT</td></tr>
+  </table>
+
   <h2>Phase XLIX &mdash; Generalized Quadrangle GQ(3,3) &amp; Finite Geometry (T696&ndash;T710)</h2>
   <p>Fifteen theorems proving W(3,3) IS the collinearity graph of the <strong>self-dual generalized quadrangle GQ(3,3)</strong>. The single GQ order q = 3 generates all five SRG parameters. Ovoids and spreads have size ALPHA = 10; exactly 56 = DIM_O&middot;&Phi;&sub6; ovoids exist. Both Hoffman bounds are tight (Delsarte graph). The tangent hyperplane p&perp; equals the closed neighborhood N[p] with |p&perp;| = &Phi;&sub3; = 1 + K. The eigenmatrix determinant det(P) = &minus;E = &minus;240. All six non-trivial Krein parameters have denominator Q = 3.</p>
   <table>
@@ -1952,7 +1973,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 710 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 725 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2395,7 +2416,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (3772+ test methods across 48 files) rigorously verifies all 710 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3863+ test methods across 49 files) rigorously verifies all 725 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -5249,7 +5270,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3772+ pytest methods verifying 710 theorems &amp; 34 predictions across 48 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3863+ pytest methods verifying 725 theorems &amp; 34 predictions across 49 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
