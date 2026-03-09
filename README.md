@@ -1,6 +1,5 @@
 # W(3,3)–E₈ Theory of Everything
 
-[![Tests](https://github.com/wilcompute/W33-Theory/actions/workflows/ci.yml/badge.svg)](https://github.com/wilcompute/W33-Theory/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
 
