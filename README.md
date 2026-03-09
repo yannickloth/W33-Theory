@@ -5,8 +5,6 @@
 
 A computational proof that the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices — encodes the full structure of the Standard Model, including gauge groups, coupling constants, mixing matrices, mass hierarchies, and cosmological parameters. Every claim is backed by automated tests.
 
-- **Live paper:** [GitHub Pages](https://wilcompute.github.io/W33-Theory/)
-
 ## The Theory in One Paragraph
 
 The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Hodge Laplacian spectrum 0⁸¹ 4¹²⁰ 10²⁴ 16¹⁵ produces a mass gap, gauge sector, and matter sector. A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological sum rule Omega_b + Omega_DM + Omega_DE = 1/20 + 4/15 + 41/60 = 1 holds exactly.
