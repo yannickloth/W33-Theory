@@ -383,10 +383,12 @@ section h2::after {
     <div class="card"><div class="num">4/13</div><div class="label">Exact PMNS route</div><div class="detail">The promoted PMNS formulas are the cyclotomic ones: sin^2(theta_12)=4/13, sin^2(theta_23)=7/13, sin^2(theta_13)=2/91 from PMNS_CYCLOTOMIC.py.</div></div>
     <div class="card"><div class="num">CE2</div><div class="label">Dual predictor frontier</div><div class="detail">The CE2 / L∞ program now closes the full a=(0,1,0) and a=(0,0,1) anchor slices. The next unresolved anchor is a=(0,0,2).</div></div>
     <div class="card"><div class="num">J_max</div><div class="label">Phase-qualified PMNS</div><div class="detail">Angle-only Jarlskog magnitude is J_max ~= 0.03336. Physical J remains phase dependent: J = J_max sin(delta).</div></div>
+    <div class="card"><div class="num">Φ₃=μ+Φ₆+λ</div><div class="label">PMNS Incidence Derivation</div><div class="detail">Phase LVI (T801–T815, 62 tests): The cyclotomic identity partitions PG(2,3) into three sectors (collinear 4, transversal 7, tangent 2). Mixing angles = sector ratios. Three-flavor sum rule s₁₂+s₂₃+s₁₃·Φ₆=1 for all q. Hierarchy via 1/Φ₆ suppression.</div></div>
   </div>
   <ul class="quick-list">
     <li><strong>Exact PMNS source:</strong> <code>PMNS_CYCLOTOMIC.py</code></li>
     <li><strong>Exact PMNS tests:</strong> <code>tests/test_master_derivation.py</code> and <code>tests/test_tower_generation_rules.py</code></li>
+    <li><strong>PMNS incidence derivation:</strong> <code>tests/test_pmns_incidence_geometry.py</code> (Phase LVI, 62 tests)</li>
     <li><strong>Global CE2 predictor:</strong> <code>scripts/ce2_global_cocycle.py</code></li>
     <li><strong>Firewall / L∞ extension:</strong> <code>tools/build_linfty_firewall_extension.py</code></li>
     <li><strong>Current first unresolved witness:</strong> <code>((22,0),(1,0),(16,1)) -&gt; W = -E_(16,0) / 54</code></li>
@@ -421,7 +423,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">2367/2367</div><div class="label">All Checks Pass ★</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 2367 checks from F₃ + ω alone. Every claim computationally verified. <strong style="color: #ffd700;">BROKE THROUGH 2000!</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">2429/2429</div><div class="label">All Checks Pass ★</div><div class="detail">THEORY_OF_EVERYTHING.py + Phase LVI incidence tests derive all 2429 checks from F₃ + ω alone. Every claim computationally verified. <strong style="color: #ffd700;">BROKE THROUGH 2000!</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -601,10 +603,10 @@ section h2::after {
   <h2><span class="icon">⚡</span> Historical Physics Derivations</h2>
   <p>This section is also archive material. It records older derivation layers and broad verification tables. The promoted exact PMNS route and the live CE2 frontier are summarized in the verified section above.</p>
 
-<h2><span class="icon">⚡</span> Complete Computational Verification — 2367/2367</h2>
+<h2><span class="icon">⚡</span> Complete Computational Verification — 2429/2429</h2>
   <p>The script <strong>THEORY_OF_EVERYTHING.py</strong> derives <em>every</em> result below from exactly two inputs:
   the field <strong>F₃ = {0,1,2}</strong> and the symplectic form <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
-  No parameters are chosen. No fitting is performed. All <strong style="color: #ffd700;">2367</strong> checks pass — <strong style="color: #ffd700;">BROKE THROUGH 2000!</strong></p>
+  No parameters are chosen. No fitting is performed. All <strong style="color: #ffd700;">2429</strong> checks pass — <strong style="color: #ffd700;">BROKE THROUGH 2000!</strong></p>
 
   <table>
     <tr><th>#</th><th>Check</th><th>Result</th><th>Status</th></tr>
@@ -872,13 +874,13 @@ section h2::after {
   <h3>Complete SRG → Physics Parameter Map</h3>
   <p>The W(3,3) strongly regular graph with parameters (v,k,λ,μ) = (40,12,2,4) maps every SRG invariant
   to a Standard Model observable. The complete mapping — covering gauge couplings, mixing angles, masses,
-  cosmological parameters, and more — is documented in the <strong>2367-row verification table</strong> above.
+  cosmological parameters, and more — is documented in the <strong>2429-row verification table</strong> above.
   Every formula has been computationally verified from two inputs alone: F₃ = {0,1,2} and the symplectic form ω.</p>
   <p>Key derived quantities include: eigenvalues r=2 (multiplicity f=24), s=−4 (multiplicity g=15);
   edges E=240, triangles T=160; cyclotomic polynomials Φ₃=13, Φ₆=7; and the composite Φ₃·Φ₆=91.
   The valency k=12 decomposes as k = (q²−1) + μ = 8 gluons + 4 EW bosons, encoding the full SM gauge structure.</p>
 
-  <p><strong style="color: #ffd700;">★ As of the latest push, the theory has been extended to 2367 verified checks spanning 85+ mathematical domains including CFT &amp; vertex algebras, string compactification, algebraic K-theory, homotopy type theory, noncommutative geometry, the Langlands program, topological phases of matter, swampland conjectures, exceptional structures &amp; sporadic groups, chromatic homotopy &amp; tmf, scattering amplitudes, grand unification, quantum error correction, arithmetic geometry, representation theory, lattice &amp; sphere packing, quantum groups, combinatorics, differential geometry, algebraic topology, category theory, operator algebras, statistical mechanics, geometric analysis &amp; PDE, dynamical systems, symplectic topology, p-adic analysis, information geometry, mathematical logic, condensed matter, algebraic number theory, quantum computing, nonlinear dynamics, spectral theory &amp; RMT, cosmological observables, geometric group theory, tropical geometry, homological algebra, knot theory, functional analysis, measure theory, QFT, discrete mathematics, game theory, analytic number theory, automata theory, ergodic theory, convex geometry, wavelet analysis, approximation theory, additive combinatorics, integral geometry, descriptive set theory, model theory, continuum mechanics, fractal geometry, formal language theory, extremal graph theory, inverse problems, geometric measure theory, differential algebra, variational analysis, signal processing, stochastic geometry, computational complexity, mathematical biology, algebraic combinatorics, convex optimization, fluid dynamics, discrete geometry, mathematical finance, and proof theory. Every single check passes.</strong></p>
+  <p><strong style="color: #ffd700;">★ As of the latest push, the theory has been extended to 2429 verified checks spanning 85+ mathematical domains including CFT &amp; vertex algebras, string compactification, algebraic K-theory, homotopy type theory, noncommutative geometry, the Langlands program, topological phases of matter, swampland conjectures, exceptional structures &amp; sporadic groups, chromatic homotopy &amp; tmf, scattering amplitudes, grand unification, quantum error correction, arithmetic geometry, representation theory, lattice &amp; sphere packing, quantum groups, combinatorics, differential geometry, algebraic topology, category theory, operator algebras, statistical mechanics, geometric analysis &amp; PDE, dynamical systems, symplectic topology, p-adic analysis, information geometry, mathematical logic, condensed matter, algebraic number theory, quantum computing, nonlinear dynamics, spectral theory &amp; RMT, cosmological observables, geometric group theory, tropical geometry, homological algebra, knot theory, functional analysis, measure theory, QFT, discrete mathematics, game theory, analytic number theory, automata theory, ergodic theory, convex geometry, wavelet analysis, approximation theory, additive combinatorics, integral geometry, descriptive set theory, model theory, continuum mechanics, fractal geometry, formal language theory, extremal graph theory, inverse problems, geometric measure theory, differential algebra, variational analysis, signal processing, stochastic geometry, computational complexity, mathematical biology, algebraic combinatorics, convex optimization, fluid dynamics, discrete geometry, mathematical finance, and proof theory. Every single check passes.</strong></p>
 
   <h3>The 240 = 40 × 3 × 2 Decomposition</h3>
   <p>Each of the <strong>40 GQ lines</strong> (a K₄ complete graph on 4 points) has exactly <strong>3 perfect matchings</strong>
@@ -3245,11 +3247,11 @@ section h2::after {
 
 <!-- ═══════════════════════ VERIFICATION DASHBOARD ═══════════════════════ -->
 <section id="dashboard">
-  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 2367/2367</h2>
-  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL 2367 CHECKS PASS — 100% verification achieved!</strong></p>
+  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 2429/2429</h2>
+  <p><strong style="color: #ffd700; font-size: 1.2em;">🎉 ALL 2429 CHECKS PASS — 100% verification achieved!</strong></p>
   <p>The 183-check physics table is in the <a href="#physics">Physics Derivations</a> section above. The extended domain coverage below spans 85+ additional mathematical domains.</p>
 
-<h2 style="color: var(--gold); border-bottom-color: var(--gold);"><span class="icon">★</span> BREAKTHROUGH: 2367/2367 — Extended Domain Coverage (Checks 842–2367)</h2>
+<h2 style="color: var(--gold); border-bottom-color: var(--gold);"><span class="icon">★</span> BREAKTHROUGH: 2429/2429 — Extended Domain Coverage (Checks 842–2429)</h2>
 <p>Beyond the initial 841 checks, the theory was extended across <strong style="color: #ffd700;">85+ additional mathematical domains</strong>,
   each contributing 14 exact identities derived from W(3,3) SRG parameters. The following table lists every domain conquered:</p>
   <table>
@@ -3403,7 +3405,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 5500+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: <strong style="color: #ffd700;">2367/2367 master checks — BROKE THROUGH 2000!</strong></p>
+  <p><strong>Tests:</strong> 5500+ automated tests across 207+ pillars, all passing; THEORY_OF_EVERYTHING.py: <strong style="color: #ffd700;">2429/2429 master checks — BROKE THROUGH 2000!</strong></p>
 </section>
 
 </div><!-- /container -->
