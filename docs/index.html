@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>725 Theorems &bull; 34 Predictions &bull; 3863+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>740 Theorems &bull; 34 Predictions &bull; 3932+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">725 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">725 proven theorems with 3863+ automated tests across 49 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">740 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">740 proven theorems with 3932+ automated tests across 50 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1461,6 +1461,29 @@ section h2::after {
     <tr><td>T725</td><td>Polynomial Duality</td><td>m &harr; m&#x0304;: ALPHA + ALBERT = V&minus;Q; m(0)&middot;m&#x0304;(0) = Q&sup3;&middot;2<sup>N</sup>&middot;ALBERT</td><td>ALPHA &harr; ALBERT</td></tr>
   </table>
 
+<section>
+  <h2>Phase LI &mdash; Matrix Transforms &amp; Spectral Duality (T726&ndash;T740)</h2>
+  <p>Fifteen theorems establishing deep dualities across spectral transforms. The <strong>Seidel matrix</strong> has minimal-polynomial Vieta sum = ALBERT&minus;ALPHA = &Phi;&sub3;+MU = 17 and product = &minus;Q&middot;N&sup2;&middot;&Phi;&sub6; = &minus;525. Evaluating <strong>Ihara zeta factors</strong> at u = &minus;1 recovers the signless Laplacian eigenvalues {F, 2&Phi;&sub6;, DIM_O} = {24, 14, 8}. The <strong>complement Laplacian</strong> has spectrum {0, V&minus;ALPHA, F} = {0, 30, 24}, with spanning trees &tau;&#x0304; = 2<sup>66</sup>&middot;3<sup>V&minus;1</sup>&middot;5<sup>23</sup>. The <strong>multiplicity&ndash;Laplacian equipartition</strong> F&middot;ALPHA = G&middot;2<sup>MU</sup> = E = 240 shows each eigenspace contributes exactly E to the Laplacian trace. The <strong>heat kernel</strong> second moment Z&Prime;(0) = E&middot;26 ties the edge count to the bosonic dimension.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
+    <tr><td>T726</td><td>Seidel Min Poly Vieta</td><td>sum = &Phi;&sub3;+MU = ALBERT&minus;ALPHA; pairwise = &minus;N; product = &minus;Q&middot;N&sup2;&middot;&Phi;&sub6;</td><td>Exceptional naming</td></tr>
+    <tr><td>T727</td><td>Seidel Determinant</td><td>det(S) = G&middot;N<sup>F</sup>&middot;&Phi;&sub6;<sup>G</sup>; positive (F even)</td><td>Spectral volume</td></tr>
+    <tr><td>T728</td><td>Signless Lap Det 2<sup>72</sup></td><td>det(KI+A) = 2<sup>72</sup>&middot;Q&middot;&Phi;&sub6;<sup>F</sup>; 72 = |&Delta;(E&sub6;)|</td><td>E&sub6; root system</td></tr>
+    <tr><td>T729</td><td>Ihara&ndash;Signless Duality</td><td>f<sub>&theta;</sub>(&minus;1) = K+&theta; = signless Laplacian eigenvalue</td><td>Zeta&ndash;matrix bridge</td></tr>
+    <tr><td>T730</td><td>Ihara Discriminant Trifecta</td><td>disc(f<sub>K</sub>) = ALPHA&sup2;; disc(f<sub>S</sub>) = &minus;MU&middot;&Phi;&sub6;</td><td>Spectral discriminants</td></tr>
+    <tr><td>T731</td><td>Complement Laplacian</td><td>Eigenvalues {0, V&minus;ALPHA, F} = {0, 30, 24}</td><td>Complement spectrum</td></tr>
+    <tr><td>T732</td><td>Complement Trees</td><td>&tau;&#x0304; = 2<sup>66</sup>&middot;3<sup>V&minus;1</sup>&middot;5<sup>23</sup></td><td>Tree enumeration</td></tr>
+    <tr><td>T733</td><td>Tree Duality Ratio</td><td>&tau;&#x0304;/&tau; = Q<sup>V&minus;1</sup>/2<sup>G</sup> = 3<sup>39</sup>/2<sup>15</sup></td><td>Graph &harr; complement</td></tr>
+    <tr><td>T734</td><td>Laplacian Pairing</td><td>ALPHA+(V&minus;ALPHA) = V; 2<sup>MU</sup>+F = V</td><td>Spectral complement</td></tr>
+    <tr><td>T735</td><td>Idempotent Denominators</td><td>d&sub0; = V&middot;MU; d&sub1; = &minus;ALPHA&middot;r_s; d&sub2; = Q&middot;2<sup>N</sup>; product = &minus;disc(m)</td><td>Projection algebra</td></tr>
+    <tr><td>T736</td><td>Multiplicity&ndash;Lap Equipartition</td><td>F&middot;ALPHA = G&middot;2<sup>MU</sup> = E = 240</td><td>Eigenspace democracy</td></tr>
+    <tr><td>T737</td><td>Half-Vertex Decomposition</td><td>F = V/2+MU; G = V/2&minus;N; MU+N = Q&sup2;</td><td>Multiplicity anatomy</td></tr>
+    <tr><td>T738</td><td>Mult&ndash;Eigenvalue Products</td><td>f&middot;R = MU&middot;K = 48; g&middot;S = &minus;K&middot;N = &minus;60</td><td>Spectral products</td></tr>
+    <tr><td>T739</td><td>Seidel Moments</td><td>tr(S&sup2;) = V(V&minus;1) = 1560; tr(S&sup3;) = 2<sup>MU</sup>&middot;Q&middot;N&middot;23</td><td>Seidel walk counts</td></tr>
+    <tr><td>T740</td><td>Heat Kernel Bosonic</td><td>Z&Prime;(0) = E&middot;26 = 6240 (bosonic!); Z&Prime;(0)/|Z&prime;(0)| = &Phi;&sub3;</td><td>Edge &times; bosonic</td></tr>
+  </table>
+</section>
+
   <h2>Phase XLIX &mdash; Generalized Quadrangle GQ(3,3) &amp; Finite Geometry (T696&ndash;T710)</h2>
   <p>Fifteen theorems proving W(3,3) IS the collinearity graph of the <strong>self-dual generalized quadrangle GQ(3,3)</strong>. The single GQ order q = 3 generates all five SRG parameters. Ovoids and spreads have size ALPHA = 10; exactly 56 = DIM_O&middot;&Phi;&sub6; ovoids exist. Both Hoffman bounds are tight (Delsarte graph). The tangent hyperplane p&perp; equals the closed neighborhood N[p] with |p&perp;| = &Phi;&sub3; = 1 + K. The eigenmatrix determinant det(P) = &minus;E = &minus;240. All six non-trivial Krein parameters have denominator Q = 3.</p>
   <table>
@@ -1973,7 +1996,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 725 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 740 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2416,7 +2439,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (3863+ test methods across 49 files) rigorously verifies all 725 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3932+ test methods across 50 files) rigorously verifies all 740 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -5270,7 +5293,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3863+ pytest methods verifying 725 theorems &amp; 34 predictions across 49 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3932+ pytest methods verifying 740 theorems &amp; 34 predictions across 50 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
