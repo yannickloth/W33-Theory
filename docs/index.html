@@ -323,7 +323,7 @@ section h2::after {
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
 <header class="hero">
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
-  <div class="subtitle">830 theorems &middot; 10,241 tests &middot; 34 predictions &middot; 466 test files</div>
+  <div class="subtitle">875 theorems &middot; 10,397 tests &middot; 34 predictions &middot; 469 test files</div>
   <div class="tagline">
     A single finite geometry — the symplectic polar space <strong>W(3,3)</strong> on
     40 vertices with 240 edges — encodes the <strong>Standard Model</strong> gauge groups,
@@ -375,7 +375,7 @@ section h2::after {
 <section id="verified">
   <h2><span class="icon">↻</span> Verified Frontier — March 2026</h2>
   <div class="spotlight">
-    <p>830 theorems (T1–T830) across 57 phases, verified by 10,241 automated tests in 466 test files. Every claim below is computationally proved.</p>
+    <p>875 theorems (T1–T875) across 60 phases, verified by 10,397 automated tests in 469 test files. Every claim below is computationally proved.</p>
   </div>
   <div class="card-grid">
     <div class="card"><div class="num">240</div><div class="label">Edges = E₈ Roots</div><div class="detail">SRG(40,12,2,4), 240 edges, 160 triangles, b₁ = 81, L₁ spectrum 0⁸¹ 4¹²⁰ 10²⁴ 16¹⁵. The edge count equals |Roots(E₈)| and H₁ = Z⁸¹ = 27+27+27 gives three chiral generations.</div></div>
@@ -389,6 +389,9 @@ section h2::after {
   <h3>Closure Phases (LII–LVII): The Complete Spectral-Exceptional Chain</h3>
   <table>
     <tr><th>Phase</th><th>Theorems</th><th>Tests</th><th>Topic</th><th>Key Result</th></tr>
+    <tr><td><strong>LX</strong></td><td>T861–T875</td><td>52</td><td>Fermion Mass Spectrum</td><td>Z₃ Yukawa selection rule; mass hierarchy from Gram eigenvalues; 12 fermion masses</td></tr>
+    <tr><td><strong>LIX</strong></td><td>T846–T860</td><td>45</td><td>Gauge Coupling Unification</td><td>α_GUT = 1/(8π); RG running to M_Z; proton lifetime; threshold corrections from spectrum</td></tr>
+    <tr><td><strong>LVIII</strong></td><td>T831–T845</td><td>59</td><td>Gravity & Discrete Einstein Eqs</td><td>Uniform Ollivier-Ricci κ; Gauss-Bonnet; S_EH = 80; Ricci flow fixed point; de Sitter</td></tr>
     <tr><td><strong>LVII</strong></td><td>T816–T830</td><td>70</td><td>CKM & Anomaly Cancellation</td><td>CKM from Schlafli SRG(27,10,1,5); all 4 SM anomalies cancel; V = 13 + 27</td></tr>
     <tr><td><strong>LVI</strong></td><td>T801–T815</td><td>62</td><td>PMNS Incidence Geometry</td><td>Mixing angles = PG(2,3) sector ratios; Φ₃ = μ+Φ₆+λ cyclotomic identity</td></tr>
     <tr><td><strong>LV</strong></td><td>T786–T800</td><td>54</td><td>Uniqueness & Normalization</td><td>No other SRG gives α ≈ 137 AND E₈; cosmological Ω sum = 1</td></tr>
@@ -398,11 +401,12 @@ section h2::after {
   </table>
 
   <ul class="quick-list">
-    <li><strong>Spectral closure proof:</strong> <code>tests/test_spectral_closure_proof.py</code> (Phase LIII, 85 tests)</li>
-    <li><strong>Yang-Mills emergence:</strong> <code>tests/test_ym_dirac_kahler_emergence.py</code> (Phase LIV, 64 tests)</li>
-    <li><strong>Uniqueness proof:</strong> <code>tests/test_uniqueness_normalization_closure.py</code> (Phase LV, 54 tests)</li>
-    <li><strong>PMNS incidence derivation:</strong> <code>tests/test_pmns_incidence_geometry.py</code> (Phase LVI, 62 tests)</li>
+    <li><strong>Fermion mass spectrum:</strong> <code>tests/test_fermion_mass_spectrum.py</code> (Phase LX, 52 tests)</li>
+    <li><strong>Gauge coupling unification:</strong> <code>tests/test_gauge_unification_rg.py</code> (Phase LIX, 45 tests)</li>
+    <li><strong>Discrete Einstein equations:</strong> <code>tests/test_gravity_discrete_einstein.py</code> (Phase LVIII, 59 tests)</li>
     <li><strong>CKM & anomaly cancellation:</strong> <code>tests/test_ckm_schlafli_anomalies.py</code> (Phase LVII, 70 tests)</li>
+    <li><strong>PMNS incidence derivation:</strong> <code>tests/test_pmns_incidence_geometry.py</code> (Phase LVI, 62 tests)</li>
+    <li><strong>Spectral closure proof:</strong> <code>tests/test_spectral_closure_proof.py</code> (Phase LIII, 85 tests)</li>
     <li><strong>Exact PMNS source:</strong> <code>PMNS_CYCLOTOMIC.py</code></li>
     <li><strong>CE2 / L∞ frontier:</strong> <code>scripts/ce2_global_cocycle.py</code> (a=(0,0,2) next unresolved anchor)</li>
     <li><strong>Technical note:</strong> <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">March 2026 frontier note</a></li>
@@ -434,7 +438,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">10,241</div><div class="label">Automated Tests ★</div><div class="detail">10,241 test functions across 466 files verify 830 theorems (T1–T830) in 57 phases. Plus THEORY_OF_EVERYTHING.py: 2429/2429 master checks. <strong style="color: #ffd700;">Every claim computationally proved.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">10,397</div><div class="label">Automated Tests ★</div><div class="detail">10,397 test functions across 469 files verify 875 theorems (T1–T875) in 60 phases. Plus THEORY_OF_EVERYTHING.py: 2429/2429 master checks. <strong style="color: #ffd700;">Every claim computationally proved.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1914,6 +1918,9 @@ section h2::after {
       <tr><td><strong>LV</strong></td><td>T786–T800</td><td><strong>Uniqueness &amp; Normalization</strong></td><td>No other SRG gives α≈137 AND E₈; cosmological Ω_b+Ω_DM+Ω_DE = 1; Planck/Hubble/Higgs</td></tr>
       <tr><td><strong>LVI</strong></td><td>T801–T815</td><td><strong>PMNS Incidence Geometry</strong></td><td>Mixing angles = PG(2,3) sector ratios; Φ₃=μ+Φ₆+λ; three-flavor sum rule for all q</td></tr>
       <tr><td><strong>LVII</strong></td><td>T816–T830</td><td><strong>CKM &amp; Anomaly Cancellation</strong></td><td>CKM from Schlafli SRG(27,10,1,5); 27=16+10+1; all 4 SM anomalies cancel; V=13+27=40</td></tr>
+      <tr><td><strong>LVIII</strong></td><td>T831–T845</td><td><strong>Gravity &amp; Discrete Einstein</strong></td><td>Uniform Ollivier-Ricci κ; discrete Gauss-Bonnet; S_EH = 80; Ricci flow fixed point; de Sitter</td></tr>
+      <tr><td><strong>LIX</strong></td><td>T846–T860</td><td><strong>Gauge Coupling Unification</strong></td><td>α_GUT=1/(8π); one-loop RG running; sin²θ_W=3/8→3/13; proton lifetime; threshold corrections</td></tr>
+      <tr><td><strong>LX</strong></td><td>T861–T875</td><td><strong>Fermion Mass Spectrum</strong></td><td>Z₃ Yukawa selection rule; mass hierarchy from eigenvalue ratios; CKM/PMNS from misalignment; 12 masses</td></tr>
     </table>
     </div>
   </details>
@@ -3281,8 +3288,8 @@ section h2::after {
 
 <!-- ═══════════════════════ VERIFICATION DASHBOARD ═══════════════════════ -->
 <section id="dashboard">
-  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 830 Theorems, 10,241 Tests</h2>
-  <p><strong style="color: #ffd700; font-size: 1.2em;">830 theorems proved across 57 phases — 10,241 automated tests in 466 files — all passing</strong></p>
+  <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard — 875 Theorems, 10,397 Tests</h2>
+  <p><strong style="color: #ffd700; font-size: 1.2em;">875 theorems proved across 60 phases — 10,397 automated tests in 469 files — all passing</strong></p>
   <p>THEORY_OF_EVERYTHING.py: 2429/2429 master checks. The 183-check physics table is in the <a href="#physics">Physics Derivations</a> section above. The extended domain coverage below spans 85+ additional mathematical domains.</p>
 
 <h2 style="color: var(--gold); border-bottom-color: var(--gold);"><span class="icon">★</span> BREAKTHROUGH: 2429/2429 — Extended Domain Coverage (Checks 842–2429)</h2>
@@ -3451,8 +3458,8 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Scale:</strong> 830 theorems (T1–T830) &middot; 10,241 automated tests &middot; 466 test files &middot; 57 phases &middot; 207+ mathematical domains</p>
-  <p><strong>Verification:</strong> THEORY_OF_EVERYTHING.py: <strong style="color: #ffd700;">2429/2429 master checks</strong> + full <code>pytest</code> suite: <strong style="color: #ffd700;">10,241 tests all passing</strong></p>
+  <p><strong>Scale:</strong> 875 theorems (T1–T875) &middot; 10,397 automated tests &middot; 469 test files &middot; 60 phases &middot; 207+ mathematical domains</p>
+  <p><strong>Verification:</strong> THEORY_OF_EVERYTHING.py: <strong style="color: #ffd700;">2429/2429 master checks</strong> + full <code>pytest</code> suite: <strong style="color: #ffd700;">10,397 tests all passing</strong></p>
 </section>
 
 </div><!-- /container -->
@@ -3460,7 +3467,7 @@ section h2::after {
 
 
 <footer>
-  <p>W(3,3)–E₈ Theory &middot; 830 theorems &middot; 10,241 tests &middot; 466 files &middot; Wil Dahn &amp; Claude &middot; 2026</p>
+  <p>W(3,3)–E₈ Theory &middot; 875 theorems &middot; 10,397 tests &middot; 469 files &middot; Wil Dahn &amp; Claude &middot; 2026</p>
   <p><a href="https://github.com/wilcompute/W33-Theory">GitHub</a> &middot; <a href="https://doi.org/10.5281/zenodo.18652825">DOI</a></p>
 </footer>
 

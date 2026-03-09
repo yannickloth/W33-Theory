@@ -17,10 +17,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 830 (T1–T830) |
-| Test functions | 10,241 |
-| Test files | 466 |
-| Phases completed | LVII (57) |
+| Theorems proved | 875 (T1–T875) |
+| Test functions | 10,397 |
+| Test files | 469 |
+| Phases completed | LX (60) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -98,6 +98,9 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LX | T861–T875 | 52 | Fermion Mass Spectrum & Yukawa Eigenvalues |
+| LIX | T846–T860 | 45 | Gauge Coupling Unification & RG Flow |
+| LVIII | T831–T845 | 59 | Gravity Closure & Discrete Einstein Equations |
 | LVII | T816–T830 | 70 | CKM from Schlafli Graph & Anomaly Cancellation |
 | LVI | T801–T815 | 62 | PMNS from Incidence Geometry |
 | LV | T786–T800 | 54 | Uniqueness & Normalization Closure |
@@ -113,7 +116,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         466 test files, 10,241 test functions (the proof)
+├── tests/         469 test files, 10,397 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
