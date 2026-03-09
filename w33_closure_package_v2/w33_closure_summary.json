@@ -1,0 +1,40 @@
+{
+  "best_effort_verdict": "candidate finite spectral-exceptional unification skeleton, not yet accepted TOE",
+  "three_shells": {
+    "local_bare": [
+      "\u0394=4",
+      "Nc=3",
+      "sin2\u03b8W=1/4",
+      "4+8=12"
+    ],
+    "projective_dressed": [
+      "sin2\u03b8W=3/13",
+      "\u03b8C=arctan(3/13)",
+      "PMNS over 13 and 91",
+      "vEW=246"
+    ],
+    "global_spectral": [
+      "\u03b1^-1=137+40/1111",
+      "\u03b2-sum=122",
+      "\u03c7=-40",
+      "Q=(41/160)I120"
+    ]
+  },
+  "master_dictionary": {
+    "exact_sector": 39,
+    "matter_sector": 81,
+    "gauge_sector": 120,
+    "E8_decomposition": [
+      86,
+      81,
+      81
+    ]
+  },
+  "proof_obligations": [
+    "continuum QFT/GR bridge",
+    "full fermion mass derivation",
+    "normalization closure",
+    "gravity dynamical closure",
+    "uniqueness among comparable finite geometries"
+  ]
+}

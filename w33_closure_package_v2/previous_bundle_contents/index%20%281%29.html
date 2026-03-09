@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>770 Theorems &bull; 34 Predictions &bull; 4091+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>695 Theorems &bull; 34 Predictions &bull; 3693+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">770 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">770 proven theorems with 4091+ automated tests across 52 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">695 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">695 proven theorems with 3693+ automated tests across 47 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1438,114 +1438,6 @@ section h2::after {
 <section>
   <h2>Phase XLVIII &mdash; Weyl Group W(E&sub6;) &amp; Exceptional Arithmetic (T681&ndash;T695)</h2>
   <p>Fifteen theorems proving <strong>|Aut(W(3,3))| = |W(E&sub6;)| = 51840</strong>. The E&sub6; exponents {1, &mu;, N, &Phi;&sub6;, DIM_O, K&minus;1} encode the SRG anatomy, with Coxeter number h = K = 12. The Weyl chain links E&sub6; &rarr; E&sub7; &rarr; E&sub8; through factors DIM_O&middot;&Phi;&sub6; = 56 and E = 240. Non-neighbor subgraph on ALBERT = 27 vertices echoes the 27 lines on a cubic surface.</p>
-</section>
-<section>
-  <h2>Phase L &mdash; Polynomial Anatomy, Spectral Measure &amp; Special Values (T711&ndash;T725)</h2>
-  <p>Fifteen theorems dissecting the <strong>minimal polynomial m(x) = x&sup3; &minus; ALPHA&middot;x&sup2; &minus; 2<sup>N</sup>&middot;x + Q&middot;2<sup>N</sup></strong>. Every evaluation m(c) at a named graph constant yields another named constant: m(r&minus;s) = &minus;E, m(MU) = &minus;2<sup>&Phi;&sub6;</sup>, m(DIM_O) = &minus;Q&sup2;&middot;2<sup>N</sup>. The factor table closes perfectly. Critical points of m&prime;(x) are DIM_O and &minus;MU/Q. The discriminant = (MU&middot;E)&sup2;. All six eigenvalues {K, R, S, K&#x0304;, &minus;Q, Q} have gaps 1, N, 1, Q&sup2;, G with product ALBERT&middot;N&sup2;. Spectral moments tr(A<sup>n</sup>)/V = Q&middot;2<sup>n</sup>&middot;c<sub>n</sub> always factor this way. Polynomial duality m &harr; m&#x0304; mirrors ALPHA &harr; ALBERT.</p>
-  <table>
-    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
-    <tr><td>T711</td><td>Min Poly Evaluations</td><td>m(r&minus;s) = &minus;E; m(&minus;1) = Q&sup2;&middot;&Phi;&sub3;; m(Q) = &minus;Q&sup2;&middot;&Phi;&sub6;</td><td>Spectral closure</td></tr>
-    <tr><td>T712</td><td>Factor Table</td><td>At each special x, all three factors (x&minus;K), (x&minus;R), (x&minus;S) are named constants</td><td>Algebraic anatomy</td></tr>
-    <tr><td>T713</td><td>Edge Count from Gap</td><td>m(r&minus;s) = (&minus;r_s)(&Omega;)(ALPHA) = &minus;E</td><td>Gap &rarr; edges</td></tr>
-    <tr><td>T714</td><td>Critical Points</td><td>m&prime; = 0 at DIM_O and &minus;MU/Q; disc(m&prime;) = (&Omega;&middot;&Phi;&sub6;)&sup2;</td><td>Spectral extrema</td></tr>
-    <tr><td>T715</td><td>Discriminant</td><td>disc(m) = (MU&middot;E)&sup2; = 16&middot;E&sup2;; &radic;disc = MU&middot;E</td><td>Spectral volume</td></tr>
-    <tr><td>T716</td><td>Char Poly Extended</td><td>p(MU) = &minus;2<sup>72</sup>; p(DIM_O) = &minus;MU&middot;(r&minus;s)<sup>F</sup>&middot;K<sup>G</sup></td><td>Exceptional exponents</td></tr>
-    <tr><td>T717</td><td>Determinant Anatomy</td><td>det(A) = &minus;Q&middot;2<sup>56</sup>; exponent 56 = DIM_O&middot;&Phi;&sub6; = ovoid count</td><td>Ovoid &harr; det</td></tr>
-    <tr><td>T718</td><td>Eigenvalue Pair Arithmetic</td><td>K&middot;R = F; R&middot;S = &minus;DIM_O; K&minus;S = 2<sup>MU</sup></td><td>Pairwise closure</td></tr>
-    <tr><td>T719</td><td>Product Identities</td><td>MU&sup2;&middot;&lambda; = 2<sup>N</sup>; KRS/(KR+KS+RS) = Q</td><td>Vieta ratio</td></tr>
-    <tr><td>T720</td><td>Complement Min Poly</td><td>m&#x0304;(x) = (x&minus;ALBERT)(x&sup2;&minus;Q&sup2;); m&#x0304;(0) = Q<sup>5</sup></td><td>Complement anatomy</td></tr>
-    <tr><td>T721</td><td>Combined 6-Spectrum</td><td>Sum = V&minus;Q; product = Q&sup3;&middot;2<sup>N</sup>&middot;ALBERT</td><td>Graph + complement</td></tr>
-    <tr><td>T722</td><td>Interlacing Gaps</td><td>Gaps: 1, N, 1, Q&sup2;, G; product = ALBERT&middot;N&sup2;</td><td>Spectral interlacing</td></tr>
-    <tr><td>T723</td><td>Spectral Measure</td><td>Weights 1/V, 3/5, 3/8; &mu;&sub4; = K&middot;MU&middot;&Phi;&sub3;</td><td>Probability measure</td></tr>
-    <tr><td>T724</td><td>Trace Ratio Pattern</td><td>tr(A<sup>n</sup>)/V = Q&middot;2<sup>n</sup>&middot;c<sub>n</sub>; c&sub4; = &Phi;&sub3;</td><td>Walk arithmetic</td></tr>
-    <tr><td>T725</td><td>Polynomial Duality</td><td>m &harr; m&#x0304;: ALPHA + ALBERT = V&minus;Q; m(0)&middot;m&#x0304;(0) = Q&sup3;&middot;2<sup>N</sup>&middot;ALBERT</td><td>ALPHA &harr; ALBERT</td></tr>
-  </table>
-
-<section>
-  <h2>Phase LI &mdash; Matrix Transforms &amp; Spectral Duality (T726&ndash;T740)</h2>
-  <p>Fifteen theorems establishing deep dualities across spectral transforms. The <strong>Seidel matrix</strong> has minimal-polynomial Vieta sum = ALBERT&minus;ALPHA = &Phi;&sub3;+MU = 17 and product = &minus;Q&middot;N&sup2;&middot;&Phi;&sub6; = &minus;525. Evaluating <strong>Ihara zeta factors</strong> at u = &minus;1 recovers the signless Laplacian eigenvalues {F, 2&Phi;&sub6;, DIM_O} = {24, 14, 8}. The <strong>complement Laplacian</strong> has spectrum {0, V&minus;ALPHA, F} = {0, 30, 24}, with spanning trees &tau;&#x0304; = 2<sup>66</sup>&middot;3<sup>V&minus;1</sup>&middot;5<sup>23</sup>. The <strong>multiplicity&ndash;Laplacian equipartition</strong> F&middot;ALPHA = G&middot;2<sup>MU</sup> = E = 240 shows each eigenspace contributes exactly E to the Laplacian trace. The <strong>heat kernel</strong> second moment Z&Prime;(0) = E&middot;26 ties the edge count to the bosonic dimension.</p>
-  <table>
-    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
-    <tr><td>T726</td><td>Seidel Min Poly Vieta</td><td>sum = &Phi;&sub3;+MU = ALBERT&minus;ALPHA; pairwise = &minus;N; product = &minus;Q&middot;N&sup2;&middot;&Phi;&sub6;</td><td>Exceptional naming</td></tr>
-    <tr><td>T727</td><td>Seidel Determinant</td><td>det(S) = G&middot;N<sup>F</sup>&middot;&Phi;&sub6;<sup>G</sup>; positive (F even)</td><td>Spectral volume</td></tr>
-    <tr><td>T728</td><td>Signless Lap Det 2<sup>72</sup></td><td>det(KI+A) = 2<sup>72</sup>&middot;Q&middot;&Phi;&sub6;<sup>F</sup>; 72 = |&Delta;(E&sub6;)|</td><td>E&sub6; root system</td></tr>
-    <tr><td>T729</td><td>Ihara&ndash;Signless Duality</td><td>f<sub>&theta;</sub>(&minus;1) = K+&theta; = signless Laplacian eigenvalue</td><td>Zeta&ndash;matrix bridge</td></tr>
-    <tr><td>T730</td><td>Ihara Discriminant Trifecta</td><td>disc(f<sub>K</sub>) = ALPHA&sup2;; disc(f<sub>S</sub>) = &minus;MU&middot;&Phi;&sub6;</td><td>Spectral discriminants</td></tr>
-    <tr><td>T731</td><td>Complement Laplacian</td><td>Eigenvalues {0, V&minus;ALPHA, F} = {0, 30, 24}</td><td>Complement spectrum</td></tr>
-    <tr><td>T732</td><td>Complement Trees</td><td>&tau;&#x0304; = 2<sup>66</sup>&middot;3<sup>V&minus;1</sup>&middot;5<sup>23</sup></td><td>Tree enumeration</td></tr>
-    <tr><td>T733</td><td>Tree Duality Ratio</td><td>&tau;&#x0304;/&tau; = Q<sup>V&minus;1</sup>/2<sup>G</sup> = 3<sup>39</sup>/2<sup>15</sup></td><td>Graph &harr; complement</td></tr>
-    <tr><td>T734</td><td>Laplacian Pairing</td><td>ALPHA+(V&minus;ALPHA) = V; 2<sup>MU</sup>+F = V</td><td>Spectral complement</td></tr>
-    <tr><td>T735</td><td>Idempotent Denominators</td><td>d&sub0; = V&middot;MU; d&sub1; = &minus;ALPHA&middot;r_s; d&sub2; = Q&middot;2<sup>N</sup>; product = &minus;disc(m)</td><td>Projection algebra</td></tr>
-    <tr><td>T736</td><td>Multiplicity&ndash;Lap Equipartition</td><td>F&middot;ALPHA = G&middot;2<sup>MU</sup> = E = 240</td><td>Eigenspace democracy</td></tr>
-    <tr><td>T737</td><td>Half-Vertex Decomposition</td><td>F = V/2+MU; G = V/2&minus;N; MU+N = Q&sup2;</td><td>Multiplicity anatomy</td></tr>
-    <tr><td>T738</td><td>Mult&ndash;Eigenvalue Products</td><td>f&middot;R = MU&middot;K = 48; g&middot;S = &minus;K&middot;N = &minus;60</td><td>Spectral products</td></tr>
-    <tr><td>T739</td><td>Seidel Moments</td><td>tr(S&sup2;) = V(V&minus;1) = 1560; tr(S&sup3;) = 2<sup>MU</sup>&middot;Q&middot;N&middot;23</td><td>Seidel walk counts</td></tr>
-    <tr><td>T740</td><td>Heat Kernel Bosonic</td><td>Z&Prime;(0) = E&middot;26 = 6240 (bosonic!); Z&Prime;(0)/|Z&prime;(0)| = &Phi;&sub3;</td><td>Edge &times; bosonic</td></tr>
-  </table>
-</section>
-
-  <h2>Phase LIII &mdash; Spectral Closure Proof (T756&ndash;T770)</h2>
-  <p>Fifteen theorems computationally verifying the <strong>complete spectral-exceptional closure chain</strong>: the Hodge decomposition C&sup1; = 39+81+120 = 240 = |E&sub8; roots|; the full D&sup2; spectrum {0<sup>122</sup>, 4<sup>240</sup>, 10<sup>48</sup>, 16<sup>30</sup>}; the 480&times;480 <strong>Hashimoto non-backtracking matrix</strong> with verified <strong>Ihara&ndash;Bass identity</strong>; the vertex propagator M with eigenvalue 1111 = 11&times;101; the alpha derivation &alpha;&sup1; = 137 + 40/1111 = 137.036004; the <strong>E&sub8; Z&sub3;-grading match</strong> (86,81,81); and the master closure criterion showing all observables are forced by 5 numbers.</p>
-  <table>
-    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
-    <tr><td>T756</td><td>Hodge Decomposition</td><td>C&sup1; = im(d&sub0;) &oplus; H&sup1; &oplus; im(d&sub1;<sup>T</sup>) = 39+81+120 = 240</td><td>Matter/gauge split</td></tr>
-    <tr><td>T757</td><td>D&sup2; Spectrum</td><td>spec(D&sup2;) = {0<sup>122</sup>, 4<sup>240</sup>, 10<sup>48</sup>, 16<sup>30</sup>} on 440 dims</td><td>Mass gap &amp; spectrum</td></tr>
-    <tr><td>T758</td><td>H&sup1; Three Generations</td><td>b&sub1; = 81 = 3&times;27 = 3 &times; dim(E&sub6; fundamental)</td><td>Three generations</td></tr>
-    <tr><td>T759</td><td>Hashimoto Matrix</td><td>480&times;480 non-backtracking B; row/col sums = k&minus;1 = 11</td><td>Directed-edge dynamics</td></tr>
-    <tr><td>T760</td><td>Ihara&ndash;Bass Identity</td><td>det(I&minus;uB) = (1&minus;u&sup2;)<sup>200</sup> det(Q(u)) verified</td><td>Zeta function bridge</td></tr>
-    <tr><td>T761</td><td>Vertex Propagator M</td><td>M&middot;1 = 1111&middot;1; spectrum {1111<sup>1</sup>, 11<sup>24</sup>, 407<sup>15</sup>}</td><td>Propagator structure</td></tr>
-    <tr><td>T762</td><td>Alpha Derivation</td><td>&alpha;<sup>&minus;1</sup> = 137 + 40/1111 = 137.036004 (CODATA: 137.036)</td><td>Fine-structure constant</td></tr>
-    <tr><td>T763</td><td>Trace Balance</td><td>2E = 480; &beta;&sub0;+&beta;&sub1;+&beta;&sub2; = 1+81+40 = 122</td><td>Ghost/YM balance</td></tr>
-    <tr><td>T764</td><td>E&sub8; Z&sub3;-Grading</td><td>g&sub0;+g&sub1;+g&sub2; = 86+81+81 = 248; g&sub0; = E&sub6;&oplus;A&sub2;</td><td>Hodge&harr;E&sub8; match</td></tr>
-    <tr><td>T765</td><td>Charge Operator</td><td>Q = (v+1)/T = 41/160 on 120-dim gauge sector</td><td>Effective charge</td></tr>
-    <tr><td>T766</td><td>Spectral Action</td><td>Tr(D&sup2;) = K&middot;T = 1920; Tr(D&sup4;) = 16320</td><td>Heat coefficients</td></tr>
-    <tr><td>T767</td><td>Euler Characteristic</td><td>&chi; = 40&minus;240+160&minus;40 = &minus;80; signed &beta;-sum = &minus;40</td><td>Topological invariant</td></tr>
-    <tr><td>T768</td><td>Weinberg Three-Shell</td><td>sin&sup2;&theta;<sub>W</sub> = 1/4 &rarr; 3/8 &rarr; 3/13 (bare&rarr;GUT&rarr;M<sub>Z</sub>)</td><td>Running coupling</td></tr>
-    <tr><td>T769</td><td>Electroweak Scale</td><td>v<sub>EW</sub> = q&sup5;+q = |E&sub8;|+2q = 246 (unique at q=3)</td><td>Higgs VEV</td></tr>
-    <tr><td>T770</td><td>Closure Criterion</td><td>5 numbers &rarr; SRG &rarr; Hodge &rarr; B &rarr; &alpha; &rarr; E&sub8; &rarr; SM</td><td>Master forcing chain</td></tr>
-  </table>
-
-  <h2>Phase LII &mdash; Walk Recursion &amp; Transition Anatomy (T741&ndash;T755)</h2>
-  <p>Fifteen theorems on the <strong>walk algebra</strong> of W(3,3). The SRG walk entry recursion has coefficients {K, &lambda;, q&sup2;, &mu;, DIM_O} &mdash; all named constants. The return-adjacent shift identity P<sup>n+1</sup><sub>diag</sub> = P<sup>n</sup><sub>adj</sub> reveals that p&sub3; = 1/72 = 1/|&Delta;(E&sub6;)|. The power decomposition A&sup2; = DIM_O&middot;I &minus; &lambda;&middot;A + &mu;&middot;J has all named coefficients. The diagonal walk ratio d&sub4;/d&sub3; = 26 = BOSONIC. The resolvent at N gives V&middot;N/(Q&middot;&Phi;&sub6;) = 200/21.</p>
-  <table>
-    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
-    <tr><td>T741</td><td>Walk Entry Recursion</td><td>Coefficients {K, &lambda;, q&sup2;, &mu;, DIM_O} = {12,2,9,4,8}</td><td>Named recursion</td></tr>
-    <tr><td>T742</td><td>Return-Adjacent Shift</td><td>P<sup>n+1</sup><sub>diag</sub> = P<sup>n</sup><sub>adj</sub>; p&sub3; = 1/72 = 1/|&Delta;(E&sub6;)|</td><td>E&sub6; root count</td></tr>
-    <tr><td>T743</td><td>Walk-3 Named Values</td><td>d&sub3;=F; a&sub3;=&mu;&middot;&Phi;&sub3;=52=dim(F&sub4;); b&sub3;=V</td><td>Exceptional dims</td></tr>
-    <tr><td>T744</td><td>Walk-4 Diagonal</td><td>d&sub4; = 2<sup>&mu;</sup>(V&minus;1) = 624; d&sub4;/d&sub3; = 26 = BOSONIC</td><td>Bosonic dimension</td></tr>
-    <tr><td>T745</td><td>Power Decomposition</td><td>A&sup2; = DIM_O&middot;I &minus; &lambda;&middot;A + &mu;&middot;J (all named)</td><td>Bose-Mesner algebra</td></tr>
-    <tr><td>T746</td><td>Idempotent Entries</td><td>E&sub1;: {Q/N, 1/&alpha;, &minus;1/G}; E&sub2;: {Q/DIM_O, &minus;1/DIM_O, 1/F}</td><td>Projection anatomy</td></tr>
-    <tr><td>T747</td><td>Multiplicity Duality</td><td>F&middot;N = G&middot;DIM_O = V&middot;Q = E/2 = 120</td><td>Eigenspace democracy</td></tr>
-    <tr><td>T748</td><td>Kemeny Constant</td><td>K<sub>c</sub> = F/&alpha; + G/(K&minus;S) = 267/80</td><td>Random walk mixing</td></tr>
-    <tr><td>T749</td><td>Effective Resistance</td><td>R<sub>adj</sub> = 2(V&minus;1)/(V&middot;K) = 13/80</td><td>Network transport</td></tr>
-    <tr><td>T750</td><td>Walk-3 Adj = dim(F&sub4;)</td><td>52 = &mu;&middot;&Phi;&sub3; = dim(F&sub4;) three-walks between neighbors</td><td>F&sub4; emergence</td></tr>
-    <tr><td>T751</td><td>Resolvent at N</td><td>tr G(N) = V&middot;N/(Q&middot;&Phi;&sub6;) = 200/21</td><td>Named resolvent</td></tr>
-    <tr><td>T752</td><td>Resolvent at &alpha;</td><td>tr G(&alpha;) = N&sup2;/&Phi;&sub6; = 25/7</td><td>Spectral function</td></tr>
-    <tr><td>T753</td><td>Walk Generating Function</td><td>W(1/&alpha;) = 25/28 = N&sup2;/(&mu;&middot;&Phi;&sub6;) closed form</td><td>Spectral zeta</td></tr>
-    <tr><td>T754</td><td>Diagonal Walk Ratios</td><td>d&sub3;/d&sub2; = F/K = &lambda;; d&sub4;/d&sub3; = 26 = BOSONIC</td><td>Growth rates</td></tr>
-    <tr><td>T755</td><td>A-Coefficient Sequence</td><td>c<sub>A</sub>(n) = {0,1,&minus;&lambda;,K,&minus;V,...} alternating SRG ladder</td><td>Parameter hierarchy</td></tr>
-  </table>
-
-  <h2>Phase XLIX &mdash; Generalized Quadrangle GQ(3,3) &amp; Finite Geometry (T696&ndash;T710)</h2>
-  <p>Fifteen theorems proving W(3,3) IS the collinearity graph of the <strong>self-dual generalized quadrangle GQ(3,3)</strong>. The single GQ order q = 3 generates all five SRG parameters. Ovoids and spreads have size ALPHA = 10; exactly 56 = DIM_O&middot;&Phi;&sub6; ovoids exist. Both Hoffman bounds are tight (Delsarte graph). The tangent hyperplane p&perp; equals the closed neighborhood N[p] with |p&perp;| = &Phi;&sub3; = 1 + K. The eigenmatrix determinant det(P) = &minus;E = &minus;240. All six non-trivial Krein parameters have denominator Q = 3.</p>
-  <table>
-    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
-    <tr><td>T696</td><td>GQ Self-Duality</td><td>s = t = q; Points = Lines = V; &omega; = &mu;</td><td>Point-line symmetry</td></tr>
-    <tr><td>T697</td><td>GQ Order &rarr; SRG</td><td>K = q(q+1); &lambda; = q&minus;1; &mu; = q+1; r = q&minus;1; s = &minus;(q+1)</td><td>Five from one</td></tr>
-    <tr><td>T698</td><td>Ovoid-Spread Duality</td><td>Ovoid = Spread = 1+q&sup2; = &alpha;; &alpha;&middot;&omega; = V</td><td>Dual configurations</td></tr>
-    <tr><td>T699</td><td>56 Ovoids</td><td>DIM_O&middot;&Phi;&sub6; = 56; per point K+&lambda; = 14; missing V+&lambda; = 42</td><td>|W(E&sub7;)|/|W(E&sub6;)|</td></tr>
-    <tr><td>T700</td><td>Delsarte Graph</td><td>Both LP bounds tight: &omega; = 4, &alpha; = 10; regular cliques &amp; indep sets</td><td>Tight optimality</td></tr>
-    <tr><td>T701</td><td>Incidence = Triangles</td><td>V&middot;&mu; = C&sub3; = 160</td><td>Incidence geometry</td></tr>
-    <tr><td>T702</td><td>Tangent Hyperplane</td><td>|p&perp;| = &Phi;&sub3; = 1+K; non-nbrs = V&minus;&Phi;&sub3; = ALBERT</td><td>Local = hyperplane</td></tr>
-    <tr><td>T703</td><td>Projective Hierarchy</td><td>|PG(n,q)| = &omega;, &Phi;&sub3;, V; [4,k]&sub3; symmetry</td><td>Gaussian binomials</td></tr>
-    <tr><td>T704</td><td>Non-Isotropic Lines</td><td>[4,2]&sub3; = &alpha;&middot;&Phi;&sub3; = 130; non-iso = q&sup2;&middot;&alpha; = 90</td><td>Symplectic vs projective</td></tr>
-    <tr><td>T705</td><td>Eigenmatrix Determinant</td><td>det(P) = &minus;E = &minus;240; det(Q) = &minus;DIM_O&middot;&alpha;&sup2;/Q</td><td>Spectral volume</td></tr>
-    <tr><td>T706</td><td>Dual Eigenmatrix Q</td><td>Rows [1,f,g], [1,&mu;,&minus;N], [1,&minus;DIM_O/Q, N/Q]</td><td>Multiplicity encoding</td></tr>
-    <tr><td>T707</td><td>Krein Parameters</td><td>All 6 non-trivial have denom Q; numerators from SRG</td><td>Hadamard idempotents</td></tr>
-    <tr><td>T708</td><td>Galois Field Tower</td><td>|GF(q)*| = &lambda;; |GF(q&sup2;)*| = DIM_O; q&sup4;&minus;1 = 2V</td><td>Finite field anatomy</td></tr>
-    <tr><td>T709</td><td>GQ Axiom Counts</td><td>V&minus;&mu; = 36 external cliques; K(&mu;&minus;1) = 36</td><td>Axiom verification</td></tr>
-    <tr><td>T710</td><td>Intersection Numbers</td><td>p&sup2;&sub1;&sub1; = &mu;; p&sup2;&sub1;&sub2; = DIM_O; p&sup2;&sub2;&sub2; = &lambda;&middot;q&sup2;</td><td>Association scheme</td></tr>
-  </table>
   <table>
     <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
     <tr><td>T681</td><td>Weyl Group Identity</td><td>|Aut| = |W(E&sub6;)| = 51840 = 2&sup7;&middot;3&sup4;&middot;5</td><td>Exceptional symmetry</td></tr>
@@ -2038,7 +1930,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 740 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 695 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2481,7 +2373,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (4091+ test methods across 52 files) rigorously verifies all 770 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3693+ test methods across 47 files) rigorously verifies all 695 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -5335,7 +5227,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 4091+ pytest methods verifying 770 theorems &amp; 34 predictions across 52 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3693+ pytest methods verifying 695 theorems &amp; 34 predictions across 47 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->

@@ -1,0 +1,9 @@
+quantity,page_value,benchmark,notes
+alpha_inverse,137.036004,CODATA 2022 137.035999177,"close numerically, not exact experimentally"
+sin2_theta_W_GUT,3/8 = 0.375,"GUT-boundary style value, not low-energy observable",page also uses 3/13 as EW value
+sin2_theta_W_EW,3/13 = 0.230769,effective weak mixing angle ≈ 0.2312–0.2315 depending on scheme,scheme dependent
+v_EW,246,246.2196508 from G_F,"integer closure, not precision electroweak fit"
+Higgs_mass_GeV,125.25,≈125.2,close numerically
+Omega_DM,4/15 = 0.266667,≈0.265,close numerically
+Omega_b,1/20 = 0.05,≈0.049,close numerically
+Omega_DE,41/60 = 0.683333,≈0.685,close numerically
