@@ -22,9 +22,9 @@ def test_readme_tracks_current_frontier_and_exact_pmns() -> None:
     assert "Information-Theoretic Closure & Holographic Bound" in text
 
 
-def test_pages_source_uses_layered_rigor_language() -> None:
-    text = _read("docs/index_source.html")
-    assert "Verified Frontier" in text
+def test_pages_live_index_uses_current_top_level_language() -> None:
+    text = _read("docs/index.html")
+    assert "Verified Results" in text
     assert "Physics Interpretation (Conjectural)" in text
     assert "Historical Archive" in text
     assert "4/13" in text
@@ -32,10 +32,11 @@ def test_pages_source_uses_layered_rigor_language() -> None:
     assert "2/91" in text
     assert "J_max" in text
     assert "J = J_max sin" in text
+    assert "residual gaps on top of that structure" in text
 
 
-def test_pages_verified_section_promotes_exact_pmns_route() -> None:
-    text = _read("docs/index_source.html")
+def test_pages_verified_section_promotes_exact_pmns_route_and_spectral_bridge() -> None:
+    text = _read("docs/index.html")
     start = text.index('<section id="verified">')
     end = text.index('<section id="conjectural">')
     verified = text[start:end]
@@ -45,3 +46,5 @@ def test_pages_verified_section_promotes_exact_pmns_route() -> None:
     assert "2/91" in verified
     assert "J_max" in verified
     assert "J = J_max sin" in verified
+    assert "tests/test_exact_spectral_bridge.py" in verified
+    assert "Str(e^-tD^2)=-80" in verified
