@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>545 Theorems &bull; 34 Predictions &bull; 2943+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>560 Theorems &bull; 34 Predictions &bull; 3027+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">545 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">545 proven theorems with 2943+ automated tests across 37 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">560 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">560 proven theorems with 3027+ automated tests across 38 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1226,6 +1226,30 @@ section h2::after {
   </table>
 </section>
 
+<!-- Phase XXXIX -->
+<section>
+  <h2>Phase XXXIX — Spectral Thermodynamics &amp; Quantum Walks (T546–T560)</h2>
+  <p>Fifteen theorems exploring heat kernels, spectral zeta functions, quantum walks, and thermodynamics on W(3,3). Key discovery: the continuous-time quantum walk has period exactly &pi; with <strong>perfect revival</strong>, and at the half-period &pi;/2 the return probability is exactly 1/N&sup2; = 1/25 with amplitude &minus;dim<sub>O</sub>/V.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
+    <tr><td>T546</td><td>Heat Trace</td><td>Z(t) = 1+fe<sup>&minus;&theta;t</sup>+ge<sup>&minus;(k+&mu;)t</sup>; Z(0)=V</td><td>Spectral partition function</td></tr>
+    <tr><td>T547</td><td>Trace Moments</td><td>Tr(L)=2E; Tr(L&sup2;)/Tr(L)=&Phi;<sub>3</sub>=13</td><td>Cyclotomic ratio in heat asymptotics</td></tr>
+    <tr><td>T548</td><td>Spectral Determinant</td><td>det&prime;(L) = 10<sup>24</sup>&middot;16<sup>15</sup> = 2<sup>84</sup>&middot;5<sup>24</sup></td><td>Only primes 2,5 in Kirchhoff determinant</td></tr>
+    <tr><td>T549</td><td>Spectral Zeta</td><td>&zeta;<sub>L</sub>(1) = 267/80 (Green&rsquo;s function trace)</td><td>Zeta regularization on graph</td></tr>
+    <tr><td>T550</td><td>Zeta-Determinant</td><td>&minus;&zeta;&prime;(0) = ln det&prime;(L) = 84 ln 2+24 ln 5</td><td>QFT zeta regularization identity</td></tr>
+    <tr><td>T551</td><td>Estrada Index</td><td>EE = e<sup>k</sup>+fe<sup>r</sup>+ge<sup>s</sup>; e<sup>k</sup> &gt; 99.8%</td><td>Subgraph centrality &amp; communicability</td></tr>
+    <tr><td>T552</td><td>Bipartiteness</td><td>&beta; = ẼẼ/EE &asymp; 0.005 &Lt; 1</td><td>Non-bipartite = chiral matter possible</td></tr>
+    <tr><td>T553</td><td>Von Neumann Entropy</td><td>S = &frac12; ln(V(V&minus;&mu;)) = ln(q&radic;(&mu;V))</td><td>Graph entropy from density matrix</td></tr>
+    <tr><td>T554</td><td>Quantum Walk Period</td><td>T = 2&pi;/gcd(10,16,6) = &pi;</td><td>Integer spectrum &rArr; periodicity</td></tr>
+    <tr><td>T555</td><td>Perfect Revival</td><td>|&langle;v|e<sup>&minus;iA&pi;</sup>|v&rangle;|&sup2; = 1</td><td>Perfect quantum state transfer</td></tr>
+    <tr><td>T556</td><td>Half-Period Echo</td><td>p(&pi;/2) = dim<sub>O</sub>&sup2;/V&sup2; = 1/N&sup2; = 1/25</td><td>Quantum echo at &minus;1/N amplitude</td></tr>
+    <tr><td>T557</td><td>Time-Averaged Return</td><td>&langle;p&rangle; = (1+f&sup2;+g&sup2;)/V&sup2; = 401/800</td><td>401 is prime; quantum localization</td></tr>
+    <tr><td>T558</td><td>Cheeger Bounds</td><td>N &le; h &le; &radic;E; W(3,3) is an expander</td><td>Isoperimetric inequality from spectrum</td></tr>
+    <tr><td>T559</td><td>Thermodynamic Energy</td><td>U(&beta;&rarr;0) = k = 12 (degree = &infin;-T energy)</td><td>Statistical mechanics on graph</td></tr>
+    <tr><td>T560</td><td>Lagrange Calculus</td><td>&Delta; = (k&minus;r)(k&minus;s)(r&minus;s) = Vf = 960</td><td>A&sup2;+2A&minus;dim<sub>O</sub>&middot;I = &mu;J</td></tr>
+  </table>
+</section>
+
 <!-- ═══════════════════════ DEEP DISCOVERIES ═══════════════════════ -->
 <section id="discoveries">
   <h2><span class="icon">★</span> Deep Discoveries — From the Codebase</h2>
@@ -1698,7 +1722,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 545 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 560 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2141,7 +2165,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (2943+ test methods across 37 files) rigorously verifies all 545 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3027+ test methods across 38 files) rigorously verifies all 560 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -4995,7 +5019,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 2943+ pytest methods verifying 545 theorems &amp; 34 predictions across 37 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3027+ pytest methods verifying 560 theorems &amp; 34 predictions across 38 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
