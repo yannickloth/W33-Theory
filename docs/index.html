@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>590 Theorems &bull; 34 Predictions &bull; 3182+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>605 Theorems &bull; 34 Predictions &bull; 3256+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">590 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">590 proven theorems with 3182+ automated tests across 40 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">605 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">605 proven theorems with 3256+ automated tests across 41 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1297,6 +1297,29 @@ section h2::after {
   </table>
 </section>
 
+<section>
+  <h2>Phase XLII &mdash; Polynomial Invariants &amp; Spectral Algebra (T591&ndash;T605)</h2>
+  <p>Fifteen theorems on polynomial and algebraic invariants of the adjacency matrix. Key discovery: <strong>Ihara zeta discriminant &Delta;<sub>r</sub> = &minus;V = &minus;40</strong> &mdash; the graph encodes its own vertex count in its zeta function! Graph energy = E/2, Hoffman polynomial H(x) = (x&minus;r)(x&minus;s)/&mu;, and spanning tree count &tau; = 2<sup>81</sup>&middot;5<sup>23</sup>.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
+    <tr><td>T591</td><td>Spanning Trees</td><td>&tau; = 2<sup>81</sup>&middot;5<sup>23</sup> (Kirchhoff)</td><td>Exponents q<sup>4</sup> and V&minus;1&minus;K&minus;&mu;</td></tr>
+    <tr><td>T592</td><td>Adjacency Determinant</td><td>det(A) = &minus;3&middot;2<sup>56</sup></td><td>56 = 2(V&minus;K); sign from odd g</td></tr>
+    <tr><td>T593</td><td>Ihara Discriminants</td><td>&Delta;<sub>r</sub> = &minus;V; &Delta;<sub>s</sub> = &minus;(V&minus;K)</td><td>Zeta function knows vertex count!</td></tr>
+    <tr><td>T594</td><td>Ramanujan Property</td><td>|s| = 4 &le; 2&radic;(K&minus;1) &asymp; 6.63</td><td>Spectral gap = DIM_O = 8</td></tr>
+    <tr><td>T595</td><td>Hoffman Polynomial</td><td>H(x) = (x&minus;r)(x&minus;s)/&mu;; H(K) = V</td><td>Denominator is &mu;</td></tr>
+    <tr><td>T596</td><td>Graph Energy</td><td>&sum;|&lambda;| = E/2 = 120</td><td>Energy = half the edges</td></tr>
+    <tr><td>T597</td><td>Minimal Polynomial</td><td>x&sup3; &minus; 10x&sup2; &minus; 32x + 96</td><td>Coefficients: &Theta;, 2(K+|s|), K&middot;DIM_O</td></tr>
+    <tr><td>T598</td><td>Resolvent Trace</td><td>Tr(A<sup>&minus;1</sup>) = N&sup2;/q = 25/3</td><td>Resolvent knows N and q</td></tr>
+    <tr><td>T599</td><td>Triangle Count</td><td>160 = V&middot;&mu; = V&middot;K&middot;&lambda;/6</td><td>Triangles = flags of GQ</td></tr>
+    <tr><td>T600</td><td>Walk Counts</td><td>w<sub>2</sub>=K, w<sub>3</sub>=2K=f</td><td>Closed walks encode multiplicities</td></tr>
+    <tr><td>T601</td><td>SRG Matrix Identity</td><td>A&sup2; = &mu;J + DIM_O&middot;I &minus; 2A</td><td>Fundamental matrix equation</td></tr>
+    <tr><td>T602</td><td>Eigenvalue Algebra</td><td>rs = &mu;&minus;K = &minus;DIM_O; r+s = &lambda;&minus;&mu;</td><td>Vieta formulas from SRG</td></tr>
+    <tr><td>T603</td><td>Min Poly Coefficients</td><td>|c<sub>1</sub>|=&Theta;, c<sub>3</sub>=K&middot;DIM_O</td><td>c<sub>1</sub>&middot;c<sub>3</sub> = V&middot;f</td></tr>
+    <tr><td>T604</td><td>Spectral Gaps</td><td>K&minus;r=&Theta;, r&minus;s=2q, K&minus;s=16</td><td>Gaps encode all parameters</td></tr>
+    <tr><td>T605</td><td>Vandermonde Product</td><td>(K&minus;r)(K&minus;s)(r&minus;s) = V&middot;f = 960</td><td>Spectral gap product = V&middot;f</td></tr>
+  </table>
+</section>
+
 <!-- ═══════════════════════ DEEP DISCOVERIES ═══════════════════════ -->
 <section id="discoveries">
   <h2><span class="icon">★</span> Deep Discoveries — From the Codebase</h2>
@@ -1769,7 +1792,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 590 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 605 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2212,7 +2235,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (3182+ test methods across 40 files) rigorously verifies all 590 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3256+ test methods across 41 files) rigorously verifies all 605 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -5066,7 +5089,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3182+ pytest methods verifying 590 theorems &amp; 34 predictions across 40 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3256+ pytest methods verifying 605 theorems &amp; 34 predictions across 41 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
