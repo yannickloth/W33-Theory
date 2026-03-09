@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>W(3,3)–E₈ Theory — A Finite-Geometry Theory of Everything</title>
-<meta name="description" content="The symplectic polar space W(3,3) over GF(3) encodes the Standard Model gauge structure, three chiral generations, and mixing matrices through an emergent E₈ root system.">
+<title>W(3,3)-E8 Live Paper -- Exact Closure and Finite-Geometry Program</title>
+<meta name="description" content="Evidence-tiered live paper for the W(3,3)-E8 research program: verified geometry, exact PMNS cyclotomic formulas, and the CE2/L-infinity closure frontier.">
 <style>
 
 :root {
@@ -323,14 +323,15 @@ section h2::after {
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
 <header class="hero">
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
-  <div class="subtitle">A Finite-Geometry Theory of Everything</div>
+  <div class="subtitle">Live paper: exact closure and finite-geometry program</div>
   <div class="tagline">
-    The 40 points and 240 edges of the symplectic polar space <strong>W(3,3)</strong>
-    over GF(3) encode the complete gauge-geometric skeleton of the Standard Model —
-    gauge groups, three chiral generations, mixing matrices, and quantum gravity —
-    through an emergent <strong>E₈ root system</strong>, quantum error-correcting code,
-    and Calabi–Yau compactification. <strong>No free parameters.</strong><br>
-    <strong style="color: #ffd700; font-size: 0.7em">⚡ 2367/2367 checks • BROKE THROUGH 2000! • α⁻¹ = 137.036 • sin²θ<sub>W</sub> = 3/13 • M<sub>Z</sub> = 91 • m<sub>H</sub> = 125 • PMNS (1σ) • v<sub>EW</sub> = 246 • g* = 106.75 • CC = −122 • N<sub>eff</sub> = 3.044 • t₀ = 13.8 • H₀ = 67/73 • z_rec/z_eq • M<sub>Pl</sub> = 1.22×10¹⁹ • w=−1 • C_F=4/3 • SM+GR DERIVED • 480 = 5 ways • 27→9→3 generations • Leech 196560 • Golay [24,12,8] • tmf • NCG • Langlands • Swampland • Grand Unification • QECC • Lattice Packing • Quantum Groups • Operator Algebras • Statistical Mechanics • Geometric PDE • Dynamical Systems • Symplectic Topology • p-adic Analysis • Math Logic • Quantum Computing • Tropical Geometry • Knot Theory • Ergodic Theory • Mathematical Finance • Proof Theory • 85+ Domains</strong>
+    This page now separates <strong>verified computations</strong> from
+    <strong>conjectural physics interpretation</strong> and from the
+    <strong>historical archive</strong>. The current source of truth is the exact
+    geometry, the exact PMNS cyclotomic formulas, and the CE2 / L-infinity
+    closure frontier. The live first unresolved anchor is currently
+    <strong>a = (0,0,2)</strong> after clearing the <strong>a = (0,1,0)</strong>
+    and <strong>a = (0,0,1)</strong> slices.
   </div>
 </header>
 
@@ -340,12 +341,14 @@ section h2::after {
   <summary>Navigate</summary>
   <div class="nav-links">
 
-  <strong style="color: var(--gold); font-size: 0.85em;">Foundation</strong>
-  <a href="#numbers">Core Numbers</a>
-  <a href="#latest">Latest Frontier</a>
-  <a href="#theory">The Theory</a>
-  <a href="#physics">Physics Derivations</a>
-  <a href="#graphtheory">Graph Theory Properties</a>
+  <strong style="color: var(--gold); font-size: 0.85em;">Live Paper</strong>
+  <a href="#verified">Verified Frontier</a>
+  <a href="#conjectural">Physics Interpretation</a>
+  <a href="#archive">Historical Archive</a>
+  <a href="#numbers">Historical Core Numbers</a>
+  <a href="#physics">Historical Physics</a>
+  <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
+  <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/pmns_colleague_email.md">PMNS Email Memo</a>
 
   <strong style="color: var(--gold); font-size: 0.85em;">Mathematical Pillars</strong>
   <a href="#theme-a">A: Exceptional &amp; Sporadic</a>
@@ -369,29 +372,48 @@ section h2::after {
 
 <div class="container">
 
-<!-- ═══════════════════════ LATEST FRONTIER ═══════════════════════ -->
-<section id="latest">
-  <h2><span class="icon">↻</span> Latest Frontier — March 2026</h2>
+<!-- ═══════════════════════ VERIFIED FRONTIER ═══════════════════════ -->
+<section id="verified">
+  <h2><span class="icon">↻</span> Verified Frontier — March 2026</h2>
   <div class="spotlight">
-    <p>The older findings remain part of the project. The live research frontier is now the dual mixed-sector closure program in the firewall / CE2 / L∞ layer.</p>
+    <p>This top section is the evidence-tiered source of truth for the live public site. Older broad claims remain preserved below, but they are archive material unless they are re-promoted here with exact script and test support.</p>
   </div>
   <div class="card-grid">
-    <div class="card"><div class="num">SU(3)</div><div class="label">Canonical gauge fixed</div><div class="detail">The canonical SU(3) gauge and signed W(E₆) action on the 27 are exported and verified in fixed conventions.</div></div>
-    <div class="card"><div class="num">CE2</div><div class="label">Global dual predictor</div><div class="detail">The cocycle program now closes whole dual g₁,g₂,g₂ family slices rather than isolated witness triples.</div></div>
-    <div class="card"><div class="num">3</div><div class="label">Anchor families closed</div><div class="detail">The dual frontier has been pushed through a = (0,1,2), a = (2,0,2), and a = (2,2,1).</div></div>
-    <div class="card"><div class="num">(2,1,2)</div><div class="label">Live unresolved sample</div><div class="detail">The current frontier is tracked explicitly by the sampler and artifact files shipped in the repo.</div></div>
+    <div class="card"><div class="num">240</div><div class="label">Geometry remains exact</div><div class="detail">SRG(40,12,2,4), 240 edges, 160 triangles, b1 = 81, and L1 spectrum 0^81 4^120 10^24 16^15 remain stable verified invariants.</div></div>
+    <div class="card"><div class="num">4/13</div><div class="label">Exact PMNS route</div><div class="detail">The promoted PMNS formulas are the cyclotomic ones: sin^2(theta_12)=4/13, sin^2(theta_23)=7/13, sin^2(theta_13)=2/91 from PMNS_CYCLOTOMIC.py.</div></div>
+    <div class="card"><div class="num">CE2</div><div class="label">Dual predictor frontier</div><div class="detail">The CE2 / L∞ program now closes the full a=(0,1,0) and a=(0,0,1) anchor slices. The next unresolved anchor is a=(0,0,2).</div></div>
+    <div class="card"><div class="num">J_max</div><div class="label">Phase-qualified PMNS</div><div class="detail">Angle-only Jarlskog magnitude is J_max ~= 0.03336. Physical J remains phase dependent: J = J_max sin(delta).</div></div>
   </div>
   <ul class="quick-list">
-    <li><strong>Global predictor:</strong> <code>scripts/ce2_global_cocycle.py</code></li>
+    <li><strong>Exact PMNS source:</strong> <code>PMNS_CYCLOTOMIC.py</code></li>
+    <li><strong>Exact PMNS tests:</strong> <code>tests/test_master_derivation.py</code> and <code>tests/test_tower_generation_rules.py</code></li>
+    <li><strong>Global CE2 predictor:</strong> <code>scripts/ce2_global_cocycle.py</code></li>
     <li><strong>Firewall / L∞ extension:</strong> <code>tools/build_linfty_firewall_extension.py</code></li>
-    <li><strong>Frontier sampler:</strong> <code>tools/sample_dual_g1g2g2_frontier.py</code></li>
-    <li><strong>Live artifact:</strong> <code>artifacts/dual_g1g2g2_frontier_sample.json</code></li>
+    <li><strong>Current first unresolved witness:</strong> <code>((22,0),(1,0),(16,1)) -&gt; W = -E_(16,0) / 54</code></li>
+    <li><strong>Current first overlap witness:</strong> <code>((22,0),(1,1),(23,0)) -&gt; U = -g1(15,2) / 108, V = E_(1,2) / 108</code></li>
+    <li><strong>Technical note:</strong> <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">March 2026 frontier note</a></li>
+    <li><strong>Email deliverable:</strong> <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/pmns_colleague_email.md">PMNS colleague memo</a></li>
   </ul>
+</section>
+
+<section id="conjectural">
+  <h2><span class="icon">∆</span> Physics Interpretation (Conjectural)</h2>
+  <p>The exact CE2 data continues to look staged rather than random: transport terms on affine or Hessian lines appear first, gauge companions appear next, and diagonal or source coherence appears only after the transport branch is fixed.</p>
+  <p>The SRG formulas for exceptional dimensions and electroweak quantities may therefore be shadows of a more fundamental Jordan / Freudenthal / TKK / projector mechanism. That interpretation is active research, not yet a finished theorem.</p>
+  <p>The same caution applies to the broader TOE narrative: the project retains a large historical synthesis, but the current rigorous core is narrower than the strongest historical claims.</p>
+</section>
+
+<section id="archive">
+  <h2><span class="icon">◫</span> Historical Archive</h2>
+  <div class="spotlight">
+    <p>Everything below this section is preserved historical project material. It contains exact results, heuristics, conjectural bridges, and older claim layers. In particular, older PMNS approximations, numerical optimization tracks, and multiple electroweak formula layers are archive context unless they are explicitly promoted in the verified section above.</p>
+  </div>
 </section>
 
 <!-- ═══════════════════════ CORE NUMBERS ═══════════════════════ -->
 <section id="numbers">
-  <h2><span class="icon">⬡</span> Core Numbers</h2>
+  <h2><span class="icon">⬡</span> Historical Core Numbers</h2>
+  <p>This section is preserved historical material. It contains exact invariants mixed with older interpretive formula layers and should be read under the archive banner above.</p>
   <div class="card-grid">
     <div class="card"><div class="num">240</div><div class="label">Edges = E₈ roots</div><div class="detail">The collinearity graph of W(3,3) has exactly 240 edges — the same count as the roots of the E₈ exceptional Lie algebra.</div></div>
     <div class="card"><div class="num">51,840</div><div class="label">|Aut| = |W(E₆)|</div><div class="detail">The automorphism group Sp(4,3) has order 51,840, isomorphic to the Weyl group of E₆.</div></div>
@@ -576,10 +598,8 @@ section h2::after {
 
 <!-- ═══════════════════════ PHYSICS DERIVATIONS ═══════════════════════ -->
 <section id="physics">
-  <h2><span class="icon">⚡</span> Physics Derivations</h2>
-  <p>Every result below is derived from exactly two inputs: the field <strong>F₃ = {0,1,2}</strong>
-  and the symplectic form <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
-  No parameters are chosen. No fitting is performed. All <strong style="color: #ffd700;">2367</strong> checks pass.</p>
+  <h2><span class="icon">⚡</span> Historical Physics Derivations</h2>
+  <p>This section is also archive material. It records older derivation layers and broad verification tables. The promoted exact PMNS route and the live CE2 frontier are summarized in the verified section above.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification — 2367/2367</h2>
   <p>The script <strong>THEORY_OF_EVERYTHING.py</strong> derives <em>every</em> result below from exactly two inputs:

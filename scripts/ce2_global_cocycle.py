@@ -3903,14 +3903,44 @@ _ANCHOR_011_OVERLAP_CASES: dict[int, tuple[int, int, int, int, int]] = {
     15: (23, 1, 21, -1, -1),
 }
 
+_ANCHOR_001_LINE_CASES: dict[int, tuple[int, int, int]] = {
+    2: (15, 0, 1),
+    3: (14, 0, -1),
+    5: (12, 0, -1),
+    8: (9, 0, 1),
+    17: (26, 22, 1),
+    18: (25, 22, -1),
+    19: (24, 22, 1),
+    20: (23, 22, -1),
+}
+
+_ANCHOR_001_OVERLAP_CASES: dict[int, tuple[int, int, int, int, int]] = {
+    2: (20, 16, 1, 1, 1),
+    3: (26, 6, 11, 1, -1),
+    5: (24, 10, 7, 1, 1),
+    8: (18, 13, 4, 1, -1),
+    9: (25, 4, 13, 1, -1),
+    12: (19, 7, 10, -1, -1),
+    14: (17, 11, 6, 1, -1),
+    15: (23, 1, 16, -1, -1),
+}
+
 _ANCHOR_010_LINE_CASES: dict[int, tuple[int, int, int]] = {
     7: (26, 16, 1),
+    11: (25, 16, -1),
+    13: (24, 16, -1),
+    15: (22, 16, 1),
 }
 
 _ANCHOR_010_OVERLAP_CASES: dict[int, tuple[int, int, int, int, int]] = {
     1: (15, 23, 0, -1, -1),
     3: (26, 6, 12, 1, 1),
     5: (24, 10, 8, 1, -1),
+    7: (19, 12, 6, -1, -1),
+    9: (25, 4, 14, 1, 1),
+    11: (17, 14, 4, 1, 1),
+    13: (18, 8, 10, 1, -1),
+    21: (22, 0, 23, 1, 1),
 }
 
 _ANCHOR_100_LINE_CASES: dict[int, tuple[int, int, int]] = {
@@ -4536,6 +4566,12 @@ def _anchor_011_active(a_i: int) -> bool:
     """Return whether the anchored a=(0,1,1) branch is active."""
     e6id_to_vec, _vec_to_e6id = _heisenberg_vec_maps()
     return tuple(int(v) for v in e6id_to_vec[int(a_i)]) == (0, 1, 1)
+
+
+def _anchor_001_active(a_i: int) -> bool:
+    """Return whether the anchored a=(0,0,1) branch is active."""
+    e6id_to_vec, _vec_to_e6id = _heisenberg_vec_maps()
+    return tuple(int(v) for v in e6id_to_vec[int(a_i)]) == (0, 0, 1)
 
 
 def _anchor_010_active(a_i: int) -> bool:
@@ -6764,6 +6800,85 @@ def predict_dual_anchor_011_overlap_uv_family_uvw(
     return CE2SparseUVW(U=U, V=V, W=[])
 
 
+def predict_dual_anchor_001_line_w_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Table-driven W-family on the anchored a=(0,0,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_001_active(a_i):
+        return None
+    case = _ANCHOR_001_LINE_CASES.get(b_i)
+    if case is None:
+        return None
+    line_c_i, target_i, sign = case
+    if c_i != line_c_i:
+        return None
+    if b_j != a_j or c_j == a_j:
+        return None
+
+    W = [(_flat_e6(c_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=[], W=W)
+
+
+def predict_dual_anchor_001_line_v_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Color-swapped V-family on the anchored a=(0,0,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_001_active(a_i):
+        return None
+    case = _ANCHOR_001_LINE_CASES.get(b_i)
+    if case is None:
+        return None
+    line_c_i, target_i, sign = case
+    if c_i != line_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    V = [(_flat_e6(b_i, target_i), Fraction(sign, 54))]
+    return CE2SparseUVW(U=[], V=V, W=[])
+
+
+def predict_dual_anchor_001_overlap_uv_family_uvw(
+    a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
+) -> CE2SparseUVW | None:
+    """Half-strength U/V overlap on the anchored a=(0,0,1) orbit."""
+    a_i, a_j = int(a[0]), int(a[1])
+    b_i, b_j = int(b[0]), int(b[1])
+    c_i, c_j = int(c[0]), int(c[1])
+
+    if not _anchor_001_active(a_i):
+        return None
+    case = _ANCHOR_001_OVERLAP_CASES.get(b_i)
+    if case is None:
+        return None
+    overlap_c_i, u_i, v_target_i, u_base_sign, v_sign = case
+    if c_i != overlap_c_i:
+        return None
+    if c_j != a_j or b_j == a_j:
+        return None
+
+    delta_b = (b_j - a_j) % 3
+    if delta_b == 1:
+        delta_sign = 1
+    elif delta_b == 2:
+        delta_sign = -1
+    else:
+        return None
+
+    support_j = (-a_j - b_j) % 3
+    U = [(27 * 27 + 9 + u_i * 3 + support_j, Fraction(u_base_sign * delta_sign, 108))]
+    V = [(_flat_e6(b_i, v_target_i), Fraction(v_sign, 108))]
+    return CE2SparseUVW(U=U, V=V, W=[])
+
+
 def predict_dual_anchor_010_line_w_family_uvw(
     a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]
 ) -> CE2SparseUVW | None:
@@ -7196,6 +7311,15 @@ def predict_dual_g1g2g2_uvw(
     if uvw is not None:
         return uvw
     uvw = predict_dual_anchor_011_overlap_uv_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_001_line_w_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_001_line_v_family_uvw(a, b, c)
+    if uvw is not None:
+        return uvw
+    uvw = predict_dual_anchor_001_overlap_uv_family_uvw(a, b, c)
     if uvw is not None:
         return uvw
     uvw = predict_dual_anchor_010_line_w_family_uvw(a, b, c)

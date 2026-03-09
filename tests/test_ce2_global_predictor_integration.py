@@ -2129,6 +2129,68 @@ def test_global_ce2_predictor_cancels_anchor_011_overlap_families() -> None:
     _assert_predictor_cancels_triples(triples)
 
 
+def test_global_ce2_predictor_cancels_anchor_001_line_families() -> None:
+    """Line families on the anchored a=(0,0,1) orbit."""
+    triples = [
+        ((21, 0), (2, 0), (15, 1)),
+        ((21, 0), (2, 0), (15, 2)),
+        ((21, 0), (2, 1), (15, 0)),
+        ((21, 0), (2, 2), (15, 0)),
+        ((21, 0), (3, 0), (14, 1)),
+        ((21, 0), (3, 0), (14, 2)),
+        ((21, 0), (3, 1), (14, 0)),
+        ((21, 0), (3, 2), (14, 0)),
+        ((21, 0), (5, 0), (12, 1)),
+        ((21, 0), (5, 0), (12, 2)),
+        ((21, 0), (5, 1), (12, 0)),
+        ((21, 0), (5, 2), (12, 0)),
+        ((21, 0), (8, 0), (9, 1)),
+        ((21, 0), (8, 0), (9, 2)),
+        ((21, 0), (8, 1), (9, 0)),
+        ((21, 0), (8, 2), (9, 0)),
+        ((21, 0), (17, 0), (26, 1)),
+        ((21, 0), (17, 0), (26, 2)),
+        ((21, 0), (17, 1), (26, 0)),
+        ((21, 0), (17, 2), (26, 0)),
+        ((21, 0), (18, 0), (25, 1)),
+        ((21, 0), (18, 0), (25, 2)),
+        ((21, 0), (18, 1), (25, 0)),
+        ((21, 0), (18, 2), (25, 0)),
+        ((21, 0), (19, 0), (24, 1)),
+        ((21, 0), (19, 0), (24, 2)),
+        ((21, 0), (19, 1), (24, 0)),
+        ((21, 0), (19, 2), (24, 0)),
+        ((21, 0), (20, 0), (23, 1)),
+        ((21, 0), (20, 0), (23, 2)),
+        ((21, 0), (20, 1), (23, 0)),
+        ((21, 0), (20, 2), (23, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
+def test_global_ce2_predictor_cancels_anchor_001_overlap_families() -> None:
+    """Half-strength overlap families on the anchored a=(0,0,1) orbit."""
+    triples = [
+        ((21, 0), (2, 1), (20, 0)),
+        ((21, 0), (2, 2), (20, 0)),
+        ((21, 0), (3, 1), (26, 0)),
+        ((21, 0), (3, 2), (26, 0)),
+        ((21, 0), (5, 1), (24, 0)),
+        ((21, 0), (5, 2), (24, 0)),
+        ((21, 0), (8, 1), (18, 0)),
+        ((21, 0), (8, 2), (18, 0)),
+        ((21, 0), (9, 1), (25, 0)),
+        ((21, 0), (9, 2), (25, 0)),
+        ((21, 0), (12, 1), (19, 0)),
+        ((21, 0), (12, 2), (19, 0)),
+        ((21, 0), (14, 1), (17, 0)),
+        ((21, 0), (14, 2), (17, 0)),
+        ((21, 0), (15, 1), (23, 0)),
+        ((21, 0), (15, 2), (23, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
 def test_global_ce2_predictor_cancels_anchor_010_line_families() -> None:
     """The az=0 line frontier closes by a constant-target W/V law."""
     triples = [
@@ -2184,6 +2246,46 @@ def test_global_ce2_predictor_leaves_anchor_010_overlap_representatives_zero() -
         linfty.enable_ce2_global_predictor()
         repaired = linfty.homotopy_jacobi(x, y, z)
         assert max_abs(repaired) < 1e-10, triple
+
+
+def test_global_ce2_predictor_cancels_anchor_010_target16_line_families() -> None:
+    """The second az=0 line branch lands on the fixed target i=16 orbit."""
+    triples = [
+        ((20, 0), (7, 0), (26, 1)),
+        ((20, 0), (7, 0), (26, 2)),
+        ((20, 0), (7, 1), (26, 0)),
+        ((20, 0), (7, 2), (26, 0)),
+        ((20, 0), (11, 0), (25, 1)),
+        ((20, 0), (11, 0), (25, 2)),
+        ((20, 0), (11, 1), (25, 0)),
+        ((20, 0), (11, 2), (25, 0)),
+        ((20, 0), (13, 0), (24, 1)),
+        ((20, 0), (13, 0), (24, 2)),
+        ((20, 0), (13, 1), (24, 0)),
+        ((20, 0), (13, 2), (24, 0)),
+        ((20, 0), (15, 0), (22, 1)),
+        ((20, 0), (15, 0), (22, 2)),
+        ((20, 0), (15, 1), (22, 0)),
+        ((20, 0), (15, 2), (22, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
+
+
+def test_global_ce2_predictor_cancels_anchor_010_overlap_families() -> None:
+    """The remaining az=0 overlap witnesses close in sparse 1/108 U/V pairs."""
+    triples = [
+        ((20, 0), (7, 1), (19, 0)),
+        ((20, 0), (7, 2), (19, 0)),
+        ((20, 0), (9, 1), (25, 0)),
+        ((20, 0), (9, 2), (25, 0)),
+        ((20, 0), (11, 1), (17, 0)),
+        ((20, 0), (11, 2), (17, 0)),
+        ((20, 0), (13, 1), (18, 0)),
+        ((20, 0), (13, 2), (18, 0)),
+        ((20, 0), (21, 1), (22, 0)),
+        ((20, 0), (21, 2), (22, 0)),
+    ]
+    _assert_predictor_cancels_triples(triples)
 
 
 def test_global_ce2_predictor_cancels_a01_b00_reflection_u_families() -> None:
