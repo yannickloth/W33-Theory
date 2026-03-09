@@ -325,7 +325,7 @@ section h2::after {
   <h1>W(3,3)–<span>E₈</span> Theory</h1>
   <div class="subtitle">A Finite-Geometry Theory of Everything</div>
   <div class="tagline">
-    <strong>575 Theorems &bull; 34 Predictions &bull; 3103+ Tests &bull; 5 Numbers</strong><br><br>
+    <strong>590 Theorems &bull; 34 Predictions &bull; 3182+ Tests &bull; 5 Numbers</strong><br><br>
     The symplectic polar space <strong>W(3,3)</strong>
     over GF(3) — with just 5 input parameters (v,k,&lambda;,&mu;,q) = (40,12,2,4,3) —
     encodes the Standard Model gauge groups, three chiral generations, all mixing matrices,
@@ -421,7 +421,7 @@ section h2::after {
     <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">575 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">575 proven theorems with 3103+ automated tests across 39 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">590 / 34</div><div class="label">Theorems / Predictions ★</div><div class="detail">590 proven theorems with 3182+ automated tests across 40 test suites. 34 quantitative predictions — all derived from 5 input numbers. <strong style="color: #ffd700;">All tests pass.</strong></div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -1274,6 +1274,29 @@ section h2::after {
   </table>
 </section>
 
+<section>
+  <h2>Phase XLI — Automorphism &amp; Orbit Counting (T576–T590)</h2>
+  <p>Fifteen theorems on Aut(W(3,3)) &cong; Sp(4,3) and its transitive actions. Key discovery: <strong>|Aut| = V&middot;(V&minus;&mu;)&sup2;</strong> &mdash; a factorization that requires (q+1) = (q&minus;1)&sup2;, uniquely solved by <strong>q = 3</strong>. All stabilizer orders flow from the master quantity (V&minus;&mu;)&sup2; = 6&sup4; = 1296.</p>
+  <table>
+    <tr><th>ID</th><th>Theorem</th><th>Key Result</th><th>Physics Link</th></tr>
+    <tr><td>T576</td><td>Group Order</td><td>|Aut| = 51840 = 2&sup7;&middot;3&sup4;&middot;5 = |W(E<sub>6</sub>)|</td><td>Weyl group of E&lt;sub&gt;6&lt;/sub&gt; governs symmetry</td></tr>
+    <tr><td>T577</td><td>Vertex Transitivity</td><td>Stab(v) = (V&minus;&mu;)&sup2; = 6&sup4; = 1296</td><td>Vertex-transitive: democratic spacetime</td></tr>
+    <tr><td>T578</td><td>Edge Transitivity</td><td>Stab(e) = 6&sup3; = 216 = 2(V&minus;&mu;)&sup2;/K</td><td>All gauge links equivalent</td></tr>
+    <tr><td>T579</td><td>Arc Transitivity</td><td>Stab(arc) = &mu;&middot;ALBERT = 108</td><td>Directed interactions uniform</td></tr>
+    <tr><td>T580</td><td>Flag Stabilizer</td><td>Stab(flag) = (V&minus;&mu;)&sup2;/&mu; = 324 = 18&sup2;</td><td>Local frame symmetry</td></tr>
+    <tr><td>T581</td><td>Non-Edge Stabilizer</td><td>Stab(ne) = 96 = 2q(&mu;)&sup2;</td><td>Complement orbit structure</td></tr>
+    <tr><td>T582</td><td>Rank-3 Scheme</td><td>3 orbits on V&times;V (rank = q)</td><td>Association scheme = q classes</td></tr>
+    <tr><td>T583</td><td>Stabilizer Ratios</td><td>Stab(v)/Stab(arc) = K; Stab(e)/Stab(arc) = r</td><td>SRG parameters from group ratios</td></tr>
+    <tr><td>T584</td><td>Group Uniqueness q=3</td><td>|Aut| = V&middot;(V&minus;&mu;)&sup2; iff (q+1)=(q&minus;1)&sup2; iff q=3</td><td>Unique group-theoretic selection</td></tr>
+    <tr><td>T585</td><td>Powers of Six</td><td>Stab(v)=6&sup4;, Stab(e)=6&sup3;; base 6=2q</td><td>Universal stabilizer base</td></tr>
+    <tr><td>T586</td><td>Permutation Character</td><td>1 + &chi;<sub>24</sub> + &chi;<sub>15</sub> = V = 40</td><td>Irreducible decomposition</td></tr>
+    <tr><td>T587</td><td>Distance Transitivity</td><td>Diameter 2 + rank 3 &rArr; distance-transitive</td><td>All distance classes are orbits</td></tr>
+    <tr><td>T588</td><td>Counting Identities</td><td>V&middot;K = 2E; k(k&minus;1&minus;&lambda;) = (V&minus;1&minus;k)&mu;</td><td>Handshaking &amp; double-counting</td></tr>
+    <tr><td>T589</td><td>Non-Self-Complementary</td><td>K=12 &ne; V&minus;1&minus;K=27; diff = &minus;g</td><td>Complement valency = ALBERT</td></tr>
+    <tr><td>T590</td><td>Stabilizer Cascade</td><td>All stabs from master (V&minus;&mu;)&sup2; = 1296</td><td>Single source for all symmetry orders</td></tr>
+  </table>
+</section>
+
 <!-- ═══════════════════════ DEEP DISCOVERIES ═══════════════════════ -->
 <section id="discoveries">
   <h2><span class="icon">★</span> Deep Discoveries — From the Codebase</h2>
@@ -1746,7 +1769,7 @@ section h2::after {
   </table>
   <div class="math-block" style="background: rgba(255,215,0,0.12); border-left-color: #ffd700; border-width: 4px;">
     <span class="eq" style="font-size: 1.2em;">
-      <strong style="color:#ffd700;">5 numbers &rarr; 575 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
+      <strong style="color:#ffd700;">5 numbers &rarr; 590 theorems &rarr; 0 free parameters &rarr; 1 universe</strong>
     </span>
   </div>
 
@@ -2189,7 +2212,7 @@ section h2::after {
   No parameters are chosen. No fitting is performed.</p>
 
 <h2><span class="icon">⚡</span> Complete Computational Verification</h2>
-  <p>The <strong>pytest</strong> suite (3103+ test methods across 39 files) rigorously verifies all 575 theorems and 34 predictions.
+  <p>The <strong>pytest</strong> suite (3182+ test methods across 40 files) rigorously verifies all 590 theorems and 34 predictions.
   Every result derives from exactly two inputs: <strong>F₃ = {0,1,2}</strong> and <strong>ω(x,y) = x₁y₃ − x₃y₁ + x₂y₄ − x₄y₂ mod 3</strong>.
   No parameters are chosen. No fitting is performed.</p>
 
@@ -5043,7 +5066,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Tests:</strong> 3103+ pytest methods verifying 575 theorems &amp; 34 predictions across 39 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
+  <p><strong>Tests:</strong> 3182+ pytest methods verifying 590 theorems &amp; 34 predictions across 40 test suites; THEORY_OF_EVERYTHING.py: 2367 extended consistency checks; all passing.</p>
 </section>
 
 </div><!-- /container -->
