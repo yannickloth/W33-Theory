@@ -42,6 +42,7 @@ from tomotope_cover_bridge import build_cover_bridge_summary
 from w33_center_quad_transport_a2_bridge import build_center_quad_transport_a2_summary
 from w33_curved_a2_heat_density_asymptotics import build_curved_a2_heat_density_asymptotics_summary
 from w33_curved_a2_quadratic_seed_bridge import build_curved_a2_quadratic_seed_bridge_summary
+from w33_curved_a2_refined_quadratic_bridge import build_curved_a2_refined_quadratic_bridge_summary
 from w33_curved_a2_transport_product import build_curved_a2_transport_product_summary
 from w33_center_quad_gq42_e6_bridge import build_center_quad_gq42_e6_bridge_summary
 from w33_center_quad_transport_bridge import build_center_quad_transport_bridge_summary
@@ -74,8 +75,11 @@ from w33_l6_a2_v4_mode_bridge import build_l6_a2_v4_mode_bridge_summary
 from w33_l6_delta27_texture_bridge import build_l6_delta27_texture_bridge_summary
 from w33_l6_delta27_v4_bridge import build_l6_delta27_v4_bridge_summary
 from w33_l6_v4_projector_bridge import build_l6_v4_projector_bridge_summary
+from w33_l6_v4_closure_selection_bridge import build_l6_v4_closure_selection_bridge_summary
 from w33_l6_v4_seed_reconstruction_bridge import build_l6_v4_seed_reconstruction_bridge_summary
 from w33_transport_lie_tower_bridge import build_transport_lie_tower_bridge_summary
+from w33_uor_gluing_bridge import build_w33_uor_gluing_summary
+from w33_uor_transport_shadow_bridge import build_w33_uor_transport_shadow_summary
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_refinement_bridge_synthesis_summary.json"
@@ -90,6 +94,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     center_quad_transport_a2 = build_center_quad_transport_a2_summary()
     curved_a2_asymptotics = build_curved_a2_heat_density_asymptotics_summary()
     curved_a2_quadratic = build_curved_a2_quadratic_seed_bridge_summary()
+    curved_a2_refined_quadratic = build_curved_a2_refined_quadratic_bridge_summary()
     curved_a2_product = build_curved_a2_transport_product_summary()
     center_quad = build_center_quad_gq42_e6_bridge_summary()
     center_quad_transport = build_center_quad_transport_bridge_summary()
@@ -114,8 +119,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     l6_delta27_texture = build_l6_delta27_texture_bridge_summary()
     l6_delta27_v4 = build_l6_delta27_v4_bridge_summary()
     l6_v4_projectors = build_l6_v4_projector_bridge_summary()
+    l6_v4_closure_selection = build_l6_v4_closure_selection_bridge_summary()
     l6_v4_seed_reconstruction = build_l6_v4_seed_reconstruction_bridge_summary()
     transport_lie = build_transport_lie_tower_bridge_summary()
+    uor_gluing = build_w33_uor_gluing_summary()
+    uor_transport_shadow = build_w33_uor_transport_shadow_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
@@ -209,6 +217,16 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "holonomy_cycle_types": center_quad_transport_holonomy["triangle_holonomy"]["cycle_type_counts"],
             "z2_parity_equals_holonomy_sign_exactly": center_quad_transport_holonomy["triangle_holonomy"]["z2_parity_equals_holonomy_sign_exactly"],
         },
+        "uor_transport_shadow_bridge": {
+            "shadow_ring": uor_transport_shadow["uor_alignment"]["coefficient_shadow_ring"],
+            "transport_group": uor_transport_shadow["uor_alignment"]["nonabelian_transport_group"],
+            "shadow_is_holonomy_sign_not_raw_voltage": uor_transport_shadow["uor_alignment"]["right_binary_shadow_is_holonomy_sign_not_raw_edge_voltage"],
+            "weyl_group_order": uor_transport_shadow["weyl_group_shadow"]["group_closure_order"],
+            "sign_kernel_order": uor_transport_shadow["weyl_group_shadow"]["sign_kernel_order"],
+            "sign_coset_order": uor_transport_shadow["weyl_group_shadow"]["sign_nontrivial_coset_order"],
+            "edge_sign_shadow_surjective": uor_transport_shadow["weyl_group_shadow"]["edge_sign_character_is_surjective"],
+            "triangle_shadow_forgets_identity_vs_three_cycle": uor_transport_shadow["triangle_shadow"]["z2_shadow_forgets_identity_vs_three_cycle"],
+        },
         "center_quad_transport_operator_bridge": {
             "bundle_dimension": center_quad_transport_operator["connection_bundle"]["total_dimension"],
             "bundle_spectrum": center_quad_transport_operator["connection_bundle"]["adjacency_spectrum"],
@@ -272,6 +290,18 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 row["second_order_abs_error"] < row["first_order_abs_error"]
                 for row in curved_a2_quadratic["step_zero_second_order_heat_checks"]
             ),
+        },
+        "curved_a2_refined_quadratic_bridge": {
+            "cp2_sd1_f_vector": tuple(curved_a2_refined_quadratic["refined_external_profiles"][0]["refined_f_vector"]),
+            "k3_sd1_f_vector": tuple(curved_a2_refined_quadratic["refined_external_profiles"][1]["refined_f_vector"]),
+            "cp2_sd1_external_second_moment": curved_a2_refined_quadratic["refined_quadratic_theorem"]["cp2_sd1_external_second_moment"],
+            "k3_sd1_external_second_moment": curved_a2_refined_quadratic["refined_quadratic_theorem"]["k3_sd1_external_second_moment"],
+            "cp2_sd1_product_quadratic_density_coefficient": curved_a2_refined_quadratic["refined_quadratic_theorem"]["cp2_sd1_product_quadratic_density_coefficient"],
+            "k3_sd1_product_quadratic_density_coefficient": curved_a2_refined_quadratic["refined_quadratic_theorem"]["k3_sd1_product_quadratic_density_coefficient"],
+            "seed_quadratic_gap": curved_a2_refined_quadratic["refined_quadratic_theorem"]["seed_quadratic_gap"],
+            "sd1_quadratic_gap": curved_a2_refined_quadratic["refined_quadratic_theorem"]["sd1_quadratic_gap"],
+            "sd1_f_vectors_match_exact_barycentric_transform_for_both_seeds": curved_a2_refined_quadratic["refined_quadratic_theorem"]["sd1_f_vectors_match_exact_barycentric_transform_for_both_seeds"],
+            "first_refinement_contracts_cp2_k3_product_quadratic_gap": curved_a2_refined_quadratic["refined_quadratic_theorem"]["first_refinement_contracts_cp2_k3_product_quadratic_gap"],
         },
         "transport_lie_tower_bridge": {
             "transport_identity_edge_count": transport_lie["transport_weyl_classes"][2]["edge_count"],
@@ -362,6 +392,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "hbar2_plus_minus_support": l6_v4_projectors["slot_profiles"]["Hbar_2"]["projectors"]["+-"]["support_labels"],
             "hbar2_minus_plus_support": l6_v4_projectors["slot_profiles"]["Hbar_2"]["projectors"]["-+"]["support_labels"],
         },
+        "l6_v4_closure_selection_bridge": {
+            "forward_fan_is_exact_generation_2_row_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["forward_fan_is_exact_generation_2_row_for_both_slots"],
+            "reverse_completion_adds_exact_double_ab_i_a_row_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["reverse_completion_adds_exact_double_ab_i_a_row_for_both_slots"],
+            "reverse_fan_is_exact_two_row_a_column_shell_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["reverse_fan_is_exact_two_row_a_column_shell_for_both_slots"],
+            "forward_completion_supplies_exact_missing_ab_i_and_a_b_entries_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["forward_completion_supplies_exact_missing_ab_i_and_a_b_entries_for_both_slots"],
+            "forward_route_assembles_canonical_label_matrix_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["forward_route_assembles_canonical_label_matrix_for_both_slots"],
+            "reverse_route_assembles_canonical_label_matrix_for_both_slots": l6_v4_closure_selection["closure_selection_theorem"]["reverse_route_assembles_canonical_label_matrix_for_both_slots"],
+            "canonical_label_matrix_is_slot_independent": l6_v4_closure_selection["closure_selection_theorem"]["canonical_label_matrix_is_slot_independent"],
+        },
         "l6_v4_seed_reconstruction_bridge": {
             "label_matrix_is_slot_independent": l6_v4_seed_reconstruction["seed_reconstruction_theorem"]["label_matrix_is_slot_independent"],
             "expected_label_matrix": l6_v4_seed_reconstruction["seed_reconstruction_theorem"]["expected_label_matrix"],
@@ -370,6 +409,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "generation_1_diagonal_delta_equals_offdiag_0_to_1_for_both_slots": l6_v4_seed_reconstruction["seed_reconstruction_theorem"]["generation_1_diagonal_delta_equals_offdiag_0_to_1_for_both_slots"],
             "generation_2_diagonal_block_is_unchanged_for_both_slots": l6_v4_seed_reconstruction["seed_reconstruction_theorem"]["generation_2_diagonal_block_is_unchanged_for_both_slots"],
             "reference_projector_rank_split_matches_h2_2_plus_2_and_hbar2_3_plus_1": l6_v4_seed_reconstruction["seed_reconstruction_theorem"]["reference_projector_rank_split_matches_h2_2_plus_2_and_hbar2_3_plus_1"],
+        },
+        "uor_gluing_bridge": {
+            "all_pairwise_overlaps_are_compatible": uor_gluing["gluing_theorem"]["all_pairwise_overlaps_are_compatible_for_both_slots"],
+            "all_cells_are_covered": uor_gluing["gluing_theorem"]["all_cells_are_covered_for_both_slots"],
+            "forward_route_glues_to_canonical_section": uor_gluing["gluing_theorem"]["forward_route_glues_to_canonical_section_for_both_slots"],
+            "reverse_route_glues_to_canonical_section": uor_gluing["gluing_theorem"]["reverse_route_glues_to_canonical_section_for_both_slots"],
+            "full_cover_has_unique_global_section": uor_gluing["gluing_theorem"]["full_cover_has_unique_global_section_for_both_slots"],
+            "canonical_global_section_is_slot_independent": uor_gluing["gluing_theorem"]["canonical_global_section_is_slot_independent"],
         },
         "lie_tower_cycle_bridge": {
             "l3_support_size": lie_tower_cycle["raw_tower_profiles"][0]["support_size"],
@@ -527,7 +574,13 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "local S3 line-matching even though the raw Z2 sheet data is finer than "
             "that matching permutation. More sharply, the old v14 triangle parity "
             "is now identified exactly with the sign of local S3 holonomy around "
-            "transport triangles, and those same edge matchings define a canonical "
+            "transport triangles, and the new UOR bridge sharpens that point: the "
+            "right binary coefficient shadow is this holonomy sign rather than the "
+            "raw edge voltage, because the full local transport group is already "
+            "Weyl(A2) ~= S3 ~= D3 and parity-0 already conflates identity holonomy "
+            "with 3-cycles. So the transport side now has the exact pattern of a "
+            "Z2 shadow sitting above a genuinely non-abelian local system. "
+            "Those same edge matchings define a canonical "
             "135-dimensional connection operator on the local-line bundle over the "
             "transport graph. That operator splits exactly as 45 + 90, with the "
             "45-dimensional trivial sector equal to the transport adjacency itself, "
@@ -550,7 +603,13 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "second-order data: the external second moments are 13392 for CP2_9 "
             "and 128640 for K3_16, recovered combinatorially from coface "
             "degree-square sums, and the native A2 product heat density has exact "
-            "step-zero quadratic coefficients 491580 and 426060. "
+            "step-zero quadratic coefficients 491580 and 426060. Better still, "
+            "the first barycentric refinement step is now exact too: sd^1(CP2_9) "
+            "and sd^1(K3_16) have refined f-vectors (255,2916,9144,10800,4320) "
+            "and (1704,22320,72480,86400,34560), external second moments 2104848 "
+            "and 22872000, and native A2 product quadratic coefficients 908925/2 "
+            "and 1835497/4. The CP2/K3 product-gap therefore contracts from 65520 "
+            "at step 0 to 17647/4 at step 1. "
             "The raw tower itself now has an exact progression theorem: l3, l4, and "
             "l5 are pure single-term layers cycling exactly through g0(E6), g1, "
             "and g2 with uniform output multiplicities 36, 320, and 3520, while "
@@ -599,7 +658,17 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "reference off-diagonal block, and one slot-independent V4-labelled "
             "generation matrix [[AB,I,A],[AB,I,A],[A,B,0]]. The generation-0 "
             "and generation-1 diagonal corrections are exact off-diagonal blocks, "
-            "while the generation-2 diagonal block stays unchanged. "
+            "while the generation-2 diagonal block stays unchanged. Better "
+            "still, that label matrix is now selected dynamically by the exact "
+            "two-step A2 closure itself: the minimal forward fan contributes the "
+            "bottom row [A,B,0], the reverse completion adds exactly two identical "
+            "rows [AB,I,A], and the reverse route assembles the same canonical "
+            "matrix in a complementary way for both H_2 and Hbar_2. "
+            "The external UOR sheaf clue now lands exactly here too: those local "
+            "closure patches overlap compatibly and glue to one unique global "
+            "section on the 3x3 generation grid, so the flavour problem is no "
+            "longer whether the exact V4 data glues but what deeper operator "
+            "principle selects those local sections. "
             "The two fan closures then coincide to one canonical mixed seed, and its 3x3 generation "
             "envelope is already of Delta(27) circulant-plus-diagonal type: one "
             "distinguished diagonal generation, a degenerate diagonal pair, and a "
@@ -642,13 +711,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "that exact internal data and a genuine curved 4D refinement family."
         ),
         "next_theorem_target": (
-            "Lift the exact second-order curved A2 seed data to the full curved "
-            "barycentric refinement tower, move beyond the replicated "
+            "Lift the exact second-order curved A2 data from steps 0 and 1 to the "
+            "full curved barycentric refinement tower, move beyond the replicated "
             "generation-diagonal three-generation seed that structurally forces "
-            "Cartan-only l6 selection, derive the new native V4-labelled seed "
-            "reconstruction dynamically from repo-internal operator data rather "
-            "than from the current fan-closure route, explain why the exact "
-            "generation label matrix [[AB,I,A],[AB,I,A],[A,B,0]] is selected, "
+            "Cartan-only l6 selection, push the new exact V4 closure-selection "
+            "theorem past minimal fan dynamics to a deeper internal operator or "
+            "variational principle that explains why the exact generation label "
+            "matrix [[AB,I,A],[AB,I,A],[A,B,0]] is selected now that the "
+            "local-to-global gluing step is exact, "
             "and push that seed into the rank-lift regime or the full six-mode regime, "
             "extend the exact l3/l4/l5/l6 tower-cycle theorem "
             "to the next gauge-return rung beyond l6, then prove the small-time / cutoff "
@@ -659,7 +729,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 294,
+        "focused_test_stack_size": 334,
     }
 
 

@@ -159,6 +159,19 @@ def test_synthesis_records_transport_holonomy_theorem() -> None:
     assert bridge["z2_parity_equals_holonomy_sign_exactly"] is True
 
 
+def test_synthesis_records_uor_transport_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["uor_transport_shadow_bridge"]
+    assert bridge["shadow_ring"] == "Z/2Z"
+    assert bridge["transport_group"] == "Weyl(A2) ~= S3 ~= D3"
+    assert bridge["shadow_is_holonomy_sign_not_raw_voltage"] is True
+    assert bridge["weyl_group_order"] == 6
+    assert bridge["sign_kernel_order"] == 3
+    assert bridge["sign_coset_order"] == 3
+    assert bridge["edge_sign_shadow_surjective"] is True
+    assert bridge["triangle_shadow_forgets_identity_vs_three_cycle"] is True
+
+
 def test_synthesis_records_transport_operator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["center_quad_transport_operator_bridge"]
@@ -241,6 +254,32 @@ def test_synthesis_records_curved_a2_quadratic_seed_bridge() -> None:
     assert bridge["cp2_quadratic_density_coefficient"] == "491580"
     assert bridge["k3_quadratic_density_coefficient"] == "426060"
     assert bridge["second_order_step_zero_prediction_improves_first_order"] is True
+
+
+def test_synthesis_records_curved_a2_refined_quadratic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_a2_refined_quadratic_bridge"]
+    assert bridge["cp2_sd1_f_vector"] == (255, 2916, 9144, 10800, 4320)
+    assert bridge["k3_sd1_f_vector"] == (1704, 22320, 72480, 86400, 34560)
+    assert bridge["cp2_sd1_external_second_moment"] == 2104848
+    assert bridge["k3_sd1_external_second_moment"] == 22872000
+    assert bridge["cp2_sd1_product_quadratic_density_coefficient"] == "908925/2"
+    assert bridge["k3_sd1_product_quadratic_density_coefficient"] == "1835497/4"
+    assert bridge["seed_quadratic_gap"] == "65520"
+    assert bridge["sd1_quadratic_gap"] == "17647/4"
+    assert bridge["sd1_f_vectors_match_exact_barycentric_transform_for_both_seeds"] is True
+    assert bridge["first_refinement_contracts_cp2_k3_product_quadratic_gap"] is True
+
+
+def test_synthesis_records_uor_gluing_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["uor_gluing_bridge"]
+    assert bridge["all_pairwise_overlaps_are_compatible"] is True
+    assert bridge["all_cells_are_covered"] is True
+    assert bridge["forward_route_glues_to_canonical_section"] is True
+    assert bridge["reverse_route_glues_to_canonical_section"] is True
+    assert bridge["full_cover_has_unique_global_section"] is True
+    assert bridge["canonical_global_section_is_slot_independent"] is True
 
 
 def test_synthesis_records_transport_lie_tower_bridge() -> None:
@@ -381,6 +420,18 @@ def test_synthesis_records_v4_seed_reconstruction_bridge() -> None:
     assert bridge["reference_projector_rank_split_matches_h2_2_plus_2_and_hbar2_3_plus_1"] is True
 
 
+def test_synthesis_records_v4_closure_selection_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["l6_v4_closure_selection_bridge"]
+    assert bridge["forward_fan_is_exact_generation_2_row_for_both_slots"] is True
+    assert bridge["reverse_completion_adds_exact_double_ab_i_a_row_for_both_slots"] is True
+    assert bridge["reverse_fan_is_exact_two_row_a_column_shell_for_both_slots"] is True
+    assert bridge["forward_completion_supplies_exact_missing_ab_i_and_a_b_entries_for_both_slots"] is True
+    assert bridge["forward_route_assembles_canonical_label_matrix_for_both_slots"] is True
+    assert bridge["reverse_route_assembles_canonical_label_matrix_for_both_slots"] is True
+    assert bridge["canonical_label_matrix_is_slot_independent"] is True
+
+
 def test_synthesis_records_lie_tower_cycle_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["lie_tower_cycle_bridge"]
@@ -486,4 +537,4 @@ def test_write_summary_emits_json(tmp_path: Path) -> None:
     out = write_summary(tmp_path / "w33_refinement_bridge_synthesis_summary.json")
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["status"] == "ok"
-    assert data["focused_test_stack_size"] == 294
+    assert data["focused_test_stack_size"] == 334

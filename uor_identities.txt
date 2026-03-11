@@ -1,0 +1,759 @@
+Total Identity nodes: 379
+criticalIdentity: The foundational theorem of the UOR kernel: neg(bnot(x)) = succ(x) for all x in R_n. This identity links the two involutions (neg and bnot) to the successor operation, making succ derivable from neg and bnot.
+
+AD_1: Addressing bijection: addresses(glyph(d)) = d. Round-trip from datum through glyph and back is identity.
+
+AD_2: Embedding coherence: glyph(╬╣(addresses(a))) = ╬╣_addr(a). The addressing diagram commutes through embeddings.
+
+R_A1: Additive associativity: add(x, add(y, z)) = add(add(x, y), z).
+
+R_A2: Additive identity: add(x, 0) = x.
+
+R_A3: Additive inverse: add(x, neg(x)) = 0.
+
+R_A4: Additive commutativity: add(x, y) = add(y, x).
+
+R_A5: Subtraction definition: sub(x, y) = add(x, neg(y)).
+
+R_A6: Negation involution: neg(neg(x)) = x.
+
+R_M1: Multiplicative associativity: mul(x, mul(y, z)) = mul(mul(x, y), z).
+
+R_M2: Multiplicative identity: mul(x, 1) = x.
+
+R_M3: Multiplicative commutativity: mul(x, y) = mul(y, x).
+
+R_M4: Distributivity: mul(x, add(y, z)) = add(mul(x, y), mul(x, z)).
+
+R_M5: Annihilation: mul(x, 0) = 0.
+
+B_1: XOR associativity: xor(x, xor(y, z)) = xor(xor(x, y), z).
+
+B_2: XOR identity: xor(x, 0) = x.
+
+B_3: XOR self-inverse: xor(x, x) = 0.
+
+B_4: AND associativity: and(x, and(y, z)) = and(and(x, y), z).
+
+B_5: AND identity: and(x, 2^n - 1) = x.
+
+B_6: AND annihilation: and(x, 0) = 0.
+
+B_7: OR associativity: or(x, or(y, z)) = or(or(x, y), z).
+
+B_8: OR identity: or(x, 0) = x.
+
+B_9: Absorption: and(x, or(x, y)) = x.
+
+B_10: AND distributes over OR: and(x, or(y, z)) = or(and(x, y), and(x, z)).
+
+B_11: De Morgan 1: bnot(and(x, y)) = or(bnot(x), bnot(y)).
+
+B_12: De Morgan 2: bnot(or(x, y)) = and(bnot(x), bnot(y)).
+
+B_13: Bnot involution: bnot(bnot(x)) = x.
+
+X_1: Neg via subtraction: neg(x) = sub(0, x).
+
+X_2: Complement via XOR: bnot(x) = xor(x, 2^n - 1).
+
+X_3: Succ via addition: succ(x) = add(x, 1).
+
+X_4: Pred via subtraction: pred(x) = sub(x, 1).
+
+X_5: Neg-bnot bridge: neg(x) = add(bnot(x), 1).
+
+X_6: Complement predecessor: bnot(x) = pred(neg(x)).
+
+X_7: XOR-add bridge: xor(x, y) = add(x, y) - 2 * and(x, y) (in Z before mod).
+
+D_1: Rotation order: succ^[2^n](x) = x.
+
+D_3: Conjugation: neg(succ(neg(x))) = pred(x).
+
+D_4: Reverse composition: bnot(neg(x)) = pred(x).
+
+D_5: Group closure: D_[2^n] = [succ^k, neg Γêÿ succ^k : 0 Γëñ k < 2^n].
+
+U_1: Unit group decomposition: R_n├ù Γëà Z/2 ├ù Z/2^[n-2] for n ΓëÑ 3.
+
+U_2: Unit group special cases: R_1├ù Γëà [1]; R_2├ù Γëà Z/2.
+
+U_3: Multiplicative order: ord(u) = lcm(ord((-1)^a), ord(3^b)).
+
+U_4: Resonance period: ord_g(2) divides ╧å(g).
+
+U_5: Step formula derivation: step_g = 2 * ((g - (2^n mod g)) mod g) + 1.
+
+AG_1: Scaling not dihedral: ╬╝_u Γêë D_[2^n] for u Γëá ┬▒1.
+
+AG_2: Affine group: Aff(R_n) = R_n├ù Γïë R_n.
+
+AG_3: Affine group order: |Aff(R_n)| = 2^[2n-1].
+
+AG_4: Subgroup inclusion: D_[2^n] Γèé Aff(R_n) with u Γêê [┬▒1].
+
+CA_1: Addition decomposition: add(x,y)_k = xor(x_k, xor(y_k, c_k(x,y))).
+
+CA_2: Carry recurrence: c_[k+1](x,y) = or(and(x_k,y_k), and(xor(x_k,y_k), c_k)).
+
+CA_3: Carry commutativity: c(x, y) = c(y, x).
+
+CA_4: Zero carry: c(x, 0) = 0 at all positions.
+
+CA_5: Negation carry: c(x, neg(x))_k = 1 for k > v_2(x).
+
+CA_6: Carry-incompatibility link: d_╬ö(x, y) > 0 iff Γêâ k : c_k(x,y) = 1.
+
+C_1: Constraint pin union: pins of a composite constraint equal the union of component pins.
+
+C_2: Constraint composition commutativity.
+
+C_3: Constraint composition associativity.
+
+C_4: Constraint composition idempotence.
+
+C_5: Constraint composition identity element.
+
+C_6: Constraint composition annihilator.
+
+CDI: Constraint-depth invariant: carry complexity of the residue representation equals the type depth.
+
+CL_1: Constraint quotient lattice isomorphism to power set.
+
+CL_2: Lattice join equals constraint composition.
+
+CL_3: Lattice meet pins the intersection of component pins.
+
+CL_4: Constraint lattice distributivity.
+
+CL_5: Constraint lattice complement existence.
+
+CM_1: Constraint redundancy criterion.
+
+CM_2: Minimal cover via greedy irredundant removal.
+
+CM_3: Minimum constraint count to cover n fibers.
+
+CR_1: Residue constraint cost is the step formula.
+
+CR_2: Carry constraint cost is the popcount of the pattern.
+
+CR_3: Depth constraint cost is sum of residue and carry costs.
+
+CR_4: Composite constraint cost is subadditive.
+
+CR_5: Optimal resolution order is increasing cost.
+
+F_1: Fiber monotonicity: a pinned fiber cannot be unpinned.
+
+F_2: Fiber budget upper bound: at most n pin operations to close.
+
+F_3: Fiber budget conservation: pinned + free = total fibers.
+
+F_4: Fiber budget closure: closed iff all fibers pinned.
+
+FL_1: Fiber lattice bottom: all fibers free.
+
+FL_2: Fiber lattice top: all fibers pinned.
+
+FL_3: Fiber lattice join is union of pinnings.
+
+FL_4: Fiber lattice height equals n.
+
+FPM_1: Unit partition membership: x is a unit iff fiber_0(x) = 1 (x is odd).
+
+FPM_2: Exterior partition membership: x is exterior iff x is not in the carrier of T.
+
+FPM_3: Irreducible partition membership: x is irreducible iff x is not a unit, exterior, or reducible.
+
+FPM_4: Reducible partition membership: x is reducible iff x is not a unit, exterior, or irreducible.
+
+FPM_5: 2-adic decomposition: every element factors as 2^{v(x)} times an odd unit.
+
+FPM_6: Stratum size formula.
+
+FPM_7: Base type partition cardinalities.
+
+FS_1: Fiber extraction: fiber_k(x) is the k-th bit of x.
+
+FS_2: Fiber 0 is parity.
+
+FS_3: Progressive fiber determination: fiber_k given lower fibers determines x mod 2^{k+1}.
+
+FS_4: Cumulative fiber determination: fibers 0..k together determine x mod 2^{k+1}.
+
+FS_5: Complete fiber determination: all n fibers determine x uniquely.
+
+FS_6: Stratum from fibers: v_2(x) is the minimum k where fiber_k(x) = 1.
+
+FS_7: Depth bound: depth(x) Γëñ v_2(x) for irreducible elements.
+
+RE_1: Resolution strategy equivalence: dihedral, canonical-form, and evaluation resolvers all compute the same partition.
+
+IR_1: Resolution monotonicity: pinned count never decreases.
+
+IR_2: Resolution convergence bound: at most n iterations.
+
+IR_3: Convergence rate definition.
+
+IR_4: Resolution termination: loop terminates if constraint set spans all fibers.
+
+SF_1: Optimal resolution level for a factor: n Γëí 0 (mod ord_g(2)).
+
+SF_2: Constraint ordering by step cost: smaller step_g first.
+
+RD_1: Resolution determinism: same type and constraint sequence yield unique partition.
+
+RD_2: Order independence: complete constraint sets yield the same partition regardless of order.
+
+SE_1: Evaluation resolver directly computes the set-theoretic partition.
+
+SE_2: Dihedral factorization resolver yields the same partition via orbit decomposition.
+
+SE_3: Canonical form resolver yields the same partition via confluent rewrite.
+
+SE_4: All three strategies compute the same set-theoretic partition.
+
+OO_1: Benefit of a constraint is the number of new pins it provides.
+
+OO_2: Constraint cost is step or popcount depending on type.
+
+OO_3: Greedy selection maximizes benefit-to-cost ratio.
+
+OO_4: Greedy approximation achieves (1 ΓêÆ 1/e) Γëê 63% of optimal.
+
+OO_5: Tiebreaker: prefer vertical (residue) before horizontal (carry).
+
+CB_1: Minimum convergence rate: 1 fiber per iteration (worst case).
+
+CB_2: Maximum convergence rate: n fibers in 1 iteration (best case).
+
+CB_3: Expected residue constraint rate: Γîèlog_2(m)Γîï fibers per constraint.
+
+CB_4: Stall detection: convergenceRate < 1 for 2 iterations suggests insufficiency.
+
+CB_5: Sufficiency criterion: pin union covers all fiber positions.
+
+CB_6: Iteration bound for k constraints: at most min(k, n) iterations.
+
+OB_M1: Ring metric triangle inequality.
+
+OB_M2: Hamming metric triangle inequality.
+
+OB_M3: Incompatibility metric is the absolute difference of ring and Hamming metrics.
+
+OB_M4: Negation preserves ring metric.
+
+OB_M5: Bitwise complement preserves Hamming metric.
+
+OB_M6: Successor preserves ring metric but may change Hamming metric.
+
+OB_C1: Negation-complement commutator is constant 2.
+
+OB_C2: Negation-translation commutator.
+
+OB_C3: Complement-XOR commutator is trivial.
+
+OB_H1: Additive paths have trivial monodromy (abelian ΓçÆ path-independent).
+
+OB_H2: Dihedral generator paths have monodromy in D_{2^n}.
+
+OB_H3: Successor-only closed path winding number.
+
+OB_P1: Path length is additive under concatenation.
+
+OB_P2: Total variation is subadditive under concatenation.
+
+OB_P3: Cascade length is additive under sequential composition.
+
+CT_1: Catastrophe boundaries are powers of 2.
+
+CT_2: Odd prime catastrophe transitions visibility via residue constraints.
+
+CT_3: Catastrophe threshold is normalized step cost.
+
+CT_4: Composite catastrophe threshold is max of component thresholds.
+
+CF_1: Curvature flux is the sum of incompatibility along a path.
+
+CF_2: Resolution cost is bounded below by curvature flux of optimal path.
+
+CF_3: Successor curvature flux: trailing_ones(x) for most x, nΓêÆ1 at maximum.
+
+CF_4: Total successor curvature flux over R_n equals 2^n ΓêÆ 2.
+
+HG_1: Additive holonomy is trivial (abelian group).
+
+HG_2: Dihedral generator holonomy group is D_{2^n}.
+
+HG_3: Unit multiplication holonomy equals the unit group.
+
+HG_4: Full holonomy group is the affine group.
+
+HG_5: Holonomy group decomposition into dihedral and non-trivial units.
+
+T_C1: Category left identity: compose(id, f) = f.
+
+T_C2: Category right identity: compose(f, id) = f.
+
+T_C3: Category associativity of transform composition.
+
+T_C4: Composability condition: f composesWith g iff target(f) = source(g).
+
+T_I1: Negation is a ring-metric isometry.
+
+T_I2: Bitwise complement is a Hamming-metric isometry.
+
+T_I3: Successor as composed isometries: succ = neg Γêÿ bnot preserves d_R but not d_H.
+
+T_I4: Ring isometries form a group under composition.
+
+T_I5: CurvatureObservable measures failure of ring isometry to be Hamming isometry.
+
+T_E1: Embedding injectivity.
+
+T_E2: Embedding is a ring homomorphism.
+
+T_E3: Embedding transitivity: composition of embeddings is an embedding.
+
+T_E4: Embedding address coherence: glyph Γêÿ ╬╣ Γêÿ addresses is well-defined.
+
+T_A1: Dihedral group acts on constraints by transforming them.
+
+T_A2: Dihedral group action on partitions permutes components.
+
+T_A3: Dihedral orbits determine irreducibility boundaries.
+
+T_A4: Fixed points of negation are {0, 2^{nΓêÆ1}}; bnot has no fixed points.
+
+AU_1: Automorphism group consists of unit multiplications.
+
+AU_2: Automorphism group is isomorphic to the unit group.
+
+AU_3: Automorphism group order is 2^{nΓêÆ1}.
+
+AU_4: Intersection of automorphism group with dihedral group is {id, neg}.
+
+AU_5: Affine group is generated by D_{2^n} and ╬╝_3.
+
+EF_1: Embedding functor action on morphisms.
+
+EF_2: Embedding functor preserves composition.
+
+EF_3: Embedding functor preserves identities.
+
+EF_4: Embedding functor composition is functorial.
+
+EF_5: Embedding functor preserves ring isometries.
+
+EF_6: Embedding functor maps dihedral subgroup into target dihedral group.
+
+EF_7: Embedding functor maps unit group into target unit group.
+
+AA_1: Braille glyph encoding: 6-bit blocks to Braille characters.
+
+AA_2: Braille XOR homomorphism: Braille encoding commutes with XOR.
+
+AA_3: Braille complement: glyph of bnot(x) is character-wise complement of glyph(x).
+
+AA_4: Addition does not lift to address space: no glyph homomorphism for add.
+
+AA_5: Liftable operations are exactly the Boolean operations.
+
+AA_6: Negation decomposes into liftable bnot and non-liftable succ.
+
+AM_1: Address metric is sum of per-character Hamming distances.
+
+AM_2: Address metric equals Hamming metric on ring elements.
+
+AM_3: Address metric does not preserve ring metric in general.
+
+AM_4: Address incompatibility metric.
+
+TH_1: Entropy of a fiber budget state.
+
+TH_2: Maximum entropy: unconstrained state has S = n ├ù ln 2.
+
+TH_3: Zero entropy: fully resolved state has S = 0.
+
+TH_4: Landauer bound on total resolution cost.
+
+TH_5: Critical inverse temperature for UOR fiber system.
+
+TH_6: Constraint application removes entropy; convergence rate equals cooling rate.
+
+TH_7: CatastropheThreshold is the temperature of a partition phase transition.
+
+TH_8: Step formula as free-energy cost of a constraint boundary.
+
+TH_9: Computational hardness maps to type incompleteness (high temperature).
+
+TH_10: Type resolution is measurement; cost ΓëÑ entropy removed.
+
+AR_1: Adiabatic schedule: decreasing freeCount, cost-per-fiber ordering.
+
+AR_2: Adiabatic cost is sum of constraint costs in optimal order.
+
+AR_3: Adiabatic cost satisfies Landauer bound.
+
+AR_4: Adiabatic efficiency ╬╖ Γëñ 1.
+
+AR_5: Greedy vs adiabatic cost difference: Γëñ 5% for n Γëñ 16.
+
+PD_1: Phase space definition.
+
+PD_2: Phase boundaries occur where g divides 2^n ΓêÆ 1 or g is a power of 2.
+
+PD_3: Parity boundary divides R_n into equal halves.
+
+PD_4: Resonance lines in the phase diagram.
+
+PD_5: Phase count at level n is at most 2^n (typically O(n)).
+
+RC_1: Reversible pinning stores prior state in ancilla fiber.
+
+RC_2: Reversible pinning has zero total entropy change.
+
+RC_3: Deferred Landauer cost at ancilla erasure.
+
+RC_4: Reversible total cost equals irreversible total cost (redistributed).
+
+RC_5: Quantum UOR: superposed fibers, cost proportional to winning path.
+
+DC_1: Ring derivative: Γêé_R f(x) = f(succ(x)) - f(x).
+
+DC_2: Hamming derivative: Γêé_H f(x) = f(bnot(x)) - f(x).
+
+DC_3: Hamming derivative of identity: Γêé_H id(x) = -(2x + 1) mod 2^n.
+
+DC_4: Commutator from derivatives: [neg, bnot](x) = Γêé_R neg(x) - Γêé_H neg(x).
+
+DC_5: Carry dependence: the difference Γêé_R f - Γêé_H f decomposes into carry contributions.
+
+DC_6: Jacobian definition: J_k(x) = Γêé_R f_k(x) where f_k = fiber_k.
+
+DC_7: Top-fiber anomaly: J_{n-1}(x) may differ from lower fibers.
+
+DC_8: Rank-curvature identity: rank(J(x)) = d_H(x, succ(x)) - 1 for generic x.
+
+DC_9: Total curvature from Jacobian: ╬║(x) = ╬ú_k J_k(x).
+
+DC_10: Curvature-weighted ordering: optimal next constraint maximizes J_k over free fibers.
+
+DC_11: Curvature equipartition: ╬ú_{x} J_k(x) Γëê (2^n - 2)/n for each k.
+
+HA_1: Constraint nerve: N(C) is the simplicial complex on constraints.
+
+HA_2: Stall iff non-trivial homology: resolution stalls Γƒ║ H_k(N(C)) Γëá 0 for some k > 0.
+
+HA_3: Betti-entropy theorem: S_residual ΓëÑ ╬ú_k ╬▓_k ├ù ln 2.
+
+IT_2: Euler-Poincar├⌐ formula for constraint nerve.
+
+IT_3: Spectral Euler characteristic.
+
+IT_6: Spectral gap bounds convergence rate from below.
+
+IT_7a: UOR index theorem (topological form): total curvature minus Euler characteristic equals residual entropy in bits.
+
+IT_7b: UOR index theorem (entropy-topology duality).
+
+IT_7c: UOR index theorem (spectral cost bound): resolution cost ΓëÑ n - ╧ç(N(C)).
+
+IT_7d: UOR index theorem (completeness criterion): resolution is complete iff ╧ç(N(C)) = n and all Betti numbers vanish.
+
+phi_1: Ring ΓåÆ Constraints map: negation transforms a residue constraint.
+
+phi_2: Constraints ΓåÆ Fibers map: composition maps to union of fiber pinnings.
+
+phi_3: Fibers ΓåÆ Partition map: a closed fiber state determines a unique 4-component partition.
+
+phi_4: Resolution pipeline: ╧åΓéä = ╧åΓéâ Γêÿ ╧åΓéé Γêÿ ╧åΓéü is the composite resolution map.
+
+phi_5: Operations ΓåÆ Observables map: negation preserves d_R, may change d_H.
+
+phi_6: Observables ΓåÆ Refinement map: observables on a state yield a refinement suggestion.
+
+psi_1: ╧ê_1: Constraints ΓåÆ SimplicialComplex (nerve construction). Maps a set of constraints to its nerve simplicial complex.
+
+psi_2: ╧ê_2: SimplicialComplex ΓåÆ ChainComplex (chain functor). Maps a simplicial complex to its chain complex.
+
+psi_3: ╧ê_3: ChainComplex ΓåÆ HomologyGroups (homology functor). Computes homology groups from a chain complex.
+
+psi_5: ╧ê_5: ChainComplex ΓåÆ CochainComplex (dualization functor). Dualizes a chain complex to obtain a cochain complex.
+
+psi_6: ╧ê_6: CochainComplex ΓåÆ CohomologyGroups (cohomology functor). Computes cohomology groups from a cochain complex.
+
+surfaceSymmetry: The Surface Symmetry Theorem: the composite PΓêÿ╬áΓêÿG is a well-typed morphism iff G and P share the same state:Frame F. When the shared-frame condition holds, the output lands in the type-equivalent neighbourhood of the source symbol.
+
+CC_1: Completeness implies O(1) resolution: a CompleteType T satisfies ΓêÇ x Γêê R_n, resolution(x, T) terminates in O(1).
+
+CC_2: Completeness is monotone: if T Γèå T' (T' has more constraints), then completeness(T) implies completeness(T').
+
+CC_3: Witness composition: concat(WΓéü, WΓéé) is a valid audit trail iff WΓéü.fibersClosed + WΓéé.fibersClosed = n.
+
+CC_4: The CompletenessResolver is the unique fixed point of the ╧ê-pipeline applied to a CompletenessCandidate.
+
+CC_5: CompletenessCertificate soundness: cert.verified = true implies ╧ç(N(C)) = n and for all k: ╬▓_k = 0.
+
+QL_1: neg(bnot(x)) = succ(x) holds in Z/(2Γü┐)Z for all n ΓëÑ 1. Universal form of the Critical Identity across all quantum levels.
+
+QL_2: The dihedral group D_{2Γü┐} generated by neg and bnot has order 2Γü┐Γü║┬╣ for all n ΓëÑ 1.
+
+QL_3: The cascade distribution P(j) = 2^{-j} is the Boltzmann distribution at ╬▓* = ln 2 for all n ΓëÑ 1.
+
+QL_4: The fiber budget of a PrimitiveType at quantum level n is exactly n (one fiber per bit).
+
+QL_5: Resolution complexity for a CompleteType is O(1) for all n ΓëÑ 1.
+
+QL_6: Content addressing is a bijection for all n ΓëÑ 1 (AD_1/AD_2 universality).
+
+QL_7: The ╧ê-pipeline produces a valid ChainComplex for any ConstrainedType at any quantum level n ΓëÑ 1.
+
+SR_1: Binding monotonicity: freeCount(B_{i+1}) Γëñ freeCount(B_i) for all i in a Session.
+
+SR_2: Binding soundness: a Binding b is sound iff b.datum resolves under b.constraint in O(1).
+
+SR_3: Session convergence: a Session S converges iff there exists i such that freeCount(B_i) = 0.
+
+SR_4: Context reset isolation: bindings in C_fresh are independent of bindings in C_prior after a SessionBoundary.
+
+SR_5: Contradiction detection: ContradictionBoundary fires iff there exist bindings b, b' with the same address, different datum, under the same constraint.
+
+TS_1: Nerve realisability: for any target (╧ç*, ╬▓ΓéÇ* = 1, ╬▓_k* = 0 for k ΓëÑ 1) with ╧ç* Γëñ n, there exists a ConstrainedType T over R_n whose constraint nerve realises the target.
+
+TS_2: Minimal basis bound: for the IT_7d target (╧ç* = n, all ╬▓* = 0), the MinimalConstraintBasis has size exactly n (one constraint per fiber position). No redundant constraints exist in the minimal basis.
+
+TS_3: Synthesis monotonicity: adding a constraint to a synthesis candidate never decreases the Euler characteristic of the resulting nerve (╧ç is monotone non-decreasing under constraint addition).
+
+TS_4: Synthesis convergence: the TypeSynthesisResolver terminates for any realisable target in at most n constraint additions (for n-fiber types).
+
+TS_5: SynthesisΓÇôcertification duality: a SynthesizedType T achieves the IT_7d target if and only if the CompletenessResolver certifies T as a CompleteType. The forward ╧ê-pipeline and the inverse TypeSynthesisResolver are dual computations.
+
+TS_6: Jacobian-guided synthesis efficiency: using the Jacobian (DC_10) to select the next constraint reduces the expected number of synthesis steps from O(n┬▓) (uninformed) to O(n log n) (Jacobian-guided).
+
+TS_7: Unreachable signatures: a Betti profile with ╬▓ΓéÇ = 0 is unreachable by any non-empty ConstrainedType ΓÇö the nerve of a non-empty constraint set is always connected (╬▓ΓéÇ ΓëÑ 1).
+
+QLS_1: Lift unobstructedness criterion: QuantumLift T' is a CompleteType iff the spectral sequence E_r^{p,q} collapses at E_2 (d_2 = 0 and all higher differentials zero).
+
+QLS_2: Obstruction localisation: a non-trivial LiftObstruction is localised to a specific fiber at bit position n+1. The obstruction class lives in H┬▓(N(C(T))) and is killed by adding one constraint involving the new fiber.
+
+QLS_3: Monotone lifting for trivially obstructed types: if T is a CompleteType at Q_n and its constraint set is closed under the Q_{n+1} extension map, then T' is a CompleteType at Q_{n+1} with basisSize(T') = basisSize(T) + 1.
+
+QLS_4: Spectral sequence convergence bound: for constraint configurations of homological depth d (H_k(N(C(T))) = 0 for k > d), the spectral sequence converges by page E_{d+2}.
+
+QLS_5: Universal identity preservation: every op:universallyValid identity holds in Γäñ/(2^{n+1})Γäñ with the lifted constraint set. The lift does not invalidate any certified universal identity.
+
+QLS_6: ╧ê-pipeline universality for quantum lifts: the ╧ê-pipeline produces a valid ChainComplex for any QuantumLift T' ΓÇö the chain complex of T' restricts to the chain complex of T on the base nerve, and the extension is well-formed by construction.
+
+MN_1: Holonomy group containment: HolonomyGroup(T) Γëñ D_{2^n} for all ConstrainedTypes T over R_n. The holonomy group is always a subgroup of the full dihedral group.
+
+MN_2: Additive flatness (extends OB_H1): if all constraints in T are additive (ResidueConstraint or DepthConstraint type), then HolonomyGroup(T) = {id} ΓÇö T is a FlatType.
+
+MN_3: Dihedral generation: if T contains both a neg-related and a bnot-related constraint in a common closed path, then HolonomyGroup(T) = D_{2^n} ΓÇö T has full dihedral holonomy.
+
+MN_4: Holonomy-Betti implication: HolonomyGroup(T) Γëá {id} Γƒ╣ ╬▓Γéü(N(C(T))) ΓëÑ 1. Non-trivial monodromy requires a topological loop. (Converse is false: ╬▓Γéü ΓëÑ 1 does not imply non-trivial holonomy.)
+
+MN_5: CompleteType holonomy: a CompleteType (IT_7d: ╧ç = n, all ╬▓ = 0) has trivial holonomy. IT_7d implies FlatType because IT_7d requires ╬▓Γéü = 0, which by MN_4 implies trivial monodromy.
+
+MN_6: Monodromy composition: if pΓéü and pΓéé are closed constraint paths, then monodromy(pΓéü ┬╖ pΓéé) = monodromy(pΓéü) ┬╖ monodromy(pΓéé) in D_{2^n} (group homomorphism from loops to dihedral elements).
+
+MN_7: TwistedType obstruction class: the monodromy of a TwistedType contributes a non-zero class to H┬▓(N(C(T')); Γäñ/2Γäñ) where T' is any QuantumLift of T. TwistedTypes always have non-trivial lift obstructions.
+
+PT_1: Product type fiber additivity: fiberBudget(A ├ù B) = fiberBudget(A) + fiberBudget(B).
+
+PT_2: Product type partition product: partition(A ├ù B) = partition(A) Γèù partition(B).
+
+PT_3: Product type Euler additivity: ╧ç(N(C(A ├ù B))) = ╧ç(N(C(A))) + ╧ç(N(C(B))).
+
+PT_4: Product type entropy additivity: S(A ├ù B) = S(A) + S(B).
+
+ST_1: Sum type fiber budget: fiberBudget(A + B) = max(fiberBudget(A), fiberBudget(B)).
+
+ST_2: Sum type entropy: S(A + B) = ln 2 + max(S(A), S(B)).
+
+SC_1: Context temperature: T_ctx(C) = freeCount(C) ├ù ln 2 / n.
+
+SC_2: Saturation degree: ╧â(C) = (n ΓêÆ freeCount(C)) / n.
+
+SC_3: Saturation monotonicity: ╧â(B_{i+1}) ΓëÑ ╧â(B_i) for all i in a Session.
+
+SC_4: Ground state equivalence: ╧â(C) = 1 Γåö freeCount(C) = 0 Γåö S(C) = 0 Γåö T_ctx(C) = 0.
+
+SC_5: O(1) resolution guarantee: freeCount(C) = 0 Γêº q.address Γêê bindings(C) ΓåÆ stepCount(q, C) = 0.
+
+SC_6: Pre-reduction of effective budget: effectiveBudget(q, C) = max(0, fiberBudget(q.type) ΓêÆ |pinnedFibers(C) Γê⌐ q.fiberSet|).
+
+SC_7: Thermodynamic cooling cost: Cost_saturation(C) = n ├ù k_B T ├ù ln 2.
+
+MS_1: Connectivity lower bound: ╬▓ΓéÇ(N(C)) ΓëÑ 1 for all non-empty C.
+
+MS_2: Euler capacity ceiling: ╧ç(N(C)) Γëñ n for all C at quantum level n.
+
+MS_3: Betti monotonicity under addition: ╧ç(N(C + c)) ΓëÑ ╧ç(N(C)) for any constraint c added to C.
+
+MS_4: Level-relative achievability: a signature achievable at quantum level n remains achievable at level n+1.
+
+MS_5: Empirical completeness convergence: verified SynthesisSignature individuals converge to the exact morphospace boundary.
+
+GD_1: Geodesic condition: a ComputationTrace is a geodesic iff its steps are AR_1-ordered and each step selects the constraint maximising J_k over free fibers (DC_10).
+
+GD_2: Geodesic entropy bound: ╬öS_step(i) = ln 2 for every step i of a geodesic trace.
+
+GD_3: Total geodesic cost: Cost_geodesic(T) = freeCount_initial ├ù k_B T ln 2 = TH_4.
+
+GD_4: Geodesic uniqueness up to step-order equivalence: all geodesics for the same ConstrainedType share stepCount and constraint set.
+
+GD_5: Subgeodesic detectability: a trace is sub-geodesic iff Γêâ step i where J_k(step_i) < max_{free fibers} J_k(state_i).
+
+QM_1: Von NeumannΓÇôLandauer bridge: S_vonNeumann(╧ê) = Cost_Landauer(collapse(╧ê)).
+
+QM_2: Measurement as fiber topology change: projective collapse on a SuperposedFiberState is topologically equivalent to applying a ResidueConstraint that pins the collapsed fiber.
+
+QM_3: Superposition entropy bound: 0 Γëñ S_vN(╧ê) Γëñ ln 2 for any single-fiber SuperposedFiberState.
+
+QM_4: Collapse idempotence: collapse(collapse(╧ê)) = collapse(╧ê). Measurement on an already-collapsed state is a no-op.
+
+QM_5: Amplitude normalization (Born rule): the sum of squared amplitudes equals 1 for any well-formed SuperposedFiberState.
+
+RC_6: Amplitude renormalization: a SuperposedFiberState can always be normalized to satisfy QM_5.
+
+FPM_8: Partition exhaustiveness: the four component cardinalities sum to the ring size.
+
+FPM_9: Exterior membership criterion: x is exterior iff x is not in the carrier of T.
+
+MN_8: Holonomy classification covering: every ConstrainedType with a computed holonomy group is either flat or twisted, not both.
+
+QL_8: Quantum level chain inverse: levelSuccessor is the left inverse of nextLevel.
+
+D_7: Dihedral composition rule: (rß╡â sß╡û)(rß╡ç sß╡á) = r^(a + (-1)ß╡û b mod 2Γü┐) s^(p xor q).
+
+SP_1: Classical embedding: superposition resolution of a classical (non-superposed) datum reduces to classical resolution.
+
+SP_2: CollapseΓÇôresolve commutativity: collapsing then resolving classically equals resolving in superposition then collapsing.
+
+SP_3: Amplitude preservation: the SuperpositionResolver preserves the normalized amplitude vector during ╧ê-pipeline traversal.
+
+SP_4: Born rule outcome probability: the probability of collapsing to fiber k equals the squared amplitude of that fiber.
+
+PT_2a: Product type partition tensor: the partition of a product type is the tensor product of the component partitions.
+
+PT_2b: Sum type partition coproduct: the partition of a sum type is the coproduct of the variant partitions.
+
+GD_6: Geodesic predicate decomposition: a trace is geodesic iff it is both AR_1-ordered and DC_10-selected.
+
+QT_1: LiftChain(Q_j, Q_k) is valid CompleteType tower iff every chainStep QuantumLift has trivial or resolved LiftObstruction.
+
+QT_2: Obstruction count bound: the number of non-trivial LiftObstructions in a chain is at most the chain length.
+
+QT_3: Resolved basis size formula: the basis size at Q_k equals basisSize(Q_j) + chainLength + obstructionResolutionCost.
+
+QT_4: Flat tower characterization: isFlat(chain) iff obstructionCount = 0 iff HolonomyGroup trivial at every step.
+
+QT_5: LiftChainCertificate existence: a CompleteType at Q_k satisfies IT_7d with a witness chain.
+
+QT_6: Single-step reduction: QT_3 with chainLength=1 and cost=0 reduces to QLS_3.
+
+QT_7: Flat chain basis size: for flat chains, resolvedBasisSize(Q_k) = basisSize(Q_j) + (k - j).
+
+CC_PINS: Carry-constraint fiber-pinning map: pinsFibers(CarryConstraint(p)) equals the set of bit positions where p has a 1 plus the first-zero stopping position.
+
+CC_COST_FIBER: Carry-constraint cost-to-fiber count: the number of fibers pinned by a CarryConstraint equals popcount plus one for the stopping position.
+
+jsat_RR: CRT joint satisfiability: two ResidueConstraints are jointly satisfiable iff the gcd of their moduli divides the difference of their residues.
+
+jsat_CR: Carry-residue joint satisfiability: a CarryConstraint and ResidueConstraint are jointly satisfiable iff the carry-pinned fibers are compatible with the residue class.
+
+jsat_CC: Carry-carry joint satisfiability: two CarryConstraints are jointly satisfiable iff their bit-patterns have no conflicting positions.
+
+D_8: Dihedral inverse formula: the inverse of r^a s^p in D_(2^n) is r^(-(ΓêÆ1)^p a mod 2^n) s^p.
+
+D_9: Dihedral reflection order: every reflection element r^k s^1 in D_(2^n) has order 2.
+
+EXP_1: Monotone carrier characterization: a ConstrainedType has an upward-closed carrier iff every ResidueConstraint has residue = modulus - 1 and no CarryConstraint or DepthConstraint appears.
+
+EXP_2: Monotone constraint count: the number of expressible monotone ConstrainedTypes at quantum level Q_n is 2^n, corresponding to the principal filter count.
+
+EXP_3: SumType carrier semantics: the carrier of a SumType is the coproduct (disjoint union) of component carriers, not the set-theoretic union.
+
+ST_3: SumType Euler characteristic additivity: for a SumType with topologically disjoint component nerves, the Euler characteristic is additive.
+
+ST_4: SumType Betti number additivity: for disjoint component nerves, all Betti numbers are additive.
+
+ST_5: SumType completeness transfer: a SumType A+B is CompleteType iff both A and B are CompleteType and they have equal quantum levels.
+
+TS_8: Betti-1 minimum constraint count: the minimum number of constraints needed to achieve first Betti number beta_1 = k in the constraint nerve is 2k + 1.
+
+TS_9: TypeSynthesisResolver termination: the resolver terminates in at most 2^n steps for any target signature at quantum level Q_n, returning either a ConstrainedType or a ForbiddenSignature certificate.
+
+TS_10: ForbiddenSignature membership criterion: a topological signature is a ForbiddenSignature iff no ConstrainedType with at most n constraints realises it at quantum level Q_n.
+
+QT_8: ObstructionChain length bound: the length of the ObstructionChain from Q_j to Q_k is at most (k-j) times C(basisSize(Q_j), 3).
+
+QT_9: TowerCompletenessResolver termination: the resolver terminates for any finite LiftChain within the QT_8 bound, producing a CompleteType certificate or a bounded ObstructionChain.
+
+COEFF_1: Standard coefficient ring: the coefficient ring for all psi-pipeline cohomology computations in uor.foundation is Z/2Z, consistent with MN_7.
+
+GO_1: GluingObstruction feedback: given a GluingObstruction class in H^1(N(C)), the killing RefinementSuggestion adds a constraint whose pinned fibers contain the intersection of the cycle-generating pair.
+
+SR_6: Saturation re-entry free count: for a session at full saturation, a new query q has freeCount equal to the number of q's fiber coordinates not already bound.
+
+SR_7: Saturation degree degradation: after re-entry with query q, the saturation degree becomes min(current sigma, 1 - freeCount(q)/n).
+
+QM_6: Amplitude index set characterization: the amplitude index set of a SuperposedFiberState over ConstrainedType T at Q_n is the set of monotone pinning trajectories consistent with T's constraints.
+
+CIC_1: Certificate issuance: every valid Transform admits a TransformCertificate attesting correct source-to-target mapping.
+
+CIC_2: Certificate issuance: every metric-preserving Transform admits an IsometryCertificate attesting distance preservation.
+
+CIC_3: Certificate issuance: every involutive operation f where f(f(x)) = x admits an InvolutionCertificate.
+
+CIC_4: Certificate issuance: full saturation (╧â = 1, freeCount = 0) admits a SaturationCertificate.
+
+CIC_5: Certificate issuance: an AR_1-ordered and DC_10-selected trace admits a GeodesicCertificate.
+
+CIC_6: Certificate issuance: a MeasurementEvent verifying the von NeumannΓÇôLandauer bridge at ╬▓* = ln 2 admits a MeasurementCertificate.
+
+CIC_7: Certificate issuance: a MeasurementEvent verifying P(outcome k) = |╬▒_k|┬▓ admits a BornRuleVerification certificate.
+
+GC_1: Certificate issuance: shared-frame grounding that lands in the type-equivalent neighbourhood admits a GroundingCertificate.
+
+SR_8: Session composition validity: compose(S_A, S_B) is valid at Q_k iff all pinned-fiber intersections agree at every tower level Q_0 through Q_k.
+
+SR_9: ContextLease disjointness: two distinct leases on the same SharedContext have non-overlapping fiber sets.
+
+SR_10: ExecutionPolicy confluence: different execution policies on the same pending query set produce the same final resolved state (Church-Rosser for session resolution).
+
+MC_1: Lease partition conserves total budget: the sum of freeCount over all leases equals the SharedContext freeCount.
+
+MC_2: Per-lease binding monotonicity: within a leased sub-domain, freeCount decreases monotonically (SR_1 restricted to lease).
+
+MC_3: General composition freeCount via inclusion-exclusion.
+
+MC_4: Disjoint-lease composition is additive: the intersection term vanishes when leases are fiber-disjoint (SR_9).
+
+MC_5: Policy-invariant final binding set: different execution policies produce identical FiberPinning records.
+
+MC_6: Full lease coverage implies composed saturation: k sessions on disjoint covering leases, each locally converged, produce a SaturatedContext via composition.
+
+MC_7: Distributed O(1) resolution: a query against a composed SaturatedContext resolves in zero steps.
+
+MC_8: Parallelism bound: per-session resolution work is bounded by lease size, not by total fiber count n.
+
+boundarySquaredZero: Γêé┬▓ = 0: the boundary of a boundary is zero.
+
+psi_4: ╧ê_4: HomologyGroups ΓåÆ BettiNumbers (extraction functor).
+
+indexBridge: Index bridge: connects Euler characteristic to alternating Betti sum.
+
+coboundarySquaredZero: ╬┤┬▓ = 0: the coboundary of a coboundary is zero.
+
+deRhamDuality: Discrete de Rham duality: H^k Γëà Hom(H_k, R).
+
+sheafCohomologyBridge: Sheaf cohomology equals simplicial cohomology for constant sheaves.
+
+localGlobalPrinciple: Local-global principle: H^1(K; F) = 0 implies all local sections glue to global sections.
+
+prf_criticalIdentity: Computation certificate for the critical identity neg(bnot(x)) = succ(x) at Q0.
+
