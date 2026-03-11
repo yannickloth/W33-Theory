@@ -45,9 +45,10 @@ import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-BUNDLE = ROOT / "TOE_270_TRANSPORT_v01_20260228_bundle.zip"
-OUTPUT_BUNDLE = ROOT / "TOE_270_transport_analysis_v01_20260228_bundle.zip"
+PILLARS_DIR = Path(__file__).resolve().parent
+REPO_ROOT = PILLARS_DIR.parent
+BUNDLE = PILLARS_DIR / "TOE_270_TRANSPORT_v01_20260228_bundle.zip"
+OUTPUT_BUNDLE = PILLARS_DIR / "TOE_270_transport_analysis_v01_20260228_bundle.zip"
 
 
 def load_data():
@@ -113,7 +114,7 @@ def analyze(edges, tbl):
             for k,v in qxy.items():
                 x,y = map(int, k.split(","))
                 if v != (sx * x + sy * y) % 3:
-                    mismatches.append((e["u"], g, k, v, sx, sy))
+                    mismatches.append((e["u"], e["gen"], k, v, sx, sy))
     out["T3_qxy_mismatches"] = mismatches
 
     # T4: block guess distinct values
@@ -128,16 +129,19 @@ def analyze(edges, tbl):
 
 
 def write_results(summary):
-    open(ROOT / "270_transport_analysis_summary.json", "w").write(json.dumps(summary, indent=2))
+    (REPO_ROOT / "270_transport_analysis_summary.json").write_text(
+        json.dumps(summary, indent=2),
+        encoding="utf-8",
+    )
     # human-readable report
-    with open(ROOT / "270_transport_report.md", "w", encoding="utf-8") as f:
+    with open(REPO_ROOT / "270_transport_report.md", "w", encoding="utf-8") as f:
         f.write("# 270‑Transport Analysis Report\n\n")
         f.write(json.dumps(summary, indent=2))
     # bundle
-    BUNDLE_DIR = ROOT / "270_transport_analysis_files"
+    BUNDLE_DIR = PILLARS_DIR / "270_transport_analysis_files"
     BUNDLE_DIR.mkdir(exist_ok=True)
     for fn in ("270_transport_analysis_summary.json", "270_transport_report.md"):
-        fe = ROOT / fn
+        fe = REPO_ROOT / fn
         BUNDLE_DIR.joinpath(fn).write_bytes(fe.read_bytes())
     with zipfile.ZipFile(OUTPUT_BUNDLE, "w") as zf:
         # include original inputs

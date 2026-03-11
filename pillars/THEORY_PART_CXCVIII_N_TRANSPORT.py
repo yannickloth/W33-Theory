@@ -39,8 +39,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple, Set
 
-ROOT = Path(__file__).resolve().parent
-BUNDLE = ROOT / "TOE_tomotope_true_flag_model_v02_20260228_bundle.zip"
+PILLARS_DIR = Path(__file__).resolve().parent
+REPO_ROOT = PILLARS_DIR.parent
+BUNDLE = PILLARS_DIR / "TOE_tomotope_true_flag_model_v02_20260228_bundle.zip"
 
 
 def compose(p: tuple, q: tuple) -> tuple:
@@ -65,7 +66,7 @@ def element_order(p: tuple) -> int:
 
 def connect_N_transport() -> dict:
     # Load N
-    N = [tuple(n) for n in json.loads((ROOT / "N_subgroup.json").read_text())]
+    N = [tuple(n) for n in json.loads((PILLARS_DIR / "N_subgroup.json").read_text())]
     idp = tuple(range(192))
 
     # Load r-generators
@@ -75,7 +76,7 @@ def connect_N_transport() -> dict:
 
     # Load flag->qid mapping (54 flags)
     flag_qid: Dict[int, int] = {}
-    with open(ROOT / "K54_54sheet_coords_refined.csv") as f:
+    with open(REPO_ROOT / "K54_54sheet_coords_refined.csv") as f:
         for row in csv.DictReader(f):
             uf = row.get("unique_flag", "")
             q = int(row["qid"])
@@ -203,8 +204,8 @@ def connect_N_transport() -> dict:
 
 def main():
     summary = connect_N_transport()
-    (ROOT / "N_transport_connection.json").write_text(json.dumps(summary, indent=2))
-    with open(ROOT / "N_transport_connection_report.md", "w", encoding="utf-8") as f:
+    (REPO_ROOT / "N_transport_connection.json").write_text(json.dumps(summary, indent=2))
+    with open(REPO_ROOT / "N_transport_connection_report.md", "w", encoding="utf-8") as f:
         f.write("# N–Transport Connection Report\n\n")
         f.write(json.dumps(summary, indent=2))
     print("wrote N_transport_connection.json and report")

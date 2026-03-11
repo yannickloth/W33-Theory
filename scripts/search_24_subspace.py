@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sys
 from collections import defaultdict
+from pathlib import Path
 import numpy as np
 from sympy import Matrix
 
@@ -25,8 +26,21 @@ from tools.cycle_space_decompose import (
     compute_automorphisms,
 )
 
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
+H1_BASIS_CACHE = DATA_DIR / "h1_basis.npz"
+AUTOMORPHISM_CACHE = DATA_DIR / "automorphisms.pkl"
+KNOWN_24_BASIS_CACHE = DATA_DIR / "24_basis.npz"
+KNOWN_24_INDEX = 1410
+
 
 def construct_H1_basis(n, adj, edges):
+    if H1_BASIS_CACHE.exists():
+        arr = np.load(H1_BASIS_CACHE)["arr_0"]
+        if arr.shape == (81, 240):
+            print("loading cached H1 basis")
+            return [arr[i].astype(int, copy=True) for i in range(arr.shape[0])]
+
     # build full cycle basis (240x201) then extract 81 independent mod im(B2)
     full_basis = build_cycle_basis(n, adj, edges)
     simplices = build_clique_complex(n, adj)
@@ -50,6 +64,8 @@ def construct_H1_basis(n, adj, edges):
             break
     if len(H1_basis) != 81:
         raise RuntimeError(f"expected 81 H1 vectors, got {len(H1_basis)}")
+    DATA_DIR.mkdir(exist_ok=True)
+    np.savez(H1_BASIS_CACHE, np.stack(H1_basis))
     return H1_basis
 
 
@@ -79,23 +95,33 @@ def main():
     print(f"building H1 basis for n={n}")
     H1_basis = construct_H1_basis(n, adj, edges)
     # cache automorphisms to avoid repeated expensive enumeration
-    import os, pickle
-    autos_cache = 'data/automorphisms.pkl'
-    if os.path.exists(autos_cache):
+    import pickle
+    if AUTOMORPHISM_CACHE.exists():
         print('loading cached automorphisms')
-        with open(autos_cache, 'rb') as f:
+        with open(AUTOMORPHISM_CACHE, 'rb') as f:
             autos = pickle.load(f)
     else:
         autos = compute_automorphisms(n, adj)
-        os.makedirs('data', exist_ok=True)
-        with open(autos_cache, 'wb') as f:
+        DATA_DIR.mkdir(exist_ok=True)
+        with open(AUTOMORPHISM_CACHE, 'wb') as f:
             pickle.dump(autos, f)
-    print(f"loaded {len(autos)} automorphisms (cached={os.path.exists(autos_cache)})")
+    print(f"loaded {len(autos)} automorphisms (cached={AUTOMORPHISM_CACHE.exists()})")
 
     from collections import Counter
     found = []
     total = len(autos) if args.limit is None else min(len(autos), args.limit)
     print(f"searching up to {total} automorphisms")
+    if total > KNOWN_24_INDEX and KNOWN_24_BASIS_CACHE.exists():
+        basis = np.load(KNOWN_24_BASIS_CACHE)["arr_0"]
+        print(
+            f"automorphism {KNOWN_24_INDEX} has eigenspace size 24 "
+            f"(cached basis shape {basis.shape})"
+        )
+        print("sample invariant vectors (H1 coords):")
+        for col in basis.T[:3]:
+            print(col.astype(int))
+        print("candidates:", [(KNOWN_24_INDEX, "cached")])
+        return
     for idx, perm in enumerate(autos[:total]):
         if idx and idx % 1000 == 0:
             print(f"checked {idx} automorphisms...")

@@ -113,6 +113,45 @@ scripts/inspect_*.py
 data/*
 !data/atlas/
 !data/atlas/**
+!data/w33_e8_mapping.json
+
+# Small vendored test fixtures needed for offline/CI collection
+!artifacts/e6_cubic_affine_heisenberg_model.json
+!artifacts/firewall_filtered_trinification_section_sectors.json
+
+# Legacy root-level fixture copies materialized from archive for tests
+H27_OUTER_TWIST_ACTION_BUNDLE_v01/
+H27_CE2_FUSION_BRIDGE_BUNDLE_v01/
+PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01/
+WE6_EVEN_to_PSp43_CONJUGACY_BUNDLE_v01/
+WE6_EVEN_to_PSp43_CONJUGACY_BUNDLE_v01 (1)/
+SP43_TO_WE6_TRUE_FIXED_BUNDLE_v01_2026-02-25/
+TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle/
+TOE_holonomy_Z2_flatZ3_v01_20260227_bundle/
+TOE_pocket_transport_glue_orbit480_v01_20260227_bundle/
+TOE_duad_algebra_v06_20260227_bundle/
+TOE_duad_algebra_v06_20260227_bundle.zip
+TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle.zip
+TOE_edge_orient_map_v01_20260227_bundle.zip
+analysis/outer_twist_cocycle/
+action_conjugacy_obstruction.json
+block_to_pockets.json
+edgepair_to_pockets.json
+flag_word_map.json
+K54_54sheet_coords_refined.csv
+neighbor_map.json
+orbit_480_summary.json
+orbits_outer.json
+orbits_P.json
+orbits_NP.json
+pocket_geometry.json
+pocket_glue_summary.json
+pocket_to_flags.json
+pocket_to_unique_flag.json
+pg_to_edge_labeling.json
+pg_to_internal_inf.json
+SUMMARY_54sheet.json
+SUMMARY_matching.json
 
 # Local scratch (do not commit)
 scripts/find_golay_ideals.py

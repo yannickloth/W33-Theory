@@ -51,6 +51,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 ROOT = Path(__file__).resolve().parent
+_ARCHIVE_ZIP = ROOT.parent / "archive" / "zip"
 BUNDLE = ROOT / "TOE_S3_SHEET_TRANSPORT_v01_20260228_bundle.zip"
 WELD_BUNDLE = ROOT / "TOE_tomotope_triality_weld_v01_20260228_bundle.zip"
 TRANSPORT_BUNDLE = ROOT / "TOE_270_TRANSPORT_v01_20260228_bundle.zip"
@@ -58,8 +59,19 @@ TRANSPORT_BUNDLE = ROOT / "TOE_270_TRANSPORT_v01_20260228_bundle.zip"
 _C3_MAP = {(0, 1, 2): 0, (1, 2, 0): 1, (2, 0, 1): 2}
 
 
+def _resolve_bundle(path: Path) -> Path:
+    candidates = (
+        path,
+        _ARCHIVE_ZIP / path.name,
+    )
+    resolved = next((candidate for candidate in candidates if candidate.exists()), None)
+    if resolved is None:
+        raise FileNotFoundError(f"Could not locate bundle {path.name} in pillars/ or archive/zip/.")
+    return resolved
+
+
 def _load_bundle():
-    with zipfile.ZipFile(BUNDLE) as zf:
+    with zipfile.ZipFile(_resolve_bundle(BUNDLE)) as zf:
         L_raw = json.loads(zf.read("L_table.json"))
         s_g_raw = json.loads(zf.read("s_g.json"))
         silent = json.loads(zf.read("silent_sheet.json"))
@@ -69,7 +81,7 @@ def _load_bundle():
 
 
 def _load_schreier_edges() -> List[Tuple[int, int, str, int]]:
-    with zipfile.ZipFile(WELD_BUNDLE) as wz:
+    with zipfile.ZipFile(_resolve_bundle(WELD_BUNDLE)) as wz:
         text = wz.read(
             "TOE_tomotope_triality_weld_v01_20260228/K_schreier_edges_voltage_Z3.csv"
         ).decode()
@@ -80,7 +92,7 @@ def _load_schreier_edges() -> List[Tuple[int, int, str, int]]:
 
 
 def _load_transport_edges() -> List[dict]:
-    with zipfile.ZipFile(TRANSPORT_BUNDLE) as zf:
+    with zipfile.ZipFile(_resolve_bundle(TRANSPORT_BUNDLE)) as zf:
         edges_txt = zf.read("edges_270_transport.csv").decode()
     return list(csv.DictReader(io.StringIO(edges_txt)))
 

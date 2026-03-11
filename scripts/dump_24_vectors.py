@@ -1,6 +1,7 @@
 """Compute the 24-dimensional invariant subspace for automorphism 582 and dump its basis."""
 
 import sys
+from pathlib import Path
 import numpy as np
 from sympy import Matrix
 
@@ -9,8 +10,21 @@ from e8_embedding_group_theoretic import build_w33
 from tools.cycle_space_analysis import build_cycle_basis
 from tools.cycle_space_decompose import build_clique_complex, boundary_matrix, permute_cycle, compute_automorphisms
 
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
+H1_BASIS_CACHE = DATA_DIR / "h1_basis.npz"
+AUTOMORPHISM_CACHE = DATA_DIR / "automorphisms.pkl"
+KNOWN_24_BASIS_CACHE = DATA_DIR / "24_basis.npz"
+KNOWN_24_INDEX = 1410
+
 
 def construct_H1_basis(n, adj, edges):
+    if H1_BASIS_CACHE.exists():
+        arr = np.load(H1_BASIS_CACHE)["arr_0"]
+        if arr.shape == (81, 240):
+            print("loading cached H1 basis")
+            return [arr[i].astype(int, copy=True) for i in range(arr.shape[0])]
+
     full_basis = build_cycle_basis(n, adj, edges)
     simplices = build_clique_complex(n, adj)
     B2 = boundary_matrix(simplices[2], simplices[1])
@@ -30,6 +44,8 @@ def construct_H1_basis(n, adj, edges):
             H1_basis.append(v.copy())
         if len(H1_basis) == 81:
             break
+    DATA_DIR.mkdir(exist_ok=True)
+    np.savez(H1_BASIS_CACHE, np.stack(H1_basis))
     return H1_basis
 
 
@@ -57,10 +73,27 @@ def main():
                         help='optional file to save the 24x? basis as numpy .npz')
     args = parser.parse_args()
 
+    if args.index == KNOWN_24_INDEX and KNOWN_24_BASIS_CACHE.exists():
+        mat = np.load(KNOWN_24_BASIS_CACHE)["arr_0"]
+        print("loaded cached 24-basis", mat.shape)
+        if args.output:
+            Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+            np.savez(args.output, mat)
+            print('saved basis to', args.output)
+        else:
+            np.set_printoptions(threshold=100, edgeitems=5)
+            print(mat)
+        return
+
     n, verts, adj, edges = build_w33()
     H1_basis = construct_H1_basis(n, adj, edges)
     # only compute enough automorphisms to reach index
-    autos = compute_automorphisms(n, adj, limit=args.index + 1)
+    if AUTOMORPHISM_CACHE.exists():
+        import pickle
+        with open(AUTOMORPHISM_CACHE, "rb") as f:
+            autos = pickle.load(f)
+    else:
+        autos = compute_automorphisms(n, adj, limit=args.index + 1)
     if len(autos) <= args.index:
         raise RuntimeError(f"automorphism {args.index} not generated; increase limit")
     perm = autos[args.index]

@@ -163,12 +163,12 @@ def main():
         cycle_parities.append((cyc, par))
 
     # output results
-    with open(ROOT/"artifacts"/"srg_flip_edge.csv", "w") as f:
+    with open(ROOT/"artifacts"/"srg_flip_edge.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["u","v","flip"])
         for (u,v),fl in flip_edge.items():
             w.writerow([u,v,fl])
-    with open(ROOT/"artifacts"/"srg_cycle_holonomy.csv","w") as f:
+    with open(ROOT/"artifacts"/"srg_cycle_holonomy.csv","w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["cycle","parity"])
         for cyc,par in cycle_parities:

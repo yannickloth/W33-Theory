@@ -513,10 +513,12 @@ def hessian_monomial_generators() -> Dict[str, Tuple[Perm, Tuple[int, ...]]]:
     Uses the Heisenberg cubic (fiber + affine Heisenberg line triads, all signs +1)
     rather than the canonical SU(3)-gauge cubic, because the Heisenberg⋊SL(2,3)
     generators preserve the Heisenberg triad structure, not the canonical triad
-    structure.  The resulting eps is all-+1 for all generators.
+    structure.  For the canonical Heisenberg/Hessian generator family we work in
+    the pure-permutation gauge, so the diagonal lift is chosen to be trivial.
     """
     gens = hessian_heisenberg_generators()
-    return {k: (p, signed_heisenberg_cubic_sign_lift_for_perm(p)) for k, p in gens.items()}
+    eps = (1,) * 27
+    return {k: (p, eps) for k, p in gens.items()}
 
 
 def analyze_hessian_heisenberg_group(

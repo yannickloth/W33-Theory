@@ -46,7 +46,15 @@ ROOT = Path(__file__).resolve().parent
 
 
 def load_edges() -> List[dict]:
-    path = ROOT / "edges_270_transport.csv"
+    candidates = (
+        ROOT / "edges_270_transport.csv",
+        ROOT.parent / "archive" / "data" / "edges_270_transport.csv",
+    )
+    path = next((candidate for candidate in candidates if candidate.exists()), None)
+    if path is None:
+        raise FileNotFoundError(
+            "Could not locate edges_270_transport.csv in pillars/ or archive/data/."
+        )
     edges = []
     with open(path) as f:
         for r in csv.DictReader(f):

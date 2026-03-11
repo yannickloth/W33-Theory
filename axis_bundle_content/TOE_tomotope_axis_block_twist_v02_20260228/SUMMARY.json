@@ -1,0 +1,95 @@
+{
+  "tomotope_counts": {
+    "V": 4,
+    "E": 12,
+    "F": 16,
+    "C": 8,
+    "flags": 192
+  },
+  "axis_counts": {
+    "V": 1,
+    "E": 16,
+    "F": 12,
+    "C": 4,
+    "flags": 192
+  },
+  "tomotope_adjacent_orders": [
+    4,
+    6,
+    3
+  ],
+  "axis_adjacent_orders": [
+    4,
+    6,
+    3
+  ],
+  "tomotope_in_axis_adjacent_orders": [
+    3,
+    12,
+    4
+  ],
+  "membership": {
+    "axis_r0_in_tomoG": true,
+    "axis_r3_in_tomoG": true,
+    "axis_r1_in_tomoG": false,
+    "axis_r2_in_tomoG": false
+  },
+  "preservation_vs_tomotope_coords": {
+    "axis_r1": {
+      "name": "axis_r1",
+      "keepV": 68,
+      "keepE": 0,
+      "keepF": 0,
+      "keepC": 2,
+      "keepVFC": 0,
+      "keepVEC": 0,
+      "keepVEFC": 0
+    },
+    "axis_r2": {
+      "name": "axis_r2",
+      "keepV": 50,
+      "keepE": 4,
+      "keepF": 8,
+      "keepC": 8,
+      "keepVFC": 2,
+      "keepVEC": 0,
+      "keepVEFC": 0
+    },
+    "tomo_r1": {
+      "name": "tomo_r1",
+      "keepV": 192,
+      "keepE": 0,
+      "keepF": 192,
+      "keepC": 192,
+      "keepVFC": 192,
+      "keepVEC": 0,
+      "keepVEFC": 0
+    },
+    "tomo_r2": {
+      "name": "tomo_r2",
+      "keepV": 192,
+      "keepE": 192,
+      "keepF": 0,
+      "keepC": 192,
+      "keepVFC": 0,
+      "keepVEC": 192,
+      "keepVEFC": 0
+    }
+  },
+  "blocks48": {
+    "count": 48,
+    "meaning": "<r0,r3> orbits, coincide with (tomotope edge, tomotope face) incidence pairs; each block has 4 flags",
+    "blocks_per_tomotope_edge_sizes": [
+      4
+    ],
+    "blocks_per_tomotope_face_sizes": [
+      3
+    ],
+    "blocks_per_axis_edge_sizes": [
+      3
+    ],
+    "blocks_per_axis_face_sizes": [
+      4
+    ]
+  }
+}

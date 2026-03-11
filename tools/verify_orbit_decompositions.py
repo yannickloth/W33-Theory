@@ -57,13 +57,13 @@ def main():
     print(f"edgepair degree: {n_ep}  | orbits: {[len(o) for o in ep_orbits]}")
     print(f"line    degree: {n_line}| orbits: {[len(o) for o in line_orbits]}")
     if len(ep_orbits) == 1:
-        print("edgepair action is TRANSITIVE ✅")
+        print("edgepair action is TRANSITIVE [ok]")
     else:
-        print("edgepair action is NOT transitive ❌")
+        print("edgepair action is NOT transitive [fail]")
     if len(line_orbits) > 1:
-        print("line action is INTRANSITIVE ✅")
+        print("line action is INTRANSITIVE [ok]")
     else:
-        print("line action is transitive (unexpected) ❌")
+        print("line action is transitive (unexpected) [fail]")
 
     out = {
         "edgepair_degree": n_ep,

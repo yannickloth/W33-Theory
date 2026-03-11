@@ -2,23 +2,22 @@ from __future__ import annotations
 
 
 def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
-    """Regression: the CE2 closed-form pieces depend only on bilinear invariants.
+    """Regression: the live CE2 law factors through bilinear F9 invariants.
 
-    This is a structural simplification:
-      - variable-case: (t, d, omega(u_c,d), dot(u_c,d)) determines (c0, eps)
-      - constant-line: (t, d, dot(u_c,d)) determines the sign
+    The current exact statement is:
+      - the branch selector depends only on (t, d, omega(u_c,d))
+      - on the variable branch, the full phase is determined by
+        (t, d, omega(u_c,d), dot(u_c,d))
+      - the closed-form sign reproduces the committed 864-entry sign map
     """
     from fractions import Fraction
     from scripts.ce2_global_cocycle import (
-        _SIMPLE_FAMILY_SIGN_C0_TERMS,
-        _SIMPLE_FAMILY_SIGN_CONST_P_TERMS,
-        _SIMPLE_FAMILY_SIGN_EPS_TERMS,
-        _eval_f3_sparse_poly,
-        _f3_chi,
         _f3_k_of_direction,
         _f3_omega,
         _heisenberg_vec_maps,
         _simple_family_sign_map,
+        predict_simple_family_phase_closed_form,
+        predict_simple_family_sign_closed_form,
     )
 
     sign_map = _simple_family_sign_map()
@@ -31,9 +30,8 @@ def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
     def dot(u1: tuple[int, int], u2: tuple[int, int]) -> int:
         return (int(u1[0]) * int(u2[0]) + int(u1[1]) * int(u2[1])) % 3
 
-    var_c0: dict[tuple[int, int, int, int, int], int] = {}
-    var_eps: dict[tuple[int, int, int, int, int], int] = {}
-    const_sign: dict[tuple[int, int, int, int], int] = {}
+    branch_type: dict[tuple[int, int, int, int], int] = {}
+    variable_phase: dict[tuple[int, int, int, int, int], int] = {}
 
     for (c_i, m_i, o_i), sgn in sign_map.items():
         uc = u(c_i)
@@ -50,32 +48,23 @@ def test_ce2_sign_depends_only_on_f9_bilinear_invariants() -> None:
         s = int(dot(uc, d))
 
         const_line = int(d1 != 0 and w == int(_f3_k_of_direction(d)))
-        if const_line:
-            P = _eval_f3_sparse_poly(
-                uc[0], uc[1], d1, d2, _SIMPLE_FAMILY_SIGN_CONST_P_TERMS[t]
-            )
-            pred = int(_f3_chi(P))
-            assert pred == int(sgn)
+        branch_key = (int(t), int(d1), int(d2), int(w))
+        if branch_key in branch_type:
+            assert branch_type[branch_key] == const_line
+        branch_type[branch_key] = const_line
 
-            key = (int(t), int(d1), int(d2), int(s))
-            if key in const_sign:
-                assert const_sign[key] == pred
-            const_sign[key] = int(pred)
+        assert predict_simple_family_sign_closed_form(c_i, m_i, o_i) == int(sgn)
+
+        if const_line:
             continue
 
-        c0 = _eval_f3_sparse_poly(uc[0], uc[1], d1, d2, _SIMPLE_FAMILY_SIGN_C0_TERMS[t])
-        e = _eval_f3_sparse_poly(uc[0], uc[1], d1, d2, _SIMPLE_FAMILY_SIGN_EPS_TERMS[t])
-        eps = int(_f3_chi(e))
-
+        phase = int(predict_simple_family_phase_closed_form(c_i, m_i, o_i))
         key = (int(t), int(d1), int(d2), int(w), int(s))
-        if key in var_c0:
-            assert var_c0[key] == int(c0)
-        if key in var_eps:
-            assert var_eps[key] == int(eps)
-        var_c0[key] = int(c0)
-        var_eps[key] = int(eps)
+        if key in variable_phase:
+            assert variable_phase[key] == phase
+        variable_phase[key] = phase
 
-    assert len(var_c0) > 0 and len(var_eps) > 0 and len(const_sign) > 0
+    assert len(branch_type) > 0 and len(variable_phase) > 0
 
     # Regression: the global Heisenberg/Weil law reproduces many sparse local CE2 repairs.
     import json
