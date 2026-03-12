@@ -13,11 +13,11 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1718 (T1–T1718) |
-| Test functions | 16,429 |
-| Test files | 640 |
-| Phases completed | CII (102) |
-| Mathematical domains covered | 217+ |
+| Theorems proved | 1797 (T1–T1823) |
+| Test functions | 16,815 |
+| Test files | 645 |
+| Phases completed | CVII (107) |
+| Mathematical domains covered | 222+ |
 | Key predictions matched | 34 |
 
 ## Current Frontier
@@ -66,6 +66,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **C:** Algebraic number theory — minimal polynomial x^3-10x^2-32x+96, Cayley-Hamilton, det=-3*2^56, p-adic valuations, discriminant 921600, GF(2)/GF(3) reductions, Newton's identities, Bose-Mesner recurrence (81 tests)
 - **CI:** Functional analysis — operator norm=12, spectral decomposition, resolvent, Green's function, spectral measure, functional calculus exp/sin/cos, Schatten norms, Riesz projections, Sobolev spaces, Hilbert-Schmidt norm sqrt(480) (79 tests)
 - **CII:** Discrete calculus — exterior derivatives d_0/d_1/d_2, cochain complex d^2=0, DEC Laplacians, Hodge decomposition 39+120+81=240, harmonic 1-forms, discrete Stokes theorem, cup product Leibniz, L_2=4*I_160 (76 tests)
+- **CIII:** Spectral clustering — Fiedler vector, algebraic connectivity 10, Cheeger inequality, conductance, vertex/edge connectivity 12, expander mixing, Ramanujan verification, spectral partitioning (76 tests)
+- **CIV:** Cayley algebraic — Bose-Mesner algebra dim=3, P/Q eigenmatrices, spectral idempotents, Krein parameters, distance-regularity, walk-regularity, absolute bound, association scheme (77 tests)
+- **CV:** Graph decomposition — edge/clique decomposition, vertex cuts, tree-width bounds, modular decomposition, ear decomposition, cycle space dim=201, matching, perfect matching existence (80 tests)
+- **CVI:** Spectral moments — M0-M6 verification, combinatorial interpretations, Ihara zeta function, Newton's identities, von Neumann entropy, Chebyshev moments, spectral form factor, Cayley-Hamilton recurrence (80 tests)
+- **CVII:** Perturbation theory — Weyl inequality, Davis-Kahan, condition number=6, pseudospectrum, Gershgorin disks, Bauer-Fike, spectral rigidity, interlacing, matrix exponential perturbation (73 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -268,8 +273,23 @@ python -m pytest tests/test_functional_analysis_computation.py -q
 # Phase CII: discrete calculus (76 tests)
 python -m pytest tests/test_discrete_calculus_computation.py -q
 
-# Phases LXIV-CII combined (all hard computations, 2758 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py -q
+# Phase CIII: spectral clustering (76 tests)
+python -m pytest tests/test_spectral_clustering_computation.py -q
+
+# Phase CIV: Cayley algebraic (77 tests)
+python -m pytest tests/test_cayley_algebraic_computation.py -q
+
+# Phase CV: graph decomposition (80 tests)
+python -m pytest tests/test_graph_decomposition_computation.py -q
+
+# Phase CVI: spectral moments (80 tests)
+python -m pytest tests/test_spectral_moments_computation.py -q
+
+# Phase CVII: perturbation theory (73 tests)
+python -m pytest tests/test_perturbation_theory_computation.py -q
+
+# Phases LXIV-CVII combined (all hard computations, 3144 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -283,6 +303,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| CVII | T1803–T1823 | 73 | Perturbation Theory — Weyl, Davis-Kahan, Pseudospectrum, Rigidity |
+| CVI | — | 80 | Spectral Moments — Raw Moments, Ihara Zeta, Newton, Entropy |
+| CV | — | 80 | Graph Decomposition — Clique, Tree-Width, Ear, Cycle Space, Matching |
+| CIV | T1740–T1760 | 77 | Cayley Algebraic — Bose-Mesner, Idempotents, Krein, Walk-Regularity |
+| CIII | T1719–T1739 | 76 | Spectral Clustering — Fiedler, Cheeger, Expander Mixing, Ramanujan |
 | CII | T1698–T1718 | 76 | Discrete Calculus — Exterior Derivatives, Hodge, Stokes, Cup Product |
 | CI | T1677–T1697 | 79 | Functional Analysis — Operator Norm, Resolvent, Schatten, Sobolev |
 | C | T1656–T1676 | 81 | Algebraic Number Theory — Minimal Poly, Determinant, p-Adic, Smith |
