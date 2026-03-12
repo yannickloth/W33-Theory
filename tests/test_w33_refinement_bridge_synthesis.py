@@ -351,6 +351,56 @@ def test_synthesis_records_transport_matter_curved_harmonic_bridge() -> None:
     assert bridge["protected_flat_sector_is_exactly_one_81_copy"] is True
 
 
+def test_synthesis_records_transport_spectral_selector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_spectral_selector_bridge"]
+    assert bridge["w33_rank_mod_3"] == 39
+    assert bridge["w33_kernel_dimension_mod_3"] == 1
+    assert bridge["w33_all_ones_spans_mod_3_kernel"] is True
+    assert bridge["transport_projector_rank"] == 1
+    assert bridge["transport_walk_gap_exact"] == "7/8"
+    assert bridge["transport_kemeny_exact"] == "1952/45"
+    assert bridge["a2_positive_laplacian_gap"] == 24
+    assert bridge["protected_flat_selector_rank_after_tensoring"] == 81
+    assert bridge["matches_protected_flat_matter_dimension"] is True
+    assert bridge["protected_flat_curved_harmonic_lifts"] == {
+        "CP2_9": 243,
+        "K3_16": 1944,
+    }
+
+
+def test_synthesis_records_transport_curved_dirac_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_curved_dirac_refinement_bridge"]
+    assert bridge["transport_dirac_dimension"] == 12090
+    assert bridge["transport_trace_d_squared"] == 74772
+    assert bridge["transport_curvature_corner_rank"] == 42
+    assert bridge["matter_dirac_dimension"] == 979290
+    assert bridge["matter_trace_d_squared"] == 6056532
+    assert bridge["protected_flat_subsector_dimension"] == 81
+    assert bridge["transport_constant_limit"] == "1450800/19"
+    assert bridge["transport_linear_limit"] == "19370040/19"
+    assert bridge["matter_constant_limit"] == "117514800/19"
+    assert bridge["matter_linear_limit"] == "1568973240/19"
+    assert bridge["cp2_transport_step0_constant"] == "171275/2"
+    assert bridge["k3_matter_step0_linear"] == "78270381"
+
+
+def test_synthesis_records_transport_curved_dirac_quadratic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_curved_dirac_quadratic_bridge"]
+    assert bridge["transport_trace_d_fourth"] == 2116184
+    assert bridge["matter_trace_d_fourth"] == 171410904
+    assert bridge["cp2_transport_seed_quadratic"] == "39997843/3"
+    assert bridge["k3_transport_seed_quadratic"] == "36601793/3"
+    assert bridge["cp2_transport_sd1_quadratic"] == "4701453583/360"
+    assert bridge["k3_transport_sd1_quadratic"] == "5052856873/360"
+    assert bridge["cp2_matter_seed_quadratic"] == "1079941761"
+    assert bridge["k3_matter_sd1_quadratic"] == "45475711857/40"
+    assert bridge["transport_first_refinement_contracts_gap"] is True
+    assert bridge["matter_first_refinement_contracts_gap"] is True
+
+
 def test_synthesis_records_curved_a2_transport_product_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_a2_transport_product_bridge"]
@@ -672,4 +722,4 @@ def test_write_summary_emits_json(tmp_path: Path) -> None:
     out = write_summary(tmp_path / "w33_refinement_bridge_synthesis_summary.json")
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["status"] == "ok"
-    assert data["focused_test_stack_size"] >= 369
+    assert data["focused_test_stack_size"] >= 372

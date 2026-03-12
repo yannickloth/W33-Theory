@@ -89,6 +89,13 @@ from w33_transport_curvature_bridge import build_transport_curvature_summary
 from w33_transport_borel_factor_bridge import build_transport_borel_factor_summary
 from w33_transport_twisted_precomplex_bridge import build_transport_twisted_precomplex_summary
 from w33_transport_matter_curved_harmonic_bridge import build_transport_matter_curved_harmonic_summary
+from w33_transport_spectral_selector_bridge import build_transport_spectral_selector_summary
+from w33_transport_curved_dirac_refinement_bridge import (
+    build_transport_curved_dirac_refinement_summary,
+)
+from w33_transport_curved_dirac_quadratic_bridge import (
+    build_transport_curved_dirac_quadratic_bridge_summary,
+)
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_refinement_bridge_synthesis_summary.json"
@@ -142,6 +149,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_borel = build_transport_borel_factor_summary()
     transport_twisted_precomplex = build_transport_twisted_precomplex_summary()
     transport_matter_curved = build_transport_matter_curved_harmonic_summary()
+    transport_spectral_selector = build_transport_spectral_selector_summary()
+    transport_curved_dirac_refinement = build_transport_curved_dirac_refinement_summary()
+    transport_curved_dirac_quadratic = build_transport_curved_dirac_quadratic_bridge_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
@@ -376,6 +386,44 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "cp2_curvature_rank_on_harmonics": transport_matter_curved["curved_external_harmonic_channels"][0]["matter_curvature_rank_on_external_harmonics"],
             "k3_curvature_rank_on_harmonics": transport_matter_curved["curved_external_harmonic_channels"][1]["matter_curvature_rank_on_external_harmonics"],
             "protected_flat_sector_is_exactly_one_81_copy": transport_matter_curved["matter_coupled_precomplex"]["protected_flat_sector_is_exactly_one_81_copy"],
+        },
+        "transport_spectral_selector_bridge": {
+            "w33_rank_mod_3": transport_spectral_selector["w33_base_selector"]["rank_mod_3"],
+            "w33_kernel_dimension_mod_3": transport_spectral_selector["w33_base_selector"]["kernel_dimension_mod_3"],
+            "w33_all_ones_spans_mod_3_kernel": transport_spectral_selector["w33_base_selector"]["all_ones_spans_mod_3_kernel"],
+            "transport_projector_rank": transport_spectral_selector["transport_selector"]["projector_rank"],
+            "transport_walk_gap_exact": transport_spectral_selector["transport_selector"]["spectral_gap"]["exact"],
+            "transport_kemeny_exact": transport_spectral_selector["transport_selector"]["kemeny_constant"]["exact"],
+            "a2_positive_laplacian_gap": transport_spectral_selector["dynamic_selection_bridge"]["a2_positive_laplacian_gap"],
+            "protected_flat_selector_rank_after_tensoring": transport_spectral_selector["dynamic_selection_bridge"]["protected_flat_selector_rank_after_tensoring"],
+            "matches_protected_flat_matter_dimension": transport_spectral_selector["dynamic_selection_bridge"]["matches_protected_flat_matter_dimension"],
+            "protected_flat_curved_harmonic_lifts": transport_spectral_selector["dynamic_selection_bridge"]["protected_flat_curved_harmonic_lifts"],
+        },
+        "transport_curved_dirac_refinement_bridge": {
+            "transport_dirac_dimension": transport_curved_dirac_refinement["transport_curved_dirac"]["total_dimension"],
+            "transport_trace_d_squared": transport_curved_dirac_refinement["transport_curved_dirac"]["trace_d_squared"],
+            "transport_curvature_corner_rank": transport_curved_dirac_refinement["transport_curved_dirac"]["curvature_corner_rank"],
+            "matter_dirac_dimension": transport_curved_dirac_refinement["matter_coupled_curved_dirac"]["total_dimension"],
+            "matter_trace_d_squared": transport_curved_dirac_refinement["matter_coupled_curved_dirac"]["trace_d_squared"],
+            "protected_flat_subsector_dimension": transport_curved_dirac_refinement["matter_coupled_curved_dirac"]["protected_flat_subsector_dimension"],
+            "transport_constant_limit": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["transport"][0]["constant_term_formula"]["limit"]["exact"],
+            "transport_linear_limit": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["transport"][0]["linear_term_formula"]["limit"]["exact"],
+            "matter_constant_limit": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["matter_coupled"][0]["constant_term_formula"]["limit"]["exact"],
+            "matter_linear_limit": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["matter_coupled"][0]["linear_term_formula"]["limit"]["exact"],
+            "cp2_transport_step0_constant": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["transport"][0]["samples"][0]["constant_term"]["exact"],
+            "k3_matter_step0_linear": transport_curved_dirac_refinement["curved_refinement_first_order_bridge"]["matter_coupled"][1]["samples"][0]["linear_term"]["exact"],
+        },
+        "transport_curved_dirac_quadratic_bridge": {
+            "transport_trace_d_fourth": transport_curved_dirac_quadratic["internal_profiles"][0]["trace_d_fourth"],
+            "matter_trace_d_fourth": transport_curved_dirac_quadratic["internal_profiles"][1]["trace_d_fourth"],
+            "cp2_transport_seed_quadratic": transport_curved_dirac_quadratic["transport_seed_profiles"][0]["quadratic_density_coefficient"]["exact"],
+            "k3_transport_seed_quadratic": transport_curved_dirac_quadratic["transport_seed_profiles"][1]["quadratic_density_coefficient"]["exact"],
+            "cp2_transport_sd1_quadratic": transport_curved_dirac_quadratic["transport_sd1_profiles"][0]["quadratic_density_coefficient"]["exact"],
+            "k3_transport_sd1_quadratic": transport_curved_dirac_quadratic["transport_sd1_profiles"][1]["quadratic_density_coefficient"]["exact"],
+            "cp2_matter_seed_quadratic": transport_curved_dirac_quadratic["matter_seed_profiles"][0]["quadratic_density_coefficient"]["exact"],
+            "k3_matter_sd1_quadratic": transport_curved_dirac_quadratic["matter_sd1_profiles"][1]["quadratic_density_coefficient"]["exact"],
+            "transport_first_refinement_contracts_gap": transport_curved_dirac_quadratic["quadratic_gap_theorem"]["transport_first_refinement_contracts_gap"],
+            "matter_first_refinement_contracts_gap": transport_curved_dirac_quadratic["quadratic_gap_theorem"]["matter_first_refinement_contracts_gap"],
         },
         "curved_a2_transport_product_bridge": {
             "internal_dimension": curved_a2_product["a2_internal_profile"]["total_dimension"],
@@ -845,7 +893,37 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "canonical flat 81-dimensional matter copy survives as the protected "
             "transport-flat sector, while the other 81 copy is curvature-sensitive. "
             "On the external harmonic channels this produces exact protected "
-            "flat matter counts 243 for CP2_9 and 1944 for K3_16. "
+            "flat matter counts 243 for CP2_9 and 1944 for K3_16. Better still, "
+            "that protected channel is now selected canonically by transport "
+            "spectral data itself: on the base W33 side the adjacency matrix has "
+            "rank 39 over F3 with unique null line spanned by the all-ones "
+            "vector, and on the exact 45-point transport graph the trivial "
+            "Bose-Mesner idempotent (T^2 + 2T - 8I)/1080 = J/45 is the long-time "
+            "random-walk / heat selector with exact gap 7/8 and Kemeny constant "
+            "1952/45. Because the invariant-line subcomplex has h0 = 1 and the "
+            "native A2 sector has positive Laplacian gap 24, tensoring that "
+            "selector with the exact 81-qutrit matter sector recovers exactly the "
+            "protected flat 81-dimensional matter copy. Better again, the "
+            "internally curved transport package itself now crosses the 4D bridge "
+            "as a genuine symmetric Dirac-type operator on C0 ⊕ C1 ⊕ C2 of total "
+            "dimension 12090, with exact diagonal trace split 3276 + 37386 + "
+            "34110 = 74772 and exact curvature corner rank 42. Tensoring with the "
+            "81-qutrit matter sector upgrades this to a 979290-dimensional curved "
+            "internal operator with Tr(D^2)=6056532, still containing the "
+            "canonically protected flat 81-sector and its lifts 243/1944 on "
+            "CP2_9/K3_16. Because the curved barycentric tower already has exact "
+            "chain and trace densities, this full twisted internal operator now "
+            "inherits exact first-order heat-density asymptotics across the whole "
+            "CP2/K3 refinement family, with universal limits 1450800/19 and "
+            "19370040/19 for the transport Dirac package and 117514800/19 and "
+            "1568973240/19 for its matter-coupled lift. Better again, the same "
+            "transport Dirac package now has exact quadratic seed and sd^1 data: "
+            "Tr(D^4)=2116184 internally and 171410904 after matter coupling, "
+            "seed-level quadratic coefficients 39997843/3 and 36601793/3 on "
+            "CP2/K3 for the transport package and 1079941761 and 988248411 for "
+            "its matter-coupled lift, and first-refinement coefficients "
+            "4701453583/360, 5052856873/360 and 42313082247/40, 45475711857/40. "
+            "In both cases the CP2/K3 quadratic gap contracts at sd^1. "
             "The two fan closures then coincide to one canonical mixed seed, and its 3x3 generation "
             "envelope is already of Delta(27) circulant-plus-diagonal type: one "
             "distinguished diagonal generation, a degenerate diagonal pair, and a "
@@ -889,10 +967,12 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
         ),
         "next_theorem_target": (
             "Push the coupled transport-matter precomplex one level further into a "
-            "native twisted operator/sheaf package with a genuine Dirac/Laplacian-type "
-            "construction, then carry that internal object across the full curved "
-            "barycentric refinement tower instead of only across the external harmonic "
-            "channels. In parallel, "
+            "native curved spectral-action theorem beyond sd^1, now that the "
+            "transport-twisted matter package already exists as a genuine symmetric "
+            "Dirac-type operator with exact first-order data and exact quadratic "
+            "seed/sd^1 coefficients. The next internal bridge is therefore the "
+            "full refinement-tower second-order theorem and then the cutoff/small-time "
+            "Einstein-Hilbert channel rather than merely harmonic. In parallel, "
             "move beyond the replicated generation-diagonal three-generation seed "
             "that structurally forces Cartan-only l6 selection, explain dynamically "
             "why the exact generation label matrix [[AB,I,A],[AB,I,A],[A,B,0]] is "
@@ -908,7 +988,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 369,
+        "focused_test_stack_size": 372,
     }
 
 
