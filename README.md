@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 920 (T1–T920) |
-| Test functions | 10,601 |
-| Test files | 472 |
-| Phases completed | LXIII (63) |
+| Theorems proved | 950 (T1–T950) |
+| Test functions | 10,799 |
+| Test files | 475 |
+| Phases completed | LXVI (66) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -27,6 +27,9 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXI:** Topological field theory and TQFT invariants on the clique complex (59 tests)
 - **LXII:** Spectral-dimension, Seeley-DeWitt, and spectral-triple continuum indicators (74 tests)
 - **LXIII:** Information-theoretic and holographic consistency bounds on the finite geometry (71 tests)
+- **LXIV:** Hard graph computation — automorphism group, Ramanujan, Ihara-Bass, all from actual matrix ops (88 tests)
+- **LXV:** Spectral rigidity — walk-regularity, eigenprojector reconstruction, two-distance sets, Bose-Mesner algebra (59 tests)
+- **LXVI:** Alpha stress-test — perturbation analysis, SRG scan, Green's function decomposition, end-to-end verification (51 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -102,6 +105,21 @@ python -m pytest tests/test_continuum_limit.py -q
 
 # Phase LXIII: information / holographic closure (71 tests)
 python -m pytest tests/test_information_holographic_closure.py -q
+
+# Phase LXI + LXIII combined (TQFT + holographic, 130 tests)
+python -m pytest tests/test_tqft_invariants.py tests/test_information_holographic_closure.py -q
+
+# Phase LXIV: hard graph computation (88 tests)
+python -m pytest tests/test_hard_graph_computation.py -q
+
+# Phase LXV: spectral rigidity (59 tests)
+python -m pytest tests/test_spectral_rigidity.py -q
+
+# Phase LXVI: alpha stress-test (51 tests)
+python -m pytest tests/test_alpha_stress.py -q
+
+# Phases LXIV-LXVI combined (198 tests, hard computations)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -115,6 +133,9 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXVI | T931–T950 | 51 | Alpha Derivation Stress-Test & Operator Calculus |
+| LXV | T911–T930 | 59 | Spectral Rigidity & Reconstruction Invariants |
+| LXIV | T891–T910 | 88 | Hard Graph Computation — Automorphism, Ramanujan, Ihara-Bass |
 | LXIII | T906–T920 | 71 | Information-Theoretic Closure & Holographic Bound |
 | LXII | T891–T905 | 74 | Continuum Limit & Spectral Action Convergence |
 | LXI | T876–T890 | 59 | TQFT Invariants & Topological Field Theory |
@@ -136,7 +157,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         472 test files, 10,601 test functions (the proof)
+├── tests/         475 test files, 10,799 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
