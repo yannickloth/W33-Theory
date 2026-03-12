@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1042 (T1–T1042) |
-| Test functions | 14,108 |
-| Test files | 604 |
-| Phases completed | LXX (70) |
+| Theorems proved | 1088 (T1–T1088) |
+| Test functions | 14,217 |
+| Test files | 606 |
+| Phases completed | LXXII (72) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -34,6 +34,8 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXVIII:** E8 root system from scratch — 240 roots, Cartan matrix, Dynkin diagram, Z3 grading 86+81+81=248 (50 tests)
 - **LXIX:** Symplectic geometry — PG(3,3), symplectic form, GQ(3,3), spreads, transvections, Klein quadric (77 tests)
 - **LXX:** Group theory — Sp(4,3) BFS construction, center, Sylow, derived subgroup, Burnside, faithful action (52 tests)
+- **LXXI:** Complement graph & association scheme — SRG(40,27,18,18), Seidel matrix, P/Q eigenmatrices, Krein conditions, intersection numbers (54 tests)
+- **LXXII:** Zeta functions & number theory — Ihara-Bass identity, Ramanujan poles, spectral zeta, Gaussian integer 137=(11+4i)(11-4i), heat kernel, Cheeger/expander bounds (55 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -139,6 +141,15 @@ python -m pytest tests/test_group_theory_computation.py -q
 
 # Phases LXVII-LXX combined (252 tests, hard computations)
 python -m pytest tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py -q
+
+# Phase LXXI: complement graph & association scheme (54 tests)
+python -m pytest tests/test_complement_association_computation.py -q
+
+# Phase LXXII: zeta functions & number theory (55 tests)
+python -m pytest tests/test_zeta_number_theory_computation.py -q
+
+# Phases LXIV-LXXII combined (all hard computations, 561 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -152,6 +163,8 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXXII | T1067–T1088 | 55 | Zeta Functions & Number Theory — Ihara-Bass, Ramanujan, Gaussian Integers |
+| LXXI | T1043–T1066 | 54 | Complement Graph & Association Scheme — Seidel, Krein, Eigenmatrices |
 | LXX | T1021–T1042 | 52 | Group Theory — Sp(4,3) Construction & Structure |
 | LXIX | T999–T1020 | 77 | Symplectic Geometry — PG(3,3), GQ(3,3), Klein Quadric |
 | LXVIII | T976–T998 | 50 | E8 Root System — Cartan Matrix, Dynkin, Z3 Grading |
@@ -180,7 +193,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         604 test files, 14,108 test functions (the proof)
+├── tests/         606 test files, 14,217 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
