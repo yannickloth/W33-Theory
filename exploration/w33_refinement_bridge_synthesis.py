@@ -80,6 +80,15 @@ from w33_l6_v4_seed_reconstruction_bridge import build_l6_v4_seed_reconstruction
 from w33_transport_lie_tower_bridge import build_transport_lie_tower_bridge_summary
 from w33_uor_gluing_bridge import build_w33_uor_gluing_summary
 from w33_uor_transport_shadow_bridge import build_w33_uor_transport_shadow_summary
+from w33_transport_path_groupoid_bridge import build_transport_path_groupoid_summary
+from w33_ternary_homological_code_bridge import build_ternary_homological_code_summary
+from w33_transport_ternary_line_bridge import build_transport_ternary_line_summary
+from w33_transport_ternary_extension_bridge import build_transport_ternary_extension_summary
+from w33_transport_ternary_cocycle_bridge import build_transport_ternary_cocycle_summary
+from w33_transport_curvature_bridge import build_transport_curvature_summary
+from w33_transport_borel_factor_bridge import build_transport_borel_factor_summary
+from w33_transport_twisted_precomplex_bridge import build_transport_twisted_precomplex_summary
+from w33_transport_matter_curved_harmonic_bridge import build_transport_matter_curved_harmonic_summary
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_refinement_bridge_synthesis_summary.json"
@@ -124,6 +133,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_lie = build_transport_lie_tower_bridge_summary()
     uor_gluing = build_w33_uor_gluing_summary()
     uor_transport_shadow = build_w33_uor_transport_shadow_summary()
+    transport_path_groupoid = build_transport_path_groupoid_summary()
+    ternary_homological_code = build_ternary_homological_code_summary()
+    transport_ternary_line = build_transport_ternary_line_summary()
+    transport_ternary_extension = build_transport_ternary_extension_summary()
+    transport_ternary_cocycle = build_transport_ternary_cocycle_summary()
+    transport_curvature = build_transport_curvature_summary()
+    transport_borel = build_transport_borel_factor_summary()
+    transport_twisted_precomplex = build_transport_twisted_precomplex_summary()
+    transport_matter_curved = build_transport_matter_curved_harmonic_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
@@ -227,6 +245,18 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "edge_sign_shadow_surjective": uor_transport_shadow["weyl_group_shadow"]["edge_sign_character_is_surjective"],
             "triangle_shadow_forgets_identity_vs_three_cycle": uor_transport_shadow["triangle_shadow"]["z2_shadow_forgets_identity_vs_three_cycle"],
         },
+        "transport_path_groupoid_bridge": {
+            "objects": transport_path_groupoid["path_groupoid"]["objects"],
+            "directed_generators": transport_path_groupoid["path_groupoid"]["directed_generating_morphisms"],
+            "tree_edges": transport_path_groupoid["spanning_tree_gauge"]["tree_edges"],
+            "fundamental_cycles": transport_path_groupoid["spanning_tree_gauge"]["fundamental_cycles"],
+            "tree_edges_gauge_trivialized": transport_path_groupoid["spanning_tree_gauge"]["all_tree_edges_gauge_trivialized"],
+            "fundamental_cycle_holonomy_group_order": transport_path_groupoid["spanning_tree_gauge"]["fundamental_cycle_holonomy_group_order"],
+            "real_flat_section_dimension": transport_path_groupoid["real_local_system"]["common_fixed_subspace_dimension"],
+            "ternary_flat_section_dimension": transport_path_groupoid["ternary_reduction"]["common_fixed_subspace_dimension"],
+            "ternary_invariant_line": transport_path_groupoid["ternary_reduction"]["unique_invariant_projective_line"],
+            "ternary_quotient_character_values": transport_path_groupoid["ternary_reduction"]["quotient_character_values"],
+        },
         "center_quad_transport_operator_bridge": {
             "bundle_dimension": center_quad_transport_operator["connection_bundle"]["total_dimension"],
             "bundle_spectrum": center_quad_transport_operator["connection_bundle"]["adjacency_spectrum"],
@@ -250,6 +280,102 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "matches_standard_sector_up_to_local_basis_change": center_quad_transport_a2["a2_transport_operator"]["matches_standard_sector_up_to_fixed_local_basis_change"],
             "triangle_character_sum": center_quad_transport_a2["triangle_character_formula"]["character_sum_over_triangle_holonomies"],
             "trace_cube_matches_character_sum": center_quad_transport_a2["triangle_character_formula"]["trace_h_cubed_equals_six_character_sum"],
+        },
+        "ternary_homological_code_bridge": {
+            "field": ternary_homological_code["ternary_css_code"]["field"],
+            "physical_qutrits": ternary_homological_code["ternary_css_code"]["physical_qutrits"],
+            "x_check_rank": ternary_homological_code["ternary_css_code"]["x_check_rank"],
+            "z_check_rank": ternary_homological_code["ternary_css_code"]["z_check_rank"],
+            "logical_qutrits": ternary_homological_code["ternary_css_code"]["logical_qutrits"],
+            "stabilizer_rank_total": ternary_homological_code["ternary_css_code"]["stabilizer_rank_total"],
+            "primal_logical_distance": ternary_homological_code["homological_distance"]["primal_logical_distance"],
+            "weight_four_witness_cycle": ternary_homological_code["homological_distance"]["witness_cycle_vertices"],
+        },
+        "transport_ternary_line_bridge": {
+            "real_flat_section_dimension": transport_ternary_line["transport_side"]["real_flat_section_dimension"],
+            "ternary_flat_section_dimension": transport_ternary_line["transport_side"]["ternary_flat_section_dimension"],
+            "invariant_line": transport_ternary_line["transport_side"]["invariant_line"],
+            "logical_qutrits": transport_ternary_line["matter_side"]["logical_qutrits"],
+            "canonical_transport_stable_sector_dimension": transport_ternary_line["matter_side"]["canonical_transport_stable_sector_dimension"],
+            "matter_flavour_dimension": transport_ternary_line["combined_sector"]["matter_flavour_dimension"],
+            "matches_flat_internal_dimension_exactly": transport_ternary_line["combined_sector"]["matches_flat_internal_dimension_exactly"],
+        },
+        "transport_ternary_extension_bridge": {
+            "field": transport_ternary_extension["reduced_transport_module"]["field"],
+            "holonomy_group_order": transport_ternary_extension["reduced_transport_module"]["holonomy_group_order"],
+            "unique_invariant_line": transport_ternary_extension["reduced_transport_module"]["unique_invariant_line"],
+            "invariant_complement_count": transport_ternary_extension["reduced_transport_module"]["invariant_complement_count"],
+            "top_character_values": transport_ternary_extension["reduced_transport_module"]["top_character_values"],
+            "quotient_character_values": transport_ternary_extension["reduced_transport_module"]["quotient_character_values"],
+            "nonsplit_extension_witness_count": transport_ternary_extension["reduced_transport_module"]["nonsplit_extension_witness_count"],
+            "is_nonsplit_extension_of_sign_by_trivial": transport_ternary_extension["reduced_transport_module"]["is_nonsplit_extension_of_sign_by_trivial"],
+            "base_logical_qutrits": transport_ternary_extension["matter_flavour_extension"]["base_logical_qutrits"],
+            "short_exact_sequence_dimensions": transport_ternary_extension["matter_flavour_extension"]["short_exact_sequence_dimensions"],
+            "matches_flat_internal_dimension_exactly": transport_ternary_extension["matter_flavour_extension"]["matches_flat_internal_dimension_exactly"],
+        },
+        "transport_ternary_cocycle_bridge": {
+            "field": transport_ternary_cocycle["extension_cocycle"]["field"],
+            "adapted_group_order": transport_ternary_cocycle["extension_cocycle"]["adapted_group_order"],
+            "twisted_cocycle_identity_exact": transport_ternary_cocycle["extension_cocycle"]["twisted_cocycle_identity_exact"],
+            "cocycle_values_on_sign_trivial_subgroup": transport_ternary_cocycle["extension_cocycle"]["cocycle_values_on_sign_trivial_subgroup"],
+            "cocycle_is_not_a_coboundary": transport_ternary_cocycle["extension_cocycle"]["cocycle_is_not_a_coboundary"],
+            "fiber_shift_rank": transport_ternary_cocycle["fiber_nilpotent_operator"]["rank"],
+            "fiber_shift_square_zero": transport_ternary_cocycle["fiber_nilpotent_operator"]["square_zero"],
+            "matter_operator_dimension": transport_ternary_cocycle["matter_extension_operator"]["dimension"],
+            "matter_operator_rank": transport_ternary_cocycle["matter_extension_operator"]["rank"],
+            "matter_operator_square_zero": transport_ternary_cocycle["matter_extension_operator"]["square_zero"],
+            "matter_operator_image_equals_kernel": transport_ternary_cocycle["matter_extension_operator"]["image_equals_kernel"],
+        },
+        "transport_curvature_bridge": {
+            "triangles": transport_curvature["transport_triangle_curvature"]["triangles"],
+            "all_six_reduced_holonomy_classes_realized": transport_curvature["transport_triangle_curvature"]["all_six_reduced_holonomy_classes_realized"],
+            "curvature_rank_counts": transport_curvature["transport_triangle_curvature"]["curvature_rank_counts"],
+            "curvature_vanishes_exactly_on_identity_holonomy_triangles": transport_curvature["transport_triangle_curvature"]["curvature_vanishes_exactly_on_identity_holonomy_triangles"],
+            "global_curvature_operator_rank": transport_curvature["global_curvature_operator"]["rank"],
+            "global_curvature_operator_nullity": transport_curvature["global_curvature_operator"]["nullity"],
+        },
+        "transport_borel_factor_bridge": {
+            "group_order": transport_borel["reduced_borel_group"]["group_order"],
+            "parity0_total": transport_borel["triangle_channel_split"]["parity0_total"],
+            "parity1_total": transport_borel["triangle_channel_split"]["parity1_total"],
+            "flat_total": transport_borel["triangle_channel_split"]["flat_total"],
+            "pure_nilpotent_total": transport_borel["triangle_channel_split"]["pure_nilpotent_total"],
+            "semisimple_curved_total": transport_borel["triangle_channel_split"]["semisimple_curved_total"],
+            "parity0_splits_as_flat_plus_pure_nilpotent": transport_borel["triangle_channel_split"]["parity0_splits_as_flat_plus_pure_nilpotent"],
+        },
+        "transport_twisted_precomplex_bridge": {
+            "c0_dimension": transport_twisted_precomplex["cochain_dimensions"]["c0_dimension"],
+            "c1_dimension": transport_twisted_precomplex["cochain_dimensions"]["c1_dimension"],
+            "c2_dimension": transport_twisted_precomplex["cochain_dimensions"]["c2_dimension"],
+            "d0_rank": transport_twisted_precomplex["adapted_block_decomposition"]["full_d0_rank"],
+            "d1_rank": transport_twisted_precomplex["adapted_block_decomposition"]["full_d1_rank"],
+            "d0_lower_left_block_vanishes": transport_twisted_precomplex["adapted_block_decomposition"]["d0_lower_left_block_vanishes"],
+            "d1_lower_left_block_vanishes": transport_twisted_precomplex["adapted_block_decomposition"]["d1_lower_left_block_vanishes"],
+            "trivial_h0_dimension": transport_twisted_precomplex["invariant_line_subcomplex"]["h0_dimension"],
+            "trivial_h1_dimension": transport_twisted_precomplex["invariant_line_subcomplex"]["h1_dimension"],
+            "sign_h0_flat_dimension": transport_twisted_precomplex["sign_shadow_precomplex"]["h0_flat_dimension"],
+            "semisimple_curvature_rank": transport_twisted_precomplex["sign_shadow_precomplex"]["semisimple_curvature_rank"],
+            "semisimple_curvature_support_triangles": transport_twisted_precomplex["sign_shadow_precomplex"]["semisimple_curvature_support_triangles"],
+            "semisimple_curvature_support_equals_parity1_triangles": transport_twisted_precomplex["sign_shadow_precomplex"]["semisimple_curvature_support_equals_parity1_triangles"],
+            "full_curvature_rank": transport_twisted_precomplex["curved_extension_package"]["full_curvature_rank"],
+            "off_diagonal_curvature_rank": transport_twisted_precomplex["curved_extension_package"]["off_diagonal_curvature_rank"],
+            "curvature_factors_through_sign_quotient": transport_twisted_precomplex["curved_extension_package"]["curvature_factors_through_sign_quotient"],
+            "upper_right_curvature_identity_exact": transport_twisted_precomplex["curved_extension_package"]["upper_right_curvature_identity_exact"],
+        },
+        "transport_matter_curved_harmonic_bridge": {
+            "logical_qutrits": transport_matter_curved["matter_coupled_precomplex"]["logical_qutrits"],
+            "matter_extension_dimension": transport_matter_curved["matter_coupled_precomplex"]["matter_extension_dimension"],
+            "coupled_c0_dimension": transport_matter_curved["matter_coupled_precomplex"]["coupled_c0_dimension"],
+            "coupled_c1_dimension": transport_matter_curved["matter_coupled_precomplex"]["coupled_c1_dimension"],
+            "coupled_c2_dimension": transport_matter_curved["matter_coupled_precomplex"]["coupled_c2_dimension"],
+            "protected_flat_h0_dimension": transport_matter_curved["matter_coupled_precomplex"]["protected_flat_h0_dimension"],
+            "full_curvature_rank": transport_matter_curved["matter_coupled_precomplex"]["full_curvature_rank"],
+            "off_diagonal_curvature_rank": transport_matter_curved["matter_coupled_precomplex"]["off_diagonal_curvature_rank"],
+            "cp2_protected_flat_matter_zero_modes": transport_matter_curved["curved_external_harmonic_channels"][0]["protected_flat_matter_zero_modes"],
+            "k3_protected_flat_matter_zero_modes": transport_matter_curved["curved_external_harmonic_channels"][1]["protected_flat_matter_zero_modes"],
+            "cp2_curvature_rank_on_harmonics": transport_matter_curved["curved_external_harmonic_channels"][0]["matter_curvature_rank_on_external_harmonics"],
+            "k3_curvature_rank_on_harmonics": transport_matter_curved["curved_external_harmonic_channels"][1]["matter_curvature_rank_on_external_harmonics"],
+            "protected_flat_sector_is_exactly_one_81_copy": transport_matter_curved["matter_coupled_precomplex"]["protected_flat_sector_is_exactly_one_81_copy"],
         },
         "curved_a2_transport_product_bridge": {
             "internal_dimension": curved_a2_product["a2_internal_profile"]["total_dimension"],
@@ -669,6 +795,57 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "section on the 3x3 generation grid, so the flavour problem is no "
             "longer whether the exact V4 data glues but what deeper operator "
             "principle selects those local sections. "
+            "The transport side is sharper in exactly the same coefficient "
+            "direction: the quotient transport data is now an honest "
+            "path-groupoid representation into Weyl(A2), a spanning-tree gauge "
+            "trivializes every tree edge so the full nontrivial content sits on "
+            "fundamental-cycle holonomy, the real A2 local system has no "
+            "nonzero flat section, but after reduction mod 3 it acquires a "
+            "unique invariant line with quotient character {1,2}. So the field "
+            "F3 is now special on both sides simultaneously: it is the natural "
+            "homological coefficient field and the first field on which the "
+            "nonabelian transport holonomy itself develops a canonical flat "
+            "one-dimensional shadow. The same W33 clique complex therefore "
+            "supports a real ternary homological code rather than a binary "
+            "analogy: on the 240 edge qutrits the exact mod-3 chain complex has "
+            "check ranks 39 and 120, logical dimension 81, and exact primal "
+            "logical distance 4 via an explicit nontrivial weight-4 cycle. "
+            "More sharply, the reduced transport fiber is now exact as a "
+            "non-split local-system extension 0 -> 1 -> rho -> sgn -> 0: the "
+            "unique invariant line is trivial, the quotient line carries the "
+            "binary sign shadow, and there is no invariant complementary line. "
+            "Tensoring that exact extension with H1(W33;F3) therefore forces "
+            "0 -> 81 -> 162 -> 81 -> 0. So the 162-dimensional matter-flavour "
+            "package is now structural and still matches the exact internal "
+            "dimension of the finite spectral-action layer. Better still, the "
+            "extension class is now explicit: in adapted basis the off-diagonal "
+            "entry is a genuine twisted 1-cocycle, it is not a coboundary "
+            "because it is already nonzero on sign-trivial elements, and the "
+            "fiber shift N=[[0,1],[0,0]] tensors to a canonical square-zero "
+            "rank-81 operator on the 162-dimensional matter extension with "
+            "image = kernel = 81. Sharper still, the same transport package is "
+            "now known to be genuinely curved on transport triangles: every "
+            "triangle carries one of the six reduced A2 holonomy classes, the "
+            "naive simplicial extension defect is exactly I - H_t in adapted "
+            "basis, it vanishes on exactly 528 identity-holonomy triangles, "
+            "and it has rank 1 on the remaining 4752 triangles. Sharper still, "
+            "the whole reduced holonomy group is exactly the Borel subgroup "
+            "B(F3), so the old parity shadow is just the quotient sign: parity-0 "
+            "splits as 528 flat + 2592 pure-nilpotent curved triangles, while "
+            "parity-1 = 2160 is the semisimple-curved channel. Better, these "
+            "pieces now assemble into the actual transport-twisted precomplex: "
+            "in adapted basis the first two covariant coboundaries are upper "
+            "triangular, the invariant-line block is the ordinary simplicial "
+            "complex with h0 = 1 and h1 = 0, the sign-shadow block is the "
+            "genuinely curved channel with no flat 0-sections, and the full "
+            "curvature d1 d0 factors through the sign quotient with rank 42 "
+            "while the cocycle block supplies the off-diagonal rank-36 coupling. "
+            "Tensoring that exact precomplex with the 81-dimensional logical "
+            "matter sector then separates the internal 162 package cleanly: one "
+            "canonical flat 81-dimensional matter copy survives as the protected "
+            "transport-flat sector, while the other 81 copy is curvature-sensitive. "
+            "On the external harmonic channels this produces exact protected "
+            "flat matter counts 243 for CP2_9 and 1944 for K3_16. "
             "The two fan closures then coincide to one canonical mixed seed, and its 3x3 generation "
             "envelope is already of Delta(27) circulant-plus-diagonal type: one "
             "distinguished diagonal generation, a degenerate diagonal pair, and a "
@@ -711,25 +888,27 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "that exact internal data and a genuine curved 4D refinement family."
         ),
         "next_theorem_target": (
-            "Lift the exact second-order curved A2 data from steps 0 and 1 to the "
-            "full curved barycentric refinement tower, move beyond the replicated "
-            "generation-diagonal three-generation seed that structurally forces "
-            "Cartan-only l6 selection, push the new exact V4 closure-selection "
-            "theorem past minimal fan dynamics to a deeper internal operator or "
-            "variational principle that explains why the exact generation label "
-            "matrix [[AB,I,A],[AB,I,A],[A,B,0]] is selected now that the "
-            "local-to-global gluing step is exact, "
-            "and push that seed into the rank-lift regime or the full six-mode regime, "
-            "extend the exact l3/l4/l5/l6 tower-cycle theorem "
-            "to the next gauge-return rung beyond l6, then prove the small-time / cutoff "
-            "asymptotics that generate the Einstein-Hilbert term."
+            "Push the coupled transport-matter precomplex one level further into a "
+            "native twisted operator/sheaf package with a genuine Dirac/Laplacian-type "
+            "construction, then carry that internal object across the full curved "
+            "barycentric refinement tower instead of only across the external harmonic "
+            "channels. In parallel, "
+            "move beyond the replicated generation-diagonal three-generation seed "
+            "that structurally forces Cartan-only l6 selection, explain dynamically "
+            "why the exact generation label matrix [[AB,I,A],[AB,I,A],[A,B,0]] is "
+            "selected now that both the local-to-global gluing step and the "
+            "transport-side ternary extension are exact, push that seed into the "
+            "rank-lift or full six-mode regime, extend the exact l3/l4/l5/l6 "
+            "tower-cycle theorem to the next gauge-return rung beyond l6, then "
+            "prove the small-time / cutoff asymptotics that generate the "
+            "Einstein-Hilbert term."
         ),
         "residual_risk": (
             "Tomotope itself remains natively cubic in its explicit Q_k tower. The 4D "
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 334,
+        "focused_test_stack_size": 369,
     }
 
 

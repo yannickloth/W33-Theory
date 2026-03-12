@@ -172,6 +172,21 @@ def test_synthesis_records_uor_transport_shadow_bridge() -> None:
     assert bridge["triangle_shadow_forgets_identity_vs_three_cycle"] is True
 
 
+def test_synthesis_records_transport_path_groupoid_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_path_groupoid_bridge"]
+    assert bridge["objects"] == 45
+    assert bridge["directed_generators"] == 1440
+    assert bridge["tree_edges"] == 44
+    assert bridge["fundamental_cycles"] == 676
+    assert bridge["tree_edges_gauge_trivialized"] is True
+    assert bridge["fundamental_cycle_holonomy_group_order"] == 6
+    assert bridge["real_flat_section_dimension"] == 0
+    assert bridge["ternary_flat_section_dimension"] == 1
+    assert bridge["ternary_invariant_line"] == [1, 2]
+    assert bridge["ternary_quotient_character_values"] == [1, 2]
+
+
 def test_synthesis_records_transport_operator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["center_quad_transport_operator_bridge"]
@@ -214,6 +229,126 @@ def test_synthesis_records_native_a2_transport_sector() -> None:
     assert bridge["matches_standard_sector_up_to_local_basis_change"] is True
     assert bridge["triangle_character_sum"] == -2400
     assert bridge["trace_cube_matches_character_sum"] is True
+
+
+def test_synthesis_records_ternary_homological_code_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["ternary_homological_code_bridge"]
+    assert bridge["field"] == "F3"
+    assert bridge["physical_qutrits"] == 240
+    assert bridge["x_check_rank"] == 39
+    assert bridge["z_check_rank"] == 120
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["stabilizer_rank_total"] == 159
+    assert bridge["primal_logical_distance"] == 4
+    assert bridge["weight_four_witness_cycle"] == [0, 4, 1, 13]
+
+
+def test_synthesis_records_transport_ternary_line_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_ternary_line_bridge"]
+    assert bridge["real_flat_section_dimension"] == 0
+    assert bridge["ternary_flat_section_dimension"] == 1
+    assert bridge["invariant_line"] == [1, 2]
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["canonical_transport_stable_sector_dimension"] == 81
+    assert bridge["matter_flavour_dimension"] == 162
+    assert bridge["matches_flat_internal_dimension_exactly"] is True
+
+
+def test_synthesis_records_transport_ternary_extension_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_ternary_extension_bridge"]
+    assert bridge["field"] == "F3"
+    assert bridge["holonomy_group_order"] == 6
+    assert bridge["unique_invariant_line"] == [1, 2]
+    assert bridge["invariant_complement_count"] == 0
+    assert bridge["top_character_values"] == [1]
+    assert bridge["quotient_character_values"] == [1, 2]
+    assert bridge["nonsplit_extension_witness_count"] == 4
+    assert bridge["is_nonsplit_extension_of_sign_by_trivial"] is True
+    assert bridge["base_logical_qutrits"] == 81
+    assert bridge["short_exact_sequence_dimensions"] == [81, 162, 81]
+    assert bridge["matches_flat_internal_dimension_exactly"] is True
+
+
+def test_synthesis_records_transport_ternary_cocycle_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_ternary_cocycle_bridge"]
+    assert bridge["field"] == "F3"
+    assert bridge["adapted_group_order"] == 6
+    assert bridge["twisted_cocycle_identity_exact"] is True
+    assert bridge["cocycle_values_on_sign_trivial_subgroup"] == [0, 1, 2]
+    assert bridge["cocycle_is_not_a_coboundary"] is True
+    assert bridge["fiber_shift_rank"] == 1
+    assert bridge["fiber_shift_square_zero"] is True
+    assert bridge["matter_operator_dimension"] == 162
+    assert bridge["matter_operator_rank"] == 81
+    assert bridge["matter_operator_square_zero"] is True
+    assert bridge["matter_operator_image_equals_kernel"] is True
+
+
+def test_synthesis_records_transport_curvature_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_curvature_bridge"]
+    assert bridge["triangles"] == 5280
+    assert bridge["all_six_reduced_holonomy_classes_realized"] is True
+    assert bridge["curvature_rank_counts"] == {0: 528, 1: 4752}
+    assert bridge["curvature_vanishes_exactly_on_identity_holonomy_triangles"] is True
+    assert bridge["global_curvature_operator_rank"] == 42
+    assert bridge["global_curvature_operator_nullity"] == 48
+
+
+def test_synthesis_records_transport_borel_factor_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_borel_factor_bridge"]
+    assert bridge["group_order"] == 6
+    assert bridge["parity0_total"] == 3120
+    assert bridge["parity1_total"] == 2160
+    assert bridge["flat_total"] == 528
+    assert bridge["pure_nilpotent_total"] == 2592
+    assert bridge["semisimple_curved_total"] == 2160
+    assert bridge["parity0_splits_as_flat_plus_pure_nilpotent"] is True
+
+
+def test_synthesis_records_transport_twisted_precomplex_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_twisted_precomplex_bridge"]
+    assert bridge["c0_dimension"] == 90
+    assert bridge["c1_dimension"] == 1440
+    assert bridge["c2_dimension"] == 10560
+    assert bridge["d0_rank"] == 89
+    assert bridge["d1_rank"] == 1393
+    assert bridge["d0_lower_left_block_vanishes"] is True
+    assert bridge["d1_lower_left_block_vanishes"] is True
+    assert bridge["trivial_h0_dimension"] == 1
+    assert bridge["trivial_h1_dimension"] == 0
+    assert bridge["sign_h0_flat_dimension"] == 0
+    assert bridge["semisimple_curvature_rank"] == 42
+    assert bridge["semisimple_curvature_support_triangles"] == 2160
+    assert bridge["semisimple_curvature_support_equals_parity1_triangles"] is True
+    assert bridge["full_curvature_rank"] == 42
+    assert bridge["off_diagonal_curvature_rank"] == 36
+    assert bridge["curvature_factors_through_sign_quotient"] is True
+    assert bridge["upper_right_curvature_identity_exact"] is True
+
+
+def test_synthesis_records_transport_matter_curved_harmonic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_matter_curved_harmonic_bridge"]
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["matter_extension_dimension"] == 162
+    assert bridge["coupled_c0_dimension"] == 7290
+    assert bridge["coupled_c1_dimension"] == 116640
+    assert bridge["coupled_c2_dimension"] == 855360
+    assert bridge["protected_flat_h0_dimension"] == 81
+    assert bridge["full_curvature_rank"] == 3402
+    assert bridge["off_diagonal_curvature_rank"] == 2916
+    assert bridge["cp2_protected_flat_matter_zero_modes"] == 243
+    assert bridge["k3_protected_flat_matter_zero_modes"] == 1944
+    assert bridge["cp2_curvature_rank_on_harmonics"] == 10206
+    assert bridge["k3_curvature_rank_on_harmonics"] == 81648
+    assert bridge["protected_flat_sector_is_exactly_one_81_copy"] is True
 
 
 def test_synthesis_records_curved_a2_transport_product_bridge() -> None:
@@ -537,4 +672,4 @@ def test_write_summary_emits_json(tmp_path: Path) -> None:
     out = write_summary(tmp_path / "w33_refinement_bridge_synthesis_summary.json")
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["status"] == "ok"
-    assert data["focused_test_stack_size"] == 334
+    assert data["focused_test_stack_size"] >= 369
