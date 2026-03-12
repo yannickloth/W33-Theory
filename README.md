@@ -13,11 +13,11 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1508 (T1–T1508) |
-| Test functions | 15,658 |
-| Test files | 630 |
-| Phases completed | XCII (92) |
-| Mathematical domains covered | 207+ |
+| Theorems proved | 1613 (T1–T1613) |
+| Test functions | 16,041 |
+| Test files | 635 |
+| Phases completed | XCVII (97) |
+| Mathematical domains covered | 212+ |
 | Key predictions matched | 34 |
 
 ## Current Frontier
@@ -56,6 +56,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **XC:** Information theory — graph entropy, von Neumann entropy, Rényi entropy, mutual information, channel capacity, entropy rate, KL divergence, Fisher information, spectral entropy, data processing inequality (85 tests)
 - **XCI:** Operator algebras — C*-algebra, spectral projections, Schur product algebra, Krein parameters, von Neumann algebra, trace functional, GNS construction, K-theory K0, tensor products, completely positive maps (78 tests)
 - **XCII:** Approximation & interpolation — bandlimited signals, Chebyshev approximation, Tikhonov regularization, Sobolev norms, Lagrange basis, Poincaré inequality, diffusion wavelets, compressed sensing, graph convolutional filters (76 tests)
+- **XCIII:** Matroid theory — graphic matroid, rank function, independent sets, circuits, spanning tree count tau=2^81*5^23, Tutte polynomial, cocircuit duality, matroid intersection, broken circuits, Whitney numbers (79 tests)
+- **XCIV:** Game theory & domination — domination number, total domination, independent domination, vertex cover, edge cover, matching, Nash equilibria, minimax, cooperative games, Shapley values on W(3,3) (71 tests)
+- **XCV:** Geometric embeddings — spectral embedding, Ollivier-Ricci curvature, Forman-Ricci curvature -14, Cheeger cut, Gromov hyperbolicity, resistance embedding, spring embedding, Kamada-Kawai, stress majorization (76 tests)
+- **XCVI:** Statistical mechanics — independence polynomial, clique polynomial, Ising partition function, Potts model, chromatic polynomial, flow polynomial, reliability polynomial, correlation functions, transfer matrix (83 tests)
+- **XCVII:** Tensor & multilinear algebra — Kronecker product spectrum, Hadamard product, tensor decomposition, resolvent identity, Gram matrix, outer product reconstruction, Schur complement, matrix pencils, generalized eigenvalues (74 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -228,8 +233,23 @@ python -m pytest tests/test_operator_algebra_computation.py -q
 # Phase XCII: approximation & interpolation (76 tests)
 python -m pytest tests/test_approximation_interpolation_computation.py -q
 
-# Phases LXIV-XCII combined (all hard computations, 1987 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py -q
+# Phase XCIII: matroid theory (79 tests)
+python -m pytest tests/test_matroid_theory_computation.py -q
+
+# Phase XCIV: game theory & domination (71 tests)
+python -m pytest tests/test_game_theory_domination_computation.py -q
+
+# Phase XCV: geometric embeddings (76 tests)
+python -m pytest tests/test_geometric_embedding_computation.py -q
+
+# Phase XCVI: statistical mechanics (83 tests)
+python -m pytest tests/test_statistical_mechanics_computation.py -q
+
+# Phase XCVII: tensor & multilinear algebra (74 tests)
+python -m pytest tests/test_tensor_multilinear_computation.py -q
+
+# Phases LXIV-XCVII combined (all hard computations, 2370 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -243,6 +263,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| XCVII | T1593–T1613 | 74 | Tensor & Multilinear Algebra — Kronecker, Hadamard, Resolvent |
+| XCVI | T1572–T1592 | 83 | Statistical Mechanics — Ising, Potts, Partition Functions |
+| XCV | T1551–T1571 | 76 | Geometric Embeddings — Ollivier-Ricci, Forman-Ricci, Hyperbolicity |
+| XCIV | T1530–T1550 | 71 | Game Theory & Domination — Domination Number, Vertex Cover |
+| XCIII | T1509–T1529 | 79 | Matroid Theory — Graphic Matroid, Tutte Polynomial, Circuits |
 | XCII | T1488–T1508 | 76 | Approximation & Interpolation — Bandlimited, Chebyshev, Wavelets |
 | XCI | T1467–T1487 | 78 | Operator Algebras — Spectral Projections, Krein, GNS, K-Theory |
 | XC | T1446–T1466 | 85 | Information Theory — Von Neumann Entropy, Channel Capacity |
