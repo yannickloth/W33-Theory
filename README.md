@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1193 (T1–T1193) |
-| Test functions | 14,489 |
-| Test files | 611 |
-| Phases completed | LXXVII (77) |
+| Theorems proved | 1298 (T1–T1298) |
+| Test functions | 14,734 |
+| Test files | 620 |
+| Phases completed | LXXXII (82) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -41,6 +41,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXXV:** Automorphism & symmetry — Weisfeiler-Leman, walk-regularity, subconstituent analysis, distance matrix, interlacing, Seidel switching, clique/independence structure (54 tests)
 - **LXXVI:** Coding theory & error correction — binary/ternary codes from adjacency, GF(3)/GF(5) ranks, weight enumerator, self-orthogonal codes, LDPC, von Neumann entropy (53 tests)
 - **LXXVII:** Algebraic combinatorics & design theory — 1-designs, quasi-symmetric, Fisher inequality, partial geometry pg(3,3,1), spreads, Bose-Mesner P/Q matrices, GQ axiom verification (48 tests)
+- **LXXVIII:** Topological graph theory — genus bounds, planarity obstruction, girth/circumference, cycle/bond spaces, clique complex, Betti numbers, homotopy, neighborhood complex, topological minors (50 tests)
+- **LXXIX:** Representation theory — Bose-Mesner multiplication table, primitive idempotents, Schur product, Krein array, Terwilliger algebra, subconstituent graphs, Delsarte LP bounds, tight frames (45 tests)
+- **LXXX:** Optimization & convex relaxations — Lovasz theta (=10), theta complement (=4), theta*theta_bar=n=40, SDP bounds, max-cut eigenvalue bound, heat kernel, condition number, minimax (46 tests)
+- **LXXXI:** Quantum walks & information — CTQW unitary, return probability, mixing, no perfect state transfer, quantum chromatic number, graph state, entanglement entropy, localization 802/1600 (44 tests)
+- **LXXXII:** Extremal graph theory — Turan bounds, Ramsey, Zarankiewicz, forbidden subgraphs, degeneracy, cycle structure, Kruskal-Katona, homomorphism densities, treewidth, Hadwiger number (45 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -168,8 +173,23 @@ python -m pytest tests/test_coding_theory_computation.py -q
 # Phase LXXVII: algebraic combinatorics & design theory (48 tests)
 python -m pytest tests/test_algebraic_combinatorics_computation.py -q
 
-# Phases LXIV-LXXVII combined (all hard computations, 833 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py -q
+# Phase LXXVIII: topological graph theory (50 tests)
+python -m pytest tests/test_topological_graph_computation.py -q
+
+# Phase LXXIX: representation theory (45 tests)
+python -m pytest tests/test_representation_theory_computation.py -q
+
+# Phase LXXX: optimization & convex relaxations (46 tests)
+python -m pytest tests/test_optimization_convex_computation.py -q
+
+# Phase LXXXI: quantum walks & information (44 tests)
+python -m pytest tests/test_quantum_walk_computation.py -q
+
+# Phase LXXXII: extremal graph theory (45 tests)
+python -m pytest tests/test_extremal_graph_computation.py -q
+
+# Phases LXIV-LXXXII combined (all hard computations, 1063 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -183,6 +203,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXXXII | T1278–T1298 | 45 | Extremal Graph Theory — Turan, Ramsey, Zarankiewicz, Hadwiger |
+| LXXXI | T1257–T1277 | 44 | Quantum Walks & Information — CTQW, Localization, Graph States |
+| LXXX | T1236–T1256 | 46 | Optimization & Convex Relaxations — Lovasz Theta, SDP, Max-Cut |
+| LXXIX | T1215–T1235 | 45 | Representation Theory — Bose-Mesner, Terwilliger, Delsarte LP |
+| LXXVIII | T1194–T1214 | 50 | Topological Graph Theory — Genus, Cycle Space, Betti Numbers |
 | LXXVII | T1173–T1193 | 48 | Algebraic Combinatorics & Design Theory — Designs, GQ Axiom, Spreads |
 | LXXVI | T1152–T1172 | 53 | Coding Theory & Error Correction — Binary/Ternary Codes, Entropy |
 | LXXV | T1131–T1151 | 54 | Automorphism & Symmetry — WL Refinement, Interlacing, Switching |
