@@ -13,11 +13,11 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1797 (T1–T1823) |
-| Test functions | 16,815 |
-| Test files | 645 |
-| Phases completed | CVII (107) |
-| Mathematical domains covered | 222+ |
+| Theorems proved | 1839 (T1–T1823) |
+| Test functions | 17,241 |
+| Test files | 650 |
+| Phases completed | CXII (112) |
+| Mathematical domains covered | 227+ |
 | Key predictions matched | 34 |
 
 ## Current Frontier
@@ -71,6 +71,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **CV:** Graph decomposition — edge/clique decomposition, vertex cuts, tree-width bounds, modular decomposition, ear decomposition, cycle space dim=201, matching, perfect matching existence (80 tests)
 - **CVI:** Spectral moments — M0-M6 verification, combinatorial interpretations, Ihara zeta function, Newton's identities, von Neumann entropy, Chebyshev moments, spectral form factor, Cayley-Hamilton recurrence (80 tests)
 - **CVII:** Perturbation theory — Weyl inequality, Davis-Kahan, condition number=6, pseudospectrum, Gershgorin disks, Bauer-Fike, spectral rigidity, interlacing, matrix exponential perturbation (73 tests)
+- **CVIII:** Random matrix theory — level spacing, spectral form factor, GOE comparison, normalized adjacency, random perturbation, Stieltjes transform, concentration inequalities, Ramanujan (81 tests)
+- **CIX:** Spectral geometry — heat kernel semigroup, spectral zeta, discrete curvature, distance spectrum, spectral dimension, Laplacian variants, isoperimetric, spectral embedding (85 tests)
+- **CX:** Deep linear algebra — SVD/polar/Schur decomposition, matrix norms, spectral projections, commutant dim=802, matrix functions, generalized inverses, Kronecker products (82 tests)
+- **CXI:** Extremal combinatorics — Turan bounds, independent set structure, subgraph counting, regularity, supersaturation, probabilistic bounds, Kruskal-Katona, forbidden subgraphs (81 tests)
+- **CXII:** Polynomial methods — characteristic/minimal/Hoffman/chromatic/independence/matching/clique polynomials, SRG identity A^2=-2A+8I+4J, cross-polynomial relations (97 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -288,8 +293,23 @@ python -m pytest tests/test_spectral_moments_computation.py -q
 # Phase CVII: perturbation theory (73 tests)
 python -m pytest tests/test_perturbation_theory_computation.py -q
 
-# Phases LXIV-CVII combined (all hard computations, 3144 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py -q
+# Phase CVIII: random matrix theory (81 tests)
+python -m pytest tests/test_random_matrix_computation.py -q
+
+# Phase CIX: spectral geometry (85 tests)
+python -m pytest tests/test_spectral_geometry_computation.py -q
+
+# Phase CX: deep linear algebra (82 tests)
+python -m pytest tests/test_linear_algebra_deep_computation.py -q
+
+# Phase CXI: extremal combinatorics (81 tests)
+python -m pytest tests/test_extremal_combinatorics_computation.py -q
+
+# Phase CXII: polynomial methods (97 tests)
+python -m pytest tests/test_polynomial_methods_computation.py -q
+
+# Phases LXIV-CXII combined (all hard computations, 3570 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py tests/test_random_matrix_computation.py tests/test_spectral_geometry_computation.py tests/test_linear_algebra_deep_computation.py tests/test_extremal_combinatorics_computation.py tests/test_polynomial_methods_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -303,6 +323,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| CXII | — | 97 | Polynomial Methods — Characteristic, Hoffman, Chromatic, Clique Polynomials |
+| CXI | — | 81 | Extremal Combinatorics — Turan, Independent Sets, Subgraph Counting |
+| CX | — | 82 | Deep Linear Algebra — SVD, Norms, Projections, Commutant, Inverses |
+| CIX | — | 85 | Spectral Geometry — Heat Kernel, Zeta, Curvature, Distance Spectrum |
+| CVIII | — | 81 | Random Matrix Theory — Level Spacing, GOE, Stieltjes, Concentration |
 | CVII | T1803–T1823 | 73 | Perturbation Theory — Weyl, Davis-Kahan, Pseudospectrum, Rigidity |
 | CVI | — | 80 | Spectral Moments — Raw Moments, Ihara Zeta, Newton, Entropy |
 | CV | — | 80 | Graph Decomposition — Clique, Tree-Width, Ear, Cycle Space, Matching |
