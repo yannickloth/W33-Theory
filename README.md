@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 950 (T1–T950) |
-| Test functions | 10,799 |
-| Test files | 475 |
-| Phases completed | LXVI (66) |
+| Theorems proved | 1042 (T1–T1042) |
+| Test functions | 14,108 |
+| Test files | 604 |
+| Phases completed | LXX (70) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -30,6 +30,10 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXIV:** Hard graph computation — automorphism group, Ramanujan, Ihara-Bass, all from actual matrix ops (88 tests)
 - **LXV:** Spectral rigidity — walk-regularity, eigenprojector reconstruction, two-distance sets, Bose-Mesner algebra (59 tests)
 - **LXVI:** Alpha stress-test — perturbation analysis, SRG scan, Green's function decomposition, end-to-end verification (51 tests)
+- **LXVII:** Homology/Hodge hard computation — boundary maps, Betti numbers, Hodge Laplacians, Dirac operator, McKean-Singer supertrace (73 tests)
+- **LXVIII:** E8 root system from scratch — 240 roots, Cartan matrix, Dynkin diagram, Z3 grading 86+81+81=248 (50 tests)
+- **LXIX:** Symplectic geometry — PG(3,3), symplectic form, GQ(3,3), spreads, transvections, Klein quadric (77 tests)
+- **LXX:** Group theory — Sp(4,3) BFS construction, center, Sylow, derived subgroup, Burnside, faithful action (52 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -120,6 +124,21 @@ python -m pytest tests/test_alpha_stress.py -q
 
 # Phases LXIV-LXVI combined (198 tests, hard computations)
 python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py -q
+
+# Phase LXVII: homology/Hodge hard computation (73 tests)
+python -m pytest tests/test_homology_hodge_computation.py -q
+
+# Phase LXVIII: E8 root system (50 tests)
+python -m pytest tests/test_e8_root_computation.py -q
+
+# Phase LXIX: symplectic geometry (77 tests)
+python -m pytest tests/test_symplectic_geometry_computation.py -q
+
+# Phase LXX: group theory hard computation (52 tests)
+python -m pytest tests/test_group_theory_computation.py -q
+
+# Phases LXVII-LXX combined (252 tests, hard computations)
+python -m pytest tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -133,6 +152,10 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXX | T1021–T1042 | 52 | Group Theory — Sp(4,3) Construction & Structure |
+| LXIX | T999–T1020 | 77 | Symplectic Geometry — PG(3,3), GQ(3,3), Klein Quadric |
+| LXVIII | T976–T998 | 50 | E8 Root System — Cartan Matrix, Dynkin, Z3 Grading |
+| LXVII | T951–T975 | 73 | Homology/Hodge Hard Computation — Dirac, McKean-Singer |
 | LXVI | T931–T950 | 51 | Alpha Derivation Stress-Test & Operator Calculus |
 | LXV | T911–T930 | 59 | Spectral Rigidity & Reconstruction Invariants |
 | LXIV | T891–T910 | 88 | Hard Graph Computation — Automorphism, Ramanujan, Ihara-Bass |
@@ -157,7 +180,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         475 test files, 10,799 test functions (the proof)
+├── tests/         604 test files, 14,108 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
