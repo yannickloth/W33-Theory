@@ -53,29 +53,113 @@ a:hover { text-decoration: underline; }
 }
 .hero .tagline strong { color: var(--accent3); }
 
-/* ── Nav ── */
-nav {
+/* ── Top Nav Bar ── */
+nav.topnav {
   position: sticky; top: 0; z-index: 100;
-  background: var(--bg2); border-bottom: 1px solid var(--border);
+  background: rgba(22,27,34,0.95); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1rem; height: 48px;
 }
-nav details summary {
-  padding: 0.5rem 1rem; cursor: pointer; font-weight: 600;
-  font-size: 0.9rem; color: var(--fg); list-style: none;
-  user-select: none;
+nav.topnav .nav-brand {
+  font-weight: 700; font-size: 0.95rem; color: var(--accent);
+  white-space: nowrap;
 }
-nav details summary::-webkit-details-marker { display: none; }
-nav details summary::before { content: '\2630\00a0'; }
-nav .nav-links {
-  display: flex; justify-content: center; gap: 0.25rem;
-  padding: 0.4rem 1rem 0.6rem; flex-wrap: wrap;
-  max-height: 50vh; overflow-y: auto;
-  border-top: 1px solid var(--border);
+nav.topnav .nav-quick {
+  display: flex; gap: 0.25rem; align-items: center;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
-nav a {
+nav.topnav a {
   padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.8rem;
-  color: var(--fg2); transition: all 0.15s;
+  color: var(--fg2); transition: all 0.15s; white-space: nowrap;
 }
-nav a:hover { background: var(--bg3); color: var(--fg); text-decoration: none; }
+nav.topnav a:hover { background: var(--bg3); color: var(--fg); text-decoration: none; }
+nav.topnav a.active { background: var(--accent); color: #111; }
+nav.topnav .nav-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  color: var(--fg); padding: 0.3rem 0.6rem; border-radius: 6px;
+  cursor: pointer; font-size: 1rem;
+}
+
+/* ── Sidebar TOC ── */
+.sidebar-toc {
+  position: fixed; top: 56px; left: 0; bottom: 0;
+  width: 260px; background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 90;
+  padding: 1rem 0; transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+.sidebar-toc.open { transform: translateX(0); }
+.sidebar-toc .toc-search {
+  margin: 0 0.75rem 0.75rem; padding: 0.4rem 0.7rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--fg); font-size: 0.8rem;
+  width: calc(100% - 1.5rem); outline: none;
+}
+.sidebar-toc .toc-search:focus { border-color: var(--accent); }
+.sidebar-toc .toc-group { margin-bottom: 0.5rem; }
+.sidebar-toc .toc-group-title {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--gold); padding: 0.4rem 1rem 0.2rem;
+  cursor: pointer; user-select: none;
+}
+.sidebar-toc .toc-group-title::before { content: '\25B8\00a0'; font-size: 0.6rem; }
+.sidebar-toc .toc-group.expanded .toc-group-title::before { content: '\25BE\00a0'; }
+.sidebar-toc .toc-items { display: none; }
+.sidebar-toc .toc-group.expanded .toc-items { display: block; }
+.sidebar-toc .toc-item {
+  display: block; padding: 0.25rem 1rem 0.25rem 1.5rem;
+  font-size: 0.78rem; color: var(--fg2); text-decoration: none;
+  transition: all 0.15s; border-left: 2px solid transparent;
+}
+.sidebar-toc .toc-item:hover {
+  background: var(--bg3); color: var(--fg); text-decoration: none;
+}
+.sidebar-toc .toc-item.active {
+  color: var(--accent); border-left-color: var(--accent);
+  background: rgba(88,166,255,0.08);
+}
+.sidebar-toc .toc-item.hidden { display: none; }
+
+/* ── Back to Top ── */
+.back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: #111;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 700;
+  cursor: pointer; z-index: 99;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  text-decoration: none;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); }
+.back-to-top:hover { background: var(--gold); text-decoration: none; }
+
+/* ── Sidebar overlay for mobile ── */
+.sidebar-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 89;
+  display: none;
+}
+.sidebar-overlay.open { display: block; }
+
+/* ── Content shift when sidebar open on desktop ── */
+@media (min-width: 1100px) {
+  .sidebar-toc { transform: translateX(0); }
+  .sidebar-overlay { display: none !important; }
+  .page-content { margin-left: 260px; }
+  nav.topnav { padding-left: 270px; }
+}
+@media (max-width: 1099px) {
+  nav.topnav .nav-quick { display: none; }
+  nav.topnav .nav-toggle { display: block; }
+}
+
+/* ── Old nav hidden ── */
+nav.old-nav { display: none; }
 
 /* ── Content ── */
 .container { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
@@ -548,7 +632,7 @@ section h2::after {
     <div class="p" style="left:92%;animation-duration:11s;animation-delay:1.5s;width:2px;height:2px"></div>
   </div>
   <h1>W(3,3)&ndash;<span>E&#8328;</span> Theory</h1>
-  <div class="subtitle">1,718 theorems &middot; 16,429 tests &middot; 34 predictions &middot; 640 test files &middot; 102 hard computation phases</div>
+  <div class="subtitle">1,718 theorems &middot; 16,671 tests &middot; 34 predictions &middot; 640 test files &middot; 107 hard computation phases</div>
   <div class="tagline">
     A single finite geometry — the symplectic polar space <strong>W(3,3)</strong> on
     40 vertices with 240 edges — encodes the <strong>Standard Model</strong> gauge groups,
@@ -559,48 +643,166 @@ section h2::after {
   </div>
 </header>
 
-<!-- ═══════════════════════ NAV ═══════════════════════ -->
-<nav>
-<details>
-  <summary>Navigate</summary>
-  <div class="nav-links">
-
-  <strong style="color: var(--gold); font-size: 0.85em;">Live Paper</strong>
-  <a href="#verified">Verified Results</a>
-  <a href="#conjectural">Physics Interpretation</a>
-  <a href="#bridge-2026">Refinement Bridge Update</a>
-  <a href="#archive">Historical Archive</a>
-  <a href="#numbers">Core Numbers</a>
-  <a href="#physics">Physics &amp; Mathematics</a>
-  <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
-  <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/pmns_colleague_email.md">PMNS Email Memo</a>
-
-  <strong style="color: var(--gold); font-size: 0.85em;">Mathematical Pillars</strong>
-  <a href="#theme-a">A: Exceptional &amp; Sporadic</a>
-  <a href="#theme-b">B: String Theory &amp; QG</a>
-  <a href="#theme-c">C: Number Theory</a>
-  <a href="#theme-d">D: Algebra &amp; Rep Theory</a>
-  <a href="#theme-e">E: Geometry &amp; Topology</a>
-  <a href="#theme-f">F: Category Theory</a>
-  <a href="#theme-g">G: Analysis &amp; Math Physics</a>
-  <a href="#theme-h">H: Applied &amp; Interdisciplinary</a>
-
-  <strong style="color: var(--gold); font-size: 0.85em;">Results</strong>
-  <a href="#spectral-closure">Spectral Closure &amp; Phenomenology</a>
-  <a href="#dashboard">Verification Dashboard</a>
-  <a href="#predictions">Key Predictions</a>
-  <a href="#open">Open Problems</a>
-  <a href="#about">About</a>
-
+<!-- ═══════════════════════ TOP NAV ═══════════════════════ -->
+<nav class="topnav">
+  <span class="nav-brand">W(3,3)&ndash;E&#8328;</span>
+  <button class="nav-toggle" onclick="document.querySelector('.sidebar-toc').classList.toggle('open');document.querySelector('.sidebar-overlay').classList.toggle('open');">&#9776;</button>
+  <div class="nav-quick">
+    <a href="#hard-computation">Hard Computation</a>
+    <a href="#verified">Verified Results</a>
+    <a href="#numbers">Core Numbers</a>
+    <a href="#predictions">Predictions</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#pillars-main">Pillars</a>
+    <a href="#open">Open Problems</a>
+    <a href="#about">About</a>
   </div>
-</details>
 </nav>
 
+<!-- ═══════════════════════ SIDEBAR TOC ═══════════════════════ -->
+<div class="sidebar-overlay" onclick="document.querySelector('.sidebar-toc').classList.remove('open');this.classList.remove('open');"></div>
+<aside class="sidebar-toc">
+  <input type="text" class="toc-search" placeholder="Search sections..." oninput="filterToc(this.value)">
+
+  <div class="toc-group expanded">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Overview</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#hard-computation">Hard Computation Phases</a>
+      <a class="toc-item" href="#verified">Verified Results</a>
+      <a class="toc-item" href="#conjectural">Physics Interpretation</a>
+      <a class="toc-item" href="#bridge-2026">Refinement Bridge</a>
+    </div>
+  </div>
+
+  <div class="toc-group expanded">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Core Theory</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#numbers">Core Numbers</a>
+      <a class="toc-item" href="#theory">The Theory</a>
+      <a class="toc-item" href="#graphtheory">Graph Theory</a>
+      <a class="toc-item" href="#spectral-closure">Spectral Closure</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Exceptional &amp; Sporadic</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#moonshine">Moonshine</a>
+      <a class="toc-item" href="#griess">Griess Algebra</a>
+      <a class="toc-item" href="#niemeier">Niemeier Lattices</a>
+      <a class="toc-item" href="#umbral">Umbral Moonshine</a>
+      <a class="toc-item" href="#sporadics">Sporadic Landscape</a>
+      <a class="toc-item" href="#borcherds">Borcherds Algebras</a>
+      <a class="toc-item" href="#exceptional2">Exceptional Structures</a>
+      <a class="toc-item" href="#latticepk">Lattice &amp; Sphere Packing</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">String Theory &amp; QG</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#heterotic">Heterotic String</a>
+      <a class="toc-item" href="#ftheory">F-theory</a>
+      <a class="toc-item" href="#holography">AdS/CFT Holography</a>
+      <a class="toc-item" href="#mirror">Mirror Symmetry</a>
+      <a class="toc-item" href="#swampland">Swampland</a>
+      <a class="toc-item" href="#spinfoam">Spin Foams</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Number Theory</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#modforms">Modular Forms</a>
+      <a class="toc-item" href="#langlands">Langlands Program</a>
+      <a class="toc-item" href="#motives">Arithmetic Geometry</a>
+      <a class="toc-item" href="#arithmtop">Arithmetic Topology</a>
+      <a class="toc-item" href="#perfectoid">Perfectoid Spaces</a>
+      <a class="toc-item" href="#padicphys">p-adic Physics</a>
+      <a class="toc-item" href="#arithdyn">Arithmetic Dynamics</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Algebra &amp; Representation</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#jordan">Jordan Algebra</a>
+      <a class="toc-item" href="#dictionary">Master Dictionary</a>
+      <a class="toc-item" href="#clusters">Cluster Algebras</a>
+      <a class="toc-item" href="#quantumgroups">Quantum Groups</a>
+      <a class="toc-item" href="#reptheory">Rep Theory &amp; Lie Theory</a>
+      <a class="toc-item" href="#derived">Derived Categories</a>
+      <a class="toc-item" href="#higheralgebra">Higher Algebra</a>
+      <a class="toc-item" href="#deralg">Derived Algebraic Geo</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Geometry &amp; Topology</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#fano-bridge">Fano Bridge</a>
+      <a class="toc-item" href="#unit-chain">Unit Chain</a>
+      <a class="toc-item" href="#tqft">Cobordism &amp; TQFT</a>
+      <a class="toc-item" href="#tropical">Tropical Geometry</a>
+      <a class="toc-item" href="#ncg">Noncommutative Geometry</a>
+      <a class="toc-item" href="#topophases">Topological Phases</a>
+      <a class="toc-item" href="#twistors">Twistor Theory</a>
+      <a class="toc-item" href="#spectral">Spectral Geometry</a>
+      <a class="toc-item" href="#floer">Floer Homology</a>
+      <a class="toc-item" href="#diffgeo">Differential Geometry</a>
+      <a class="toc-item" href="#algtop">Algebraic Topology</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Category Theory</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#hott">Homotopy Type Theory</a>
+      <a class="toc-item" href="#condensed">Condensed Math</a>
+      <a class="toc-item" href="#motivic">Motivic Homotopy</a>
+      <a class="toc-item" href="#highcat">Higher Categories</a>
+      <a class="toc-item" href="#cattheory">Category &amp; Structures</a>
+      <a class="toc-item" href="#operads">Operads</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Analysis &amp; Physics</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#cft-voa">CFT &amp; Vertex Algebras</a>
+      <a class="toc-item" href="#rmt">Random Matrix Theory</a>
+      <a class="toc-item" href="#confboot">Conformal Bootstrap</a>
+      <a class="toc-item" href="#infogeo">Information Geometry</a>
+      <a class="toc-item" href="#statmech">Statistical Mechanics</a>
+      <a class="toc-item" href="#opalg">Operator Algebras</a>
+      <a class="toc-item" href="#geopde">Geometric Analysis</a>
+      <a class="toc-item" href="#qec">Quantum Error Correction</a>
+    </div>
+  </div>
+
+  <div class="toc-group expanded">
+    <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Results</div>
+    <div class="toc-items">
+      <a class="toc-item" href="#dashboard">Verification Dashboard</a>
+      <a class="toc-item" href="#predictions">Key Predictions</a>
+      <a class="toc-item" href="#validation">External Validation</a>
+      <a class="toc-item" href="#open">Open Problems</a>
+      <a class="toc-item" href="#about">About</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════ BACK TO TOP ═══════════════════════ -->
+<a href="#" class="back-to-top" id="backToTop" title="Back to top">&uarr;</a>
+
+<div class="page-content">
 <div class="container">
+
+<!-- Old nav removed -->
 
 <!-- ═══════════════════════ HIGHLIGHTS BANNER ═══════════════════════ -->
 <div class="highlights-banner">
-  <h3>Latest Results &mdash; 102 Phases, 16,429 Tests, 217+ Mathematical Domains</h3>
+  <h3>Latest Results &mdash; 107 Phases, 16,671 Tests, 217+ Mathematical Domains</h3>
   <div class="highlights-grid">
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Spectral Action</strong> — Full NCG spectral action functionals from W(3,3)</span></div>
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>M-Theory</strong> — Exceptional structures &amp; 11D from SRG parameters</span></div>
@@ -708,11 +910,11 @@ section h2::after {
 
 <!-- ═══════════════════════ HARD COMPUTATION PHASES ═══════════════════════ -->
 <section id="hard-computation">
-  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">2,758 tests</span></h2>
+  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">3,000 tests</span></h2>
   <p>Every phase below constructs W(3,3) from scratch and proves exact graph-theoretic, algebraic, and topological properties through pure computation. No approximations, no external libraries for graph construction &mdash; raw matrix operations on the symplectic adjacency matrix.</p>
 
   <div class="progress-bar">
-    <div class="progress-fill" style="width:100%">39 phases &middot; 2,758 tests &middot; 100% pass</div>
+    <div class="progress-fill" style="width:100%">44 phases &middot; 3,000 tests &middot; 100% pass</div>
   </div>
 
   <div class="domain-grid">
@@ -755,6 +957,11 @@ section h2::after {
     <div class="domain-chip"><div class="domain-phase">C</div><div class="domain-name">Algebraic Number Theory</div><div class="domain-tests">81 tests</div></div>
     <div class="domain-chip"><div class="domain-phase">CI</div><div class="domain-name">Functional Analysis</div><div class="domain-tests">79 tests</div></div>
     <div class="domain-chip"><div class="domain-phase">CII</div><div class="domain-name">Discrete Calculus</div><div class="domain-tests">76 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CIII</div><div class="domain-name">Swampland &amp; Vacuum Selection</div><div class="domain-tests">46 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CIV</div><div class="domain-name">Topological Quantum Comp.</div><div class="domain-tests">47 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CV</div><div class="domain-name">Emergent Spacetime</div><div class="domain-tests">46 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CVI</div><div class="domain-name">Precision Observables</div><div class="domain-tests">48 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CVII</div><div class="domain-name">Ultimate Closure</div><div class="domain-tests">55 tests</div></div>
   </div>
 
   <div class="spotlight">
@@ -3934,10 +4141,10 @@ section h2::after {
   <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard</h2>
 
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num">16,429</div><div class="stat-label">Automated Tests</div></div>
+    <div class="stat-card"><div class="stat-num">16,671</div><div class="stat-label">Automated Tests</div></div>
     <div class="stat-card"><div class="stat-num">640</div><div class="stat-label">Test Files</div></div>
     <div class="stat-card"><div class="stat-num">1,718</div><div class="stat-label">Theorems Proved</div></div>
-    <div class="stat-card"><div class="stat-num">102</div><div class="stat-label">Hard Computation Phases</div></div>
+    <div class="stat-card"><div class="stat-num">107</div><div class="stat-label">Hard Computation Phases</div></div>
     <div class="stat-card"><div class="stat-num">217+</div><div class="stat-label">Mathematical Domains</div></div>
     <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">Pass Rate</div></div>
   </div>
@@ -4129,11 +4336,12 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Scale:</strong> 102 phases of hard computation &middot; 640 test files &middot; 16,429 automated tests &middot; 1,718 theorems &middot; 217+ mathematical domains &middot; 34 key predictions &middot; <strong style="color: #ffd700;">100% pass rate</strong></p>
+  <p><strong>Scale:</strong> 107 phases of hard computation &middot; 640 test files &middot; 16,671 automated tests &middot; 1,718 theorems &middot; 217+ mathematical domains &middot; 34 key predictions &middot; <strong style="color: #ffd700;">100% pass rate</strong></p>
   <p><strong>Foundation:</strong> The entire theory derives from SRG(40,12,2,4) — five integers that encode the Standard Model, gravity, and cosmology with no free parameters.</p>
 </section>
 
 </div><!-- /container -->
+</div><!-- /page-content -->
 
 
 
@@ -4144,8 +4352,73 @@ section h2::after {
     <a href="https://doi.org/10.5281/zenodo.18652825">DOI</a> &middot;
     <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
   </p>
-  <p style="margin-top: 0.4rem; font-size: 0.8rem;">16,429 tests &middot; 640 files &middot; 1,718 theorems &middot; 102 phases &middot; 217+ domains &middot; 100% pass rate</p>
+  <p style="margin-top: 0.4rem; font-size: 0.8rem;">16,671 tests &middot; 640 files &middot; 1,718 theorems &middot; 107 phases &middot; 217+ domains &middot; 100% pass rate</p>
 </footer>
+
+<script>
+// ── Back to top button ──
+(function() {
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  });
+})();
+
+// ── Sidebar TOC search filter ──
+function filterToc(query) {
+  var items = document.querySelectorAll('.sidebar-toc .toc-item');
+  var groups = document.querySelectorAll('.sidebar-toc .toc-group');
+  var q = query.toLowerCase().trim();
+  items.forEach(function(item) {
+    if (!q || item.textContent.toLowerCase().indexOf(q) >= 0) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+  // Auto-expand groups with visible items, collapse empty ones
+  groups.forEach(function(group) {
+    var visible = group.querySelectorAll('.toc-item:not(.hidden)');
+    if (q) {
+      if (visible.length > 0) group.classList.add('expanded');
+      else group.classList.remove('expanded');
+    }
+  });
+}
+
+// ── Active section highlighting ──
+(function() {
+  var tocItems = document.querySelectorAll('.sidebar-toc .toc-item');
+  var sections = [];
+  tocItems.forEach(function(item) {
+    var href = item.getAttribute('href');
+    if (href && href.charAt(0) === '#') {
+      var el = document.getElementById(href.substring(1));
+      if (el) sections.push({ el: el, link: item });
+    }
+  });
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY + 100;
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocItems.forEach(function(item) { item.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  });
+})();
+
+// ── Close sidebar on mobile when clicking a link ──
+document.querySelectorAll('.sidebar-toc .toc-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    if (window.innerWidth < 1100) {
+      document.querySelector('.sidebar-toc').classList.remove('open');
+      document.querySelector('.sidebar-overlay').classList.remove('open');
+    }
+  });
+});
+</script>
 
 </body>
 </html>
