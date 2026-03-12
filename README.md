@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1088 (T1–T1088) |
-| Test functions | 14,217 |
-| Test files | 606 |
-| Phases completed | LXXII (72) |
+| Theorems proved | 1193 (T1–T1193) |
+| Test functions | 14,489 |
+| Test files | 611 |
+| Phases completed | LXXVII (77) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -36,6 +36,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXX:** Group theory — Sp(4,3) BFS construction, center, Sylow, derived subgroup, Burnside, faithful action (52 tests)
 - **LXXI:** Complement graph & association scheme — SRG(40,27,18,18), Seidel matrix, P/Q eigenmatrices, Krein conditions, intersection numbers (54 tests)
 - **LXXII:** Zeta functions & number theory — Ihara-Bass identity, Ramanujan poles, spectral zeta, Gaussian integer 137=(11+4i)(11-4i), heat kernel, Cheeger/expander bounds (55 tests)
+- **LXXIII:** Random walks & mixing — transition matrix, spectral gap, Kemeny's constant, hitting/commute times, total variation decay, cutoff, friendship theorem (49 tests)
+- **LXXIV:** Graph polynomials & spectral theory — characteristic/minimal polynomial, Cayley-Hamilton, spectral moments, Laplacian/signless/normalized spectra, idempotent decomposition, matrix functions (68 tests)
+- **LXXV:** Automorphism & symmetry — Weisfeiler-Leman, walk-regularity, subconstituent analysis, distance matrix, interlacing, Seidel switching, clique/independence structure (54 tests)
+- **LXXVI:** Coding theory & error correction — binary/ternary codes from adjacency, GF(3)/GF(5) ranks, weight enumerator, self-orthogonal codes, LDPC, von Neumann entropy (53 tests)
+- **LXXVII:** Algebraic combinatorics & design theory — 1-designs, quasi-symmetric, Fisher inequality, partial geometry pg(3,3,1), spreads, Bose-Mesner P/Q matrices, GQ axiom verification (48 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -148,8 +153,23 @@ python -m pytest tests/test_complement_association_computation.py -q
 # Phase LXXII: zeta functions & number theory (55 tests)
 python -m pytest tests/test_zeta_number_theory_computation.py -q
 
-# Phases LXIV-LXXII combined (all hard computations, 561 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py -q
+# Phase LXXIII: random walks & mixing (49 tests)
+python -m pytest tests/test_random_walk_computation.py -q
+
+# Phase LXXIV: graph polynomials & spectral theory (68 tests)
+python -m pytest tests/test_graph_polynomial_computation.py -q
+
+# Phase LXXV: automorphism & symmetry (54 tests)
+python -m pytest tests/test_automorphism_symmetry_computation.py -q
+
+# Phase LXXVI: coding theory & error correction (53 tests)
+python -m pytest tests/test_coding_theory_computation.py -q
+
+# Phase LXXVII: algebraic combinatorics & design theory (48 tests)
+python -m pytest tests/test_algebraic_combinatorics_computation.py -q
+
+# Phases LXIV-LXXVII combined (all hard computations, 833 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -163,6 +183,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXXVII | T1173–T1193 | 48 | Algebraic Combinatorics & Design Theory — Designs, GQ Axiom, Spreads |
+| LXXVI | T1152–T1172 | 53 | Coding Theory & Error Correction — Binary/Ternary Codes, Entropy |
+| LXXV | T1131–T1151 | 54 | Automorphism & Symmetry — WL Refinement, Interlacing, Switching |
+| LXXIV | T1110–T1130 | 68 | Graph Polynomials & Spectral Theory — Cayley-Hamilton, Laplacians |
+| LXXIII | T1089–T1109 | 49 | Random Walks & Mixing — Spectral Gap, Kemeny, Cover Time |
 | LXXII | T1067–T1088 | 55 | Zeta Functions & Number Theory — Ihara-Bass, Ramanujan, Gaussian Integers |
 | LXXI | T1043–T1066 | 54 | Complement Graph & Association Scheme — Seidel, Krein, Eigenmatrices |
 | LXX | T1021–T1042 | 52 | Group Theory — Sp(4,3) Construction & Structure |
