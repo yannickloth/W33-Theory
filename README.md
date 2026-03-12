@@ -13,11 +13,11 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1839 (T1–T1823) |
-| Test functions | 17,241 |
-| Test files | 650 |
-| Phases completed | CXII (112) |
-| Mathematical domains covered | 227+ |
+| Theorems proved | 1874 (T1–T1975) |
+| Test functions | 17,653 |
+| Test files | 655 |
+| Phases completed | CXVII (117) |
+| Mathematical domains covered | 232+ |
 | Key predictions matched | 34 |
 
 ## Current Frontier
@@ -76,6 +76,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **CX:** Deep linear algebra — SVD/polar/Schur decomposition, matrix norms, spectral projections, commutant dim=802, matrix functions, generalized inverses, Kronecker products (82 tests)
 - **CXI:** Extremal combinatorics — Turan bounds, independent set structure, subgraph counting, regularity, supersaturation, probabilistic bounds, Kruskal-Katona, forbidden subgraphs (81 tests)
 - **CXII:** Polynomial methods — characteristic/minimal/Hoffman/chromatic/independence/matching/clique polynomials, SRG identity A^2=-2A+8I+4J, cross-polynomial relations (97 tests)
+- **CXIII:** Connectivity & flow — vertex/edge connectivity=12, Edmonds-Karp max-flow, Menger's theorem, algebraic connectivity=10, toughness, spanning trees, expansion (80 tests)
+- **CXIV:** Spectral bounds — interlacing, Hoffman alpha/chi/omega bounds, Cheeger inequality, eigenvalue moments, Lovász theta=10, Ramanujan property, graph energy=120 (87 tests)
+- **CXV:** Deep automorphism — Weisfeiler-Leman refinement, orbit structure, vertex stabilizer order=648, symmetry breaking, PSp(4,3) generators, spectral symmetry (85 tests)
+- **CXVI:** Covering & lifting — fundamental group, voltage graphs, bipartite double cover, quotient graphs, deck transformations, homology lifts, Hashimoto non-backtracking matrix (80 tests)
+- **CXVII:** Incidence geometry — PG(3,3), GQ(3,3) axiom verification, incidence matrix BB^T=A+4I, spreads, symplectic form, dual structure, subgeometry (80 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -308,8 +313,23 @@ python -m pytest tests/test_extremal_combinatorics_computation.py -q
 # Phase CXII: polynomial methods (97 tests)
 python -m pytest tests/test_polynomial_methods_computation.py -q
 
-# Phases LXIV-CXII combined (all hard computations, 3570 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py tests/test_random_matrix_computation.py tests/test_spectral_geometry_computation.py tests/test_linear_algebra_deep_computation.py tests/test_extremal_combinatorics_computation.py tests/test_polynomial_methods_computation.py -q
+# Phase CXIII: connectivity & flow (80 tests)
+python -m pytest tests/test_connectivity_flow_computation.py -q
+
+# Phase CXIV: spectral bounds (87 tests)
+python -m pytest tests/test_spectral_bounds_computation.py -q
+
+# Phase CXV: deep automorphism (85 tests)
+python -m pytest tests/test_automorphism_deep_computation.py -q
+
+# Phase CXVI: covering & lifting (80 tests)
+python -m pytest tests/test_covering_lifting_computation.py -q
+
+# Phase CXVII: incidence geometry (80 tests)
+python -m pytest tests/test_incidence_geometry_computation.py -q
+
+# Phases LXIV-CXVII combined (all hard computations, 3982 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py tests/test_random_matrix_computation.py tests/test_spectral_geometry_computation.py tests/test_linear_algebra_deep_computation.py tests/test_extremal_combinatorics_computation.py tests/test_polynomial_methods_computation.py tests/test_connectivity_flow_computation.py tests/test_spectral_bounds_computation.py tests/test_automorphism_deep_computation.py tests/test_covering_lifting_computation.py tests/test_incidence_geometry_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -323,6 +343,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| CXVII | — | 80 | Incidence Geometry — PG(3,3), GQ(3,3), Spreads, Symplectic Form |
+| CXVI | — | 80 | Covering & Lifting — Voltage Graphs, Double Cover, Hashimoto Matrix |
+| CXV | T1900–T1975 | 85 | Deep Automorphism — WL Refinement, PSp(4,3), Orbits, Stabilizers |
+| CXIV | — | 87 | Spectral Bounds — Interlacing, Hoffman, Cheeger, Lovász Theta, Ramanujan |
+| CXIII | — | 80 | Connectivity & Flow — Max-Flow, Menger, Algebraic Connectivity, Expansion |
 | CXII | — | 97 | Polynomial Methods — Characteristic, Hoffman, Chromatic, Clique Polynomials |
 | CXI | — | 81 | Extremal Combinatorics — Turan, Independent Sets, Subgraph Counting |
 | CX | — | 82 | Deep Linear Algebra — SVD, Norms, Projections, Commutant, Inverses |
