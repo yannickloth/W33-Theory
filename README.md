@@ -13,10 +13,10 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1298 (T1–T1298) |
-| Test functions | 14,734 |
-| Test files | 620 |
-| Phases completed | LXXXII (82) |
+| Theorems proved | 1403 (T1–T1403) |
+| Test functions | 15,218 |
+| Test files | 625 |
+| Phases completed | LXXXVII (87) |
 | Mathematical domains covered | 207+ |
 | Key predictions matched | 34 |
 
@@ -46,6 +46,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **LXXX:** Optimization & convex relaxations — Lovasz theta (=10), theta complement (=4), theta*theta_bar=n=40, SDP bounds, max-cut eigenvalue bound, heat kernel, condition number, minimax (46 tests)
 - **LXXXI:** Quantum walks & information — CTQW unitary, return probability, mixing, no perfect state transfer, quantum chromatic number, graph state, entanglement entropy, localization 802/1600 (44 tests)
 - **LXXXII:** Extremal graph theory — Turan bounds, Ramsey, Zarankiewicz, forbidden subgraphs, degeneracy, cycle structure, Kruskal-Katona, homomorphism densities, treewidth, Hadwiger number (45 tests)
+- **LXXXIII:** Algebraic graph theory — distance polynomials, Hoffman polynomial H(A)=J, adjacency algebra, minimal polynomial, walk counts, Seidel matrix, line/subdivision graph, Kirchhoff index, Smith normal form (63 tests)
+- **LXXXIV:** Matrix analysis & operator theory — matrix norms, SVD, condition number, polar decomposition, Schur decomposition, Hadamard/Kronecker products, resolvent, spectral projections, commutant, Perron-Frobenius (91 tests)
+- **LXXXV:** Harmonic analysis on graphs — graph Fourier transform, Parseval, heat diffusion, wave equation, Chebyshev expansion, graph wavelets, spectral clustering, gradient/divergence/Helmholtz, effective resistance, bandlimited signals (109 tests)
+- **LXXXVI:** Number-theoretic graph properties — integer eigenvalues, p-rank over GF(2)/GF(3)/GF(5), Smith normal form, det=-3*2^56, Ramanujan, Gaussian integers 137=(11+4i)(11-4i), cyclotomic polynomials, Bernoulli numbers (114 tests)
+- **LXXXVII:** Probabilistic combinatorics — edge/triangle density, expander mixing lemma, discrepancy, Alon-Chung, Lovasz Local Lemma, Janson inequality, spectral measure, Cheeger constant, chromatic bounds, conductance (107 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -188,8 +193,23 @@ python -m pytest tests/test_quantum_walk_computation.py -q
 # Phase LXXXII: extremal graph theory (45 tests)
 python -m pytest tests/test_extremal_graph_computation.py -q
 
-# Phases LXIV-LXXXII combined (all hard computations, 1063 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py -q
+# Phase LXXXIII: algebraic graph theory (63 tests)
+python -m pytest tests/test_algebraic_graph_theory_computation.py -q
+
+# Phase LXXXIV: matrix analysis & operator theory (91 tests)
+python -m pytest tests/test_matrix_analysis_computation.py -q
+
+# Phase LXXXV: harmonic analysis on graphs (109 tests)
+python -m pytest tests/test_harmonic_analysis_computation.py -q
+
+# Phase LXXXVI: number-theoretic graph properties (114 tests)
+python -m pytest tests/test_number_theory_graph_computation.py -q
+
+# Phase LXXXVII: probabilistic combinatorics (107 tests)
+python -m pytest tests/test_probabilistic_combinatorics_computation.py -q
+
+# Phases LXIV-LXXXVII combined (all hard computations, 1547 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -203,6 +223,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| LXXXVII | T1383–T1403 | 107 | Probabilistic Combinatorics — Expander Mixing, Cheeger, Janson |
+| LXXXVI | T1362–T1382 | 114 | Number-Theoretic Graph Properties — p-Rank, Smith Normal Form |
+| LXXXV | T1341–T1361 | 109 | Harmonic Analysis — GFT, Wavelets, Helmholtz Decomposition |
+| LXXXIV | T1320–T1340 | 91 | Matrix Analysis & Operator Theory — SVD, Polar, Commutant |
+| LXXXIII | T1299–T1319 | 63 | Algebraic Graph Theory — Hoffman Polynomial, Kirchhoff Index |
 | LXXXII | T1278–T1298 | 45 | Extremal Graph Theory — Turan, Ramsey, Zarankiewicz, Hadwiger |
 | LXXXI | T1257–T1277 | 44 | Quantum Walks & Information — CTQW, Localization, Graph States |
 | LXXX | T1236–T1256 | 46 | Optimization & Convex Relaxations — Lovasz Theta, SDP, Max-Cut |
