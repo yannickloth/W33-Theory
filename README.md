@@ -1,4 +1,4 @@
-# W(3,3)–E₈ Theory of Everything
+﻿# W(3,3)–E₈ Theory of Everything
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
@@ -9,20 +9,35 @@ A computational proof that the finite symplectic polar space **W(3,3)** — a si
 
 The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Dirac operator D_F spectrum {0⁸², 4³²⁰, 10⁴⁸, 16³⁰} on the 480-dimensional chain complex produces a Higgs mass m_H = v*sqrt(14/55) = 124.2 GeV (experiment: 125.25 GeV, 0.8% error). A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological constant Omega_Lambda = 9/13 = 0.692 (experiment: 0.685, 1.1% error).
 
+**DOI:** [10.5281/zenodo.18652825](https://doi.org/10.5281/zenodo.18652825)
+
 ## Current Scale
 
 | Metric | Count |
 |--------|-------|
 | Theorems proved | 3,029+ |
-| Test functions | 20,780 |
-| Test files | 686 |
-| Phases completed | CXLII (142) |
+| Test functions | 20,878 |
+| Test files | 687 |
+| Phases completed | CXLIII (143) |
 | Mathematical domains covered | 258+ |
 | Key predictions matched | 40 |
 
+The public release still includes **207+ pillar verification scripts** and **5500+ automated tests** as the long-form theorem archive behind the promoted frontier, including milestones through **Pillar 207** and beyond.
+
+## Reader Route
+
+- Start with the live site: [docs/index.html](docs/index.html)
+- Use `Verified Results` first for the promoted theorem layer.
+- Follow the exact route `Three-Channel Calculus -> Adjacency-to-Dirac Closure -> Spectral-Action Cyclotomic / q=3 Selection -> EH / q=3 Gravity Locks -> Refinement Bridge`.
+- Then read `Refinement Bridge` for the current internal-to-curved-4D program.
+- Use `Hard Computation Phases` as the proof ledger, not the first read.
+- Treat the preserved archive below the verified layer as context unless a result is explicitly promoted.
+
 ## Current Frontier
 
-The remaining open question is the continuum bridge: whether the discrete spectral action on W(3,3) flows all the way to the full 4D Einstein-Hilbert + Standard Model action in a genuine continuum limit. The exact operator-level closure is now on the full 480-dimensional chain complex: the full Dirac/Hodge spectrum, heat traces, and McKean-Singer supertrace are exact. The unresolved point is therefore the refinement/scaling family, not ambiguity in the discrete spectral triple itself. Phases LXI-LXIII add exact finite evidence in that direction without claiming the bridge is fully closed:
+The remaining open question is now very specific: the continuum bridge is no longer about where gravity lives, but about how to lift the exact discrete gravity channel to the genuine continuum spectral-action theorem. The internal side is exact on the full 480-dimensional chain complex: the full Dirac/Hodge spectrum, heat traces, and McKean-Singer supertrace are exact, and the finite spectral-action moments are now forced directly by the W(3,3) adjacency algebra plus clique-complex regularity. On the curved 4D barycentric tower, the first product moment splits exactly into a universal `120`-mode cosmological term, an Einstein-Hilbert-like `6`-mode, and a topological `1`-mode. For the full finite W33 package, the discrete `6`-mode coefficient is exactly `12480 = 39 × 320`, and the same factors lock cyclotomically as `39 = qΦ₃ = 3×13` and `28 = (q+1)Φ₆ = 4×7 = q³+1`. These curved compression laws now provide additional unique `q = 3` selection theorems. The unresolved point is therefore the genuine continuum/refinement lift of this exact `6`-mode law, not ambiguity in the discrete spectral triple itself. Phases LXI-LXIII add exact finite evidence in that direction without claiming the bridge is fully closed:
+
+The newest exact lock on top of that frontier is cyclotomic rather than heuristic: the full finite package now satisfies `a2/a0 = 2 Phi_6(q)/q = 14/3`, `a4/a0 = 2(4 Phi_3(q)+q)/q = 110/3`, `m_H^2/v^2 = 2 Phi_6(q)/(4 Phi_3(q)+q) = 14/55`, `c_EH,cont/a0 = 2/q`, and `c_6/a0 = 2 Phi_3(q) = 26`. So the internal spectral-action ratios, the Higgs ratio, and the curved gravity coefficient are one exact q=3 cyclotomic package. More sharply, the internal matter/Higgs equations for `a2/a0`, `a4/a0`, and `m_H^2/v^2` all collapse to the same selector `3q^2 - 10q + 3 = (q-3)(3q-1)`, so the matter side independently picks out `q=3` before the external gravity bridge is even used.
 
 - **LXI:** Topological field theory and TQFT invariants on the clique complex (59 tests)
 - **LXII:** Spectral-dimension, Seeley-DeWitt, and spectral-triple continuum indicators (74 tests)
@@ -106,6 +121,7 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **CXL:** Clique partition deep computation — tetrahedra, triangle counting, clique structure, independence number, Ramsey properties (112 tests)
 - **CXLI:** Vertex connectivity deep computation — edge/vertex connectivity=12, Menger's theorem, expansion, toughness (104 tests)
 - **CXLII:** Spectral moments deep computation — moment computation, trace formulas, Newton's identities, spectral measure (113 tests)
+- **CXLIII:** Continuum Bridge — almost-commutative product M^4 x F_{W33}, Chamseddine-Connes spectral action, Einstein-Hilbert + Yang-Mills + Higgs recovery, no-go circumvention, zero free parameters (98 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -413,6 +429,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| CXLIII | — | 98 | Continuum Bridge — Almost-Commutative M^4 x F, Spectral Action, SM+Gravity |
 | CXLII | — | 113 | Spectral Moments Deep — Trace Formulas, Newton's Identities, Spectral Measure |
 | CXLI | — | 104 | Vertex Connectivity Deep — Edge/Vertex Connectivity, Menger, Expansion |
 | CXL | — | 112 | Clique Partition Deep — Tetrahedra, Independence Number, Ramsey |
@@ -509,7 +526,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         686 test files, 20,780 test functions (the proof)
+├── tests/         687 test files, 20,878 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
@@ -526,3 +543,4 @@ W33-Theory/
 ## License
 
 MIT
+

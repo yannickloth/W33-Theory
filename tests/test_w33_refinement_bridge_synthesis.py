@@ -92,6 +92,149 @@ def test_synthesis_records_curved_refinement_density_bridge() -> None:
     assert density["product_zero_modes_vanish_exactly"] is True
 
 
+def test_synthesis_records_adjacency_dirac_closure_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["adjacency_dirac_closure_bridge"]
+    assert bridge["vertex_laplacian_formula"] == "L0 = 12 I - A"
+    assert bridge["vertex_laplacian_matches_formula_exactly"] is True
+    assert bridge["vertex_laplacian_spectrum"] == {0: 1, 10: 24, 16: 15}
+    assert bridge["edge_harmonic_dimension"] == 81
+    assert bridge["edge_exact_dimension"] == 39
+    assert bridge["edge_coexact_dimension"] == 120
+    assert bridge["exact_one_form_spectrum_is_vertex_nonzero_spectrum"] is True
+    assert bridge["triangle_laplacian_is_scalar_4"] is True
+    assert bridge["tetrahedron_laplacian_is_scalar_4"] is True
+    assert bridge["df2_spectrum"] == {0: 82, 4: 320, 10: 48, 16: 30}
+    assert bridge["a0_f"] == 480
+    assert bridge["a2_f"] == 2240
+    assert bridge["a4_f"] == 17600
+    assert bridge["mu_squared"] == "14/3"
+    assert bridge["lambda"] == "110/3"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["full_finite_spectrum_forced_from_adjacency_plus_clique_regularities"] is True
+
+
+def test_synthesis_records_three_channel_and_dual_bose_mesner_bridges() -> None:
+    summary = build_refinement_bridge_synthesis()
+    three_channel = summary["three_channel_operator_bridge"]
+    dual = summary["dual_bose_mesner_bridge"]
+    assert three_channel["basis"] == ["I", "A", "J"]
+    assert three_channel["three_entry_classes"] == ["diagonal", "edge", "nonedge"]
+    assert three_channel["positive_projector_entry_values"] == {
+        "diagonal": "5/8",
+        "edge": "1/8",
+        "nonedge": "-1/24",
+    }
+    assert three_channel["laplacian_pseudoinverse_entry_values"] == {
+        "diagonal": "267/3200",
+        "edge": "7/3200",
+        "nonedge": "-13/3200",
+    }
+    assert three_channel["effective_resistance_adjacent"] == "13/80"
+    assert three_channel["effective_resistance_nonadjacent"] == "7/40"
+    assert three_channel["kemeny_constant"] == "801/20"
+    assert three_channel["exact_mixing_rate"] == "1/3"
+    assert dual["w33_constant_projector_matches_exactly"] is True
+    assert dual["transport_constant_projector_matches_exactly"] is True
+    assert dual["shared_nontrivial_polynomial"] == "x^2 + 2x - 8"
+    assert dual["kills_mean_zero_on_w33"] is True
+    assert dual["kills_mean_zero_on_transport"] is True
+    assert dual["positive_channel_coefficients"] == {"alpha": "2/3", "beta": "1/6"}
+    assert dual["negative_channel_coefficients"] == {"alpha": "1/3", "beta": "-1/6"}
+
+
+def test_synthesis_records_curved_eh_mode_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_eh_mode_bridge"]
+    assert "860 a0 + 120 a2" in bridge["master_density_formula"]
+    assert "12 a0 + 3 a2" in bridge["master_density_formula"]
+    assert "6^r" in bridge["master_integrated_formula"]
+    assert bridge["exact_scale_separation"] == "120 / 6 = 20"
+    assert bridge["finite_df2_cosmological_limit"] == "681600/19"
+    assert bridge["finite_df2_eh_6_mode_coefficient"] == "12480"
+    assert bridge["finite_df2_topological_1_mode_coefficient"] == "2240"
+    assert bridge["a2_transport_cosmological_limit"] == "423000/19"
+    assert bridge["transport_dirac_cosmological_limit"] == "19370040/19"
+    assert bridge["matter_transport_dirac_cosmological_limit"] == "1568973240/19"
+    assert bridge["cp2_finite_df2_curvature_mode_density"] == "54080/19"
+    assert bridge["k3_finite_df2_curvature_mode_density"] == "-114400/57"
+    assert bridge["cp2_curvature_sign_matches_signature"] is True
+    assert bridge["k3_curvature_sign_matches_signature"] is True
+
+
+def test_synthesis_records_eh_continuum_lock_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["eh_continuum_lock_bridge"]
+    assert bridge["continuum_eh_coefficient"] == "320"
+    assert bridge["discrete_eh_6_mode_coefficient"] == "12480"
+    assert bridge["rank_factor"] == "39"
+    assert bridge["discrete_equals_rank_factor_times_continuum"] is True
+    assert bridge["rank_d1"] == 39
+    assert bridge["rank_mod_3_adjacency"] == 39
+    assert bridge["nontrivial_adjacency_multiplicity_sum"] == 39
+    assert bridge["all_rank_39_identifications_agree"] is True
+    assert bridge["topological_1_mode_coefficient"] == "2240"
+    assert bridge["absolute_euler_characteristic"] == 80
+    assert bridge["q_cubic_plus_1"] == 28
+    assert bridge["topological_equals_q_cubic_plus_1_times_abs_chi"] is True
+
+
+def test_synthesis_records_curvature_cyclotomic_lock_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curvature_cyclotomic_lock_bridge"]
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["q_phi3"] == 39
+    assert bridge["q_plus_1_phi6"] == 28
+    assert bridge["gravity_is_q_phi3_times_continuum"] is True
+    assert bridge["topology_is_q_plus_1_phi6_times_abs_chi"] is True
+    assert bridge["topology_is_q_cubic_plus_1_times_abs_chi"] is True
+
+
+def test_synthesis_records_q3_curved_selection_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["q3_curved_selection_bridge"]
+    assert bridge["gravity_polynomial"] == "q^3 - 2q^2 - 2q - 3"
+    assert bridge["gravity_factorization"] == "(q - 3)(q^2 + q + 1)"
+    assert bridge["gravity_unique_positive_integer_solution"] == 3
+    assert bridge["topology_polynomial"] == "q^2 + q - 12"
+    assert bridge["topology_factorization"] == "(q - 3)(q + 4)"
+    assert bridge["topology_unique_positive_integer_solution"] == 3
+
+
+def test_synthesis_records_spectral_action_cyclotomic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["spectral_action_cyclotomic_bridge"]
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["four_phi3_plus_q"] == 55
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["a2_over_a0_matches_formula"] is True
+    assert bridge["a4_over_a0_matches_formula"] is True
+    assert bridge["higgs_ratio_square_matches_formula"] is True
+    assert bridge["continuum_eh_over_a0"] == "2/3"
+    assert bridge["discrete_6_mode_over_a0"] == "26"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["continuum_eh_over_a0_matches_formula"] is True
+    assert bridge["discrete_6_mode_over_a0_matches_formula"] is True
+    assert bridge["discrete_to_continuum_matches_formula"] is True
+
+
+def test_synthesis_records_spectral_action_q3_selection_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["spectral_action_q3_selection_bridge"]
+    assert bridge["internal_polynomial"] == "3q^2 - 10q + 3"
+    assert bridge["internal_factorization"] == "(q - 3)(3q - 1)"
+    assert bridge["internal_unique_positive_integer_solution"] == 3
+    assert bridge["a4_uses_same_polynomial"] is True
+    assert bridge["higgs_uses_same_polynomial"] is True
+    assert bridge["gravity_polynomial"] == "q^2 + q - 12"
+    assert bridge["gravity_factorization"] == "(q - 3)(q + 4)"
+    assert bridge["gravity_unique_positive_integer_solution"] == 3
+
+
 def test_synthesis_records_center_quad_exceptional_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["center_quad_exceptional_bridge"]

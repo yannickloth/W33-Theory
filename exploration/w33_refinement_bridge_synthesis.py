@@ -96,6 +96,15 @@ from w33_transport_curved_dirac_refinement_bridge import (
 from w33_transport_curved_dirac_quadratic_bridge import (
     build_transport_curved_dirac_quadratic_bridge_summary,
 )
+from w33_adjacency_dirac_closure_bridge import build_adjacency_dirac_closure_summary
+from w33_three_channel_operator_bridge import build_three_channel_operator_summary
+from w33_dual_bose_mesner_bridge import build_dual_bose_mesner_bridge_summary
+from w33_curved_eh_mode_bridge import build_curved_eh_mode_bridge_summary
+from w33_eh_continuum_lock_bridge import build_eh_continuum_lock_summary
+from w33_curvature_cyclotomic_lock_bridge import build_curvature_cyclotomic_lock_summary
+from w33_q3_curved_selection_bridge import build_q3_curved_selection_summary
+from w33_spectral_action_cyclotomic_bridge import build_spectral_action_cyclotomic_summary
+from w33_spectral_action_q3_selection_bridge import build_spectral_action_q3_selection_summary
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_refinement_bridge_synthesis_summary.json"
@@ -152,6 +161,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_spectral_selector = build_transport_spectral_selector_summary()
     transport_curved_dirac_refinement = build_transport_curved_dirac_refinement_summary()
     transport_curved_dirac_quadratic = build_transport_curved_dirac_quadratic_bridge_summary()
+    adjacency_dirac_closure = build_adjacency_dirac_closure_summary()
+    three_channel_operator = build_three_channel_operator_summary()
+    dual_bose_mesner = build_dual_bose_mesner_bridge_summary()
+    curved_eh_mode = build_curved_eh_mode_bridge_summary()
+    eh_continuum_lock = build_eh_continuum_lock_summary()
+    curvature_cyclotomic_lock = build_curvature_cyclotomic_lock_summary()
+    q3_curved_selection = build_q3_curved_selection_summary()
+    spectral_action_cyclotomic = build_spectral_action_cyclotomic_summary()
+    spectral_action_q3_selection = build_spectral_action_q3_selection_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
@@ -191,6 +209,119 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "witting_tetrads": witting["paper_system"]["orthogonal_tetrads"],
             "tomotope_flag_count": order["tomotope"]["flags"],
             "minimal_regular_cover_order": order["minimal_regular_cover"]["automorphism_group_order"],
+        },
+        "adjacency_dirac_closure_bridge": {
+            "vertex_laplacian_formula": adjacency_dirac_closure["adjacency_side"]["vertex_laplacian_formula"],
+            "vertex_laplacian_matches_formula_exactly": adjacency_dirac_closure["adjacency_side"]["vertex_laplacian_matches_formula_exactly"],
+            "vertex_laplacian_spectrum": adjacency_dirac_closure["adjacency_side"]["vertex_laplacian_spectrum"],
+            "edge_harmonic_dimension": adjacency_dirac_closure["hodge_lift_theorem"]["edge_harmonic_dimension"],
+            "edge_exact_dimension": adjacency_dirac_closure["hodge_lift_theorem"]["exact_one_form_dimension"],
+            "edge_coexact_dimension": adjacency_dirac_closure["hodge_lift_theorem"]["coexact_one_form_dimension"],
+            "exact_one_form_spectrum_is_vertex_nonzero_spectrum": adjacency_dirac_closure["hodge_lift_theorem"]["exact_one_form_spectrum_is_vertex_nonzero_spectrum"],
+            "triangle_laplacian_is_scalar_4": adjacency_dirac_closure["high_degree_regularities"]["triangle_laplacian_is_scalar_4"],
+            "tetrahedron_laplacian_is_scalar_4": adjacency_dirac_closure["high_degree_regularities"]["tetrahedron_laplacian_is_scalar_4"],
+            "df2_spectrum": adjacency_dirac_closure["finite_dirac_closure"]["df2_spectrum"],
+            "a0_f": adjacency_dirac_closure["finite_dirac_closure"]["seeley_dewitt_moments"]["a0_f"],
+            "a2_f": adjacency_dirac_closure["finite_dirac_closure"]["seeley_dewitt_moments"]["a2_f"],
+            "a4_f": adjacency_dirac_closure["finite_dirac_closure"]["seeley_dewitt_moments"]["a4_f"],
+            "mu_squared": adjacency_dirac_closure["finite_dirac_closure"]["spectral_action_ratios"]["mu_squared"],
+            "lambda": adjacency_dirac_closure["finite_dirac_closure"]["spectral_action_ratios"]["lambda"],
+            "higgs_ratio_square": adjacency_dirac_closure["finite_dirac_closure"]["spectral_action_ratios"]["higgs_ratio_square"],
+            "full_finite_spectrum_forced_from_adjacency_plus_clique_regularities": adjacency_dirac_closure["finite_dirac_closure"]["full_finite_spectrum_forced_from_adjacency_plus_clique_regularities"],
+        },
+        "three_channel_operator_bridge": {
+            "basis": three_channel_operator["operator_calculus"]["basis"],
+            "three_entry_classes": three_channel_operator["operator_calculus"]["three_entry_classes"],
+            "positive_projector_entry_values": three_channel_operator["spectral_projectors"]["positive_projector_entry_values"],
+            "laplacian_pseudoinverse_entry_values": three_channel_operator["resistance_bridge"]["laplacian_pseudoinverse_entry_values"],
+            "effective_resistance_adjacent": three_channel_operator["resistance_bridge"]["effective_resistance_adjacent"],
+            "effective_resistance_nonadjacent": three_channel_operator["resistance_bridge"]["effective_resistance_nonadjacent"],
+            "kemeny_constant": three_channel_operator["resistance_bridge"]["kemeny_constant"],
+            "exact_mixing_rate": three_channel_operator["mixing_bridge"]["exact_mixing_rate"],
+        },
+        "dual_bose_mesner_bridge": {
+            "w33_constant_projector_matches_exactly": dual_bose_mesner["w33"]["constant_projector_matches_exactly"],
+            "transport_constant_projector_matches_exactly": dual_bose_mesner["transport"]["constant_projector_matches_exactly"],
+            "shared_nontrivial_polynomial": dual_bose_mesner["shared_nontrivial_polynomial"]["polynomial"],
+            "kills_mean_zero_on_w33": dual_bose_mesner["shared_nontrivial_polynomial"]["kills_mean_zero_on_w33"],
+            "kills_mean_zero_on_transport": dual_bose_mesner["shared_nontrivial_polynomial"]["kills_mean_zero_on_transport"],
+            "positive_channel_coefficients": dual_bose_mesner["shared_mean_zero_calculus"]["positive_channel_coefficients"],
+            "negative_channel_coefficients": dual_bose_mesner["shared_mean_zero_calculus"]["negative_channel_coefficients"],
+        },
+        "curved_eh_mode_bridge": {
+            "master_density_formula": curved_eh_mode["master_formula"]["density"],
+            "master_integrated_formula": curved_eh_mode["master_formula"]["integrated"],
+            "exact_scale_separation": curved_eh_mode["master_formula"]["exact_scale_separation"],
+            "finite_df2_cosmological_limit": curved_eh_mode["profiles"][2]["global_coefficients"]["cosmological_density_limit"]["exact"],
+            "finite_df2_eh_6_mode_coefficient": curved_eh_mode["profiles"][2]["global_coefficients"]["einstein_hilbert_6_mode_coefficient"]["exact"],
+            "finite_df2_topological_1_mode_coefficient": curved_eh_mode["profiles"][2]["global_coefficients"]["topological_1_mode_coefficient"]["exact"],
+            "a2_transport_cosmological_limit": curved_eh_mode["profiles"][3]["global_coefficients"]["cosmological_density_limit"]["exact"],
+            "transport_dirac_cosmological_limit": curved_eh_mode["profiles"][4]["global_coefficients"]["cosmological_density_limit"]["exact"],
+            "matter_transport_dirac_cosmological_limit": curved_eh_mode["profiles"][5]["global_coefficients"]["cosmological_density_limit"]["exact"],
+            "cp2_finite_df2_curvature_mode_density": curved_eh_mode["profiles"][2]["seeds"][0]["density_formula"]["einstein_hilbert_density_coefficient"]["exact"],
+            "k3_finite_df2_curvature_mode_density": curved_eh_mode["profiles"][2]["seeds"][1]["density_formula"]["einstein_hilbert_density_coefficient"]["exact"],
+            "cp2_curvature_sign_matches_signature": curved_eh_mode["profiles"][2]["seeds"][0]["sign_matches_signature_for_curvature_mode"],
+            "k3_curvature_sign_matches_signature": curved_eh_mode["profiles"][2]["seeds"][1]["sign_matches_signature_for_curvature_mode"],
+        },
+        "eh_continuum_lock_bridge": {
+            "continuum_eh_coefficient": eh_continuum_lock["continuum_lock"]["continuum_eh_coefficient"]["exact"],
+            "discrete_eh_6_mode_coefficient": eh_continuum_lock["continuum_lock"]["discrete_eh_6_mode_coefficient"]["exact"],
+            "rank_factor": eh_continuum_lock["continuum_lock"]["rank_factor"]["exact"],
+            "discrete_equals_rank_factor_times_continuum": eh_continuum_lock["continuum_lock"]["discrete_equals_rank_factor_times_continuum"],
+            "rank_d1": eh_continuum_lock["rank_39_identifications"]["rank_d1"],
+            "rank_mod_3_adjacency": eh_continuum_lock["rank_39_identifications"]["rank_mod_3_adjacency"],
+            "nontrivial_adjacency_multiplicity_sum": eh_continuum_lock["rank_39_identifications"]["nontrivial_adjacency_multiplicity_sum"],
+            "all_rank_39_identifications_agree": eh_continuum_lock["rank_39_identifications"]["all_equal_39"],
+            "topological_1_mode_coefficient": eh_continuum_lock["topological_lock"]["topological_1_mode_coefficient"]["exact"],
+            "absolute_euler_characteristic": eh_continuum_lock["topological_lock"]["absolute_euler_characteristic"],
+            "q_cubic_plus_1": eh_continuum_lock["topological_lock"]["q_cubic_plus_1"],
+            "topological_equals_q_cubic_plus_1_times_abs_chi": eh_continuum_lock["topological_lock"]["topological_equals_q_cubic_plus_1_times_abs_chi"],
+        },
+        "curvature_cyclotomic_lock_bridge": {
+            "phi3": curvature_cyclotomic_lock["cyclotomic_factors"]["phi3"],
+            "phi6": curvature_cyclotomic_lock["cyclotomic_factors"]["phi6"],
+            "q_phi3": curvature_cyclotomic_lock["cyclotomic_factors"]["q_phi3"],
+            "q_plus_1_phi6": curvature_cyclotomic_lock["cyclotomic_factors"]["q_plus_1_phi6"],
+            "gravity_is_q_phi3_times_continuum": curvature_cyclotomic_lock["gravity_lock"]["discrete_equals_q_phi3_times_continuum"],
+            "topology_is_q_plus_1_phi6_times_abs_chi": curvature_cyclotomic_lock["topology_lock"]["topological_equals_q_plus_1_phi6_times_abs_chi"],
+            "topology_is_q_cubic_plus_1_times_abs_chi": curvature_cyclotomic_lock["topology_lock"]["equals_q_cubic_plus_1_times_abs_chi"],
+        },
+        "q3_curved_selection_bridge": {
+            "gravity_polynomial": q3_curved_selection["curved_selection_equations"]["gravity_compression"]["polynomial"],
+            "gravity_factorization": q3_curved_selection["curved_selection_equations"]["gravity_compression"]["factorization"],
+            "gravity_unique_positive_integer_solution": q3_curved_selection["curved_selection_equations"]["gravity_compression"]["unique_positive_integer_solution"],
+            "topology_polynomial": q3_curved_selection["curved_selection_equations"]["topology_compression"]["polynomial"],
+            "topology_factorization": q3_curved_selection["curved_selection_equations"]["topology_compression"]["factorization"],
+            "topology_unique_positive_integer_solution": q3_curved_selection["curved_selection_equations"]["topology_compression"]["unique_positive_integer_solution"],
+        },
+        "spectral_action_cyclotomic_bridge": {
+            "phi3": spectral_action_cyclotomic["cyclotomic_data"]["phi3"],
+            "phi6": spectral_action_cyclotomic["cyclotomic_data"]["phi6"],
+            "four_phi3_plus_q": spectral_action_cyclotomic["cyclotomic_data"]["four_phi3_plus_q"],
+            "a2_over_a0": spectral_action_cyclotomic["internal_spectral_action"]["a2_over_a0"]["exact"],
+            "a4_over_a0": spectral_action_cyclotomic["internal_spectral_action"]["a4_over_a0"]["exact"],
+            "higgs_ratio_square": spectral_action_cyclotomic["internal_spectral_action"]["higgs_ratio_square"]["exact"],
+            "a2_over_a0_matches_formula": spectral_action_cyclotomic["internal_spectral_action"]["a2_over_a0_matches_formula"],
+            "a4_over_a0_matches_formula": spectral_action_cyclotomic["internal_spectral_action"]["a4_over_a0_matches_formula"],
+            "higgs_ratio_square_matches_formula": spectral_action_cyclotomic["internal_spectral_action"]["higgs_ratio_square_matches_formula"],
+            "continuum_eh_over_a0": spectral_action_cyclotomic["gravity_lock"]["continuum_eh_over_a0"]["exact"],
+            "discrete_6_mode_over_a0": spectral_action_cyclotomic["gravity_lock"]["discrete_6_mode_over_a0"]["exact"],
+            "discrete_to_continuum_ratio": spectral_action_cyclotomic["gravity_lock"]["discrete_to_continuum_ratio"]["exact"],
+            "continuum_eh_over_a0_matches_formula": spectral_action_cyclotomic["gravity_lock"]["continuum_eh_over_a0_matches_formula"],
+            "discrete_6_mode_over_a0_matches_formula": spectral_action_cyclotomic["gravity_lock"]["discrete_6_mode_over_a0_matches_formula"],
+            "discrete_to_continuum_matches_formula": spectral_action_cyclotomic["gravity_lock"]["discrete_to_continuum_matches_formula"],
+        },
+        "spectral_action_q3_selection_bridge": {
+            "internal_polynomial": spectral_action_q3_selection["selection_equations"]["internal_a2_ratio"]["polynomial"],
+            "internal_factorization": spectral_action_q3_selection["selection_equations"]["internal_a2_ratio"]["factorization"],
+            "internal_unique_positive_integer_solution": spectral_action_q3_selection["selection_equations"]["internal_a2_ratio"]["unique_positive_integer_solution"],
+            "a4_uses_same_polynomial": spectral_action_q3_selection["selection_equations"]["internal_a4_ratio"]["polynomial"]
+            == spectral_action_q3_selection["selection_equations"]["internal_a2_ratio"]["polynomial"],
+            "higgs_uses_same_polynomial": spectral_action_q3_selection["selection_equations"]["higgs_ratio"]["polynomial"]
+            == spectral_action_q3_selection["selection_equations"]["internal_a2_ratio"]["polynomial"],
+            "gravity_polynomial": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["polynomial"],
+            "gravity_factorization": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["factorization"],
+            "gravity_unique_positive_integer_solution": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["unique_positive_integer_solution"],
         },
         "center_quad_exceptional_bridge": {
             "center_quads": center_quad["w33_seed"]["center_quads"],
@@ -733,7 +864,18 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "The missing theorem is no longer a vague 'continuum limit' placeholder. "
             "The finite internal side is exact: the Witting 40-state system is now "
             "identified explicitly with W(3,3) via SRG(40,12,2,4) and 40 orthogonal "
-            "tetrads, the W33 center-quad quotient reconstructs an exact 45-point / "
+            "tetrads, and the whole 480-dimensional finite Dirac/Hodge spectrum is "
+            "now seen to be forced by the same rank-3 adjacency algebra plus the "
+            "clique-complex regularities L0 = 12I - A, L2 = 4I, and L3 = 4I, so "
+            "the internal spectral-action moments a0 = 480, a2 = 2240, a4 = 17600 "
+            "are not a separate fitted package. More sharply, those moments, the "
+            "Higgs ratio 2a2/a4 = 14/55, the continuum Einstein-Hilbert coefficient "
+            "per internal degree of freedom 2/q, and the discrete 6-mode curvature "
+            "coefficient per internal degree of freedom 2Phi_3 are now one exact "
+            "cyclotomic law governed by Phi_3 = 13 and Phi_6 = 7, and the matter/Higgs "
+            "side now independently selects q = 3 because a2/a0, a4/a0, and 2a2/a4 all "
+            "collapse to the same polynomial 3q^2 - 10q + 3. The W33 center-quad quotient then "
+            "reconstructs an exact 45-point / "
             "27-line dual GQ(4,2) whose line graph is SRG(27,10,1,5) with 45 "
             "triangles, giving a direct exact bridge to the 27-line / 45-tritangent "
             "E6 layer. On those same 45 quotient points the old transport layer "
@@ -916,7 +1058,32 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "inherits exact first-order heat-density asymptotics across the whole "
             "CP2/K3 refinement family, with universal limits 1450800/19 and "
             "19370040/19 for the transport Dirac package and 117514800/19 and "
-            "1568973240/19 for its matter-coupled lift. Better again, the same "
+            "1568973240/19 for its matter-coupled lift. Better again, those "
+            "first-order bridges are now one exact three-mode law: for any "
+            "internal package with moments (a0,a2), the curved barycentric tower "
+            "splits the first product moment into a universal 120-mode "
+            "cosmological term ((860 a0 + 120 a2)/19), an exact 6-mode "
+            "Einstein-Hilbert-like channel (12 a0 + 3 a2), and a residual "
+            "1-mode topological term a2. So the full finite 480-dimensional W33 "
+            "package, the native A2 product bridge, and the transport-curved "
+            "Dirac bridge are all specializations of the same exact curved "
+            "convolution theorem. Better still, for the full finite W33 package "
+            "that 6-mode coefficient is exactly 39 times the continuum "
+            "Einstein-Hilbert coefficient 4a0/6 = 320, with the same factor 39 "
+            "appearing simultaneously as V-1, rank(d1), rank_GF(3)(A), and "
+            "24+15, the total multiplicity of the nontrivial adjacency "
+            "spectrum; while the residual 1-mode is exactly (q^3+1)|chi| = "
+            "28*80 = 2240. Sharper still, these are exactly the q=3 cyclotomic "
+            "factors q*Phi_3 = 3*13 = 39 and (q+1)*Phi_6 = 4*7 = 28, so the "
+            "curved first-order gravity/topology bridge is locked to the same "
+            "Phi_3 / Phi_6 arithmetic that already governs the rest of the "
+            "program. Better again, those same curved compression laws now give "
+            "new q=3 selection theorems: requiring the 6-mode to compress "
+            "exactly to 2Phi_3 a0 yields the polynomial "
+            "q^3 - 2q^2 - 2q - 3 = (q-3)(q^2+q+1), and requiring the 1-mode to "
+            "compress exactly to (q+1)Phi_6|chi| yields "
+            "q^2 + q - 12 = (q-3)(q+4). Both therefore select q=3 uniquely among "
+            "positive integers. Better again, the same "
             "transport Dirac package now has exact quadratic seed and sd^1 data: "
             "Tr(D^4)=2116184 internally and 171410904 after matter coupling, "
             "seed-level quadratic coefficients 39997843/3 and 36601793/3 on "
@@ -970,9 +1137,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "native curved spectral-action theorem beyond sd^1, now that the "
             "transport-twisted matter package already exists as a genuine symmetric "
             "Dirac-type operator with exact first-order data and exact quadratic "
-            "seed/sd^1 coefficients. The next internal bridge is therefore the "
-            "full refinement-tower second-order theorem and then the cutoff/small-time "
-            "Einstein-Hilbert channel rather than merely harmonic. In parallel, "
+            "seed/sd^1 coefficients. The whole internal matter/Higgs/gravity ratio "
+            "package is now cyclotomically locked, and the matter/Higgs side now has its own "
+            "exact q = 3 selection law, so the exact discrete Einstein-Hilbert-like "
+            "channel is now identified as the barycentric 6-mode, so the next "
+            "internal bridge is therefore the full refinement-tower second-order "
+            "theorem and then the genuine cutoff/small-time continuum lift of "
+            "that exact 6-mode law rather than a search for where the curvature "
+            "channel lives. In parallel, "
             "move beyond the replicated generation-diagonal three-generation seed "
             "that structurally forces Cartan-only l6 selection, explain dynamically "
             "why the exact generation label matrix [[AB,I,A],[AB,I,A],[A,B,0]] is "
