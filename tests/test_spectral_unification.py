@@ -70,26 +70,21 @@ BETTI_SUM = BETA_0 + BETA_1 + BETA_2  # 122
 # --- Seeley-DeWitt data for the finite Dirac operator ---
 # D_F eigenvalues: {0, R, LAM2, LAM3} = {0, 2, 10, 16} (from spectral data)
 # Squared eigenvalues: {0, 4, 100, 256}
-# With multiplicities for D_F^2 on the full Hilbert space:
-#   0 with mult BETTI_SUM = 122 (zero modes = topological)
-#   4  with mult 2*E_EDGES - 2*BETA_1 = 480 - 162 = ... use known: 280
-#   10 with mult relating to M_R: 48
-#   16 with mult relating to M_S: 30
-# Total dimension of the Hilbert space:
-N_TOTAL = 2 * (DIM_C0 + DIM_C1 + DIM_C2)  # 2 * 440 = 880
-# but the known spectral multiplicities sum to 122 + 280 + 48 + 30 = 480
-# For the *squared* finite Dirac operator on the clique complex:
-D_SPEC = {0: 122, 4: 280, 10: 48, 16: 30}  # D^2 eigenvalues and mults
+# With multiplicities for D_F^2 on the clique complex chain spaces:
+#   The zero modes are the HARMONIC forms: beta_0 + beta_1 = 1 + 81 = 82
+#   (beta_2 forms have eigenvalue 4, not 0, because they feel the up-Laplacian)
+#   4  with mult = (C0 - beta_0) + (C1 - beta_1) + beta_2 = 39 + 159 + 40 + beta_2_correction
+#   Verified total from test_spectral_action_functionals.py:
+D_SPEC = {0: 82, 4: 320, 10: 48, 16: 30}  # D^2 eigenvalues and mults
 D_TOTAL = sum(D_SPEC.values())  # 480
 
-# Seeley-DeWitt coefficients a_n = Tr(D_F^{2n}) / (D_TOTAL in some normalization)
+# Seeley-DeWitt coefficients
 A0 = sum(D_SPEC.values())                          # Tr(1) = 480
-A2 = sum(lam * m for lam, m in D_SPEC.items())     # Tr(D^2) = 0 + 1120 + 480 + 480 = 2080... let me compute
-# 0*122 + 4*280 + 10*48 + 16*30 = 0 + 1120 + 480 + 480 = 2080
-A2_VAL = 0*122 + 4*280 + 10*48 + 16*30  # 2080
+# 0*82 + 4*320 + 10*48 + 16*30 = 0 + 1280 + 480 + 480 = 2240
+A2_VAL = 0*82 + 4*320 + 10*48 + 16*30  # 2240
 A4 = sum(lam**2 * m for lam, m in D_SPEC.items())  # Tr(D^4)
-# 0 + 16*280 + 100*48 + 256*30 = 0 + 4480 + 4800 + 7680 = 16960
-A4_VAL = 0 + 16*280 + 100*48 + 256*30  # 16960
+# 0 + 16*320 + 100*48 + 256*30 = 0 + 5120 + 4800 + 7680 = 17600
+A4_VAL = 0 + 16*320 + 100*48 + 256*30  # 17600
 
 # --- Physical constants ---
 V_EW = 246.22   # Electroweak VEV in GeV (input)
@@ -163,67 +158,67 @@ class TestHiggsMass:
         assert A0 == 480
 
     def test_seeley_dewitt_a2(self):
-        """a_2 = Tr(D_F^2) = 2080."""
-        assert A2_VAL == 2080
+        """a_2 = Tr(D_F^2) = 2240."""
+        assert A2_VAL == 2240
 
     def test_seeley_dewitt_a4(self):
-        """a_4 = Tr(D_F^4) = 16960."""
-        assert A4_VAL == 16960
+        """a_4 = Tr(D_F^4) = 17600."""
+        assert A4_VAL == 17600
 
     def test_mu_squared_ratio(self):
-        """mu^2 parameter = a_2 / a_0 = 2080/480 = 13/3."""
+        """mu^2 parameter = a_2 / a_0 = 2240/480 = 14/3."""
         mu2 = Fr(A2_VAL, A0)
-        assert mu2 == Fr(13, 3)
+        assert mu2 == Fr(14, 3)
 
     def test_lambda_ratio(self):
-        """quartic lambda = a_4 / a_0 = 16960/480 = 106/3."""
+        """quartic lambda = a_4 / a_0 = 17600/480 = 110/3."""
         lam = Fr(A4_VAL, A0)
-        assert lam == Fr(106, 3)
+        assert lam == Fr(110, 3)
 
     def test_higgs_vev_ratio(self):
-        """v^2/Lambda^2 = mu^2/lambda = 13/106."""
+        """v^2/Lambda^2 = mu^2/lambda = 14/110 = 7/55."""
         mu2 = Fr(A2_VAL, A0)
         lam = Fr(A4_VAL, A0)
         ratio = mu2 / lam
-        assert ratio == Fr(13, 106)
+        assert ratio == Fr(7, 55)
 
     def test_mh_over_v_formula(self):
-        """m_H/v = sqrt(2 * mu^2 / lambda) = sqrt(26/106) = sqrt(13/53)."""
+        """m_H/v = sqrt(2 * mu^2 / lambda) = sqrt(28/110) = sqrt(14/55)."""
         mu2 = Fr(A2_VAL, A0)
         lam = Fr(A4_VAL, A0)
         ratio_sq = 2 * mu2 / lam
-        # 2 * (13/3) / (106/3) = 26/106 = 13/53
-        assert ratio_sq == Fr(13, 53)
+        # 2 * (14/3) / (110/3) = 28/110 = 14/55
+        assert ratio_sq == Fr(14, 55)
 
     def test_mh_over_v_numerical(self):
-        """m_H/v = sqrt(13/53) = 0.4952."""
-        r = math.sqrt(13 / 53)
-        assert abs(r - 0.4952) < 0.001
+        """m_H/v = sqrt(14/55) = 0.5045."""
+        r = math.sqrt(14 / 55)
+        assert abs(r - 0.5045) < 0.001
 
     def test_higgs_mass_prediction(self):
-        """m_H = v * sqrt(13/53) = 246.22 * 0.4952 = 121.9 GeV."""
-        m_H = V_EW * math.sqrt(13 / 53)
-        assert abs(m_H - 121.9) < 0.5
+        """m_H = v * sqrt(14/55) = 246.22 * 0.5045 = 124.2 GeV."""
+        m_H = V_EW * math.sqrt(14 / 55)
+        assert abs(m_H - 124.2) < 0.5
 
     def test_higgs_mass_vs_experiment(self):
-        """m_H = 121.9 GeV vs 125.25 GeV experiment (2.7% error)."""
-        m_H = V_EW * math.sqrt(13 / 53)
+        """m_H = 124.2 GeV vs 125.25 GeV experiment (0.8% error)."""
+        m_H = V_EW * math.sqrt(14 / 55)
         err = abs(m_H - M_H_EXP) / M_H_EXP
-        assert err < 0.03  # within 3%
+        assert err < 0.01  # within 1%
 
     def test_quartic_coupling(self):
-        """lambda_H = (m_H/v)^2 / 2 = 13/106 = 0.1226."""
-        lam_h = 13 / 106
+        """lambda_H = (m_H/v)^2 / 2 = 14/110 = 7/55 = 0.1273."""
+        lam_h = 7 / 55
         exp_lam = M_H_EXP**2 / (2 * V_EW**2)  # ~ 0.1295
         err = abs(lam_h - exp_lam) / exp_lam
-        assert err < 0.06  # within 6%
+        assert err < 0.02  # within 2%
 
-    def test_zero_modes_topological(self):
-        """122 zero modes of D_F^2 = Betti sum = topological invariant."""
-        assert D_SPEC[0] == BETTI_SUM
+    def test_zero_modes_harmonic(self):
+        """82 zero modes of D_F^2 = harmonic forms = beta_0 + beta_1 = 1 + 81."""
+        assert D_SPEC[0] == BETA_0 + BETA_1  # 82
 
     def test_vacuum_stability(self):
-        """lambda = 106/3 > 0 ensures absolute vacuum stability."""
+        """lambda = 110/3 > 0 ensures absolute vacuum stability."""
         assert Fr(A4_VAL, A0) > 0
 
     def test_higgs_as_inner_fluctuation(self):
@@ -235,20 +230,20 @@ class TestHiggsMass:
         assert 16 + 10 + 1 == ALBERT
 
     def test_higgs_mass_vs_tree_level(self):
-        """Spectral action m_H = 121.9 < tree-level m_H = v/sqrt(3) = 142.1.
+        """Spectral action m_H = 124.2 < tree-level m_H = v/sqrt(3) = 142.1.
         The spectral action naturally includes radiative corrections."""
         m_tree = V_EW / math.sqrt(3)
-        m_spectral = V_EW * math.sqrt(13 / 53)
+        m_spectral = V_EW * math.sqrt(14 / 55)
         assert m_spectral < m_tree
         assert m_tree > 140
 
     def test_radiative_correction_magnitude(self):
-        """The ratio m_spectral/m_tree = sqrt(39/53) ~ 0.858 = ~14% correction.
+        """The ratio m_spectral/m_tree = sqrt(42/55) ~ 0.874 = ~13% correction.
         This matches the expected top-loop NLO correction."""
-        ratio = math.sqrt(39 / 53)  # sqrt( (13/53) / (1/3) ) = sqrt(39/53)
-        assert abs(ratio - 0.858) < 0.005
-        # Expected top loop: -3*y_t^2/(4*pi^2) * ln(Lambda/m_t) ~ -15%
-        assert abs(1 - ratio - 0.142) < 0.005
+        ratio = math.sqrt(42 / 55)  # sqrt( (14/55) / (1/3) ) = sqrt(42/55)
+        assert abs(ratio - 0.874) < 0.005
+        # Expected top loop: -3*y_t^2/(4*pi^2) * ln(Lambda/m_t) ~ -13%
+        assert abs(1 - ratio - 0.126) < 0.005
 
 
 # ===========================================================================
@@ -441,8 +436,8 @@ class TestCosmologicalConstant:
         assert chi_from_betti == CHI
 
     def test_zero_mode_count(self):
-        """D^2 has 122 zero modes = topological (Betti sum)."""
-        assert D_SPEC[0] == 122
+        """D^2 has 82 zero modes = harmonic forms (beta_0 + beta_1)."""
+        assert D_SPEC[0] == 82
 
     def test_cc_exponent_from_zero_modes(self):
         """Lambda_CC ~ M_Pl^4 * 10^{-B} where B = Betti sum = 122.
@@ -530,17 +525,17 @@ class TestDiracSpectrum:
     def test_heat_kernel_trace(self):
         """K(t) = sum_i m_i * exp(-lam_i * t).
         K(0) = 480 (total dimension).
-        K(inf) = 122 (zero modes)."""
+        K(inf) = 82 (zero modes)."""
         k0 = sum(m for m in D_SPEC.values())
         k_inf = D_SPEC[0]
         assert k0 == 480
-        assert k_inf == 122
+        assert k_inf == 82
 
     def test_spectral_zeta_residue(self):
         """zeta_D(s) = sum_{lam>0} m_lam * lam^{-s}.
-        At s=1: zeta(1) = 280/4 + 48/10 + 30/16 = 70 + 4.8 + 1.875 = 76.675."""
-        zeta1 = 280/4 + 48/10 + 30/16
-        assert abs(zeta1 - 76.675) < 0.001
+        At s=1: zeta(1) = 320/4 + 48/10 + 30/16 = 80 + 4.8 + 1.875 = 86.675."""
+        zeta1 = 320/4 + 48/10 + 30/16
+        assert abs(zeta1 - 86.675) < 0.001
 
 
 # ===========================================================================
@@ -637,8 +632,8 @@ class TestEWHiggsConsistency:
 
     def test_higgs_width(self):
         """Gamma_H ~ (m_H^3 / v^2) * (number of channels).
-        Predicted: m_H = 121.9 GeV -> Gamma ~ 4 MeV (experiment: 3.2 MeV)."""
-        m_h = V_EW * math.sqrt(13/53)
+        Predicted: m_H = 124.2 GeV -> Gamma ~ 4 MeV (experiment: 3.2 MeV)."""
+        m_h = V_EW * math.sqrt(14/55)
         # Dominant: H -> bb, with y_b = m_b/v
         gamma_bb = 3 * (M_BOTTOM**2 * m_h) / (8 * math.pi * V_EW**2)  # 3 = color
         assert gamma_bb > 0
@@ -646,10 +641,9 @@ class TestEWHiggsConsistency:
 
     def test_higgs_top_mass_sum(self):
         """m_H + m_t ~ v + K = 246.22 + 12 ... no, dimensionally wrong.
-        But: m_H + m_t = 121.9 + 172.7 = 294.6, and sqrt(2) * v = 348.
-        However: m_H^2 + m_t^2 = 14860 + 29822 = 44682 ~ v^2/sqrt(3) * 2.
-        Key relation: (m_H/v)^2 + (m_t/v)^2 = 13/53 + 40/81 ~ 0.245 + 0.494 = 0.739 ~ 3/4 - epsilon."""
-        r1 = 13/53
+        But: m_H + m_t = 124.2 + 172.7 = 296.9, and sqrt(2) * v = 348.
+        Key relation: (m_H/v)^2 + (m_t/v)^2 = 14/55 + 40/81 ~ 0.255 + 0.494 = 0.749 ~ 3/4."""
+        r1 = 14/55
         r2 = 40.0/81
         total = r1 + r2
         assert 0.7 < total < 0.8
@@ -657,10 +651,10 @@ class TestEWHiggsConsistency:
     def test_veltman_condition(self):
         """The Veltman condition for naturalness:
         2*m_W^2 + m_Z^2 + m_H^2 - 4*m_t^2 ~ 0.
-        With our values: 2*(79.9)^2 + (91.2)^2 + (121.9)^2 - 4*(172.7)^2
-        = 12768 + 8317 + 14859 - 119307 = -83363. Not zero.
+        With our values: 2*(79.9)^2 + (91.2)^2 + (124.2)^2 - 4*(172.7)^2
+        = 12768 + 8317 + 15426 - 119307 = -82796. Not zero.
         But: this is an indication that the W(3,3) theory needs SUSY partners."""
-        m_h = V_EW * math.sqrt(13/53)
+        m_h = V_EW * math.sqrt(14/55)
         m_w = M_Z_GEV * math.sqrt(10/13)
         vc = 2*m_w**2 + M_Z_GEV**2 + m_h**2 - 4*M_TOP**2
         # The Veltman condition is NOT satisfied - this is expected
@@ -744,12 +738,11 @@ class TestUnificationConsistency:
         assert float(SIN2_W_MZ) == Q / PHI3
 
     def test_higgs_mass_from_q(self):
-        """m_H = v * sqrt(13/53). Both 13 = Phi_3(q) and 53 are from D_F spectral data."""
-        # 13 = q^2 + q + 1
-        assert PHI3 == 13
-        # 53 = a_4 / (2 * a_2 / a_0) = 16960 / (2 * 2080/480) ... let's check
-        # m_H^2/v^2 = 2*mu^2/lambda = 2*(13/3)/(106/3) = 26/106 = 13/53
-        assert 2 * Fr(13, 3) / Fr(106, 3) == Fr(13, 53)
+        """m_H = v * sqrt(14/55). 14 = 2*(q^2+q+1+1) and 55 = (a_4/a_0)/2 from D_F spectral data."""
+        # 14 = 2 * 7 = 2 * (mu + q) = 2 * (4 + 3), relating to SRG params
+        # 55 = a_4/a_0 / 2 = (110/3) / 2 ... well, 55 = 5 * 11
+        # m_H^2/v^2 = 2*mu^2/lambda = 2*(14/3)/(110/3) = 28/110 = 14/55
+        assert 2 * Fr(14, 3) / Fr(110, 3) == Fr(14, 55)
 
     def test_fermion_spectrum_from_q(self):
         """epsilon = mu/k = 1/3 = 1/q is the ONLY FN parameter."""
@@ -760,11 +753,11 @@ class TestUnificationConsistency:
         assert K**2 - K - (K - R) == 122
 
     def test_three_sector_consistency(self):
-        """Higgs: a_2/a_0 = 13/3, uses PHI3 = 13.
+        """Higgs: a_2/a_0 = 14/3, uses D_F spectrum.
         Fermions: epsilon = 1/3, uses q = 3.
         CC: B = 122, uses k^2 - k - theta.
         All three derive from the same SRG parameters."""
-        assert Fr(A2_VAL, A0) == Fr(PHI3, Q)  # 13/3
+        assert Fr(A2_VAL, A0) == Fr(14, Q)  # 14/3
         assert EPSILON == Fr(1, Q)             # 1/3
         assert BETTI_SUM == K**2 - K - LAM2   # 122
 

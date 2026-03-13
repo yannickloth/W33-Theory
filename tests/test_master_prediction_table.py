@@ -90,11 +90,11 @@ Y_TOP = math.sqrt(V / (V + K + ALBERT + 2))  # sqrt(40/81)
 M_TOP_PRED = Y_TOP * V_EW  # 173.1 GeV
 
 # Higgs mass from spectral action
-# D_F^2 spectrum: {0:122, 4:280, 10:48, 16:30}
+# D_F^2 spectrum: {0:82, 4:320, 10:48, 16:30} (82 = beta_0 + beta_1 harmonic forms)
 A0 = 480
-A2 = 0*122 + 4*280 + 10*48 + 16*30  # 2080
-A4 = 0*122 + 16*280 + 100*48 + 256*30  # 16960
-MH_OVER_V = math.sqrt(2 * (A2/A0) / (A4/A0))  # sqrt(2 * (13/3) / (106/3)) = sqrt(13/53)
+A2 = 0*82 + 4*320 + 10*48 + 16*30  # 2240
+A4 = 0*82 + 16*320 + 100*48 + 256*30  # 17600
+MH_OVER_V = math.sqrt(2 * (A2/A0) / (A4/A0))  # sqrt(2 * (14/3) / (110/3)) = sqrt(14/55)
 M_H_PRED = MH_OVER_V * V_EW
 
 # Fermion mass ratios (GUT scale)
@@ -144,7 +144,7 @@ PREDICTIONS = [
     ("alpha_1_inv_MZ", float(ALPHA_1_INV), 58.98, 'rel', 0.02),
     ("alpha_2_inv_MZ", float(ALPHA_2_INV), 29.57, 'rel', 0.02),
     ("alpha_3_inv_MZ", float(ALPHA_3_INV), 8.50, 'rel', 0.01),
-    ("m_H_GeV", M_H_PRED, 125.25, 'rel', 0.03),
+    ("m_H_GeV", M_H_PRED, 125.25, 'rel', 0.01),
     ("m_top_GeV", M_TOP_PRED, 172.69, 'rel', 0.005),
     ("m_W_GeV", M_W_PRED, 80.377, 'rel', 0.01),
     ("M_Planck_GeV", M_PLANCK_PRED, 1.221e19, 'rel', 0.005),
@@ -346,13 +346,13 @@ class TestExperimentalTests:
         assert delta_w > 0.01
 
     def test_higgs_self_coupling(self):
-        """lambda_H = 13/106 = 0.1226.
+        """lambda_H = 7/55 = 0.1273.
         SM predicts lambda = m_H^2/(2*v^2) = 0.1295.
-        If W(3,3) is correct, HL-LHC should measure lambda ~ 5% below SM."""
-        lam_w33 = 13/106
+        If W(3,3) is correct, HL-LHC should measure lambda ~ 1.7% below SM."""
+        lam_w33 = 7/55
         lam_sm = 125.25**2 / (2 * 246.22**2)
         delta = (lam_w33 - lam_sm) / lam_sm
-        assert abs(delta) < 0.10  # within 10%
+        assert abs(delta) < 0.03  # within 3%
         assert delta < 0  # W(3,3) predicts SMALLER lambda
 
     def test_muon_g_minus_2(self):
