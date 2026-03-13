@@ -13,11 +13,11 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 1941 (T1–T1975) |
-| Test functions | 18,200 |
-| Test files | 660 |
-| Phases completed | CXXII (122) |
-| Mathematical domains covered | 237+ |
+| Theorems proved | 2002 (T1–T1975) |
+| Test functions | 18,664 |
+| Test files | 665 |
+| Phases completed | CXXVII (127) |
+| Mathematical domains covered | 242+ |
 | Key predictions matched | 34 |
 
 ## Current Frontier
@@ -86,6 +86,11 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **CXX:** Spectral gap applications — mixing time<=3 steps, Kemeny's constant=40.05, Poincaré inequality, MCMC convergence, random walk decay, Cheeger isoperimetry (100 tests)
 - **CXXI:** Graph homomorphism — endomorphisms, chromatic chi=6, fractional chi_f=40/7, alpha=7, tensor/Cartesian/strong/lexicographic products, homomorphism counts (101 tests)
 - **CXXII:** Spectral partitioning — modularity matrix, Fiedler partitioning, normalized/ratio cuts, k-way bounds, conductance, assortative structure, community detection (90 tests)
+- **CXXIII:** Graph signal processing — GFT, Parseval, graph convolution, filters (low/high/band-pass), Dirichlet energy, wavelets, bandlimited signals, sampling, denoising, total variation (108 tests)
+- **CXXIV:** Quantum graph theory — CTQW, quantum state transfer, entanglement entropy, quantum chromatic bounds, Grover search, quantum mixing, density matrix evolution, decoherence (87 tests)
+- **CXXV:** Finite field methods — GF(2) rank=16, GF(3) rank=39, p-rank sweep, Smith normal form, kernel structure, Chevalley-Warning, symplectic form, modular traces (87 tests)
+- **CXXVI:** Laplacian powers — L^2, L^3, L^{1/2} fractional, heat/wave semigroup, diffusion kernels, Sobolev norms, Green's function, biharmonic, regularization (85 tests)
+- **CXXVII:** Delsarte theory — association scheme, P/Q eigenmatrices, Krein parameters, LP bounds alpha<=10/omega<=4, absolute bound, inner distributions, design strength, primitivity (88 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -348,8 +353,23 @@ python -m pytest tests/test_graph_homomorphism_computation.py -q
 # Phase CXXII: spectral partitioning (90 tests)
 python -m pytest tests/test_spectral_partitioning_computation.py -q
 
-# Phases LXIV-CXXII combined (all hard computations, 4529 tests)
-python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py tests/test_random_matrix_computation.py tests/test_spectral_geometry_computation.py tests/test_linear_algebra_deep_computation.py tests/test_extremal_combinatorics_computation.py tests/test_polynomial_methods_computation.py tests/test_connectivity_flow_computation.py tests/test_spectral_bounds_computation.py tests/test_automorphism_deep_computation.py tests/test_covering_lifting_computation.py tests/test_incidence_geometry_computation.py tests/test_resistance_distance_computation.py tests/test_cayley_hamilton_deep_computation.py tests/test_spectral_gap_computation.py tests/test_graph_homomorphism_computation.py tests/test_spectral_partitioning_computation.py -q
+# Phase CXXIII: graph signal processing (108 tests)
+python -m pytest tests/test_graph_signal_computation.py -q
+
+# Phase CXXIV: quantum graph theory (87 tests)
+python -m pytest tests/test_quantum_graph_computation.py -q
+
+# Phase CXXV: finite field methods (87 tests)
+python -m pytest tests/test_finite_field_methods_computation.py -q
+
+# Phase CXXVI: Laplacian powers (85 tests)
+python -m pytest tests/test_laplacian_powers_computation.py -q
+
+# Phase CXXVII: Delsarte theory (88 tests)
+python -m pytest tests/test_delsarte_theory_computation.py -q
+
+# Phases LXIV-CXXVII combined (all hard computations, 4993 tests)
+python -m pytest tests/test_hard_graph_computation.py tests/test_spectral_rigidity.py tests/test_alpha_stress.py tests/test_homology_hodge_computation.py tests/test_e8_root_computation.py tests/test_symplectic_geometry_computation.py tests/test_group_theory_computation.py tests/test_complement_association_computation.py tests/test_zeta_number_theory_computation.py tests/test_random_walk_computation.py tests/test_graph_polynomial_computation.py tests/test_automorphism_symmetry_computation.py tests/test_coding_theory_computation.py tests/test_algebraic_combinatorics_computation.py tests/test_topological_graph_computation.py tests/test_representation_theory_computation.py tests/test_optimization_convex_computation.py tests/test_quantum_walk_computation.py tests/test_extremal_graph_computation.py tests/test_algebraic_graph_theory_computation.py tests/test_matrix_analysis_computation.py tests/test_harmonic_analysis_computation.py tests/test_number_theory_graph_computation.py tests/test_probabilistic_combinatorics_computation.py tests/test_metric_graph_computation.py tests/test_algebraic_topology_computation.py tests/test_information_theory_computation.py tests/test_operator_algebra_computation.py tests/test_approximation_interpolation_computation.py tests/test_matroid_theory_computation.py tests/test_game_theory_domination_computation.py tests/test_geometric_embedding_computation.py tests/test_statistical_mechanics_computation.py tests/test_tensor_multilinear_computation.py tests/test_spectral_drawing_computation.py tests/test_graph_coloring_computation.py tests/test_algebraic_number_theory_computation.py tests/test_functional_analysis_computation.py tests/test_discrete_calculus_computation.py tests/test_spectral_clustering_computation.py tests/test_cayley_algebraic_computation.py tests/test_graph_decomposition_computation.py tests/test_spectral_moments_computation.py tests/test_perturbation_theory_computation.py tests/test_random_matrix_computation.py tests/test_spectral_geometry_computation.py tests/test_linear_algebra_deep_computation.py tests/test_extremal_combinatorics_computation.py tests/test_polynomial_methods_computation.py tests/test_connectivity_flow_computation.py tests/test_spectral_bounds_computation.py tests/test_automorphism_deep_computation.py tests/test_covering_lifting_computation.py tests/test_incidence_geometry_computation.py tests/test_resistance_distance_computation.py tests/test_cayley_hamilton_deep_computation.py tests/test_spectral_gap_computation.py tests/test_graph_homomorphism_computation.py tests/test_spectral_partitioning_computation.py tests/test_graph_signal_computation.py tests/test_quantum_graph_computation.py tests/test_finite_field_methods_computation.py tests/test_laplacian_powers_computation.py tests/test_delsarte_theory_computation.py -q
 ```
 
 Run the exact PMNS cyclotomic path:
@@ -363,6 +383,11 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
+| CXXVII | — | 88 | Delsarte Theory — P/Q Matrices, Krein, LP Bounds, Designs |
+| CXXVI | — | 85 | Laplacian Powers — Fractional, Heat/Wave, Sobolev, Green's Function |
+| CXXV | — | 87 | Finite Field Methods — GF(2) Rank=16, p-Rank, Smith, Symplectic |
+| CXXIV | — | 87 | Quantum Graph Theory — CTQW, State Transfer, Grover, Decoherence |
+| CXXIII | — | 108 | Graph Signal Processing — GFT, Filters, Wavelets, Sampling, TV |
 | CXXII | — | 90 | Spectral Partitioning — Modularity, Fiedler, Normalized/Ratio Cuts |
 | CXXI | — | 101 | Graph Homomorphism — Endomorphisms, Products, Chromatic chi=6 |
 | CXX | — | 100 | Spectral Gap — Mixing Time, Kemeny, Poincaré, MCMC, Cheeger |
