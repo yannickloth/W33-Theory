@@ -29,6 +29,7 @@ The public release still includes **207+ pillar verification scripts** and **550
 - Start with the live site: [docs/index.html](docs/index.html)
 - Use `Verified Results` first for the promoted theorem layer.
 - Follow the exact route `Three-Channel Calculus -> Adjacency-to-Dirac Closure -> Spectral-Action Cyclotomic / q=3 Selection -> EH / q=3 Gravity Locks -> Refinement Bridge`.
+- If you want the Standard Model first, use the top verified cards for Higgs, PMNS, CKM, and gauge closure before diving into the bridge machinery.
 - Then read `Refinement Bridge` for the current internal-to-curved-4D program.
 - Use `Hard Computation Phases` as the proof ledger, not the first read.
 - Treat the preserved archive below the verified layer as context unless a result is explicitly promoted.

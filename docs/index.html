@@ -29,6 +29,28 @@ body {
 }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.92em;
+  background: rgba(110,118,129,0.18);
+  border: 1px solid rgba(110,118,129,0.28);
+  border-radius: 6px;
+  padding: 0.08rem 0.34rem;
+}
+.repo-file-link {
+  color: inherit;
+  text-decoration: underline dotted rgba(88,166,255,0.7);
+  text-underline-offset: 0.16rem;
+}
+.repo-file-link:hover {
+  color: var(--accent);
+  text-decoration-style: solid;
+}
+.repo-file-link code {
+  color: inherit;
+  background: rgba(88,166,255,0.08);
+  border-color: rgba(88,166,255,0.3);
+}
 
 /* ── Hero ── */
 .hero {
@@ -1065,7 +1087,7 @@ section h2::after {
 <section id="verified">
   <h2><span class="icon">↻</span> Verified Results — March 2026</h2>
   <div class="spotlight">
-    <p>This top section is the live promoted layer of a much larger exact body preserved below. The archive is not throwaway context; it is the accumulated result set. The only items treated as residual gaps are the few that are named explicitly here.</p>
+    <p>This top section is the live promoted layer of a much larger exact body preserved below. The archive is not throwaway context; it is the accumulated result set. The only items treated as residual gaps are the few that are named explicitly here. Monospace file references below now open the corresponding GitHub files directly.</p>
   </div>
   <div class="card-grid">
     <div class="card"><div class="num">1</div><div class="label">Operator Core</div><div class="detail">Start with the exact operator algebra: <code>span{I,A,J}</code> and the adjacency-to-Dirac closure force the full finite internal spectrum.</div></div>
@@ -1076,13 +1098,16 @@ section h2::after {
   <div class="card-grid">
     <div class="card"><div class="num">240</div><div class="label">Geometry remains exact</div><div class="detail">SRG(40,12,2,4), 240 edges, 160 triangles, b1 = 81, and L1 spectrum 0^81 4^120 10^24 16^15 remain stable verified invariants.</div></div>
     <div class="card"><div class="num">480</div><div class="label">Full spectral bridge closes</div><div class="detail">On C0⊕C1⊕C2⊕C3, the exact Dirac/Hodge system is now closed in finite form: spec(D)=0^82, ±2^160, ±√10^24, ±4^15, Tr(e^-tD^2)=82+320e^-4t+48e^-10t+30e^-16t, and Str(e^-tD^2)=-80.</div></div>
+    <div class="card"><div class="num">124.2</div><div class="label">Higgs from Finite Spectrum</div><div class="detail">The exact finite ratio <code>m_H^2/v^2 = 14/55</code> comes straight from the closed internal spectrum and now sits in the same cyclotomic package as the gravity coefficient.</div></div>
     <div class="card"><div class="num">4/13</div><div class="label">Exact PMNS route</div><div class="detail">The promoted PMNS formulas are the cyclotomic ones: sin^2(theta_12)=4/13, sin^2(theta_23)=7/13, sin^2(theta_13)=2/91 from PMNS_CYCLOTOMIC.py. The sector column is exact too: collinear / transversal / tangent = 4 / 7 / 2, and theta_13 is the tangent sector with extra 1/Phi_6 suppression.</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶). Derived from vertex propagator spectral identity.</div></div>
     <div class="card"><div class="num">13.0°</div><div class="label">CKM Cabibbo</div><div class="detail">θ<sub>C</sub> = arctan(3/13) = 13.0° (obs: 13.04°). Full CKM from Schläfli graph: error 0.0026, all 4 parameters derived from q=3 (Phase LVII).</div></div>
+    <div class="card"><div class="num">12</div><div class="label">SM Gauge Closure</div><div class="detail">The promoted Standard Model layer already closes the gauge count <code>8+3+1 = 12</code>, three generations, anomaly cancellation, CKM/PMNS, and the Higgs ratio from the same exact internal package.</div></div>
     <div class="card"><div class="num">CE2</div><div class="label">Residual algebra gap</div><div class="detail">The CE2 / L∞ program now closes the full a=(0,1,0) and a=(0,0,1) anchor slices. What remains is a narrow residual gap, not the main body of the theory; the next unresolved anchor is a=(0,0,2).</div></div>
   </div>
   <ul class="quick-list">
     <li><strong>Exact spectral bridge:</strong> <code>tests/test_exact_spectral_bridge.py</code> closes the full 480-dimensional Dirac/Hodge spectrum and the exact McKean-Singer heat supertrace <code>Str(e^-tD^2) = -80</code>.</li>
+    <li><strong>Standard Model promoted layer:</strong> <code>tests/test_master_derivation.py</code>, <code>tests/test_ckm_schlafli_anomalies.py</code>, and <code>tests/test_w33_adjacency_dirac_closure_bridge.py</code> are the shortest direct route to the promoted SM content: gauge count <code>8+3+1 = 12</code>, three generations, anomaly cancellation, CKM/PMNS, Higgs ratio <code>14/55</code>, and the closed finite Dirac spectrum.</li>
     <li><strong>W(3,3) exceptional parameter dictionary:</strong> <code>tests/test_w33_algebraic_spine.py</code> now locks the two-table Rosetta statement in executable form: the same <code>(v,k,lambda,mu;q) = (40,12,2,4;3)</code> package gives Rosetta counts <code>27, 135, 45, 270, 192</code>, generates <code>G2 = 14</code>, <code>F4 = 52</code>, <code>E6 = 78</code>, <code>E7(fund) = 56</code>, <code>E7 = 133</code>, <code>E8 = 248</code>, and reproduces the octonionic row of the <code>4x4</code> Freudenthal magic square <code>F4/E6/E7/E8 = 52/78/133/248</code> together with the <code>E8</code> <code>Z/3</code>-grading <code>86 + 81 + 81 = 248</code>.</li>
     <li><strong>Corrected L6 gauge return:</strong> <code>tests/test_w33_l6_exceptional_gauge_return.py</code> proves that the corrected full <code>l6</code> table is the first exact gauge-return rung: support is exactly <code>72 E6 roots + 6 A2 roots + 8 Cartan = 86</code>, the dominant democratic pattern <code>(0,0,1,1,2,2)</code> lands only in generation-preserving <code>E6 + h</code>, and the six smaller asymmetric patterns land only in the six <code>A2</code> generation-mixing roots.</li>
     <li><strong>L6 chiral gauge bridge:</strong> <code>tests/test_w33_l6_chiral_gauge_bridge.py</code> lifts the induced <code>H_2/Hbar_2</code> Yukawa seed to the full three-generation <code>24x24</code> left-right space and then dresses it with the chirality-preserving <code>l6</code> <code>A2 + h</code> family. The response has <code>rank 9</code> while the augmented system has <code>rank 10</code>, so exact linearized closure is impossible; but the strict residual still drops from <code>3.523729</code> to <code>0.826695</code>, the optimal fit uses only the Cartan slice, and both quark blocks lift from rank <code>6</code> to rank <code>9</code>.</li>
@@ -4527,6 +4552,48 @@ document.querySelectorAll('.sidebar-toc .toc-item').forEach(function(item) {
     }
   });
 });
+
+// —— Auto-link repo file references in code spans ——
+(function() {
+  var REPO_BASE = 'https://github.com/wilcompute/W33-Theory';
+  var folderPattern = /^(tests|exploration|scripts|tools|docs|data|pillars|bundles|tmp)\//;
+  var filePattern = /\.(py|md|json|toml|html|txt|cff|yml|yaml|zip)$/i;
+  var rootFiles = {
+    'README.md': true,
+    'CITATION.cff': true,
+    '.zenodo.json': true,
+    'PMNS_CYCLOTOMIC.py': true
+  };
+
+  function isRepoPath(text) {
+    var value = text.trim();
+    if (!value) return false;
+    if (value.indexOf(' ') >= 0 || value.indexOf('=') >= 0) return false;
+    if (folderPattern.test(value) && filePattern.test(value)) return true;
+    if (rootFiles[value]) return true;
+    if (!value.includes('/') && filePattern.test(value)) return true;
+    return false;
+  }
+
+  function hrefForPath(path) {
+    var clean = path.trim();
+    if (clean.endsWith('/')) return REPO_BASE + '/tree/master/' + clean.slice(0, -1);
+    return REPO_BASE + '/blob/master/' + clean;
+  }
+
+  document.querySelectorAll('code').forEach(function(code) {
+    if (code.closest('a')) return;
+    var text = code.textContent.trim();
+    if (!isRepoPath(text)) return;
+    var link = document.createElement('a');
+    link.href = hrefForPath(text);
+    link.className = 'repo-file-link';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    code.parentNode.insertBefore(link, code);
+    link.appendChild(code);
+  });
+})();
 </script>
 
 </body>
