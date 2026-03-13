@@ -150,6 +150,17 @@ nav.topnav .nav-toggle {
 @media (min-width: 1100px) {
   .sidebar-toc { transform: translateX(0); }
   .sidebar-overlay { display: none !important; }
+  .hero {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
+  .hero h1,
+  .hero .subtitle,
+  .hero .tagline {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .page-content { margin-left: 260px; }
   nav.topnav { padding-left: 270px; }
 }
@@ -632,7 +643,7 @@ section h2::after {
     <div class="p" style="left:92%;animation-duration:11s;animation-delay:1.5s;width:2px;height:2px"></div>
   </div>
   <h1>W(3,3)&ndash;<span>E&#8328;</span> Theory</h1>
-  <div class="subtitle">1,941 theorems &middot; 18,200 tests &middot; 34 predictions &middot; 660 test files &middot; 122 hard computation phases</div>
+  <div class="subtitle">2,002 theorems &middot; 18,664 tests &middot; 34 predictions &middot; 665 test files &middot; 127 hard computation phases</div>
   <div class="tagline">
     A single finite geometry — the symplectic polar space <strong>W(3,3)</strong> on
     40 vertices with 240 edges — encodes the <strong>Standard Model</strong> gauge groups,
@@ -648,12 +659,12 @@ section h2::after {
   <span class="nav-brand">W(3,3)&ndash;E&#8328;</span>
   <button class="nav-toggle" onclick="document.querySelector('.sidebar-toc').classList.toggle('open');document.querySelector('.sidebar-overlay').classList.toggle('open');">&#9776;</button>
   <div class="nav-quick">
+    <a href="#reader-guide">Reader Guide</a>
     <a href="#hard-computation">Hard Computation</a>
     <a href="#verified">Verified Results</a>
+    <a href="#bridge-2026">Refinement Bridge</a>
     <a href="#numbers">Core Numbers</a>
-    <a href="#predictions">Predictions</a>
     <a href="#dashboard">Dashboard</a>
-    <a href="#pillars-main">Pillars</a>
     <a href="#open">Open Problems</a>
     <a href="#about">About</a>
   </div>
@@ -667,6 +678,7 @@ section h2::after {
   <div class="toc-group expanded">
     <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Overview</div>
     <div class="toc-items">
+      <a class="toc-item" href="#reader-guide">Reader Guide</a>
       <a class="toc-item" href="#hard-computation">Hard Computation Phases</a>
       <a class="toc-item" href="#verified">Verified Results</a>
       <a class="toc-item" href="#conjectural">Physics Interpretation</a>
@@ -800,9 +812,40 @@ section h2::after {
 
 <!-- Old nav removed -->
 
+<section id="reader-guide" style="padding-top: 2rem; padding-bottom: 1.5rem;">
+  <h2><span class="icon">&#8984;</span> Reader Guide <span class="section-badge">Start Here</span></h2>
+  <div class="spotlight">
+    <p>This page now has several distinct layers: the current hard-computation phase ladder, the promoted verified frontier, the transport/ternary/refinement bridge program, and the preserved historical archive. If you are not reading linearly, use one of the routes below instead of scrolling blind.</p>
+    <ul class="quick-list">
+      <li><a href="#verified">Verified Results</a> is the live theorem layer.</li>
+      <li><a href="#bridge-2026">Refinement Bridge</a> is the current internal-to-4D bridge program.</li>
+      <li><a href="#hard-computation">Hard Computation Phases</a> is the proof engine and phase ledger.</li>
+      <li><a href="#archive">Historical Archive</a> is preserved context, not automatically promoted status.</li>
+    </ul>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="label">Fastest Route</div>
+      <div class="detail">Read <a href="#verified">Verified Results</a>, then <a href="#bridge-2026">Refinement Bridge</a>, then <a href="#open">Open Problems</a>.</div>
+    </div>
+    <div class="card">
+      <div class="label">Newest Exact Work</div>
+      <div class="detail">Use <a href="#hard-computation">Hard Computation Phases</a> for the latest phase ladder, then the verified bullets for the transport, ternary, curved-Dirac, and operator-calculus bridges.</div>
+    </div>
+    <div class="card">
+      <div class="label">If You Want The Numbers</div>
+      <div class="detail">Jump straight to <a href="#numbers">Core Numbers</a>, <a href="#dashboard">Verification Dashboard</a>, and <a href="#predictions">Key Predictions</a>.</div>
+    </div>
+    <div class="card">
+      <div class="label">Archive And Context</div>
+      <div class="detail">Use <a href="#archive">Historical Archive</a> and <a href="#about">About</a> after the verified layer; older phenomenology below is preserved context, not automatic live-theorem status.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════ HIGHLIGHTS BANNER ═══════════════════════ -->
 <div class="highlights-banner">
-  <h3>Latest Results &mdash; 122 Phases, 18,200 Tests, 237+ Mathematical Domains</h3>
+  <h3>Latest Results &mdash; 127 Phases, 18,664 Tests, 242+ Mathematical Domains</h3>
   <div class="highlights-grid">
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Spectral Action</strong> — Full NCG spectral action functionals from W(3,3)</span></div>
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>M-Theory</strong> — Exceptional structures &amp; 11D from SRG parameters</span></div>
@@ -813,6 +856,7 @@ section h2::after {
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Moonshine</strong> — Monster, Mathieu &amp; umbral connections to SRG</span></div>
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>UOR Ternary</strong> — Universal Object Reference extended from binary to Z/(p^n)Z; W(3,3) is first instance</span></div>
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Arithmetic Geometry</strong> — Dedekind zeta, modular forms, E₈ roots = 240</span></div>
+    <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Three-Channel Calculus</strong> &mdash; recent hard-computation phases unify as one exact operator algebra <code>span{I,A,J}</code></span></div>
   </div>
 </div>
 
@@ -910,11 +954,12 @@ section h2::after {
 
 <!-- ═══════════════════════ HARD COMPUTATION PHASES ═══════════════════════ -->
 <section id="hard-computation">
-  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">3,000 tests</span></h2>
+  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">18,664 tests</span></h2>
   <p>Every phase below constructs W(3,3) from scratch and proves exact graph-theoretic, algebraic, and topological properties through pure computation. No approximations, no external libraries for graph construction &mdash; raw matrix operations on the symplectic adjacency matrix.</p>
+  <p style="color: var(--fg2); font-size: 0.95rem;">The chip grid below is the current continuous hard-computation window <code>LXIV&ndash;CXXVII</code>. The live repository total is <strong>127 phases</strong> and <strong>18,664 tests</strong>.</p>
 
   <div class="progress-bar">
-    <div class="progress-fill" style="width:100%">44 phases &middot; 3,000 tests &middot; 100% pass</div>
+    <div class="progress-fill" style="width:100%">127 phases &middot; 18,664 tests &middot; 100% pass</div>
   </div>
 
   <div class="domain-grid">
@@ -977,10 +1022,16 @@ section h2::after {
     <div class="domain-chip"><div class="domain-phase">CXX</div><div class="domain-name">Spectral Gap</div><div class="domain-tests">100 tests</div></div>
     <div class="domain-chip"><div class="domain-phase">CXXI</div><div class="domain-name">Graph Homomorphism</div><div class="domain-tests">101 tests</div></div>
     <div class="domain-chip"><div class="domain-phase">CXXII</div><div class="domain-name">Spectral Partitioning</div><div class="domain-tests">90 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CXXIII</div><div class="domain-name">Graph Signal Processing</div><div class="domain-tests">108 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CXXIV</div><div class="domain-name">Quantum Graph Theory</div><div class="domain-tests">87 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CXXV</div><div class="domain-name">Finite Field Methods</div><div class="domain-tests">87 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CXXVI</div><div class="domain-name">Laplacian Powers</div><div class="domain-tests">85 tests</div></div>
+    <div class="domain-chip"><div class="domain-phase">CXXVII</div><div class="domain-name">Delsarte Theory</div><div class="domain-tests">88 tests</div></div>
   </div>
 
   <div class="spotlight">
     <p><strong>Key invariants verified across all phases:</strong> spectrum {12<sup>1</sup>, 2<sup>24</sup>, -4<sup>15</sup>} &middot; Wiener index 1,320 &middot; spanning trees &tau; = 2<sup>81</sup> &middot; 5<sup>23</sup> &middot; det(A) = -3 &middot; 2<sup>56</sup> &middot; Kirchhoff index 133.5 &middot; Forman-Ricci curvature -14 &middot; Lov&aacute;sz &theta; = 10 &middot; Euler characteristic &chi; = -80</p>
+    <p><strong>Current unification:</strong> the recent operator-heavy windows no longer sit as separate scraps. The W33 hard-computation kernels now close in one exact three-channel calculus on <code>span{I,A,J}</code>, and the 45-point transport quotient shares the same nontrivial spectral polynomial <code>x^2 + 2x - 8</code>. That is the clean reason spectral clustering, moments, perturbation, resistance distance, mixing, and transport selection keep reproducing the same rational data.</p>
   </div>
 </section>
 
@@ -1117,7 +1168,9 @@ section h2::after {
     <li><strong>Transport matter / curved-harmonic bridge:</strong> <code>tests/test_w33_transport_matter_curved_harmonic_bridge.py</code> (2 tests) proves that after tensoring with the exact <code>81</code>-qutrit matter sector, the curved transport precomplex separates one protected flat <code>81</code>-dimensional matter copy from one curvature-sensitive <code>81</code> copy. On the external harmonic channels this gives exact protected flat matter counts <code>243</code> for <code>CP2_9</code> and <code>1944</code> for <code>K3_16</code>.</li>
     <li><strong>Transport spectral-selector bridge:</strong> <code>tests/test_w33_transport_spectral_selector_bridge.py</code> (4 tests) proves the protected flat matter channel is selected canonically by spectral data itself: on W33 the adjacency matrix has rank <code>39</code> over <code>GF(3)</code> with unique all-ones null line, on the exact transport graph the trivial Bose-Mesner idempotent <code>(T^2 + 2T - 8I)/1080 = J/45</code> is the long-time random-walk / heat selector with exact gap <code>7/8</code> and Kemeny constant <code>1952/45</code>, and tensoring that selector with the exact <code>81</code>-qutrit matter sector recovers the protected <code>81</code> and lifts <code>243/1944</code> on <code>CP2_9/K3_16</code>.</li>
     <li><strong>Transport curved-Dirac / refinement bridge:</strong> <code>tests/test_w33_transport_curved_dirac_refinement_bridge.py</code> (4 tests) proves the internally curved transport package itself now crosses the curved <code>4D</code> bridge: the integer lift of the adapted transport precomplex defines a symmetric Dirac-type operator on <code>C0 ⊕ C1 ⊕ C2</code> of total dimension <code>12090</code> with exact trace split <code>3276 + 37386 + 34110 = 74772</code> and curvature corner rank <code>42</code>. Tensoring with the exact <code>81</code>-qutrit matter sector upgrades this to dimension <code>979290</code> with <code>Tr(D^2)=6056532</code>, and the full twisted package now has exact first-order curved-refinement limits <code>1450800/19, 19370040/19</code> and <code>117514800/19, 1568973240/19</code>.</li>
-    <li><strong>Transport curved-Dirac quadratic bridge:</strong> <code>tests/test_w33_transport_curved_dirac_quadratic_bridge.py</code> (4 tests) proves the same twisted internal operator now crosses the curved bridge through second order at the seed and <code>sd^1</code> levels: <code>Tr(D^4)=2116184</code> internally and <code>171410904</code> after matter coupling, with exact seed-level quadratic coefficients <code>39997843/3, 36601793/3</code> and <code>1079941761, 988248411</code>, and exact first-refinement coefficients <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both cases the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>.</li>
+    <li><strong>Transport curved-Dirac quadratic bridge:</strong> <code>tests/test_w33_transport_curved_dirac_quadratic_bridge.py</code> (4 tests) proves the same twisted internal operator now crosses the curved bridge through second order at the seed and <code>sd^1</code> levels: <code>Tr(D^4)=2116184</code> internally and <code>171410904</code> after matter coupling, with exact seed-level quadratic coefficients <code>39997843/3, 36651793/3</code> and <code>1079941761, 988248411</code>, and exact first-refinement coefficients <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both cases the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>.</li>
+    <li><strong>Three-channel operator bridge:</strong> <code>tests/test_w33_three_channel_operator_bridge.py</code> (6 tests) proves the recent hard-computation stack is controlled by one exact Bose-Mesner interpolation theorem: because the W33 adjacency spectrum is exactly <code>12, 2, -4</code>, every spectral kernel <code>f(A)</code> lies in <code>span{I,A,J}</code> and therefore has exactly three entry values (diagonal / edge / non-edge). This recovers the nonnegative spectral projector profile <code>5/8, 1/8, -1/24</code>, the Laplacian pseudoinverse entries <code>267/3200, 7/3200, -13/3200</code>, effective resistances <code>13/80</code> and <code>7/40</code>, exact Kemeny constant <code>801/20</code>, and the random-walk mixing rate <code>1/3</code> from one unified operator calculus.</li>
+    <li><strong>Dual Bose-Mesner bridge:</strong> <code>tests/test_w33_dual_bose_mesner_bridge.py</code> (4 tests) proves the W33 graph and the 45-point transport quotient share the same nontrivial spectrum <code>{2,-4}</code>, so they have the same exact mean-zero Bose-Mesner calculus. The polynomial <code>x^2 + 2x - 8</code> kills the mean-zero sector of both graphs and becomes the constant projector after rescaling: <code>(A^2 + 2A - 8I)/160 = J/40</code> and <code>(T^2 + 2T - 8I)/1080 = J/45</code>. This is the structural reason the new hard-computation operator results and the transport-selector results mirror each other.</li>
     <li><strong>Refinement bridge synthesis:</strong> <code>tests/test_w33_refinement_bridge_synthesis.py</code> (20+ tests) consolidates the full March 2026 refinement/tomotope program: dimension firewall, curved CP2/K3 seeds, refinement-invariant curvature budget, density bridges, center-quad exceptional bridges, transport bridges, ternary path-groupoid/code/cocycle/curvature/Borel/precomplex/matter-coupling bridges, the new curved transport-Dirac/refinement bridge, l6 A2 selection, mixed-seed activation, V4 closure-selection, UOR bridges, minimal triangulations.</li>
     <li><strong>Exact PMNS source:</strong> <code>PMNS_CYCLOTOMIC.py</code></li>
     <li><strong>PMNS sector and magic-square audit:</strong> <code>tests/test_w33_pmns_magic_square_audit.py</code> fixes the PMNS sector column as <code>4/7/2 = collinear/transversal/tangent</code> and shows that the <code>4x4</code> magic-square row sums <code>84, 137, 255, 511</code> are not Fibonacci row-by-row; the exact survivor is only the total <code>987 = F16</code>.</li>
@@ -1135,7 +1188,7 @@ section h2::after {
   <p><strong>Lie-tower / s12 bridge:</strong> the old <code>s12</code> scripts now meet the live Lie-tower layer exactly. The grade-only Golay model has <code>6</code> Jacobi-failure triples, the corrected <code>l6</code> return has <code>6</code> asymmetric <code>A2</code> sextuple sectors, and both six-sets canonically identify with the same complete oriented three-generation graph as the exact <code>l6</code> <code>A2</code> transfer modes. The same <code>s12</code> split <code>(242,243,243)</code> is uniquely the block-cyclic <code>Z3</code> grading of <code>sl_27</code> with <code>27 = 9+9+9</code>, and the Monster <code>3B</code> / Heisenberg / Golay closure supplies the phase/cocycle mechanism that resolves the grade-only obstruction.</p>
   <p><strong>Tower-cycle bridge:</strong> the raw patch tower itself is now exact through <code>l6</code>. The outputs cycle through the <code>Z3</code> grading as <code>l3 -&gt; g0(E6 only)</code>, <code>l4 -&gt; g1</code>, <code>l5 -&gt; g2</code>, <code>l6 -&gt; g0 + h</code>, with pure single-term uniform layers at <code>l3/l4/l5</code> and the first multi-term interference only at <code>l6</code>. More sharply, the only multi-term <code>l6</code> sector is the democratic <code>(0,0,1,1,2,2)</code> sextuple feeding Cartan, while the six asymmetric <code>3-2-1</code> sextuple sectors isolate the six exact <code>A2</code> channels.</p>
   <p><strong>UOR clue bridge:</strong> the strongest clues from the external UOR framework now land in two exact places in the live stack (<code>exploration/W33_UOR_CLUE_MAP_2026_03_11.md</code>). On the transport side, the meaningful binary shadow is the sign of local holonomy, not the raw edge-voltage bit: the full local group is already <code>Weyl(A2) ~= S3 ~= D3</code>, and the old <code>v14</code> triangle parity is exactly its <code>Z2</code> sign shadow (<code>exploration/w33_uor_transport_shadow_bridge.py</code>). On the flavour side, the exact local closure patches from the two minimal <code>A2</code> routes now glue to one unique global section <code>[[AB,I,A],[AB,I,A],[A,B,0]]</code> (<code>exploration/w33_uor_gluing_bridge.py</code>), so the open problem is no longer whether the exact data glues but what deeper operator principle selects those local sections. The UOR framework itself has been extended from binary <code>Z/(2^n)Z</code> to arbitrary primes <code>Z/(p^n)Z</code>, with W(3,3) at <code>q=3</code> as the first concrete instance (<code>exploration/uor_ternary_breakthrough.py</code>; 12 new theorems UT-1 to UT-12).</p>
-  <p><strong>Transport / ternary bridge:</strong> the transport side and the qutrit-code side now lock together structurally. The exact quotient transport graph carries a path-groupoid representation into <code>Weyl(A2)</code> with no real flat section, but over <code>GF(3)</code> it acquires a unique invariant projective line <code>[1,2]</code>. Independently, the exact W33 clique complex over <code>GF(3)</code> is a real qutrit CSS code with parameters <code>[240,81,d_Z=4]</code>. More sharply, the reduced transport fiber is the non-split local-system extension <code>0 -&gt; 1 -&gt; rho -&gt; sgn -&gt; 0</code>, so tensoring with the exact <code>81</code>-qutrit matter sector forces <code>0 -&gt; 81 -&gt; 162 -&gt; 81 -&gt; 0</code>. Better still, that extension class is now explicit: in adapted basis the off-diagonal term is a genuine twisted <code>1</code>-cocycle, not a coboundary, and the fiber shift <code>N=[[0,1],[0,0]]</code> tensors to a canonical square-zero rank-<code>81</code> operator on the <code>162</code>-sector with image = kernel = <code>81</code>. Sharper still, the same package is genuinely curved on transport triangles: all six reduced <code>A2</code> holonomy classes occur, and the naive simplicial extension defect <code>I - H_t</code> vanishes on exactly <code>528</code> identity-holonomy triangles and has rank <code>1</code> on the remaining <code>4752</code>. In adapted basis the whole reduced holonomy is exactly the Borel subgroup <code>B(F3)</code>, so the old parity shadow is just the quotient sign: parity-<code>0</code> secretly splits as <code>528</code> flat + <code>2592</code> pure-nilpotent curved triangles, while parity-<code>1</code> is the <code>2160</code>-triangle semisimple-curved channel. Better again, these pieces now assemble into the actual transport-twisted precomplex: the first two covariant coboundaries are upper triangular, the invariant-line block is the ordinary simplicial complex with <code>h0 = 1</code> and <code>h1 = 0</code>, the sign-shadow block has no flat <code>0</code>-sections and carries the genuine curvature, and the full curvature factors through the sign quotient with rank <code>42</code> while the cocycle block supplies the rank-<code>36</code> off-diagonal coupling. Tensoring that exact precomplex with the logical matter sector then separates the internal <code>162</code> package cleanly: one protected flat <code>81</code>-dimensional matter copy survives, while the other <code>81</code> copy is curvature-sensitive. On the external harmonic channels this gives exact protected flat matter counts <code>243</code> for <code>CP2_9</code> and <code>1944</code> for <code>K3_16</code>. Better still, that protected channel is now selected canonically by spectral data itself: on the W33 side the adjacency has rank <code>39</code> over <code>GF(3)</code> with unique all-ones null line, and on the transport side the exact walk on <code>SRG(45,32,22,24)</code> converges to the trivial Bose-Mesner idempotent <code>(T^2 + 2T - 8I)/1080 = J/45</code> with gap <code>7/8</code> and Kemeny constant <code>1952/45</code>; tensoring that selector with the <code>81</code>-qutrit matter sector recovers exactly the protected flat <code>81</code>. Better again, the internally curved transport package itself now crosses the curved <code>4D</code> bridge as a genuine symmetric Dirac-type operator on <code>C0 ⊕ C1 ⊕ C2</code> of total dimension <code>12090</code>, with exact diagonal trace split <code>3276 + 37386 + 34110 = 74772</code> and curvature corner rank <code>42</code>. Tensoring with the same qutrit matter sector upgrades this to a <code>979290</code>-dimensional curved internal operator with <code>Tr(D^2)=6056532</code>, still containing the protected flat <code>81</code> and its exact lifts <code>243/1944</code>. Because the curved barycentric tower already has exact chain and trace densities, this full twisted internal operator now inherits exact first-order heat-density limits <code>1450800/19</code>, <code>19370040/19</code> and <code>117514800/19</code>, <code>1568973240/19</code> across the <code>CP2/K3</code> refinement family. It now also crosses through second order where the data is exact: <code>Tr(D^4)=2116184</code> internally and <code>171410904</code> after matter coupling, seed-level quadratic coefficients <code>39997843/3, 36601793/3</code> and <code>1079941761, 988248411</code>, and first-refinement coefficients <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both the bare transport and matter-coupled channels, the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>. The internal <code>162</code>-sector is therefore now explained as a transport-twisted ternary matter extension, operator package, curved/Borel/precomplex local system, canonical transport spectral selector, and first-/second-order curved Dirac bridge rather than only as a count match.</p>
+  <p><strong>Transport / ternary bridge:</strong> the transport side and the qutrit-code side now lock together structurally. The exact quotient transport graph carries a path-groupoid representation into <code>Weyl(A2)</code> with no real flat section, but over <code>GF(3)</code> it acquires a unique invariant projective line <code>[1,2]</code>. Independently, the exact W33 clique complex over <code>GF(3)</code> is a real qutrit CSS code with parameters <code>[240,81,d_Z=4]</code>. More sharply, the reduced transport fiber is the non-split local-system extension <code>0 -&gt; 1 -&gt; rho -&gt; sgn -&gt; 0</code>, so tensoring with the exact <code>81</code>-qutrit matter sector forces <code>0 -&gt; 81 -&gt; 162 -&gt; 81 -&gt; 0</code>. Better still, that extension class is now explicit: in adapted basis the off-diagonal term is a genuine twisted <code>1</code>-cocycle, not a coboundary, and the fiber shift <code>N=[[0,1],[0,0]]</code> tensors to a canonical square-zero rank-<code>81</code> operator on the <code>162</code>-sector with image = kernel = <code>81</code>. Sharper still, the same package is genuinely curved on transport triangles: all six reduced <code>A2</code> holonomy classes occur, and the naive simplicial extension defect <code>I - H_t</code> vanishes on exactly <code>528</code> identity-holonomy triangles and has rank <code>1</code> on the remaining <code>4752</code>. In adapted basis the whole reduced holonomy is exactly the Borel subgroup <code>B(F3)</code>, so the old parity shadow is just the quotient sign: parity-<code>0</code> secretly splits as <code>528</code> flat + <code>2592</code> pure-nilpotent curved triangles, while parity-<code>1</code> is the <code>2160</code>-triangle semisimple-curved channel. Better again, these pieces now assemble into the actual transport-twisted precomplex: the first two covariant coboundaries are upper triangular, the invariant-line block is the ordinary simplicial complex with <code>h0 = 1</code> and <code>h1 = 0</code>, the sign-shadow block has no flat <code>0</code>-sections and carries the genuine curvature, and the full curvature factors through the sign quotient with rank <code>42</code> while the cocycle block supplies the rank-<code>36</code> off-diagonal coupling. Tensoring that exact precomplex with the logical matter sector then separates the internal <code>162</code> package cleanly: one protected flat <code>81</code>-dimensional matter copy survives, while the other <code>81</code> copy is curvature-sensitive. On the external harmonic channels this gives exact protected flat matter counts <code>243</code> for <code>CP2_9</code> and <code>1944</code> for <code>K3_16</code>. Better still, that protected channel is now selected canonically by spectral data itself: on the W33 side the adjacency has rank <code>39</code> over <code>GF(3)</code> with unique all-ones null line, and on the transport side the exact walk on <code>SRG(45,32,22,24)</code> converges to the trivial Bose-Mesner idempotent <code>(T^2 + 2T - 8I)/1080 = J/45</code> with gap <code>7/8</code> and Kemeny constant <code>1952/45</code>; tensoring that selector with the <code>81</code>-qutrit matter sector recovers exactly the protected flat <code>81</code>. Better again, the internally curved transport package itself now crosses the curved <code>4D</code> bridge as a genuine symmetric Dirac-type operator on <code>C0 ⊕ C1 ⊕ C2</code> of total dimension <code>12090</code>, with exact diagonal trace split <code>3276 + 37386 + 34110 = 74772</code> and curvature corner rank <code>42</code>. Tensoring with the same qutrit matter sector upgrades this to a <code>979290</code>-dimensional curved internal operator with <code>Tr(D^2)=6056532</code>, still containing the protected flat <code>81</code> and its exact lifts <code>243/1944</code>. Because the curved barycentric tower already has exact chain and trace densities, this full twisted internal operator now inherits exact first-order heat-density limits <code>1450800/19</code>, <code>19370040/19</code> and <code>117514800/19</code>, <code>1568973240/19</code> across the <code>CP2/K3</code> refinement family. It now also crosses through second order where the data is exact: <code>Tr(D^4)=2116184</code> internally and <code>171410904</code> after matter coupling, seed-level quadratic coefficients <code>39997843/3, 36651793/3</code> and <code>1079941761, 988248411</code>, and first-refinement coefficients <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both the bare transport and matter-coupled channels, the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>. The internal <code>162</code>-sector is therefore now explained as a transport-twisted ternary matter extension, operator package, curved/Borel/precomplex local system, canonical transport spectral selector, and first-/second-order curved Dirac bridge rather than only as a count match.</p>
   </div>
 </section>
 
@@ -1202,7 +1255,7 @@ section h2::after {
     <tr><td>Transport matter / curved-harmonic bridge</td><td>Tensoring the curved transport precomplex with the exact <code>81</code>-qutrit matter sector cleanly separates the internal <code>162</code>-package: one protected flat <code>81</code>-dimensional matter copy survives, while the other <code>81</code> copy is curvature-sensitive. The coupled curvature ranks are exact: <code>3402</code> for the full curvature and <code>2916</code> for the off-diagonal cocycle coupling. On the external harmonic channels this yields protected flat matter counts <code>243</code> for <code>CP2_9</code> and <code>1944</code> for <code>K3_16</code>.</td><td class="status-ok">✅ exact protected-vs-curved matter split</td></tr>
     <tr><td>Transport spectral-selector bridge</td><td>The protected flat matter copy is now selected canonically rather than by inspection. On W33 the adjacency has rank <code>39</code> over <code>GF(3)</code> with unique all-ones null line, and on the exact transport graph the trivial Bose-Mesner idempotent <code>(T^2 + 2T - 8I)/1080 = J/45</code> is the long-time random-walk / heat selector with exact gap <code>7/8</code> and Kemeny constant <code>1952/45</code>. Tensoring that selector with the exact <code>81</code>-qutrit matter sector recovers the protected <code>81</code> and its curved lifts <code>243/1944</code>.</td><td class="status-ok">✅ exact dynamic selector for protected matter</td></tr>
     <tr><td>Transport curved-Dirac / refinement bridge</td><td>The integer lift of the adapted transport precomplex now defines a symmetric Dirac-type operator on <code>C0 ⊕ C1 ⊕ C2</code> of total dimension <code>12090</code>, with exact diagonal trace split <code>3276 + 37386 + 34110 = 74772</code> and curvature corner rank <code>42</code>. Tensoring with the exact <code>81</code>-qutrit matter sector upgrades this to dimension <code>979290</code> with <code>Tr(D^2)=6056532</code>, and the full twisted package acquires exact first-order heat-density limits <code>1450800/19</code>, <code>19370040/19</code> and <code>117514800/19</code>, <code>1568973240/19</code> across the curved <code>CP2/K3</code> barycentric tower.</td><td class="status-ok">✅ exact first-order curved Dirac bridge</td></tr>
-    <tr><td>Transport curved-Dirac quadratic bridge</td><td>The same internally curved transport operator now has exact second-order seed and <code>sd^1</code> data. Internally <code>Tr(D^4)=2116184</code>, and after tensoring with the exact <code>81</code>-qutrit matter sector this becomes <code>171410904</code>. The exact seed-level quadratic coefficients on <code>CP2/K3</code> are <code>39997843/3, 36601793/3</code> and <code>1079941761, 988248411</code>; the exact first-refinement coefficients are <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both channels the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>.</td><td class="status-ok">✅ exact second-order curved Dirac bridge at seed and sd<sup>1</sup></td></tr>
+    <tr><td>Transport curved-Dirac quadratic bridge</td><td>The same internally curved transport operator now has exact second-order seed and <code>sd^1</code> data. Internally <code>Tr(D^4)=2116184</code>, and after tensoring with the exact <code>81</code>-qutrit matter sector this becomes <code>171410904</code>. The exact seed-level quadratic coefficients on <code>CP2/K3</code> are <code>39997843/3, 36651793/3</code> and <code>1079941761, 988248411</code>; the exact first-refinement coefficients are <code>4701453583/360, 5052856873/360</code> and <code>42313082247/40, 45475711857/40</code>. In both channels the <code>CP2/K3</code> quadratic gap contracts at <code>sd^1</code>.</td><td class="status-ok">✅ exact second-order curved Dirac bridge at seed and sd<sup>1</sup></td></tr>
     <tr><td>Minimal triangulations</td><td><code>CP2</code>: <code>9</code> vertices, <code>&chi; = 3</code>; <code>K3</code>: <code>16</code> vertices, <code>&chi; = 24</code>; closed flat metrics are topologically forbidden on both.</td><td class="status-ok">✅ curved 4D seed geometries</td></tr>
     <tr><td>Curved 4D curvature budget</td><td><code>CP2</code> and <code>K3</code> have signatures <code>1</code> and <code>-16</code>, so the signature theorem forces Weyl-energy floors <code>12&pi;<sup>2</sup></code> and <code>192&pi;<sup>2</sup></code>. This survives every barycentric refinement because the topology is unchanged.</td><td class="status-ok">✅ exact quadratic-curvature channel</td></tr>
     <tr><td>Explicit curved complexes</td><td><code>CP2_9</code> is reconstructed from a <code>12</code>-facet orbit under the fundamental order-<code>3</code> permutation, giving Betti profile <code>(1,0,1,0,1)</code>. <code>K3_16</code> is reconstructed from <code>2</code> seed facets under a <code>240</code>-element permutation group, giving Betti profile <code>(1,0,22,0,1)</code>.</td><td class="status-ok">✅ explicit external chain complexes</td></tr>
@@ -1265,7 +1318,7 @@ section h2::after {
     <tr><td>GF(2) homology</td><td><strong>dim = 8, A²≡0 mod 2</strong></td><td>Rank of adjacency mod 2 equals E₈ rank</td></tr>
     <tr><td>Determinant</td><td><strong>det(A) = −3 × 2⁵⁶</strong></td><td>Encodes E₈ structure: rank-8 mod-2 kernel</td></tr>
     <tr><td>μ-graph</td><td><strong>SRG(27,16,...)</strong></td><td>Common-neighbor-3 subgraph; eigenvalues {−2:20, 4:6, 16:1}</td></tr>
-    <tr><td>Cosmological constant</td><td><strong>Λ exponent = −122</strong></td><td>−(k²−f+λ) where f=24 (eigenvalue multiplicity)</td></tr>
+    <tr><td>Cosmological constant</td><td><strong>Λ exponent = −127</strong></td><td>−(k²−f+λ) where f=24 (eigenvalue multiplicity)</td></tr>
     <tr><td>Hubble constant</td><td><strong>H₀ = 67 / 73 km/s/Mpc</strong></td><td>v+f+1+λ (CMB) vs v+f+1+2λ+μ (local)</td></tr>
     <tr><td>Higgs mass</td><td><strong>M<sub>H</sub> = 125 GeV</strong></td><td>s⁴+v+μ where s=3 (field characteristic)</td></tr>
     <tr><td>Vertex decomposition</td><td><strong>40 = 1 + 24 + 15</strong></td><td>Vacuum + gauge bosons (SU(5) adj) + fermions/gen</td></tr>
@@ -1447,7 +1500,7 @@ section h2::after {
     <tr><td>12</td><td>27 non-neighbors: 8-regular</td><td>Complement of Schläfli graph structure</td><td class="status-ok">✅</td></tr>
     <tr><td>13</td><td>μ-graph: SRG(27,16,...)</td><td>Eigenvalues {−2:20, 4:6, 16:1}</td><td class="status-ok">✅</td></tr>
     <tr><td>14</td><td>α⁻¹ = 137.036004</td><td>Diff from experiment: 4.5×10⁻⁶</td><td class="status-ok">✅</td></tr>
-    <tr><td>15</td><td>Λ exponent = −122</td><td>−(k²−f+λ) = −(144−24+2)</td><td class="status-ok">✅</td></tr>
+    <tr><td>15</td><td>Λ exponent = −127</td><td>−(k²−f+λ) = −(144−24+2)</td><td class="status-ok">✅</td></tr>
     <tr><td>16</td><td>H₀ = 67 (CMB) and 73 (local)</td><td>v+f+1+λ and v+f+1+2λ+μ</td><td class="status-ok">✅</td></tr>
     <tr><td>17</td><td>M<sub>Higgs</sub> = 125 GeV</td><td>s⁴+v+μ = 81+40+4</td><td class="status-ok">✅</td></tr>
     <tr><td>18</td><td>sin²θ<sub>W</sub> = 1/4</td><td>μ/(k+μ) = 4/16</td><td class="status-ok">✅</td></tr>
@@ -1462,7 +1515,7 @@ section h2::after {
     <tr><td>26</td><td>Zero modes: 3+2+2 = 7</td><td>Per-generation Laplacian zero modes (massless spectrum)</td><td class="status-ok">✅</td></tr>
     <tr><td>27</td><td>Laplacian 10×16 = 160 = triangles</td><td>Spectral-combinatorial identity from eigenvalues 0, 10, 16</td><td class="status-ok">✅</td></tr>
     <tr><td>28</td><td>θ<sub>C</sub> = arctan(q/(q²+q+1)) = 13.0°</td><td>Cabibbo angle: sinθᶜ = 3/√178 = 0.2249 (obs: 0.2250±0.0007)</td><td class="status-ok">✅</td></tr>
-    <tr><td>29</td><td>sin²θ<sub>W</sub> = q/(q²+q+1) = 3/13</td><td>Weinberg angle: 0.23077 (obs: 0.23122±0.00003, diff 0.19%)</td><td class="status-ok">✅</td></tr>
+    <tr><td>29</td><td>sin²θ<sub>W</sub> = q/(q²+q+1) = 3/13</td><td>Weinberg angle: 0.23077 (obs: 0.23127±0.00003, diff 0.19%)</td><td class="status-ok">✅</td></tr>
     <tr><td>30</td><td>θ₂₃ = arcsin(A·λ²), A=(q+1)/(q+2)</td><td>CKM θ₂₃ = 2.318° (obs: 2.38°, diff 0.062°, 2.6%)</td><td class="status-ok">✅</td></tr>
     <tr><td>31</td><td>δ<sub>CP</sub> = arctan(q−1) = 63.4°</td><td>CP phase: arctan(2) = 63.43° (obs: 65.5±1.5°, diff 3.2%)</td><td class="status-ok">✅</td></tr>
     <tr><td>32</td><td>sin(θ₁₃) = A·λ⁴·√q = 0.00354</td><td>CKM θ₁₃ = 0.203° (obs: 0.201±0.011°, 0.9%, within exp. error)</td><td class="status-ok">✅</td></tr>
@@ -1498,7 +1551,7 @@ section h2::after {
     <tr><td>58</td><td>W(3,3) is Ramanujan graph</td><td>|r|=2, |s|=4 ≤ 2√(k−1) ≈ 6.63 → optimal spectral expansion</td><td class="status-ok">✅</td></tr>
     <tr><td colspan="4" style="background:var(--bg3);font-weight:bold;color:var(--accent3)">Inflation, CC Hierarchy, Higgs Mass & SM Structure</td></tr>
     <tr><td>59</td><td>N = |E|/μ = 60 → n<sub>s</sub> = 0.9667</td><td>Inflation e-folds: 240/4=60; n<sub>s</sub>=1−2/60 (obs 0.9649±0.0042, 0.42σ); r=0.0033</td><td class="status-ok">✅</td></tr>
-    <tr><td>60</td><td>CC: −(vq+μ−λ) = −122</td><td>log₁₀(Λ<sub>CC</sub>/M<sub>Pl</sub>⁴) = −(120+2) = −122 (EXACT!)</td><td class="status-ok">✅</td></tr>
+    <tr><td>60</td><td>CC: −(vq+μ−λ) = −127</td><td>log₁₀(Λ<sub>CC</sub>/M<sub>Pl</sub>⁴) = −(120+2) = −127 (EXACT!)</td><td class="status-ok">✅</td></tr>
     <tr><td>61</td><td>m<sub>H</sub> = vq+μ+1 = 125 GeV</td><td>Higgs mass: 120+4+1=125 (obs 125.10±0.14, 0.71σ)</td><td class="status-ok">✅</td></tr>
     <tr><td>62</td><td>N<sub>SM</sub> = Φ₃+Φ₆−1 = 19</td><td>SM free parameters; +Φ₆=26=D(bosonic string)</td><td class="status-ok">✅</td></tr>
     <tr><td>63</td><td>Spectral dim flow: μ→λ = 4→2</td><td>d<sub>IR</sub>=μ=4, d<sub>UV</sub>=λ=2 (CDT/Horava-Lifshitz/asymptotic safety)</td><td class="status-ok">✅</td></tr>
@@ -1523,7 +1576,7 @@ section h2::after {
     <tr><td colspan="4" style="background:var(--bg3);font-weight:bold;color:var(--accent3)">Gauge Counting, Higgs Mechanism & Alpha Running</td></tr>
     <tr><td>79</td><td>q=3 massive + (k−q)=9 massless bosons</td><td>W±Z + 8 gluons + γ = 12 = k</td><td class="status-ok">✅</td></tr>
     <tr><td>80</td><td>μ=4 DOF → (q−λ)=1 Higgs + q=3 Goldstones</td><td>Higgs mechanism: 3 eaten by W±Z</td><td class="status-ok">✅</td></tr>
-    <tr><td>81</td><td>vq = 120 = dim(adj SO(16))</td><td>CC = −(SO(16) + μ − λ) = −122</td><td class="status-ok">✅</td></tr>
+    <tr><td>81</td><td>vq = 120 = dim(adj SO(16))</td><td>CC = −(SO(16) + μ − λ) = −127</td><td class="status-ok">✅</td></tr>
     <tr><td>82</td><td>α⁻¹(M<sub>Z</sub>) = 2<sup>Φ₆</sup> = 128</td><td>Running coupling (obs 127.95, 0.04%!)</td><td class="status-ok">✅</td></tr>
     <tr><td>83</td><td>τ<sub>p</sub> ~ 10<sup>37</sup> years</td><td>Proton lifetime above Super-K bound (testable!)</td><td class="status-ok">✅</td></tr>
     <tr><td colspan="4" style="background:var(--bg3);font-weight:bold;color:var(--accent3)">E₈ Structure, Inflation & String Duality</td></tr>
@@ -1570,7 +1623,7 @@ section h2::after {
     <tr><td>119</td><td>Accidental symmetries = μ = 4</td><td>B, L<sub>e</sub>, L<sub>μ</sub>, L<sub>τ</sub></td><td class="status-ok">✅</td></tr>
     <tr><td>120</td><td>Max SUSY = 2×2<sup>μ</sup> = 32</td><td>N=8 (4D) = N=1 (11D M-theory)</td><td class="status-ok">✅</td></tr>
     <tr><td>121</td><td>SM multiplets/gen = q+λ = 5</td><td>Q<sub>L</sub>, u<sub>R</sub>, d<sub>R</sub>, L<sub>L</sub>, e<sub>R</sub></td><td class="status-ok">✅</td></tr>
-    <tr><td>122</td><td>Dark energy EoS: w = s/μ = −1</td><td>ΛCDM equation of state (±0.05)</td><td class="status-ok">✅</td></tr>
+    <tr><td>127</td><td>Dark energy EoS: w = s/μ = −1</td><td>ΛCDM equation of state (±0.05)</td><td class="status-ok">✅</td></tr>
     <tr><td>123</td><td>QCD adjoint Casimir C<sub>A</sub> = q = 3</td><td>Color factor N<sub>c</sub> = 3</td><td class="status-ok">✅</td></tr>
     <tr><td>124</td><td>QCD fundamental Casimir C<sub>F</sub> = μ/q = 4/3</td><td>(q²−1)/(2q) = 8/6 = 4/3</td><td class="status-ok">✅</td></tr>
     <tr><td>125</td><td>Gluons = q²−1 = k−μ = 8</td><td>SU(3) generators; k = gluons + EW</td><td class="status-ok">✅</td></tr>
@@ -1797,7 +1850,7 @@ section h2::after {
   </div>
   <p>The cosmological constant hierarchy — the <em>"worst prediction in physics"</em> — is resolved:</p>
   <div class="math-block">
-    <span class="eq">log₁₀(Λ<sub>CC</sub>/M<sub>Pl</sub>⁴) = −(vq + μ − λ) = −(120 + 2) = <strong>−122</strong> (EXACT!)</span>
+    <span class="eq">log₁₀(Λ<sub>CC</sub>/M<sub>Pl</sub>⁴) = −(vq + μ − λ) = −(120 + 2) = <strong>−127</strong> (EXACT!)</span>
   </div>
   <p>The Higgs boson mass:</p>
   <div class="math-block">
@@ -2637,7 +2690,7 @@ section h2::after {
     <table>
       <tr><th>#</th><th>Theorem</th><th>Key Result</th></tr>
       <tr><td><strong>121</strong></td><td><strong>G₂ from D₄ Triality — The Fano Bridge</strong></td><td><strong>D₄ triality σ³=I folds to G₂; Fano plane → octonions → Der(𝕆) = G₂(14); 24→12 roots, 28→14 dim</strong></td></tr>
-      <tr><td><strong>122</strong></td><td><strong>Cayley Integers: 240 Units = E₈ Roots</strong></td><td><strong>Q₈(8) ⊂ Hurwitz(24) ⊂ Cayley(240) = E₈; 112+128 decomposition; det(E₈ Cartan)=1; |W(E₈)|/240=|W(E₇)|</strong></td></tr>
+      <tr><td><strong>127</strong></td><td><strong>Cayley Integers: 240 Units = E₈ Roots</strong></td><td><strong>Q₈(8) ⊂ Hurwitz(24) ⊂ Cayley(240) = E₈; 112+128 decomposition; det(E₈ Cartan)=1; |W(E₈)|/240=|W(E₇)|</strong></td></tr>
       <tr><td><strong>123</strong></td><td><strong>E₈ Theta Series: Modular Forms</strong></td><td><strong>Θ_{E₈} = E₄; a(n)=240·σ₃(n); j(τ) = q⁻¹+744+196884q; 744=6!+24; E₄²=E₈</strong></td></tr>
       <tr><td><strong>124</strong></td><td><strong>The Leech Lattice: Gateway to the Monster</strong></td><td><strong>Λ₂₄ = E₈³+Golay; kiss=196560; 196884=196560+4·81; Aut=Co₀; W(3,3)→E₈→j→Monster</strong></td></tr>
       <tr><td><strong>125</strong></td><td><strong>Binary Golay Code: M₂₄ and 759 Octads</strong></td><td><strong>[24,12,8] self-dual; S(5,8,24); 759=3·253; |M₂₄|=244823040; 24=3·8 generations</strong></td></tr>
@@ -3016,7 +3069,7 @@ section h2::after {
     <tr><td>947</td><td>Emergence: couplings from integrating out towers</td><td>α⁻¹ = 137 from spectral integration</td><td class="status-ok">✅</td></tr>
     <tr><td>948</td><td>Finite moduli space: |M| &lt; ∞</td><td>W(3,3) has finitely many deformations</td><td class="status-ok">✅</td></tr>
     <tr><td>949</td><td>Anomaly-free spectrum: Green-Schwarz</td><td>496 factorization from v·k + 2⁴</td><td class="status-ok">✅</td></tr>
-    <tr><td>950</td><td>No stable non-SUSY: AdS iff |Λ| &gt; 0</td><td>CC = −122 from graph parameters</td><td class="status-ok">✅</td></tr>
+    <tr><td>950</td><td>No stable non-SUSY: AdS iff |Λ| &gt; 0</td><td>CC = −127 from graph parameters</td><td class="status-ok">✅</td></tr>
     <tr><td>951</td><td>Tower mass = M_Pl · exp(−φ/√(k−μ))</td><td>KK/string tower from rank E₈ = 8</td><td class="status-ok">✅</td></tr>
     <tr><td>952</td><td>Gravitino mass constraint: m_{3/2} &lt; M_Pl/v</td><td>SUSY breaking scale from v = 40</td><td class="status-ok">✅</td></tr>
     <tr><td>953</td><td>EFT cut-off Λ = M_Pl/v^(1/μ) </td><td>Species bound cut-off</td><td class="status-ok">✅</td></tr>
@@ -3423,13 +3476,13 @@ section h2::after {
   </div>
 </section>
 <section id="unit-chain">
-  <h2><span class="icon">⛓</span> The Unit Chain — Pillars 122–123</h2>
-  <p>Pillars 122–123 reveal the <strong>integral spine</strong> of the theory:
+  <h2><span class="icon">⛓</span> The Unit Chain — Pillars 127–123</h2>
+  <p>Pillars 127–123 reveal the <strong>integral spine</strong> of the theory:
   the Cayley–Dickson tower of integer rings mirrors the algebra tower,
   and the E₈ theta series IS the Eisenstein modular form E₄.</p>
 
   <div class="rosetta">
-    <h3>The Cayley Integer Unit Chain (Pillar 122)</h3>
+    <h3>The Cayley Integer Unit Chain (Pillar 127)</h3>
     <div class="cascade">
       <div class="node"><div class="name">Q₈</div><div class="order">8 units</div></div>
       <div class="arrow">⊂</div>
@@ -3776,7 +3829,7 @@ section h2::after {
   <p><strong>W33 link:</strong> 40 W(3,3) points as objects, 240 edges as 1-morphisms; higher simplices from W(3,3) cliques; Sp(6,F₂) as autoequivalences; W(3,3) as fully dualizable object (cobordism hypothesis); E₆-algebra structure; factorization algebra on W(3,3) graph; Koszul duality of W(3,3) E_n-algebra.</p>
 </section>
 <section id="cattheory">
-  <h2 style="color: var(--gold);"><span class="icon">◆</span> Category Theory &amp; Higher Structures (Checks 1122–1135)</h2>
+  <h2 style="color: var(--gold);"><span class="icon">◆</span> Category Theory &amp; Higher Structures (Checks 1127–1135)</h2>
   <div class="formula-highlight" style="border-left-color: #ffd700;">
     W(3,3) as a categorical object: the nerve N(W) has dim = k−1 = 11 (M-theory!),
     the Grothendieck group K₀ has rank = q+1 = 4, Euler characteristic of the classifying space
@@ -3785,7 +3838,7 @@ section h2::after {
   </div>
   <table>
     <tr><th>#</th><th>Check</th><th>Result</th><th>Status</th></tr>
-    <tr><td>1122</td><td>dim(nerve) = k−1 = 11</td><td>M-theory dimension from simplicial complex</td><td class="status-ok">✅</td></tr>
+    <tr><td>1127</td><td>dim(nerve) = k−1 = 11</td><td>M-theory dimension from simplicial complex</td><td class="status-ok">✅</td></tr>
     <tr><td>1125</td><td>K₀ rank = q+1 = 4</td><td>Grothendieck group from field</td><td class="status-ok">✅</td></tr>
     <tr><td>1129</td><td>Dold-Kan correspondence: N_n = C(k,n)</td><td>Simplicial-chain complex from degree</td><td class="status-ok">✅</td></tr>
     <tr><td>1133</td><td>Postnikov height = N = 5</td><td>Truncation level from shell count</td><td class="status-ok">✅</td></tr>
@@ -4112,8 +4165,8 @@ section h2::after {
       <tr><td>LXXX</td><td>T1161–T1175</td><td>Entanglement &amp; Quantum Foundations</td><td><code>tests/test_entanglement_quantum_foundations.py</code> (44 tests)</td></tr>
       <tr><td>LXXXI</td><td>T1176–T1190</td><td>Experimental Predictions Compendium</td><td><code>tests/test_experimental_predictions.py</code> (50 tests)</td></tr>
       <tr><td>LXXXII</td><td>T1191–T1205</td><td>Scattering Amplitudes &amp; Amplituhedron</td><td><code>tests/test_scattering_amplitudes.py</code> (45 tests)</td></tr>
-      <tr><td>LXXXIII</td><td>T1206–T1220</td><td>String Theory Landscape</td><td><code>tests/test_string_landscape.py</code> (44 tests)</td></tr>
-      <tr><td>LXXXIV</td><td>T1221–T1235</td><td>Thermodynamics &amp; Statistical Mechanics</td><td><code>tests/test_thermodynamics.py</code> (38 tests)</td></tr>
+      <tr><td>LXXXIII</td><td>T1206–T1270</td><td>String Theory Landscape</td><td><code>tests/test_string_landscape.py</code> (44 tests)</td></tr>
+      <tr><td>LXXXIV</td><td>T1271–T1235</td><td>Thermodynamics &amp; Statistical Mechanics</td><td><code>tests/test_thermodynamics.py</code> (38 tests)</td></tr>
       <tr><td>LXXXV</td><td>T1236–T1250</td><td>Spectral Action Functionals</td><td><code>tests/test_spectral_action_functionals.py</code> (71 tests)</td></tr>
       <tr><td>LXXXVI</td><td>T1251–T1265</td><td>KO-dimension &amp; Real Spectral Triple</td><td><code>tests/test_ko_dimension_real_spectral.py</code> (55 tests)</td></tr>
       <tr><td>LXXXVII</td><td>T1266–T1280</td><td>Precision Electroweak &amp; g−2</td><td><code>tests/test_precision_electroweak_g2.py</code> (52 tests)</td></tr>
@@ -4156,9 +4209,9 @@ section h2::after {
   <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard</h2>
 
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num">18,200</div><div class="stat-label">Automated Tests</div></div>
-    <div class="stat-card"><div class="stat-num">660</div><div class="stat-label">Test Files</div></div>
-    <div class="stat-card"><div class="stat-num">1,941</div><div class="stat-label">Theorems Proved</div></div>
+    <div class="stat-card"><div class="stat-num">18,664</div><div class="stat-label">Automated Tests</div></div>
+    <div class="stat-card"><div class="stat-num">665</div><div class="stat-label">Test Files</div></div>
+    <div class="stat-card"><div class="stat-num">2,002</div><div class="stat-label">Theorems Proved</div></div>
     <div class="stat-card"><div class="stat-num">107</div><div class="stat-label">Hard Computation Phases</div></div>
     <div class="stat-card"><div class="stat-num">217+</div><div class="stat-label">Mathematical Domains</div></div>
     <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">Pass Rate</div></div>
@@ -4179,7 +4232,7 @@ section h2::after {
     <tr><td>VII-BP</td><td>Dynamical Systems</td><td>1178–1191</td><td>Lyapunov exponents from eigenvalues</td></tr>
     <tr><td>VII-BQ</td><td>Symplectic Topology</td><td>1192–1205</td><td>Symplectic capacity = v = 40</td></tr>
     <tr><td>VII-BR</td><td>p-adic Analysis</td><td>1206–1219</td><td>p-adic valuation from q = 3</td></tr>
-    <tr><td>VII-BS</td><td>Information Geometry</td><td>1220–1233</td><td>Fisher dimension = k = 12</td></tr>
+    <tr><td>VII-BS</td><td>Information Geometry</td><td>1270–1233</td><td>Fisher dimension = k = 12</td></tr>
     <tr><td>VII-BT</td><td>Mathematical Logic</td><td>1234–1247</td><td>Gödel number structure from v</td></tr>
     <tr><td>VII-BU</td><td>Condensed Matter</td><td>1248–1261</td><td>Coordination number = k = 12</td></tr>
     <tr><td>VII-BV</td><td>Algebraic Number Theory</td><td>1262–1275</td><td>Class number from Φ₃ = 13</td></tr>
@@ -4271,7 +4324,7 @@ section h2::after {
   <p>Every prediction below is derived from the 5 SRG parameters (v,k,λ,μ,q) = (40,12,2,4,3) — no free parameters.</p>
   <table>
     <tr><th>Quantity</th><th>W(3,3) Value</th><th>Experiment</th><th>Status</th></tr>
-    <tr><td>sin²θ<sub>W</sub>(M<sub>Z</sub>)</td><td>3/13 = 0.23077</td><td>0.23122 ± 0.00003</td><td class="status-ok">✅ 0.19%</td></tr>
+    <tr><td>sin²θ<sub>W</sub>(M<sub>Z</sub>)</td><td>3/13 = 0.23077</td><td>0.23127 ± 0.00003</td><td class="status-ok">✅ 0.19%</td></tr>
     <tr><td>sin²θ<sub>W</sub> at GUT scale</td><td>3/8 = 0.375</td><td>SU(5) boundary</td><td class="status-ok">✅ Exact</td></tr>
     <tr><td>α⁻¹ (fine-structure)</td><td>137.036004</td><td>137.035999</td><td class="status-ok">✅ 4.5×10⁻⁶</td></tr>
     <tr><td>α<sub>s</sub> (strong coupling)</td><td>9/76 = 0.11842</td><td>0.1180 ± 0.0009</td><td class="status-ok">✅ 0.47σ</td></tr>
@@ -4300,7 +4353,7 @@ section h2::after {
     <tr><td>α₂⁻¹(M<sub>Z</sub>)</td><td>29.52</td><td>29.58</td><td class="status-ok">✅ 0.2%</td></tr>
     <tr><td>Proton decay τ<sub>p</sub></td><td>~10³⁷ yr</td><td>&gt;10³⁴ yr (Super-K)</td><td class="status-ok">✅ Testable at Hyper-K</td></tr>
     <tr><td>GUT scale M<sub>GUT</sub></td><td>~10¹⁶ GeV</td><td>MSSM prediction</td><td class="status-ok">✅ Consistent</td></tr>
-    <tr><td>Cosmological constant log₁₀|Λ|</td><td>−122 from graph parameters</td><td>~10⁻¹²² (Planck units)</td><td class="status-ok">✅ Order match</td></tr>
+    <tr><td>Cosmological constant log₁₀|Λ|</td><td>−127 from graph parameters</td><td>~10⁻¹²² (Planck units)</td><td class="status-ok">✅ Order match</td></tr>
     <tr><td>N<sub>eff</sub> (effective neutrinos)</td><td>3 + μ/E = 3.017</td><td>3.044 ± 0.034</td><td class="status-ok">✅ 1σ</td></tr>
     <tr><td>dim(E₈×E₈)</td><td>vk + r(k−μ) = 496</td><td>Heterotic string</td><td class="status-ok">✅ Exact</td></tr>
     <tr><td>Mass hierarchy</td><td>~301:1 from triple intersection</td><td>~10⁴ spread</td><td class="status-partial">⚠️ Order</td></tr>
@@ -4335,7 +4388,7 @@ section h2::after {
     <tr><td>2</td><td><strong>Exact fermion masses</strong></td><td>Gram eigenvalue ratios give qualitative hierarchy; reproducing the full 10-order-of-magnitude spread requires Yukawa boundary conditions from the cubic intersection tensor</td></tr>
     <tr><td>3</td><td><del>Small Cabibbo angle</del></td><td>✅ <strong>SOLVED</strong> — θ<sub>C</sub> = arctan(q/(q²+q+1)) = arctan(3/13) = 13.0° (observed: 13.04° ± 0.05°); sin θ<sub>C</sub> = 3/√178 = 0.2249 (observed: 0.2250 ± 0.0007). Full CKM now derived: θ₂₃ = arcsin(A·λ²) with A=(q+1)/(q+2)=4/5 gives 2.32° (obs 2.38°); sin(θ₁₃) = A·λ⁴·√q = 0.00354 (obs 0.00351, within exp. error!); δ<sub>CP</sub> = arctan(q−1) = 63.4° (obs 65.5°); η̄ = 2λ√(q/5) = 0.3484 (obs 0.348, exact!).</td></tr>
     <tr><td>4</td><td><del>Gravity from graph curvature</del></td><td>✅ <strong>PARTIALLY SOLVED</strong> — κ = 2/k = 1/6 uniform Ollivier-Ricci curvature on all 240 edges; R = 1/vertex; discrete Gauss–Bonnet verified; W(3,3) is discrete de Sitter; full dynamical 4D GR emergence remains open</td></tr>
-    <tr><td>5</td><td><del>Weinberg angle</del></td><td>✅ <strong>SOLVED</strong> — sin²θ<sub>W</sub> = q/(q²+q+1) = 3/13 = 0.23077 (observed: 0.23122 ± 0.00003, diff 0.19%). Running from tree-level 1/4 to low-energy 3/13 via correction −1/(μ·(q²+q+1)) = −1/52. Same algebraic number q²+q+1 = 13 = |PG(2,q)| controls both Weinberg and Cabibbo angles.</td></tr>
+    <tr><td>5</td><td><del>Weinberg angle</del></td><td>✅ <strong>SOLVED</strong> — sin²θ<sub>W</sub> = q/(q²+q+1) = 3/13 = 0.23077 (observed: 0.23127 ± 0.00003, diff 0.19%). Running from tree-level 1/4 to low-energy 3/13 via correction −1/(μ·(q²+q+1)) = −1/52. Same algebraic number q²+q+1 = 13 = |PG(2,q)| controls both Weinberg and Cabibbo angles.</td></tr>
     <tr><td>5</td><td><del>Uniqueness</del></td><td>✅ <strong>SOLVED</strong> — Phase LXIV (<code>test_uniqueness_srg_landscape.py</code>, 64 tests) proves W(3,3) is the unique SRG with parameters (40,12,2,4) that yields the full SM structure. No other graph in the landscape produces the same phenomenology.</td></tr>
     <tr><td>6</td><td><strong>Rigorous α formula derivation</strong></td><td>The formula k²−2μ+1+v/L<sub>eff</sub> gives 137.036004 but WHY? <strong style="color:#00ff88;">✅ SOLVED:</strong> α = spectral identity from vertex propagator M = (k−1)((A−λI)²+I)</td></tr>
     <tr><td>7</td><td><strong>Mass spectrum from spectral theory</strong></td><td>Laplacian eigenvalues 0(1)/10(24)/16(15); 10×16=160=triangles; 10+16=26; mass ratio √(8/5); full spectrum prediction in progress</td></tr>
@@ -4351,7 +4404,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Scale:</strong> 122 phases of hard computation &middot; 660 test files &middot; 18,200 automated tests &middot; 1,941 theorems &middot; 237+ mathematical domains &middot; 34 key predictions &middot; <strong style="color: #ffd700;">100% pass rate</strong></p>
+  <p><strong>Scale:</strong> 127 phases of hard computation &middot; 665 test files &middot; 18,664 automated tests &middot; 2,002 theorems &middot; 242+ mathematical domains &middot; 34 key predictions &middot; <strong style="color: #ffd700;">100% pass rate</strong></p>
   <p><strong>Foundation:</strong> The entire theory derives from SRG(40,12,2,4) — five integers that encode the Standard Model, gravity, and cosmology with no free parameters.</p>
 </section>
 
@@ -4367,7 +4420,7 @@ section h2::after {
     <a href="https://doi.org/10.5281/zenodo.18652825">DOI</a> &middot;
     <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
   </p>
-  <p style="margin-top: 0.4rem; font-size: 0.8rem;">18,200 tests &middot; 660 files &middot; 1,941 theorems &middot; 122 phases &middot; 237+ domains &middot; 100% pass rate</p>
+  <p style="margin-top: 0.4rem; font-size: 0.8rem;">18,664 tests &middot; 665 files &middot; 2,002 theorems &middot; 127 phases &middot; 242+ domains &middot; 100% pass rate</p>
 </footer>
 
 <script>
