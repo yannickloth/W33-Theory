@@ -7,18 +7,18 @@ A computational proof that the finite symplectic polar space **W(3,3)** — a si
 
 ## The Theory in One Paragraph
 
-The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Hodge Laplacian spectrum 0⁸¹ 4¹²⁰ 10²⁴ 16¹⁵ produces a mass gap, gauge sector, and matter sector. A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological sum rule Omega_b + Omega_DM + Omega_DE = 1/20 + 4/15 + 41/60 = 1 holds exactly.
+The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Dirac operator D_F spectrum {0⁸², 4³²⁰, 10⁴⁸, 16³⁰} on the 480-dimensional chain complex produces a Higgs mass m_H = v*sqrt(14/55) = 124.2 GeV (experiment: 125.25 GeV, 0.8% error). A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological constant Omega_Lambda = 9/13 = 0.692 (experiment: 0.685, 1.1% error).
 
 ## Current Scale
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 2087 (T1–T1975) |
-| Test functions | 19,245 |
-| Test files | 670 |
-| Phases completed | CXXXII (132) |
-| Mathematical domains covered | 247+ |
-| Key predictions matched | 34 |
+| Theorems proved | 3,029+ |
+| Test functions | 20,780 |
+| Test files | 686 |
+| Phases completed | CXLII (142) |
+| Mathematical domains covered | 258+ |
+| Key predictions matched | 40 |
 
 ## Current Frontier
 
@@ -96,6 +96,16 @@ The remaining open question is the continuum bridge: whether the discrete spectr
 - **CXXX:** Spectral comparison — A/L/Q/Seidel/normalized/distance spectra, line graph, complement relation lambda_bar=-1-lambda, energy E(G)=LE(G)=120, Estrada index, cospectral uniqueness (128 tests)
 - **CXXXI:** Graph products — Cartesian/tensor/strong/lexicographic/corona/modular/rooted products, spectral formulas, Shannon capacity bounds, adjacency rules (117 tests)
 - **CXXXII:** Walk enumeration — W_k=tr(A^k) for k=0..10, walk regularity, non-backtracking walks, generating function, cycle counting, Ihara zeta, path counting, asymptotic growth (119 tests)
+- **CXXXIII:** Grand Unification RG predictions — gauge coupling running, GUT scale, proton lifetime, neutrino masses, RG flow verification (84 tests)
+- **CXXXIV:** Spectral Unification — Higgs mass m_H=124.2 GeV from D_F^2 spectrum {0:82,4:320,10:48,16:30}, fermion mass hierarchy, cosmological constant, spectral action functionals (83 tests)
+- **CXXXV:** Gravitational Sector — Planck mass 3^40, Ollivier-Ricci curvature 1/4, inflation r=1/450, n_s=0.967, dark energy Omega_Lambda=9/13, black hole entropy (54 tests)
+- **CXXXVI:** Master Prediction Table — 26 observables from q=3 vs experiment, global chi-squared, falsifiability, theory comparison (51 tests)
+- **CXXXVII:** Why q=3 — 7 uniqueness conditions, v=q^5=243 GeV, CP violation, confinement, zero-parameter theory (57 tests)
+- **CXXXVIII:** Graph diameter deep computation — distance matrix, eccentricity, diameter=2, radius, periphery, BFS verification (107 tests)
+- **CXXXIX:** Cayley graph deep computation — Sp(4,3) generators, automorphism verification, Cayley graph structure, orbit analysis (101 tests)
+- **CXL:** Clique partition deep computation — tetrahedra, triangle counting, clique structure, independence number, Ramsey properties (112 tests)
+- **CXLI:** Vertex connectivity deep computation — edge/vertex connectivity=12, Menger's theorem, expansion, toughness (104 tests)
+- **CXLII:** Spectral moments deep computation — moment computation, trace formulas, Newton's identities, spectral measure (113 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -403,7 +413,18 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 | Phase | Theorems | Tests | Topic |
 |-------|----------|-------|-------|
-| CXXVII | — | 88 | Delsarte Theory — P/Q Matrices, Krein, LP Bounds, Designs |
+| CXLII | — | 113 | Spectral Moments Deep — Trace Formulas, Newton's Identities, Spectral Measure |
+| CXLI | — | 104 | Vertex Connectivity Deep — Edge/Vertex Connectivity, Menger, Expansion |
+| CXL | — | 112 | Clique Partition Deep — Tetrahedra, Independence Number, Ramsey |
+| CXXXIX | — | 101 | Cayley Graph Deep — Sp(4,3) Generators, Automorphisms, Orbits |
+| CXXXVIII | — | 107 | Graph Diameter Deep — Distance Matrix, Eccentricity, BFS |
+| CXXXVII | — | 57 | Why q=3 — Uniqueness, CP Violation, Confinement, Zero-Parameter |
+| CXXXVI | — | 51 | Master Prediction Table — 26 Observables, Chi-Squared, Falsifiability |
+| CXXXV | — | 54 | Gravitational Sector — Planck Mass, Inflation, Dark Energy, Curvature |
+| CXXXIV | — | 83 | Spectral Unification — Higgs 124.2 GeV, Fermion Masses, Spectral Action |
+| CXXXIII | — | 84 | Grand Unification RG — Gauge Running, GUT Scale, Proton Lifetime |
+| CXXXII | — | 119 | Walk Enumeration — Walk Regularity, Generating Function, Ihara Zeta |
+| CXXXI | — | 117 | Graph Products — Cartesian, Tensor, Strong, Lexicographic, Shannon |
 | CXXVI | — | 85 | Laplacian Powers — Fractional, Heat/Wave, Sobolev, Green's Function |
 | CXXV | — | 87 | Finite Field Methods — GF(2) Rank=16, p-Rank, Smith, Symplectic |
 | CXXIV | — | 87 | Quantum Graph Theory — CTQW, State Transfer, Grover, Decoherence |
@@ -488,7 +509,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         606 test files, 14,217 test functions (the proof)
+├── tests/         686 test files, 20,780 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
