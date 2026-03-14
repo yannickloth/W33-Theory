@@ -652,6 +652,26 @@ def test_synthesis_records_monster_transport_shell_bridge() -> None:
     assert bridge["complement_equals_block_bundle_plus_generation"] is True
 
 
+def test_synthesis_records_monster_supertrace_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_supertrace_bridge"]
+    assert bridge["euler_characteristic"] == -80
+    assert bridge["supertrace"] == -80
+    assert bridge["supertrace_magnitude"] == 80
+    assert bridge["selector_line_dimension"] == 1
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["generation_states"] == 27
+    assert bridge["e8_second_shell"] == 2160
+    assert bridge["semisimple_transport_shell"] == 2160
+    assert bridge["monster_complement_states"] == 3**7
+    assert bridge["euler_matches_supertrace_exactly"] is True
+    assert bridge["semisimple_equals_e8_second_shell"] is True
+    assert bridge["semisimple_equals_generation_times_supertrace_magnitude"] is True
+    assert bridge["logical_equals_supertrace_magnitude_plus_selector"] is True
+    assert bridge["monster_complement_equals_generation_times_logical"] is True
+    assert bridge["monster_complement_equals_e8_second_shell_plus_generation"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

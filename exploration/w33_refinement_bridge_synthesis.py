@@ -118,6 +118,7 @@ from w33_monster_selector_completion_bridge import (
 )
 from w33_monster_q5_completion_bridge import build_monster_q5_completion_summary
 from w33_monster_transport_shell_bridge import build_monster_transport_shell_summary
+from w33_monster_supertrace_bridge import build_monster_supertrace_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -217,6 +218,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_selector_completion = build_monster_selector_completion_summary()
     monster_q5_completion = build_monster_q5_completion_summary()
     monster_transport_shell = build_monster_transport_shell_summary()
+    monster_supertrace = build_monster_supertrace_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -565,6 +567,23 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "complement_equals_q_squared_edges_plus_q_cubed": monster_transport_shell["monster_transport_completion"]["complement_equals_q_squared_edges_plus_q_cubed"],
             "complement_equals_q_transport_edges_plus_q_cubed": monster_transport_shell["monster_transport_completion"]["complement_equals_q_transport_edges_plus_q_cubed"],
             "complement_equals_block_bundle_plus_generation": monster_transport_shell["monster_transport_completion"]["complement_equals_block_bundle_plus_generation"],
+        },
+        "monster_supertrace_bridge": {
+            "euler_characteristic": monster_supertrace["spectral_dictionary"]["euler_characteristic"],
+            "supertrace": monster_supertrace["spectral_dictionary"]["supertrace"],
+            "supertrace_magnitude": monster_supertrace["spectral_dictionary"]["supertrace_magnitude"],
+            "selector_line_dimension": monster_supertrace["spectral_dictionary"]["selector_line_dimension"],
+            "logical_qutrits": monster_supertrace["spectral_dictionary"]["logical_qutrits"],
+            "generation_states": monster_supertrace["spectral_dictionary"]["generation_states"],
+            "e8_second_shell": monster_supertrace["spectral_dictionary"]["e8_second_shell"],
+            "semisimple_transport_shell": monster_supertrace["spectral_dictionary"]["semisimple_transport_shell"],
+            "monster_complement_states": monster_supertrace["spectral_dictionary"]["monster_complement_states"],
+            "euler_matches_supertrace_exactly": monster_supertrace["spectral_dictionary"]["euler_matches_supertrace_exactly"],
+            "semisimple_equals_e8_second_shell": monster_supertrace["spectral_dictionary"]["semisimple_equals_e8_second_shell"],
+            "semisimple_equals_generation_times_supertrace_magnitude": monster_supertrace["spectral_dictionary"]["semisimple_equals_generation_times_supertrace_magnitude"],
+            "logical_equals_supertrace_magnitude_plus_selector": monster_supertrace["spectral_dictionary"]["logical_equals_supertrace_magnitude_plus_selector"],
+            "monster_complement_equals_generation_times_logical": monster_supertrace["spectral_dictionary"]["monster_complement_equals_generation_times_logical"],
+            "monster_complement_equals_e8_second_shell_plus_generation": monster_supertrace["spectral_dictionary"]["monster_complement_equals_e8_second_shell_plus_generation"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
