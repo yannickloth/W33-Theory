@@ -125,6 +125,8 @@ from w33_monster_gap_duality_bridge import build_monster_gap_duality_summary
 from w33_monster_triangle_landauer_bridge import build_monster_triangle_landauer_summary
 from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_summary
 from w33_vacuum_unity_bridge import build_vacuum_unity_summary
+from w33_quantum_vacuum_standards_bridge import build_quantum_vacuum_standards_summary
+from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -241,6 +243,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_triangle_landauer = build_monster_triangle_landauer_summary()
     triality_moonshine_spine = build_triality_moonshine_spine_summary()
     vacuum_unity = build_vacuum_unity_summary()
+    quantum_vacuum_standards = build_quantum_vacuum_standards_summary()
+    natural_units_meaning = build_natural_units_meaning_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -451,6 +455,56 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "z0_error_tracks_alpha": vacuum_unity["codata_2022_comparison"]["z0_error_tracks_alpha"],
             "selector_line_dimension": vacuum_unity["selector_cross_bridge"]["selector_line_dimension"],
             "vacuum_unity_matches_selector_rank": vacuum_unity["selector_cross_bridge"]["vacuum_unity_matches_selector_rank"],
+        },
+        "quantum_vacuum_standards_bridge": {
+            "rk_formula": quantum_vacuum_standards["exact_quantum_standards"]["von_klitzing_constant"]["formula"],
+            "kj_formula": quantum_vacuum_standards["exact_quantum_standards"]["josephson_constant"]["formula"],
+            "g0_formula": quantum_vacuum_standards["exact_quantum_standards"]["conductance_quantum"]["formula"],
+            "phi0_formula": quantum_vacuum_standards["exact_quantum_standards"]["flux_quantum"]["formula"],
+            "rk_prediction": quantum_vacuum_standards["exact_quantum_standards"]["von_klitzing_constant"]["scientific"],
+            "kj_prediction": quantum_vacuum_standards["exact_quantum_standards"]["josephson_constant"]["scientific"],
+            "g0_prediction": quantum_vacuum_standards["exact_quantum_standards"]["conductance_quantum"]["scientific"],
+            "phi0_prediction": quantum_vacuum_standards["exact_quantum_standards"]["flux_quantum"]["scientific"],
+            "phi0_times_kj": quantum_vacuum_standards["exact_quantum_standards"]["phi0_times_kj"]["exact"],
+            "rk_times_g0": quantum_vacuum_standards["exact_quantum_standards"]["rk_times_g0"]["exact"],
+            "kj_squared_rk_h": quantum_vacuum_standards["exact_quantum_standards"]["kj_squared_rk_h"]["exact"],
+            "z0_equals_2_alpha_rk": quantum_vacuum_standards["vacuum_transport_dictionary"]["z0_equals_2_alpha_rk"],
+            "mu0_equals_2_alpha_rk_over_c": quantum_vacuum_standards["vacuum_transport_dictionary"]["mu0_equals_2_alpha_rk_over_c"],
+            "epsilon0_equals_one_over_2_alpha_rk_c": quantum_vacuum_standards["vacuum_transport_dictionary"]["epsilon0_equals_one_over_2_alpha_rk_c"],
+            "y0_equals_g0_over_4alpha": quantum_vacuum_standards["vacuum_transport_dictionary"]["y0_equals_g0_over_4alpha"],
+            "alpha_from_z0_over_2rk": quantum_vacuum_standards["vacuum_transport_dictionary"]["alpha_from_z0_over_2rk"]["exact"],
+            "alpha_from_z0_g0_over_4": quantum_vacuum_standards["vacuum_transport_dictionary"]["alpha_from_z0_g0_over_4"]["exact"],
+            "z0_times_g0": quantum_vacuum_standards["vacuum_transport_dictionary"]["z0_times_g0"]["exact"],
+            "rk_over_z0": quantum_vacuum_standards["vacuum_transport_dictionary"]["rk_over_z0"]["exact"],
+        },
+        "natural_units_meaning_bridge": {
+            "convention": natural_units_meaning["heaviside_lorentz_natural_units"]["convention"],
+            "alpha_formula": natural_units_meaning["heaviside_lorentz_natural_units"]["alpha_formula"],
+            "e_hl_squared_symbolic": natural_units_meaning["heaviside_lorentz_natural_units"]["electric_charge_squared_symbolic"],
+            "e_hl_squared": natural_units_meaning["heaviside_lorentz_natural_units"]["electric_charge_squared"],
+            "e_hl": natural_units_meaning["heaviside_lorentz_natural_units"]["electric_charge"],
+            "rk_natural_symbolic": natural_units_meaning["heaviside_lorentz_natural_units"]["von_klitzing_symbolic"],
+            "rk_natural": natural_units_meaning["heaviside_lorentz_natural_units"]["von_klitzing_constant"],
+            "g0_natural_symbolic": natural_units_meaning["heaviside_lorentz_natural_units"]["conductance_quantum_symbolic"],
+            "g0_natural": natural_units_meaning["heaviside_lorentz_natural_units"]["conductance_quantum"],
+            "kj_natural": natural_units_meaning["heaviside_lorentz_natural_units"]["josephson_constant"],
+            "phi0_natural": natural_units_meaning["heaviside_lorentz_natural_units"]["flux_quantum"],
+            "vacuum_unity_becomes_unit_element": natural_units_meaning["heaviside_lorentz_natural_units"]["vacuum_unity_becomes_unit_element"],
+            "z0_equals_2alpha_rk_becomes_unit_identity": natural_units_meaning["heaviside_lorentz_natural_units"]["z0_equals_2alpha_rk_becomes_unit_identity"],
+            "alpha_equals_g0_over_4": natural_units_meaning["heaviside_lorentz_natural_units"]["alpha_equals_g0_over_4"],
+            "rk_times_g0_equals_2": natural_units_meaning["heaviside_lorentz_natural_units"]["rk_times_g0_equals_2"],
+            "phi0_times_kj_equals_1": natural_units_meaning["heaviside_lorentz_natural_units"]["phi0_times_kj_equals_1"],
+            "gaussian_alpha_formula": natural_units_meaning["gaussian_crosscheck"]["alpha_formula"],
+            "heaviside_equals_4pi_gaussian": natural_units_meaning["gaussian_crosscheck"]["heaviside_equals_4pi_gaussian"],
+            "weinberg_x": natural_units_meaning["dimensionless_graph_observables"]["weinberg_x"],
+            "higgs_ratio_square": natural_units_meaning["dimensionless_graph_observables"]["higgs_ratio_square"],
+            "omega_lambda": natural_units_meaning["dimensionless_graph_observables"]["omega_lambda"],
+            "a2_over_a0": natural_units_meaning["dimensionless_graph_observables"]["a2_over_a0"],
+            "a4_over_a0": natural_units_meaning["dimensionless_graph_observables"]["a4_over_a0"],
+            "discrete_to_continuum_ratio": natural_units_meaning["dimensionless_graph_observables"]["discrete_to_continuum_ratio"],
+            "topological_over_continuum": natural_units_meaning["dimensionless_graph_observables"]["topological_over_continuum"],
+            "graphs_mean_couplings_and_mode_weights_in_natural_units": natural_units_meaning["dimensionless_graph_observables"]["graphs_mean_couplings_and_mode_weights_in_natural_units"],
+            "si_vacuum_is_reexpression_of_dimensionless_package": natural_units_meaning["dimensionless_graph_observables"]["si_vacuum_is_reexpression_of_dimensionless_package"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],

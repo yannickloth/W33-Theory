@@ -3,11 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
 
-A computational proof that the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices — encodes the full structure of the Standard Model, including gauge groups, coupling constants, mixing matrices, mass hierarchies, and cosmological parameters. Every claim is backed by automated tests.
+A computational proof that the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices — encodes the full structure of the Standard Model, including gauge groups, coupling constants, mixing matrices, mass hierarchies, cosmological parameters, and the promoted vacuum/transport standards layer. Every claim is backed by automated tests.
 
 ## The Theory in One Paragraph
 
-The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Dirac operator D_F spectrum {0⁸², 4³²⁰, 10⁴⁸, 16³⁰} on the 480-dimensional chain complex produces a Higgs mass m_H = v*sqrt(14/55) = 124.2 GeV (experiment: 125.25 GeV, 0.8% error). A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). In the modern SI, that same alpha theorem also fixes the vacuum constants through the exact unity law c²μ₀ε₀ = 1 and Z₀ = μ₀c = 1/(ε₀c), so the electromagnetic vacuum is alpha-mediated rather than an unrelated convention. The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological constant Omega_Lambda = 9/13 = 0.692 (experiment: 0.685, 1.1% error).
+The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)|. Its first homology H₁ = Z⁸¹ = 27+27+27 gives three chiral generations. The Dirac operator D_F spectrum {0⁸², 4³²⁰, 10⁴⁸, 16³⁰} on the 480-dimensional chain complex produces a Higgs mass m_H = v*sqrt(14/55) = 124.2 GeV (experiment: 125.25 GeV, 0.8% error). A vertex propagator formula yields the fine-structure constant alpha⁻¹ = 137.036004 (experiment: 137.035999). In the modern SI, that same alpha theorem also fixes the vacuum constants through the exact unity law c²μ₀ε₀ = 1 and Z₀ = μ₀c = 1/(ε₀c), and it now lands directly on the quantum electrical standards as Z₀ = 2αR_K and Z₀G₀ = 4α, where R_K = h/e² and G₀ = 2e²/h. In Heaviside-Lorentz natural units that whole vacuum sector collapses to the unit element, so the graph is read directly as dimensionless physics: couplings, mixing angles, mass ratios, and curvature-mode weights. The PMNS neutrino mixing angles derive exactly from projective incidence geometry over F₃: sin²(theta_12) = 4/13, sin²(theta_23) = 7/13, sin²(theta_13) = 2/91. The CKM quark mixing matrix derives from the Schlafli graph SRG(27,10,1,5). All four SM anomaly conditions cancel. The cosmological constant Omega_Lambda = 9/13 = 0.692 (experiment: 0.685, 1.1% error).
 
 **DOI:** [10.5281/zenodo.18652825](https://doi.org/10.5281/zenodo.18652825)
 
@@ -150,6 +150,8 @@ The exact fermion mass spectrum is still partially open. The current exact contr
 ### Coupling Constants
 - **Fine-structure constant:** alpha⁻¹ = k²-2mu+1 + v/[(k-1)((k-lambda)²+1)] = 137 + 40/1111 = 137.036004
 - **Vacuum unity lock:** c²μ₀ε₀ = 1 exactly, Z₀ = μ₀c = 1/(ε₀c), and in modern SI the W(3,3) alpha theorem predicts μ₀, ε₀, and Z₀ together through μ₀ = 2αh/(ce²)
+- **Quantum vacuum standards:** the same vacuum theorem lands directly on the Josephson/von-Klitzing/Landauer package: R_K = h/e², K_J = 2e/h, G₀ = 2e²/h, Φ₀ = h/(2e), Z₀ = 2αR_K, Y₀ = G₀/(4α), and α = Z₀G₀/4
+- **Natural-units meaning:** in Heaviside-Lorentz natural units the vacuum becomes 1, so the graph should be read directly as dimensionless physics: α, 3/13, 14/55, 9/13, 39, and 7 are the promoted couplings, ratios, and mode weights; the SI constants are re-expressions of that package
 - **Weinberg angle:** sin²(theta_W) = 3/13 = 0.23077 (exp: 0.23122, diff 0.19%)
 - **GUT coupling:** alpha_GUT = 1/(8pi) ~ 1/25.1 (exp: ~1/24.3, 3.6%)
 

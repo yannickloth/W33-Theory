@@ -165,6 +165,62 @@ def test_synthesis_records_vacuum_unity_bridge() -> None:
     assert bridge["vacuum_unity_matches_selector_rank"] is True
 
 
+def test_synthesis_records_quantum_vacuum_standards_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["quantum_vacuum_standards_bridge"]
+    assert bridge["rk_formula"] == "h / e^2"
+    assert bridge["kj_formula"] == "2 e / h"
+    assert bridge["g0_formula"] == "2 e^2 / h"
+    assert bridge["phi0_formula"] == "h / (2 e)"
+    assert bridge["rk_prediction"].startswith("2.58128074593045066600455")
+    assert bridge["kj_prediction"].startswith("4.83597848416983632447658")
+    assert bridge["g0_prediction"].startswith("7.74809172986365064668082")
+    assert bridge["phi0_prediction"].startswith("2.06783384846192932308111")
+    assert bridge["phi0_times_kj"] == "1"
+    assert bridge["rk_times_g0"] == "2"
+    assert bridge["kj_squared_rk_h"] == "4"
+    assert bridge["z0_equals_2_alpha_rk"] is True
+    assert bridge["mu0_equals_2_alpha_rk_over_c"] is True
+    assert bridge["epsilon0_equals_one_over_2_alpha_rk_c"] is True
+    assert bridge["y0_equals_g0_over_4alpha"] is True
+    assert bridge["alpha_from_z0_over_2rk"] == "1111/152247"
+    assert bridge["alpha_from_z0_g0_over_4"] == "1111/152247"
+    assert bridge["z0_times_g0"] == "4444/152247"
+    assert bridge["rk_over_z0"] == "152247/2222"
+
+
+def test_synthesis_records_natural_units_meaning_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_meaning_bridge"]
+    assert bridge["convention"] == "hbar = c = epsilon0 = mu0 = Z0 = Y0 = 1"
+    assert bridge["alpha_formula"] == "e_HL^2 / (4 pi)"
+    assert bridge["e_hl_squared_symbolic"] == "4 pi alpha"
+    assert bridge["e_hl_squared"] == pytest.approx(0.09170123386702556)
+    assert bridge["e_hl"] == pytest.approx(0.30282211588162705)
+    assert bridge["rk_natural_symbolic"] == "1 / (2 alpha)"
+    assert bridge["rk_natural"] == pytest.approx(68.51800180018002)
+    assert bridge["g0_natural_symbolic"] == "4 alpha"
+    assert bridge["g0_natural"] == pytest.approx(0.029189409315126078)
+    assert bridge["kj_natural"] == pytest.approx(0.09639127324021538)
+    assert bridge["phi0_natural"] == pytest.approx(10.374383140555823)
+    assert bridge["vacuum_unity_becomes_unit_element"] is True
+    assert bridge["z0_equals_2alpha_rk_becomes_unit_identity"] is True
+    assert bridge["alpha_equals_g0_over_4"] is True
+    assert bridge["rk_times_g0_equals_2"] is True
+    assert bridge["phi0_times_kj_equals_1"] is True
+    assert bridge["gaussian_alpha_formula"] == "e_G^2"
+    assert bridge["heaviside_equals_4pi_gaussian"] is True
+    assert bridge["weinberg_x"] == "3/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["topological_over_continuum"] == "7"
+    assert bridge["graphs_mean_couplings_and_mode_weights_in_natural_units"] is True
+    assert bridge["si_vacuum_is_reexpression_of_dimensionless_package"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]
