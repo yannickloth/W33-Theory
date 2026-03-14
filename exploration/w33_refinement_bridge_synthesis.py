@@ -120,6 +120,7 @@ from w33_monster_q5_completion_bridge import build_monster_q5_completion_summary
 from w33_monster_transport_shell_bridge import build_monster_transport_shell_summary
 from w33_monster_supertrace_bridge import build_monster_supertrace_summary
 from w33_monster_moonshine_lift_bridge import build_monster_moonshine_lift_summary
+from w33_monster_transport_moonshine_bridge import build_monster_transport_moonshine_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -221,6 +222,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_transport_shell = build_monster_transport_shell_summary()
     monster_supertrace = build_monster_supertrace_summary()
     monster_moonshine_lift = build_monster_moonshine_lift_summary()
+    monster_transport_moonshine = build_monster_transport_moonshine_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -607,6 +609,19 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "first_moonshine_equals_leech_plus_gap": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_leech_plus_gap"],
             "first_moonshine_equals_selector_plus_smallest_monster_irrep": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_selector_plus_smallest_monster_irrep"],
             "first_moonshine_equals_cyclotomic_lifted_shell_plus_spacetime_matter": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_cyclotomic_lifted_shell_plus_spacetime_matter"],
+        },
+        "monster_transport_moonshine_bridge": {
+            "sl27_traceless_dimension": monster_transport_moonshine["transport_moonshine_dictionary"]["sl27_traceless_dimension"],
+            "sl27_completed_dimension": monster_transport_moonshine["transport_moonshine_dictionary"]["sl27_completed_dimension"],
+            "directed_transport_edges": monster_transport_moonshine["transport_moonshine_dictionary"]["directed_transport_edges"],
+            "gauge_package_rank": monster_transport_moonshine["transport_moonshine_dictionary"]["gauge_package_rank"],
+            "leech_kissing_number": monster_transport_moonshine["transport_moonshine_dictionary"]["leech_kissing_number"],
+            "moonshine_gap": monster_transport_moonshine["transport_moonshine_dictionary"]["moonshine_gap"],
+            "first_moonshine_coefficient": monster_transport_moonshine["transport_moonshine_dictionary"]["first_moonshine_coefficient"],
+            "leech_equals_sl27_traceless_times_transport_edges": monster_transport_moonshine["transport_moonshine_dictionary"]["leech_equals_sl27_traceless_times_transport_edges"],
+            "first_moonshine_equals_completed_sl27_times_transport_plus_gauge_rank": monster_transport_moonshine["transport_moonshine_dictionary"]["first_moonshine_equals_completed_sl27_times_transport_plus_gauge_rank"],
+            "moonshine_gap_equals_transport_plus_gauge_rank": monster_transport_moonshine["transport_moonshine_dictionary"]["moonshine_gap_equals_transport_plus_gauge_rank"],
+            "gauge_package_rank_equals_e6_plus_a2_plus_cartan": monster_transport_moonshine["transport_moonshine_dictionary"]["gauge_package_rank_equals_e6_plus_a2_plus_cartan"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],

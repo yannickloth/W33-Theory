@@ -696,6 +696,22 @@ def test_synthesis_records_monster_moonshine_lift_bridge() -> None:
     assert bridge["first_moonshine_equals_cyclotomic_lifted_shell_plus_spacetime_matter"] is True
 
 
+def test_synthesis_records_monster_transport_moonshine_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_transport_moonshine_bridge"]
+    assert bridge["sl27_traceless_dimension"] == 728
+    assert bridge["sl27_completed_dimension"] == 729
+    assert bridge["directed_transport_edges"] == 270
+    assert bridge["gauge_package_rank"] == 54
+    assert bridge["leech_kissing_number"] == 196560
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["first_moonshine_coefficient"] == 196884
+    assert bridge["leech_equals_sl27_traceless_times_transport_edges"] is True
+    assert bridge["first_moonshine_equals_completed_sl27_times_transport_plus_gauge_rank"] is True
+    assert bridge["moonshine_gap_equals_transport_plus_gauge_rank"] is True
+    assert bridge["gauge_package_rank_equals_e6_plus_a2_plus_cartan"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]
