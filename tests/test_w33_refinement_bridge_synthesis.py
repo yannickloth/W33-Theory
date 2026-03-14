@@ -143,6 +143,28 @@ def test_synthesis_records_three_channel_and_dual_bose_mesner_bridges() -> None:
     assert dual["negative_channel_coefficients"] == {"alpha": "1/3", "beta": "-1/6"}
 
 
+def test_synthesis_records_vacuum_unity_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["vacuum_unity_bridge"]
+    assert bridge["alpha_inverse"] == "152247/1111"
+    assert bridge["alpha"] == "1111/152247"
+    assert bridge["unity_relation"] == "1"
+    assert bridge["impedance_admittance_unity"] == "1"
+    assert bridge["z0_equals_mu0_c"] is True
+    assert bridge["z0_equals_one_over_epsilon0_c"] is True
+    assert bridge["mu0_formula"] == "2 alpha h / (c e^2)"
+    assert bridge["epsilon0_formula"] == "e^2 / (2 alpha h c)"
+    assert bridge["z0_formula"] == "2 alpha h / e^2"
+    assert bridge["mu0_prediction"].startswith("1.256637020705")
+    assert bridge["epsilon0_prediction"].startswith("8.854188104604")
+    assert bridge["z0_prediction"].startswith("3.767303012510")
+    assert bridge["mu0_error_tracks_alpha"] is True
+    assert bridge["epsilon0_error_tracks_negative_alpha"] is True
+    assert bridge["z0_error_tracks_alpha"] is True
+    assert bridge["selector_line_dimension"] == 1
+    assert bridge["vacuum_unity_matches_selector_rank"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]

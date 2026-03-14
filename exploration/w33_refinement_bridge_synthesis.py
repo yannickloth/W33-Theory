@@ -124,6 +124,7 @@ from w33_monster_transport_moonshine_bridge import build_monster_transport_moons
 from w33_monster_gap_duality_bridge import build_monster_gap_duality_summary
 from w33_monster_triangle_landauer_bridge import build_monster_triangle_landauer_summary
 from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_summary
+from w33_vacuum_unity_bridge import build_vacuum_unity_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -239,6 +240,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_gap_duality = build_monster_gap_duality_summary()
     monster_triangle_landauer = build_monster_triangle_landauer_summary()
     triality_moonshine_spine = build_triality_moonshine_spine_summary()
+    vacuum_unity = build_vacuum_unity_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -430,6 +432,25 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "omega_lambda_equals_q_times_weinberg": standard_model_cyclotomic["closure_relations"]["omega_lambda_equals_q_times_weinberg"],
             "reactor_has_phi3_phi6_denominator": standard_model_cyclotomic["closure_relations"]["reactor_has_phi3_phi6_denominator"],
             "higgs_uses_four_phi3_plus_q_denominator": standard_model_cyclotomic["closure_relations"]["higgs_uses_four_phi3_plus_q_denominator"],
+        },
+        "vacuum_unity_bridge": {
+            "alpha_inverse": vacuum_unity["w33_alpha_input"]["alpha_inverse"]["exact"],
+            "alpha": vacuum_unity["w33_alpha_input"]["alpha"]["exact"],
+            "unity_relation": vacuum_unity["vacuum_unity_relations"]["c_squared_mu0_epsilon0"]["exact"],
+            "impedance_admittance_unity": vacuum_unity["vacuum_unity_relations"]["z0_times_y0"]["exact"],
+            "z0_equals_mu0_c": vacuum_unity["vacuum_unity_relations"]["z0_equals_mu0_c"],
+            "z0_equals_one_over_epsilon0_c": vacuum_unity["vacuum_unity_relations"]["z0_equals_one_over_epsilon0_c"],
+            "mu0_formula": vacuum_unity["vacuum_unity_relations"]["mu0_formula"],
+            "epsilon0_formula": vacuum_unity["vacuum_unity_relations"]["epsilon0_formula"],
+            "z0_formula": vacuum_unity["vacuum_unity_relations"]["z0_formula"],
+            "mu0_prediction": vacuum_unity["predicted_vacuum_constants"]["mu0_si"]["scientific"],
+            "epsilon0_prediction": vacuum_unity["predicted_vacuum_constants"]["epsilon0_si"]["scientific"],
+            "z0_prediction": vacuum_unity["predicted_vacuum_constants"]["z0_si"]["scientific"],
+            "mu0_error_tracks_alpha": vacuum_unity["codata_2022_comparison"]["mu0_error_tracks_alpha"],
+            "epsilon0_error_tracks_negative_alpha": vacuum_unity["codata_2022_comparison"]["epsilon0_error_tracks_negative_alpha"],
+            "z0_error_tracks_alpha": vacuum_unity["codata_2022_comparison"]["z0_error_tracks_alpha"],
+            "selector_line_dimension": vacuum_unity["selector_cross_bridge"]["selector_line_dimension"],
+            "vacuum_unity_matches_selector_rank": vacuum_unity["selector_cross_bridge"]["vacuum_unity_matches_selector_rank"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],
