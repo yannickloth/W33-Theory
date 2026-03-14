@@ -541,6 +541,25 @@ def test_synthesis_records_monster_3adic_closure_bridge() -> None:
     assert bridge["monster_three_trits_equal_phi3_plus_phi6"] is True
 
 
+def test_synthesis_records_monster_3b_centralizer_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_3b_centralizer_bridge"]
+    assert bridge["centralizer_label"] == "3^(1+12).2Suz"
+    assert bridge["monster_three_primary_states"] == 3**20
+    assert bridge["centralizer_three_primary_states"] == 3**20
+    assert bridge["centralizer_three_primary_matches_monster"] is True
+    assert bridge["shell_states"] == 3**13
+    assert bridge["two_suz_three_primary_states"] == 3**7
+    assert bridge["two_suz_three_primary_trits"] == 7
+    assert bridge["two_suz_three_primary_equals_logical_times_generation"] is True
+    assert bridge["landauer_additivity_exact"] is True
+    assert bridge["gravity_over_q"] == "13"
+    assert bridge["topology_over_continuum"] == "7"
+    assert bridge["shell_from_curved_gravity_exact"] is True
+    assert bridge["two_suz_from_curved_topology_exact"] is True
+    assert bridge["centralizer_three_primary_from_curved_coefficients_exact"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

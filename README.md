@@ -156,7 +156,7 @@ The exact fermion mass spectrum is still partially open. The current exact contr
 - **Dirac-Kahler operator:** D_DK on C⁰+C¹+C²+C³ = 480 = 2|E₈ roots|
 - **SRG uniqueness:** No other strongly regular graph passes both alpha~137 AND E+k-mu=248
 - **Cosmological sum rule:** Omega_b + Omega_DM + Omega_DE = 1/20 + 4/15 + 41/60 = 1
-- **Monster/Landauer closure:** the rigorous Monster bridge is the local `3B` shell `3^(1+12)`, now factoring exactly as `3^13 = 3^6 * 3^4 * 3^3`; its exact complement is `3^7 = 3^4 * 3^3`, so the full Monster ternary part closes as `3^20 = 3^13 * 3^7 = 3^(Phi_3 + Phi_6)`. This gives exact ternary costs `20 ln 3`, `13 ln 3`, `7 ln 3` and matches the promoted `3/13`, `4/13`, `7/13`, `39` package
+- **Monster/Landauer closure:** the rigorous Monster bridge is the local `3B` shell `3^(1+12)`, now factoring exactly as `3^13 = 3^6 * 3^4 * 3^3`; its exact complement is the `3`-part of the sporadic factor in `C_M(3B)=3^(1+12).2Suz`, namely `|2Suz|_3 = 3^7 = 3^4 * 3^3`. So the full Monster ternary part closes as `3^20 = 3^13 * 3^7 = 3^(Phi_3 + Phi_6)`. This gives exact ternary costs `20 ln 3`, `13 ln 3`, `7 ln 3` and matches the promoted `3/13`, `4/13`, `7/13`, `39` package
 
 ### Anomaly Cancellation (Phase LVII)
 - **E₆ decomposition:** 27 = 16 + 10 + 1 (SM fermion content per generation)

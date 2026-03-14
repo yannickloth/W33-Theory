@@ -109,6 +109,7 @@ from w33_standard_model_cyclotomic_bridge import build_standard_model_cyclotomic
 from w33_monster_landauer_ternary_bridge import build_monster_landauer_ternary_bridge_summary
 from w33_monster_shell_factorization_bridge import build_monster_shell_factorization_summary
 from w33_monster_3adic_closure_bridge import build_monster_3adic_closure_summary
+from w33_monster_3b_centralizer_bridge import build_monster_3b_centralizer_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -203,6 +204,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_landauer_ternary = build_monster_landauer_ternary_bridge_summary()
     monster_shell_factorization = build_monster_shell_factorization_summary()
     monster_3adic_closure = build_monster_3adic_closure_summary()
+    monster_3b_centralizer = build_monster_3b_centralizer_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -455,6 +457,22 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "complement_from_curved_topology_exact": monster_3adic_closure["curved_thermodynamic_dictionary"]["complement_from_curved_topology_exact"],
             "full_monster_three_primary_from_curved_coefficients_exact": monster_3adic_closure["curved_thermodynamic_dictionary"]["full_monster_three_primary_from_curved_coefficients_exact"],
             "monster_three_trits_equal_phi3_plus_phi6": monster_3adic_closure["curved_thermodynamic_dictionary"]["monster_three_trits_equal_phi3_plus_phi6"],
+        },
+        "monster_3b_centralizer_bridge": {
+            "centralizer_label": monster_3b_centralizer["three_b_centralizer"]["centralizer_label"],
+            "monster_three_primary_states": monster_3b_centralizer["three_b_centralizer"]["monster_three_primary_part"]["states"],
+            "centralizer_three_primary_states": monster_3b_centralizer["three_b_centralizer"]["centralizer_three_primary_part"]["states"],
+            "centralizer_three_primary_matches_monster": monster_3b_centralizer["three_b_centralizer"]["centralizer_three_primary_matches_monster"],
+            "shell_states": monster_3b_centralizer["centralizer_factorization"]["shell_states"],
+            "two_suz_three_primary_states": monster_3b_centralizer["centralizer_factorization"]["two_suz_three_primary_states"],
+            "two_suz_three_primary_trits": monster_3b_centralizer["centralizer_factorization"]["two_suz_three_primary_trits"],
+            "two_suz_three_primary_equals_logical_times_generation": monster_3b_centralizer["centralizer_factorization"]["two_suz_three_primary_equals_logical_times_generation"],
+            "landauer_additivity_exact": monster_3b_centralizer["landauer_budget"]["landauer_additivity_exact"],
+            "gravity_over_q": monster_3b_centralizer["curved_dictionary"]["gravity_over_q"]["exact"],
+            "topology_over_continuum": monster_3b_centralizer["curved_dictionary"]["topology_over_continuum"]["exact"],
+            "shell_from_curved_gravity_exact": monster_3b_centralizer["curved_dictionary"]["shell_from_curved_gravity_exact"],
+            "two_suz_from_curved_topology_exact": monster_3b_centralizer["curved_dictionary"]["two_suz_from_curved_topology_exact"],
+            "centralizer_three_primary_from_curved_coefficients_exact": monster_3b_centralizer["curved_dictionary"]["centralizer_three_primary_from_curved_coefficients_exact"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
