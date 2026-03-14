@@ -105,6 +105,32 @@ from w33_curvature_cyclotomic_lock_bridge import build_curvature_cyclotomic_lock
 from w33_q3_curved_selection_bridge import build_q3_curved_selection_summary
 from w33_spectral_action_cyclotomic_bridge import build_spectral_action_cyclotomic_summary
 from w33_spectral_action_q3_selection_bridge import build_spectral_action_q3_selection_summary
+from w33_standard_model_cyclotomic_bridge import build_standard_model_cyclotomic_summary
+from w33_weinberg_generator_bridge import build_weinberg_generator_summary
+from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
+from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
+from w33_spectral_rosetta_lock_bridge import build_spectral_rosetta_lock_summary
+from w33_curved_mode_projector_bridge import build_curved_mode_projector_bridge_summary
+from w33_curved_mode_residue_bridge import build_curved_mode_residue_bridge_summary
+from w33_curved_continuum_extractor_bridge import build_curved_continuum_extractor_summary
+from w33_curved_weinberg_lock_bridge import build_curved_weinberg_lock_bridge_summary
+from w33_curved_rosetta_reconstruction_bridge import build_curved_rosetta_reconstruction_summary
+from w33_curved_finite_spectral_reconstruction_bridge import (
+    build_curved_finite_spectral_reconstruction_summary,
+)
+from w33_curved_roundtrip_closure_bridge import build_curved_roundtrip_closure_summary
+from w33_three_sample_master_closure_bridge import build_three_sample_master_closure_summary
+from w33_exceptional_channel_continuum_bridge import (
+    build_exceptional_channel_continuum_bridge_summary,
+)
+from w33_exceptional_operator_projector_bridge import (
+    build_exceptional_operator_projector_summary,
+)
+from w33_exceptional_tensor_rank_bridge import (
+    build_exceptional_tensor_rank_summary,
+)
+from w33_exceptional_residue_bridge import build_exceptional_residue_bridge_summary
+from w33_curved_inverse_rosetta_bridge import build_curved_inverse_rosetta_summary
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_refinement_bridge_synthesis_summary.json"
@@ -170,6 +196,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     q3_curved_selection = build_q3_curved_selection_summary()
     spectral_action_cyclotomic = build_spectral_action_cyclotomic_summary()
     spectral_action_q3_selection = build_spectral_action_q3_selection_summary()
+    standard_model_cyclotomic = build_standard_model_cyclotomic_summary()
+    weinberg_generator = build_weinberg_generator_summary()
+    weinberg_reconstruction = build_weinberg_reconstruction_summary()
+    srg_rosetta_lock = build_srg_rosetta_lock_summary()
+    spectral_rosetta_lock = build_spectral_rosetta_lock_summary()
+    curved_mode_projector = build_curved_mode_projector_bridge_summary()
+    curved_mode_residue = build_curved_mode_residue_bridge_summary()
+    curved_continuum_extractor = build_curved_continuum_extractor_summary()
+    curved_weinberg_lock = build_curved_weinberg_lock_bridge_summary()
+    curved_rosetta_reconstruction = build_curved_rosetta_reconstruction_summary()
+    curved_finite_spectral_reconstruction = build_curved_finite_spectral_reconstruction_summary()
+    curved_roundtrip_closure = build_curved_roundtrip_closure_summary()
+    three_sample_master_closure = build_three_sample_master_closure_summary()
+    exceptional_channel_continuum = build_exceptional_channel_continuum_bridge_summary()
+    exceptional_operator_projector = build_exceptional_operator_projector_summary()
+    exceptional_tensor_rank = build_exceptional_tensor_rank_summary()
+    exceptional_residue = build_exceptional_residue_bridge_summary()
+    curved_inverse_rosetta = build_curved_inverse_rosetta_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
@@ -322,6 +366,321 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "gravity_polynomial": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["polynomial"],
             "gravity_factorization": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["factorization"],
             "gravity_unique_positive_integer_solution": spectral_action_q3_selection["selection_equations"]["gravity_normalization"]["unique_positive_integer_solution"],
+        },
+        "standard_model_cyclotomic_bridge": {
+            "sin2_theta_w_ew": standard_model_cyclotomic["promoted_observables"]["sin2_theta_w_ew"]["exact"],
+            "tan_theta_c": standard_model_cyclotomic["promoted_observables"]["tan_theta_c"]["exact"],
+            "sin2_theta_12": standard_model_cyclotomic["promoted_observables"]["sin2_theta_12"]["exact"],
+            "sin2_theta_23": standard_model_cyclotomic["promoted_observables"]["sin2_theta_23"]["exact"],
+            "sin2_theta_13": standard_model_cyclotomic["promoted_observables"]["sin2_theta_13"]["exact"],
+            "higgs_ratio_square": standard_model_cyclotomic["promoted_observables"]["higgs_ratio_square"]["exact"],
+            "omega_lambda": standard_model_cyclotomic["promoted_observables"]["omega_lambda"]["exact"],
+            "tan_cabibbo_equals_ew_weinberg": standard_model_cyclotomic["closure_relations"]["tan_cabibbo_equals_ew_weinberg"],
+            "pmns_23_equals_weinberg_plus_pmns_12": standard_model_cyclotomic["closure_relations"]["pmns_23_equals_weinberg_plus_pmns_12"],
+            "omega_lambda_equals_q_times_weinberg": standard_model_cyclotomic["closure_relations"]["omega_lambda_equals_q_times_weinberg"],
+            "reactor_has_phi3_phi6_denominator": standard_model_cyclotomic["closure_relations"]["reactor_has_phi3_phi6_denominator"],
+            "higgs_uses_four_phi3_plus_q_denominator": standard_model_cyclotomic["closure_relations"]["higgs_uses_four_phi3_plus_q_denominator"],
+        },
+        "weinberg_generator_bridge": {
+            "generator": weinberg_generator["generator"]["exact"]["exact"],
+            "tan_theta_c": weinberg_generator["generated_observables"]["tan_theta_c"]["exact"]["exact"],
+            "sin2_theta_12": weinberg_generator["generated_observables"]["sin2_theta_12"]["exact"]["exact"],
+            "sin2_theta_23": weinberg_generator["generated_observables"]["sin2_theta_23"]["exact"]["exact"],
+            "sin2_theta_13": weinberg_generator["generated_observables"]["sin2_theta_13"]["exact"]["exact"],
+            "omega_lambda": weinberg_generator["generated_observables"]["omega_lambda"]["exact"]["exact"],
+            "higgs_ratio_square": weinberg_generator["generated_observables"]["higgs_ratio_square"]["exact"]["exact"],
+            "a2_over_a0": weinberg_generator["generated_observables"]["a2_over_a0"]["exact"]["exact"],
+            "a4_over_a0": weinberg_generator["generated_observables"]["a4_over_a0"]["exact"]["exact"],
+            "discrete_6_mode_over_a0": weinberg_generator["generated_observables"]["discrete_6_mode_over_a0"]["exact"]["exact"],
+            "discrete_to_continuum_ratio": weinberg_generator["generated_observables"]["discrete_to_continuum_ratio"]["exact"]["exact"],
+            "sin2_theta_23_plus_2weinberg_equals_1": weinberg_generator["derived_relations"]["sin2_theta_23_plus_2weinberg_equals_1"],
+            "sin2_theta_12_equals_four_thirds_weinberg": weinberg_generator["derived_relations"]["sin2_theta_12_equals_four_thirds_weinberg"],
+            "omega_lambda_equals_3weinberg": weinberg_generator["derived_relations"]["omega_lambda_equals_3weinberg"],
+            "cabibbo_equals_weinberg": weinberg_generator["derived_relations"]["cabibbo_equals_weinberg"],
+            "gravity_ratio_equals_9_over_weinberg": weinberg_generator["derived_relations"]["gravity_ratio_equals_9_over_weinberg"],
+        },
+        "weinberg_reconstruction_bridge": {
+            "master_variable": weinberg_reconstruction["master_variable"]["exact"]["exact"],
+            "from_cabibbo": weinberg_reconstruction["independent_reconstructions"]["from_cabibbo"]["exact"]["exact"],
+            "from_pmns_12": weinberg_reconstruction["independent_reconstructions"]["from_pmns_12"]["exact"]["exact"],
+            "from_pmns_23": weinberg_reconstruction["independent_reconstructions"]["from_pmns_23"]["exact"]["exact"],
+            "from_omega_lambda": weinberg_reconstruction["independent_reconstructions"]["from_omega_lambda"]["exact"]["exact"],
+            "from_higgs_ratio": weinberg_reconstruction["independent_reconstructions"]["from_higgs_ratio"]["exact"]["exact"],
+            "from_a2_over_a0": weinberg_reconstruction["independent_reconstructions"]["from_a2_over_a0"]["exact"]["exact"],
+            "from_a4_over_a0": weinberg_reconstruction["independent_reconstructions"]["from_a4_over_a0"]["exact"]["exact"],
+            "from_discrete_6_mode_over_a0": weinberg_reconstruction["independent_reconstructions"]["from_discrete_6_mode_over_a0"]["exact"]["exact"],
+            "from_discrete_to_continuum_ratio": weinberg_reconstruction["independent_reconstructions"]["from_discrete_to_continuum_ratio"]["exact"]["exact"],
+            "all_channels_match_master_variable": all(
+                channel["matches_master_variable"]
+                for channel in weinberg_reconstruction["independent_reconstructions"].values()
+            ),
+        },
+        "srg_rosetta_lock_bridge": {
+            "q_from_lambda_plus_one": srg_rosetta_lock["srg_data"]["q_from_lambda_plus_one"],
+            "phi3_from_k_plus_one": srg_rosetta_lock["srg_data"]["phi3_from_k_plus_one"],
+            "phi6_from_k_minus_lambda_minus_mu_plus_one": srg_rosetta_lock["srg_data"]["phi6_from_k_minus_lambda_minus_mu_plus_one"],
+            "sin2_theta_w_ew": srg_rosetta_lock["promoted_observables"]["sin2_theta_w_ew"]["exact"]["exact"],
+            "sin2_theta_12": srg_rosetta_lock["promoted_observables"]["sin2_theta_12"]["exact"]["exact"],
+            "sin2_theta_23": srg_rosetta_lock["promoted_observables"]["sin2_theta_23"]["exact"]["exact"],
+            "sin2_theta_13": srg_rosetta_lock["promoted_observables"]["sin2_theta_13"]["exact"]["exact"],
+            "omega_lambda": srg_rosetta_lock["promoted_observables"]["omega_lambda"]["exact"]["exact"],
+            "higgs_ratio_square": srg_rosetta_lock["promoted_observables"]["higgs_ratio_square"]["exact"]["exact"],
+            "a2_over_a0": srg_rosetta_lock["promoted_observables"]["a2_over_a0"]["exact"]["exact"],
+            "a4_over_a0": srg_rosetta_lock["promoted_observables"]["a4_over_a0"]["exact"]["exact"],
+            "discrete_6_mode_over_a0": srg_rosetta_lock["promoted_observables"]["discrete_6_mode_over_a0"]["exact"]["exact"],
+            "discrete_to_continuum_ratio": srg_rosetta_lock["promoted_observables"]["discrete_to_continuum_ratio"]["exact"]["exact"],
+            "all_matches_formula": all(
+                entry["matches_formula"] for entry in srg_rosetta_lock["promoted_observables"].values()
+            ),
+        },
+        "spectral_rosetta_lock_bridge": {
+            "q_from_r_plus_one": spectral_rosetta_lock["spectral_data"]["q_from_r_plus_one"],
+            "phi3_from_k_plus_one": spectral_rosetta_lock["spectral_data"]["phi3_from_k_plus_one"],
+            "phi6_from_one_plus_r_minus_s": spectral_rosetta_lock["spectral_data"]["phi6_from_one_plus_r_minus_s"],
+            "sin2_theta_w_ew": spectral_rosetta_lock["promoted_observables"]["sin2_theta_w_ew"]["exact"]["exact"],
+            "sin2_theta_12": spectral_rosetta_lock["promoted_observables"]["sin2_theta_12"]["exact"]["exact"],
+            "sin2_theta_23": spectral_rosetta_lock["promoted_observables"]["sin2_theta_23"]["exact"]["exact"],
+            "sin2_theta_13": spectral_rosetta_lock["promoted_observables"]["sin2_theta_13"]["exact"]["exact"],
+            "omega_lambda": spectral_rosetta_lock["promoted_observables"]["omega_lambda"]["exact"]["exact"],
+            "higgs_ratio_square": spectral_rosetta_lock["promoted_observables"]["higgs_ratio_square"]["exact"]["exact"],
+            "a2_over_a0": spectral_rosetta_lock["promoted_observables"]["a2_over_a0"]["exact"]["exact"],
+            "a4_over_a0": spectral_rosetta_lock["promoted_observables"]["a4_over_a0"]["exact"]["exact"],
+            "discrete_6_mode_over_a0": spectral_rosetta_lock["promoted_observables"]["discrete_6_mode_over_a0"]["exact"]["exact"],
+            "discrete_to_continuum_ratio": spectral_rosetta_lock["promoted_observables"]["discrete_to_continuum_ratio"]["exact"]["exact"],
+            "all_matches_formula": all(
+                entry["matches_formula"] for entry in spectral_rosetta_lock["promoted_observables"].values()
+            ),
+        },
+        "curved_mode_projector_bridge": {
+            "tower_characteristic_polynomial": curved_mode_projector["tower_characteristic_polynomial"],
+            "p120": curved_mode_projector["shift_projectors"]["P_120"],
+            "p6": curved_mode_projector["shift_projectors"]["P_6"],
+            "p1": curved_mode_projector["shift_projectors"]["P_1"],
+            "finite_einstein_hilbert_coefficient": curved_mode_projector["finite_profile"]["einstein_hilbert_coefficient"]["exact"],
+            "cp2_eh_extracted": curved_mode_projector["seeds"][0]["eh_extracted_coefficient"]["exact"],
+            "k3_eh_extracted": curved_mode_projector["seeds"][1]["eh_extracted_coefficient"]["exact"],
+            "cp2_continuum_eh": curved_mode_projector["seeds"][0]["continuum_eh_from_rank_39_lock"]["exact"],
+            "k3_continuum_eh": curved_mode_projector["seeds"][1]["continuum_eh_from_rank_39_lock"]["exact"],
+            "all_projector_samples_match": all(
+                sample["projected_120"]["exact"] == sample["expected_120"]["exact"]
+                and sample["projected_6"]["exact"] == sample["expected_6"]["exact"]
+                and sample["projected_1"]["exact"] == sample["expected_1"]["exact"]
+                for seed in curved_mode_projector["seeds"]
+                for sample in seed["projector_samples"]
+            ),
+        },
+        "curved_mode_residue_bridge": {
+            "generating_function_formula": curved_mode_residue["generating_function"]["formula"],
+            "residue_definition": curved_mode_residue["generating_function"]["normalized_residue_definition"],
+            "expected_eh": curved_mode_residue["finite_profile"]["einstein_hilbert_coefficient"]["exact"],
+            "cp2_eh_from_residue": curved_mode_residue["seed_residue_data"][0]["eh_from_residue_over_six_mode"]["exact"],
+            "k3_eh_from_residue": curved_mode_residue["seed_residue_data"][1]["eh_from_residue_over_six_mode"]["exact"],
+            "cp2_continuum_from_residue": curved_mode_residue["seed_residue_data"][0]["continuum_eh_after_rank39_normalization"]["exact"],
+            "k3_continuum_from_residue": curved_mode_residue["seed_residue_data"][1]["continuum_eh_after_rank39_normalization"]["exact"],
+            "all_seed_residues_match_expected": all(
+                seed["eh_from_residue_over_six_mode"]["exact"]
+                == curved_mode_residue["finite_profile"]["einstein_hilbert_coefficient"]["exact"]
+                and seed["continuum_eh_after_rank39_normalization"]["exact"] == "320"
+                for seed in curved_mode_residue["seed_residue_data"]
+            ),
+        },
+        "curved_continuum_extractor_bridge": {
+            "discrete_eh_formula": curved_continuum_extractor["extractor_formulas"]["discrete_eh"],
+            "continuum_eh_formula": curved_continuum_extractor["extractor_formulas"]["continuum_eh"],
+            "topological_a2_formula": curved_continuum_extractor["extractor_formulas"]["topological_a2"],
+            "expected_discrete_eh": curved_continuum_extractor["finite_profile"]["expected_discrete_eh"]["exact"],
+            "expected_continuum_eh": curved_continuum_extractor["finite_profile"]["expected_continuum_eh"]["exact"],
+            "cp2_step0_continuum_eh": curved_continuum_extractor["seeds"][0]["samples"][0]["continuum_eh"]["exact"],
+            "k3_step0_continuum_eh": curved_continuum_extractor["seeds"][1]["samples"][0]["continuum_eh"]["exact"],
+            "all_samples_match_expected": all(
+                sample["discrete_eh"]["exact"] == curved_continuum_extractor["finite_profile"]["expected_discrete_eh"]["exact"]
+                and sample["continuum_eh"]["exact"] == curved_continuum_extractor["finite_profile"]["expected_continuum_eh"]["exact"]
+                and sample["topological_a2"]["exact"] == curved_continuum_extractor["finite_profile"]["a2"]["exact"]
+                for seed in curved_continuum_extractor["seeds"]
+                for sample in seed["samples"]
+            ),
+        },
+        "curved_weinberg_lock_bridge": {
+            "master_variable": curved_weinberg_lock["master_variable"]["exact"]["exact"],
+            "curved_reconstruction_formula": curved_weinberg_lock["curved_reconstruction_formula"],
+            "cp2_step0_reconstructed_x": curved_weinberg_lock["curved_samples"][0]["reconstructed_x"]["exact"],
+            "cp2_step1_reconstructed_x": curved_weinberg_lock["curved_samples"][1]["reconstructed_x"]["exact"],
+            "k3_step0_reconstructed_x": curved_weinberg_lock["curved_samples"][2]["reconstructed_x"]["exact"],
+            "k3_step1_reconstructed_x": curved_weinberg_lock["curved_samples"][3]["reconstructed_x"]["exact"],
+            "all_curved_samples_match_master_variable": all(
+                sample["matches_master_variable"] for sample in curved_weinberg_lock["curved_samples"]
+            ),
+            "exceptional_formula": curved_weinberg_lock["exceptional_reconstruction"]["formula"],
+            "exceptional_reconstructed_x": curved_weinberg_lock["exceptional_reconstruction"]["reconstructed_x"]["exact"],
+            "exceptional_matches_master_variable": curved_weinberg_lock["exceptional_reconstruction"]["matches_master_variable"],
+            "tan_theta_c": curved_weinberg_lock["promoted_observables_from_curved_x"]["tan_theta_c"]["exact"]["exact"],
+            "sin2_theta_12": curved_weinberg_lock["promoted_observables_from_curved_x"]["sin2_theta_12"]["exact"]["exact"],
+            "sin2_theta_23": curved_weinberg_lock["promoted_observables_from_curved_x"]["sin2_theta_23"]["exact"]["exact"],
+            "sin2_theta_13": curved_weinberg_lock["promoted_observables_from_curved_x"]["sin2_theta_13"]["exact"]["exact"],
+            "omega_lambda": curved_weinberg_lock["promoted_observables_from_curved_x"]["omega_lambda"]["exact"]["exact"],
+            "higgs_ratio_square": curved_weinberg_lock["promoted_observables_from_curved_x"]["higgs_ratio_square"]["exact"]["exact"],
+            "a2_over_a0": curved_weinberg_lock["promoted_observables_from_curved_x"]["a2_over_a0"]["exact"]["exact"],
+            "a4_over_a0": curved_weinberg_lock["promoted_observables_from_curved_x"]["a4_over_a0"]["exact"]["exact"],
+            "discrete_to_continuum_ratio": curved_weinberg_lock["promoted_observables_from_curved_x"]["discrete_to_continuum_ratio"]["exact"]["exact"],
+            "all_promoted_observables_match_public_generator_values": all(
+                entry["matches_public_generator_value"]
+                for entry in curved_weinberg_lock["promoted_observables_from_curved_x"].values()
+            ),
+        },
+        "curved_rosetta_reconstruction_bridge": {
+            "master_variable": curved_rosetta_reconstruction["curved_inputs"]["master_variable"]["exact"],
+            "discrete_to_continuum_ratio": curved_rosetta_reconstruction["curved_inputs"]["discrete_to_continuum_ratio"]["exact"],
+            "phi6_from_topological_over_continuum": curved_rosetta_reconstruction["curved_inputs"]["phi6_from_topological_over_continuum"]["exact"],
+            "vertex_count_from_topological_over_e7_fund": curved_rosetta_reconstruction["curved_inputs"]["vertex_count_from_topological_over_e7_fund"],
+            "edge_count_from_discrete_over_f4": curved_rosetta_reconstruction["curved_inputs"]["edge_count_from_discrete_over_f4"],
+            "k_from_two_edges_over_vertices": curved_rosetta_reconstruction["curved_inputs"]["k_from_two_edges_over_vertices"]["exact"],
+            "q": curved_rosetta_reconstruction["reconstructed_cyclotomic_data"]["q"],
+            "phi3": curved_rosetta_reconstruction["reconstructed_cyclotomic_data"]["phi3"]["exact"],
+            "phi6": curved_rosetta_reconstruction["reconstructed_cyclotomic_data"]["phi6"]["exact"],
+            "srg_data": curved_rosetta_reconstruction["reconstructed_srg_data"],
+            "spectral_data": curved_rosetta_reconstruction["reconstructed_spectral_data"],
+            "all_promoted_observables_match": curved_rosetta_reconstruction["matches_live_rosetta_data"]["all_promoted_observables_match"],
+            "all_samples_constant": curved_rosetta_reconstruction["all_samples_constant"],
+        },
+        "curved_finite_spectral_reconstruction_bridge": {
+            "q": curved_finite_spectral_reconstruction["reconstructed_graph_geometry"]["q"],
+            "line_count": curved_finite_spectral_reconstruction["reconstructed_graph_geometry"]["line_count"],
+            "edge_count": curved_finite_spectral_reconstruction["reconstructed_graph_geometry"]["edge_count"],
+            "triangle_count": curved_finite_spectral_reconstruction["reconstructed_graph_geometry"]["triangle_count"],
+            "tetrahedron_count": curved_finite_spectral_reconstruction["reconstructed_graph_geometry"]["tetrahedron_count"],
+            "betti_numbers": curved_finite_spectral_reconstruction["reconstructed_hodge_data"]["betti_numbers"],
+            "boundary_ranks": curved_finite_spectral_reconstruction["reconstructed_hodge_data"]["boundary_ranks"],
+            "vertex_laplacian_spectrum": curved_finite_spectral_reconstruction["reconstructed_vertex_channels"]["vertex_laplacian_spectrum"],
+            "df2_spectrum": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["df2_spectrum"],
+            "a0_f": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["seeley_dewitt_moments"]["a0_f"],
+            "a2_f": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["seeley_dewitt_moments"]["a2_f"],
+            "a4_f": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["seeley_dewitt_moments"]["a4_f"],
+            "mu_squared": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["spectral_action_ratios"]["mu_squared"]["exact"],
+            "lambda": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["spectral_action_ratios"]["lambda"]["exact"],
+            "higgs_ratio_square": curved_finite_spectral_reconstruction["reconstructed_finite_dirac_package"]["spectral_action_ratios"]["higgs_ratio_square"]["exact"],
+            "df2_spectrum_match": curved_finite_spectral_reconstruction["matches_live_internal_package"]["df2_spectrum_match"],
+            "moments_match": curved_finite_spectral_reconstruction["matches_live_internal_package"]["moments_match"],
+            "all_samples_constant": curved_finite_spectral_reconstruction["all_samples_constant"],
+        },
+        "curved_roundtrip_closure_bridge": {
+            "a0_f": curved_roundtrip_closure["reconstructed_finite_package"]["a0_f"],
+            "a2_f": curved_roundtrip_closure["reconstructed_finite_package"]["a2_f"],
+            "a4_f": curved_roundtrip_closure["reconstructed_finite_package"]["a4_f"],
+            "df2_spectrum": curved_roundtrip_closure["reconstructed_finite_package"]["df2_spectrum"],
+            "continuum_eh_from_finite": curved_roundtrip_closure["roundtrip_curved_coefficients"]["continuum_eh_from_finite"]["exact"],
+            "discrete_eh_from_finite": curved_roundtrip_closure["roundtrip_curved_coefficients"]["discrete_eh_from_finite"]["exact"],
+            "topological_from_finite": curved_roundtrip_closure["roundtrip_curved_coefficients"]["topological_from_finite"]["exact"],
+            "master_variable_from_roundtrip": curved_roundtrip_closure["roundtrip_curved_coefficients"]["master_variable_from_roundtrip"]["exact"],
+            "continuum_matches": curved_roundtrip_closure["matches_curved_extractor_profile"]["continuum_matches"],
+            "discrete_matches": curved_roundtrip_closure["matches_curved_extractor_profile"]["discrete_matches"],
+            "topological_matches": curved_roundtrip_closure["matches_curved_extractor_profile"]["topological_matches"],
+            "master_variable_matches": curved_roundtrip_closure["matches_curved_extractor_profile"]["master_variable_matches"],
+            "all_samples_close_exactly": curved_roundtrip_closure["all_samples_close_exactly"],
+        },
+        "three_sample_master_closure_bridge": {
+            "minimal_seed": three_sample_master_closure["minimal_curved_data"]["seed_name"],
+            "steps": three_sample_master_closure["minimal_curved_data"]["steps"],
+            "discrete_eh": three_sample_master_closure["minimal_curved_data"]["discrete_eh"],
+            "continuum_eh": three_sample_master_closure["minimal_curved_data"]["continuum_eh"],
+            "topological_a2": three_sample_master_closure["minimal_curved_data"]["topological_a2"],
+            "master_variable": three_sample_master_closure["public_generator_layer"]["master_variable"],
+            "q": three_sample_master_closure["rosetta_layer"]["q"],
+            "phi3": three_sample_master_closure["rosetta_layer"]["phi3"],
+            "phi6": three_sample_master_closure["rosetta_layer"]["phi6"],
+            "srg_data": three_sample_master_closure["rosetta_layer"]["srg_data"],
+            "spectral_data": three_sample_master_closure["rosetta_layer"]["spectral_data"],
+            "df2_spectrum": three_sample_master_closure["finite_spectral_layer"]["df2_spectrum"],
+            "a0_f": three_sample_master_closure["finite_spectral_layer"]["a0_f"],
+            "a2_f": three_sample_master_closure["finite_spectral_layer"]["a2_f"],
+            "a4_f": three_sample_master_closure["finite_spectral_layer"]["a4_f"],
+            "exceptional_data": three_sample_master_closure["exceptional_layer"],
+            "full_master_closure": three_sample_master_closure["closure_checks"]["full_master_closure"],
+        },
+        "exceptional_channel_continuum_bridge": {
+            "continuum_eh_coefficient": exceptional_channel_continuum["base_continuum_channel"]["continuum_eh_coefficient"],
+            "continuum_equals_spinor_e6_times_cartan": exceptional_channel_continuum["base_continuum_channel"]["continuum_equals_spinor_e6_times_cartan"],
+            "shared_six_l6_a2_root_support": exceptional_channel_continuum["shared_six_channel"]["l6_a2_root_support"],
+            "shared_six_transport_weyl_a2_order": exceptional_channel_continuum["shared_six_channel"]["transport_weyl_a2_order"],
+            "shared_six_firewall_triplet_fibers": exceptional_channel_continuum["shared_six_channel"]["firewall_triplet_fibers"],
+            "shared_six_tomotope_triality_factor": exceptional_channel_continuum["shared_six_channel"]["tomotope_triality_factor"],
+            "all_shared_six_channels_agree": exceptional_channel_continuum["shared_six_channel"]["all_equal_to_6"],
+            "discrete_6_mode_coefficient": exceptional_channel_continuum["discrete_curvature_channel"]["discrete_6_mode_coefficient"],
+            "discrete_equals_edges_times_f4": exceptional_channel_continuum["discrete_curvature_channel"]["discrete_equals_edges_times_f4"],
+            "discrete_equals_spinor_e6_times_shared_six_times_f4": exceptional_channel_continuum["discrete_curvature_channel"]["discrete_equals_spinor_e6_times_shared_six_times_f4"],
+            "cartan_rank_times_rank39_equals_shared_six_times_f4": exceptional_channel_continuum["discrete_curvature_channel"]["cartan_rank_times_rank39_equals_shared_six_times_f4"],
+            "topological_equals_spinor_e6_times_e7_fund": exceptional_channel_continuum["topological_channel"]["topological_equals_spinor_e6_times_e7_fund"],
+            "topological_equals_continuum_times_phi6": exceptional_channel_continuum["topological_channel"]["topological_equals_continuum_times_phi6"],
+            "tomotope_automorphism_equals_16_times_shared_six": exceptional_channel_continuum["tomotope_triality_bridge"]["tomotope_automorphism_equals_16_times_shared_six"],
+            "firewall_full_clean_quark_block_exists": exceptional_channel_continuum["transport_lie_crosscheck"]["firewall_full_clean_quark_block_exists"],
+        },
+        "exceptional_operator_projector_bridge": {
+            "spinor_operator_dimension": exceptional_operator_projector["operator_space"]["spinor_operator_dimension"],
+            "channel_ranks": exceptional_operator_projector["operator_space"]["channel_ranks"],
+            "frobenius_channels_are_pairwise_orthogonal_exactly": exceptional_operator_projector["operator_space"]["frobenius_channels_are_pairwise_orthogonal_exactly"],
+            "projector_traces_equal_ranks": exceptional_operator_projector["orthogonal_projectors"]["projector_traces_equal_ranks"],
+            "combined_gauge_package_rank": exceptional_operator_projector["orthogonal_projectors"]["combined_gauge_package_rank"],
+            "combined_rank_matches_spinor_total_rank": exceptional_operator_projector["orthogonal_projectors"]["combined_rank_matches_spinor_total_rank"],
+            "e6_generation_preserving": exceptional_operator_projector["generation_channel_alignment"]["e6_generation_preserving"],
+            "a2_generation_mixing_only": exceptional_operator_projector["generation_channel_alignment"]["a2_generation_mixing_only"],
+            "cartan_generation_preserving": exceptional_operator_projector["generation_channel_alignment"]["cartan_generation_preserving"],
+            "continuum_from_projector_ranks": exceptional_operator_projector["curved_rank_dressing"]["continuum_from_projector_ranks"],
+            "discrete_from_projector_ranks_and_f4": exceptional_operator_projector["curved_rank_dressing"]["discrete_from_projector_ranks_and_f4"],
+            "topological_from_projector_rank_and_e7_fund": exceptional_operator_projector["curved_rank_dressing"]["topological_from_projector_rank_and_e7_fund"],
+            "tomotope_from_a2_projector_rank": exceptional_operator_projector["curved_rank_dressing"]["tomotope_from_a2_projector_rank"],
+            "firewall_triplet_fibers_from_a2_projector_rank": exceptional_operator_projector["curved_rank_dressing"]["firewall_triplet_fibers_from_a2_projector_rank"],
+            "continuum_matches_live_bridge": exceptional_operator_projector["curved_rank_dressing"]["continuum_matches_live_bridge"],
+            "discrete_matches_live_bridge": exceptional_operator_projector["curved_rank_dressing"]["discrete_matches_live_bridge"],
+            "topological_matches_live_bridge": exceptional_operator_projector["curved_rank_dressing"]["topological_matches_live_bridge"],
+            "tomotope_matches_live_bridge": exceptional_operator_projector["curved_rank_dressing"]["tomotope_matches_live_bridge"],
+            "firewall_matches_live_bridge": exceptional_operator_projector["curved_rank_dressing"]["firewall_matches_live_bridge"],
+            "firewall_full_clean_quark_block_exists": exceptional_operator_projector["curved_rank_dressing"]["firewall_full_clean_quark_block_exists"],
+        },
+        "exceptional_tensor_rank_bridge": {
+            "e6_projector_rank": exceptional_tensor_rank["base_ranks"]["e6_projector_rank"],
+            "a2_projector_rank": exceptional_tensor_rank["base_ranks"]["a2_projector_rank"],
+            "cartan_projector_rank": exceptional_tensor_rank["base_ranks"]["cartan_projector_rank"],
+            "a2_transfer_block_rank": exceptional_tensor_rank["base_ranks"]["a2_transfer_block_rank"],
+            "all_a2_transfer_blocks_have_rank_16": exceptional_tensor_rank["base_ranks"]["all_a2_transfer_blocks_have_rank_16"],
+            "w33_edge_or_e8_root_count": exceptional_tensor_rank["tensor_rank_dictionary"]["w33_edge_or_e8_root_count"],
+            "continuum_eh_coefficient": exceptional_tensor_rank["tensor_rank_dictionary"]["continuum_eh_coefficient"],
+            "tomotope_automorphism_order": exceptional_tensor_rank["tensor_rank_dictionary"]["tomotope_automorphism_order"],
+            "discrete_curvature_coefficient": exceptional_tensor_rank["tensor_rank_dictionary"]["discrete_curvature_coefficient"],
+            "topological_coefficient": exceptional_tensor_rank["tensor_rank_dictionary"]["topological_coefficient"],
+            "edge_count_equals_e6_rank_times_a2_rank": exceptional_tensor_rank["tensor_rank_dictionary"]["edge_count_equals_e6_rank_times_a2_rank"],
+            "continuum_equals_e6_rank_times_cartan_rank": exceptional_tensor_rank["tensor_rank_dictionary"]["continuum_equals_e6_rank_times_cartan_rank"],
+            "tomotope_equals_a2_rank_times_a2_block_rank": exceptional_tensor_rank["tensor_rank_dictionary"]["tomotope_equals_a2_rank_times_a2_block_rank"],
+            "discrete_equals_edge_count_times_f4": exceptional_tensor_rank["tensor_rank_dictionary"]["discrete_equals_edge_count_times_f4"],
+            "topological_equals_e6_rank_times_e7_fund": exceptional_tensor_rank["tensor_rank_dictionary"]["topological_equals_e6_rank_times_e7_fund"],
+            "all_promoted_exceptional_counts_match": all(
+                exceptional_tensor_rank["promoted_exceptional_lock"].values()
+            ),
+        },
+        "exceptional_residue_bridge": {
+            "e6_projector_rank": exceptional_residue["internal_exceptional_data"]["e6_projector_rank"],
+            "a2_projector_rank": exceptional_residue["internal_exceptional_data"]["a2_projector_rank"],
+            "cartan_projector_rank": exceptional_residue["internal_exceptional_data"]["cartan_projector_rank"],
+            "edge_or_e8_root_count": exceptional_residue["internal_exceptional_data"]["edge_or_e8_root_count"],
+            "discrete_curvature_from_6_pole": exceptional_residue["pole_dictionary"]["discrete_curvature_from_6_pole"],
+            "continuum_eh_from_rank39_normalized_6_pole": exceptional_residue["pole_dictionary"]["continuum_eh_from_rank39_normalized_6_pole"],
+            "topological_from_1_pole": exceptional_residue["pole_dictionary"]["topological_from_1_pole"],
+            "discrete_equals_e6_times_a2_times_f4": exceptional_residue["pole_dictionary"]["discrete_equals_e6_times_a2_times_f4"],
+            "discrete_equals_edges_times_f4": exceptional_residue["pole_dictionary"]["discrete_equals_edges_times_f4"],
+            "continuum_equals_e6_times_cartan": exceptional_residue["pole_dictionary"]["continuum_equals_e6_times_cartan"],
+            "topological_equals_e6_times_e7_fund": exceptional_residue["pole_dictionary"]["topological_equals_e6_times_e7_fund"],
+            "all_seed_checks_pass": exceptional_residue["all_seed_checks_pass"],
+        },
+        "curved_inverse_rosetta_bridge": {
+            "w33_vertex_count": curved_inverse_rosetta["reconstructed_internal_data"]["w33_vertex_count"],
+            "w33_edge_or_e8_root_count": curved_inverse_rosetta["reconstructed_internal_data"]["w33_edge_or_e8_root_count"],
+            "spinor_cartan_rank": curved_inverse_rosetta["reconstructed_internal_data"]["spinor_cartan_rank"],
+            "shared_six_channel": curved_inverse_rosetta["reconstructed_internal_data"]["shared_six_channel"],
+            "tomotope_automorphism_order": curved_inverse_rosetta["reconstructed_internal_data"]["tomotope_automorphism_order"],
+            "vertex_count_matches": curved_inverse_rosetta["matches_live_internal_data"]["vertex_count_matches"],
+            "edge_count_matches": curved_inverse_rosetta["matches_live_internal_data"]["edge_count_matches"],
+            "cartan_rank_matches": curved_inverse_rosetta["matches_live_internal_data"]["cartan_rank_matches"],
+            "shared_six_matches": curved_inverse_rosetta["matches_live_internal_data"]["shared_six_matches"],
+            "tomotope_aut_matches": curved_inverse_rosetta["matches_live_internal_data"]["tomotope_aut_matches"],
+            "all_samples_constant": curved_inverse_rosetta["all_samples_constant"],
         },
         "center_quad_exceptional_bridge": {
             "center_quads": center_quad["w33_seed"]["center_quads"],
@@ -874,7 +1233,53 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "coefficient per internal degree of freedom 2Phi_3 are now one exact "
             "cyclotomic law governed by Phi_3 = 13 and Phi_6 = 7, and the matter/Higgs "
             "side now independently selects q = 3 because a2/a0, a4/a0, and 2a2/a4 all "
-            "collapse to the same polynomial 3q^2 - 10q + 3. The W33 center-quad quotient then "
+            "collapse to the same polynomial 3q^2 - 10q + 3. The promoted Standard Model "
+            "observables are sharper in the same language: sin^2(theta_W)=tan(theta_C)=3/13, "
+            "sin^2(theta_12)=4/13, sin^2(theta_23)=7/13, sin^2(theta_13)=2/91, and "
+            "Omega_Lambda=9/13 form one exact Phi_3/Phi_6 Rosetta layer. More strongly, "
+            "once q=3 is fixed that whole promoted Standard Model/cosmology package, together "
+            "with the Higgs ratio and the promoted internal gravity normalizations, collapses "
+            "to a single generator x = sin^2(theta_W) = 3/13. Better, the same x is then "
+            "reconstructed independently from Cabibbo, PMNS, Omega_Lambda, the Higgs ratio, "
+            "the internal spectral-action moments, and the promoted gravity ratios. More sharply still, "
+            "that same promoted package is already a direct SRG law: q = lambda + 1, Phi_3 = k + 1, "
+            "and Phi_6 = k - lambda - mu + 1 for SRG(40,12,2,4). Even more tightly, it is a direct "
+            "spectral law on the adjacency eigenvalues (k,r,s) = (12,2,-4), with q = r + 1 and "
+            "Phi_6 = 1 + r - s. On the curved side, the first product-moment refinement tower is "
+            "now not just decomposed but projector-controlled: its characteristic polynomial is "
+            "x^3 - 127x^2 + 846x - 720, and exact shift projectors isolate the 120-, 6-, and 1-mode "
+            "channels from three successive refinement levels, extracting the same EH coefficient 12480 "
+            "for both CP2_9 and K3_16 and the same continuum value 320 after the rank-39 normalization. "
+            "The same tower is now also an exact pole theorem: its generating function has only the "
+            "120-, 6-, and 1-poles, and the 6-pole residue divided by the seed six-mode recovers the "
+            "same 12480 while the 1-pole residue divided by the Euler mode recovers the same 2240. "
+            "More sharply still, that continuum value is now an exact three-sample discrete extractor on "
+            "the refinement tower itself, and the bridge is no longer scalar-only: 320 = 40*8 is the "
+            "exact l6 spinor E6/Cartan base block, the same six-channel core appears as the l6 A2 "
+            "support, the transport Weyl(A2) order, the six firewall triplet fibers, and the tomotope "
+            "triality factor in 96 = 16*6, and the discrete six-mode factorizes both as 320*39 and as "
+            "240*52 = 40*6*52, tying the curved channel directly to the W33 edge/E8-root count and the "
+            "F4 tomotope/24-cell route; the residual topological mode likewise factors as 40*56 = 320*7. "
+            "Better again, those same 40/6/8 channel numbers now come from a genuine operator theorem: "
+            "on End(S_48) the corrected l6 spinor package splits into pairwise Frobenius-orthogonal "
+            "projector spaces of exact ranks 40, 6, and 8 for E6, A2, and Cartan, so the curved scalar "
+            "coefficients are exact rank dressings of live internal projectors rather than anonymous "
+            "counts. Sharper still, those promoted exceptional counts now form a native tensor-rank "
+            "dictionary: 240 = 40*6 is the E6/A2 tensor-rank, 320 = 40*8 is the E6/Cartan tensor-rank, "
+            "96 = 6*16 is the A2 projector rank times the full A2 transfer-block rank, 12480 = 240*52, "
+            "and 2240 = 40*56. Even more sharply, those exact pole residues are already the live exceptional "
+            "dictionary: the 6-pole is the E6*A2*F4 channel, the rank-39-normalized 6-pole is the "
+            "E6*Cartan continuum EH channel, and the 1-pole is the E6*E7(fund) topological channel. "
+            "Better again, the same curved tower now reconstructs the electroweak generator itself: "
+            "from any three successive refinement levels one gets x = 9 c_EH / c_6 = 3/13, and the "
+            "same identity is already visible in the exceptional residue dictionary as "
+            "x = 9(40*8)/(40*6*52). So the curved bridge now recovers the promoted Standard Model "
+            "package, not only the gravity channel. Better still, the same curved inputs now reconstruct "
+            "the native graph geometry too: q = 3, Phi_3 = 13, Phi_6 = 7, the SRG data "
+            "(40,12,2,4), and the adjacency spectrum (12,2,-4). So the curved bridge now recovers "
+            "the public observables and the internal Rosetta data in one step. The channel-aware continuum value is an exact three-sample discrete extractor on the "
+            "refinement tower itself, and the same extractor is already "
+            "bidirectional on the promoted exceptional data. The W33 center-quad quotient then "
             "reconstructs an exact 45-point / "
             "27-line dual GQ(4,2) whose line graph is SRG(27,10,1,5) with 45 "
             "triangles, giving a direct exact bridge to the 27-line / 45-tritangent "
@@ -1160,7 +1565,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 372,
+        "focused_test_stack_size": 442,
     }
 
 

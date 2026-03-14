@@ -179,6 +179,217 @@ def test_synthesis_records_eh_continuum_lock_bridge() -> None:
     assert bridge["topological_equals_q_cubic_plus_1_times_abs_chi"] is True
 
 
+def test_synthesis_records_exceptional_channel_continuum_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["exceptional_channel_continuum_bridge"]
+    assert bridge["continuum_eh_coefficient"] == 320
+    assert bridge["continuum_equals_spinor_e6_times_cartan"] is True
+    assert bridge["shared_six_l6_a2_root_support"] == 6
+    assert bridge["shared_six_transport_weyl_a2_order"] == 6
+    assert bridge["shared_six_firewall_triplet_fibers"] == 6
+    assert bridge["shared_six_tomotope_triality_factor"] == 6
+    assert bridge["all_shared_six_channels_agree"] is True
+    assert bridge["discrete_6_mode_coefficient"] == 12480
+    assert bridge["discrete_equals_edges_times_f4"] is True
+    assert bridge["discrete_equals_spinor_e6_times_shared_six_times_f4"] is True
+    assert bridge["cartan_rank_times_rank39_equals_shared_six_times_f4"] is True
+    assert bridge["topological_equals_spinor_e6_times_e7_fund"] is True
+    assert bridge["topological_equals_continuum_times_phi6"] is True
+    assert bridge["tomotope_automorphism_equals_16_times_shared_six"] is True
+    assert bridge["firewall_full_clean_quark_block_exists"] is False
+
+
+def test_synthesis_records_exceptional_operator_projector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["exceptional_operator_projector_bridge"]
+    assert bridge["spinor_operator_dimension"] == 2304
+    assert bridge["channel_ranks"] == {"e6": 40, "a2": 6, "cartan": 8}
+    assert bridge["frobenius_channels_are_pairwise_orthogonal_exactly"] is True
+    assert bridge["projector_traces_equal_ranks"] is True
+    assert bridge["combined_gauge_package_rank"] == 54
+    assert bridge["combined_rank_matches_spinor_total_rank"] is True
+    assert bridge["e6_generation_preserving"] is True
+    assert bridge["a2_generation_mixing_only"] is True
+    assert bridge["cartan_generation_preserving"] is True
+    assert bridge["continuum_from_projector_ranks"] == 320
+    assert bridge["discrete_from_projector_ranks_and_f4"] == 12480
+    assert bridge["topological_from_projector_rank_and_e7_fund"] == 2240
+    assert bridge["tomotope_from_a2_projector_rank"] == 96
+    assert bridge["firewall_triplet_fibers_from_a2_projector_rank"] == 6
+    assert bridge["continuum_matches_live_bridge"] is True
+    assert bridge["discrete_matches_live_bridge"] is True
+    assert bridge["topological_matches_live_bridge"] is True
+    assert bridge["tomotope_matches_live_bridge"] is True
+    assert bridge["firewall_matches_live_bridge"] is True
+    assert bridge["firewall_full_clean_quark_block_exists"] is False
+
+
+def test_synthesis_records_exceptional_tensor_rank_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["exceptional_tensor_rank_bridge"]
+    assert bridge["e6_projector_rank"] == 40
+    assert bridge["a2_projector_rank"] == 6
+    assert bridge["cartan_projector_rank"] == 8
+    assert bridge["a2_transfer_block_rank"] == 16
+    assert bridge["all_a2_transfer_blocks_have_rank_16"] is True
+    assert bridge["w33_edge_or_e8_root_count"] == 240
+    assert bridge["continuum_eh_coefficient"] == 320
+    assert bridge["tomotope_automorphism_order"] == 96
+    assert bridge["discrete_curvature_coefficient"] == 12480
+    assert bridge["topological_coefficient"] == 2240
+    assert bridge["edge_count_equals_e6_rank_times_a2_rank"] is True
+    assert bridge["continuum_equals_e6_rank_times_cartan_rank"] is True
+    assert bridge["tomotope_equals_a2_rank_times_a2_block_rank"] is True
+    assert bridge["discrete_equals_edge_count_times_f4"] is True
+    assert bridge["topological_equals_e6_rank_times_e7_fund"] is True
+    assert bridge["all_promoted_exceptional_counts_match"] is True
+
+
+def test_synthesis_records_exceptional_residue_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["exceptional_residue_bridge"]
+    assert bridge["e6_projector_rank"] == 40
+    assert bridge["a2_projector_rank"] == 6
+    assert bridge["cartan_projector_rank"] == 8
+    assert bridge["edge_or_e8_root_count"] == 240
+    assert bridge["discrete_curvature_from_6_pole"] == 12480
+    assert bridge["continuum_eh_from_rank39_normalized_6_pole"] == 320
+    assert bridge["topological_from_1_pole"] == 2240
+    assert bridge["discrete_equals_e6_times_a2_times_f4"] is True
+    assert bridge["discrete_equals_edges_times_f4"] is True
+    assert bridge["continuum_equals_e6_times_cartan"] is True
+    assert bridge["topological_equals_e6_times_e7_fund"] is True
+    assert bridge["all_seed_checks_pass"] is True
+
+
+def test_synthesis_records_curved_inverse_rosetta_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_inverse_rosetta_bridge"]
+    assert bridge["w33_vertex_count"] == 40
+    assert bridge["w33_edge_or_e8_root_count"] == 240
+    assert bridge["spinor_cartan_rank"] == 8
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["tomotope_automorphism_order"] == 96
+    assert bridge["vertex_count_matches"] is True
+    assert bridge["edge_count_matches"] is True
+    assert bridge["cartan_rank_matches"] is True
+    assert bridge["shared_six_matches"] is True
+    assert bridge["tomotope_aut_matches"] is True
+    assert bridge["all_samples_constant"] is True
+
+
+def test_synthesis_records_curved_weinberg_lock_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_weinberg_lock_bridge"]
+    assert bridge["master_variable"] == "3/13"
+    assert bridge["curved_reconstruction_formula"] == "x = 9 * c_EH,cont / c_6"
+    assert bridge["cp2_step0_reconstructed_x"] == "3/13"
+    assert bridge["cp2_step1_reconstructed_x"] == "3/13"
+    assert bridge["k3_step0_reconstructed_x"] == "3/13"
+    assert bridge["k3_step1_reconstructed_x"] == "3/13"
+    assert bridge["all_curved_samples_match_master_variable"] is True
+    assert bridge["exceptional_formula"] == "x = 9 * (40*8) / (40*6*52)"
+    assert bridge["exceptional_reconstructed_x"] == "3/13"
+    assert bridge["exceptional_matches_master_variable"] is True
+    assert bridge["tan_theta_c"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["all_promoted_observables_match_public_generator_values"] is True
+
+
+def test_synthesis_records_curved_rosetta_reconstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_rosetta_reconstruction_bridge"]
+    assert bridge["master_variable"] == "3/13"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["phi6_from_topological_over_continuum"] == "7"
+    assert bridge["vertex_count_from_topological_over_e7_fund"] == 40
+    assert bridge["edge_count_from_discrete_over_f4"] == 240
+    assert bridge["k_from_two_edges_over_vertices"] == "12"
+    assert bridge["q"] == 3
+    assert bridge["phi3"] == "13"
+    assert bridge["phi6"] == "7"
+    assert bridge["srg_data"] == {"v": 40, "k": 12, "lambda": 2, "mu": 4}
+    assert bridge["spectral_data"] == {"k": 12, "r": 2, "s": -4}
+    assert bridge["all_promoted_observables_match"] is True
+    assert bridge["all_samples_constant"] is True
+
+
+def test_synthesis_records_curved_finite_spectral_reconstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_finite_spectral_reconstruction_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["line_count"] == 40
+    assert bridge["edge_count"] == 240
+    assert bridge["triangle_count"] == 160
+    assert bridge["tetrahedron_count"] == 40
+    assert bridge["betti_numbers"] == {"b0": 1, "b1": 81, "b2": 0, "b3": 0}
+    assert bridge["boundary_ranks"] == {"rank_d1": 39, "rank_d2": 120, "rank_d3": 40}
+    assert bridge["vertex_laplacian_spectrum"] == {0: 1, 10: 24, 16: 15}
+    assert bridge["df2_spectrum"] == {0: 82, 4: 320, 10: 48, 16: 30}
+    assert bridge["a0_f"] == 480
+    assert bridge["a2_f"] == 2240
+    assert bridge["a4_f"] == 17600
+    assert bridge["mu_squared"] == "14/3"
+    assert bridge["lambda"] == "110/3"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["df2_spectrum_match"] is True
+    assert bridge["moments_match"] is True
+    assert bridge["all_samples_constant"] is True
+
+
+def test_synthesis_records_curved_roundtrip_closure_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_roundtrip_closure_bridge"]
+    assert bridge["a0_f"] == 480
+    assert bridge["a2_f"] == 2240
+    assert bridge["a4_f"] == 17600
+    assert bridge["df2_spectrum"] == {0: 82, 4: 320, 10: 48, 16: 30}
+    assert bridge["continuum_eh_from_finite"] == "320"
+    assert bridge["discrete_eh_from_finite"] == "12480"
+    assert bridge["topological_from_finite"] == "2240"
+    assert bridge["master_variable_from_roundtrip"] == "3/13"
+    assert bridge["continuum_matches"] is True
+    assert bridge["discrete_matches"] is True
+    assert bridge["topological_matches"] is True
+    assert bridge["master_variable_matches"] is True
+    assert bridge["all_samples_close_exactly"] is True
+
+
+def test_synthesis_records_three_sample_master_closure_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["three_sample_master_closure_bridge"]
+    assert bridge["minimal_seed"] == "CP2"
+    assert bridge["steps"] == [0, 1, 2]
+    assert bridge["discrete_eh"] == "12480"
+    assert bridge["continuum_eh"] == "320"
+    assert bridge["topological_a2"] == "2240"
+    assert bridge["master_variable"] == "3/13"
+    assert bridge["q"] == 3
+    assert bridge["phi3"] == "13"
+    assert bridge["phi6"] == "7"
+    assert bridge["srg_data"] == {"v": 40, "k": 12, "lambda": 2, "mu": 4}
+    assert bridge["spectral_data"] == {"k": 12, "r": 2, "s": -4}
+    assert bridge["df2_spectrum"] == {0: 82, 4: 320, 10: 48, 16: 30}
+    assert bridge["a0_f"] == 480
+    assert bridge["a2_f"] == 2240
+    assert bridge["a4_f"] == 17600
+    assert bridge["exceptional_data"] == {
+        "w33_vertex_count": 40,
+        "w33_edge_or_e8_root_count": 240,
+        "spinor_cartan_rank": 8,
+        "shared_six_channel": 6,
+        "tomotope_automorphism_order": 96,
+    }
+    assert bridge["full_master_closure"] is True
+
+
 def test_synthesis_records_curvature_cyclotomic_lock_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curvature_cyclotomic_lock_bridge"]
@@ -233,6 +444,139 @@ def test_synthesis_records_spectral_action_q3_selection_bridge() -> None:
     assert bridge["gravity_polynomial"] == "q^2 + q - 12"
     assert bridge["gravity_factorization"] == "(q - 3)(q + 4)"
     assert bridge["gravity_unique_positive_integer_solution"] == 3
+
+
+def test_synthesis_records_standard_model_cyclotomic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["standard_model_cyclotomic_bridge"]
+    assert bridge["sin2_theta_w_ew"] == "3/13"
+    assert bridge["tan_theta_c"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["tan_cabibbo_equals_ew_weinberg"] is True
+    assert bridge["pmns_23_equals_weinberg_plus_pmns_12"] is True
+    assert bridge["omega_lambda_equals_q_times_weinberg"] is True
+    assert bridge["reactor_has_phi3_phi6_denominator"] is True
+    assert bridge["higgs_uses_four_phi3_plus_q_denominator"] is True
+
+
+def test_synthesis_records_weinberg_generator_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["weinberg_generator_bridge"]
+    assert bridge["generator"] == "3/13"
+    assert bridge["tan_theta_c"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["discrete_6_mode_over_a0"] == "26"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["sin2_theta_23_plus_2weinberg_equals_1"] is True
+    assert bridge["sin2_theta_12_equals_four_thirds_weinberg"] is True
+    assert bridge["omega_lambda_equals_3weinberg"] is True
+    assert bridge["cabibbo_equals_weinberg"] is True
+    assert bridge["gravity_ratio_equals_9_over_weinberg"] is True
+
+
+def test_synthesis_records_weinberg_reconstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["weinberg_reconstruction_bridge"]
+    assert bridge["master_variable"] == "3/13"
+    assert bridge["from_cabibbo"] == "3/13"
+    assert bridge["from_pmns_12"] == "3/13"
+    assert bridge["from_pmns_23"] == "3/13"
+    assert bridge["from_omega_lambda"] == "3/13"
+    assert bridge["from_higgs_ratio"] == "3/13"
+    assert bridge["from_a2_over_a0"] == "3/13"
+    assert bridge["from_a4_over_a0"] == "3/13"
+    assert bridge["from_discrete_6_mode_over_a0"] == "3/13"
+    assert bridge["from_discrete_to_continuum_ratio"] == "3/13"
+    assert bridge["all_channels_match_master_variable"] is True
+
+
+def test_synthesis_records_srg_rosetta_lock_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["srg_rosetta_lock_bridge"]
+    assert bridge["q_from_lambda_plus_one"] == 3
+    assert bridge["phi3_from_k_plus_one"] == 13
+    assert bridge["phi6_from_k_minus_lambda_minus_mu_plus_one"] == 7
+    assert bridge["sin2_theta_w_ew"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["discrete_6_mode_over_a0"] == "26"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["all_matches_formula"] is True
+
+
+def test_synthesis_records_spectral_rosetta_lock_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["spectral_rosetta_lock_bridge"]
+    assert bridge["q_from_r_plus_one"] == 3
+    assert bridge["phi3_from_k_plus_one"] == 13
+    assert bridge["phi6_from_one_plus_r_minus_s"] == 7
+    assert bridge["sin2_theta_w_ew"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["omega_lambda"] == "9/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["a2_over_a0"] == "14/3"
+    assert bridge["a4_over_a0"] == "110/3"
+    assert bridge["discrete_6_mode_over_a0"] == "26"
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["all_matches_formula"] is True
+
+
+def test_synthesis_records_curved_mode_projector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_mode_projector_bridge"]
+    assert bridge["tower_characteristic_polynomial"] == "x^3 - 127x^2 + 846x - 720"
+    assert bridge["p120"] == "((E-6)(E-1))/13566"
+    assert bridge["p6"] == "-((E-120)(E-1))/570"
+    assert bridge["p1"] == "((E-120)(E-6))/595"
+    assert bridge["finite_einstein_hilbert_coefficient"] == "12480"
+    assert bridge["cp2_eh_extracted"] == "12480"
+    assert bridge["k3_eh_extracted"] == "12480"
+    assert bridge["cp2_continuum_eh"] == "320"
+    assert bridge["k3_continuum_eh"] == "320"
+    assert bridge["all_projector_samples_match"] is True
+
+
+def test_synthesis_records_curved_mode_residue_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_mode_residue_bridge"]
+    assert bridge["generating_function_formula"] == "A/(1 - 120 z) + B/(1 - 6 z) + C/(1 - z)"
+    assert bridge["residue_definition"] == "R_alpha(G) = -alpha * Res_{z = 1/alpha} G(z)"
+    assert bridge["expected_eh"] == "12480"
+    assert bridge["cp2_eh_from_residue"] == "12480"
+    assert bridge["k3_eh_from_residue"] == "12480"
+    assert bridge["cp2_continuum_from_residue"] == "320"
+    assert bridge["k3_continuum_from_residue"] == "320"
+    assert bridge["all_seed_residues_match_expected"] is True
+
+
+def test_synthesis_records_curved_continuum_extractor_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_continuum_extractor_bridge"]
+    assert bridge["discrete_eh_formula"] == "-(M_{r+2} - 121 M_{r+1} + 120 M_r) / (570 * six * 6^r)"
+    assert bridge["continuum_eh_formula"] == "-(M_{r+2} - 121 M_{r+1} + 120 M_r) / (570 * six * 39 * 6^r)"
+    assert bridge["topological_a2_formula"] == "(M_{r+2} - 126 M_{r+1} + 720 M_r) / (595 * chi)"
+    assert bridge["expected_discrete_eh"] == "12480"
+    assert bridge["expected_continuum_eh"] == "320"
+    assert bridge["cp2_step0_continuum_eh"] == "320"
+    assert bridge["k3_step0_continuum_eh"] == "320"
+    assert bridge["all_samples_match_expected"] is True
 
 
 def test_synthesis_records_center_quad_exceptional_bridge() -> None:
