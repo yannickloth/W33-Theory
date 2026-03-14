@@ -463,6 +463,36 @@ def test_synthesis_records_standard_model_cyclotomic_bridge() -> None:
     assert bridge["higgs_uses_four_phi3_plus_q_denominator"] is True
 
 
+def test_synthesis_records_monster_landauer_ternary_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_landauer_ternary_bridge"]
+    assert bridge["monster_class"] == "3B"
+    assert bridge["shell_states"] == 3**13
+    assert bridge["shell_trits"] == 13
+    assert bridge["shell_landauer_over_kT"] == "13 ln(3)"
+    assert bridge["heisenberg_irrep_states"] == 3**6
+    assert bridge["heisenberg_irrep_trits"] == 6
+    assert bridge["complement_states"] == 3**7
+    assert bridge["complement_trits"] == 7
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["logical_trits"] == 4
+    assert bridge["phi3_equals_shell_trits"] is True
+    assert bridge["shared_six_equals_irrep_trits"] is True
+    assert bridge["phi6_equals_complement_trits"] is True
+    assert bridge["phi6_equals_shell_minus_irrep"] is True
+    assert bridge["heisenberg_irrep_equals_q_squared_times_logical_qutrits"] is True
+    assert bridge["weinberg_from_generation_over_shell"] == "3/13"
+    assert bridge["theta12_from_logical_over_shell"] == "4/13"
+    assert bridge["theta23_from_complement_over_shell"] == "7/13"
+    assert bridge["weinberg_matches_promoted_value"] is True
+    assert bridge["theta12_matches_promoted_value"] is True
+    assert bridge["theta23_matches_promoted_value"] is True
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["discrete_to_continuum_equals_shell_times_generation_trits"] is True
+    assert bridge["topological_over_continuum"] == "7"
+    assert bridge["topological_over_continuum_equals_complement_trits"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

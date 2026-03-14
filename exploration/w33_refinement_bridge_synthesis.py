@@ -106,6 +106,7 @@ from w33_q3_curved_selection_bridge import build_q3_curved_selection_summary
 from w33_spectral_action_cyclotomic_bridge import build_spectral_action_cyclotomic_summary
 from w33_spectral_action_q3_selection_bridge import build_spectral_action_q3_selection_summary
 from w33_standard_model_cyclotomic_bridge import build_standard_model_cyclotomic_summary
+from w33_monster_landauer_ternary_bridge import build_monster_landauer_ternary_bridge_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -197,6 +198,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     spectral_action_cyclotomic = build_spectral_action_cyclotomic_summary()
     spectral_action_q3_selection = build_spectral_action_q3_selection_summary()
     standard_model_cyclotomic = build_standard_model_cyclotomic_summary()
+    monster_landauer_ternary = build_monster_landauer_ternary_bridge_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -380,6 +382,33 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "omega_lambda_equals_q_times_weinberg": standard_model_cyclotomic["closure_relations"]["omega_lambda_equals_q_times_weinberg"],
             "reactor_has_phi3_phi6_denominator": standard_model_cyclotomic["closure_relations"]["reactor_has_phi3_phi6_denominator"],
             "higgs_uses_four_phi3_plus_q_denominator": standard_model_cyclotomic["closure_relations"]["higgs_uses_four_phi3_plus_q_denominator"],
+        },
+        "monster_landauer_ternary_bridge": {
+            "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],
+            "shell_states": monster_landauer_ternary["monster_local_shell"]["extraspecial_shell"]["states"],
+            "shell_trits": monster_landauer_ternary["monster_local_shell"]["extraspecial_shell"]["trits"],
+            "shell_landauer_over_kT": monster_landauer_ternary["monster_local_shell"]["extraspecial_shell"]["landauer_over_kT"]["exact"],
+            "heisenberg_irrep_states": monster_landauer_ternary["monster_local_shell"]["heisenberg_irrep"]["states"],
+            "heisenberg_irrep_trits": monster_landauer_ternary["monster_local_shell"]["heisenberg_irrep"]["trits"],
+            "complement_states": monster_landauer_ternary["monster_local_shell"]["shell_complement"]["states"],
+            "complement_trits": monster_landauer_ternary["monster_local_shell"]["shell_complement"]["trits"],
+            "logical_qutrits": monster_landauer_ternary["ternary_lock_dictionary"]["logical_qutrits"],
+            "logical_trits": monster_landauer_ternary["ternary_lock_dictionary"]["logical_trits"],
+            "phi3_equals_shell_trits": monster_landauer_ternary["ternary_lock_dictionary"]["phi3_equals_shell_trits"],
+            "shared_six_equals_irrep_trits": monster_landauer_ternary["ternary_lock_dictionary"]["shared_six_equals_irrep_trits"],
+            "phi6_equals_complement_trits": monster_landauer_ternary["ternary_lock_dictionary"]["phi6_equals_complement_trits"],
+            "phi6_equals_shell_minus_irrep": monster_landauer_ternary["ternary_lock_dictionary"]["phi6_equals_shell_minus_irrep"],
+            "heisenberg_irrep_equals_q_squared_times_logical_qutrits": monster_landauer_ternary["ternary_lock_dictionary"]["heisenberg_irrep_equals_q_squared_times_logical_qutrits"],
+            "weinberg_from_generation_over_shell": monster_landauer_ternary["landauer_ratio_dictionary"]["weinberg_from_generation_over_shell"]["exact"],
+            "theta12_from_logical_over_shell": monster_landauer_ternary["landauer_ratio_dictionary"]["theta12_from_logical_over_shell"]["exact"],
+            "theta23_from_complement_over_shell": monster_landauer_ternary["landauer_ratio_dictionary"]["theta23_from_complement_over_shell"]["exact"],
+            "weinberg_matches_promoted_value": monster_landauer_ternary["landauer_ratio_dictionary"]["weinberg_matches_promoted_value"],
+            "theta12_matches_promoted_value": monster_landauer_ternary["landauer_ratio_dictionary"]["theta12_matches_promoted_value"],
+            "theta23_matches_promoted_value": monster_landauer_ternary["landauer_ratio_dictionary"]["theta23_matches_promoted_value"],
+            "discrete_to_continuum_ratio": monster_landauer_ternary["landauer_ratio_dictionary"]["discrete_to_continuum_ratio"]["exact"],
+            "discrete_to_continuum_equals_shell_times_generation_trits": monster_landauer_ternary["landauer_ratio_dictionary"]["discrete_to_continuum_equals_shell_times_generation_trits"],
+            "topological_over_continuum": monster_landauer_ternary["landauer_ratio_dictionary"]["topological_over_continuum"]["exact"],
+            "topological_over_continuum_equals_complement_trits": monster_landauer_ternary["landauer_ratio_dictionary"]["topological_over_continuum_equals_complement_trits"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
