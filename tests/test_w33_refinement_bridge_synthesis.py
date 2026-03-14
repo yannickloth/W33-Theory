@@ -291,6 +291,141 @@ def test_synthesis_records_d4_f4_tomotope_reye_bridge() -> None:
     assert bridge["weyl_f4_equals_2_times_rotational_24"] is True
 
 
+def test_synthesis_records_triality_ladder_algebra_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["triality_ladder_algebra_bridge"]
+    assert bridge["q8_vertex_block"] == 24
+    assert bridge["tomotope_aut_block"] == 96
+    assert bridge["d4_weyl_flag_block"] == 192
+    assert bridge["rotational_24cell_block"] == 576
+    assert bridge["f4_weyl_block"] == 1152
+    assert bridge["e6_weyl_closure"] == 51840
+    assert bridge["tomotope_equals_a2_rank_times_block_rank"] is True
+    assert bridge["d4_equals_d4_roots_times_cartan_rank"] is True
+    assert bridge["rotational_24_equals_e6_root_support_times_cartan_rank"] is True
+    assert bridge["f4_equals_e6_root_support_times_block_rank"] is True
+    assert bridge["we6_equals_tritangents_times_wf4"] is True
+    assert bridge["we6_equals_directed_transport_edges_times_wd4"] is True
+    assert bridge["we6_equals_e6_root_support_times_transport_edges"] is True
+    assert bridge["tritangents"] == 45
+    assert bridge["directed_transport_edges"] == 270
+    assert bridge["transport_edges"] == 720
+
+
+def test_synthesis_records_triality_moonshine_spine_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["triality_moonshine_spine_bridge"]
+    assert bridge["q8_vertex_block"] == 24
+    assert bridge["weyl_e6_order"] == 51840
+    assert bridge["monster_semisimple_shell"] == 2160
+    assert bridge["monster_local_complement"] == 2187
+    assert bridge["leech_kissing_number"] == 196560
+    assert bridge["first_moonshine_coefficient"] == 196884
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["weyl_e6_quotiented_by_q8_vertex_block_equals_shell"] is True
+    assert bridge["shell_equals_tritangents_times_spinor_dimension"] is True
+    assert bridge["shell_equals_directed_transport_edges_times_cartan_rank"] is True
+    assert bridge["shell_equals_transport_edges_times_q"] is True
+    assert bridge["shell_equals_w33_edges_times_q_squared"] is True
+    assert bridge["local_complement_equals_shell_plus_generation"] is True
+    assert bridge["leech_equals_shell_times_phi3_phi6"] is True
+    assert bridge["first_moonshine_equals_leech_plus_gap"] is True
+    assert bridge["gap_equals_gauge_rank_times_shared_six"] is True
+    assert bridge["gap_equals_spacetime_factor_times_logical_qutrits"] is True
+
+
+def test_synthesis_records_s12_klein_projective_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["s12_klein_projective_bridge"]
+    assert bridge["harmonic_cube_order"] == 27
+    assert bridge["ternary_golay_code_size"] == 729
+    assert bridge["sl27_shell_dimension"] == 728
+    assert bridge["projectivized_shell_size"] == 364
+    assert bridge["ambient_pg53_points"] == 364
+    assert bridge["w33_klein_slice_points"] == 40
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["harmonic_cube_square_equals_golay_size"] is True
+    assert bridge["nonzero_golay_equals_sl27_dimension"] is True
+    assert bridge["projectivized_nonzero_shell_equals_pg53_points"] is True
+    assert bridge["projective_shell_minus_w33_klein_slice_equals_gap"] is True
+    assert bridge["projective_shell_splits_as_w33_slice_plus_gap"] is True
+    assert bridge["projective_weight_distribution"] == {6: 132, 9: 220, 12: 12}
+    assert bridge["external_plane_points"] == 13
+    assert bridge["plane_quartic_bitangent_count"] == 28
+    assert bridge["ambient_equals_bitangents_times_external_plane_points"] is True
+
+
+def test_synthesis_records_klein_quartic_ag21_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["klein_quartic_ag21_bridge"]
+    assert bridge["klein_quartic_ag_code_length"] == 21
+    assert bridge["fano_flags"] == 21
+    assert bridge["heawood_edges"] == 21
+    assert bridge["csaszar_edges"] == 21
+    assert bridge["szilassi_edges"] == 21
+    assert bridge["ag21_equals_q_times_phi6"] is True
+    assert bridge["all_promoted_21_counts_agree"] is True
+
+
+def test_synthesis_records_klein_harmonic_vogel_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["klein_harmonic_vogel_bridge"]
+    assert bridge["harmonic_packet_total"] == 14
+    assert bridge["klein_quartic_vertices"] == 24
+    assert bridge["klein_quartic_triangles"] == 56
+    assert bridge["klein_quartic_edges"] == 84
+    assert bridge["klein_quartic_automorphism_order"] == 168
+    assert bridge["bitangent_count"] == 28
+    assert bridge["ag21_length"] == 21
+    assert bridge["phi3"] == 13
+    assert bridge["g2_dimension"] == 14
+    assert bridge["a26_rank"] == 26
+    assert bridge["ambient_pg53_points"] == 364
+    assert bridge["w33_klein_slice_points"] == 40
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["sl27_shell_dimension"] == 728
+    assert bridge["harmonic_packet_total_equals_g2_dimension"] is True
+    assert bridge["triangles_equals_packets_times_spacetime"] is True
+    assert bridge["triangles_equals_two_times_bitangents"] is True
+    assert bridge["triangles_equals_cartan_times_phi6"] is True
+    assert bridge["edges_equals_packets_times_shared_six"] is True
+    assert bridge["edges_equals_four_times_ag21"] is True
+    assert bridge["edges_equals_gauge_closure_times_phi6"] is True
+    assert bridge["automorphisms_equals_two_times_edges"] is True
+    assert bridge["automorphisms_equals_eight_times_ag21"] is True
+    assert bridge["automorphisms_equals_vertex_seed_times_phi6"] is True
+    assert bridge["ambient_equals_g2_times_a26"] is True
+    assert bridge["ambient_equals_bitangents_times_phi3"] is True
+    assert bridge["ambient_equals_w33_slice_plus_gap"] is True
+    assert bridge["sl27_equals_two_times_ambient"] is True
+    assert bridge["sl27_equals_bitangents_times_a26"] is True
+    assert bridge["sl27_equals_triangles_times_phi3"] is True
+    assert bridge["gap_equals_spacetime_times_logical_qutrits"] is True
+
+
+def test_synthesis_records_s12_vogel_spine_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["s12_vogel_spine_bridge"]
+    assert bridge["sl27_dimension"] == 728
+    assert bridge["a_family_rank"] == 26
+    assert bridge["projective_shell_dimension"] == 364
+    assert bridge["g2_dimension"] == 14
+    assert bridge["d4_dimension"] == 28
+    assert bridge["f4_dimension"] == 52
+    assert bridge["e8_dimension"] == 248
+    assert bridge["finite_w33_dimension"] == 480
+    assert bridge["sl27_is_exactly_a26"] is True
+    assert bridge["projective_shell_equals_g2_times_a26_rank"] is True
+    assert bridge["sl27_equals_d4_dimension_times_a26_rank"] is True
+    assert bridge["sl27_equals_g2_times_f4"] is True
+    assert bridge["sl27_equals_finite_w33_plus_e8"] is True
+    assert bridge["dim_242_in_positive_exceptional_hit_set"] is False
+    assert bridge["dim_486_in_positive_exceptional_hit_set"] is False
+    assert bridge["dim_728_in_positive_exceptional_hit_set"] is False
+    assert bridge["nearest_positive_exceptional_hits_to_728"] == [782]
+    assert bridge["distance_from_728_to_nearest_positive_exceptional_hit"] == 54
+
+
 def test_synthesis_records_curved_inverse_rosetta_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_inverse_rosetta_bridge"]

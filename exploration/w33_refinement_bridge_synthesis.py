@@ -123,6 +123,11 @@ from w33_monster_moonshine_lift_bridge import build_monster_moonshine_lift_summa
 from w33_monster_transport_moonshine_bridge import build_monster_transport_moonshine_summary
 from w33_monster_gap_duality_bridge import build_monster_gap_duality_summary
 from w33_monster_triangle_landauer_bridge import build_monster_triangle_landauer_summary
+from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_summary
+from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
+from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
+from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
+from w33_s12_vogel_spine_bridge import build_s12_vogel_spine_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -148,6 +153,7 @@ from w33_exceptional_tensor_rank_bridge import (
 )
 from w33_exceptional_residue_bridge import build_exceptional_residue_bridge_summary
 from w33_d4_f4_tomotope_reye_bridge import build_d4_f4_tomotope_reye_summary
+from w33_triality_ladder_algebra_bridge import build_triality_ladder_algebra_summary
 from w33_curved_inverse_rosetta_bridge import build_curved_inverse_rosetta_summary
 
 
@@ -228,6 +234,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_transport_moonshine = build_monster_transport_moonshine_summary()
     monster_gap_duality = build_monster_gap_duality_summary()
     monster_triangle_landauer = build_monster_triangle_landauer_summary()
+    triality_moonshine_spine = build_triality_moonshine_spine_summary()
+    s12_klein_projective = build_s12_klein_projective_summary()
+    klein_quartic_ag21 = build_klein_quartic_ag21_summary()
+    klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
+    s12_vogel_spine = build_s12_vogel_spine_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -245,6 +256,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     exceptional_tensor_rank = build_exceptional_tensor_rank_summary()
     exceptional_residue = build_exceptional_residue_bridge_summary()
     d4_f4_tomotope_reye = build_d4_f4_tomotope_reye_summary()
+    triality_ladder_algebra = build_triality_ladder_algebra_summary()
     curved_inverse_rosetta = build_curved_inverse_rosetta_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
@@ -666,6 +678,105 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "landauer_exceptional_split_matches": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_exceptional_split_matches"],
             "landauer_matter_split_matches": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_matter_split_matches"],
         },
+        "triality_moonshine_spine_bridge": {
+            "q8_vertex_block": triality_moonshine_spine["compressed_spine_dictionary"]["q8_vertex_block"],
+            "weyl_e6_order": triality_moonshine_spine["compressed_spine_dictionary"]["weyl_e6_order"],
+            "monster_semisimple_shell": triality_moonshine_spine["compressed_spine_dictionary"]["monster_semisimple_shell"],
+            "monster_local_complement": triality_moonshine_spine["compressed_spine_dictionary"]["monster_local_complement"],
+            "leech_kissing_number": triality_moonshine_spine["compressed_spine_dictionary"]["leech_kissing_number"],
+            "first_moonshine_coefficient": triality_moonshine_spine["compressed_spine_dictionary"]["first_moonshine_coefficient"],
+            "moonshine_gap": triality_moonshine_spine["compressed_spine_dictionary"]["moonshine_gap"],
+            "weyl_e6_quotiented_by_q8_vertex_block_equals_shell": triality_moonshine_spine["compressed_spine_dictionary"]["weyl_e6_quotiented_by_q8_vertex_block_equals_shell"],
+            "shell_equals_tritangents_times_spinor_dimension": triality_moonshine_spine["compressed_spine_dictionary"]["shell_equals_tritangents_times_spinor_dimension"],
+            "shell_equals_directed_transport_edges_times_cartan_rank": triality_moonshine_spine["compressed_spine_dictionary"]["shell_equals_directed_transport_edges_times_cartan_rank"],
+            "shell_equals_transport_edges_times_q": triality_moonshine_spine["compressed_spine_dictionary"]["shell_equals_transport_edges_times_q"],
+            "shell_equals_w33_edges_times_q_squared": triality_moonshine_spine["compressed_spine_dictionary"]["shell_equals_w33_edges_times_q_squared"],
+            "local_complement_equals_shell_plus_generation": triality_moonshine_spine["compressed_spine_dictionary"]["local_complement_equals_shell_plus_generation"],
+            "leech_equals_shell_times_phi3_phi6": triality_moonshine_spine["compressed_spine_dictionary"]["leech_equals_shell_times_phi3_phi6"],
+            "first_moonshine_equals_leech_plus_gap": triality_moonshine_spine["compressed_spine_dictionary"]["first_moonshine_equals_leech_plus_gap"],
+            "gap_equals_gauge_rank_times_shared_six": triality_moonshine_spine["compressed_spine_dictionary"]["gap_equals_gauge_rank_times_shared_six"],
+            "gap_equals_spacetime_factor_times_logical_qutrits": triality_moonshine_spine["compressed_spine_dictionary"]["gap_equals_spacetime_factor_times_logical_qutrits"],
+        },
+        "s12_klein_projective_bridge": {
+            "harmonic_cube_order": s12_klein_projective["harmonic_cube_square_dictionary"]["harmonic_cube_order"],
+            "ternary_golay_code_size": s12_klein_projective["harmonic_cube_square_dictionary"]["ternary_golay_code_size"],
+            "sl27_shell_dimension": s12_klein_projective["harmonic_cube_square_dictionary"]["sl27_shell_dimension"],
+            "projectivized_shell_size": s12_klein_projective["harmonic_cube_square_dictionary"]["projectivized_shell_size"],
+            "ambient_pg53_points": s12_klein_projective["harmonic_cube_square_dictionary"]["ambient_pg53_points"],
+            "w33_klein_slice_points": s12_klein_projective["harmonic_cube_square_dictionary"]["w33_klein_slice_points"],
+            "moonshine_gap": s12_klein_projective["harmonic_cube_square_dictionary"]["moonshine_gap"],
+            "harmonic_cube_square_equals_golay_size": s12_klein_projective["harmonic_cube_square_dictionary"]["harmonic_cube_square_equals_golay_size"],
+            "nonzero_golay_equals_sl27_dimension": s12_klein_projective["harmonic_cube_square_dictionary"]["nonzero_golay_equals_sl27_dimension"],
+            "projectivized_nonzero_shell_equals_pg53_points": s12_klein_projective["harmonic_cube_square_dictionary"]["projectivized_nonzero_shell_equals_pg53_points"],
+            "projective_shell_minus_w33_klein_slice_equals_gap": s12_klein_projective["harmonic_cube_square_dictionary"]["projective_shell_minus_w33_klein_slice_equals_gap"],
+            "projective_shell_splits_as_w33_slice_plus_gap": s12_klein_projective["harmonic_cube_square_dictionary"]["projective_shell_splits_as_w33_slice_plus_gap"],
+            "projective_weight_distribution": s12_klein_projective["weight_projectivization"]["projective_weight_distribution"],
+            "external_plane_points": s12_klein_projective["quartic_parallelism_guide_rail"]["clifford_parallelism_external_plane_points"],
+            "plane_quartic_bitangent_count": s12_klein_projective["quartic_parallelism_guide_rail"]["plane_quartic_bitangent_count"],
+            "ambient_equals_bitangents_times_external_plane_points": s12_klein_projective["quartic_parallelism_guide_rail"]["ambient_pg53_equals_bitangents_times_external_plane_points"],
+        },
+        "klein_quartic_ag21_bridge": {
+            "klein_quartic_ag_code_length": klein_quartic_ag21["ag21_coding_shadow"]["klein_quartic_ag_code_length"],
+            "fano_flags": klein_quartic_ag21["ag21_coding_shadow"]["fano_flags"],
+            "heawood_edges": klein_quartic_ag21["ag21_coding_shadow"]["heawood_edges"],
+            "csaszar_edges": klein_quartic_ag21["ag21_coding_shadow"]["csaszar_edges"],
+            "szilassi_edges": klein_quartic_ag21["ag21_coding_shadow"]["szilassi_edges"],
+            "ag21_equals_q_times_phi6": klein_quartic_ag21["ag21_coding_shadow"]["ag21_equals_q_times_phi6"],
+            "all_promoted_21_counts_agree": klein_quartic_ag21["ag21_coding_shadow"]["all_promoted_21_counts_agree"],
+        },
+        "klein_harmonic_vogel_bridge": {
+            "harmonic_packet_total": klein_harmonic_vogel["harmonic_quartic_dictionary"]["harmonic_packet_total"],
+            "klein_quartic_vertices": klein_harmonic_vogel["harmonic_quartic_dictionary"]["klein_quartic_vertices"],
+            "klein_quartic_triangles": klein_harmonic_vogel["harmonic_quartic_dictionary"]["klein_quartic_triangles"],
+            "klein_quartic_edges": klein_harmonic_vogel["harmonic_quartic_dictionary"]["klein_quartic_edges"],
+            "klein_quartic_automorphism_order": klein_harmonic_vogel["harmonic_quartic_dictionary"]["klein_quartic_automorphism_order"],
+            "bitangent_count": klein_harmonic_vogel["harmonic_quartic_dictionary"]["bitangent_count"],
+            "ag21_length": klein_harmonic_vogel["harmonic_quartic_dictionary"]["ag21_length"],
+            "phi3": klein_harmonic_vogel["harmonic_quartic_dictionary"]["phi3"],
+            "g2_dimension": klein_harmonic_vogel["harmonic_quartic_dictionary"]["g2_dimension"],
+            "a26_rank": klein_harmonic_vogel["harmonic_quartic_dictionary"]["a26_rank"],
+            "ambient_pg53_points": klein_harmonic_vogel["harmonic_quartic_dictionary"]["ambient_pg53_points"],
+            "w33_klein_slice_points": klein_harmonic_vogel["harmonic_quartic_dictionary"]["w33_klein_slice_points"],
+            "moonshine_gap": klein_harmonic_vogel["harmonic_quartic_dictionary"]["moonshine_gap"],
+            "sl27_shell_dimension": klein_harmonic_vogel["harmonic_quartic_dictionary"]["sl27_shell_dimension"],
+            "harmonic_packet_total_equals_g2_dimension": klein_harmonic_vogel["harmonic_quartic_dictionary"]["harmonic_packet_total_equals_g2_dimension"],
+            "triangles_equals_packets_times_spacetime": klein_harmonic_vogel["harmonic_quartic_dictionary"]["triangles_equals_packets_times_spacetime"],
+            "triangles_equals_two_times_bitangents": klein_harmonic_vogel["harmonic_quartic_dictionary"]["triangles_equals_two_times_bitangents"],
+            "triangles_equals_cartan_times_phi6": klein_harmonic_vogel["harmonic_quartic_dictionary"]["triangles_equals_cartan_times_phi6"],
+            "edges_equals_packets_times_shared_six": klein_harmonic_vogel["promoted_factorizations"]["edges_equals_packets_times_shared_six"],
+            "edges_equals_four_times_ag21": klein_harmonic_vogel["promoted_factorizations"]["edges_equals_four_times_ag21"],
+            "edges_equals_gauge_closure_times_phi6": klein_harmonic_vogel["promoted_factorizations"]["edges_equals_gauge_closure_times_phi6"],
+            "automorphisms_equals_two_times_edges": klein_harmonic_vogel["promoted_factorizations"]["automorphisms_equals_two_times_edges"],
+            "automorphisms_equals_eight_times_ag21": klein_harmonic_vogel["promoted_factorizations"]["automorphisms_equals_eight_times_ag21"],
+            "automorphisms_equals_vertex_seed_times_phi6": klein_harmonic_vogel["promoted_factorizations"]["automorphisms_equals_vertex_seed_times_phi6"],
+            "ambient_equals_g2_times_a26": klein_harmonic_vogel["promoted_factorizations"]["ambient_equals_g2_times_a26"],
+            "ambient_equals_bitangents_times_phi3": klein_harmonic_vogel["promoted_factorizations"]["ambient_equals_bitangents_times_phi3"],
+            "ambient_equals_w33_slice_plus_gap": klein_harmonic_vogel["promoted_factorizations"]["ambient_equals_w33_slice_plus_gap"],
+            "sl27_equals_two_times_ambient": klein_harmonic_vogel["promoted_factorizations"]["sl27_equals_two_times_ambient"],
+            "sl27_equals_bitangents_times_a26": klein_harmonic_vogel["promoted_factorizations"]["sl27_equals_bitangents_times_a26"],
+            "sl27_equals_triangles_times_phi3": klein_harmonic_vogel["promoted_factorizations"]["sl27_equals_triangles_times_phi3"],
+            "gap_equals_spacetime_times_logical_qutrits": klein_harmonic_vogel["promoted_factorizations"]["gap_equals_spacetime_times_logical_qutrits"],
+        },
+        "s12_vogel_spine_bridge": {
+            "sl27_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_dimension"],
+            "a_family_rank": s12_vogel_spine["vogel_a_line_dictionary"]["a_family_rank"],
+            "projective_shell_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["projective_shell_dimension"],
+            "g2_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["g2_dimension"],
+            "d4_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["d4_dimension"],
+            "f4_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["f4_dimension"],
+            "e8_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["e8_dimension"],
+            "finite_w33_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["finite_w33_dimension"],
+            "sl27_is_exactly_a26": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_is_exactly_a26"],
+            "projective_shell_equals_g2_times_a26_rank": s12_vogel_spine["vogel_a_line_dictionary"]["projective_shell_equals_g2_times_a26_rank"],
+            "sl27_equals_d4_dimension_times_a26_rank": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_equals_d4_dimension_times_a26_rank"],
+            "sl27_equals_g2_times_f4": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_equals_g2_times_f4"],
+            "sl27_equals_finite_w33_plus_e8": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_equals_finite_w33_plus_e8"],
+            "dim_242_in_positive_exceptional_hit_set": s12_vogel_spine["exceptional_line_firewall"]["dim_242_in_positive_exceptional_hit_set"],
+            "dim_486_in_positive_exceptional_hit_set": s12_vogel_spine["exceptional_line_firewall"]["dim_486_in_positive_exceptional_hit_set"],
+            "dim_728_in_positive_exceptional_hit_set": s12_vogel_spine["exceptional_line_firewall"]["dim_728_in_positive_exceptional_hit_set"],
+            "nearest_positive_exceptional_hits_to_728": s12_vogel_spine["exceptional_line_firewall"]["nearest_positive_exceptional_hits_to_728"],
+            "distance_from_728_to_nearest_positive_exceptional_hit": s12_vogel_spine["exceptional_line_firewall"]["distance_from_728_to_nearest_positive_exceptional_hit"],
+        },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
             "tan_theta_c": weinberg_generator["generated_observables"]["tan_theta_c"]["exact"]["exact"],
@@ -979,6 +1090,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "weyl_f4_equals_twelve_times_tomotope_automorphism": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_twelve_times_tomotope_automorphism"],
             "rotational_24_equals_triality_times_tomotope_automorphism": d4_f4_tomotope_reye["f4_triality_lift"]["rotational_24_equals_triality_times_tomotope_automorphism"],
             "weyl_f4_equals_2_times_rotational_24": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_2_times_rotational_24"],
+        },
+        "triality_ladder_algebra_bridge": {
+            "q8_vertex_block": triality_ladder_algebra["triality_ladder"]["q8_d4_24cell_vertex_block"]["value"],
+            "tomotope_aut_block": triality_ladder_algebra["triality_ladder"]["tomotope_aut_block"]["value"],
+            "d4_weyl_flag_block": triality_ladder_algebra["triality_ladder"]["d4_weyl_flag_block"]["value"],
+            "rotational_24cell_block": triality_ladder_algebra["triality_ladder"]["rotational_24cell_block"]["value"],
+            "f4_weyl_block": triality_ladder_algebra["triality_ladder"]["f4_weyl_block"]["value"],
+            "e6_weyl_closure": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["value"],
+            "tomotope_equals_a2_rank_times_block_rank": triality_ladder_algebra["triality_ladder"]["tomotope_aut_block"]["equals_a2_rank_times_a2_block_rank"],
+            "d4_equals_d4_roots_times_cartan_rank": triality_ladder_algebra["triality_ladder"]["d4_weyl_flag_block"]["equals_d4_roots_times_cartan_rank"],
+            "rotational_24_equals_e6_root_support_times_cartan_rank": triality_ladder_algebra["triality_ladder"]["rotational_24cell_block"]["equals_e6_root_support_times_cartan_rank"],
+            "f4_equals_e6_root_support_times_block_rank": triality_ladder_algebra["triality_ladder"]["f4_weyl_block"]["equals_e6_root_support_times_a2_block_rank"],
+            "we6_equals_tritangents_times_wf4": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["equals_tritangents_times_wf4"],
+            "we6_equals_directed_transport_edges_times_wd4": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["equals_directed_transport_edges_times_wd4"],
+            "we6_equals_e6_root_support_times_transport_edges": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["equals_e6_root_support_times_transport_edges"],
+            "tritangents": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["tritangents"],
+            "directed_transport_edges": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["directed_transport_edges"],
+            "transport_edges": triality_ladder_algebra["triality_ladder"]["e6_weyl_closure"]["transport_edges"],
         },
         "curved_inverse_rosetta_bridge": {
             "w33_vertex_count": curved_inverse_rosetta["reconstructed_internal_data"]["w33_vertex_count"],
