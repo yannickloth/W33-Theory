@@ -122,6 +122,7 @@ from w33_monster_supertrace_bridge import build_monster_supertrace_summary
 from w33_monster_moonshine_lift_bridge import build_monster_moonshine_lift_summary
 from w33_monster_transport_moonshine_bridge import build_monster_transport_moonshine_summary
 from w33_monster_gap_duality_bridge import build_monster_gap_duality_summary
+from w33_monster_triangle_landauer_bridge import build_monster_triangle_landauer_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -146,6 +147,7 @@ from w33_exceptional_tensor_rank_bridge import (
     build_exceptional_tensor_rank_summary,
 )
 from w33_exceptional_residue_bridge import build_exceptional_residue_bridge_summary
+from w33_d4_f4_tomotope_reye_bridge import build_d4_f4_tomotope_reye_summary
 from w33_curved_inverse_rosetta_bridge import build_curved_inverse_rosetta_summary
 
 
@@ -225,6 +227,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_moonshine_lift = build_monster_moonshine_lift_summary()
     monster_transport_moonshine = build_monster_transport_moonshine_summary()
     monster_gap_duality = build_monster_gap_duality_summary()
+    monster_triangle_landauer = build_monster_triangle_landauer_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -241,6 +244,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     exceptional_operator_projector = build_exceptional_operator_projector_summary()
     exceptional_tensor_rank = build_exceptional_tensor_rank_summary()
     exceptional_residue = build_exceptional_residue_bridge_summary()
+    d4_f4_tomotope_reye = build_d4_f4_tomotope_reye_summary()
     curved_inverse_rosetta = build_curved_inverse_rosetta_summary()
     fano_group = build_fano_group_summary()
     fano_square = build_fano_square_tomotope_summary()
@@ -641,6 +645,27 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "gauge_rank_equals_e6_plus_a2_plus_cartan": monster_gap_duality["moonshine_gap_dictionary"]["gauge_rank_equals_e6_plus_a2_plus_cartan"],
             "shared_six_is_live_a2_rank": monster_gap_duality["moonshine_gap_dictionary"]["shared_six_is_live_a2_rank"],
         },
+        "monster_triangle_landauer_bridge": {
+            "q": monster_triangle_landauer["triangle_landauer_dictionary"]["q"],
+            "vertices": monster_triangle_landauer["triangle_landauer_dictionary"]["vertices"],
+            "degree": monster_triangle_landauer["triangle_landauer_dictionary"]["degree"],
+            "lambda": monster_triangle_landauer["triangle_landauer_dictionary"]["lambda"],
+            "triangle_count": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_count"],
+            "automorphism_order": monster_triangle_landauer["triangle_landauer_dictionary"]["automorphism_order"],
+            "triangle_stabilizer": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer"],
+            "moonshine_gap": monster_triangle_landauer["triangle_landauer_dictionary"]["moonshine_gap"],
+            "triangle_stabilizer_matches_general_formula": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer_matches_general_formula"],
+            "triangle_stabilizer_equals_moonshine_gap": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer_equals_moonshine_gap"],
+            "triangle_stabilizer_equals_exceptional_times_shared_six": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer_equals_exceptional_times_shared_six"],
+            "triangle_stabilizer_equals_spacetime_times_logical_qutrits": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer_equals_spacetime_times_logical_qutrits"],
+            "triangle_stabilizer_equals_degree_times_generation": monster_triangle_landauer["triangle_landauer_dictionary"]["triangle_stabilizer_equals_degree_times_generation"],
+            "first_moonshine_equals_transport_traceless_plus_triangle_stabilizer": monster_triangle_landauer["triangle_landauer_dictionary"]["first_moonshine_equals_transport_traceless_plus_triangle_stabilizer"],
+            "landauer_gap_over_kT": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_gap_over_kT"]["exact"],
+            "landauer_exceptional_split": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_exceptional_split"],
+            "landauer_matter_split": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_matter_split"],
+            "landauer_exceptional_split_matches": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_exceptional_split_matches"],
+            "landauer_matter_split_matches": monster_triangle_landauer["triangle_landauer_dictionary"]["landauer_matter_split_matches"],
+        },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
             "tan_theta_c": weinberg_generator["generated_observables"]["tan_theta_c"]["exact"]["exact"],
@@ -928,6 +953,32 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "continuum_equals_e6_times_cartan": exceptional_residue["pole_dictionary"]["continuum_equals_e6_times_cartan"],
             "topological_equals_e6_times_e7_fund": exceptional_residue["pole_dictionary"]["topological_equals_e6_times_e7_fund"],
             "all_seed_checks_pass": exceptional_residue["all_seed_checks_pass"],
+        },
+        "d4_f4_tomotope_reye_bridge": {
+            "weyl_d4_order": d4_f4_tomotope_reye["d4_lock"]["weyl_d4_order"],
+            "tomotope_flag_count": d4_f4_tomotope_reye["d4_lock"]["tomotope_flag_count"],
+            "tomotope_automorphism_order": d4_f4_tomotope_reye["d4_lock"]["tomotope_automorphism_order"],
+            "weyl_d4_equals_tomotope_flags": d4_f4_tomotope_reye["d4_lock"]["weyl_d4_equals_tomotope_flags"],
+            "weyl_d4_equals_2_times_tomotope_automorphism": d4_f4_tomotope_reye["d4_lock"]["weyl_d4_equals_2_times_tomotope_automorphism"],
+            "aut_q8_order": d4_f4_tomotope_reye["q8_to_24cell_bridge"]["aut_q8_order"],
+            "d4_root_count": d4_f4_tomotope_reye["q8_to_24cell_bridge"]["d4_root_count"],
+            "twenty_four_cell_vertex_count": d4_f4_tomotope_reye["q8_to_24cell_bridge"]["twenty_four_cell_vertex_count"],
+            "aut_q8_equals_d4_root_count": d4_f4_tomotope_reye["q8_to_24cell_bridge"]["aut_q8_equals_d4_root_count"],
+            "d4_root_count_equals_24cell_vertices": d4_f4_tomotope_reye["q8_to_24cell_bridge"]["d4_root_count_equals_24cell_vertices"],
+            "reye_points": d4_f4_tomotope_reye["reye_shadow"]["reye_points"],
+            "reye_lines": d4_f4_tomotope_reye["reye_shadow"]["reye_lines"],
+            "twenty_four_cell_axes": d4_f4_tomotope_reye["reye_shadow"]["twenty_four_cell_axes"],
+            "twenty_four_cell_hexagon_shadow_count": d4_f4_tomotope_reye["reye_shadow"]["twenty_four_cell_hexagon_shadow_count"],
+            "all_twelve_counts_agree": d4_f4_tomotope_reye["reye_shadow"]["all_twelve_counts_agree"],
+            "all_sixteen_counts_agree": d4_f4_tomotope_reye["reye_shadow"]["all_sixteen_counts_agree"],
+            "outer_d4_order": d4_f4_tomotope_reye["f4_triality_lift"]["outer_d4_order"],
+            "weyl_f4_order": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_order"],
+            "twenty_four_cell_rotational_symmetry_order": d4_f4_tomotope_reye["f4_triality_lift"]["twenty_four_cell_rotational_symmetry_order"],
+            "weyl_f4_equals_triality_times_weyl_d4": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_triality_times_weyl_d4"],
+            "weyl_f4_equals_triality_times_tomotope_flags": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_triality_times_tomotope_flags"],
+            "weyl_f4_equals_twelve_times_tomotope_automorphism": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_twelve_times_tomotope_automorphism"],
+            "rotational_24_equals_triality_times_tomotope_automorphism": d4_f4_tomotope_reye["f4_triality_lift"]["rotational_24_equals_triality_times_tomotope_automorphism"],
+            "weyl_f4_equals_2_times_rotational_24": d4_f4_tomotope_reye["f4_triality_lift"]["weyl_f4_equals_2_times_rotational_24"],
         },
         "curved_inverse_rosetta_bridge": {
             "w33_vertex_count": curved_inverse_rosetta["reconstructed_internal_data"]["w33_vertex_count"],

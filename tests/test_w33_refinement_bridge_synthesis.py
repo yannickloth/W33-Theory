@@ -262,6 +262,35 @@ def test_synthesis_records_exceptional_residue_bridge() -> None:
     assert bridge["all_seed_checks_pass"] is True
 
 
+def test_synthesis_records_d4_f4_tomotope_reye_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["d4_f4_tomotope_reye_bridge"]
+    assert bridge["weyl_d4_order"] == 192
+    assert bridge["tomotope_flag_count"] == 192
+    assert bridge["tomotope_automorphism_order"] == 96
+    assert bridge["weyl_d4_equals_tomotope_flags"] is True
+    assert bridge["weyl_d4_equals_2_times_tomotope_automorphism"] is True
+    assert bridge["aut_q8_order"] == 24
+    assert bridge["d4_root_count"] == 24
+    assert bridge["twenty_four_cell_vertex_count"] == 24
+    assert bridge["aut_q8_equals_d4_root_count"] is True
+    assert bridge["d4_root_count_equals_24cell_vertices"] is True
+    assert bridge["reye_points"] == 12
+    assert bridge["reye_lines"] == 16
+    assert bridge["twenty_four_cell_axes"] == 12
+    assert bridge["twenty_four_cell_hexagon_shadow_count"] == 16
+    assert bridge["all_twelve_counts_agree"] is True
+    assert bridge["all_sixteen_counts_agree"] is True
+    assert bridge["outer_d4_order"] == 6
+    assert bridge["weyl_f4_order"] == 1152
+    assert bridge["twenty_four_cell_rotational_symmetry_order"] == 576
+    assert bridge["weyl_f4_equals_triality_times_weyl_d4"] is True
+    assert bridge["weyl_f4_equals_triality_times_tomotope_flags"] is True
+    assert bridge["weyl_f4_equals_twelve_times_tomotope_automorphism"] is True
+    assert bridge["rotational_24_equals_triality_times_tomotope_automorphism"] is True
+    assert bridge["weyl_f4_equals_2_times_rotational_24"] is True
+
+
 def test_synthesis_records_curved_inverse_rosetta_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_inverse_rosetta_bridge"]
@@ -729,6 +758,30 @@ def test_synthesis_records_monster_gap_duality_bridge() -> None:
     assert bridge["first_moonshine_equals_completed_transport_plus_gauge_rank"] is True
     assert bridge["gauge_rank_equals_e6_plus_a2_plus_cartan"] is True
     assert bridge["shared_six_is_live_a2_rank"] is True
+
+
+def test_synthesis_records_monster_triangle_landauer_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_triangle_landauer_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["vertices"] == 40
+    assert bridge["degree"] == 12
+    assert bridge["lambda"] == 2
+    assert bridge["triangle_count"] == 160
+    assert bridge["automorphism_order"] == 51840
+    assert bridge["triangle_stabilizer"] == 324
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["triangle_stabilizer_matches_general_formula"] is True
+    assert bridge["triangle_stabilizer_equals_moonshine_gap"] is True
+    assert bridge["triangle_stabilizer_equals_exceptional_times_shared_six"] is True
+    assert bridge["triangle_stabilizer_equals_spacetime_times_logical_qutrits"] is True
+    assert bridge["triangle_stabilizer_equals_degree_times_generation"] is True
+    assert bridge["first_moonshine_equals_transport_traceless_plus_triangle_stabilizer"] is True
+    assert bridge["landauer_gap_over_kT"] == "ln(324)"
+    assert bridge["landauer_exceptional_split"] == "ln(54) + ln(6)"
+    assert bridge["landauer_matter_split"] == "ln(4) + ln(81)"
+    assert bridge["landauer_exceptional_split_matches"] is True
+    assert bridge["landauer_matter_split_matches"] is True
 
 
 def test_synthesis_records_weinberg_generator_bridge() -> None:
