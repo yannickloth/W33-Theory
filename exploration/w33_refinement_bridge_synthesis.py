@@ -119,6 +119,7 @@ from w33_monster_selector_completion_bridge import (
 from w33_monster_q5_completion_bridge import build_monster_q5_completion_summary
 from w33_monster_transport_shell_bridge import build_monster_transport_shell_summary
 from w33_monster_supertrace_bridge import build_monster_supertrace_summary
+from w33_monster_moonshine_lift_bridge import build_monster_moonshine_lift_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -219,6 +220,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_q5_completion = build_monster_q5_completion_summary()
     monster_transport_shell = build_monster_transport_shell_summary()
     monster_supertrace = build_monster_supertrace_summary()
+    monster_moonshine_lift = build_monster_moonshine_lift_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -584,6 +586,27 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "logical_equals_supertrace_magnitude_plus_selector": monster_supertrace["spectral_dictionary"]["logical_equals_supertrace_magnitude_plus_selector"],
             "monster_complement_equals_generation_times_logical": monster_supertrace["spectral_dictionary"]["monster_complement_equals_generation_times_logical"],
             "monster_complement_equals_e8_second_shell_plus_generation": monster_supertrace["spectral_dictionary"]["monster_complement_equals_e8_second_shell_plus_generation"],
+        },
+        "monster_moonshine_lift_bridge": {
+            "q": monster_moonshine_lift["moonshine_lift_dictionary"]["q"],
+            "phi3": monster_moonshine_lift["moonshine_lift_dictionary"]["phi3"],
+            "phi6": monster_moonshine_lift["moonshine_lift_dictionary"]["phi6"],
+            "cyclotomic_lift_factor": monster_moonshine_lift["moonshine_lift_dictionary"]["cyclotomic_lift_factor"],
+            "local_second_shell": monster_moonshine_lift["moonshine_lift_dictionary"]["local_second_shell"],
+            "leech_kissing_number": monster_moonshine_lift["moonshine_lift_dictionary"]["leech_kissing_number"],
+            "logical_qutrits": monster_moonshine_lift["moonshine_lift_dictionary"]["logical_qutrits"],
+            "spacetime_factor": monster_moonshine_lift["moonshine_lift_dictionary"]["spacetime_factor"],
+            "moonshine_gap": monster_moonshine_lift["moonshine_lift_dictionary"]["moonshine_gap"],
+            "first_moonshine_coefficient": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_coefficient"],
+            "smallest_monster_irrep": monster_moonshine_lift["moonshine_lift_dictionary"]["smallest_monster_irrep"],
+            "selector_line_dimension": monster_moonshine_lift["moonshine_lift_dictionary"]["selector_line_dimension"],
+            "local_second_shell_matches_theta_e8_second_shell": monster_moonshine_lift["moonshine_lift_dictionary"]["local_second_shell_matches_theta_e8_second_shell"],
+            "leech_equals_local_second_shell_times_phi3_phi6": monster_moonshine_lift["moonshine_lift_dictionary"]["leech_equals_local_second_shell_times_phi3_phi6"],
+            "moonshine_gap_equals_q_plus_1_times_logical_qutrits": monster_moonshine_lift["moonshine_lift_dictionary"]["moonshine_gap_equals_q_plus_1_times_logical_qutrits"],
+            "moonshine_gap_equals_q_plus_1_times_q_to_four": monster_moonshine_lift["moonshine_lift_dictionary"]["moonshine_gap_equals_q_plus_1_times_q_to_four"],
+            "first_moonshine_equals_leech_plus_gap": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_leech_plus_gap"],
+            "first_moonshine_equals_selector_plus_smallest_monster_irrep": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_selector_plus_smallest_monster_irrep"],
+            "first_moonshine_equals_cyclotomic_lifted_shell_plus_spacetime_matter": monster_moonshine_lift["moonshine_lift_dictionary"]["first_moonshine_equals_cyclotomic_lifted_shell_plus_spacetime_matter"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
