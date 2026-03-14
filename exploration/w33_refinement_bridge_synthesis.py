@@ -107,6 +107,8 @@ from w33_spectral_action_cyclotomic_bridge import build_spectral_action_cyclotom
 from w33_spectral_action_q3_selection_bridge import build_spectral_action_q3_selection_summary
 from w33_standard_model_cyclotomic_bridge import build_standard_model_cyclotomic_summary
 from w33_monster_landauer_ternary_bridge import build_monster_landauer_ternary_bridge_summary
+from w33_monster_shell_factorization_bridge import build_monster_shell_factorization_summary
+from w33_monster_3adic_closure_bridge import build_monster_3adic_closure_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -199,6 +201,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     spectral_action_q3_selection = build_spectral_action_q3_selection_summary()
     standard_model_cyclotomic = build_standard_model_cyclotomic_summary()
     monster_landauer_ternary = build_monster_landauer_ternary_bridge_summary()
+    monster_shell_factorization = build_monster_shell_factorization_summary()
+    monster_3adic_closure = build_monster_3adic_closure_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -409,6 +413,48 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "discrete_to_continuum_equals_shell_times_generation_trits": monster_landauer_ternary["landauer_ratio_dictionary"]["discrete_to_continuum_equals_shell_times_generation_trits"],
             "topological_over_continuum": monster_landauer_ternary["landauer_ratio_dictionary"]["topological_over_continuum"]["exact"],
             "topological_over_continuum_equals_complement_trits": monster_landauer_ternary["landauer_ratio_dictionary"]["topological_over_continuum_equals_complement_trits"],
+        },
+        "monster_shell_factorization_bridge": {
+            "shell_states": monster_shell_factorization["shell_factorization"]["shell_states"],
+            "heisenberg_states": monster_shell_factorization["shell_factorization"]["heisenberg_states"],
+            "logical_states": monster_shell_factorization["shell_factorization"]["logical_states"],
+            "generation_states": monster_shell_factorization["shell_factorization"]["generation_states"],
+            "complement_states": monster_shell_factorization["shell_factorization"]["complement_states"],
+            "shell_equals_heisenberg_times_logical_times_generation": monster_shell_factorization["shell_factorization"]["shell_equals_heisenberg_times_logical_times_generation"],
+            "complement_equals_logical_times_generation": monster_shell_factorization["shell_factorization"]["complement_equals_logical_times_generation"],
+            "shell_trits_split": monster_shell_factorization["shell_factorization"]["shell_trits_split"],
+            "shell_trits_factorization_exact": monster_shell_factorization["shell_factorization"]["shell_trits_factorization_exact"],
+            "complement_trits_split": monster_shell_factorization["shell_factorization"]["complement_trits_split"],
+            "complement_trits_factorization_exact": monster_shell_factorization["shell_factorization"]["complement_trits_factorization_exact"],
+            "weinberg_from_generation_over_shell": monster_shell_factorization["promoted_ratio_factorization"]["weinberg_from_generation_over_shell"]["exact"],
+            "theta12_from_logical_over_shell": monster_shell_factorization["promoted_ratio_factorization"]["theta12_from_logical_over_shell"]["exact"],
+            "active_heisenberg_share": monster_shell_factorization["promoted_ratio_factorization"]["active_heisenberg_share"]["exact"],
+            "theta23_from_complement_over_shell": monster_shell_factorization["promoted_ratio_factorization"]["theta23_from_complement_over_shell"]["exact"],
+            "theta23_equals_theta12_plus_weinberg": monster_shell_factorization["promoted_ratio_factorization"]["theta23_equals_theta12_plus_weinberg"],
+            "theta23_plus_active_heisenberg_share_equals_one": monster_shell_factorization["promoted_ratio_factorization"]["theta23_plus_active_heisenberg_share_equals_one"],
+            "discrete_to_continuum_ratio": monster_shell_factorization["curved_ratio_factorization"]["discrete_to_continuum_ratio"]["exact"],
+            "topological_over_continuum": monster_shell_factorization["curved_ratio_factorization"]["topological_over_continuum"]["exact"],
+            "discrete_to_continuum_equals_shell_times_generation": monster_shell_factorization["curved_ratio_factorization"]["discrete_to_continuum_equals_shell_times_generation"],
+            "topological_over_continuum_equals_logical_plus_generation": monster_shell_factorization["curved_ratio_factorization"]["topological_over_continuum_equals_logical_plus_generation"],
+        },
+        "monster_3adic_closure_bridge": {
+            "three_primary_states": monster_3adic_closure["monster_3_primary_order"]["three_primary_part"]["states"],
+            "three_primary_trits": monster_3adic_closure["monster_3_primary_order"]["three_primary_part"]["trits"],
+            "full_landauer_over_kT": monster_3adic_closure["monster_3_primary_order"]["three_primary_part"]["landauer_over_kT"]["exact"],
+            "shell_states": monster_3adic_closure["local_global_ternary_closure"]["shell_states"],
+            "complement_states": monster_3adic_closure["local_global_ternary_closure"]["complement_states"],
+            "full_three_primary_equals_shell_times_complement": monster_3adic_closure["local_global_ternary_closure"]["full_three_primary_equals_shell_times_complement"],
+            "full_three_primary_equals_heisenberg_times_logical_squared_times_generation_squared": monster_3adic_closure["local_global_ternary_closure"]["full_three_primary_equals_heisenberg_times_logical_squared_times_generation_squared"],
+            "full_three_primary_trits_equal_phi3_plus_phi6": monster_3adic_closure["local_global_ternary_closure"]["full_three_primary_trits_equal_phi3_plus_phi6"],
+            "landauer_additivity_exact": monster_3adic_closure["landauer_budget"]["landauer_additivity_exact"],
+            "shell_share_of_full_monster_three_primary": monster_3adic_closure["landauer_budget"]["shell_share_of_full_monster_three_primary"]["exact"],
+            "complement_share_of_full_monster_three_primary": monster_3adic_closure["landauer_budget"]["complement_share_of_full_monster_three_primary"]["exact"],
+            "gravity_over_q": monster_3adic_closure["curved_thermodynamic_dictionary"]["gravity_over_q"]["exact"],
+            "topological_over_continuum": monster_3adic_closure["curved_thermodynamic_dictionary"]["topological_over_continuum"]["exact"],
+            "shell_from_curved_gravity_exact": monster_3adic_closure["curved_thermodynamic_dictionary"]["shell_from_curved_gravity_exact"],
+            "complement_from_curved_topology_exact": monster_3adic_closure["curved_thermodynamic_dictionary"]["complement_from_curved_topology_exact"],
+            "full_monster_three_primary_from_curved_coefficients_exact": monster_3adic_closure["curved_thermodynamic_dictionary"]["full_monster_three_primary_from_curved_coefficients_exact"],
+            "monster_three_trits_equal_phi3_plus_phi6": monster_3adic_closure["curved_thermodynamic_dictionary"]["monster_three_trits_equal_phi3_plus_phi6"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],

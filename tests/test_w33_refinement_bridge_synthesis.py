@@ -493,6 +493,54 @@ def test_synthesis_records_monster_landauer_ternary_bridge() -> None:
     assert bridge["topological_over_continuum_equals_complement_trits"] is True
 
 
+def test_synthesis_records_monster_shell_factorization_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_shell_factorization_bridge"]
+    assert bridge["shell_states"] == 3**13
+    assert bridge["heisenberg_states"] == 3**6
+    assert bridge["logical_states"] == 3**4
+    assert bridge["generation_states"] == 3**3
+    assert bridge["complement_states"] == 3**7
+    assert bridge["shell_equals_heisenberg_times_logical_times_generation"] is True
+    assert bridge["complement_equals_logical_times_generation"] is True
+    assert bridge["shell_trits_split"] == [6, 4, 3]
+    assert bridge["shell_trits_factorization_exact"] is True
+    assert bridge["complement_trits_split"] == [4, 3]
+    assert bridge["complement_trits_factorization_exact"] is True
+    assert bridge["weinberg_from_generation_over_shell"] == "3/13"
+    assert bridge["theta12_from_logical_over_shell"] == "4/13"
+    assert bridge["active_heisenberg_share"] == "6/13"
+    assert bridge["theta23_from_complement_over_shell"] == "7/13"
+    assert bridge["theta23_equals_theta12_plus_weinberg"] is True
+    assert bridge["theta23_plus_active_heisenberg_share_equals_one"] is True
+    assert bridge["discrete_to_continuum_ratio"] == "39"
+    assert bridge["topological_over_continuum"] == "7"
+    assert bridge["discrete_to_continuum_equals_shell_times_generation"] is True
+    assert bridge["topological_over_continuum_equals_logical_plus_generation"] is True
+
+
+def test_synthesis_records_monster_3adic_closure_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_3adic_closure_bridge"]
+    assert bridge["three_primary_states"] == 3**20
+    assert bridge["three_primary_trits"] == 20
+    assert bridge["full_landauer_over_kT"] == "20 ln(3)"
+    assert bridge["shell_states"] == 3**13
+    assert bridge["complement_states"] == 3**7
+    assert bridge["full_three_primary_equals_shell_times_complement"] is True
+    assert bridge["full_three_primary_equals_heisenberg_times_logical_squared_times_generation_squared"] is True
+    assert bridge["full_three_primary_trits_equal_phi3_plus_phi6"] is True
+    assert bridge["landauer_additivity_exact"] is True
+    assert bridge["shell_share_of_full_monster_three_primary"] == "13/20"
+    assert bridge["complement_share_of_full_monster_three_primary"] == "7/20"
+    assert bridge["gravity_over_q"] == "13"
+    assert bridge["topological_over_continuum"] == "7"
+    assert bridge["shell_from_curved_gravity_exact"] is True
+    assert bridge["complement_from_curved_topology_exact"] is True
+    assert bridge["full_monster_three_primary_from_curved_coefficients_exact"] is True
+    assert bridge["monster_three_trits_equal_phi3_plus_phi6"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]
