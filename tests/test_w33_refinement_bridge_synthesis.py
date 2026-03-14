@@ -632,6 +632,26 @@ def test_synthesis_records_monster_q5_completion_bridge() -> None:
     assert bridge["complement_equals_q_squared_edges_plus_q_cubed"] is True
 
 
+def test_synthesis_records_monster_transport_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_transport_shell_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["w33_edge_count"] == 240
+    assert bridge["transport_edge_count"] == 720
+    assert bridge["local_line_bundle_dimension"] == 135
+    assert bridge["a2_transfer_block_rank"] == 16
+    assert bridge["semisimple_transport_shell"] == 2160
+    assert bridge["generation_states"] == 27
+    assert bridge["monster_complement_states"] == 3**7
+    assert bridge["semisimple_equals_q_squared_times_w33_edges"] is True
+    assert bridge["semisimple_equals_q_times_transport_edges"] is True
+    assert bridge["semisimple_equals_a2_block_rank_times_bundle_dimension"] is True
+    assert bridge["complement_equals_semisimple_plus_generation"] is True
+    assert bridge["complement_equals_q_squared_edges_plus_q_cubed"] is True
+    assert bridge["complement_equals_q_transport_edges_plus_q_cubed"] is True
+    assert bridge["complement_equals_block_bundle_plus_generation"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

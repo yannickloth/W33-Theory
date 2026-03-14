@@ -117,6 +117,7 @@ from w33_monster_selector_completion_bridge import (
     build_monster_selector_completion_summary,
 )
 from w33_monster_q5_completion_bridge import build_monster_q5_completion_summary
+from w33_monster_transport_shell_bridge import build_monster_transport_shell_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -215,6 +216,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_lagrangian_complement = build_monster_lagrangian_complement_summary()
     monster_selector_completion = build_monster_selector_completion_summary()
     monster_q5_completion = build_monster_q5_completion_summary()
+    monster_transport_shell = build_monster_transport_shell_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -546,6 +548,23 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "semisimple_curved_equals_q7_minus_q3": monster_q5_completion["transport_curvature_dictionary"]["semisimple_curved_equals_q7_minus_q3"],
             "complement_equals_semisimple_curved_plus_generation": monster_q5_completion["transport_curvature_dictionary"]["complement_equals_semisimple_curved_plus_generation"],
             "complement_equals_q_squared_edges_plus_q_cubed": monster_q5_completion["transport_curvature_dictionary"]["complement_equals_q_squared_edges_plus_q_cubed"],
+        },
+        "monster_transport_shell_bridge": {
+            "q": monster_transport_shell["transport_shell_dictionary"]["q"],
+            "w33_edge_count": monster_transport_shell["transport_shell_dictionary"]["w33_edge_count"],
+            "transport_edge_count": monster_transport_shell["transport_shell_dictionary"]["transport_edge_count"],
+            "local_line_bundle_dimension": monster_transport_shell["transport_shell_dictionary"]["local_line_bundle_dimension"],
+            "a2_transfer_block_rank": monster_transport_shell["transport_shell_dictionary"]["a2_transfer_block_rank"],
+            "semisimple_transport_shell": monster_transport_shell["transport_shell_dictionary"]["semisimple_transport_shell"],
+            "generation_states": monster_transport_shell["transport_shell_dictionary"]["generation_states"],
+            "monster_complement_states": monster_transport_shell["transport_shell_dictionary"]["monster_complement_states"],
+            "semisimple_equals_q_squared_times_w33_edges": monster_transport_shell["transport_shell_dictionary"]["semisimple_equals_q_squared_times_w33_edges"],
+            "semisimple_equals_q_times_transport_edges": monster_transport_shell["transport_shell_dictionary"]["semisimple_equals_q_times_transport_edges"],
+            "semisimple_equals_a2_block_rank_times_bundle_dimension": monster_transport_shell["transport_shell_dictionary"]["semisimple_equals_a2_block_rank_times_bundle_dimension"],
+            "complement_equals_semisimple_plus_generation": monster_transport_shell["monster_transport_completion"]["complement_equals_semisimple_plus_generation"],
+            "complement_equals_q_squared_edges_plus_q_cubed": monster_transport_shell["monster_transport_completion"]["complement_equals_q_squared_edges_plus_q_cubed"],
+            "complement_equals_q_transport_edges_plus_q_cubed": monster_transport_shell["monster_transport_completion"]["complement_equals_q_transport_edges_plus_q_cubed"],
+            "complement_equals_block_bundle_plus_generation": monster_transport_shell["monster_transport_completion"]["complement_equals_block_bundle_plus_generation"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
