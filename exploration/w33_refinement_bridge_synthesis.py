@@ -116,6 +116,7 @@ from w33_monster_lagrangian_complement_bridge import (
 from w33_monster_selector_completion_bridge import (
     build_monster_selector_completion_summary,
 )
+from w33_monster_q5_completion_bridge import build_monster_q5_completion_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -213,6 +214,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_3b_centralizer = build_monster_3b_centralizer_summary()
     monster_lagrangian_complement = build_monster_lagrangian_complement_summary()
     monster_selector_completion = build_monster_selector_completion_summary()
+    monster_q5_completion = build_monster_q5_completion_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -523,6 +525,27 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "w33_all_ones_spans_mod_3_kernel": monster_selector_completion["cross_bridge_dictionary"]["w33_all_ones_spans_mod_3_kernel"],
             "transport_projective_selector_line_is_unique": monster_selector_completion["cross_bridge_dictionary"]["transport_projective_selector_line_is_unique"],
             "path_groupoid_has_unique_invariant_line": monster_selector_completion["cross_bridge_dictionary"]["path_groupoid_has_unique_invariant_line"],
+        },
+        "monster_q5_completion_bridge": {
+            "q": monster_q5_completion["q5_restoration"]["q"],
+            "q5": monster_q5_completion["q5_restoration"]["q5"],
+            "q7": monster_q5_completion["q5_restoration"]["q7"],
+            "grade_split": monster_q5_completion["q5_restoration"]["grade_split"],
+            "selector_line_dimension": monster_q5_completion["q5_restoration"]["selector_line_dimension"],
+            "restored_blocks": monster_q5_completion["q5_restoration"]["restored_blocks"],
+            "restored_blocks_are_three_q5_blocks": monster_q5_completion["q5_restoration"]["restored_blocks_are_three_q5_blocks"],
+            "full_codewords": monster_q5_completion["q5_restoration"]["full_codewords"],
+            "full_codewords_equal_3q5": monster_q5_completion["q5_restoration"]["full_codewords_equal_3q5"],
+            "complement_states": monster_q5_completion["monster_completion_dictionary"]["complement_states"],
+            "complement_equals_q7": monster_q5_completion["monster_completion_dictionary"]["complement_equals_q7"],
+            "edge_count": monster_q5_completion["w33_q5_dictionary"]["edge_count"],
+            "edge_count_equals_q5_minus_q": monster_q5_completion["w33_q5_dictionary"]["edge_count_equals_q5_minus_q"],
+            "semisimple_curved_states": monster_q5_completion["transport_curvature_dictionary"]["semisimple_curved_states"],
+            "generation_states": monster_q5_completion["transport_curvature_dictionary"]["generation_states"],
+            "semisimple_curved_equals_q_squared_times_edges": monster_q5_completion["transport_curvature_dictionary"]["semisimple_curved_equals_q_squared_times_edges"],
+            "semisimple_curved_equals_q7_minus_q3": monster_q5_completion["transport_curvature_dictionary"]["semisimple_curved_equals_q7_minus_q3"],
+            "complement_equals_semisimple_curved_plus_generation": monster_q5_completion["transport_curvature_dictionary"]["complement_equals_semisimple_curved_plus_generation"],
+            "complement_equals_q_squared_edges_plus_q_cubed": monster_q5_completion["transport_curvature_dictionary"]["complement_equals_q_squared_edges_plus_q_cubed"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
