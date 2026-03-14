@@ -127,6 +127,9 @@ from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_s
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
+from w33_klein_clifford_topological_bridge import (
+    build_klein_clifford_topological_summary,
+)
 from w33_s12_vogel_spine_bridge import build_s12_vogel_spine_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
@@ -238,6 +241,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
+    klein_clifford_topological = build_klein_clifford_topological_summary()
     s12_vogel_spine = build_s12_vogel_spine_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
@@ -756,6 +760,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "sl27_equals_bitangents_times_a26": klein_harmonic_vogel["promoted_factorizations"]["sl27_equals_bitangents_times_a26"],
             "sl27_equals_triangles_times_phi3": klein_harmonic_vogel["promoted_factorizations"]["sl27_equals_triangles_times_phi3"],
             "gap_equals_spacetime_times_logical_qutrits": klein_harmonic_vogel["promoted_factorizations"]["gap_equals_spacetime_times_logical_qutrits"],
+        },
+        "klein_clifford_topological_bridge": {
+            "external_plane_points": klein_clifford_topological["clifford_quartic_lift"]["clifford_parallelism_external_plane_points"],
+            "bitangent_count": klein_clifford_topological["clifford_quartic_lift"]["plane_quartic_bitangent_count"],
+            "quartic_triangle_count": klein_clifford_topological["clifford_quartic_lift"]["klein_quartic_triangle_count"],
+            "e7_fundamental_dimension": klein_clifford_topological["clifford_quartic_lift"]["e7_fundamental_dimension"],
+            "w33_klein_slice_points": klein_clifford_topological["clifford_quartic_lift"]["w33_klein_slice_points"],
+            "topological_1_mode_coefficient": klein_clifford_topological["clifford_quartic_lift"]["topological_1_mode_coefficient"],
+            "quartic_triangles_equal_e7_fund": klein_clifford_topological["clifford_quartic_lift"]["quartic_triangles_equal_e7_fund"],
+            "quartic_triangles_equal_two_times_bitangents": klein_clifford_topological["clifford_quartic_lift"]["quartic_triangles_equal_two_times_bitangents"],
+            "quartic_triangles_equal_cartan_times_phi6": klein_clifford_topological["clifford_quartic_lift"]["quartic_triangles_equal_cartan_times_phi6"],
+            "bitangents_equal_q_cubic_plus_1": klein_clifford_topological["clifford_quartic_lift"]["bitangents_equal_q_cubic_plus_1"],
+            "topological_equals_w33_slice_times_quartic_triangles": klein_clifford_topological["clifford_quartic_lift"]["topological_equals_w33_slice_times_quartic_triangles"],
+            "ambient_pg53_points": klein_clifford_topological["ambient_shell_lift"]["ambient_pg53_points"],
+            "sl27_shell_dimension": klein_clifford_topological["ambient_shell_lift"]["sl27_shell_dimension"],
+            "ambient_equals_bitangents_times_phi3": klein_clifford_topological["ambient_shell_lift"]["ambient_equals_bitangents_times_phi3"],
+            "sl27_equals_quartic_triangles_times_phi3": klein_clifford_topological["ambient_shell_lift"]["sl27_equals_quartic_triangles_times_phi3"],
+            "sl27_equals_two_times_ambient": klein_clifford_topological["ambient_shell_lift"]["sl27_equals_two_times_ambient"],
         },
         "s12_vogel_spine_bridge": {
             "sl27_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_dimension"],

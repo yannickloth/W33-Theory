@@ -403,6 +403,27 @@ def test_synthesis_records_klein_harmonic_vogel_bridge() -> None:
     assert bridge["gap_equals_spacetime_times_logical_qutrits"] is True
 
 
+def test_synthesis_records_klein_clifford_topological_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["klein_clifford_topological_bridge"]
+    assert bridge["external_plane_points"] == 13
+    assert bridge["bitangent_count"] == 28
+    assert bridge["quartic_triangle_count"] == 56
+    assert bridge["e7_fundamental_dimension"] == 56
+    assert bridge["w33_klein_slice_points"] == 40
+    assert bridge["topological_1_mode_coefficient"] == 2240
+    assert bridge["quartic_triangles_equal_e7_fund"] is True
+    assert bridge["quartic_triangles_equal_two_times_bitangents"] is True
+    assert bridge["quartic_triangles_equal_cartan_times_phi6"] is True
+    assert bridge["bitangents_equal_q_cubic_plus_1"] is True
+    assert bridge["topological_equals_w33_slice_times_quartic_triangles"] is True
+    assert bridge["ambient_pg53_points"] == 364
+    assert bridge["sl27_shell_dimension"] == 728
+    assert bridge["ambient_equals_bitangents_times_phi3"] is True
+    assert bridge["sl27_equals_quartic_triangles_times_phi3"] is True
+    assert bridge["sl27_equals_two_times_ambient"] is True
+
+
 def test_synthesis_records_s12_vogel_spine_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["s12_vogel_spine_bridge"]
