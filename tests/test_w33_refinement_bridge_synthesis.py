@@ -712,6 +712,25 @@ def test_synthesis_records_monster_transport_moonshine_bridge() -> None:
     assert bridge["gauge_package_rank_equals_e6_plus_a2_plus_cartan"] is True
 
 
+def test_synthesis_records_monster_gap_duality_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_gap_duality_bridge"]
+    assert bridge["leech_kissing_number"] == 196560
+    assert bridge["first_moonshine_coefficient"] == 196884
+    assert bridge["moonshine_gap"] == 324
+    assert bridge["gauge_package_rank"] == 54
+    assert bridge["shared_six_channel_rank"] == 6
+    assert bridge["spacetime_factor"] == 4
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["gap_equals_exceptional_gauge_rank_times_shared_six"] is True
+    assert bridge["gap_equals_spacetime_factor_times_logical_qutrits"] is True
+    assert bridge["exceptional_gap_matches_spacetime_matter_gap"] is True
+    assert bridge["first_moonshine_equals_traceless_transport_plus_exceptional_gap"] is True
+    assert bridge["first_moonshine_equals_completed_transport_plus_gauge_rank"] is True
+    assert bridge["gauge_rank_equals_e6_plus_a2_plus_cartan"] is True
+    assert bridge["shared_six_is_live_a2_rank"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

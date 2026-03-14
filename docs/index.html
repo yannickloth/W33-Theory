@@ -425,6 +425,12 @@ footer a { color: var(--accent); }
   position: relative;
   overflow: hidden;
 }
+.domain-chip.domain-chip-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
 .domain-chip::after {
   content: '';
   position: absolute;
@@ -436,6 +442,10 @@ footer a { color: var(--accent); }
 .domain-chip:hover {
   border-color: var(--accent);
   transform: translateX(4px);
+}
+.domain-chip.domain-chip-link:hover {
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 .domain-chip .domain-phase {
   font-weight: 700;
@@ -451,6 +461,21 @@ footer a { color: var(--accent); }
   color: var(--fg2);
   font-size: 0.75rem;
   margin-top: 0.15rem;
+}
+.domain-chip .domain-hint {
+  margin-top: 0.55rem;
+  font-size: 0.73rem;
+  color: var(--gold);
+}
+.domain-chip .domain-hint code {
+  font-size: 0.88em;
+}
+.navigator-note {
+  border-left-color: var(--accent4);
+  background: linear-gradient(135deg, rgba(240,136,62,0.12), rgba(88,166,255,0.06));
+}
+.plain-english-grid .card .label {
+  color: var(--gold);
 }
 
 /* ── Floating particles (CSS-only) ── */
@@ -841,6 +866,9 @@ section h2::after {
 
 <section id="reader-guide" style="padding-top: 2rem; padding-bottom: 1.5rem;">
   <h2><span class="icon">&#8984;</span> Reader Guide <span class="section-badge">Start Here</span></h2>
+  <div class="spotlight navigator-note">
+    <p><strong>Navigator required:</strong> this live paper is too large to read linearly. Use the left-hand navigator on desktop or the section menu on mobile, then enter through <a href="#verified">Verified Results</a>, <a href="#bridge-2026">Refinement Bridge</a>, or <a href="#hard-computation">Hard Computation Phases</a> depending what you need.</p>
+  </div>
   <div class="spotlight">
     <p>This page now has several distinct layers: the current hard-computation phase ladder, the promoted verified frontier, the transport/ternary/refinement bridge program, and the preserved historical archive. If you are not reading linearly, use one of the routes below instead of scrolling blind.</p>
     <ul class="quick-list">
@@ -864,6 +892,36 @@ section h2::after {
       <div class="detail">Use <a href="#archive">Historical Archive</a> and <a href="#about">About</a> after the verified layer; older phenomenology below is preserved context, not automatic live-theorem status.</div>
     </div>
   </div>
+  <h3>Plain-English Map</h3>
+  <div class="spotlight">
+    <p>This is the short version of what the theory is trying to say in physical language. The math below is exact and detailed, but the claims themselves are simpler than the notation makes them look.</p>
+  </div>
+  <div class="card-grid plain-english-grid">
+    <div class="card">
+      <div class="label">Geometry</div>
+      <div class="detail"><strong>W(3,3)</strong> is the interaction skeleton. Its <code>40</code> vertices are the basic states, and its <code>240</code> edges say which pairs can interact consistently.</div>
+    </div>
+    <div class="card">
+      <div class="label">Matter</div>
+      <div class="detail">The protected <code>81</code>-dimensional harmonic sector is the matter channel. The exact <code>27+27+27</code> split is why the theory keeps producing three generations.</div>
+    </div>
+    <div class="card">
+      <div class="label">Forces</div>
+      <div class="detail">The spectrum separates light from heavy channels. The recurring <code>40 / 6 / 8</code> package is the live internal gauge split: an <code>E6</code> block, an <code>A2</code> transfer block, and a Cartan block.</div>
+    </div>
+    <div class="card">
+      <div class="label">Gravity</div>
+      <div class="detail">The curved barycentric refinement tower is the discrete stand-in for smooth 4D geometry. Its exact <code>6</code>-mode is the Einstein-Hilbert channel that the current bridge keeps extracting.</div>
+    </div>
+    <div class="card">
+      <div class="label">Thermodynamics / Monster</div>
+      <div class="detail">Landauer turns exact state counts into heat cost. The Monster side is not decoration: it is the same ternary counting structure closing globally on symmetry and moonshine data.</div>
+    </div>
+    <div class="card">
+      <div class="label">How To Read Proofs</div>
+      <div class="detail">Use the hard-computation tiles as proof entry points, not as a first read. Each tile opens the exact test file on GitHub, while the verified layer tells you which results are currently promoted.</div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══════════════════════ HIGHLIGHTS BANNER ═══════════════════════ -->
@@ -881,7 +939,7 @@ section h2::after {
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Arithmetic Geometry</strong> — Dedekind zeta, modular forms, E₈ roots = 240</span></div>
     <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Three-Channel Calculus</strong> &mdash; recent hard-computation phases unify as one exact operator algebra <code>span{I,A,J}</code></span></div>
     <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Standard-Model Cyclotomic Rosetta</strong> &mdash; Weinberg, Cabibbo, PMNS, Higgs, and <code>&Omega;<sub>&Lambda;</sub></code> now sit in one exact <code>q=3</code>, <code>&Phi;<sub>3</sub></code>, <code>&Phi;<sub>6</sub></code> package</span></div>
-    <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Monster-Landauer Closure</strong> &mdash; the live shell now reaches moonshine in two exact ways: <code>196560 = 2160&middot;13&middot;7 = 728&middot;270</code> and <code>196884 = 729&middot;270 + 54</code></span></div>
+    <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Monster-Landauer Closure</strong> &mdash; the live shell now reaches moonshine in two exact ways, and the gap is structural too: <code>196560 = 2160&middot;13&middot;7 = 728&middot;270</code>, while <code>196884 - 196560 = 324 = 54&middot;6 = 4&middot;81</code></span></div>
     <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>One-Generator Closure</strong> &mdash; once <code>q=3</code> is fixed, the promoted Standard Model, cosmology, Higgs, and spectral/gravity ratios all collapse to one exact master variable <code>x = sin^2(&theta;<sub>W</sub>) = 3/13</code>, and the same sectors reconstruct <code>x</code> back independently</span></div>
     <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>SRG Rosetta Lock</strong> &mdash; the promoted package is now directly geometric too: for <code>SRG(40,12,2,4)</code>, <code>q = &lambda;+1</code>, <code>&Phi;<sub>3</sub> = k+1</code>, and <code>&Phi;<sub>6</sub> = k-&lambda;-&mu;+1</code></span></div>
     <div class="highlight-item"><span class="hi-icon">&starf;</span><span><strong>Spectral Rosetta Lock</strong> &mdash; the same package is already a direct adjacency-spectrum law on <code>(k,r,s) = (12,2,-4)</code>, with <code>q = r+1</code> and <code>&Phi;<sub>6</sub> = 1+r-s</code></span></div>
@@ -1001,8 +1059,8 @@ section h2::after {
 <!-- ═══════════════════════ HARD COMPUTATION PHASES ═══════════════════════ -->
 <section id="hard-computation">
   <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">20,878 tests</span></h2>
-  <p>Every phase below constructs W(3,3) from scratch and proves exact graph-theoretic, algebraic, and topological properties through pure computation. No approximations, no external libraries for graph construction &mdash; raw matrix operations on the symplectic adjacency matrix.</p>
-  <p style="color: var(--fg2); font-size: 0.95rem;">The chip grid below is the current continuous hard-computation window <code>LXIV&ndash;CXLIII</code>. The live repository total is <strong>143 phases</strong> and <strong>20,878 tests</strong>.</p>
+  <p>Every phase below constructs W(3,3) from scratch and proves exact graph-theoretic, algebraic, and topological properties through pure computation. No approximations, no external graph build shortcuts &mdash; just explicit matrix, chain-complex, and operator calculations.</p>
+  <p style="color: var(--fg2); font-size: 0.95rem;">The chip grid below is the current continuous hard-computation window <code>LXIV&ndash;CXLII</code>. Click any tile to open the exact proof file in the <code>tests/</code> folder on GitHub. If you are new to the theory, read the plain-English map and verified layer first, then use the tiles as proof entry points.</p>
 
   <div class="progress-bar">
     <div class="progress-fill" style="width:100%">143 phases &middot; 20,878 tests &middot; 100% pass</div>
@@ -1127,7 +1185,7 @@ section h2::after {
     <li><strong>Weinberg reconstruction web:</strong> <code>tests/test_w33_weinberg_reconstruction_bridge.py</code> proves the lock is bidirectional, not one-way: the same exact <code>x = 3/13</code> is reconstructed independently from Cabibbo, PMNS, <code>&Omega;<sub>&Lambda;</sub></code>, the Higgs ratio, <code>a2/a0</code>, <code>a4/a0</code>, <code>c<sub>6</sub>/a0</code>, and <code>c<sub>6</sub>/c<sub>EH,cont</sub></code>.</li>
     <li><strong>SRG Rosetta lock:</strong> <code>tests/test_w33_srg_rosetta_lock_bridge.py</code> proves the same promoted package is already locked directly by the native graph parameters: for <code>SRG(40,12,2,4)</code>, <code>q = &lambda;+1 = 3</code>, <code>&Phi;<sub>3</sub> = k+1 = 13</code>, <code>&Phi;<sub>6</sub> = k-&lambda;-&mu;+1 = 7</code>, and the promoted electroweak, PMNS, Higgs, cosmology, spectral-action, and gravity formulas follow immediately.</li>
     <li><strong>Spectral Rosetta lock:</strong> <code>tests/test_w33_spectral_rosetta_lock_bridge.py</code> proves the same promoted package is already an adjacency-spectrum law: for the native nontrivial eigenvalues <code>r = 2</code> and <code>s = -4</code>, one has <code>q = r+1 = 3</code>, <code>&Phi;<sub>3</sub> = k+1 = 13</code>, <code>&Phi;<sub>6</sub> = 1+r-s = 7</code>, and the full promoted electroweak/PMNS/Higgs/cosmology/spectral/gravity package follows directly from <code>(k,r,s)</code>.</li>
-    <li><strong>Monster-Landauer closure:</strong> <code>tests/test_w33_monster_landauer_ternary_bridge.py</code>, <code>tests/test_w33_monster_shell_factorization_bridge.py</code>, <code>tests/test_w33_monster_3adic_closure_bridge.py</code>, <code>tests/test_w33_monster_3b_centralizer_bridge.py</code>, <code>tests/test_w33_monster_lagrangian_complement_bridge.py</code>, <code>tests/test_w33_monster_selector_completion_bridge.py</code>, <code>tests/test_w33_monster_q5_completion_bridge.py</code>, <code>tests/test_w33_monster_transport_shell_bridge.py</code>, <code>tests/test_w33_monster_supertrace_bridge.py</code>, <code>tests/test_w33_monster_moonshine_lift_bridge.py</code>, and <code>tests/test_w33_monster_transport_moonshine_bridge.py</code> prove the rigorous Monster/Landauer bridge is local and ternary at the shell level, closes globally at the full Monster <code>3</code>-primary level, closes directly on the live transport and exact finite spectral stacks, and now reaches moonshine in two exact live forms: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code> and <code>196884 = 196560 + 4&middot;81 = 729&middot;270 + 54</code>.</li>
+    <li><strong>Monster-Landauer closure:</strong> <code>tests/test_w33_monster_landauer_ternary_bridge.py</code>, <code>tests/test_w33_monster_shell_factorization_bridge.py</code>, <code>tests/test_w33_monster_3adic_closure_bridge.py</code>, <code>tests/test_w33_monster_3b_centralizer_bridge.py</code>, <code>tests/test_w33_monster_lagrangian_complement_bridge.py</code>, <code>tests/test_w33_monster_selector_completion_bridge.py</code>, <code>tests/test_w33_monster_q5_completion_bridge.py</code>, <code>tests/test_w33_monster_transport_shell_bridge.py</code>, <code>tests/test_w33_monster_supertrace_bridge.py</code>, <code>tests/test_w33_monster_moonshine_lift_bridge.py</code>, <code>tests/test_w33_monster_transport_moonshine_bridge.py</code>, and <code>tests/test_w33_monster_gap_duality_bridge.py</code> prove the rigorous Monster/Landauer bridge is local and ternary at the shell level, closes globally at the full Monster <code>3</code>-primary level, closes directly on the live transport and exact finite spectral stacks, and now reaches moonshine in a reader-clean way too: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code>, while the gap is exactly <code>324 = 54&middot;6 = 4&middot;81</code>, so <code>196884 = 728&middot;270 + 54&middot;6 = 729&middot;270 + 54</code>.</li>
     <li><strong>Continuum extractor:</strong> <code>tests/test_w33_curved_continuum_extractor_bridge.py</code> proves the continuum EH coefficient is already a rigid discrete invariant of the refinement tower. From any three successive levels, the same exact formulas recover the discrete EH coefficient <code>12480</code>, the continuum coefficient <code>320</code>, and the topological coefficient <code>a2 = 2240</code> on both <code>CP2_9</code> and <code>K3_16</code>.</li>
     <li><strong>Exceptional channel continuum bridge:</strong> <code>tests/test_w33_exceptional_channel_continuum_bridge.py</code> proves the curved bridge is no longer scalar-only: <code>320 = 40&times;8</code> is the exact l6 spinor <code>E6</code>/Cartan base block, the shared six-channel core is simultaneously the l6 <code>A2</code> support, the ordered generation-transfer graph, the transport Weyl(<code>A2</code>) order, the six firewall triplet fibers, and the tomotope triality factor, and the discrete six-mode coefficient factors both as <code>320&times;39</code> and as <code>240&times;52 = 40&times;6&times;52</code>.</li>
     <li><strong>Exceptional operator projectors:</strong> <code>tests/test_w33_exceptional_operator_projector_bridge.py</code> proves the promoted exceptional data now lives on a genuine internal operator package. On <code>End(S_48)</code>, the corrected <code>l6</code> spinor operators split into pairwise Frobenius-orthogonal <code>E6</code>, <code>A2</code>, and Cartan channel spaces of exact ranks <code>40</code>, <code>6</code>, and <code>8</code>, so <code>320</code>, <code>12480</code>, and <code>2240</code> are exact rank dressings of live internal projectors rather than anonymous scalar fits.</li>
@@ -1262,7 +1320,7 @@ section h2::after {
     <li><strong>Adjacency-to-Dirac closure bridge:</strong> <code>tests/test_w33_adjacency_dirac_closure_bridge.py</code> (3 tests) proves the full finite spectral triple is forced by the same exact internal operator package. The vertex Laplacian is exactly <code>L0 = 12I - A</code>, so its nonzero channels are <code>10</code> and <code>16</code>; the exact 1-form sector lifts those same channels; and the high-degree clique-regularity identities <code>L2 = 4I_160</code> and <code>L3 = 4I_40</code> force the whole coexact/high-degree sector to sit at eigenvalue <code>4</code>. Therefore the entire <code>D_F^2</code> spectrum is <code>{0^82, 4^320, 10^48, 16^30}</code>, with exact internal moments <code>a0 = 480</code>, <code>a2 = 2240</code>, <code>a4 = 17600</code>, and exact spectral-action ratios <code>14/3</code>, <code>110/3</code>, and <code>14/55</code>.</li>
     <li><strong>Spectral-action cyclotomic bridge:</strong> <code>tests/test_w33_spectral_action_cyclotomic_bridge.py</code> (3 tests) proves the internal spectral-action ratios, the Higgs ratio, and the curved gravity coefficient are one exact <code>q=3</code> law. The package satisfies <code>a2/a0 = 2&Phi;<sub>6</sub>(q)/q = 14/3</code>, <code>a4/a0 = 2(4&Phi;<sub>3</sub>(q)+q)/q = 110/3</code>, <code>m_H^2/v^2 = 2&Phi;<sub>6</sub>(q)/(4&Phi;<sub>3</sub>(q)+q) = 14/55</code>, <code>c<sub>EH,cont</sub>/a0 = 2/q</code>, and <code>c<sub>6</sub>/a0 = 2&Phi;<sub>3</sub>(q) = 26</code>.</li>
     <li><strong>Spectral-action q=3 selection bridge:</strong> <code>tests/test_w33_spectral_action_q3_selection_bridge.py</code> (3 tests) proves the internal matter/Higgs side now selects <code>q=3</code> on its own. The exact equations for <code>a2/a0 = 14/3</code>, <code>a4/a0 = 110/3</code>, and <code>m_H^2/v^2 = 14/55</code> all collapse to the same polynomial <code>3q^2 - 10q + 3 = (q-3)(3q-1)</code>, whose unique positive integer solution is <code>q=3</code>. The curved normalization <code>c<sub>6</sub>/a0 = 26</code> gives the companion selector <code>q^2 + q - 12 = (q-3)(q+4)</code>.</li>
-    <li><strong>Monster-Landauer closure:</strong> <code>tests/test_w33_monster_landauer_ternary_bridge.py</code>, <code>tests/test_w33_monster_shell_factorization_bridge.py</code>, <code>tests/test_w33_monster_3adic_closure_bridge.py</code>, <code>tests/test_w33_monster_3b_centralizer_bridge.py</code>, <code>tests/test_w33_monster_lagrangian_complement_bridge.py</code>, <code>tests/test_w33_monster_selector_completion_bridge.py</code>, <code>tests/test_w33_monster_q5_completion_bridge.py</code>, <code>tests/test_w33_monster_transport_shell_bridge.py</code>, <code>tests/test_w33_monster_supertrace_bridge.py</code>, <code>tests/test_w33_monster_moonshine_lift_bridge.py</code>, and <code>tests/test_w33_monster_transport_moonshine_bridge.py</code> (32 tests) prove the rigorous Monster/Landauer bridge is the local <code>3B</code> shell <code>3^(1+12)</code>, that this local theorem already closes globally on the full Monster <code>3</code>-primary part, that the same complement has exact transport-shell and finite spectral forms, and that the live shell now reaches moonshine in two exact repo-native ways: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code> and <code>196884 = 196560 + 4&middot;81 = 729&middot;270 + 54</code>. So the first global moonshine coefficient is now written directly in the current <code>sl(27)</code>, transport, selector, and exceptional gauge data.</li>
+    <li><strong>Monster-Landauer closure:</strong> <code>tests/test_w33_monster_landauer_ternary_bridge.py</code>, <code>tests/test_w33_monster_shell_factorization_bridge.py</code>, <code>tests/test_w33_monster_3adic_closure_bridge.py</code>, <code>tests/test_w33_monster_3b_centralizer_bridge.py</code>, <code>tests/test_w33_monster_lagrangian_complement_bridge.py</code>, <code>tests/test_w33_monster_selector_completion_bridge.py</code>, <code>tests/test_w33_monster_q5_completion_bridge.py</code>, <code>tests/test_w33_monster_transport_shell_bridge.py</code>, <code>tests/test_w33_monster_supertrace_bridge.py</code>, <code>tests/test_w33_monster_moonshine_lift_bridge.py</code>, <code>tests/test_w33_monster_transport_moonshine_bridge.py</code>, and <code>tests/test_w33_monster_gap_duality_bridge.py</code> (35 tests) prove the rigorous Monster/Landauer bridge is the local <code>3B</code> shell <code>3^(1+12)</code>, that this local theorem already closes globally on the full Monster <code>3</code>-primary part, that the same complement has exact transport-shell and finite spectral forms, and that the live shell now reaches moonshine in a fully repo-native dual form: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code>, while the gap is exactly <code>324 = 54&middot;6 = 4&middot;81</code>, so <code>196884 = 728&middot;270 + 54&middot;6 = 729&middot;270 + 54</code>. So the first global moonshine coefficient is now written directly in the current <code>sl(27)</code>, transport, selector, exceptional gauge, and matter data.</li>
     <li><strong>Curved EH-mode bridge:</strong> <code>tests/test_w33_curved_eh_mode_bridge.py</code> (3 tests) proves the whole first-order curved bridge is governed by one exact three-mode barycentric convolution law. For any internal package with moments <code>(a0,a2)</code>, the product first moment splits exactly into a universal <code>120</code>-mode cosmological term <code>(860 a0 + 120 a2)/19</code>, an Einstein-Hilbert-like <code>6</code>-mode <code>12 a0 + 3 a2</code>, and a residual topological <code>1</code>-mode <code>a2</code>. This simultaneously recovers the external chain/trace formulas, the native <code>A2</code> bridge, the transport-curved Dirac bridge, and gives the new full finite-<code>480</code> product coefficients <code>681600/19</code>, <code>12480</code>, and <code>2240</code>.</li>
     <li><strong>Curved mode residue bridge:</strong> <code>tests/test_w33_curved_mode_residue_bridge.py</code> (3 tests) proves the same curved refinement tower is an exact pole theorem. Its generating function is <code>A/(1 - 120 z) + B/(1 - 6 z) + C/(1 - z)</code>, so the normalized residues at <code>z = 1/120, 1/6, 1</code> are exactly the cosmological, EH-like, and topological channels, with the <code>6</code>-pole recovering <code>12480</code> and the rank-<code>39</code>-normalized <code>6</code>-pole recovering <code>320</code> on both curved seeds.</li>
     <li><strong>EH continuum-lock bridge:</strong> <code>tests/test_w33_eh_continuum_lock_bridge.py</code> (3 tests) proves the discrete curvature channel is locked to native W33 invariants. For the full finite package, the continuum Einstein-Hilbert coefficient is <code>4a0/6 = 320</code>, the discrete curved <code>6</code>-mode coefficient is <code>12480</code>, and they satisfy <code>12480 = 39 × 320</code>. The same factor <code>39</code> appears simultaneously as <code>V-1</code>, <code>rank(d1)</code>, <code>rank_GF(3)(A)</code>, and the total nontrivial adjacency multiplicity <code>24+15</code>. The residual topological <code>1</code>-mode also locks exactly as <code>2240 = (q^3+1)|χ| = 28 × 80</code>.</li>
@@ -1328,13 +1386,13 @@ section h2::after {
     <div class="card"><div class="num">Q<sub>k</sub></div><div class="label">Infinite Cover Family</div><div class="detail">The tomotope admits an explicit infinite regular-cover tower. This removes the naive finiteness objection, but the native carrier growth is still cubic rather than quartic.</div></div>
     <div class="card"><div class="num">4D</div><div class="label">Exact External Scale</div><div class="detail">The exact product operator <code>&Delta;<sub>ext</sub> &otimes; 1 + 1 &otimes; D<sub>F</sub><sup>2</sup></code> factorizes heat traces and supplies a genuine quartic external refinement parameter.</div></div>
     <div class="card"><div class="num">CP2 / K3</div><div class="label">Curved 4D Seeds</div><div class="detail">Vertex-minimal triangulations of <code>CP2</code> and <code>K3</code> give curved 4-manifold seeds with <code>&chi; = 3</code> and <code>24</code>, and barycentric subdivision multiplies top simplices by <code>120</code> each step.</div></div>
-    <div class="card"><div class="num">485</div><div class="label">Focused Bridge Tests</div><div class="detail">The current bridge-only stack passes <code>485</code> targeted tests, including the full transport/Lie/refinement chain, the curved reconstruction/roundtrip/master-closure chain, and the Monster/Landauer sequence through the new transport-moonshine closure where <code>196560 = 728&middot;270</code> and <code>196884 = 729&middot;270 + 54</code>.</div></div>
+    <div class="card"><div class="num">400</div><div class="label">Focused Bridge Tests</div><div class="detail">The current promoted bridge/docs stack passes <code>400</code> targeted checks, including the live <code>w33_*bridge</code> theorem chain, the curved reconstruction/roundtrip/master-closure route, the new moonshine-gap duality <code>324 = 54&middot;6 = 4&middot;81</code>, and the public docs/release metadata checks.</div></div>
   </div>
 
   <table>
     <tr><th>Bridge Layer</th><th>Exact Statement</th><th>Status</th></tr>
     <tr><td>s12 / Lie tower bridge</td><td>The grade-only ternary-Golay <code>s12</code> model has exactly <code>6</code> Jacobi-failure triples. Those <code>6</code> triples, the <code>6</code> asymmetric corrected-<code>l6</code> sextuple sectors, and the <code>6</code> exact <code>l6</code> <code>A2</code> generation-transfer modes all canonically identify with the same oriented three-generation graph. The same <code>s12</code> split <code>(242,243,243)</code> is uniquely the block-cyclic <code>Z3</code> grading of <code>sl_27</code> with <code>27 = 9+9+9</code>, and the Monster <code>3B</code> / Heisenberg / Golay bridge supplies the phase mechanism that resolves the grade-only obstruction.</td><td class="status-ok">&#9989; exact six-channel phase bridge</td></tr>
-    <tr><td>Monster / Landauer closure</td><td>The rigorous Monster/Landauer bridge is the local <code>3B</code> shell <code>3^(1+12)</code>, and it now closes at the actual centralizer level: <code>C<sub>M</sub>(3B)=3^(1+12).2Suz</code>. The shell contributes <code>3^13</code>, the sporadic factor contributes <code>|2Suz|<sub>3</sub>=3^7</code>, and together they exhaust the full Monster <code>3</code>-primary factor <code>3^20 = 3^13 &middot; 3^7 = 3^(&Phi;<sub>3</sub>+&Phi;<sub>6</sub>)</code>. More sharply, the same local shell now reaches moonshine in two exact live forms: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code>, and <code>196884 = 196560 + 4&middot;81 = 729&middot;270 + 54</code>, where <code>728 = dim sl(27)</code>, <code>270</code> is the exact directed transport count, and <code>54 = 40+6+8</code> is the full exceptional gauge-package rank.</td><td class="status-ok">&#9989; exact centralizer + transport + spectral + moonshine closure</td></tr>
+    <tr><td>Monster / Landauer closure</td><td>The rigorous Monster/Landauer bridge is the local <code>3B</code> shell <code>3^(1+12)</code>, and it now closes at the actual centralizer level: <code>C<sub>M</sub>(3B)=3^(1+12).2Suz</code>. The shell contributes <code>3^13</code>, the sporadic factor contributes <code>|2Suz|<sub>3</sub>=3^7</code>, and together they exhaust the full Monster <code>3</code>-primary factor <code>3^20 = 3^13 &middot; 3^7 = 3^(&Phi;<sub>3</sub>+&Phi;<sub>6</sub>)</code>. More sharply, the same local shell now reaches moonshine in a dual exact form: <code>196560 = 2160&middot;&Phi;<sub>3</sub>&middot;&Phi;<sub>6</sub> = 728&middot;270</code>, while the gap is exactly <code>324 = 54&middot;6 = 4&middot;81</code>, so <code>196884 = 728&middot;270 + 54&middot;6 = 729&middot;270 + 54</code>. Here <code>728 = dim sl(27)</code>, <code>270</code> is the exact directed transport count, <code>54 = 40+6+8</code> is the full exceptional gauge-package rank, <code>6</code> is the shared transfer channel, and <code>81</code> is the protected matter sector.</td><td class="status-ok">&#9989; exact centralizer + transport + spectral + moonshine closure</td></tr>
     <tr><td>Tomotope tower</td><td>Explicit <code>Q_k</code> family with <code>Q_k -&gt; Q_m</code> iff <code>m | k</code>; native carrier dimension <code>3</code>, so the tower is real but not yet the missing 4D Weyl-law theorem.</td><td class="status-ok">✅ exact finite family</td></tr>
     <tr><td>Almost-commutative bridge</td><td><code>&Delta;<sub>ext</sub> &otimes; 1 + 1 &otimes; D<sub>F</sub><sup>2</sup></code> on the external <code>(C_n)^4</code> family and the exact W(3,3) finite Dirac operator; heat traces factorize exactly.</td><td class="status-ok">✅ exact product identity</td></tr>
     <tr><td>Flat spectral-action coefficients</td><td><code>dim = 162</code>, <code>Tr(D<sub>F</sub><sup>2</sup>) = 61440</code>, <code>Tr(D<sub>F</sub><sup>4</sup>) = 89217408</code>; the flat external scalar-curvature term is still <code>0</code>.</td><td class="status-partial">⚠️ curvature still external</td></tr>
@@ -4549,7 +4607,7 @@ section h2::after {
     <a href="https://doi.org/10.5281/zenodo.18652825">DOI</a> &middot;
     <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
   </p>
-  <p style="margin-top: 0.4rem; font-size: 0.8rem;">20,780 tests &middot; 686 files &middot; 3,029+ theorems &middot; 142 phases &middot; 258+ domains &middot; 100% pass rate</p>
+  <p style="margin-top: 0.4rem; font-size: 0.8rem;">20,878 tests &middot; 687 files &middot; 3,029+ theorems &middot; 143 phases &middot; 259+ domains &middot; 100% pass rate</p>
 </footer>
 
 <script>
@@ -4615,6 +4673,109 @@ document.querySelectorAll('.sidebar-toc .toc-item').forEach(function(item) {
     }
   });
 });
+
+// —— Hard-computation phase chips -> exact GitHub proof files ——
+(function() {
+  var REPO_BASE = 'https://github.com/wilcompute/W33-Theory';
+  var phaseToTest = {
+    'LXIV': 'tests/test_hard_graph_computation.py',
+    'LXV': 'tests/test_spectral_rigidity.py',
+    'LXVI': 'tests/test_alpha_stress.py',
+    'LXVII': 'tests/test_homology_hodge_computation.py',
+    'LXVIII': 'tests/test_e8_root_computation.py',
+    'LXIX': 'tests/test_symplectic_geometry_computation.py',
+    'LXX': 'tests/test_group_theory_computation.py',
+    'LXXI': 'tests/test_complement_association_computation.py',
+    'LXXII': 'tests/test_zeta_number_theory_computation.py',
+    'LXXIII': 'tests/test_random_walk_computation.py',
+    'LXXIV': 'tests/test_graph_polynomial_computation.py',
+    'LXXV': 'tests/test_automorphism_symmetry_computation.py',
+    'LXXVI': 'tests/test_coding_theory_computation.py',
+    'LXXVII': 'tests/test_algebraic_combinatorics_computation.py',
+    'LXXVIII': 'tests/test_topological_graph_computation.py',
+    'LXXIX': 'tests/test_representation_theory_computation.py',
+    'LXXX': 'tests/test_optimization_convex_computation.py',
+    'LXXXI': 'tests/test_quantum_walk_computation.py',
+    'LXXXII': 'tests/test_extremal_graph_computation.py',
+    'LXXXIII': 'tests/test_algebraic_graph_theory_computation.py',
+    'LXXXIV': 'tests/test_matrix_analysis_computation.py',
+    'LXXXV': 'tests/test_harmonic_analysis_computation.py',
+    'LXXXVI': 'tests/test_number_theory_graph_computation.py',
+    'LXXXVII': 'tests/test_probabilistic_combinatorics_computation.py',
+    'LXXXVIII': 'tests/test_metric_graph_computation.py',
+    'LXXXIX': 'tests/test_algebraic_topology_computation.py',
+    'XC': 'tests/test_information_theory_computation.py',
+    'XCI': 'tests/test_operator_algebra_computation.py',
+    'XCII': 'tests/test_approximation_interpolation_computation.py',
+    'XCIII': 'tests/test_matroid_theory_computation.py',
+    'XCIV': 'tests/test_game_theory_domination_computation.py',
+    'XCV': 'tests/test_geometric_embedding_computation.py',
+    'XCVI': 'tests/test_statistical_mechanics_computation.py',
+    'XCVII': 'tests/test_tensor_multilinear_computation.py',
+    'XCVIII': 'tests/test_spectral_drawing_computation.py',
+    'XCIX': 'tests/test_graph_coloring_computation.py',
+    'C': 'tests/test_algebraic_number_theory_computation.py',
+    'CI': 'tests/test_functional_analysis_computation.py',
+    'CII': 'tests/test_discrete_calculus_computation.py',
+    'CIII': 'tests/test_spectral_clustering_computation.py',
+    'CIV': 'tests/test_cayley_algebraic_computation.py',
+    'CV': 'tests/test_graph_decomposition_computation.py',
+    'CVI': 'tests/test_spectral_moments_computation.py',
+    'CVII': 'tests/test_perturbation_theory_computation.py',
+    'CVIII': 'tests/test_random_matrix_computation.py',
+    'CIX': 'tests/test_spectral_geometry_computation.py',
+    'CX': 'tests/test_linear_algebra_deep_computation.py',
+    'CXI': 'tests/test_extremal_combinatorics_computation.py',
+    'CXII': 'tests/test_polynomial_methods_computation.py',
+    'CXIII': 'tests/test_connectivity_flow_computation.py',
+    'CXIV': 'tests/test_spectral_bounds_computation.py',
+    'CXV': 'tests/test_automorphism_deep_computation.py',
+    'CXVI': 'tests/test_covering_lifting_computation.py',
+    'CXVII': 'tests/test_incidence_geometry_computation.py',
+    'CXVIII': 'tests/test_resistance_distance_computation.py',
+    'CXIX': 'tests/test_cayley_hamilton_deep_computation.py',
+    'CXX': 'tests/test_spectral_gap_computation.py',
+    'CXXI': 'tests/test_graph_homomorphism_computation.py',
+    'CXXII': 'tests/test_spectral_partitioning_computation.py',
+    'CXXIII': 'tests/test_graph_signal_computation.py',
+    'CXXIV': 'tests/test_quantum_graph_computation.py',
+    'CXXV': 'tests/test_finite_field_methods_computation.py',
+    'CXXVI': 'tests/test_laplacian_powers_computation.py',
+    'CXXVII': 'tests/test_delsarte_theory_computation.py',
+    'CXXVIII': 'tests/test_graph_entropy_deep_computation.py',
+    'CXXIX': 'tests/test_clique_complex_deep_computation.py',
+    'CXXX': 'tests/test_spectral_comparison_computation.py',
+    'CXXXI': 'tests/test_graph_products_computation.py',
+    'CXXXII': 'tests/test_walk_enumeration_computation.py',
+    'CXXXIII': 'tests/test_spectral_decomposition_deep_computation.py',
+    'CXXXIV': 'tests/test_matrix_functions_deep_computation.py',
+    'CXXXV': 'tests/test_graph_coloring_deep_computation.py',
+    'CXXXVI': 'tests/test_algebraic_connectivity_deep_computation.py',
+    'CXXXVII': 'tests/test_distance_spectrum_deep_computation.py',
+    'CXXXVIII': 'tests/test_graph_diameter_deep_computation.py',
+    'CXXXIX': 'tests/test_cayley_graph_deep_computation.py',
+    'CXL': 'tests/test_clique_partition_deep_computation.py',
+    'CXLI': 'tests/test_vertex_connectivity_deep_computation.py',
+    'CXLII': 'tests/test_spectral_moments_deep_computation.py'
+  };
+
+  document.querySelectorAll('.domain-grid .domain-chip').forEach(function(chip) {
+    var phaseNode = chip.querySelector('.domain-phase');
+    if (!phaseNode) return;
+    var phase = phaseNode.textContent.trim();
+    var testPath = phaseToTest[phase];
+    if (!testPath) return;
+
+    var link = document.createElement('a');
+    link.href = REPO_BASE + '/blob/master/' + testPath;
+    link.className = 'domain-chip domain-chip-link';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.title = 'Open exact proof file in tests/ on GitHub';
+    link.innerHTML = chip.innerHTML + '<div class=\"domain-hint\">Open exact proof file in <code>tests/</code> on GitHub &rarr;</div>';
+    chip.parentNode.replaceChild(link, chip);
+  });
+})();
 
 // —— Auto-link repo file references in code spans ——
 (function() {
