@@ -130,6 +130,7 @@ from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
 from w33_klein_clifford_topological_bridge import (
     build_klein_clifford_topological_summary,
 )
+from w33_klein_bitangent_shell_bridge import build_klein_bitangent_shell_summary
 from w33_s12_vogel_spine_bridge import build_s12_vogel_spine_summary
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
@@ -242,6 +243,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
     klein_clifford_topological = build_klein_clifford_topological_summary()
+    klein_bitangent_shell = build_klein_bitangent_shell_summary()
     s12_vogel_spine = build_s12_vogel_spine_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
@@ -778,6 +780,30 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "ambient_equals_bitangents_times_phi3": klein_clifford_topological["ambient_shell_lift"]["ambient_equals_bitangents_times_phi3"],
             "sl27_equals_quartic_triangles_times_phi3": klein_clifford_topological["ambient_shell_lift"]["sl27_equals_quartic_triangles_times_phi3"],
             "sl27_equals_two_times_ambient": klein_clifford_topological["ambient_shell_lift"]["sl27_equals_two_times_ambient"],
+        },
+        "klein_bitangent_shell_bridge": {
+            "bitangent_shell": klein_bitangent_shell["bitangent_shell_dictionary"]["bitangent_shell"],
+            "phi3": klein_bitangent_shell["bitangent_shell_dictionary"]["phi3"],
+            "a26_rank": klein_bitangent_shell["bitangent_shell_dictionary"]["a26_rank"],
+            "quartic_triangle_shell": klein_bitangent_shell["bitangent_shell_dictionary"]["quartic_triangle_shell"],
+            "w33_slice": klein_bitangent_shell["bitangent_shell_dictionary"]["w33_slice"],
+            "supertrace_magnitude": klein_bitangent_shell["bitangent_shell_dictionary"]["supertrace_magnitude"],
+            "euler_magnitude": klein_bitangent_shell["bitangent_shell_dictionary"]["euler_magnitude"],
+            "ambient_pg53_points": klein_bitangent_shell["bitangent_shell_dictionary"]["ambient_pg53_points"],
+            "sl27_shell_dimension": klein_bitangent_shell["bitangent_shell_dictionary"]["sl27_shell_dimension"],
+            "topological_1_mode_coefficient": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_1_mode_coefficient"],
+            "ambient_equals_bitangents_times_phi3": klein_bitangent_shell["bitangent_shell_dictionary"]["ambient_equals_bitangents_times_phi3"],
+            "sl27_equals_bitangents_times_a26_rank": klein_bitangent_shell["bitangent_shell_dictionary"]["sl27_equals_bitangents_times_a26_rank"],
+            "topological_equals_bitangents_times_supertrace_magnitude": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_equals_bitangents_times_supertrace_magnitude"],
+            "topological_equals_bitangents_times_euler_magnitude": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_equals_bitangents_times_euler_magnitude"],
+            "quartic_triangles_equals_two_times_bitangents": klein_bitangent_shell["bitangent_shell_dictionary"]["quartic_triangles_equals_two_times_bitangents"],
+            "quartic_triangles_equals_cartan_times_phi6": klein_bitangent_shell["bitangent_shell_dictionary"]["quartic_triangles_equals_cartan_times_phi6"],
+            "topological_equals_w33_slice_times_quartic_triangles": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_equals_w33_slice_times_quartic_triangles"],
+            "a26_rank_equals_two_times_phi3": klein_bitangent_shell["bitangent_shell_dictionary"]["a26_rank_equals_two_times_phi3"],
+            "dressings": klein_bitangent_shell["bitangent_shell_dictionary"]["dressings"],
+            "shell_ladder": klein_bitangent_shell["bitangent_shell_dictionary"]["shell_ladder"],
+            "topological_over_ambient": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_over_ambient"],
+            "topological_over_sl27": klein_bitangent_shell["bitangent_shell_dictionary"]["topological_over_sl27"],
         },
         "s12_vogel_spine_bridge": {
             "sl27_dimension": s12_vogel_spine["vogel_a_line_dictionary"]["sl27_dimension"],
@@ -2027,7 +2053,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 442,
+        "focused_test_stack_size": 427,
     }
 
 
