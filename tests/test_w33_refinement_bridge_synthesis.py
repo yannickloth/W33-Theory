@@ -583,6 +583,31 @@ def test_synthesis_records_monster_lagrangian_complement_bridge() -> None:
     assert bridge["topological_equals_center_plus_heisenberg"] is True
 
 
+def test_synthesis_records_monster_selector_completion_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_selector_completion_bridge"]
+    assert bridge["complement_states"] == 3**7
+    assert bridge["center_states"] == 3
+    assert bridge["heisenberg_completion_states"] == 3**6
+    assert bridge["sl27_traceless_dimension"] == 728
+    assert bridge["nonzero_golay_codewords"] == 728
+    assert bridge["full_golay_codewords"] == 729
+    assert bridge["selector_line_dimension"] == 1
+    assert bridge["projective_selector_line"] == [1, 2]
+    assert bridge["w33_kernel_dimension_mod_3"] == 1
+    assert bridge["full_codewords_equal_sl27_plus_selector"] is True
+    assert bridge["nonzero_codewords_equal_sl27_traceless"] is True
+    assert bridge["complement_equals_center_times_selector_completion"] is True
+    assert bridge["selector_completion_decomposition_exact"] is True
+    assert bridge["sl27_z3_total_dimension"] == 728
+    assert bridge["sl27_bridge_claim_holds"] is True
+    assert bridge["golay_nonzero_equals_sl27_total"] is True
+    assert bridge["transport_selector_is_unique"] is True
+    assert bridge["w33_all_ones_spans_mod_3_kernel"] is True
+    assert bridge["transport_projective_selector_line_is_unique"] is True
+    assert bridge["path_groupoid_has_unique_invariant_line"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

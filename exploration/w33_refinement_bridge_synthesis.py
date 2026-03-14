@@ -113,6 +113,9 @@ from w33_monster_3b_centralizer_bridge import build_monster_3b_centralizer_summa
 from w33_monster_lagrangian_complement_bridge import (
     build_monster_lagrangian_complement_summary,
 )
+from w33_monster_selector_completion_bridge import (
+    build_monster_selector_completion_summary,
+)
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -209,6 +212,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_3adic_closure = build_monster_3adic_closure_summary()
     monster_3b_centralizer = build_monster_3b_centralizer_summary()
     monster_lagrangian_complement = build_monster_lagrangian_complement_summary()
+    monster_selector_completion = build_monster_selector_completion_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -497,6 +501,28 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "topological_equals_complement_trits": monster_lagrangian_complement["curved_dictionary"]["topological_equals_complement_trits"],
             "topological_equals_logical_plus_generation": monster_lagrangian_complement["curved_dictionary"]["topological_equals_logical_plus_generation"],
             "topological_equals_center_plus_heisenberg": monster_lagrangian_complement["curved_dictionary"]["topological_equals_center_plus_heisenberg"],
+        },
+        "monster_selector_completion_bridge": {
+            "complement_states": monster_selector_completion["selector_completion"]["complement_states"],
+            "center_states": monster_selector_completion["selector_completion"]["center_states"],
+            "heisenberg_completion_states": monster_selector_completion["selector_completion"]["heisenberg_completion_states"],
+            "sl27_traceless_dimension": monster_selector_completion["selector_completion"]["sl27_traceless_dimension"],
+            "nonzero_golay_codewords": monster_selector_completion["selector_completion"]["nonzero_golay_codewords"],
+            "full_golay_codewords": monster_selector_completion["selector_completion"]["full_golay_codewords"],
+            "selector_line_dimension": monster_selector_completion["selector_completion"]["selector_line_dimension"],
+            "projective_selector_line": monster_selector_completion["selector_completion"]["projective_selector_line"],
+            "w33_kernel_dimension_mod_3": monster_selector_completion["selector_completion"]["w33_kernel_dimension_mod_3"],
+            "full_codewords_equal_sl27_plus_selector": monster_selector_completion["selector_completion"]["full_codewords_equal_sl27_plus_selector"],
+            "nonzero_codewords_equal_sl27_traceless": monster_selector_completion["selector_completion"]["nonzero_codewords_equal_sl27_traceless"],
+            "complement_equals_center_times_selector_completion": monster_selector_completion["selector_completion"]["complement_equals_center_times_selector_completion"],
+            "selector_completion_decomposition_exact": monster_selector_completion["selector_completion"]["selector_completion_decomposition_exact"],
+            "sl27_z3_total_dimension": monster_selector_completion["cross_bridge_dictionary"]["sl27_z3_total_dimension"],
+            "sl27_bridge_claim_holds": monster_selector_completion["cross_bridge_dictionary"]["sl27_bridge_claim_holds"],
+            "golay_nonzero_equals_sl27_total": monster_selector_completion["cross_bridge_dictionary"]["golay_nonzero_equals_sl27_total"],
+            "transport_selector_is_unique": monster_selector_completion["cross_bridge_dictionary"]["transport_selector_is_unique"],
+            "w33_all_ones_spans_mod_3_kernel": monster_selector_completion["cross_bridge_dictionary"]["w33_all_ones_spans_mod_3_kernel"],
+            "transport_projective_selector_line_is_unique": monster_selector_completion["cross_bridge_dictionary"]["transport_projective_selector_line_is_unique"],
+            "path_groupoid_has_unique_invariant_line": monster_selector_completion["cross_bridge_dictionary"]["path_groupoid_has_unique_invariant_line"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
