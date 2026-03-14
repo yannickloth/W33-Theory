@@ -560,6 +560,29 @@ def test_synthesis_records_monster_3b_centralizer_bridge() -> None:
     assert bridge["centralizer_three_primary_from_curved_coefficients_exact"] is True
 
 
+def test_synthesis_records_monster_lagrangian_complement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["monster_lagrangian_complement_bridge"]
+    assert bridge["max_abelian_subgroup_order"] == 3**7
+    assert bridge["complement_states"] == 3**7
+    assert bridge["lagrangian_quotient_states"] == 3**6
+    assert bridge["complement_equals_lifted_max_abelian_exactly"] is True
+    assert bridge["lagrangian_quotient_equals_heisenberg_irrep"] is True
+    assert bridge["lagrangian_quotient_equals_golay_codewords"] is True
+    assert bridge["lagrangian_quotient_equals_sl27_operator_basis"] is True
+    assert bridge["center_times_lagrangian_quotient_equals_complement"] is True
+    assert bridge["complement_equals_logical_times_generation"] is True
+    assert bridge["logical_plus_generation_trits"] == [4, 3]
+    assert bridge["center_plus_heisenberg_trits"] == [1, 6]
+    assert bridge["complement_trits_equal_logical_plus_generation"] is True
+    assert bridge["complement_trits_equal_center_plus_heisenberg"] is True
+    assert bridge["dual_trit_splits_agree_exactly"] is True
+    assert bridge["topological_over_continuum"] == "7"
+    assert bridge["topological_equals_complement_trits"] is True
+    assert bridge["topological_equals_logical_plus_generation"] is True
+    assert bridge["topological_equals_center_plus_heisenberg"] is True
+
+
 def test_synthesis_records_weinberg_generator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["weinberg_generator_bridge"]

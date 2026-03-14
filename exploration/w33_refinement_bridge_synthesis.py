@@ -110,6 +110,9 @@ from w33_monster_landauer_ternary_bridge import build_monster_landauer_ternary_b
 from w33_monster_shell_factorization_bridge import build_monster_shell_factorization_summary
 from w33_monster_3adic_closure_bridge import build_monster_3adic_closure_summary
 from w33_monster_3b_centralizer_bridge import build_monster_3b_centralizer_summary
+from w33_monster_lagrangian_complement_bridge import (
+    build_monster_lagrangian_complement_summary,
+)
 from w33_weinberg_generator_bridge import build_weinberg_generator_summary
 from w33_weinberg_reconstruction_bridge import build_weinberg_reconstruction_summary
 from w33_srg_rosetta_lock_bridge import build_srg_rosetta_lock_summary
@@ -205,6 +208,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     monster_shell_factorization = build_monster_shell_factorization_summary()
     monster_3adic_closure = build_monster_3adic_closure_summary()
     monster_3b_centralizer = build_monster_3b_centralizer_summary()
+    monster_lagrangian_complement = build_monster_lagrangian_complement_summary()
     weinberg_generator = build_weinberg_generator_summary()
     weinberg_reconstruction = build_weinberg_reconstruction_summary()
     srg_rosetta_lock = build_srg_rosetta_lock_summary()
@@ -473,6 +477,26 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "shell_from_curved_gravity_exact": monster_3b_centralizer["curved_dictionary"]["shell_from_curved_gravity_exact"],
             "two_suz_from_curved_topology_exact": monster_3b_centralizer["curved_dictionary"]["two_suz_from_curved_topology_exact"],
             "centralizer_three_primary_from_curved_coefficients_exact": monster_3b_centralizer["curved_dictionary"]["centralizer_three_primary_from_curved_coefficients_exact"],
+        },
+        "monster_lagrangian_complement_bridge": {
+            "max_abelian_subgroup_order": monster_lagrangian_complement["lagrangian_realization"]["max_abelian_subgroup_order"],
+            "complement_states": monster_lagrangian_complement["lagrangian_realization"]["complement_states"],
+            "lagrangian_quotient_states": monster_lagrangian_complement["lagrangian_realization"]["lagrangian_quotient_states"],
+            "complement_equals_lifted_max_abelian_exactly": monster_lagrangian_complement["lagrangian_realization"]["complement_equals_lifted_max_abelian_exactly"],
+            "lagrangian_quotient_equals_heisenberg_irrep": monster_lagrangian_complement["lagrangian_realization"]["lagrangian_quotient_equals_heisenberg_irrep"],
+            "lagrangian_quotient_equals_golay_codewords": monster_lagrangian_complement["lagrangian_realization"]["lagrangian_quotient_equals_golay_codewords"],
+            "lagrangian_quotient_equals_sl27_operator_basis": monster_lagrangian_complement["lagrangian_realization"]["lagrangian_quotient_equals_sl27_operator_basis"],
+            "center_times_lagrangian_quotient_equals_complement": monster_lagrangian_complement["lagrangian_realization"]["center_times_lagrangian_quotient_equals_complement"],
+            "complement_equals_logical_times_generation": monster_lagrangian_complement["dual_factorization"]["complement_equals_logical_times_generation"],
+            "logical_plus_generation_trits": monster_lagrangian_complement["dual_factorization"]["logical_plus_generation_trits"],
+            "center_plus_heisenberg_trits": monster_lagrangian_complement["dual_factorization"]["center_plus_heisenberg_trits"],
+            "complement_trits_equal_logical_plus_generation": monster_lagrangian_complement["dual_factorization"]["complement_trits_equal_logical_plus_generation"],
+            "complement_trits_equal_center_plus_heisenberg": monster_lagrangian_complement["dual_factorization"]["complement_trits_equal_center_plus_heisenberg"],
+            "dual_trit_splits_agree_exactly": monster_lagrangian_complement["dual_factorization"]["dual_trit_splits_agree_exactly"],
+            "topological_over_continuum": monster_lagrangian_complement["curved_dictionary"]["topological_over_continuum"]["exact"],
+            "topological_equals_complement_trits": monster_lagrangian_complement["curved_dictionary"]["topological_equals_complement_trits"],
+            "topological_equals_logical_plus_generation": monster_lagrangian_complement["curved_dictionary"]["topological_equals_logical_plus_generation"],
+            "topological_equals_center_plus_heisenberg": monster_lagrangian_complement["curved_dictionary"]["topological_equals_center_plus_heisenberg"],
         },
         "weinberg_generator_bridge": {
             "generator": weinberg_generator["generator"]["exact"]["exact"],
