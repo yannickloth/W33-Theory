@@ -155,6 +155,7 @@ The exact fermion mass spectrum is still partially open. The current exact contr
 - **Electroweak action bridge:** in natural units the same graph package now fixes the canonically normalized bosonic weak-sector action data directly: `e^2 = 4πα`, `g^2 = e^2/sin^2(theta_W)`, `g'^2 = e^2/cos^2(theta_W)`, `lambda_H = 7/55`, `rho = 1`, and `m_W^2/m_Z^2 = 10/13`
 - **One-scale bosonic closure:** once the promoted graph scale `v = q^5 + q = |E| + 2q = 246` is accepted, the Higgs potential and custodial tree package close as one normalized action: `mu_H^2/v^2 = 7/55`, `m_H^2/v^2 = 14/55`, `V_min/v^4 = -7/220`, `rho = 1`, and `m_W^2/m_Z^2 = 10/13`
 - **Bosonic action completion:** the same data now fixes the full renormalizable bosonic electroweak action in canonical field-theory form, with no remaining bosonic freedom beyond the graph-fixed triple `(alpha, x, v)`
+- **Standard Model action backbone:** the exact public SM result is now structural: canonical bosonic action, exact fermion content `16 = 6+3+3+2+1+1` per generation, three-generation matter count `48`, clean Higgs pair `H_2, Hbar_2`, promoted Cabibbo/PMNS backbone, and exact anomaly cancellation. The remaining SM-side frontier is the full Yukawa eigenvalue spectrum
 - **Weinberg angle:** sin²(theta_W) = 3/13 = 0.23077 (exp: 0.23122, diff 0.19%)
 - **GUT coupling:** alpha_GUT = 1/(8pi) ~ 1/25.1 (exp: ~1/24.3, 3.6%)
 

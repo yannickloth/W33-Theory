@@ -130,6 +130,7 @@ from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
+from w33_standard_model_action_backbone_bridge import build_standard_model_action_backbone_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -251,6 +252,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
+    standard_model_action_backbone = build_standard_model_action_backbone_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -587,6 +589,32 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "higgs_potential_fixed_by_x_and_v": bosonic_action_completion["completion_claim"]["higgs_potential_fixed_by_x_and_v"],
             "no_free_bosonic_parameter_beyond_graph_fixed_alpha_x_v": bosonic_action_completion["completion_claim"]["no_free_bosonic_parameter_beyond_graph_fixed_alpha_x_v"],
             "graph_fixes_full_tree_level_bosonic_electroweak_action": bosonic_action_completion["completion_claim"]["graph_fixes_full_tree_level_bosonic_electroweak_action"],
+        },
+        "standard_model_action_backbone_bridge": {
+            "alpha": standard_model_action_backbone["bosonic_action_backbone"]["alpha"]["exact"],
+            "weinberg_x": standard_model_action_backbone["bosonic_action_backbone"]["weinberg_x"]["exact"],
+            "lambda_h": standard_model_action_backbone["bosonic_action_backbone"]["lambda_h"]["exact"],
+            "vev_ew_gev": standard_model_action_backbone["bosonic_action_backbone"]["vev_ew_gev"],
+            "mw_squared_over_mz_squared": standard_model_action_backbone["bosonic_action_backbone"]["mw_squared_over_mz_squared"]["exact"],
+            "rho_parameter": standard_model_action_backbone["bosonic_action_backbone"]["rho_parameter"]["exact"],
+            "one_generation_spinor_dimension": standard_model_action_backbone["fermion_representation_backbone"]["one_generation_spinor_dimension"],
+            "three_generation_matter_dimension": standard_model_action_backbone["fermion_representation_backbone"]["three_generation_matter_dimension"],
+            "left_right_split": standard_model_action_backbone["fermion_representation_backbone"]["left_right_split"],
+            "one_generation_counts": standard_model_action_backbone["fermion_representation_backbone"]["one_generation_counts"],
+            "clean_higgs_slots": standard_model_action_backbone["fermion_representation_backbone"]["clean_higgs_slots"],
+            "tan_theta_c": standard_model_action_backbone["mixing_backbone"]["tan_theta_c"]["exact"],
+            "sin2_theta_12": standard_model_action_backbone["mixing_backbone"]["sin2_theta_12"]["exact"],
+            "sin2_theta_23": standard_model_action_backbone["mixing_backbone"]["sin2_theta_23"]["exact"],
+            "sin2_theta_13": standard_model_action_backbone["mixing_backbone"]["sin2_theta_13"]["exact"],
+            "all_anomalies_cancel": standard_model_action_backbone["anomaly_backbone"]["all_anomalies_cancel"],
+            "full_bosonic_action_fixed": standard_model_action_backbone["bosonic_action_backbone"]["full_bosonic_action_fixed"],
+            "decomposition_16_equals_6_3_3_2_1_1": standard_model_action_backbone["fermion_representation_backbone"]["decomposition_16_equals_6_3_3_2_1_1"],
+            "clean_higgs_pair_is_h2_hbar2": standard_model_action_backbone["fermion_representation_backbone"]["clean_higgs_pair_is_h2_hbar2"],
+            "bosonic_action_complete": standard_model_action_backbone["frontier_boundary"]["bosonic_action_complete"],
+            "fermion_representations_complete": standard_model_action_backbone["frontier_boundary"]["fermion_representations_complete"],
+            "mixing_backbone_complete": standard_model_action_backbone["frontier_boundary"]["mixing_backbone_complete"],
+            "anomaly_backbone_complete": standard_model_action_backbone["frontier_boundary"]["anomaly_backbone_complete"],
+            "full_yukawa_eigenvalue_spectrum_still_open": standard_model_action_backbone["frontier_boundary"]["full_yukawa_eigenvalue_spectrum_still_open"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],

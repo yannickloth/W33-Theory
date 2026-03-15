@@ -306,6 +306,42 @@ def test_synthesis_records_bosonic_action_completion_bridge() -> None:
     assert bridge["graph_fixes_full_tree_level_bosonic_electroweak_action"] is True
 
 
+def test_synthesis_records_standard_model_action_backbone_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["standard_model_action_backbone_bridge"]
+    assert bridge["alpha"] == "1111/152247"
+    assert bridge["weinberg_x"] == "3/13"
+    assert bridge["lambda_h"] == "7/55"
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["mw_squared_over_mz_squared"] == "10/13"
+    assert bridge["rho_parameter"] == "1"
+    assert bridge["one_generation_spinor_dimension"] == 16
+    assert bridge["three_generation_matter_dimension"] == 48
+    assert bridge["left_right_split"] == "8+8"
+    assert bridge["one_generation_counts"] == {
+        "Q": 6,
+        "u_c": 3,
+        "d_c": 3,
+        "L": 2,
+        "e_c": 1,
+        "nu_c": 1,
+    }
+    assert bridge["clean_higgs_slots"] == ["H_2", "Hbar_2"]
+    assert bridge["tan_theta_c"] == "3/13"
+    assert bridge["sin2_theta_12"] == "4/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["sin2_theta_13"] == "2/91"
+    assert bridge["all_anomalies_cancel"] is True
+    assert bridge["full_bosonic_action_fixed"] is True
+    assert bridge["decomposition_16_equals_6_3_3_2_1_1"] is True
+    assert bridge["clean_higgs_pair_is_h2_hbar2"] is True
+    assert bridge["bosonic_action_complete"] is True
+    assert bridge["fermion_representations_complete"] is True
+    assert bridge["mixing_backbone_complete"] is True
+    assert bridge["anomaly_backbone_complete"] is True
+    assert bridge["full_yukawa_eigenvalue_spectrum_still_open"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]
