@@ -127,6 +127,7 @@ from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_s
 from w33_vacuum_unity_bridge import build_vacuum_unity_summary
 from w33_quantum_vacuum_standards_bridge import build_quantum_vacuum_standards_summary
 from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
+from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -245,6 +246,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     vacuum_unity = build_vacuum_unity_summary()
     quantum_vacuum_standards = build_quantum_vacuum_standards_summary()
     natural_units_meaning = build_natural_units_meaning_summary()
+    electroweak_lagrangian = build_electroweak_lagrangian_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -505,6 +507,33 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "topological_over_continuum": natural_units_meaning["dimensionless_graph_observables"]["topological_over_continuum"],
             "graphs_mean_couplings_and_mode_weights_in_natural_units": natural_units_meaning["dimensionless_graph_observables"]["graphs_mean_couplings_and_mode_weights_in_natural_units"],
             "si_vacuum_is_reexpression_of_dimensionless_package": natural_units_meaning["dimensionless_graph_observables"]["si_vacuum_is_reexpression_of_dimensionless_package"],
+        },
+        "electroweak_lagrangian_bridge": {
+            "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
+            "weinberg_x": electroweak_lagrangian["graph_inputs"]["weinberg_x"]["exact"],
+            "cos2_theta_w": electroweak_lagrangian["graph_inputs"]["cos2_theta_w"]["exact"],
+            "higgs_ratio_square": electroweak_lagrangian["graph_inputs"]["higgs_ratio_square"]["exact"],
+            "lambda_h": electroweak_lagrangian["graph_inputs"]["lambda_h"]["exact"],
+            "g_squared_over_4pi_alpha": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["g_squared_over_4pi_alpha"]["exact"],
+            "gprime_squared_over_4pi_alpha": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["gprime_squared_over_4pi_alpha"]["exact"],
+            "gz_squared_over_4pi_alpha": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["gz_squared_over_4pi_alpha"]["exact"],
+            "one_over_e_squared_equals_sum": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["one_over_e_squared_equals_sum"],
+            "g_squared_over_gprime_squared": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["g_squared_over_gprime_squared"]["exact"],
+            "rho_parameter": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["rho_parameter"]["exact"],
+            "mw_squared_over_mz_squared": electroweak_lagrangian["dimensionless_lagrangian_dictionary"]["mw_squared_over_mz_squared"]["exact"],
+            "e": electroweak_lagrangian["natural_unit_couplings"]["e"]["scientific"],
+            "g": electroweak_lagrangian["natural_unit_couplings"]["g"]["scientific"],
+            "gprime": electroweak_lagrangian["natural_unit_couplings"]["gprime"]["scientific"],
+            "gZ": electroweak_lagrangian["natural_unit_couplings"]["gZ"]["scientific"],
+            "mw_tree_gev": electroweak_lagrangian["natural_unit_couplings"]["mw_tree_gev"]["scientific"],
+            "mz_tree_gev": electroweak_lagrangian["natural_unit_couplings"]["mz_tree_gev"]["scientific"],
+            "mh_tree_gev": electroweak_lagrangian["natural_unit_couplings"]["mh_tree_gev"]["scientific"],
+            "fermi_constant_tree": electroweak_lagrangian["natural_unit_couplings"]["fermi_constant_tree"]["scientific"],
+            "e_equals_g_sin_theta": electroweak_lagrangian["exact_tree_level_relations"]["e_equals_g_sin_theta"],
+            "e_equals_gprime_cos_theta": electroweak_lagrangian["exact_tree_level_relations"]["e_equals_gprime_cos_theta"],
+            "mz_equals_mw_over_cos_theta": electroweak_lagrangian["exact_tree_level_relations"]["mz_equals_mw_over_cos_theta"],
+            "mh_equals_v_sqrt_2lambda": electroweak_lagrangian["exact_tree_level_relations"]["mh_equals_v_sqrt_2lambda"],
+            "gf_equals_one_over_sqrt2_v2": electroweak_lagrangian["exact_tree_level_relations"]["gf_equals_one_over_sqrt2_v2"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],

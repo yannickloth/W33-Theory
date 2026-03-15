@@ -221,6 +221,36 @@ def test_synthesis_records_natural_units_meaning_bridge() -> None:
     assert bridge["si_vacuum_is_reexpression_of_dimensionless_package"] is True
 
 
+def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["electroweak_lagrangian_bridge"]
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["weinberg_x"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["lambda_h"] == "7/55"
+    assert bridge["g_squared_over_4pi_alpha"] == "13/3"
+    assert bridge["gprime_squared_over_4pi_alpha"] == "13/10"
+    assert bridge["gz_squared_over_4pi_alpha"] == "169/30"
+    assert bridge["one_over_e_squared_equals_sum"] is True
+    assert bridge["g_squared_over_gprime_squared"] == "10/3"
+    assert bridge["rho_parameter"] == "1"
+    assert bridge["mw_squared_over_mz_squared"] == "10/13"
+    assert bridge["e"].startswith("3.0282211588162705")
+    assert bridge["g"].startswith("6.303745025171762")
+    assert bridge["gprime"].startswith("3.452703347047545")
+    assert bridge["gZ"].startswith("7.18737516379179")
+    assert bridge["mw_tree_gev"].startswith("7.753606380961267")
+    assert bridge["mz_tree_gev"].startswith("8.840471451463902")
+    assert bridge["mh_tree_gev"].startswith("1.241131448609402")
+    assert bridge["fermi_constant_tree"].startswith("1.168462524268867")
+    assert bridge["e_equals_g_sin_theta"] is True
+    assert bridge["e_equals_gprime_cos_theta"] is True
+    assert bridge["mz_equals_mw_over_cos_theta"] is True
+    assert bridge["mh_equals_v_sqrt_2lambda"] is True
+    assert bridge["gf_equals_one_over_sqrt2_v2"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]

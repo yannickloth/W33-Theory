@@ -152,6 +152,7 @@ The exact fermion mass spectrum is still partially open. The current exact contr
 - **Vacuum unity lock:** c²μ₀ε₀ = 1 exactly, Z₀ = μ₀c = 1/(ε₀c), and in modern SI the W(3,3) alpha theorem predicts μ₀, ε₀, and Z₀ together through μ₀ = 2αh/(ce²)
 - **Quantum vacuum standards:** the same vacuum theorem lands directly on the Josephson/von-Klitzing/Landauer package: R_K = h/e², K_J = 2e/h, G₀ = 2e²/h, Φ₀ = h/(2e), Z₀ = 2αR_K, Y₀ = G₀/(4α), and α = Z₀G₀/4
 - **Natural-units meaning:** in Heaviside-Lorentz natural units the vacuum becomes 1, so the graph should be read directly as dimensionless physics: α, 3/13, 14/55, 9/13, 39, and 7 are the promoted couplings, ratios, and mode weights; the SI constants are re-expressions of that package
+- **Electroweak action bridge:** in natural units the same graph package now fixes the bosonic weak-sector action data directly: `e^2 = 4πα`, `g^2 = e^2/sin^2(theta_W)`, `g'^2 = e^2/cos^2(theta_W)`, `lambda_H = 7/55`, `rho = 1`, and `m_W^2/m_Z^2 = 10/13`
 - **Weinberg angle:** sin²(theta_W) = 3/13 = 0.23077 (exp: 0.23122, diff 0.19%)
 - **GUT coupling:** alpha_GUT = 1/(8pi) ~ 1/25.1 (exp: ~1/24.3, 3.6%)
 
