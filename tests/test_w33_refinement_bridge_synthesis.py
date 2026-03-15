@@ -364,6 +364,56 @@ def test_synthesis_records_q3_fermion_hierarchy_bridge() -> None:
     assert bridge["muon_ratio_is_phi3_mu_squared"] is True
 
 
+def test_synthesis_records_alpha_hierarchy_gaussian_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["alpha_hierarchy_gaussian_bridge"]
+    assert bridge["outer_alpha_formula"] == "|(k-1) + i mu|^2"
+    assert bridge["outer_alpha_vector"] == [11, 4]
+    assert bridge["outer_alpha_norm"] == "137"
+    assert bridge["inner_hierarchy_formula"] == "|mu + i|^2"
+    assert bridge["inner_hierarchy_vector"] == [4, 1]
+    assert bridge["inner_hierarchy_norm"] == "17"
+    assert bridge["transport_prefactor"] == "8"
+    assert bridge["up_sector_suppressor"] == "136"
+    assert bridge["selector_line_dimension"] == "1"
+    assert bridge["alpha_tree_equals_up_sector_plus_selector"] is True
+    assert bridge["vertex_correction_term"] == "40/1111"
+    assert bridge["alpha_full_equals_nested_shell_plus_vertex_correction"] is True
+    assert bridge["mc_over_mt"] == "1/136"
+    assert bridge["mu_over_mc"] == "1/544"
+    assert bridge["charm_ratio_is_inverse_selector_reduced_tree_alpha"] is True
+    assert bridge["second_up_step_is_extra_mu_factor"] is True
+
+
+def test_synthesis_records_qcd_beta_phi6_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["qcd_beta_phi6_bridge"]
+    assert bridge["beta0_formula"] == "11 - 2 n_f / 3"
+    assert bridge["beta0_su3"] == "7"
+    assert bridge["phi6_formula"] == "q^2 - q + 1"
+    assert bridge["phi6_q3"] == "7"
+    assert bridge["pmns_atmospheric_ratio"] == "7/13"
+    assert bridge["higgs_quartic"] == "7/55"
+    assert bridge["topological_over_continuum_ratio"] == "7"
+    assert bridge["beta0_equals_phi6"] is True
+    assert bridge["positive_integer_solution_of_phi6_equals_7"] == [3]
+
+
+def test_synthesis_records_jones_mu4_selector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["jones_mu4_selector_bridge"]
+    assert bridge["jones_value_set"] == "{4 cos^2(pi/n) : n >= 3} union [4, infinity)"
+    assert bridge["critical_boundary"] == "4"
+    assert bridge["mu"] == "4"
+    assert bridge["spectral_gap"] == "4"
+    assert bridge["external_dimension"] == "4"
+    assert bridge["mu_equals_q_plus_one"] is True
+    assert bridge["mu_hits_jones_boundary"] is True
+    assert bridge["mu_equals_spectral_gap"] is True
+    assert bridge["mu_equals_external_dimension"] is True
+    assert bridge["positive_integer_solution_of_q_plus_one_equals_4"] == [3]
+
+
 def test_synthesis_records_f4_neutrino_scale_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["f4_neutrino_scale_bridge"]

@@ -132,6 +132,9 @@ from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
 from w33_standard_model_action_backbone_bridge import build_standard_model_action_backbone_summary
 from w33_q3_fermion_hierarchy_bridge import build_q3_fermion_hierarchy_summary
+from w33_alpha_hierarchy_gaussian_bridge import build_alpha_hierarchy_gaussian_summary
+from w33_qcd_beta_phi6_bridge import build_qcd_beta_phi6_summary
+from w33_jones_mu4_selector_bridge import build_jones_mu4_selector_summary
 from w33_f4_neutrino_scale_bridge import build_f4_neutrino_scale_summary
 from w33_one_input_fermion_spectrum_bridge import build_one_input_fermion_spectrum_summary
 from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
@@ -267,6 +270,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     bosonic_action_completion = build_bosonic_action_completion_summary()
     standard_model_action_backbone = build_standard_model_action_backbone_summary()
     q3_fermion_hierarchy = build_q3_fermion_hierarchy_summary()
+    alpha_hierarchy_gaussian = build_alpha_hierarchy_gaussian_summary()
+    qcd_beta_phi6 = build_qcd_beta_phi6_summary()
+    jones_mu4_selector = build_jones_mu4_selector_summary()
     f4_neutrino_scale = build_f4_neutrino_scale_summary()
     one_input_fermion_spectrum = build_one_input_fermion_spectrum_summary()
     yukawa_scaffold = build_yukawa_scaffold_summary()
@@ -656,6 +662,47 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "strange_ratio_is_inverse_nonbacktracking_degree_times_mu": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["strange_ratio_is_inverse_nonbacktracking_degree_times_mu"],
             "down_ratio_is_lambda_over_v": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["down_ratio_is_lambda_over_v"],
             "muon_ratio_is_phi3_mu_squared": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["muon_ratio_is_phi3_mu_squared"],
+        },
+        "alpha_hierarchy_gaussian_bridge": {
+            "outer_alpha_formula": alpha_hierarchy_gaussian["nested_gaussian_shells"]["outer_alpha_formula"],
+            "outer_alpha_vector": alpha_hierarchy_gaussian["nested_gaussian_shells"]["outer_alpha_vector"],
+            "outer_alpha_norm": alpha_hierarchy_gaussian["nested_gaussian_shells"]["outer_alpha_norm"]["exact"],
+            "inner_hierarchy_formula": alpha_hierarchy_gaussian["nested_gaussian_shells"]["inner_hierarchy_formula"],
+            "inner_hierarchy_vector": alpha_hierarchy_gaussian["nested_gaussian_shells"]["inner_hierarchy_vector"],
+            "inner_hierarchy_norm": alpha_hierarchy_gaussian["nested_gaussian_shells"]["inner_hierarchy_norm"]["exact"],
+            "transport_prefactor": alpha_hierarchy_gaussian["nested_gaussian_shells"]["transport_prefactor"]["exact"],
+            "up_sector_suppressor": alpha_hierarchy_gaussian["nested_gaussian_shells"]["up_sector_suppressor"]["exact"],
+            "selector_line_dimension": alpha_hierarchy_gaussian["selector_split"]["selector_line_dimension"]["exact"],
+            "alpha_tree_equals_up_sector_plus_selector": alpha_hierarchy_gaussian["selector_split"]["alpha_tree_equals_up_sector_plus_selector"],
+            "vertex_correction_term": alpha_hierarchy_gaussian["selector_split"]["vertex_correction_term"]["exact"],
+            "alpha_full_equals_nested_shell_plus_vertex_correction": alpha_hierarchy_gaussian["selector_split"]["alpha_full_equals_nested_shell_plus_vertex_correction"],
+            "mc_over_mt": alpha_hierarchy_gaussian["hierarchy_lock"]["mc_over_mt"]["exact"],
+            "mu_over_mc": alpha_hierarchy_gaussian["hierarchy_lock"]["mu_over_mc"]["exact"],
+            "charm_ratio_is_inverse_selector_reduced_tree_alpha": alpha_hierarchy_gaussian["hierarchy_lock"]["charm_ratio_is_inverse_selector_reduced_tree_alpha"],
+            "second_up_step_is_extra_mu_factor": alpha_hierarchy_gaussian["hierarchy_lock"]["second_up_step_is_extra_mu_factor"],
+        },
+        "qcd_beta_phi6_bridge": {
+            "beta0_formula": qcd_beta_phi6["qcd_beta_dictionary"]["beta0_formula"],
+            "beta0_su3": qcd_beta_phi6["qcd_beta_dictionary"]["beta0_su3"]["exact"],
+            "phi6_formula": qcd_beta_phi6["qcd_beta_dictionary"]["phi6_formula"],
+            "phi6_q3": qcd_beta_phi6["qcd_beta_dictionary"]["phi6_q3"]["exact"],
+            "pmns_atmospheric_ratio": qcd_beta_phi6["qcd_beta_dictionary"]["pmns_atmospheric_ratio"]["exact"],
+            "higgs_quartic": qcd_beta_phi6["qcd_beta_dictionary"]["higgs_quartic"]["exact"],
+            "topological_over_continuum_ratio": qcd_beta_phi6["qcd_beta_dictionary"]["topological_over_continuum_ratio"]["exact"],
+            "beta0_equals_phi6": qcd_beta_phi6["selector_bridge"]["beta0_equals_phi6"],
+            "positive_integer_solution_of_phi6_equals_7": qcd_beta_phi6["selector_bridge"]["positive_integer_solution_of_phi6_equals_7"],
+        },
+        "jones_mu4_selector_bridge": {
+            "jones_value_set": jones_mu4_selector["jones_dictionary"]["jones_value_set"],
+            "critical_boundary": jones_mu4_selector["jones_dictionary"]["critical_boundary"]["exact"],
+            "mu": jones_mu4_selector["jones_dictionary"]["mu"]["exact"],
+            "spectral_gap": jones_mu4_selector["jones_dictionary"]["spectral_gap"]["exact"],
+            "external_dimension": jones_mu4_selector["jones_dictionary"]["external_dimension"]["exact"],
+            "mu_equals_q_plus_one": jones_mu4_selector["selector_bridge"]["mu_equals_q_plus_one"],
+            "mu_hits_jones_boundary": jones_mu4_selector["selector_bridge"]["mu_hits_jones_boundary"],
+            "mu_equals_spectral_gap": jones_mu4_selector["selector_bridge"]["mu_equals_spectral_gap"],
+            "mu_equals_external_dimension": jones_mu4_selector["selector_bridge"]["mu_equals_external_dimension"],
+            "positive_integer_solution_of_q_plus_one_equals_4": jones_mu4_selector["selector_bridge"]["positive_integer_solution_of_q_plus_one_equals_4"],
         },
         "f4_neutrino_scale_bridge": {
             "f4_dimension": f4_neutrino_scale["exceptional_scale_dictionary"]["f4_dimension"],
@@ -2441,7 +2488,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 466,
+        "focused_test_stack_size": 471,
     }
 
 
