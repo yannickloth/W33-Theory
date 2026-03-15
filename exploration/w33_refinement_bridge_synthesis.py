@@ -139,6 +139,7 @@ from w33_yukawa_kronecker_reduction_bridge import (
     build_yukawa_kronecker_reduction_summary,
 )
 from w33_yukawa_gram_shell_bridge import build_yukawa_gram_shell_summary
+from w33_yukawa_base_spectrum_bridge import build_yukawa_base_spectrum_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -265,6 +266,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
     yukawa_kronecker_reduction = build_yukawa_kronecker_reduction_summary()
     yukawa_gram_shell = build_yukawa_gram_shell_summary()
+    yukawa_base_spectrum = build_yukawa_base_spectrum_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -724,6 +726,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "h2_minus_plus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["H_2"]["-+"]["contains_exact_phi3_mode_13_over_240"],
             "hbar2_plus_minus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["Hbar_2"]["+-"]["contains_exact_phi3_mode_13_over_240"],
             "hbar2_minus_plus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["Hbar_2"]["-+"]["contains_exact_phi3_mode_13_over_240"],
+        },
+        "yukawa_base_spectrum_bridge": {
+            "gram_denominator": yukawa_base_spectrum["gram_denominator"],
+            "h2_plus_minus_squared_spectrum": yukawa_base_spectrum["base_squared_spectra"]["h2_plus_minus"],
+            "h2_minus_plus_squared_spectrum": yukawa_base_spectrum["base_squared_spectra"]["h2_minus_plus"],
+            "hbar2_plus_minus_squared_spectrum": yukawa_base_spectrum["base_squared_spectra"]["hbar2_plus_minus"],
+            "hbar2_minus_plus_squared_spectrum": yukawa_base_spectrum["base_squared_spectra"]["hbar2_minus_plus"],
+            "shared_phi3_scalar_channel": yukawa_base_spectrum["radical_packet_dictionary"]["shared_phi3_scalar_channel"],
+            "h2_plus_minus_companion_scalar_channel": yukawa_base_spectrum["radical_packet_dictionary"]["h2_plus_minus_companion_scalar_channel"],
+            "hbar2_minus_plus_scalar_channel": yukawa_base_spectrum["radical_packet_dictionary"]["hbar2_minus_plus_scalar_channel"],
+            "h2_minus_plus_radical_pair": yukawa_base_spectrum["radical_packet_dictionary"]["h2_minus_plus_radical_pair"],
+            "hbar2_plus_minus_radical_pair": yukawa_base_spectrum["radical_packet_dictionary"]["hbar2_plus_minus_radical_pair"],
+            "all_base_squared_spectra_are_exact_algebraic_numbers_on_240_shell": yukawa_base_spectrum["base_spectrum_theorem"]["all_base_squared_spectra_are_exact_algebraic_numbers_on_240_shell"],
+            "residual_base_frontier_is_two_radical_pairs_plus_exact_scalar_channels": yukawa_base_spectrum["base_spectrum_theorem"]["residual_base_frontier_is_two_radical_pairs_plus_exact_scalar_channels"],
+            "h2_minus_plus_block_trace": yukawa_base_spectrum["base_spectrum_theorem"]["h2_minus_plus_block_trace"],
+            "h2_minus_plus_block_determinant": yukawa_base_spectrum["base_spectrum_theorem"]["h2_minus_plus_block_determinant"],
+            "hbar2_plus_minus_block_trace": yukawa_base_spectrum["base_spectrum_theorem"]["hbar2_plus_minus_block_trace"],
+            "hbar2_plus_minus_block_determinant": yukawa_base_spectrum["base_spectrum_theorem"]["hbar2_plus_minus_block_determinant"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],

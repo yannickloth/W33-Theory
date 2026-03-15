@@ -485,6 +485,32 @@ def test_synthesis_records_yukawa_gram_shell_bridge() -> None:
     assert bridge["hbar2_minus_plus_contains_exact_phi3_mode"] is False
 
 
+def test_synthesis_records_yukawa_base_spectrum_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_base_spectrum_bridge"]
+    assert bridge["gram_denominator"] == 57600
+    assert bridge["h2_plus_minus_squared_spectrum"] == ["169/57600", "275/57600"]
+    assert bridge["h2_minus_plus_squared_spectrum"] == [
+        "271/57600 - sqrt(12241)/57600",
+        "sqrt(12241)/57600 + 271/57600",
+    ]
+    assert bridge["hbar2_plus_minus_squared_spectrum"] == [
+        "169/57600",
+        "491/57600 - sqrt(103849)/57600",
+        "sqrt(103849)/57600 + 491/57600",
+    ]
+    assert bridge["hbar2_minus_plus_squared_spectrum"] == ["323/57600"]
+    assert bridge["shared_phi3_scalar_channel"] == "169/57600"
+    assert bridge["h2_plus_minus_companion_scalar_channel"] == "275/57600"
+    assert bridge["hbar2_minus_plus_scalar_channel"] == "323/57600"
+    assert bridge["all_base_squared_spectra_are_exact_algebraic_numbers_on_240_shell"] is True
+    assert bridge["residual_base_frontier_is_two_radical_pairs_plus_exact_scalar_channels"] is True
+    assert bridge["h2_minus_plus_block_trace"] == 542
+    assert bridge["h2_minus_plus_block_determinant"] == 61200
+    assert bridge["hbar2_plus_minus_block_trace"] == 982
+    assert bridge["hbar2_plus_minus_block_determinant"] == 137232
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]
