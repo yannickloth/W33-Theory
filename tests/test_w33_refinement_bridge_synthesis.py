@@ -342,6 +342,66 @@ def test_synthesis_records_standard_model_action_backbone_bridge() -> None:
     assert bridge["full_yukawa_eigenvalue_spectrum_still_open"] is True
 
 
+def test_synthesis_records_q3_fermion_hierarchy_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["q3_fermion_hierarchy_bridge"]
+    assert bridge["alpha_inverse_exact"] == "152247/1111"
+    assert bridge["alpha_tree_inverse"] == "137"
+    assert bridge["gaussian_norm_mu_plus_i"] == "17"
+    assert bridge["up_sector_suppressor"] == "136"
+    assert bridge["alpha_tree_minus_one_equals_up_sector_suppressor"] is True
+    assert bridge["vertex_correction_term"] == "40/1111"
+    assert bridge["mc_over_mt"] == "1/136"
+    assert bridge["mu_over_mc"] == "1/544"
+    assert bridge["mb_over_mc"] == "13/4"
+    assert bridge["ms_over_mb"] == "1/44"
+    assert bridge["md_over_ms"] == "1/20"
+    assert bridge["mmu_over_me"] == "208"
+    assert bridge["charm_suppressor_is_alpha_tree_minus_one"] is True
+    assert bridge["bottom_ratio_is_projective_plane_over_line"] is True
+    assert bridge["strange_ratio_is_inverse_nonbacktracking_degree_times_mu"] is True
+    assert bridge["down_ratio_is_lambda_over_v"] is True
+    assert bridge["muon_ratio_is_phi3_mu_squared"] is True
+
+
+def test_synthesis_records_f4_neutrino_scale_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["f4_neutrino_scale_bridge"]
+    assert bridge["f4_dimension"] == 52
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["mr_over_vew"] == "1/52"
+    assert bridge["mnu_over_me_squared_if_dirac_seed_is_electron"] == "26/123"
+    assert bridge["f4_dimension_equals_phi3_times_mu"] is True
+    assert bridge["f4_dimension_equals_v_plus_k"] is True
+    assert bridge["majorana_scale_is_inverse_f4_dimension"] is True
+    assert bridge["seesaw_coefficient_is_exact_f4_over_vew"] is True
+    assert bridge["seesaw_coefficient_reduces_to_26_over_123"] is True
+
+
+def test_synthesis_records_one_input_fermion_spectrum_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["one_input_fermion_spectrum_bridge"]
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["mt_over_vew"] == "sqrt(2)/2"
+    assert bridge["mc_over_vew"] == "sqrt(2)/272"
+    assert bridge["mu_over_vew"] == "sqrt(2)/147968"
+    assert bridge["mb_over_vew"] == "13*sqrt(2)/1088"
+    assert bridge["ms_over_vew"] == "13*sqrt(2)/47872"
+    assert bridge["md_over_vew"] == "13*sqrt(2)/957440"
+    assert bridge["mu_over_mt"] == "1/73984"
+    assert bridge["residual_seed"] == "m_e"
+    assert bridge["mmu_over_me"] == "208"
+    assert bridge["koide_q"] == "2/3"
+    assert bridge["sqrt_mtau_over_me"] == "2 + sqrt(48*sqrt(13) + 627) + 8*sqrt(13)"
+    assert bridge["mtau_over_me_minpoly"] == "y**4 - 5852*y**3 + 8322694*y**2 - 302918748*y + 1628364609"
+    assert bridge["mnu_over_me_squared_if_dirac_seed_is_electron"] == "26/123"
+    assert bridge["quark_ladder_fixed_by_graph_scale_and_q3_ratios"] is True
+    assert bridge["charged_lepton_ladder_reduced_to_one_electron_seed"] is True
+    assert bridge["koide_packet_closes_tau_over_e_algebraically"] is True
+    assert bridge["neutrino_scale_reduced_to_same_electron_seed_plus_f4_coefficient"] is True
+    assert bridge["remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet"] is True
+
+
 def test_synthesis_records_yukawa_scaffold_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["yukawa_scaffold_bridge"]
@@ -509,6 +569,40 @@ def test_synthesis_records_yukawa_base_spectrum_bridge() -> None:
     assert bridge["h2_minus_plus_block_determinant"] == 61200
     assert bridge["hbar2_plus_minus_block_trace"] == 982
     assert bridge["hbar2_plus_minus_block_determinant"] == 137232
+
+
+def test_synthesis_records_yukawa_active_spectrum_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_active_spectrum_bridge"]
+    assert bridge["gram_denominator"] == 57600
+    assert bridge["scaled_variable"] == "y = 57600 * sigma^2"
+    assert bridge["h2_plus_minus_factors"] == [
+        "y - 275",
+        "y - 169",
+        "y**2 - 5350*y + 675625",
+        "y**2 - 4946*y + 143761",
+    ]
+    assert bridge["h2_minus_plus_factors"] == [
+        "y**2 - 542*y + 61200",
+        "y**4 - 7292*y**3 + 7645348*y**2 - 2031422400*y + 153044640000",
+    ]
+    assert bridge["hbar2_plus_minus_factors"] == [
+        "y - 169",
+        "y**2 - 1138*y + 143761",
+        "y**2 - 982*y + 137232",
+        "y**4 - 13100*y**3 + 44831236*y**2 - 23791760064*y + 246961799424",
+    ]
+    assert bridge["hbar2_minus_plus_factors"] == [
+        "y - 323",
+        "y**2 - 4646*y + 896329",
+    ]
+    assert bridge["all_active_sector_scaled_spectra_factor_over_z"] is True
+    assert bridge["max_factor_degree"] == 4
+    assert bridge["h2_plus_minus_contains_exact_base_scalar_packet"] is True
+    assert bridge["h2_minus_plus_contains_exact_base_quadratic_packet"] is True
+    assert bridge["hbar2_plus_minus_contains_exact_base_packet"] is True
+    assert bridge["hbar2_minus_plus_contains_exact_base_scalar_packet"] is True
+    assert bridge["remaining_full_active_frontier_is_finite_algebraic_packet"] is True
 
 
 def test_synthesis_records_curved_eh_mode_bridge() -> None:

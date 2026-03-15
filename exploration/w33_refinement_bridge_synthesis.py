@@ -131,6 +131,9 @@ from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summa
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
 from w33_standard_model_action_backbone_bridge import build_standard_model_action_backbone_summary
+from w33_q3_fermion_hierarchy_bridge import build_q3_fermion_hierarchy_summary
+from w33_f4_neutrino_scale_bridge import build_f4_neutrino_scale_summary
+from w33_one_input_fermion_spectrum_bridge import build_one_input_fermion_spectrum_summary
 from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
 from w33_yukawa_unipotent_reduction_bridge import (
     build_yukawa_unipotent_reduction_summary,
@@ -140,6 +143,7 @@ from w33_yukawa_kronecker_reduction_bridge import (
 )
 from w33_yukawa_gram_shell_bridge import build_yukawa_gram_shell_summary
 from w33_yukawa_base_spectrum_bridge import build_yukawa_base_spectrum_summary
+from w33_yukawa_active_spectrum_bridge import build_yukawa_active_spectrum_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -262,11 +266,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
     standard_model_action_backbone = build_standard_model_action_backbone_summary()
+    q3_fermion_hierarchy = build_q3_fermion_hierarchy_summary()
+    f4_neutrino_scale = build_f4_neutrino_scale_summary()
+    one_input_fermion_spectrum = build_one_input_fermion_spectrum_summary()
     yukawa_scaffold = build_yukawa_scaffold_summary()
     yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
     yukawa_kronecker_reduction = build_yukawa_kronecker_reduction_summary()
     yukawa_gram_shell = build_yukawa_gram_shell_summary()
     yukawa_base_spectrum = build_yukawa_base_spectrum_summary()
+    yukawa_active_spectrum = build_yukawa_active_spectrum_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -630,6 +638,57 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "anomaly_backbone_complete": standard_model_action_backbone["frontier_boundary"]["anomaly_backbone_complete"],
             "full_yukawa_eigenvalue_spectrum_still_open": standard_model_action_backbone["frontier_boundary"]["full_yukawa_eigenvalue_spectrum_still_open"],
         },
+        "q3_fermion_hierarchy_bridge": {
+            "alpha_inverse_exact": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["alpha_inverse_exact"]["exact"],
+            "alpha_tree_inverse": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["alpha_tree_inverse"]["exact"],
+            "gaussian_norm_mu_plus_i": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["gaussian_norm_mu_plus_i"]["exact"],
+            "up_sector_suppressor": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["up_sector_suppressor"]["exact"],
+            "alpha_tree_minus_one_equals_up_sector_suppressor": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["alpha_tree_minus_one_equals_up_sector_suppressor"],
+            "vertex_correction_term": q3_fermion_hierarchy["electromagnetic_to_flavour_lock"]["vertex_correction_term"]["exact"],
+            "mc_over_mt": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["mc_over_mt"]["exact"],
+            "mu_over_mc": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["mu_over_mc"]["exact"],
+            "mb_over_mc": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["mb_over_mc"]["exact"],
+            "ms_over_mb": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["ms_over_mb"]["exact"],
+            "md_over_ms": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["md_over_ms"]["exact"],
+            "mmu_over_me": q3_fermion_hierarchy["dimensionless_hierarchy_ratios"]["mmu_over_me"]["exact"],
+            "charm_suppressor_is_alpha_tree_minus_one": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["charm_suppressor_is_alpha_tree_minus_one"],
+            "bottom_ratio_is_projective_plane_over_line": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["bottom_ratio_is_projective_plane_over_line"],
+            "strange_ratio_is_inverse_nonbacktracking_degree_times_mu": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["strange_ratio_is_inverse_nonbacktracking_degree_times_mu"],
+            "down_ratio_is_lambda_over_v": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["down_ratio_is_lambda_over_v"],
+            "muon_ratio_is_phi3_mu_squared": q3_fermion_hierarchy["fermion_hierarchy_theorem"]["muon_ratio_is_phi3_mu_squared"],
+        },
+        "f4_neutrino_scale_bridge": {
+            "f4_dimension": f4_neutrino_scale["exceptional_scale_dictionary"]["f4_dimension"],
+            "vev_ew_gev": f4_neutrino_scale["exceptional_scale_dictionary"]["vev_ew_gev"],
+            "mr_over_vew": f4_neutrino_scale["exceptional_scale_dictionary"]["mr_over_vew"]["exact"],
+            "mnu_over_me_squared_if_dirac_seed_is_electron": f4_neutrino_scale["exceptional_scale_dictionary"]["mnu_over_me_squared_if_dirac_seed_is_electron"]["exact"],
+            "f4_dimension_equals_phi3_times_mu": f4_neutrino_scale["exceptional_scale_theorem"]["f4_dimension_equals_phi3_times_mu"],
+            "f4_dimension_equals_v_plus_k": f4_neutrino_scale["exceptional_scale_theorem"]["f4_dimension_equals_v_plus_k"],
+            "majorana_scale_is_inverse_f4_dimension": f4_neutrino_scale["exceptional_scale_theorem"]["majorana_scale_is_inverse_f4_dimension"],
+            "seesaw_coefficient_is_exact_f4_over_vew": f4_neutrino_scale["exceptional_scale_theorem"]["seesaw_coefficient_is_exact_f4_over_vew"],
+            "seesaw_coefficient_reduces_to_26_over_123": f4_neutrino_scale["exceptional_scale_theorem"]["seesaw_coefficient_reduces_to_26_over_123"],
+        },
+        "one_input_fermion_spectrum_bridge": {
+            "vev_ew_gev": one_input_fermion_spectrum["graph_fixed_seed"]["vev_ew_gev"],
+            "mt_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["mt_over_vew"]["exact"],
+            "mc_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["mc_over_vew"]["exact"],
+            "mu_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["mu_over_vew"]["exact"],
+            "mb_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["mb_over_vew"]["exact"],
+            "ms_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["ms_over_vew"]["exact"],
+            "md_over_vew": one_input_fermion_spectrum["graph_fixed_seed"]["md_over_vew"]["exact"],
+            "mu_over_mt": one_input_fermion_spectrum["dimensionless_fermion_ladder"]["mu_over_mt"]["exact"],
+            "residual_seed": one_input_fermion_spectrum["charged_lepton_one_seed_closure"]["residual_seed"],
+            "mmu_over_me": one_input_fermion_spectrum["charged_lepton_one_seed_closure"]["mmu_over_me"]["exact"],
+            "koide_q": one_input_fermion_spectrum["charged_lepton_one_seed_closure"]["koide_q"]["exact"],
+            "sqrt_mtau_over_me": one_input_fermion_spectrum["charged_lepton_one_seed_closure"]["sqrt_mtau_over_me"]["exact"],
+            "mtau_over_me_minpoly": one_input_fermion_spectrum["charged_lepton_one_seed_closure"]["mtau_over_me_minpoly"],
+            "mnu_over_me_squared_if_dirac_seed_is_electron": one_input_fermion_spectrum["exceptional_neutrino_closure"]["mnu_over_me_squared_if_dirac_seed_is_electron"]["exact"],
+            "quark_ladder_fixed_by_graph_scale_and_q3_ratios": one_input_fermion_spectrum["fermion_spectrum_theorem"]["quark_ladder_fixed_by_graph_scale_and_q3_ratios"],
+            "charged_lepton_ladder_reduced_to_one_electron_seed": one_input_fermion_spectrum["fermion_spectrum_theorem"]["charged_lepton_ladder_reduced_to_one_electron_seed"],
+            "koide_packet_closes_tau_over_e_algebraically": one_input_fermion_spectrum["fermion_spectrum_theorem"]["koide_packet_closes_tau_over_e_algebraically"],
+            "neutrino_scale_reduced_to_same_electron_seed_plus_f4_coefficient": one_input_fermion_spectrum["fermion_spectrum_theorem"]["neutrino_scale_reduced_to_same_electron_seed_plus_f4_coefficient"],
+            "remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet": one_input_fermion_spectrum["fermion_spectrum_theorem"]["remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet"],
+        },
         "yukawa_scaffold_bridge": {
             "clean_higgs_slots": yukawa_scaffold["sm_backbone_anchor"]["clean_higgs_slots"],
             "clean_higgs_pair_is_h2_hbar2": yukawa_scaffold["sm_backbone_anchor"]["clean_higgs_pair_is_h2_hbar2"],
@@ -744,6 +803,21 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "h2_minus_plus_block_determinant": yukawa_base_spectrum["base_spectrum_theorem"]["h2_minus_plus_block_determinant"],
             "hbar2_plus_minus_block_trace": yukawa_base_spectrum["base_spectrum_theorem"]["hbar2_plus_minus_block_trace"],
             "hbar2_plus_minus_block_determinant": yukawa_base_spectrum["base_spectrum_theorem"]["hbar2_plus_minus_block_determinant"],
+        },
+        "yukawa_active_spectrum_bridge": {
+            "gram_denominator": yukawa_active_spectrum["gram_denominator"],
+            "scaled_variable": yukawa_active_spectrum["scaled_variable"],
+            "h2_plus_minus_factors": yukawa_active_spectrum["slot_factorizations"]["H_2"]["+-"],
+            "h2_minus_plus_factors": yukawa_active_spectrum["slot_factorizations"]["H_2"]["-+"],
+            "hbar2_plus_minus_factors": yukawa_active_spectrum["slot_factorizations"]["Hbar_2"]["+-"],
+            "hbar2_minus_plus_factors": yukawa_active_spectrum["slot_factorizations"]["Hbar_2"]["-+"],
+            "all_active_sector_scaled_spectra_factor_over_z": yukawa_active_spectrum["active_spectrum_theorem"]["all_active_sector_scaled_spectra_factor_over_z"],
+            "max_factor_degree": yukawa_active_spectrum["active_spectrum_theorem"]["max_factor_degree"],
+            "h2_plus_minus_contains_exact_base_scalar_packet": yukawa_active_spectrum["active_spectrum_theorem"]["h2_plus_minus_contains_exact_base_scalar_packet"],
+            "h2_minus_plus_contains_exact_base_quadratic_packet": yukawa_active_spectrum["active_spectrum_theorem"]["h2_minus_plus_contains_exact_base_quadratic_packet"],
+            "hbar2_plus_minus_contains_exact_base_packet": yukawa_active_spectrum["active_spectrum_theorem"]["hbar2_plus_minus_contains_exact_base_packet"],
+            "hbar2_minus_plus_contains_exact_base_scalar_packet": yukawa_active_spectrum["active_spectrum_theorem"]["hbar2_minus_plus_contains_exact_base_scalar_packet"],
+            "remaining_full_active_frontier_is_finite_algebraic_packet": yukawa_active_spectrum["active_spectrum_theorem"]["remaining_full_active_frontier_is_finite_algebraic_packet"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],
@@ -2367,7 +2441,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 427,
+        "focused_test_stack_size": 466,
     }
 
 
