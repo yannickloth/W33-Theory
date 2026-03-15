@@ -423,6 +423,68 @@ def test_synthesis_records_yukawa_unipotent_reduction_bridge() -> None:
     assert bridge["slot_independent_minus_plus_matrix"] is True
 
 
+def test_synthesis_records_yukawa_kronecker_reduction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_kronecker_reduction_bridge"]
+    assert bridge["plus_minus_matrix"] == [
+        [0, 1, 1],
+        [-1, 2, 1],
+        [1, -1, 1],
+    ]
+    assert bridge["minus_plus_matrix"] == [
+        [0, 1, -1],
+        [-1, 2, -1],
+        [-1, 1, 1],
+    ]
+    assert bridge["conjugating_matrix"] == [
+        [-2, 1, 0],
+        [-1, 0, 0],
+        [0, 0, 1],
+    ]
+    assert bridge["conjugating_matrix_determinant"] == 1
+    assert bridge["exact_integer_conjugacy_between_generation_matrices"] is True
+    assert bridge["plus_minus_charpoly"] == "(lambda - 1)**3"
+    assert bridge["minus_plus_charpoly"] == "(lambda - 1)**3"
+    assert bridge["common_jordan_form"] == [
+        [1, 1, 0],
+        [0, 1, 1],
+        [0, 0, 1],
+    ]
+    assert bridge["all_active_sectors_have_exact_kronecker_form"] is True
+    assert bridge["all_active_sectors_have_exact_reduced_gram_formula"] is True
+    assert bridge["all_active_sector_singular_spectra_match_reduced_gram_exactly"] is True
+    assert bridge["template_ranks_match_active_sector_widths"] is True
+    assert bridge["h2_plus_minus_sector_width"] == 2
+    assert bridge["h2_minus_plus_sector_width"] == 2
+    assert bridge["hbar2_plus_minus_sector_width"] == 3
+    assert bridge["hbar2_minus_plus_sector_width"] == 1
+
+
+def test_synthesis_records_yukawa_gram_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_gram_shell_bridge"]
+    assert bridge["root_denominator"] == 240
+    assert bridge["gram_denominator"] == 57600
+    assert bridge["all_template_grams_scale_exactly_to_integer_shell"] is True
+    assert bridge["plus_minus_slots_share_exact_phi3_mode_13_over_240"] is True
+    assert bridge["h2_plus_minus_base_gram_numerator"] == [[275, 0], [0, 169]]
+    assert bridge["h2_minus_plus_base_gram_numerator"] == [[367, -55], [-55, 175]]
+    assert bridge["hbar2_plus_minus_base_gram_numerator"] == [[323, 275, 0], [275, 659, 0], [0, 0, 169]]
+    assert bridge["hbar2_minus_plus_base_gram_numerator"] == [[323]]
+    assert bridge["residual_frontier_is_two_integer_2x2_blocks_plus_exact_scalar_channels"] is True
+    assert bridge["h2_minus_plus_residual_block_numerator"] == [[367, -55], [-55, 175]]
+    assert bridge["hbar2_plus_minus_residual_block_numerator"] == [[323, 275], [275, 659]]
+    assert bridge["exact_scalar_channel_numerators"] == {
+        "shared_phi3_mode": 169,
+        "h2_plus_minus_companion": 275,
+        "hbar2_minus_plus_scalar": 323,
+    }
+    assert bridge["h2_plus_minus_contains_exact_phi3_mode"] is True
+    assert bridge["h2_minus_plus_contains_exact_phi3_mode"] is False
+    assert bridge["hbar2_plus_minus_contains_exact_phi3_mode"] is True
+    assert bridge["hbar2_minus_plus_contains_exact_phi3_mode"] is False
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]

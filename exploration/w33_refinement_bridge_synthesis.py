@@ -135,6 +135,10 @@ from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
 from w33_yukawa_unipotent_reduction_bridge import (
     build_yukawa_unipotent_reduction_summary,
 )
+from w33_yukawa_kronecker_reduction_bridge import (
+    build_yukawa_kronecker_reduction_summary,
+)
+from w33_yukawa_gram_shell_bridge import build_yukawa_gram_shell_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -259,6 +263,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     standard_model_action_backbone = build_standard_model_action_backbone_summary()
     yukawa_scaffold = build_yukawa_scaffold_summary()
     yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
+    yukawa_kronecker_reduction = build_yukawa_kronecker_reduction_summary()
+    yukawa_gram_shell = build_yukawa_gram_shell_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -682,6 +688,42 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "generation_matrices_commute_exactly": yukawa_unipotent_reduction["universal_generation_algebra"]["generation_matrices_commute_exactly"],
             "slot_independent_plus_minus_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["slot_independent_plus_minus_matrix"],
             "slot_independent_minus_plus_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["slot_independent_minus_plus_matrix"],
+        },
+        "yukawa_kronecker_reduction_bridge": {
+            "plus_minus_matrix": yukawa_kronecker_reduction["generation_algebra"]["plus_minus_matrix"],
+            "minus_plus_matrix": yukawa_kronecker_reduction["generation_algebra"]["minus_plus_matrix"],
+            "conjugating_matrix": yukawa_kronecker_reduction["generation_algebra"]["conjugating_matrix"],
+            "conjugating_matrix_determinant": yukawa_kronecker_reduction["generation_algebra"]["conjugating_matrix_determinant"],
+            "exact_integer_conjugacy_between_generation_matrices": yukawa_kronecker_reduction["generation_algebra"]["exact_integer_conjugacy_between_generation_matrices"],
+            "plus_minus_charpoly": yukawa_kronecker_reduction["generation_algebra"]["plus_minus_charpoly"],
+            "minus_plus_charpoly": yukawa_kronecker_reduction["generation_algebra"]["minus_plus_charpoly"],
+            "common_jordan_form": yukawa_kronecker_reduction["generation_algebra"]["common_jordan_form"],
+            "all_active_sectors_have_exact_kronecker_form": yukawa_kronecker_reduction["kronecker_reduction_theorem"]["all_active_sectors_have_exact_kronecker_form"],
+            "all_active_sectors_have_exact_reduced_gram_formula": yukawa_kronecker_reduction["kronecker_reduction_theorem"]["all_active_sectors_have_exact_reduced_gram_formula"],
+            "all_active_sector_singular_spectra_match_reduced_gram_exactly": yukawa_kronecker_reduction["kronecker_reduction_theorem"]["all_active_sector_singular_spectra_match_reduced_gram_exactly"],
+            "template_ranks_match_active_sector_widths": yukawa_kronecker_reduction["kronecker_reduction_theorem"]["template_ranks_match_active_sector_widths"],
+            "h2_plus_minus_sector_width": yukawa_kronecker_reduction["slot_profiles"]["H_2"]["+-"]["sector_width"],
+            "h2_minus_plus_sector_width": yukawa_kronecker_reduction["slot_profiles"]["H_2"]["-+"]["sector_width"],
+            "hbar2_plus_minus_sector_width": yukawa_kronecker_reduction["slot_profiles"]["Hbar_2"]["+-"]["sector_width"],
+            "hbar2_minus_plus_sector_width": yukawa_kronecker_reduction["slot_profiles"]["Hbar_2"]["-+"]["sector_width"],
+        },
+        "yukawa_gram_shell_bridge": {
+            "root_denominator": yukawa_gram_shell["root_denominator"],
+            "gram_denominator": yukawa_gram_shell["gram_denominator"],
+            "all_template_grams_scale_exactly_to_integer_shell": yukawa_gram_shell["gram_shell_theorem"]["all_template_grams_scale_exactly_to_integer_shell"],
+            "plus_minus_slots_share_exact_phi3_mode_13_over_240": yukawa_gram_shell["gram_shell_theorem"]["plus_minus_slots_share_exact_phi3_mode_13_over_240"],
+            "h2_plus_minus_base_gram_numerator": yukawa_gram_shell["gram_shell_theorem"]["h2_plus_minus_base_gram_numerator"],
+            "h2_minus_plus_base_gram_numerator": yukawa_gram_shell["gram_shell_theorem"]["h2_minus_plus_base_gram_numerator"],
+            "hbar2_plus_minus_base_gram_numerator": yukawa_gram_shell["gram_shell_theorem"]["hbar2_plus_minus_base_gram_numerator"],
+            "hbar2_minus_plus_base_gram_numerator": yukawa_gram_shell["gram_shell_theorem"]["hbar2_minus_plus_base_gram_numerator"],
+            "residual_frontier_is_two_integer_2x2_blocks_plus_exact_scalar_channels": yukawa_gram_shell["gram_shell_theorem"]["residual_frontier_is_two_integer_2x2_blocks_plus_exact_scalar_channels"],
+            "h2_minus_plus_residual_block_numerator": yukawa_gram_shell["gram_shell_theorem"]["h2_minus_plus_residual_block_numerator"],
+            "hbar2_plus_minus_residual_block_numerator": yukawa_gram_shell["gram_shell_theorem"]["hbar2_plus_minus_residual_block_numerator"],
+            "exact_scalar_channel_numerators": yukawa_gram_shell["gram_shell_theorem"]["exact_scalar_channel_numerators"],
+            "h2_plus_minus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["H_2"]["+-"]["contains_exact_phi3_mode_13_over_240"],
+            "h2_minus_plus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["H_2"]["-+"]["contains_exact_phi3_mode_13_over_240"],
+            "hbar2_plus_minus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["Hbar_2"]["+-"]["contains_exact_phi3_mode_13_over_240"],
+            "hbar2_minus_plus_contains_exact_phi3_mode": yukawa_gram_shell["slot_profiles"]["Hbar_2"]["-+"]["contains_exact_phi3_mode_13_over_240"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],
