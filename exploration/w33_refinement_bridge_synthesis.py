@@ -137,6 +137,8 @@ from w33_qcd_beta_phi6_bridge import build_qcd_beta_phi6_summary
 from w33_jones_mu4_selector_bridge import build_jones_mu4_selector_summary
 from w33_f4_neutrino_scale_bridge import build_f4_neutrino_scale_summary
 from w33_one_input_fermion_spectrum_bridge import build_one_input_fermion_spectrum_summary
+from w33_l3_pfaffian_packet_bridge import build_l3_pfaffian_packet_summary
+from w33_truncated_dirac_shell_bridge import build_truncated_dirac_shell_summary
 from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
 from w33_yukawa_unipotent_reduction_bridge import (
     build_yukawa_unipotent_reduction_summary,
@@ -275,6 +277,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     jones_mu4_selector = build_jones_mu4_selector_summary()
     f4_neutrino_scale = build_f4_neutrino_scale_summary()
     one_input_fermion_spectrum = build_one_input_fermion_spectrum_summary()
+    l3_pfaffian_packet = build_l3_pfaffian_packet_summary()
+    truncated_dirac_shell = build_truncated_dirac_shell_summary()
     yukawa_scaffold = build_yukawa_scaffold_summary()
     yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
     yukawa_kronecker_reduction = build_yukawa_kronecker_reduction_summary()
@@ -735,6 +739,49 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "koide_packet_closes_tau_over_e_algebraically": one_input_fermion_spectrum["fermion_spectrum_theorem"]["koide_packet_closes_tau_over_e_algebraically"],
             "neutrino_scale_reduced_to_same_electron_seed_plus_f4_coefficient": one_input_fermion_spectrum["fermion_spectrum_theorem"]["neutrino_scale_reduced_to_same_electron_seed_plus_f4_coefficient"],
             "remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet": one_input_fermion_spectrum["fermion_spectrum_theorem"]["remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet"],
+        },
+        "l3_pfaffian_packet_bridge": {
+            "support_count": l3_pfaffian_packet["l3_tensor_dictionary"]["support_count"],
+            "plus_count": l3_pfaffian_packet["l3_tensor_dictionary"]["plus_count"],
+            "minus_count": l3_pfaffian_packet["l3_tensor_dictionary"]["minus_count"],
+            "balanced_signs": l3_pfaffian_packet["l3_tensor_dictionary"]["balanced_signs"],
+            "all_supported_entries_are_antisymmetric": l3_pfaffian_packet["l3_tensor_dictionary"]["all_supported_entries_are_antisymmetric"],
+            "vector_vev_count": l3_pfaffian_packet["l3_tensor_dictionary"]["vector_vev_count"],
+            "all_vector_packets_have_determinant_plus_one": l3_pfaffian_packet["skew_packet_dictionary"]["all_vector_packets_have_determinant_plus_one"],
+            "all_vector_packets_have_full_skew_rank": l3_pfaffian_packet["skew_packet_dictionary"]["all_vector_packets_have_full_skew_rank"],
+            "type_a_directions": l3_pfaffian_packet["spectral_archetypes"]["type_a"]["i27_directions"],
+            "type_a_charpoly": l3_pfaffian_packet["spectral_archetypes"]["type_a"]["characteristic_polynomial"],
+            "type_b_directions": l3_pfaffian_packet["spectral_archetypes"]["type_b"]["i27_directions"],
+            "type_b_charpoly": l3_pfaffian_packet["spectral_archetypes"]["type_b"]["characteristic_polynomial"],
+            "democratic_directions": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_directions"],
+            "democratic_labels": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_labels"],
+            "democratic_characteristic_polynomial": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_characteristic_polynomial"],
+            "democratic_packet_is_exactly_higgs_higgsbar": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_packet_is_exactly_higgs_higgsbar"],
+            "remaining_direction_labels": l3_pfaffian_packet["higgs_packet_bridge"]["remaining_direction_labels"],
+        },
+        "truncated_dirac_shell_bridge": {
+            "chain_dimensions": truncated_dirac_shell["truncated_sector"]["chain_dimensions"],
+            "total_dimension": truncated_dirac_shell["truncated_sector"]["total_dimension"],
+            "boundary_ranks": truncated_dirac_shell["truncated_sector"]["boundary_ranks"],
+            "betti_numbers": truncated_dirac_shell["truncated_sector"]["betti_numbers"],
+            "zero_mode_count": truncated_dirac_shell["truncated_sector"]["zero_mode_count"],
+            "lovasz_theta": truncated_dirac_shell["truncated_sector"]["lovasz_theta"],
+            "zero_mode_formula": truncated_dirac_shell["truncated_sector"]["zero_mode_formula"],
+            "zero_mode_formula_value": truncated_dirac_shell["truncated_sector"]["zero_mode_formula_value"],
+            "zero_modes_equal_graph_formula": truncated_dirac_shell["truncated_sector"]["zero_modes_equal_graph_formula"],
+            "d2_spectrum": truncated_dirac_shell["spectral_shell"]["d2_spectrum"],
+            "f0": truncated_dirac_shell["spectral_shell"]["f0"],
+            "f2": truncated_dirac_shell["spectral_shell"]["f2"],
+            "f4": truncated_dirac_shell["spectral_shell"]["f4"],
+            "f6": truncated_dirac_shell["spectral_shell"]["f6"],
+            "f2_over_f0": truncated_dirac_shell["spectral_shell"]["f2_over_f0"],
+            "f4_over_f2": truncated_dirac_shell["spectral_shell"]["f4_over_f2"],
+            "f6_over_f4": truncated_dirac_shell["spectral_shell"]["f6_over_f4"],
+            "f2_over_f0_formula": truncated_dirac_shell["spectral_shell"]["f2_over_f0_formula"],
+            "f4_over_f2_formula": truncated_dirac_shell["spectral_shell"]["f4_over_f2_formula"],
+            "f2_over_f0_matches_formula": truncated_dirac_shell["spectral_shell"]["f2_over_f0_matches_formula"],
+            "f4_over_f2_matches_formula": truncated_dirac_shell["spectral_shell"]["f4_over_f2_matches_formula"],
+            "f2_equals_k_times_triangle_count": truncated_dirac_shell["spectral_shell"]["f2_equals_k_times_triangle_count"],
         },
         "yukawa_scaffold_bridge": {
             "clean_higgs_slots": yukawa_scaffold["sm_backbone_anchor"]["clean_higgs_slots"],
@@ -2488,7 +2535,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 471,
+        "focused_test_stack_size": 477,
     }
 
 

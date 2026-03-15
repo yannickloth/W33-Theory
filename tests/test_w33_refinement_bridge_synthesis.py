@@ -452,6 +452,55 @@ def test_synthesis_records_one_input_fermion_spectrum_bridge() -> None:
     assert bridge["remaining_fermion_frontier_is_one_seed_plus_final_internal_spectral_packet"] is True
 
 
+def test_synthesis_records_l3_pfaffian_packet_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["l3_pfaffian_packet_bridge"]
+    assert bridge["support_count"] == 2592
+    assert bridge["plus_count"] == 1296
+    assert bridge["minus_count"] == 1296
+    assert bridge["balanced_signs"] is True
+    assert bridge["all_supported_entries_are_antisymmetric"] is True
+    assert bridge["vector_vev_count"] == 10
+    assert bridge["all_vector_packets_have_determinant_plus_one"] is True
+    assert bridge["all_vector_packets_have_full_skew_rank"] is True
+    assert bridge["type_a_directions"] == [17, 19, 24, 26]
+    assert bridge["type_a_charpoly"] == "(x**2 + 1)**4*(x**8 + 22*x**6 + 87*x**4 + 26*x**2 + 1)"
+    assert bridge["type_b_directions"] == [18, 20, 23, 25]
+    assert bridge["type_b_charpoly"] == "(x**2 + 1)**4*(x**8 + 22*x**6 + 123*x**4 + 26*x**2 + 1)"
+    assert bridge["democratic_directions"] == [21, 22]
+    assert bridge["democratic_labels"] == ["H", "Hbar"]
+    assert bridge["democratic_characteristic_polynomial"] == "(x**2 + 1)**8"
+    assert bridge["democratic_packet_is_exactly_higgs_higgsbar"] is True
+    assert bridge["remaining_direction_labels"] == ["H", "Hbar", "T", "T", "T", "Tbar", "Tbar", "Tbar"]
+
+
+def test_synthesis_records_truncated_dirac_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["truncated_dirac_shell_bridge"]
+    assert bridge["chain_dimensions"] == [40, 240, 160]
+    assert bridge["total_dimension"] == 440
+    assert bridge["boundary_ranks"] == [39, 120]
+    assert bridge["betti_numbers"] == [1, 81, 40]
+    assert bridge["zero_mode_count"] == 122
+    assert bridge["lovasz_theta"] == 10
+    assert bridge["zero_mode_formula"] == "k^2 - k - Theta(W33)"
+    assert bridge["zero_mode_formula_value"] == 122
+    assert bridge["zero_modes_equal_graph_formula"] is True
+    assert bridge["d2_spectrum"] == {"0": 122, "4": 240, "10": 48, "16": 30}
+    assert bridge["f0"] == 440
+    assert bridge["f2"] == 1920
+    assert bridge["f4"] == 16320
+    assert bridge["f6"] == 186240
+    assert bridge["f2_over_f0"] == "48/11"
+    assert bridge["f4_over_f2"] == "17/2"
+    assert bridge["f6_over_f4"] == "194/17"
+    assert bridge["f2_over_f0_formula"] == "mu*k/(k-1)"
+    assert bridge["f4_over_f2_formula"] == "(k+mu+1)/2"
+    assert bridge["f2_over_f0_matches_formula"] is True
+    assert bridge["f4_over_f2_matches_formula"] is True
+    assert bridge["f2_equals_k_times_triangle_count"] is True
+
+
 def test_synthesis_records_yukawa_scaffold_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["yukawa_scaffold_bridge"]
