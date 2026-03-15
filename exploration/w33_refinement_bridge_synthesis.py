@@ -131,6 +131,10 @@ from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summa
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
 from w33_standard_model_action_backbone_bridge import build_standard_model_action_backbone_summary
+from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
+from w33_yukawa_unipotent_reduction_bridge import (
+    build_yukawa_unipotent_reduction_summary,
+)
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -253,6 +257,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
     standard_model_action_backbone = build_standard_model_action_backbone_summary()
+    yukawa_scaffold = build_yukawa_scaffold_summary()
+    yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -615,6 +621,67 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "mixing_backbone_complete": standard_model_action_backbone["frontier_boundary"]["mixing_backbone_complete"],
             "anomaly_backbone_complete": standard_model_action_backbone["frontier_boundary"]["anomaly_backbone_complete"],
             "full_yukawa_eigenvalue_spectrum_still_open": standard_model_action_backbone["frontier_boundary"]["full_yukawa_eigenvalue_spectrum_still_open"],
+        },
+        "yukawa_scaffold_bridge": {
+            "clean_higgs_slots": yukawa_scaffold["sm_backbone_anchor"]["clean_higgs_slots"],
+            "clean_higgs_pair_is_h2_hbar2": yukawa_scaffold["sm_backbone_anchor"]["clean_higgs_pair_is_h2_hbar2"],
+            "one_generation_spinor_dimension": yukawa_scaffold["sm_backbone_anchor"]["one_generation_spinor_dimension"],
+            "three_generation_matter_dimension": yukawa_scaffold["sm_backbone_anchor"]["three_generation_matter_dimension"],
+            "label_matrix": yukawa_scaffold["canonical_texture"]["label_matrix"],
+            "label_matrix_is_slot_independent": yukawa_scaffold["canonical_texture"]["label_matrix_is_slot_independent"],
+            "reconstructs_exactly_for_both_slots": yukawa_scaffold["canonical_texture"]["reconstructs_exactly_for_both_slots"],
+            "generation_0_diagonal_delta_equals_offdiag_1_to_0": yukawa_scaffold["canonical_texture"]["generation_0_diagonal_delta_equals_offdiag_1_to_0"],
+            "generation_1_diagonal_delta_equals_offdiag_0_to_1": yukawa_scaffold["canonical_texture"]["generation_1_diagonal_delta_equals_offdiag_0_to_1"],
+            "generation_2_diagonal_block_unchanged": yukawa_scaffold["canonical_texture"]["generation_2_diagonal_block_unchanged"],
+            "h2_split": yukawa_scaffold["v4_projector_scaffold"]["h2_split"],
+            "hbar2_split": yukawa_scaffold["v4_projector_scaffold"]["hbar2_split"],
+            "minimal_full_a2_activation_seed_modes": yukawa_scaffold["a2_activation_scaffold"]["minimal_full_a2_activation_seed_modes"],
+            "minimal_rank_lift_seed_modes": yukawa_scaffold["a2_activation_scaffold"]["minimal_rank_lift_seed_modes"],
+            "max_response_rank_within_unit_seed_family": yukawa_scaffold["a2_activation_scaffold"]["max_response_rank_within_unit_seed_family"],
+            "max_augmented_rank_within_unit_seed_family": yukawa_scaffold["a2_activation_scaffold"]["max_augmented_rank_within_unit_seed_family"],
+            "generated_source_unit_count": yukawa_scaffold["ce2_boundary"]["generated_source_unit_count"],
+            "projected_mode_count": yukawa_scaffold["ce2_boundary"]["projected_mode_count"],
+            "response_rank": yukawa_scaffold["ce2_boundary"]["response_rank"],
+            "augmented_rank": yukawa_scaffold["ce2_boundary"]["augmented_rank"],
+            "arbitrary_quark_screen_rank": yukawa_scaffold["ce2_boundary"]["arbitrary_quark_screen_rank"],
+            "arbitrary_quark_screen_nullity": yukawa_scaffold["ce2_boundary"]["arbitrary_quark_screen_nullity"],
+            "trivial_closure_total_residual_norm": yukawa_scaffold["ce2_boundary"]["trivial_closure_total_residual_norm"],
+            "zero_is_unique_clean_point": yukawa_scaffold["ce2_boundary"]["zero_is_unique_clean_point"],
+            "l4_response_contained_in_ce2": yukawa_scaffold["ce2_boundary"]["l4_response_contained_in_ce2"],
+            "yukawa_scaffold_is_exact": yukawa_scaffold["frontier_boundary"]["yukawa_scaffold_is_exact"],
+            "nonzero_yukawa_eigenvalues_still_open": yukawa_scaffold["frontier_boundary"]["nonzero_yukawa_eigenvalues_still_open"],
+            "exact_open_problem_is_spectrum_not_support_or_symmetry": yukawa_scaffold["frontier_boundary"]["exact_open_problem_is_spectrum_not_support_or_symmetry"],
+        },
+        "yukawa_unipotent_reduction_bridge": {
+            "h2_plus_minus_support": yukawa_unipotent_reduction["slot_profiles"]["H_2"]["+-"]["support_labels"],
+            "h2_minus_plus_support": yukawa_unipotent_reduction["slot_profiles"]["H_2"]["-+"]["support_labels"],
+            "hbar2_plus_minus_support": yukawa_unipotent_reduction["slot_profiles"]["Hbar_2"]["+-"]["support_labels"],
+            "hbar2_minus_plus_support": yukawa_unipotent_reduction["slot_profiles"]["Hbar_2"]["-+"]["support_labels"],
+            "h2_plus_minus_compressed_rank": yukawa_unipotent_reduction["slot_profiles"]["H_2"]["+-"]["compressed_rank"],
+            "h2_minus_plus_compressed_rank": yukawa_unipotent_reduction["slot_profiles"]["H_2"]["-+"]["compressed_rank"],
+            "hbar2_plus_minus_compressed_rank": yukawa_unipotent_reduction["slot_profiles"]["Hbar_2"]["+-"]["compressed_rank"],
+            "hbar2_minus_plus_compressed_rank": yukawa_unipotent_reduction["slot_profiles"]["Hbar_2"]["-+"]["compressed_rank"],
+            "all_active_sector_block_spans_have_rank_2": all(
+                yukawa_unipotent_reduction["slot_profiles"][slot][sector]["block_span_rank"] == 2
+                for slot in ("H_2", "Hbar_2")
+                for sector in ("+-", "-+")
+            ),
+            "all_active_sector_ranks_saturate_three_generation_support": all(
+                yukawa_unipotent_reduction["slot_profiles"][slot][sector]["compressed_rank_saturates_three_generation_support"]
+                for slot in ("H_2", "Hbar_2")
+                for sector in ("+-", "-+")
+            ),
+            "plus_minus_generation_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["plus_minus_generation_matrix"],
+            "minus_plus_generation_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["minus_plus_generation_matrix"],
+            "plus_minus_charpoly": yukawa_unipotent_reduction["universal_generation_algebra"]["plus_minus_charpoly"],
+            "minus_plus_charpoly": yukawa_unipotent_reduction["universal_generation_algebra"]["minus_plus_charpoly"],
+            "plus_minus_is_unipotent_jordan_type": yukawa_unipotent_reduction["universal_generation_algebra"]["plus_minus_is_unipotent_jordan_type"],
+            "minus_plus_is_unipotent_jordan_type": yukawa_unipotent_reduction["universal_generation_algebra"]["minus_plus_is_unipotent_jordan_type"],
+            "nilpotent_squares_match_exactly": yukawa_unipotent_reduction["universal_generation_algebra"]["nilpotent_squares_match_exactly"],
+            "common_nilpotent_square": yukawa_unipotent_reduction["universal_generation_algebra"]["common_nilpotent_square"],
+            "generation_matrices_commute_exactly": yukawa_unipotent_reduction["universal_generation_algebra"]["generation_matrices_commute_exactly"],
+            "slot_independent_plus_minus_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["slot_independent_plus_minus_matrix"],
+            "slot_independent_minus_plus_matrix": yukawa_unipotent_reduction["universal_generation_algebra"]["slot_independent_minus_plus_matrix"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],

@@ -342,6 +342,87 @@ def test_synthesis_records_standard_model_action_backbone_bridge() -> None:
     assert bridge["full_yukawa_eigenvalue_spectrum_still_open"] is True
 
 
+def test_synthesis_records_yukawa_scaffold_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_scaffold_bridge"]
+    assert bridge["clean_higgs_slots"] == ["H_2", "Hbar_2"]
+    assert bridge["clean_higgs_pair_is_h2_hbar2"] is True
+    assert bridge["one_generation_spinor_dimension"] == 16
+    assert bridge["three_generation_matter_dimension"] == 48
+    assert bridge["label_matrix"] == [
+        ["AB", "I", "A"],
+        ["AB", "I", "A"],
+        ["A", "B", "0"],
+    ]
+    assert bridge["label_matrix_is_slot_independent"] is True
+    assert bridge["reconstructs_exactly_for_both_slots"] is True
+    assert bridge["generation_0_diagonal_delta_equals_offdiag_1_to_0"] is True
+    assert bridge["generation_1_diagonal_delta_equals_offdiag_0_to_1"] is True
+    assert bridge["generation_2_diagonal_block_unchanged"] is True
+    assert bridge["h2_split"] == {
+        "minus_plus": ["u_c_1", "u_c_3"],
+        "plus_minus": ["u_c_2", "nu_c"],
+    }
+    assert bridge["hbar2_split"] == {
+        "minus_plus": ["d_c_1"],
+        "plus_minus": ["d_c_2", "d_c_3", "e_c"],
+    }
+    assert bridge["minimal_full_a2_activation_seed_modes"] == [[8, 9], [246, 247]]
+    assert bridge["minimal_rank_lift_seed_modes"] == [[8, 246], [8, 247], [9, 246], [9, 247]]
+    assert bridge["max_response_rank_within_unit_seed_family"] == 11
+    assert bridge["max_augmented_rank_within_unit_seed_family"] == 12
+    assert bridge["generated_source_unit_count"] == 144
+    assert bridge["projected_mode_count"] == 54
+    assert bridge["response_rank"] == 28
+    assert bridge["augmented_rank"] == 28
+    assert bridge["arbitrary_quark_screen_rank"] == 36
+    assert bridge["arbitrary_quark_screen_nullity"] == 0
+    assert bridge["trivial_closure_total_residual_norm"] == 0.0
+    assert bridge["zero_is_unique_clean_point"] is True
+    assert bridge["l4_response_contained_in_ce2"] is True
+    assert bridge["yukawa_scaffold_is_exact"] is True
+    assert bridge["nonzero_yukawa_eigenvalues_still_open"] is True
+    assert bridge["exact_open_problem_is_spectrum_not_support_or_symmetry"] is True
+
+
+def test_synthesis_records_yukawa_unipotent_reduction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_unipotent_reduction_bridge"]
+    assert bridge["h2_plus_minus_support"] == ["u_c_2", "nu_c"]
+    assert bridge["h2_minus_plus_support"] == ["u_c_1", "u_c_3"]
+    assert bridge["hbar2_plus_minus_support"] == ["d_c_2", "d_c_3", "e_c"]
+    assert bridge["hbar2_minus_plus_support"] == ["d_c_1"]
+    assert bridge["h2_plus_minus_compressed_rank"] == 6
+    assert bridge["h2_minus_plus_compressed_rank"] == 6
+    assert bridge["hbar2_plus_minus_compressed_rank"] == 9
+    assert bridge["hbar2_minus_plus_compressed_rank"] == 3
+    assert bridge["all_active_sector_block_spans_have_rank_2"] is True
+    assert bridge["all_active_sector_ranks_saturate_three_generation_support"] is True
+    assert bridge["plus_minus_generation_matrix"] == [
+        [0, 1, 1],
+        [-1, 2, 1],
+        [1, -1, 1],
+    ]
+    assert bridge["minus_plus_generation_matrix"] == [
+        [0, 1, -1],
+        [-1, 2, -1],
+        [-1, 1, 1],
+    ]
+    assert bridge["plus_minus_charpoly"] == "(lambda - 1)**3"
+    assert bridge["minus_plus_charpoly"] == "(lambda - 1)**3"
+    assert bridge["plus_minus_is_unipotent_jordan_type"] is True
+    assert bridge["minus_plus_is_unipotent_jordan_type"] is True
+    assert bridge["nilpotent_squares_match_exactly"] is True
+    assert bridge["common_nilpotent_square"] == [
+        [1, -1, 0],
+        [1, -1, 0],
+        [0, 0, 0],
+    ]
+    assert bridge["generation_matrices_commute_exactly"] is True
+    assert bridge["slot_independent_plus_minus_matrix"] is True
+    assert bridge["slot_independent_minus_plus_matrix"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]
