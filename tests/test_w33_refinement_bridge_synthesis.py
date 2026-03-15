@@ -251,6 +251,61 @@ def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     assert bridge["gf_equals_one_over_sqrt2_v2"] is True
 
 
+def test_synthesis_records_one_scale_bosonic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["one_scale_bosonic_bridge"]
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["weinberg_x"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["lambda_h"] == "7/55"
+    assert bridge["higgs_ratio_square"] == "14/55"
+    assert bridge["mu_h_squared_over_v_squared"] == "7/55"
+    assert bridge["mh_squared_over_v_squared"] == "14/55"
+    assert bridge["vacuum_energy_over_v_fourth"] == "-7/220"
+    assert bridge["mu_equals_lambda_v_squared"] is True
+    assert bridge["mh_squared_equals_2lambda_v_squared"] is True
+    assert bridge["vacuum_energy_equals_minus_lambda_v_fourth_over_4"] is True
+    assert bridge["mw_squared_over_mz_squared"] == "10/13"
+    assert bridge["z_minus_w_split_over_z"] == "3/13"
+    assert bridge["rho_parameter"] == "1"
+    assert bridge["mw_over_v"].startswith("3.151872512585881")
+    assert bridge["mz_over_v"].startswith("3.593687581895895")
+    assert bridge["mh_over_v"].startswith("5.04524979109513")
+    assert bridge["mw_over_mz_equals_sqrt_cos2"] is True
+    assert bridge["mh_over_v_equals_sqrt_higgs_ratio"] is True
+    assert bridge["all_dimensionless_bosonic_data_fixed"] is True
+    assert bridge["only_overall_scale_is_v"] is True
+    assert bridge["vev_is_graph_fixed_as_q5_plus_q"] is True
+    assert bridge["vev_is_graph_fixed_as_edges_plus_2q"] is True
+    assert bridge["zero_extra_parameter_bosonic_closure_if_promoted_vev_accepted"] is True
+
+
+def test_synthesis_records_bosonic_action_completion_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["bosonic_action_completion_bridge"]
+    assert bridge["lagrangian_formula"].startswith("L_bos = -1/4 W^a_{mu nu}")
+    assert bridge["covariant_derivative_formula"] == "D_mu = partial_mu - i g tau^a W^a_mu / 2 - i g' B_mu / 2"
+    assert bridge["potential_formula"] == "V(H) = -mu_H^2 (H^dagger H) + lambda_H (H^dagger H)^2"
+    assert bridge["alpha"] == "1111/152247"
+    assert bridge["weinberg_x"] == "3/13"
+    assert bridge["lambda_h"] == "7/55"
+    assert bridge["vev_ew_gev"] == 246
+    assert bridge["g_squared_over_4pi_alpha"] == "13/3"
+    assert bridge["gprime_squared_over_4pi_alpha"] == "13/10"
+    assert bridge["gz_squared_over_4pi_alpha"] == "169/30"
+    assert bridge["g_squared_over_gprime_squared"] == "10/3"
+    assert bridge["mw_squared_over_mz_squared"] == "10/13"
+    assert bridge["rho_parameter"] == "1"
+    assert bridge["mu_h_squared_over_v_squared"] == "7/55"
+    assert bridge["mh_squared_over_v_squared"] == "14/55"
+    assert bridge["vacuum_energy_over_v_fourth"] == "-7/220"
+    assert bridge["canonical_gauge_kinetics_fixed"] is True
+    assert bridge["covariant_derivative_fixed_by_alpha_and_x"] is True
+    assert bridge["higgs_potential_fixed_by_x_and_v"] is True
+    assert bridge["no_free_bosonic_parameter_beyond_graph_fixed_alpha_x_v"] is True
+    assert bridge["graph_fixes_full_tree_level_bosonic_electroweak_action"] is True
+
+
 def test_synthesis_records_curved_eh_mode_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["curved_eh_mode_bridge"]

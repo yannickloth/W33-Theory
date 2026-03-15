@@ -128,6 +128,8 @@ from w33_vacuum_unity_bridge import build_vacuum_unity_summary
 from w33_quantum_vacuum_standards_bridge import build_quantum_vacuum_standards_summary
 from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
+from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
+from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
 from w33_s12_klein_projective_bridge import build_s12_klein_projective_summary
 from w33_klein_quartic_ag21_bridge import build_klein_quartic_ag21_summary
 from w33_klein_harmonic_vogel_bridge import build_klein_harmonic_vogel_summary
@@ -247,6 +249,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     quantum_vacuum_standards = build_quantum_vacuum_standards_summary()
     natural_units_meaning = build_natural_units_meaning_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
+    one_scale_bosonic = build_one_scale_bosonic_summary()
+    bosonic_action_completion = build_bosonic_action_completion_summary()
     s12_klein_projective = build_s12_klein_projective_summary()
     klein_quartic_ag21 = build_klein_quartic_ag21_summary()
     klein_harmonic_vogel = build_klein_harmonic_vogel_summary()
@@ -534,6 +538,55 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "mz_equals_mw_over_cos_theta": electroweak_lagrangian["exact_tree_level_relations"]["mz_equals_mw_over_cos_theta"],
             "mh_equals_v_sqrt_2lambda": electroweak_lagrangian["exact_tree_level_relations"]["mh_equals_v_sqrt_2lambda"],
             "gf_equals_one_over_sqrt2_v2": electroweak_lagrangian["exact_tree_level_relations"]["gf_equals_one_over_sqrt2_v2"],
+        },
+        "one_scale_bosonic_bridge": {
+            "vev_ew_gev": one_scale_bosonic["graph_fixed_inputs"]["vev_ew_gev"],
+            "weinberg_x": one_scale_bosonic["graph_fixed_inputs"]["weinberg_x"]["exact"],
+            "cos2_theta_w": one_scale_bosonic["graph_fixed_inputs"]["cos2_theta_w"]["exact"],
+            "lambda_h": one_scale_bosonic["graph_fixed_inputs"]["lambda_h"]["exact"],
+            "higgs_ratio_square": one_scale_bosonic["graph_fixed_inputs"]["higgs_ratio_square"]["exact"],
+            "mu_h_squared_over_v_squared": one_scale_bosonic["higgs_potential_dictionary"]["mu_h_squared_over_v_squared"]["exact"],
+            "mh_squared_over_v_squared": one_scale_bosonic["higgs_potential_dictionary"]["mh_squared_over_v_squared"]["exact"],
+            "vacuum_energy_over_v_fourth": one_scale_bosonic["higgs_potential_dictionary"]["vacuum_energy_over_v_fourth"]["exact"],
+            "mu_equals_lambda_v_squared": one_scale_bosonic["higgs_potential_dictionary"]["mu_equals_lambda_v_squared"],
+            "mh_squared_equals_2lambda_v_squared": one_scale_bosonic["higgs_potential_dictionary"]["mh_squared_equals_2lambda_v_squared"],
+            "vacuum_energy_equals_minus_lambda_v_fourth_over_4": one_scale_bosonic["higgs_potential_dictionary"]["vacuum_energy_equals_minus_lambda_v_fourth_over_4"],
+            "mw_squared_over_mz_squared": one_scale_bosonic["normalized_tree_mass_dictionary"]["mw_squared_over_mz_squared"]["exact"],
+            "z_minus_w_split_over_z": one_scale_bosonic["normalized_tree_mass_dictionary"]["z_minus_w_split_over_z"]["exact"],
+            "rho_parameter": one_scale_bosonic["normalized_tree_mass_dictionary"]["rho_parameter"]["exact"],
+            "mw_over_v": one_scale_bosonic["normalized_tree_mass_dictionary"]["mw_over_v"]["scientific"],
+            "mz_over_v": one_scale_bosonic["normalized_tree_mass_dictionary"]["mz_over_v"]["scientific"],
+            "mh_over_v": one_scale_bosonic["normalized_tree_mass_dictionary"]["mh_over_v"]["scientific"],
+            "mw_over_mz_equals_sqrt_cos2": one_scale_bosonic["normalized_tree_mass_dictionary"]["mw_over_mz_equals_sqrt_cos2"],
+            "mh_over_v_equals_sqrt_higgs_ratio": one_scale_bosonic["normalized_tree_mass_dictionary"]["mh_over_v_equals_sqrt_higgs_ratio"],
+            "all_dimensionless_bosonic_data_fixed": one_scale_bosonic["one_scale_closure"]["all_dimensionless_bosonic_data_fixed"],
+            "only_overall_scale_is_v": one_scale_bosonic["one_scale_closure"]["only_overall_scale_is_v"],
+            "vev_is_graph_fixed_as_q5_plus_q": one_scale_bosonic["one_scale_closure"]["vev_is_graph_fixed_as_q5_plus_q"],
+            "vev_is_graph_fixed_as_edges_plus_2q": one_scale_bosonic["one_scale_closure"]["vev_is_graph_fixed_as_edges_plus_2q"],
+            "zero_extra_parameter_bosonic_closure_if_promoted_vev_accepted": one_scale_bosonic["one_scale_closure"]["zero_extra_parameter_bosonic_closure_if_promoted_vev_accepted"],
+        },
+        "bosonic_action_completion_bridge": {
+            "lagrangian_formula": bosonic_action_completion["canonical_bosonic_action"]["lagrangian_formula"],
+            "covariant_derivative_formula": bosonic_action_completion["canonical_bosonic_action"]["covariant_derivative_formula"],
+            "potential_formula": bosonic_action_completion["canonical_bosonic_action"]["potential_formula"],
+            "alpha": bosonic_action_completion["graph_fixed_inputs"]["alpha"]["exact"],
+            "weinberg_x": bosonic_action_completion["graph_fixed_inputs"]["weinberg_x"]["exact"],
+            "lambda_h": bosonic_action_completion["graph_fixed_inputs"]["lambda_h"]["exact"],
+            "vev_ew_gev": bosonic_action_completion["graph_fixed_inputs"]["vev_ew_gev"],
+            "g_squared_over_4pi_alpha": bosonic_action_completion["gauge_ratio_dictionary"]["g_squared_over_4pi_alpha"]["exact"],
+            "gprime_squared_over_4pi_alpha": bosonic_action_completion["gauge_ratio_dictionary"]["gprime_squared_over_4pi_alpha"]["exact"],
+            "gz_squared_over_4pi_alpha": bosonic_action_completion["gauge_ratio_dictionary"]["gz_squared_over_4pi_alpha"]["exact"],
+            "g_squared_over_gprime_squared": bosonic_action_completion["gauge_ratio_dictionary"]["g_squared_over_gprime_squared"]["exact"],
+            "mw_squared_over_mz_squared": bosonic_action_completion["gauge_ratio_dictionary"]["mw_squared_over_mz_squared"]["exact"],
+            "rho_parameter": bosonic_action_completion["gauge_ratio_dictionary"]["rho_parameter"]["exact"],
+            "mu_h_squared_over_v_squared": bosonic_action_completion["higgs_dictionary"]["mu_h_squared_over_v_squared"]["exact"],
+            "mh_squared_over_v_squared": bosonic_action_completion["higgs_dictionary"]["mh_squared_over_v_squared"]["exact"],
+            "vacuum_energy_over_v_fourth": bosonic_action_completion["higgs_dictionary"]["vacuum_energy_over_v_fourth"]["exact"],
+            "canonical_gauge_kinetics_fixed": bosonic_action_completion["completion_claim"]["canonical_gauge_kinetics_fixed"],
+            "covariant_derivative_fixed_by_alpha_and_x": bosonic_action_completion["completion_claim"]["covariant_derivative_fixed_by_alpha_and_x"],
+            "higgs_potential_fixed_by_x_and_v": bosonic_action_completion["completion_claim"]["higgs_potential_fixed_by_x_and_v"],
+            "no_free_bosonic_parameter_beyond_graph_fixed_alpha_x_v": bosonic_action_completion["completion_claim"]["no_free_bosonic_parameter_beyond_graph_fixed_alpha_x_v"],
+            "graph_fixes_full_tree_level_bosonic_electroweak_action": bosonic_action_completion["completion_claim"]["graph_fixes_full_tree_level_bosonic_electroweak_action"],
         },
         "monster_landauer_ternary_bridge": {
             "monster_class": monster_landauer_ternary["monster_local_shell"]["monster_class"],
