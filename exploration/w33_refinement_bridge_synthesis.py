@@ -138,6 +138,8 @@ from w33_jones_mu4_selector_bridge import build_jones_mu4_selector_summary
 from w33_f4_neutrino_scale_bridge import build_f4_neutrino_scale_summary
 from w33_one_input_fermion_spectrum_bridge import build_one_input_fermion_spectrum_summary
 from w33_l3_pfaffian_packet_bridge import build_l3_pfaffian_packet_summary
+from w33_selector_firewall_bridge import build_selector_firewall_summary
+from w33_theta_hierarchy_bridge import build_theta_hierarchy_summary
 from w33_truncated_dirac_shell_bridge import build_truncated_dirac_shell_summary
 from w33_yukawa_scaffold_bridge import build_yukawa_scaffold_summary
 from w33_yukawa_unipotent_reduction_bridge import (
@@ -278,6 +280,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     f4_neutrino_scale = build_f4_neutrino_scale_summary()
     one_input_fermion_spectrum = build_one_input_fermion_spectrum_summary()
     l3_pfaffian_packet = build_l3_pfaffian_packet_summary()
+    selector_firewall = build_selector_firewall_summary()
+    theta_hierarchy = build_theta_hierarchy_summary()
     truncated_dirac_shell = build_truncated_dirac_shell_summary()
     yukawa_scaffold = build_yukawa_scaffold_summary()
     yukawa_unipotent_reduction = build_yukawa_unipotent_reduction_summary()
@@ -758,6 +762,35 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "democratic_characteristic_polynomial": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_characteristic_polynomial"],
             "democratic_packet_is_exactly_higgs_higgsbar": l3_pfaffian_packet["higgs_packet_bridge"]["democratic_packet_is_exactly_higgs_higgsbar"],
             "remaining_direction_labels": l3_pfaffian_packet["higgs_packet_bridge"]["remaining_direction_labels"],
+        },
+        "selector_firewall_bridge": {
+            "identity": selector_firewall["master_equation"]["identity"],
+            "srg_parameters": selector_firewall["master_equation"]["srg_parameters"],
+            "identity_holds_for_canonical_w33": selector_firewall["master_equation"]["identity_holds_for_canonical_w33"],
+            "classification_count_for_srg_40_12_2_4": selector_firewall["master_equation"]["classification_count_for_srg_40_12_2_4"],
+            "master_equation_alone_does_not_force_unique_graph": selector_firewall["master_equation"]["master_equation_alone_does_not_force_unique_graph"],
+            "canonical_realization": selector_firewall["selector_package"]["canonical_realization"],
+            "gf3_rank_of_adjacency": selector_firewall["selector_package"]["gf3_rank_of_adjacency"],
+            "gf3_rank_selector_matches_v_minus_1": selector_firewall["selector_package"]["gf3_rank_selector_matches_v_minus_1"],
+            "all_neighborhoods_decompose_as_4K3": selector_firewall["selector_package"]["all_neighborhoods_decompose_as_4K3"],
+            "neighborhood_component_sizes": selector_firewall["selector_package"]["neighborhood_component_sizes"],
+            "symplectic_group_order": selector_firewall["selector_package"]["symplectic_group_order"],
+        },
+        "theta_hierarchy_bridge": {
+            "lovasz_theta": theta_hierarchy["theta_dictionary"]["lovasz_theta"],
+            "theta_complement": theta_hierarchy["theta_dictionary"]["theta_complement"],
+            "theta_times_theta_complement": theta_hierarchy["theta_dictionary"]["theta_times_theta_complement"],
+            "theta_times_theta_complement_equals_v": theta_hierarchy["theta_dictionary"]["theta_times_theta_complement_equals_v"],
+            "small_selector_formula": theta_hierarchy["hierarchy_selector"]["small_selector_formula"],
+            "small_selector": theta_hierarchy["hierarchy_selector"]["small_selector"],
+            "mu_over_v": theta_hierarchy["hierarchy_selector"]["mu_over_v"],
+            "selector_matches_mu_over_v": theta_hierarchy["hierarchy_selector"]["selector_matches_mu_over_v"],
+            "selector_times_theta_is_unity": theta_hierarchy["hierarchy_selector"]["selector_times_theta_is_unity"],
+            "betti_numbers": theta_hierarchy["truncated_shell_lock"]["betti_numbers"],
+            "zero_mode_count": theta_hierarchy["truncated_shell_lock"]["zero_mode_count"],
+            "zero_mode_formula": theta_hierarchy["truncated_shell_lock"]["zero_mode_formula"],
+            "zero_mode_formula_value": theta_hierarchy["truncated_shell_lock"]["zero_mode_formula_value"],
+            "betti_sum_equals_formula": theta_hierarchy["truncated_shell_lock"]["betti_sum_equals_formula"],
         },
         "truncated_dirac_shell_bridge": {
             "chain_dimensions": truncated_dirac_shell["truncated_sector"]["chain_dimensions"],
@@ -2535,7 +2568,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 477,
+        "focused_test_stack_size": 482,
     }
 
 

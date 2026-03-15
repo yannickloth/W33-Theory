@@ -474,6 +474,41 @@ def test_synthesis_records_l3_pfaffian_packet_bridge() -> None:
     assert bridge["remaining_direction_labels"] == ["H", "Hbar", "T", "T", "T", "Tbar", "Tbar", "Tbar"]
 
 
+def test_synthesis_records_selector_firewall_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["selector_firewall_bridge"]
+    assert bridge["identity"] == "A^2 + 2A - 8I = 4J"
+    assert bridge["srg_parameters"] == [40, 12, 2, 4]
+    assert bridge["identity_holds_for_canonical_w33"] is True
+    assert bridge["classification_count_for_srg_40_12_2_4"] == 28
+    assert bridge["master_equation_alone_does_not_force_unique_graph"] is True
+    assert bridge["canonical_realization"] == "symplectic W(3,3) on PG(3,3)"
+    assert bridge["gf3_rank_of_adjacency"] == 39
+    assert bridge["gf3_rank_selector_matches_v_minus_1"] is True
+    assert bridge["all_neighborhoods_decompose_as_4K3"] is True
+    assert bridge["neighborhood_component_sizes"] == [3, 3, 3, 3]
+    assert bridge["symplectic_group_order"] == 51840
+
+
+def test_synthesis_records_theta_hierarchy_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["theta_hierarchy_bridge"]
+    assert bridge["lovasz_theta"] == "10"
+    assert bridge["theta_complement"] == "4"
+    assert bridge["theta_times_theta_complement"] == "40"
+    assert bridge["theta_times_theta_complement_equals_v"] is True
+    assert bridge["small_selector_formula"] == "1/Theta(W33) = mu/v"
+    assert bridge["small_selector"] == "1/10"
+    assert bridge["mu_over_v"] == "1/10"
+    assert bridge["selector_matches_mu_over_v"] is True
+    assert bridge["selector_times_theta_is_unity"] is True
+    assert bridge["betti_numbers"] == [1, 81, 40]
+    assert bridge["zero_mode_count"] == 122
+    assert bridge["zero_mode_formula"] == "k^2 - k - Theta(W33)"
+    assert bridge["zero_mode_formula_value"] == 122
+    assert bridge["betti_sum_equals_formula"] is True
+
+
 def test_synthesis_records_truncated_dirac_shell_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["truncated_dirac_shell_bridge"]
