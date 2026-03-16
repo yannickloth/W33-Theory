@@ -2579,3 +2579,30 @@ def test_global_ce2_predictor_cancels_origin_same_fiber_uv_family_diagonal() -> 
     linfty.enable_ce2_global_predictor()
     repaired = linfty.homotopy_jacobi(x, y, z)
     assert max_abs(repaired) < 1e-10
+
+
+def test_global_ce2_predictor_cancels_anchor_002_triple() -> None:
+    """Regression test for the missing a=(0,0,2) anchor coverage."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    # Use the E6 id for (0,0,2) anchor (g1 index 22).
+    # This triple previously had a nonzero Jacobi residual until the anchor CE2 entry
+    # was added to the sparse artifact.
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g1(toe, (0, 1))
+    z = basis_elem_g2(toe, (0, 0))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
