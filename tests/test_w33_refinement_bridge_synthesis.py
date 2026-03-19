@@ -2404,6 +2404,27 @@ def test_synthesis_records_surface_hurwitz_flag_bridge() -> None:
     assert bridge["q3_is_unique_positive_solution"] is True
 
 
+def test_synthesis_records_mod12_selector_closure_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["mod12_selector_closure_bridge"]
+    assert bridge["modulus"] == 12
+    assert bridge["nonzero_surface_residues_mod_12"] == [3, 4, 7]
+    assert bridge["q"] == 3
+    assert bridge["mu"] == 4
+    assert bridge["phi6"] == 7
+    assert bridge["theta_w33"] == 10
+    assert bridge["k_minus_one"] == 11
+    assert bridge["g2_dimension"] == 14
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["residues_equal_q_mu_phi6"] is True
+    assert bridge["q_plus_mu_equals_phi6"] is True
+    assert bridge["q_plus_phi6_equals_theta"] is True
+    assert bridge["mu_plus_phi6_equals_k_minus_one"] is True
+    assert bridge["q_plus_mu_plus_phi6_equals_g2_dimension"] is True
+    assert bridge["q_times_mu_times_phi6_equals_single_surface_flags"] is True
+    assert bridge["modulus_equals_gauge_dimension"] is True
+
+
 def test_synthesis_records_decimal_surface_flag_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["decimal_surface_flag_bridge"]
@@ -2447,6 +2468,28 @@ def test_synthesis_records_surface_physics_shell_bridge() -> None:
     assert bridge["full_heawood_order_equals_shared_six_times_quartic_e7_packet"] is True
 
 
+def test_synthesis_records_toroidal_k7_spectral_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["toroidal_k7_spectral_bridge"]
+    assert bridge["toroidal_seed_order"] == 7
+    assert bridge["csaszar_vertex_graph"] == "K7"
+    assert bridge["szilassi_face_graph"] == "K7"
+    assert bridge["adjacency_spectrum"] == [6, -1, -1, -1, -1, -1, -1]
+    assert bridge["laplacian_spectrum"] == [0, 7, 7, 7, 7, 7, 7]
+    assert bridge["selector_line_dimension"] == 1
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["phi6"] == 7
+    assert bridge["adjacency_square_trace"] == 42
+    assert bridge["laplacian_trace"] == 42
+    assert bridge["csaszar_vertex_graph_is_k7"] is True
+    assert bridge["szilassi_face_graph_is_k7"] is True
+    assert bridge["selector_plus_shared_six_equals_toroidal_seed_order"] is True
+    assert bridge["nontrivial_laplacian_mode_equals_phi6"] is True
+    assert bridge["nontrivial_adjacency_multiplicity_equals_shared_six"] is True
+    assert bridge["laplacian_trace_equals_shared_six_times_phi6"] is True
+    assert bridge["adjacency_square_trace_equals_shared_six_times_phi6"] is True
+
+
 def test_synthesis_records_klein_hurwitz_extremal_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["klein_hurwitz_extremal_bridge"]
@@ -2482,6 +2525,24 @@ def test_synthesis_records_hurwitz_237_selector_bridge() -> None:
     assert bridge["single_surface_flags_equals_2_times_affine_shell"] is True
     assert bridge["heawood_preserving_equals_4_times_affine_shell"] is True
     assert bridge["heawood_full_equals_8_times_affine_shell"] is True
+
+
+def test_synthesis_records_affine_middle_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["affine_middle_shell_bridge"]
+    assert bridge["duality_factor"] == 2
+    assert bridge["q"] == 3
+    assert bridge["phi6"] == 7
+    assert bridge["ag21_length"] == 21
+    assert bridge["g2_dimension"] == 14
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["affine_shell_order"] == 42
+    assert bridge["affine_shell_equals_2_times_ag21"] is True
+    assert bridge["affine_shell_equals_q_times_g2"] is True
+    assert bridge["affine_shell_equals_shared_six_times_phi6"] is True
+    assert bridge["ag21_equals_3_times_phi6"] is True
+    assert bridge["g2_equals_2_times_phi6"] is True
+    assert bridge["shared_six_equals_2_times_q"] is True
 
 
 def test_synthesis_records_realization_orbit_package() -> None:

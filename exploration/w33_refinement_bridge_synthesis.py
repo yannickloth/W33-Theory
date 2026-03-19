@@ -69,10 +69,13 @@ from w33_realization_orbit_bridge import build_realization_orbit_summary
 from w33_surface_neighborly_bridge import build_surface_neighborly_summary
 from w33_surface_congruence_selector_bridge import build_surface_congruence_selector_summary
 from w33_surface_hurwitz_flag_bridge import build_surface_hurwitz_flag_summary
+from w33_mod12_selector_closure_bridge import build_mod12_selector_closure_summary
 from w33_decimal_surface_flag_bridge import build_decimal_surface_flag_summary
 from w33_surface_physics_shell_bridge import build_surface_physics_shell_summary
+from w33_toroidal_k7_spectral_bridge import build_toroidal_k7_spectral_summary
 from w33_klein_hurwitz_extremal_bridge import build_klein_hurwitz_extremal_summary
 from w33_hurwitz_237_selector_bridge import build_hurwitz_237_selector_summary
+from w33_affine_middle_shell_bridge import build_affine_middle_shell_summary
 from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
@@ -235,10 +238,13 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     realization = build_realization_orbit_summary()
     surface_congruence_selector = build_surface_congruence_selector_summary()
     surface_hurwitz_flag = build_surface_hurwitz_flag_summary()
+    mod12_selector_closure = build_mod12_selector_closure_summary()
     decimal_surface_flag = build_decimal_surface_flag_summary()
     surface_physics_shell = build_surface_physics_shell_summary()
+    toroidal_k7_spectral = build_toroidal_k7_spectral_summary()
     klein_hurwitz_extremal = build_klein_hurwitz_extremal_summary()
     hurwitz_237_selector = build_hurwitz_237_selector_summary()
+    affine_middle_shell = build_affine_middle_shell_summary()
     witting = build_witting_srg_bridge_summary()
     lie_tower_cycle = build_lie_tower_cycle_bridge_summary()
     lie_tower_s12 = build_lie_tower_s12_bridge_summary()
@@ -2327,6 +2333,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "full_heawood_order_equals_four_single_surface_flag_packets": surface_hurwitz_flag["exact_factorizations"]["full_heawood_order_equals_four_single_surface_flag_packets"],
             "q3_is_unique_positive_solution": surface_hurwitz_flag["q3_selection"]["q3_is_unique_positive_solution"],
         },
+        "mod12_selector_closure_bridge": {
+            "modulus": mod12_selector_closure["mod12_selector_dictionary"]["modulus"],
+            "nonzero_surface_residues_mod_12": mod12_selector_closure["mod12_selector_dictionary"]["nonzero_surface_residues_mod_12"],
+            "q": mod12_selector_closure["mod12_selector_dictionary"]["q"],
+            "mu": mod12_selector_closure["mod12_selector_dictionary"]["mu"],
+            "phi6": mod12_selector_closure["mod12_selector_dictionary"]["phi6"],
+            "theta_w33": mod12_selector_closure["mod12_selector_dictionary"]["theta_w33"],
+            "k_minus_one": mod12_selector_closure["mod12_selector_dictionary"]["k_minus_one"],
+            "g2_dimension": mod12_selector_closure["mod12_selector_dictionary"]["g2_dimension"],
+            "single_surface_flags": mod12_selector_closure["mod12_selector_dictionary"]["single_surface_flags"],
+            "residues_equal_q_mu_phi6": mod12_selector_closure["exact_closures"]["residues_equal_q_mu_phi6"],
+            "q_plus_mu_equals_phi6": mod12_selector_closure["exact_closures"]["q_plus_mu_equals_phi6"],
+            "q_plus_phi6_equals_theta": mod12_selector_closure["exact_closures"]["q_plus_phi6_equals_theta"],
+            "mu_plus_phi6_equals_k_minus_one": mod12_selector_closure["exact_closures"]["mu_plus_phi6_equals_k_minus_one"],
+            "q_plus_mu_plus_phi6_equals_g2_dimension": mod12_selector_closure["exact_closures"]["q_plus_mu_plus_phi6_equals_g2_dimension"],
+            "q_times_mu_times_phi6_equals_single_surface_flags": mod12_selector_closure["exact_closures"]["q_times_mu_times_phi6_equals_single_surface_flags"],
+            "modulus_equals_gauge_dimension": mod12_selector_closure["exact_closures"]["modulus_equals_gauge_dimension"],
+        },
         "decimal_surface_flag_bridge": {
             "decimal_generator_mod_7": decimal_surface_flag["decimal_surface_dictionary"]["decimal_generator_mod_7"],
             "decimal_generator_order_mod_7": decimal_surface_flag["decimal_surface_dictionary"]["decimal_generator_order_mod_7"],
@@ -2364,6 +2388,25 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "full_heawood_order_equals_gauge_dimension_times_topological_shell": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_gauge_dimension_times_topological_shell"],
             "full_heawood_order_equals_shared_six_times_quartic_e7_packet": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_shared_six_times_quartic_e7_packet"],
         },
+        "toroidal_k7_spectral_bridge": {
+            "toroidal_seed_order": toroidal_k7_spectral["toroidal_k7_dictionary"]["toroidal_seed_order"],
+            "csaszar_vertex_graph": toroidal_k7_spectral["toroidal_k7_dictionary"]["csaszar_vertex_graph"],
+            "szilassi_face_graph": toroidal_k7_spectral["toroidal_k7_dictionary"]["szilassi_face_graph"],
+            "adjacency_spectrum": toroidal_k7_spectral["toroidal_k7_dictionary"]["adjacency_spectrum"],
+            "laplacian_spectrum": toroidal_k7_spectral["toroidal_k7_dictionary"]["laplacian_spectrum"],
+            "selector_line_dimension": toroidal_k7_spectral["toroidal_k7_dictionary"]["selector_line_dimension"],
+            "shared_six_channel": toroidal_k7_spectral["toroidal_k7_dictionary"]["shared_six_channel"],
+            "phi6": toroidal_k7_spectral["toroidal_k7_dictionary"]["phi6"],
+            "adjacency_square_trace": toroidal_k7_spectral["toroidal_k7_dictionary"]["adjacency_square_trace"],
+            "laplacian_trace": toroidal_k7_spectral["toroidal_k7_dictionary"]["laplacian_trace"],
+            "csaszar_vertex_graph_is_k7": toroidal_k7_spectral["exact_factorizations"]["csaszar_vertex_graph_is_k7"],
+            "szilassi_face_graph_is_k7": toroidal_k7_spectral["exact_factorizations"]["szilassi_face_graph_is_k7"],
+            "selector_plus_shared_six_equals_toroidal_seed_order": toroidal_k7_spectral["exact_factorizations"]["selector_plus_shared_six_equals_toroidal_seed_order"],
+            "nontrivial_laplacian_mode_equals_phi6": toroidal_k7_spectral["exact_factorizations"]["nontrivial_laplacian_mode_equals_phi6"],
+            "nontrivial_adjacency_multiplicity_equals_shared_six": toroidal_k7_spectral["exact_factorizations"]["nontrivial_adjacency_multiplicity_equals_shared_six"],
+            "laplacian_trace_equals_shared_six_times_phi6": toroidal_k7_spectral["exact_factorizations"]["laplacian_trace_equals_shared_six_times_phi6"],
+            "adjacency_square_trace_equals_shared_six_times_phi6": toroidal_k7_spectral["exact_factorizations"]["adjacency_square_trace_equals_shared_six_times_phi6"],
+        },
         "klein_hurwitz_extremal_bridge": {
             "klein_quartic_genus": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["klein_quartic_genus"],
             "hurwitz_coefficient": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["hurwitz_coefficient"],
@@ -2394,6 +2437,21 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "single_surface_flags_equals_2_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["single_surface_flags_equals_2_times_affine_shell"],
             "heawood_preserving_equals_4_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["heawood_preserving_equals_4_times_affine_shell"],
             "heawood_full_equals_8_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["heawood_full_equals_8_times_affine_shell"],
+        },
+        "affine_middle_shell_bridge": {
+            "duality_factor": affine_middle_shell["affine_middle_shell_dictionary"]["duality_factor"],
+            "q": affine_middle_shell["affine_middle_shell_dictionary"]["q"],
+            "phi6": affine_middle_shell["affine_middle_shell_dictionary"]["phi6"],
+            "ag21_length": affine_middle_shell["affine_middle_shell_dictionary"]["ag21_length"],
+            "g2_dimension": affine_middle_shell["affine_middle_shell_dictionary"]["g2_dimension"],
+            "shared_six_channel": affine_middle_shell["affine_middle_shell_dictionary"]["shared_six_channel"],
+            "affine_shell_order": affine_middle_shell["affine_middle_shell_dictionary"]["affine_shell_order"],
+            "affine_shell_equals_2_times_ag21": affine_middle_shell["exact_factorizations"]["affine_shell_equals_2_times_ag21"],
+            "affine_shell_equals_q_times_g2": affine_middle_shell["exact_factorizations"]["affine_shell_equals_q_times_g2"],
+            "affine_shell_equals_shared_six_times_phi6": affine_middle_shell["exact_factorizations"]["affine_shell_equals_shared_six_times_phi6"],
+            "ag21_equals_3_times_phi6": affine_middle_shell["exact_factorizations"]["ag21_equals_3_times_phi6"],
+            "g2_equals_2_times_phi6": affine_middle_shell["exact_factorizations"]["g2_equals_2_times_phi6"],
+            "shared_six_equals_2_times_q": affine_middle_shell["exact_factorizations"]["shared_six_equals_2_times_q"],
         },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
@@ -2750,11 +2808,22 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "so the promoted Heawood/Klein symmetry order 168 is exactly the "
             "genus-3 Hurwitz extremal packet 84(g-1), and the full Heawood order "
             "336 is its doubled point-line extension. "
+            "More sharply again, the toroidal dual seed is already an exact K7 "
+            "spectral shell on both sides: the Csaszar vertex graph and the "
+            "Szilassi face-adjacency graph are both K7, so the shared toroidal "
+            "shell has adjacency spectrum 6,(-1)^6 and Laplacian spectrum 0,7^6. "
+            "That means the torus route already carries one selector line plus "
+            "six identical nontrivial Phi_6 modes, and the compressed affine "
+            "packet 42 is recovered as Tr(L_K7) = Tr(A_K7^2) = 6*7. "
             "Even the classical Klein signature is now visible directly in the "
             "live finite shell: the torus affine packet is exactly 42 = 2*3*7, "
             "with 2 the duality sheet flip, 3 the field value q, and 7 the "
             "same Phi_6 / QCD selector already governing the promoted physics "
-            "side. "
+            "side. More sharply again, that same affine packet is the exact "
+            "middle shell 42 = 2*21 = 3*14 = 6*7, so the mod-7 affine route, "
+            "the Heawood/AG21 packet, the G2 packet, and the shared "
+            "physics-facing six-by-seven selector are already one promoted "
+            "object before the lifts to 84, 168, and 336. "
             "The M\"obius/Csaszar torus seed splits exactly as two Fano "
             "heptads on the same 7 vertices, that seed has an explicit Szilassi "
             "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
@@ -2815,7 +2884,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 513,
+        "focused_test_stack_size": 515,
     }
 
 
