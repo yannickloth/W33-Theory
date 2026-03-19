@@ -2425,6 +2425,28 @@ def test_synthesis_records_decimal_surface_flag_bridge() -> None:
     assert bridge["decimal_order_plus_one_equals_first_toroidal_value"] is True
 
 
+def test_synthesis_records_surface_physics_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["surface_physics_shell_bridge"]
+    assert bridge["gauge_dimension"] == 12
+    assert bridge["gauge_dimension_decomposition"] == [8, 3, 1]
+    assert bridge["beta0_qcd"] == 7
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["g2_dimension"] == 14
+    assert bridge["topological_shell"] == 28
+    assert bridge["quartic_e7_packet"] == 56
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["dual_pair_flags"] == 168
+    assert bridge["full_heawood_order"] == 336
+    assert bridge["gauge_dimension_equals_8_plus_3_plus_1"] is True
+    assert bridge["single_surface_flags_equals_gauge_dimension_times_beta0"] is True
+    assert bridge["single_surface_flags_equals_g2_dimension_times_shared_six"] is True
+    assert bridge["dual_pair_flags_equals_gauge_dimension_times_g2_dimension"] is True
+    assert bridge["dual_pair_flags_equals_shared_six_times_topological_shell"] is True
+    assert bridge["full_heawood_order_equals_gauge_dimension_times_topological_shell"] is True
+    assert bridge["full_heawood_order_equals_shared_six_times_quartic_e7_packet"] is True
+
+
 def test_synthesis_records_realization_orbit_package() -> None:
     summary = build_refinement_bridge_synthesis()
     realization = summary["realization_orbit_bridge"]

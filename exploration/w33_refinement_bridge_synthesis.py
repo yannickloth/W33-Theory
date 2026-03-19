@@ -70,6 +70,7 @@ from w33_surface_neighborly_bridge import build_surface_neighborly_summary
 from w33_surface_congruence_selector_bridge import build_surface_congruence_selector_summary
 from w33_surface_hurwitz_flag_bridge import build_surface_hurwitz_flag_summary
 from w33_decimal_surface_flag_bridge import build_decimal_surface_flag_summary
+from w33_surface_physics_shell_bridge import build_surface_physics_shell_summary
 from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
@@ -233,6 +234,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     surface_congruence_selector = build_surface_congruence_selector_summary()
     surface_hurwitz_flag = build_surface_hurwitz_flag_summary()
     decimal_surface_flag = build_decimal_surface_flag_summary()
+    surface_physics_shell = build_surface_physics_shell_summary()
     witting = build_witting_srg_bridge_summary()
     lie_tower_cycle = build_lie_tower_cycle_bridge_summary()
     lie_tower_s12 = build_lie_tower_s12_bridge_summary()
@@ -2339,6 +2341,25 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "single_surface_flags_equals_21_times_4": decimal_surface_flag["exact_factorizations"]["single_surface_flags_equals_21_times_4"],
             "decimal_order_plus_one_equals_first_toroidal_value": decimal_surface_flag["exact_factorizations"]["decimal_order_plus_one_equals_first_toroidal_value"],
         },
+        "surface_physics_shell_bridge": {
+            "gauge_dimension": surface_physics_shell["standard_model_gauge_dictionary"]["gauge_dimension"],
+            "gauge_dimension_decomposition": surface_physics_shell["standard_model_gauge_dictionary"]["gauge_dimension_decomposition"],
+            "beta0_qcd": surface_physics_shell["standard_model_gauge_dictionary"]["beta0_qcd"],
+            "shared_six_channel": surface_physics_shell["standard_model_gauge_dictionary"]["shared_six_channel"],
+            "g2_dimension": surface_physics_shell["standard_model_gauge_dictionary"]["g2_dimension"],
+            "topological_shell": surface_physics_shell["standard_model_gauge_dictionary"]["topological_shell"],
+            "quartic_e7_packet": surface_physics_shell["standard_model_gauge_dictionary"]["quartic_e7_packet"],
+            "single_surface_flags": surface_physics_shell["surface_physics_shell_dictionary"]["single_surface_flags"],
+            "dual_pair_flags": surface_physics_shell["surface_physics_shell_dictionary"]["dual_pair_flags"],
+            "full_heawood_order": surface_physics_shell["surface_physics_shell_dictionary"]["full_heawood_order"],
+            "gauge_dimension_equals_8_plus_3_plus_1": surface_physics_shell["exact_factorizations"]["gauge_dimension_equals_8_plus_3_plus_1"],
+            "single_surface_flags_equals_gauge_dimension_times_beta0": surface_physics_shell["exact_factorizations"]["single_surface_flags_equals_gauge_dimension_times_beta0"],
+            "single_surface_flags_equals_g2_dimension_times_shared_six": surface_physics_shell["exact_factorizations"]["single_surface_flags_equals_g2_dimension_times_shared_six"],
+            "dual_pair_flags_equals_gauge_dimension_times_g2_dimension": surface_physics_shell["exact_factorizations"]["dual_pair_flags_equals_gauge_dimension_times_g2_dimension"],
+            "dual_pair_flags_equals_shared_six_times_topological_shell": surface_physics_shell["exact_factorizations"]["dual_pair_flags_equals_shared_six_times_topological_shell"],
+            "full_heawood_order_equals_gauge_dimension_times_topological_shell": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_gauge_dimension_times_topological_shell"],
+            "full_heawood_order_equals_shared_six_times_quartic_e7_packet": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_shared_six_times_quartic_e7_packet"],
+        },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
             "common_symmetry_group": realization["common_symmetry"]["group"],
@@ -2685,7 +2706,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "fixed point at 4, and 7 is the first positive toroidal dual value. "
             "More sharply, the decimal 1/7 side is already in the same shell: "
             "ord_7(10)=6 and the single-surface packet is exactly "
-            "84 = 12*7 = 14*6 = 21*4. "
+            "84 = 12*7 = 14*6 = 21*4. More physically, that same packet is already "
+            "the promoted selector ladder: 84 = gauge-dimension 12 times beta_0 = 7, "
+            "168 = 12*14 = 6*28, and 336 = 12*28 = 6*56, so the torus/Klein route "
+            "is packaging the same Standard Model, QCD, topological, and quartic "
+            "shell integers that already govern the live W33 physics layer. "
             "The M\"obius/Csaszar torus seed splits exactly as two Fano "
             "heptads on the same 7 vertices, that seed has an explicit Szilassi "
             "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
@@ -2746,7 +2771,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 510,
+        "focused_test_stack_size": 511,
     }
 
 
