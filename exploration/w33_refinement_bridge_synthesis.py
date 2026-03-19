@@ -2884,7 +2884,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 515,
+        "focused_test_stack_size": 517,
     }
 
 
