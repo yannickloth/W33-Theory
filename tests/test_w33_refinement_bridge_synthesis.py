@@ -2358,6 +2358,73 @@ def test_synthesis_records_heawood_shell_ladder_bridge() -> None:
     assert bridge["full_order_equals_affine_order_times_preserving_edge_stabilizer"] is True
 
 
+def test_synthesis_records_klein_quartic_gf3_tetra_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["klein_quartic_gf3_tetra_bridge"]
+    assert bridge["field"] == 3
+    assert bridge["point_count"] == 4
+    assert bridge["projective_points"] == [
+        [0, 0, 1],
+        [0, 1, 0],
+        [1, 0, 0],
+        [1, 1, 1],
+    ]
+    assert bridge["point_count_equals_q_plus_1"] is True
+    assert bridge["point_count_equals_mu"] is True
+    assert bridge["no_three_points_are_collinear"] is True
+    assert bridge["induced_projective_packet_is_k4"] is True
+    assert bridge["point_count_matches_surface_fixed_point"] is True
+    assert bridge["tetra_automorphism_order_matches_hurwitz_units"] is True
+
+
+def test_synthesis_records_surface_hurwitz_flag_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["surface_hurwitz_flag_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["q_plus_one"] == 4
+    assert bridge["phi6"] == 7
+    assert bridge["genus_denominator"] == 12
+    assert bridge["tetrahedron_fixed_point"] == 4
+    assert bridge["nonzero_surface_residues_mod_12"] == [3, 4, 7]
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["dual_pair_flags"] == 168
+    assert bridge["heawood_preserving_order"] == 168
+    assert bridge["heawood_full_order"] == 336
+    assert bridge["heawood_vertices"] == 14
+    assert bridge["heawood_edges"] == 21
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["nonzero_surface_residues_are_q_q_plus_one_phi6"] is True
+    assert bridge["nonzero_surface_residues_add_to_phi6"] is True
+    assert bridge["single_surface_flags_equals_product_of_nonzero_surface_residues"] is True
+    assert bridge["single_surface_flags_equals_genus_denominator_times_phi6"] is True
+    assert bridge["single_surface_flags_equals_heawood_vertices_times_shared_six"] is True
+    assert bridge["single_surface_flags_equals_heawood_edges_times_tetrahedron_fixed_point"] is True
+    assert bridge["dual_pair_flags_equals_heawood_preserving_order"] is True
+    assert bridge["full_heawood_order_equals_four_single_surface_flag_packets"] is True
+    assert bridge["q3_is_unique_positive_solution"] is True
+
+
+def test_synthesis_records_decimal_surface_flag_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["decimal_surface_flag_bridge"]
+    assert bridge["decimal_generator_mod_7"] == 3
+    assert bridge["decimal_generator_order_mod_7"] == 6
+    assert bridge["decimal_square_order_mod_7"] == 3
+    assert bridge["genus_denominator"] == 12
+    assert bridge["first_toroidal_dual_value"] == 7
+    assert bridge["phi6"] == 7
+    assert bridge["heawood_vertices"] == 14
+    assert bridge["heawood_edges"] == 21
+    assert bridge["tetrahedral_fixed_point"] == 4
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["decimal_order_equals_shared_six_channel"] is True
+    assert bridge["single_surface_flags_equals_12_times_7"] is True
+    assert bridge["single_surface_flags_equals_14_times_6"] is True
+    assert bridge["single_surface_flags_equals_21_times_4"] is True
+    assert bridge["decimal_order_plus_one_equals_first_toroidal_value"] is True
+
+
 def test_synthesis_records_realization_orbit_package() -> None:
     summary = build_refinement_bridge_synthesis()
     realization = summary["realization_orbit_bridge"]

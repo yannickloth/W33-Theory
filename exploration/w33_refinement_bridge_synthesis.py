@@ -63,10 +63,13 @@ from w33_mod7_fano_duality_bridge import build_mod7_fano_duality_summary
 from w33_heawood_harmonic_bridge import build_heawood_harmonic_summary
 from w33_heawood_klein_symmetry_bridge import build_heawood_klein_symmetry_summary
 from w33_heawood_shell_ladder_bridge import build_heawood_shell_ladder_summary
+from w33_klein_quartic_gf3_tetra_bridge import build_klein_quartic_gf3_tetra_summary
 from w33_mobius_szilassi_dual import build_mobius_szilassi_dual_summary
 from w33_realization_orbit_bridge import build_realization_orbit_summary
 from w33_surface_neighborly_bridge import build_surface_neighborly_summary
 from w33_surface_congruence_selector_bridge import build_surface_congruence_selector_summary
+from w33_surface_hurwitz_flag_bridge import build_surface_hurwitz_flag_summary
+from w33_decimal_surface_flag_bridge import build_decimal_surface_flag_summary
 from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
@@ -224,9 +227,12 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     heawood_harmonic = build_heawood_harmonic_summary()
     heawood_klein_symmetry = build_heawood_klein_symmetry_summary()
     heawood_shell_ladder = build_heawood_shell_ladder_summary()
+    klein_quartic_gf3_tetra = build_klein_quartic_gf3_tetra_summary()
     mobius_dual = build_mobius_szilassi_dual_summary()
     realization = build_realization_orbit_summary()
     surface_congruence_selector = build_surface_congruence_selector_summary()
+    surface_hurwitz_flag = build_surface_hurwitz_flag_summary()
+    decimal_surface_flag = build_decimal_surface_flag_summary()
     witting = build_witting_srg_bridge_summary()
     lie_tower_cycle = build_lie_tower_cycle_bridge_summary()
     lie_tower_s12 = build_lie_tower_s12_bridge_summary()
@@ -2280,6 +2286,59 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "full_order_equals_d4_seed_times_g2_dimension": heawood_shell_ladder["exact_factorizations"]["full_order_equals_d4_seed_times_g2_dimension"],
             "full_order_equals_affine_order_times_preserving_edge_stabilizer": heawood_shell_ladder["exact_factorizations"]["full_order_equals_affine_order_times_preserving_edge_stabilizer"],
         },
+        "klein_quartic_gf3_tetra_bridge": {
+            "field": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["field"],
+            "point_count": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["point_count"],
+            "projective_points": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["projective_points"],
+            "point_count_equals_q_plus_1": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["point_count_equals_q_plus_1"],
+            "point_count_equals_mu": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["point_count_equals_mu"],
+            "no_three_points_are_collinear": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["no_three_points_are_collinear"],
+            "induced_projective_packet_is_k4": klein_quartic_gf3_tetra["gf3_klein_quartic_packet"]["induced_projective_packet_is_k4"],
+            "point_count_matches_surface_fixed_point": klein_quartic_gf3_tetra["surface_and_hurwitz_dictionary"]["point_count_matches_surface_fixed_point"],
+            "tetra_automorphism_order_matches_hurwitz_units": klein_quartic_gf3_tetra["surface_and_hurwitz_dictionary"]["tetra_automorphism_order_matches_hurwitz_units"],
+        },
+        "surface_hurwitz_flag_bridge": {
+            "q": surface_hurwitz_flag["surface_hurwitz_dictionary"]["q"],
+            "q_plus_one": surface_hurwitz_flag["surface_hurwitz_dictionary"]["q_plus_one"],
+            "phi6": surface_hurwitz_flag["surface_hurwitz_dictionary"]["phi6"],
+            "genus_denominator": surface_hurwitz_flag["surface_hurwitz_dictionary"]["genus_denominator"],
+            "tetrahedron_fixed_point": surface_hurwitz_flag["surface_hurwitz_dictionary"]["tetrahedron_fixed_point"],
+            "nonzero_surface_residues_mod_12": surface_hurwitz_flag["surface_hurwitz_dictionary"]["nonzero_surface_residues_mod_12"],
+            "single_surface_flags": surface_hurwitz_flag["surface_hurwitz_dictionary"]["single_surface_flags"],
+            "dual_pair_flags": surface_hurwitz_flag["surface_hurwitz_dictionary"]["dual_pair_flags"],
+            "heawood_preserving_order": surface_hurwitz_flag["surface_hurwitz_dictionary"]["heawood_preserving_order"],
+            "heawood_full_order": surface_hurwitz_flag["surface_hurwitz_dictionary"]["heawood_full_order"],
+            "heawood_vertices": surface_hurwitz_flag["surface_hurwitz_dictionary"]["heawood_vertices"],
+            "heawood_edges": surface_hurwitz_flag["surface_hurwitz_dictionary"]["heawood_edges"],
+            "shared_six_channel": surface_hurwitz_flag["surface_hurwitz_dictionary"]["shared_six_channel"],
+            "nonzero_surface_residues_are_q_q_plus_one_phi6": surface_hurwitz_flag["exact_factorizations"]["nonzero_surface_residues_are_q_q_plus_one_phi6"],
+            "nonzero_surface_residues_add_to_phi6": surface_hurwitz_flag["exact_factorizations"]["nonzero_surface_residues_add_to_phi6"],
+            "single_surface_flags_equals_product_of_nonzero_surface_residues": surface_hurwitz_flag["exact_factorizations"]["single_surface_flags_equals_product_of_nonzero_surface_residues"],
+            "single_surface_flags_equals_genus_denominator_times_phi6": surface_hurwitz_flag["exact_factorizations"]["single_surface_flags_equals_genus_denominator_times_phi6"],
+            "single_surface_flags_equals_heawood_vertices_times_shared_six": surface_hurwitz_flag["exact_factorizations"]["single_surface_flags_equals_heawood_vertices_times_shared_six"],
+            "single_surface_flags_equals_heawood_edges_times_tetrahedron_fixed_point": surface_hurwitz_flag["exact_factorizations"]["single_surface_flags_equals_heawood_edges_times_tetrahedron_fixed_point"],
+            "dual_pair_flags_equals_heawood_preserving_order": surface_hurwitz_flag["exact_factorizations"]["dual_pair_flags_equals_heawood_preserving_order"],
+            "full_heawood_order_equals_four_single_surface_flag_packets": surface_hurwitz_flag["exact_factorizations"]["full_heawood_order_equals_four_single_surface_flag_packets"],
+            "q3_is_unique_positive_solution": surface_hurwitz_flag["q3_selection"]["q3_is_unique_positive_solution"],
+        },
+        "decimal_surface_flag_bridge": {
+            "decimal_generator_mod_7": decimal_surface_flag["decimal_surface_dictionary"]["decimal_generator_mod_7"],
+            "decimal_generator_order_mod_7": decimal_surface_flag["decimal_surface_dictionary"]["decimal_generator_order_mod_7"],
+            "decimal_square_order_mod_7": decimal_surface_flag["decimal_surface_dictionary"]["decimal_square_order_mod_7"],
+            "genus_denominator": decimal_surface_flag["decimal_surface_dictionary"]["genus_denominator"],
+            "first_toroidal_dual_value": decimal_surface_flag["decimal_surface_dictionary"]["first_toroidal_dual_value"],
+            "phi6": decimal_surface_flag["decimal_surface_dictionary"]["phi6"],
+            "heawood_vertices": decimal_surface_flag["decimal_surface_dictionary"]["heawood_vertices"],
+            "heawood_edges": decimal_surface_flag["decimal_surface_dictionary"]["heawood_edges"],
+            "tetrahedral_fixed_point": decimal_surface_flag["decimal_surface_dictionary"]["tetrahedral_fixed_point"],
+            "shared_six_channel": decimal_surface_flag["decimal_surface_dictionary"]["shared_six_channel"],
+            "single_surface_flags": decimal_surface_flag["decimal_surface_dictionary"]["single_surface_flags"],
+            "decimal_order_equals_shared_six_channel": decimal_surface_flag["exact_factorizations"]["decimal_order_equals_shared_six_channel"],
+            "single_surface_flags_equals_12_times_7": decimal_surface_flag["exact_factorizations"]["single_surface_flags_equals_12_times_7"],
+            "single_surface_flags_equals_14_times_6": decimal_surface_flag["exact_factorizations"]["single_surface_flags_equals_14_times_6"],
+            "single_surface_flags_equals_21_times_4": decimal_surface_flag["exact_factorizations"]["single_surface_flags_equals_21_times_4"],
+            "decimal_order_plus_one_equals_first_toroidal_value": decimal_surface_flag["exact_factorizations"]["decimal_order_plus_one_equals_first_toroidal_value"],
+        },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
             "common_symmetry_group": realization["common_symmetry"]["group"],
@@ -2624,6 +2683,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "graph and complete-face genus formulas are integral only in the same "
             "0,3,4,7 mod 12 residue classes, the tetrahedron is the self-dual "
             "fixed point at 4, and 7 is the first positive toroidal dual value. "
+            "More sharply, the decimal 1/7 side is already in the same shell: "
+            "ord_7(10)=6 and the single-surface packet is exactly "
+            "84 = 12*7 = 14*6 = 21*4. "
             "The M\"obius/Csaszar torus seed splits exactly as two Fano "
             "heptads on the same 7 vertices, that seed has an explicit Szilassi "
             "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
@@ -2637,6 +2699,10 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "42 -> 168 -> 336, where 14 = dim(G2), 21 = AG(2,1), and "
             "336 = 24*14 = 21*16 = 42*8, landing the torus/Fano route directly on "
             "the same D4/G2/Klein-code shell already visible on the quartic side. "
+            "More sharply, the projective Klein quartic model over GF(3) already "
+            "collapses to the same tetrahedral fixed packet: exactly four projective "
+            "points, no three collinear, hence a combinatorial K4 with automorphism "
+            "order 24 = |Hurwitz units|. "
             "The seven cataloged Euclidean realizations all share the same Z2 half-turn with "
             "dual orbit package (Csaszar: 4V/7F, Szilassi: 7V/4F), and minimal "
             "triangulations of CP2 and K3 supply curved 4D simplicial seed geometries "
