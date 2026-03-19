@@ -60,6 +60,7 @@ from w33_flat_ac_spectral_action import build_flat_product_summary
 from w33_minimal_triangulation_bridge import build_minimal_triangulation_summary
 from w33_mobius_fano_bridge import build_mobius_fano_summary
 from w33_mod7_fano_duality_bridge import build_mod7_fano_duality_summary
+from w33_heawood_harmonic_bridge import build_heawood_harmonic_summary
 from w33_mobius_szilassi_dual import build_mobius_szilassi_dual_summary
 from w33_realization_orbit_bridge import build_realization_orbit_summary
 from w33_surface_neighborly_bridge import build_surface_neighborly_summary
@@ -67,6 +68,7 @@ from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
 from w33_tomotope_order_bridge import build_tomotope_order_summary
+from w33_tomotope_partial_sheet_bridge import build_tomotope_partial_sheet_summary
 from w33_torus_refinement_bridge import build_refinement_summary
 from w33_lie_tower_cycle_bridge import build_lie_tower_cycle_bridge_summary
 from w33_lie_tower_s12_bridge import build_lie_tower_s12_bridge_summary
@@ -216,6 +218,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     surface = build_surface_neighborly_summary()
     mobius = build_mobius_fano_summary()
     mod7_fano_duality = build_mod7_fano_duality_summary()
+    heawood_harmonic = build_heawood_harmonic_summary()
     mobius_dual = build_mobius_szilassi_dual_summary()
     realization = build_realization_orbit_summary()
     witting = build_witting_srg_bridge_summary()
@@ -320,6 +323,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     fano_square = build_fano_square_tomotope_summary()
     order = build_tomotope_order_summary()
     klitzing = build_klitzing_ladder_summary()
+    partial_sheet = build_tomotope_partial_sheet_summary()
     exceptional = build_exceptional_triad_summary()
 
     cp2 = triangulations["seeds"][0]
@@ -2217,6 +2221,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "dual_is_heawood_skeleton": mobius_dual["heawood_checks"]["matches_shifted_fano_lines"],
             "dual_face_adjacency_is_k7": mobius_dual["szilassi_checks"]["complete_face_adjacency_k7"],
         },
+        "heawood_harmonic_bridge": {
+            "selector_eigenvalues_exact": heawood_harmonic["incidence_operator"]["selector_eigenvalues_exact"],
+            "adjacency_minimal_polynomial": heawood_harmonic["heawood_operator"]["adjacency_minimal_polynomial"],
+            "adjacency_quartic_relation_holds": heawood_harmonic["heawood_operator"]["adjacency_quartic_relation_holds"],
+            "laplacian_gap_exact": heawood_harmonic["heawood_operator"]["laplacian_gap_exact"],
+            "tetra_weight_for_same_gap_exact": heawood_harmonic["local_normalization"]["tetra_weight_for_same_gap_exact"],
+            "weighted_tetra_nonzero_laplacian_equals_heawood_gap": heawood_harmonic["local_normalization"]["weighted_tetra_nonzero_laplacian_equals_heawood_gap"],
+        },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
             "common_symmetry_group": realization["common_symmetry"]["group"],
@@ -2240,6 +2252,17 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "regular_cover_equals_flags_squared": order["exact_identities"]["regular_cover_equals_flags_t_squared"],
             "klitzing_ladder": list(klitzing["leading_count_ladder"]),
             "klitzing_doublings": list(klitzing["successive_doublings"]),
+        },
+        "tomotope_partial_sheet_bridge": {
+            "partial_a": partial_sheet["principal_packets"]["partial_a"],
+            "partial_b": partial_sheet["principal_packets"]["partial_b"],
+            "entrywise_ratio": partial_sheet["principal_packets"]["entrywise_ratio"],
+            "partial_a_equals_two_times_partial_b": partial_sheet["principal_packets"]["partial_a_equals_two_times_partial_b"],
+            "partial_b_matches_tomotope_edge_triangle_cell_counts": partial_sheet["live_count_alignment"]["partial_b_matches_tomotope_edge_triangle_cell_counts"],
+            "partial_a_matches_universal_edge_triangle_cell_counts": partial_sheet["live_count_alignment"]["partial_a_matches_universal_edge_triangle_cell_counts"],
+            "automorphism_ratio_matches_sheet_doubling": partial_sheet["live_count_alignment"]["automorphism_ratio_matches_sheet_doubling"],
+            "flag_ratio_matches_sheet_doubling": partial_sheet["live_count_alignment"]["flag_ratio_matches_sheet_doubling"],
+            "monodromy_ratio_is_quadratic_not_linear": partial_sheet["live_count_alignment"]["monodromy_ratio_is_quadratic_not_linear"],
         },
         "exceptional_triad_note": exceptional["global_verdict"],
         "combined_verdict": (
@@ -2542,10 +2565,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "mechanism rather than more grade-only counting. "
             "The tomotope gives a genuine infinite cover family, the "
             "Fano/tetrahedron bridge gives a concrete D8 local model for tomotope "
-            "edge stars, the M\"obius/Csaszar torus seed splits exactly as two Fano "
-            "heptads on the same 7 vertices, that seed has an explicit abstract "
-            "Szilassi dual with Heawood 1-skeleton and K7 face adjacency, the seven "
-            "cataloged Euclidean realizations all share the same Z2 half-turn with "
+            "edge stars, the Klitzing partial-a / partial-b seed rows now add an "
+            "exact two-sheet count law (8,24,32,8,8) = 2*(4,12,16,4,4), and that "
+            "doubling matches the live edge/triangle/cell and flag ratios even "
+            "though the monodromy ratio stays quadratic at 4. The M\"obius/Csaszar torus seed splits exactly as two Fano "
+            "heptads on the same 7 vertices, that seed has an explicit Szilassi "
+            "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
+            "skeleton already carries an exact harmonic packet with selector law "
+            "B B^T = 2I + J, quartic relation H^4 - 11H^2 + 18I = 0, and gap "
+            "3-sqrt(2). The seven cataloged Euclidean realizations all share the same Z2 half-turn with "
             "dual orbit package (Csaszar: 4V/7F, Szilassi: 7V/4F), and minimal "
             "triangulations of CP2 and K3 supply curved 4D simplicial seed geometries "
             "with true refinement towers, a signature-forced nonzero Weyl-curvature "
@@ -2588,7 +2616,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 486,
+        "focused_test_stack_size": 494,
     }
 
 

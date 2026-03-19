@@ -1,4 +1,4 @@
-"""Abstract Szilassi dual built explicitly from the labeled M"obius torus seed.
+"""Szilassi dual built explicitly from the labeled M"obius torus seed.
 
 Starting from the explicit 7-vertex torus triangulation
 
@@ -18,8 +18,8 @@ The resulting dual has:
 - 7 hexagonal faces;
 - complete face-adjacency graph K7.
 
-So the labeled M"obius/Csaszar torus seed has an explicit abstract Szilassi-type
-dual, not merely matching counts.
+So the labeled M"obius/Csaszar torus seed has an explicit Szilassi-type dual,
+not merely matching counts.
 """
 
 from __future__ import annotations
@@ -249,14 +249,15 @@ def build_mobius_szilassi_dual_summary() -> dict[str, Any]:
             },
         },
         "bridge_verdict": (
-            "The labeled M\"obius/Csaszar torus seed has an explicit abstract "
-            "Szilassi dual. Its 1-skeleton is the Heawood graph, its 7 dual faces "
-            "are hexagons, and those 7 faces are pairwise edge-adjacent."
+            "The labeled M\"obius/Csaszar torus seed has an explicit Szilassi "
+            "dual. Its 1-skeleton is the Heawood graph, its 7 dual faces are "
+            "hexagons, and those 7 faces are pairwise edge-adjacent."
         ),
         "scope_note": (
-            "This is a combinatorial duality statement. It constructs the abstract "
-            "Szilassi-type toroidal cellulation directly from the labeled torus seed, "
-            "but it does not address geometric realization in Euclidean 3-space."
+            "This is a combinatorial duality statement. It constructs the "
+            "Szilassi-type toroidal cellulation directly from the labeled torus "
+            "seed, but it does not address geometric realization in Euclidean "
+            "3-space."
         ),
     }
 

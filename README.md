@@ -37,9 +37,10 @@ The public release still includes **207+ pillar verification scripts** and **550
   - `Curved Mode Projectors`, `Continuum Extractor`, `Curved Roundtrip Closure`, and `Three-Sample Master Closure`
   - `Refinement Bridge` for the current internal-to-curved-4D program
 - If you want the algebra shell first, use the live site's `Plain-English Map` entry `27 -> 729 -> 728 -> 364 -> 40 + 324`, then read the promoted `s12 / Klein ambient shell`, `Harmonic cube / Klein quartic / Vogel shell`, `Klein / Clifford topological lift`, `Bitangent shell ladder`, and `Triality ladder algebra` results.
+- If you want the tomotope side first, read `Tomotope order tower`, `Klitzing ladder`, `Tomotope partial-sheet split`, and then `D4/F4 tomotope-Reye bridge`.
 - If you want the Standard Model first, use the top verified cards for Higgs, PMNS, CKM, and gauge closure before diving into the bridge machinery.
 - If you want the fermion/Yukawa side first, read the live site's `One-Input Fermion Closure`, `Skew Yukawa Packet`, `Truncated 122 Shell`, and `Theta / Hierarchy Selector` entries in that order.
-- If you want the torus/Fano side first, read `Möbius torus seed`, then `Decimal / Fano affine split`, then `Abstract Szilassi dual`, and then `Surface/Fano bridge`.
+- If you want the torus/Fano side first, read `Möbius torus seed`, then `Decimal / Fano affine split`, then `Szilassi dual`, then `Heawood harmonic bridge`, and then `Surface/Fano bridge`.
 - If you want the geometry side first, read `Selector Firewall` before the SRG / spectral Rosetta cards; it is the clean statement of what the quadratic master law does and does not determine by itself.
 - Use `Hard Computation Phases` as the proof ledger, not the first read.
 - Treat the preserved archive below the verified layer as context unless a result is explicitly promoted.

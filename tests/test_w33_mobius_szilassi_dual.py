@@ -37,7 +37,7 @@ def test_heawood_incidence_matches_shifted_fano_lines() -> None:
     assert mobius_dual_matches_fano_incidence() is True
 
 
-def test_summary_records_explicit_abstract_szilassi_dual() -> None:
+def test_summary_records_explicit_szilassi_dual() -> None:
     summary = build_mobius_szilassi_dual_summary()
     assert summary["status"] == "ok"
     assert summary["summary"]["dual_vertex_count"] == 14
@@ -46,7 +46,7 @@ def test_summary_records_explicit_abstract_szilassi_dual() -> None:
     assert summary["heawood_checks"]["matches_shifted_fano_lines"] is True
     assert summary["szilassi_checks"]["every_dual_face_is_hexagon"] is True
     assert summary["szilassi_checks"]["complete_face_adjacency_k7"] is True
-    assert "abstract Szilassi dual" in summary["bridge_verdict"]
+    assert "Szilassi dual" in summary["bridge_verdict"]
 
 
 def test_write_summary_emits_json(tmp_path: Path) -> None:

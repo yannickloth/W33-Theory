@@ -2282,7 +2282,7 @@ def test_synthesis_records_mod7_fano_duality_bridge() -> None:
     assert bridge["c6_splits_into_c3_and_z2_shadow"] is True
 
 
-def test_synthesis_records_explicit_abstract_szilassi_dual() -> None:
+def test_synthesis_records_explicit_szilassi_dual() -> None:
     summary = build_refinement_bridge_synthesis()
     dual = summary["mobius_szilassi_dual_bridge"]
     assert dual["dual_vertex_count"] == 14
@@ -2291,6 +2291,17 @@ def test_synthesis_records_explicit_abstract_szilassi_dual() -> None:
     assert dual["dual_face_size"] == 6
     assert dual["dual_is_heawood_skeleton"] is True
     assert dual["dual_face_adjacency_is_k7"] is True
+
+
+def test_synthesis_records_heawood_harmonic_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_harmonic_bridge"]
+    assert bridge["selector_eigenvalues_exact"] == ["2", "2", "2", "2", "2", "2", "9"]
+    assert bridge["adjacency_minimal_polynomial"] == "x^4 - 11*x^2 + 18"
+    assert bridge["adjacency_quartic_relation_holds"] is True
+    assert bridge["laplacian_gap_exact"] == "3 - sqrt(2)"
+    assert bridge["tetra_weight_for_same_gap_exact"] == "3/4 - sqrt(2)/4"
+    assert bridge["weighted_tetra_nonzero_laplacian_equals_heawood_gap"] is True
 
 
 def test_synthesis_records_realization_orbit_package() -> None:
@@ -2324,6 +2335,20 @@ def test_synthesis_records_cover_and_klitzing_towers() -> None:
     assert tower["regular_cover_equals_flags_squared"] is True
     assert tower["klitzing_ladder"] == [12, 24, 48, 96]
     assert tower["klitzing_doublings"] == [2, 2, 2]
+
+
+def test_synthesis_records_tomotope_partial_sheet_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["tomotope_partial_sheet_bridge"]
+    assert bridge["partial_a"] == [8, 24, 32, 8, 8]
+    assert bridge["partial_b"] == [4, 12, 16, 4, 4]
+    assert bridge["entrywise_ratio"] == [2, 2, 2, 2, 2]
+    assert bridge["partial_a_equals_two_times_partial_b"] is True
+    assert bridge["partial_b_matches_tomotope_edge_triangle_cell_counts"] is True
+    assert bridge["partial_a_matches_universal_edge_triangle_cell_counts"] is True
+    assert bridge["automorphism_ratio_matches_sheet_doubling"] is True
+    assert bridge["flag_ratio_matches_sheet_doubling"] is True
+    assert bridge["monodromy_ratio_is_quadratic_not_linear"] is True
 
 
 def test_write_summary_emits_json(tmp_path: Path) -> None:
