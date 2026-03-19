@@ -71,6 +71,8 @@ from w33_surface_congruence_selector_bridge import build_surface_congruence_sele
 from w33_surface_hurwitz_flag_bridge import build_surface_hurwitz_flag_summary
 from w33_decimal_surface_flag_bridge import build_decimal_surface_flag_summary
 from w33_surface_physics_shell_bridge import build_surface_physics_shell_summary
+from w33_klein_hurwitz_extremal_bridge import build_klein_hurwitz_extremal_summary
+from w33_hurwitz_237_selector_bridge import build_hurwitz_237_selector_summary
 from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
@@ -235,6 +237,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     surface_hurwitz_flag = build_surface_hurwitz_flag_summary()
     decimal_surface_flag = build_decimal_surface_flag_summary()
     surface_physics_shell = build_surface_physics_shell_summary()
+    klein_hurwitz_extremal = build_klein_hurwitz_extremal_summary()
+    hurwitz_237_selector = build_hurwitz_237_selector_summary()
     witting = build_witting_srg_bridge_summary()
     lie_tower_cycle = build_lie_tower_cycle_bridge_summary()
     lie_tower_s12 = build_lie_tower_s12_bridge_summary()
@@ -2360,6 +2364,37 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "full_heawood_order_equals_gauge_dimension_times_topological_shell": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_gauge_dimension_times_topological_shell"],
             "full_heawood_order_equals_shared_six_times_quartic_e7_packet": surface_physics_shell["exact_factorizations"]["full_heawood_order_equals_shared_six_times_quartic_e7_packet"],
         },
+        "klein_hurwitz_extremal_bridge": {
+            "klein_quartic_genus": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["klein_quartic_genus"],
+            "hurwitz_coefficient": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["hurwitz_coefficient"],
+            "heawood_preserving_order": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["heawood_preserving_order"],
+            "heawood_full_order": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["heawood_full_order"],
+            "standard_model_gauge_dimension": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["standard_model_gauge_dimension"],
+            "phi6": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["phi6"],
+            "g2_dimension": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["g2_dimension"],
+            "preserving_order_equals_hurwitz_bound_at_genus_3": klein_hurwitz_extremal["exact_factorizations"]["preserving_order_equals_hurwitz_bound_at_genus_3"],
+            "preserving_order_equals_two_times_hurwitz_coefficient": klein_hurwitz_extremal["exact_factorizations"]["preserving_order_equals_two_times_hurwitz_coefficient"],
+            "preserving_order_equals_2_k_phi6": klein_hurwitz_extremal["exact_factorizations"]["preserving_order_equals_2_k_phi6"],
+            "preserving_order_equals_k_times_g2_dimension": klein_hurwitz_extremal["exact_factorizations"]["preserving_order_equals_k_times_g2_dimension"],
+            "full_order_equals_two_times_preserving_order": klein_hurwitz_extremal["exact_factorizations"]["full_order_equals_two_times_preserving_order"],
+            "full_order_equals_four_times_hurwitz_coefficient": klein_hurwitz_extremal["exact_factorizations"]["full_order_equals_four_times_hurwitz_coefficient"],
+        },
+        "hurwitz_237_selector_bridge": {
+            "triangle_signature": hurwitz_237_selector["hurwitz_237_dictionary"]["triangle_signature"],
+            "duality_sheet_flip_order": hurwitz_237_selector["hurwitz_237_dictionary"]["duality_sheet_flip_order"],
+            "q": hurwitz_237_selector["hurwitz_237_dictionary"]["q"],
+            "phi6": hurwitz_237_selector["hurwitz_237_dictionary"]["phi6"],
+            "affine_shell_order": hurwitz_237_selector["hurwitz_237_dictionary"]["affine_shell_order"],
+            "single_surface_flags": hurwitz_237_selector["hurwitz_237_dictionary"]["single_surface_flags"],
+            "heawood_preserving_order": hurwitz_237_selector["hurwitz_237_dictionary"]["heawood_preserving_order"],
+            "heawood_full_order": hurwitz_237_selector["hurwitz_237_dictionary"]["heawood_full_order"],
+            "affine_shell_equals_2_3_7": hurwitz_237_selector["exact_factorizations"]["affine_shell_equals_2_3_7"],
+            "affine_shell_is_agl_1_7": hurwitz_237_selector["exact_factorizations"]["affine_shell_is_agl_1_7"],
+            "decimal_c6_splits_into_c3_and_z2": hurwitz_237_selector["exact_factorizations"]["decimal_c6_splits_into_c3_and_z2"],
+            "single_surface_flags_equals_2_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["single_surface_flags_equals_2_times_affine_shell"],
+            "heawood_preserving_equals_4_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["heawood_preserving_equals_4_times_affine_shell"],
+            "heawood_full_equals_8_times_affine_shell": hurwitz_237_selector["exact_factorizations"]["heawood_full_equals_8_times_affine_shell"],
+        },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
             "common_symmetry_group": realization["common_symmetry"]["group"],
@@ -2711,6 +2746,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "168 = 12*14 = 6*28, and 336 = 12*28 = 6*56, so the torus/Klein route "
             "is packaging the same Standard Model, QCD, topological, and quartic "
             "shell integers that already govern the live W33 physics layer. "
+            "More sharply still, that same 84 is the Hurwitz coefficient itself, "
+            "so the promoted Heawood/Klein symmetry order 168 is exactly the "
+            "genus-3 Hurwitz extremal packet 84(g-1), and the full Heawood order "
+            "336 is its doubled point-line extension. "
+            "Even the classical Klein signature is now visible directly in the "
+            "live finite shell: the torus affine packet is exactly 42 = 2*3*7, "
+            "with 2 the duality sheet flip, 3 the field value q, and 7 the "
+            "same Phi_6 / QCD selector already governing the promoted physics "
+            "side. "
             "The M\"obius/Csaszar torus seed splits exactly as two Fano "
             "heptads on the same 7 vertices, that seed has an explicit Szilassi "
             "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
@@ -2771,7 +2815,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 511,
+        "focused_test_stack_size": 513,
     }
 
 

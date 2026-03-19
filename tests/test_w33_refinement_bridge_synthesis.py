@@ -2447,6 +2447,43 @@ def test_synthesis_records_surface_physics_shell_bridge() -> None:
     assert bridge["full_heawood_order_equals_shared_six_times_quartic_e7_packet"] is True
 
 
+def test_synthesis_records_klein_hurwitz_extremal_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["klein_hurwitz_extremal_bridge"]
+    assert bridge["klein_quartic_genus"] == 3
+    assert bridge["hurwitz_coefficient"] == 84
+    assert bridge["heawood_preserving_order"] == 168
+    assert bridge["heawood_full_order"] == 336
+    assert bridge["standard_model_gauge_dimension"] == 12
+    assert bridge["phi6"] == 7
+    assert bridge["g2_dimension"] == 14
+    assert bridge["preserving_order_equals_hurwitz_bound_at_genus_3"] is True
+    assert bridge["preserving_order_equals_two_times_hurwitz_coefficient"] is True
+    assert bridge["preserving_order_equals_2_k_phi6"] is True
+    assert bridge["preserving_order_equals_k_times_g2_dimension"] is True
+    assert bridge["full_order_equals_two_times_preserving_order"] is True
+    assert bridge["full_order_equals_four_times_hurwitz_coefficient"] is True
+
+
+def test_synthesis_records_hurwitz_237_selector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["hurwitz_237_selector_bridge"]
+    assert bridge["triangle_signature"] == [2, 3, 7]
+    assert bridge["duality_sheet_flip_order"] == 2
+    assert bridge["q"] == 3
+    assert bridge["phi6"] == 7
+    assert bridge["affine_shell_order"] == 42
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["heawood_preserving_order"] == 168
+    assert bridge["heawood_full_order"] == 336
+    assert bridge["affine_shell_equals_2_3_7"] is True
+    assert bridge["affine_shell_is_agl_1_7"] is True
+    assert bridge["decimal_c6_splits_into_c3_and_z2"] is True
+    assert bridge["single_surface_flags_equals_2_times_affine_shell"] is True
+    assert bridge["heawood_preserving_equals_4_times_affine_shell"] is True
+    assert bridge["heawood_full_equals_8_times_affine_shell"] is True
+
+
 def test_synthesis_records_realization_orbit_package() -> None:
     summary = build_refinement_bridge_synthesis()
     realization = summary["realization_orbit_bridge"]
