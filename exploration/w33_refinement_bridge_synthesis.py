@@ -59,6 +59,7 @@ from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
 from w33_flat_ac_spectral_action import build_flat_product_summary
 from w33_minimal_triangulation_bridge import build_minimal_triangulation_summary
 from w33_mobius_fano_bridge import build_mobius_fano_summary
+from w33_mod7_fano_duality_bridge import build_mod7_fano_duality_summary
 from w33_mobius_szilassi_dual import build_mobius_szilassi_dual_summary
 from w33_realization_orbit_bridge import build_realization_orbit_summary
 from w33_surface_neighborly_bridge import build_surface_neighborly_summary
@@ -214,6 +215,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
     mobius = build_mobius_fano_summary()
+    mod7_fano_duality = build_mod7_fano_duality_summary()
     mobius_dual = build_mobius_szilassi_dual_summary()
     realization = build_realization_orbit_summary()
     witting = build_witting_srg_bridge_summary()
@@ -2189,6 +2191,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "triangle_vertex_incidences": mobius["summary"]["triangle_vertex_incidences"],
             "triangle_vertex_incidences_equals_two_fano_flag_sets": mobius["incidence_lift"]["equals_two_fano_flag_sets"],
         },
+        "mod7_fano_duality_bridge": {
+            "quadratic_residues": mod7_fano_duality["mod7_dictionary"]["quadratic_residues"],
+            "quadratic_nonresidues": mod7_fano_duality["mod7_dictionary"]["quadratic_nonresidues"],
+            "decimal_generator_mod_7": mod7_fano_duality["mod7_dictionary"]["decimal_generator_mod_7"],
+            "decimal_square_mod_7": mod7_fano_duality["mod7_dictionary"]["decimal_square_mod_7"],
+            "decimal_generator_order": mod7_fano_duality["mod7_dictionary"]["decimal_generator_order"],
+            "point_cycle_type": mod7_fano_duality["mod7_dictionary"]["point_cycle_type"],
+            "affine_group_order": mod7_fano_duality["affine_group"]["full_affine_group_order"],
+            "heptad_preserver_subgroup_order": mod7_fano_duality["affine_group"]["heptad_preserver_subgroup_order"],
+            "heptad_duality_coset_order": mod7_fano_duality["affine_group"]["heptad_duality_coset_order"],
+            "decimal_and_translation_generate_full_affine_group": mod7_fano_duality["affine_group"]["decimal_and_translation_generate_full_affine_group"],
+            "residues_preserve_each_heptad": mod7_fano_duality["heptad_action"]["residues_preserve_each_heptad"],
+            "nonresidues_swap_heptads": mod7_fano_duality["heptad_action"]["nonresidues_swap_heptads"],
+            "decimal_power_targets_on_A": mod7_fano_duality["decimal_duality_bridge"]["decimal_power_targets_on_A"],
+            "odd_decimal_powers_swap_heptads": mod7_fano_duality["decimal_duality_bridge"]["odd_decimal_powers_swap_heptads"],
+            "even_decimal_powers_preserve_heptads": mod7_fano_duality["decimal_duality_bridge"]["even_decimal_powers_preserve_heptads"],
+            "c6_splits_into_c3_and_z2_shadow": mod7_fano_duality["decimal_duality_bridge"]["c6_splits_into_c3_and_z2_shadow"],
+        },
         "mobius_szilassi_dual_bridge": {
             "dual_vertex_count": mobius_dual["summary"]["dual_vertex_count"],
             "dual_edge_count": mobius_dual["summary"]["dual_edge_count"],
@@ -2568,7 +2588,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 482,
+        "focused_test_stack_size": 486,
     }
 
 

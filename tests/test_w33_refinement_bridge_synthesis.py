@@ -2261,6 +2261,27 @@ def test_synthesis_records_explicit_mobius_fano_surface_split() -> None:
     assert surface["triangle_vertex_incidences_equals_two_fano_flag_sets"] is True
 
 
+def test_synthesis_records_mod7_fano_duality_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["mod7_fano_duality_bridge"]
+    assert bridge["quadratic_residues"] == [1, 2, 4]
+    assert bridge["quadratic_nonresidues"] == [3, 5, 6]
+    assert bridge["decimal_generator_mod_7"] == 3
+    assert bridge["decimal_square_mod_7"] == 2
+    assert bridge["decimal_generator_order"] == 6
+    assert bridge["point_cycle_type"] == {"fixed": [0], "six_cycle": [1, 3, 2, 6, 4, 5]}
+    assert bridge["affine_group_order"] == 42
+    assert bridge["heptad_preserver_subgroup_order"] == 21
+    assert bridge["heptad_duality_coset_order"] == 21
+    assert bridge["decimal_and_translation_generate_full_affine_group"] is True
+    assert bridge["residues_preserve_each_heptad"] is True
+    assert bridge["nonresidues_swap_heptads"] is True
+    assert bridge["decimal_power_targets_on_A"] == ["A", "B", "A", "B", "A", "B"]
+    assert bridge["odd_decimal_powers_swap_heptads"] is True
+    assert bridge["even_decimal_powers_preserve_heptads"] is True
+    assert bridge["c6_splits_into_c3_and_z2_shadow"] is True
+
+
 def test_synthesis_records_explicit_abstract_szilassi_dual() -> None:
     summary = build_refinement_bridge_synthesis()
     dual = summary["mobius_szilassi_dual_bridge"]
