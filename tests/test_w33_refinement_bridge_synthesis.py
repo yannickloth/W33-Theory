@@ -2490,6 +2490,34 @@ def test_synthesis_records_toroidal_k7_spectral_bridge() -> None:
     assert bridge["adjacency_square_trace_equals_shared_six_times_phi6"] is True
 
 
+def test_synthesis_records_fano_toroidal_complement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["fano_toroidal_complement_bridge"]
+    assert bridge["space_dimension"] == 7
+    assert bridge["fano_selector_formula"] == "2I + J"
+    assert bridge["toroidal_laplacian_formula"] == "7I - J"
+    assert bridge["complement_formula"] == "9I"
+    assert bridge["q_squared"] == 9
+    assert bridge["selector_spectrum_exact"] == ["2", "2", "2", "2", "2", "2", "9"]
+    assert bridge["toroidal_laplacian_spectrum_exact"] == [0, 7, 7, 7, 7, 7, 7]
+    assert bridge["selector_trace"] == 21
+    assert bridge["selector_nontrivial_trace"] == 12
+    assert bridge["toroidal_trace"] == 42
+    assert bridge["combined_trace"] == 63
+    assert bridge["combined_nontrivial_trace"] == 54
+    assert bridge["selector_determinant"] == 576
+    assert bridge["selector_determinant_square_root"] == 24
+    assert bridge["selector_minimal_polynomial"] == "x^2 - 11x + 18"
+    assert bridge["complement_operator_equals_q_squared_identity"] is True
+    assert bridge["selector_trace_equals_ag21_length"] is True
+    assert bridge["selector_nontrivial_trace_equals_gauge_dimension"] is True
+    assert bridge["toroidal_trace_equals_6_times_phi6"] is True
+    assert bridge["combined_nontrivial_trace_equals_exceptional_projector_rank"] is True
+    assert bridge["selector_determinant_square_root_equals_hurwitz_unit_shell"] is True
+    assert bridge["selector_quadratic_matches_heawood_quartic_in_x_squared"] is True
+    assert bridge["gauge_plus_toroidal_equals_exceptional_rank"] is True
+
+
 def test_synthesis_records_klein_hurwitz_extremal_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["klein_hurwitz_extremal_bridge"]

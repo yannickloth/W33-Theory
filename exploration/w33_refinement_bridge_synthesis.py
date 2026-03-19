@@ -71,6 +71,7 @@ from w33_surface_congruence_selector_bridge import build_surface_congruence_sele
 from w33_surface_hurwitz_flag_bridge import build_surface_hurwitz_flag_summary
 from w33_mod12_selector_closure_bridge import build_mod12_selector_closure_summary
 from w33_decimal_surface_flag_bridge import build_decimal_surface_flag_summary
+from w33_fano_toroidal_complement_bridge import build_fano_toroidal_complement_summary
 from w33_surface_physics_shell_bridge import build_surface_physics_shell_summary
 from w33_toroidal_k7_spectral_bridge import build_toroidal_k7_spectral_summary
 from w33_klein_hurwitz_extremal_bridge import build_klein_hurwitz_extremal_summary
@@ -240,6 +241,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     surface_hurwitz_flag = build_surface_hurwitz_flag_summary()
     mod12_selector_closure = build_mod12_selector_closure_summary()
     decimal_surface_flag = build_decimal_surface_flag_summary()
+    fano_toroidal_complement = build_fano_toroidal_complement_summary()
     surface_physics_shell = build_surface_physics_shell_summary()
     toroidal_k7_spectral = build_toroidal_k7_spectral_summary()
     klein_hurwitz_extremal = build_klein_hurwitz_extremal_summary()
@@ -2407,6 +2409,31 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "laplacian_trace_equals_shared_six_times_phi6": toroidal_k7_spectral["exact_factorizations"]["laplacian_trace_equals_shared_six_times_phi6"],
             "adjacency_square_trace_equals_shared_six_times_phi6": toroidal_k7_spectral["exact_factorizations"]["adjacency_square_trace_equals_shared_six_times_phi6"],
         },
+        "fano_toroidal_complement_bridge": {
+            "space_dimension": fano_toroidal_complement["operator_dictionary"]["space_dimension"],
+            "fano_selector_formula": fano_toroidal_complement["operator_dictionary"]["fano_selector_formula"],
+            "toroidal_laplacian_formula": fano_toroidal_complement["operator_dictionary"]["toroidal_laplacian_formula"],
+            "complement_formula": fano_toroidal_complement["operator_dictionary"]["complement_formula"],
+            "q_squared": fano_toroidal_complement["operator_dictionary"]["q_squared"],
+            "selector_spectrum_exact": fano_toroidal_complement["operator_dictionary"]["selector_spectrum_exact"],
+            "toroidal_laplacian_spectrum_exact": fano_toroidal_complement["operator_dictionary"]["toroidal_laplacian_spectrum_exact"],
+            "selector_trace": fano_toroidal_complement["operator_dictionary"]["selector_trace"],
+            "selector_nontrivial_trace": fano_toroidal_complement["operator_dictionary"]["selector_nontrivial_trace"],
+            "toroidal_trace": fano_toroidal_complement["operator_dictionary"]["toroidal_trace"],
+            "combined_trace": fano_toroidal_complement["operator_dictionary"]["combined_trace"],
+            "combined_nontrivial_trace": fano_toroidal_complement["operator_dictionary"]["combined_nontrivial_trace"],
+            "selector_determinant": fano_toroidal_complement["operator_dictionary"]["selector_determinant"],
+            "selector_determinant_square_root": fano_toroidal_complement["operator_dictionary"]["selector_determinant_square_root"],
+            "selector_minimal_polynomial": fano_toroidal_complement["operator_dictionary"]["selector_minimal_polynomial"],
+            "complement_operator_equals_q_squared_identity": fano_toroidal_complement["exact_factorizations"]["complement_operator_equals_q_squared_identity"],
+            "selector_trace_equals_ag21_length": fano_toroidal_complement["exact_factorizations"]["selector_trace_equals_ag21_length"],
+            "selector_nontrivial_trace_equals_gauge_dimension": fano_toroidal_complement["exact_factorizations"]["selector_nontrivial_trace_equals_gauge_dimension"],
+            "toroidal_trace_equals_6_times_phi6": fano_toroidal_complement["exact_factorizations"]["toroidal_trace_equals_6_times_phi6"],
+            "combined_nontrivial_trace_equals_exceptional_projector_rank": fano_toroidal_complement["exact_factorizations"]["combined_nontrivial_trace_equals_exceptional_projector_rank"],
+            "selector_determinant_square_root_equals_hurwitz_unit_shell": fano_toroidal_complement["exact_factorizations"]["selector_determinant_square_root_equals_hurwitz_unit_shell"],
+            "selector_quadratic_matches_heawood_quartic_in_x_squared": fano_toroidal_complement["exact_factorizations"]["selector_quadratic_matches_heawood_quartic_in_x_squared"],
+            "gauge_plus_toroidal_equals_exceptional_rank": fano_toroidal_complement["exact_factorizations"]["gauge_plus_toroidal_equals_exceptional_rank"],
+        },
         "klein_hurwitz_extremal_bridge": {
             "klein_quartic_genus": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["klein_quartic_genus"],
             "hurwitz_coefficient": klein_hurwitz_extremal["hurwitz_extremal_dictionary"]["hurwitz_coefficient"],
@@ -2884,7 +2911,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 517,
+        "focused_test_stack_size": 518,
     }
 
 
