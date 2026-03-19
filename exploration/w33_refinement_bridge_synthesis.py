@@ -61,9 +61,12 @@ from w33_minimal_triangulation_bridge import build_minimal_triangulation_summary
 from w33_mobius_fano_bridge import build_mobius_fano_summary
 from w33_mod7_fano_duality_bridge import build_mod7_fano_duality_summary
 from w33_heawood_harmonic_bridge import build_heawood_harmonic_summary
+from w33_heawood_klein_symmetry_bridge import build_heawood_klein_symmetry_summary
+from w33_heawood_shell_ladder_bridge import build_heawood_shell_ladder_summary
 from w33_mobius_szilassi_dual import build_mobius_szilassi_dual_summary
 from w33_realization_orbit_bridge import build_realization_orbit_summary
 from w33_surface_neighborly_bridge import build_surface_neighborly_summary
+from w33_surface_congruence_selector_bridge import build_surface_congruence_selector_summary
 from w33_witting_srg_bridge import build_witting_srg_bridge_summary
 from w33_tomotope_ac_bridge import build_bridge_summary
 from w33_tomotope_klitzing_ladder import build_klitzing_ladder_summary
@@ -219,8 +222,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     mobius = build_mobius_fano_summary()
     mod7_fano_duality = build_mod7_fano_duality_summary()
     heawood_harmonic = build_heawood_harmonic_summary()
+    heawood_klein_symmetry = build_heawood_klein_symmetry_summary()
+    heawood_shell_ladder = build_heawood_shell_ladder_summary()
     mobius_dual = build_mobius_szilassi_dual_summary()
     realization = build_realization_orbit_summary()
+    surface_congruence_selector = build_surface_congruence_selector_summary()
     witting = build_witting_srg_bridge_summary()
     lie_tower_cycle = build_lie_tower_cycle_bridge_summary()
     lie_tower_s12 = build_lie_tower_s12_bridge_summary()
@@ -2221,6 +2227,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "dual_is_heawood_skeleton": mobius_dual["heawood_checks"]["matches_shifted_fano_lines"],
             "dual_face_adjacency_is_k7": mobius_dual["szilassi_checks"]["complete_face_adjacency_k7"],
         },
+        "surface_congruence_selector_bridge": {
+            "vertex_integral_residues_mod_12": surface_congruence_selector["surface_selector"]["vertex_integral_residues_mod_12"],
+            "face_integral_residues_mod_12": surface_congruence_selector["surface_selector"]["face_integral_residues_mod_12"],
+            "admissible_residues_are_0_3_4_7": surface_congruence_selector["surface_selector"]["admissible_residues_are_0_3_4_7"],
+            "tetrahedron_fixed_point_value": surface_congruence_selector["fixed_and_first_torus_values"]["tetrahedron_fixed_point_value"],
+            "tetrahedron_is_self_dual_fixed_point": surface_congruence_selector["fixed_and_first_torus_values"]["tetrahedron_is_self_dual_fixed_point"],
+            "first_toroidal_dual_value": surface_congruence_selector["fixed_and_first_torus_values"]["first_toroidal_dual_value"],
+            "csaszar_and_szilassi_share_first_toroidal_value": surface_congruence_selector["fixed_and_first_torus_values"]["csaszar_and_szilassi_share_first_toroidal_value"],
+        },
         "heawood_harmonic_bridge": {
             "selector_eigenvalues_exact": heawood_harmonic["incidence_operator"]["selector_eigenvalues_exact"],
             "adjacency_minimal_polynomial": heawood_harmonic["heawood_operator"]["adjacency_minimal_polynomial"],
@@ -2228,6 +2243,42 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "laplacian_gap_exact": heawood_harmonic["heawood_operator"]["laplacian_gap_exact"],
             "tetra_weight_for_same_gap_exact": heawood_harmonic["local_normalization"]["tetra_weight_for_same_gap_exact"],
             "weighted_tetra_nonzero_laplacian_equals_heawood_gap": heawood_harmonic["local_normalization"]["weighted_tetra_nonzero_laplacian_equals_heawood_gap"],
+        },
+        "heawood_klein_symmetry_bridge": {
+            "bipartition_preserving_order": heawood_klein_symmetry["bipartition_preserving_symmetry"]["heawood_bipartition_preserving_order"],
+            "full_heawood_order": heawood_klein_symmetry["full_symmetry"]["full_heawood_automorphism_order"],
+            "flag_edge_stabilizer_order": heawood_klein_symmetry["bipartition_preserving_symmetry"]["flag_edge_stabilizer_order"],
+            "full_edge_stabilizer_order": heawood_klein_symmetry["full_symmetry"]["edge_stabilizer_order"],
+            "polarity_formula": heawood_klein_symmetry["point_line_duality"]["polarity_formula"],
+            "polarity_permutation": heawood_klein_symmetry["point_line_duality"]["polarity_permutation"],
+            "polarity_is_incidence_duality": heawood_klein_symmetry["point_line_duality"]["polarity_is_incidence_duality"],
+            "polarity_swap_is_involution": heawood_klein_symmetry["point_line_duality"]["polarity_swap_is_involution"],
+            "matches_klein_quartic_orientation_preserving_order": heawood_klein_symmetry["klein_quartic_bridge"]["matches_klein_quartic_orientation_preserving_order"],
+            "full_heawood_order_is_double_klein_order": heawood_klein_symmetry["klein_quartic_bridge"]["full_heawood_order_is_double_klein_order"],
+            "preserving_order_equals_8_times_21": heawood_klein_symmetry["klein_quartic_bridge"]["preserving_order_equals_8_times_21"],
+            "full_order_equals_16_times_21": heawood_klein_symmetry["klein_quartic_bridge"]["full_order_equals_16_times_21"],
+        },
+        "heawood_shell_ladder_bridge": {
+            "heptad_size": heawood_shell_ladder["heawood_shell_dictionary"]["heptad_size"],
+            "phi6": heawood_shell_ladder["heawood_shell_dictionary"]["phi6"],
+            "heawood_vertices": heawood_shell_ladder["heawood_shell_dictionary"]["heawood_vertices"],
+            "g2_dimension": heawood_shell_ladder["heawood_shell_dictionary"]["g2_dimension"],
+            "heawood_edges": heawood_shell_ladder["heawood_shell_dictionary"]["heawood_edges"],
+            "ag21_length": heawood_shell_ladder["heawood_shell_dictionary"]["ag21_length"],
+            "hurwitz_unit_order": heawood_shell_ladder["heawood_shell_dictionary"]["hurwitz_unit_order"],
+            "d4_seed_order": heawood_shell_ladder["heawood_shell_dictionary"]["d4_seed_order"],
+            "affine_order": heawood_shell_ladder["heawood_shell_dictionary"]["affine_order"],
+            "preserving_order": heawood_shell_ladder["heawood_shell_dictionary"]["preserving_order"],
+            "full_order": heawood_shell_ladder["heawood_shell_dictionary"]["full_order"],
+            "vertices_equal_2_times_phi6": heawood_shell_ladder["exact_factorizations"]["vertices_equal_2_times_phi6"],
+            "vertices_equal_g2_dimension": heawood_shell_ladder["exact_factorizations"]["vertices_equal_g2_dimension"],
+            "edges_equal_ag21_length": heawood_shell_ladder["exact_factorizations"]["edges_equal_ag21_length"],
+            "affine_order_equals_2_times_ag21": heawood_shell_ladder["exact_factorizations"]["affine_order_equals_2_times_ag21"],
+            "preserving_order_equals_hurwitz_units_times_phi6": heawood_shell_ladder["exact_factorizations"]["preserving_order_equals_hurwitz_units_times_phi6"],
+            "preserving_order_equals_d4_seed_times_phi6": heawood_shell_ladder["exact_factorizations"]["preserving_order_equals_d4_seed_times_phi6"],
+            "full_order_equals_hurwitz_units_times_g2_dimension": heawood_shell_ladder["exact_factorizations"]["full_order_equals_hurwitz_units_times_g2_dimension"],
+            "full_order_equals_d4_seed_times_g2_dimension": heawood_shell_ladder["exact_factorizations"]["full_order_equals_d4_seed_times_g2_dimension"],
+            "full_order_equals_affine_order_times_preserving_edge_stabilizer": heawood_shell_ladder["exact_factorizations"]["full_order_equals_affine_order_times_preserving_edge_stabilizer"],
         },
         "realization_orbit_bridge": {
             "catalog_total": realization["catalog_counts"]["total"],
@@ -2568,12 +2619,25 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "edge stars, the Klitzing partial-a / partial-b seed rows now add an "
             "exact two-sheet count law (8,24,32,8,8) = 2*(4,12,16,4,4), and that "
             "doubling matches the live edge/triangle/cell and flag ratios even "
-            "though the monodromy ratio stays quadratic at 4. The M\"obius/Csaszar torus seed splits exactly as two Fano "
+            "though the monodromy ratio stays quadratic at 4. More basically, the "
+            "surface side already comes with a genuine selector law: the complete-"
+            "graph and complete-face genus formulas are integral only in the same "
+            "0,3,4,7 mod 12 residue classes, the tetrahedron is the self-dual "
+            "fixed point at 4, and 7 is the first positive toroidal dual value. "
+            "The M\"obius/Csaszar torus seed splits exactly as two Fano "
             "heptads on the same 7 vertices, that seed has an explicit Szilassi "
             "dual with Heawood 1-skeleton and K7 face adjacency, and that Heawood "
             "skeleton already carries an exact harmonic packet with selector law "
             "B B^T = 2I + J, quartic relation H^4 - 11H^2 + 18I = 0, and gap "
-            "3-sqrt(2). The seven cataloged Euclidean realizations all share the same Z2 half-turn with "
+            "3-sqrt(2). More sharply, its bipartition-preserving automorphism "
+            "group is exactly the 168-element Fano collineation group, the explicit "
+            "polarity i -> -i mod 7 swaps points and lines, and the full Heawood "
+            "automorphism order is therefore 336 = 2*168. More sharply again, the "
+            "same torus/Fano route already carries the full shell 7 -> 14 -> 21 -> "
+            "42 -> 168 -> 336, where 14 = dim(G2), 21 = AG(2,1), and "
+            "336 = 24*14 = 21*16 = 42*8, landing the torus/Fano route directly on "
+            "the same D4/G2/Klein-code shell already visible on the quartic side. "
+            "The seven cataloged Euclidean realizations all share the same Z2 half-turn with "
             "dual orbit package (Csaszar: 4V/7F, Szilassi: 7V/4F), and minimal "
             "triangulations of CP2 and K3 supply curved 4D simplicial seed geometries "
             "with true refinement towers, a signature-forced nonzero Weyl-curvature "
@@ -2616,7 +2680,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 494,
+        "focused_test_stack_size": 503,
     }
 
 

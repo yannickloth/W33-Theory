@@ -2293,6 +2293,18 @@ def test_synthesis_records_explicit_szilassi_dual() -> None:
     assert dual["dual_face_adjacency_is_k7"] is True
 
 
+def test_synthesis_records_surface_congruence_selector_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["surface_congruence_selector_bridge"]
+    assert bridge["vertex_integral_residues_mod_12"] == [0, 3, 4, 7]
+    assert bridge["face_integral_residues_mod_12"] == [0, 3, 4, 7]
+    assert bridge["admissible_residues_are_0_3_4_7"] is True
+    assert bridge["tetrahedron_fixed_point_value"] == 4
+    assert bridge["tetrahedron_is_self_dual_fixed_point"] is True
+    assert bridge["first_toroidal_dual_value"] == 7
+    assert bridge["csaszar_and_szilassi_share_first_toroidal_value"] is True
+
+
 def test_synthesis_records_heawood_harmonic_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["heawood_harmonic_bridge"]
@@ -2302,6 +2314,48 @@ def test_synthesis_records_heawood_harmonic_bridge() -> None:
     assert bridge["laplacian_gap_exact"] == "3 - sqrt(2)"
     assert bridge["tetra_weight_for_same_gap_exact"] == "3/4 - sqrt(2)/4"
     assert bridge["weighted_tetra_nonzero_laplacian_equals_heawood_gap"] is True
+
+
+def test_synthesis_records_heawood_klein_symmetry_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_klein_symmetry_bridge"]
+    assert bridge["bipartition_preserving_order"] == 168
+    assert bridge["full_heawood_order"] == 336
+    assert bridge["flag_edge_stabilizer_order"] == 8
+    assert bridge["full_edge_stabilizer_order"] == 16
+    assert bridge["polarity_formula"] == "i -> -i mod 7"
+    assert bridge["polarity_permutation"] == [0, 6, 5, 4, 3, 2, 1]
+    assert bridge["polarity_is_incidence_duality"] is True
+    assert bridge["polarity_swap_is_involution"] is True
+    assert bridge["matches_klein_quartic_orientation_preserving_order"] is True
+    assert bridge["full_heawood_order_is_double_klein_order"] is True
+    assert bridge["preserving_order_equals_8_times_21"] is True
+    assert bridge["full_order_equals_16_times_21"] is True
+
+
+def test_synthesis_records_heawood_shell_ladder_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_shell_ladder_bridge"]
+    assert bridge["heptad_size"] == 7
+    assert bridge["phi6"] == 7
+    assert bridge["heawood_vertices"] == 14
+    assert bridge["g2_dimension"] == 14
+    assert bridge["heawood_edges"] == 21
+    assert bridge["ag21_length"] == 21
+    assert bridge["hurwitz_unit_order"] == 24
+    assert bridge["d4_seed_order"] == 24
+    assert bridge["affine_order"] == 42
+    assert bridge["preserving_order"] == 168
+    assert bridge["full_order"] == 336
+    assert bridge["vertices_equal_2_times_phi6"] is True
+    assert bridge["vertices_equal_g2_dimension"] is True
+    assert bridge["edges_equal_ag21_length"] is True
+    assert bridge["affine_order_equals_2_times_ag21"] is True
+    assert bridge["preserving_order_equals_hurwitz_units_times_phi6"] is True
+    assert bridge["preserving_order_equals_d4_seed_times_phi6"] is True
+    assert bridge["full_order_equals_hurwitz_units_times_g2_dimension"] is True
+    assert bridge["full_order_equals_d4_seed_times_g2_dimension"] is True
+    assert bridge["full_order_equals_affine_order_times_preserving_edge_stabilizer"] is True
 
 
 def test_synthesis_records_realization_orbit_package() -> None:
@@ -2355,4 +2409,4 @@ def test_write_summary_emits_json(tmp_path: Path) -> None:
     out = write_summary(tmp_path / "w33_refinement_bridge_synthesis_summary.json")
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["status"] == "ok"
-    assert data["focused_test_stack_size"] >= 372
+    assert data["focused_test_stack_size"] >= 503

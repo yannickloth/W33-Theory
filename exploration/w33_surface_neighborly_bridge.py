@@ -357,9 +357,11 @@ def build_surface_neighborly_summary() -> dict[str, Any]:
         ),
         "group_theoretic_note": (
             "The equality 84 + 84 = 168 is stronger than raw numerology because "
-            "168 = 21 x 8 also comes from orbit-stabilizer on Fano flags. What is "
-            "still missing is a canonical PSL(3,2) action on the disjoint union of "
-            "the two toroidal flag sets."
+            "168 = 21 x 8 also comes from orbit-stabilizer on Fano flags. The "
+            "explicit Szilassi/Heawood dual now upgrades that further: its "
+            "bipartition-preserving automorphism group is exactly the same "
+            "168-element Fano collineation group, and the point-line polarity "
+            "doubles it to the full Heawood order 336."
         ),
         "cross_dimensional_note": (
             "Adding the tetrahedral midpoint gives 84 + 24 + 84 = 192, which matches "

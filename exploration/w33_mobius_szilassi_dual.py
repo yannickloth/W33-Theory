@@ -5,7 +5,7 @@ Starting from the explicit 7-vertex torus triangulation
     M = A union B
 
 where A and B are the two cyclic Fano heptads from ``w33_mobius_fano_bridge``,
-this module constructs the abstract dual cellulation:
+this module constructs the explicit dual cellulation:
 
 - dual vertices = the 14 torus triangles;
 - dual edges = shared torus edges between adjacent triangles;
