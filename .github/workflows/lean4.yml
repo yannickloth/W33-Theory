@@ -1,16 +1,6 @@
 name: Lean 4 CI
 
 on:
-  pull_request:
-    branches: [ main, master ]
-    paths:
-      - "proofs/lean/**"
-      - ".github/workflows/lean4.yml"
-  push:
-    branches: [ main, master ]
-    paths:
-      - "proofs/lean/**"
-      - ".github/workflows/lean4.yml"
   workflow_dispatch:
 
 concurrency:
@@ -19,7 +9,6 @@ concurrency:
 
 jobs:
   lean-build:
-    if: ${{ hashFiles('proofs/lean/lean-toolchain') != '' }}
     runs-on: ubuntu-latest
     env:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}

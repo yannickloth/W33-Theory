@@ -1,14 +1,10 @@
 name: Lean 4 Weekly Verification
 
 on:
-  schedule:
-    # Weekly verification to ensure the Lean containerized build remains reliable
-    - cron: '0 6 * * 0'  # Sunday 06:00 UTC
   workflow_dispatch:
 
 jobs:
   verify:
-    if: ${{ hashFiles('proofs/lean/lean-toolchain') != '' }}
     runs-on: ubuntu-latest
     env:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}

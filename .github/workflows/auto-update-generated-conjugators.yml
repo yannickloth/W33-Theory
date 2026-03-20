@@ -7,7 +7,6 @@ on:
 
 jobs:
   update-generated:
-    if: ${{ hashFiles('proofs/lean/conjugators_generated.lean') != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
