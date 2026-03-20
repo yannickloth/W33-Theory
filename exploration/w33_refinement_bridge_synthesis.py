@@ -163,6 +163,12 @@ from w33_natural_units_custodial_bridge import (
 from w33_natural_units_sigma_shell_bridge import (
     build_natural_units_sigma_shell_summary,
 )
+from w33_natural_units_neutral_shell_bridge import (
+    build_natural_units_neutral_shell_summary,
+)
+from w33_natural_units_root_gap_bridge import (
+    build_natural_units_root_gap_summary,
+)
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
@@ -330,6 +336,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     natural_units_projective_denominator = build_natural_units_projective_denominator_summary()
     natural_units_custodial = build_natural_units_custodial_summary()
     natural_units_sigma_shell = build_natural_units_sigma_shell_summary()
+    natural_units_neutral_shell = build_natural_units_neutral_shell_summary()
+    natural_units_root_gap = build_natural_units_root_gap_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -856,6 +864,58 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "single_surface_flags_equals_two_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["single_surface_flags_equals_two_toroidal_traces"],
             "dual_pair_flags_equals_four_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["dual_pair_flags_equals_four_toroidal_traces"],
             "full_heawood_order_equals_eight_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["full_heawood_order_equals_eight_toroidal_traces"],
+        },
+        "natural_units_neutral_shell_bridge": {
+            "neutral_numerator_formula": natural_units_neutral_shell["neutral_shell_dictionary"]["neutral_numerator_formula"],
+            "neutral_reciprocal_formula": natural_units_neutral_shell["neutral_shell_dictionary"]["neutral_reciprocal_formula"],
+            "q": natural_units_neutral_shell["neutral_shell_dictionary"]["q"],
+            "theta_w33": natural_units_neutral_shell["neutral_shell_dictionary"]["theta_w33"],
+            "phi3": natural_units_neutral_shell["neutral_shell_dictionary"]["phi3"],
+            "sigma": natural_units_neutral_shell["neutral_shell_dictionary"]["sigma"],
+            "q_squared": natural_units_neutral_shell["neutral_shell_dictionary"]["q_squared"],
+            "rk_times_g0": natural_units_neutral_shell["neutral_shell_dictionary"]["rk_times_g0"],
+            "phi6": natural_units_neutral_shell["neutral_shell_dictionary"]["phi6"],
+            "ag21_length": natural_units_neutral_shell["neutral_shell_dictionary"]["ag21_length"],
+            "neutral_numerator": natural_units_neutral_shell["neutral_shell_dictionary"]["neutral_numerator"],
+            "neutral_reciprocal": natural_units_neutral_shell["neutral_shell_dictionary"]["neutral_reciprocal"]["exact"],
+            "single_surface_flags": natural_units_neutral_shell["neutral_shell_dictionary"]["single_surface_flags"],
+            "complement_trace": natural_units_neutral_shell["neutral_shell_dictionary"]["complement_trace"],
+            "neutral_numerator_equals_q_times_theta": natural_units_neutral_shell["exact_factorizations"]["neutral_numerator_equals_q_times_theta"],
+            "neutral_reciprocal_equals_q_theta_over_phi3_squared": natural_units_neutral_shell["exact_factorizations"]["neutral_reciprocal_equals_q_theta_over_phi3_squared"],
+            "q_times_rk_times_g0_equals_sigma": natural_units_neutral_shell["exact_factorizations"]["q_times_rk_times_g0_equals_sigma"],
+            "q_times_phi6_equals_ag21": natural_units_neutral_shell["exact_factorizations"]["q_times_phi6_equals_ag21"],
+            "neutral_numerator_equals_q_plus_sigma_plus_ag21": natural_units_neutral_shell["exact_factorizations"]["neutral_numerator_equals_q_plus_sigma_plus_ag21"],
+            "complement_trace_equals_sigma_times_q_squared": natural_units_neutral_shell["exact_factorizations"]["complement_trace_equals_sigma_times_q_squared"],
+            "surface_flags_equals_complement_trace_plus_neutral_numerator": natural_units_neutral_shell["exact_factorizations"]["surface_flags_equals_complement_trace_plus_neutral_numerator"],
+        },
+        "natural_units_root_gap_bridge": {
+            "quadratic_formula": natural_units_root_gap["root_gap_dictionary"]["quadratic_formula"],
+            "sum_formula": natural_units_root_gap["root_gap_dictionary"]["sum_formula"],
+            "product_formula": natural_units_root_gap["root_gap_dictionary"]["product_formula"],
+            "discriminant_formula": natural_units_root_gap["root_gap_dictionary"]["discriminant_formula"],
+            "gap_formula": natural_units_root_gap["root_gap_dictionary"]["gap_formula"],
+            "weak_root_formula": natural_units_root_gap["root_gap_dictionary"]["weak_root_formula"],
+            "hypercharge_root_formula": natural_units_root_gap["root_gap_dictionary"]["hypercharge_root_formula"],
+            "q": natural_units_root_gap["root_gap_dictionary"]["q"],
+            "theta_w33": natural_units_root_gap["root_gap_dictionary"]["theta_w33"],
+            "phi3": natural_units_root_gap["root_gap_dictionary"]["phi3"],
+            "phi6": natural_units_root_gap["root_gap_dictionary"]["phi6"],
+            "weak_share": natural_units_root_gap["root_gap_dictionary"]["weak_share"]["exact"],
+            "hypercharge_share": natural_units_root_gap["root_gap_dictionary"]["hypercharge_share"]["exact"],
+            "neutral_product": natural_units_root_gap["root_gap_dictionary"]["neutral_product"]["exact"],
+            "discriminant": natural_units_root_gap["root_gap_dictionary"]["discriminant"]["exact"],
+            "root_gap": natural_units_root_gap["root_gap_dictionary"]["root_gap"]["exact"],
+            "atmospheric_share": natural_units_root_gap["root_gap_dictionary"]["atmospheric_share"]["exact"],
+            "weak_plus_hypercharge_equals_unity": natural_units_root_gap["exact_factorizations"]["weak_plus_hypercharge_equals_unity"],
+            "weak_times_hypercharge_equals_neutral_product": natural_units_root_gap["exact_factorizations"]["weak_times_hypercharge_equals_neutral_product"],
+            "discriminant_equals_phi6_squared_over_phi3_squared": natural_units_root_gap["exact_factorizations"]["discriminant_equals_phi6_squared_over_phi3_squared"],
+            "root_gap_equals_phi6_over_phi3": natural_units_root_gap["exact_factorizations"]["root_gap_equals_phi6_over_phi3"],
+            "root_gap_equals_atmospheric_share": natural_units_root_gap["exact_factorizations"]["root_gap_equals_atmospheric_share"],
+            "weak_root_reconstructs_from_gap": natural_units_root_gap["exact_factorizations"]["weak_root_reconstructs_from_gap"],
+            "hypercharge_root_reconstructs_from_gap": natural_units_root_gap["exact_factorizations"]["hypercharge_root_reconstructs_from_gap"],
+            "weak_root_equals_q_over_phi3": natural_units_root_gap["exact_factorizations"]["weak_root_equals_q_over_phi3"],
+            "hypercharge_root_equals_theta_over_phi3": natural_units_root_gap["exact_factorizations"]["hypercharge_root_equals_theta_over_phi3"],
+            "heawood_denominator_matches_root_gap": natural_units_root_gap["exact_factorizations"]["heawood_denominator_matches_root_gap"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -3207,7 +3267,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 686,
+        "focused_test_stack_size": 691,
     }
 
 

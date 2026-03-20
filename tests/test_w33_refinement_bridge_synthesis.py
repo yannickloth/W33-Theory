@@ -493,6 +493,64 @@ def test_synthesis_records_natural_units_sigma_shell_bridge() -> None:
     assert bridge["full_heawood_order_equals_eight_toroidal_traces"] is True
 
 
+def test_synthesis_records_natural_units_neutral_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_neutral_shell_bridge"]
+    assert bridge["neutral_numerator_formula"] == "q Theta(W33)"
+    assert bridge["neutral_reciprocal_formula"] == "(4 pi alpha) / g_Z^2 = q Theta(W33) / Phi_3^2"
+    assert bridge["q"] == 3
+    assert bridge["theta_w33"] == 10
+    assert bridge["phi3"] == 13
+    assert bridge["sigma"] == 6
+    assert bridge["q_squared"] == 9
+    assert bridge["rk_times_g0"] == 2
+    assert bridge["phi6"] == 7
+    assert bridge["ag21_length"] == 21
+    assert bridge["neutral_numerator"] == 30
+    assert bridge["neutral_reciprocal"] == "30/169"
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["complement_trace"] == 54
+    assert bridge["neutral_numerator_equals_q_times_theta"] is True
+    assert bridge["neutral_reciprocal_equals_q_theta_over_phi3_squared"] is True
+    assert bridge["q_times_rk_times_g0_equals_sigma"] is True
+    assert bridge["q_times_phi6_equals_ag21"] is True
+    assert bridge["neutral_numerator_equals_q_plus_sigma_plus_ag21"] is True
+    assert bridge["complement_trace_equals_sigma_times_q_squared"] is True
+    assert bridge["surface_flags_equals_complement_trace_plus_neutral_numerator"] is True
+
+
+def test_synthesis_records_natural_units_root_gap_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_root_gap_bridge"]
+    assert bridge["quadratic_formula"] == "t^2 - t + q Theta(W33) / Phi_3^2 = 0"
+    assert bridge["sum_formula"] == "x + y = 1"
+    assert bridge["product_formula"] == "xy = q Theta(W33) / Phi_3^2"
+    assert bridge["discriminant_formula"] == "1 - 4 q Theta(W33) / Phi_3^2 = Phi_6^2 / Phi_3^2"
+    assert bridge["gap_formula"] == "y - x = Phi_6 / Phi_3 = sin^2(theta_23)"
+    assert bridge["weak_root_formula"] == "x = (1 - Phi_6 / Phi_3) / 2 = q / Phi_3"
+    assert bridge["hypercharge_root_formula"] == "y = (1 + Phi_6 / Phi_3) / 2 = Theta(W33) / Phi_3"
+    assert bridge["q"] == 3
+    assert bridge["theta_w33"] == 10
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["weak_share"] == "3/13"
+    assert bridge["hypercharge_share"] == "10/13"
+    assert bridge["neutral_product"] == "30/169"
+    assert bridge["discriminant"] == "49/169"
+    assert bridge["root_gap"] == "7/13"
+    assert bridge["atmospheric_share"] == "7/13"
+    assert bridge["weak_plus_hypercharge_equals_unity"] is True
+    assert bridge["weak_times_hypercharge_equals_neutral_product"] is True
+    assert bridge["discriminant_equals_phi6_squared_over_phi3_squared"] is True
+    assert bridge["root_gap_equals_phi6_over_phi3"] is True
+    assert bridge["root_gap_equals_atmospheric_share"] is True
+    assert bridge["weak_root_reconstructs_from_gap"] is True
+    assert bridge["hypercharge_root_reconstructs_from_gap"] is True
+    assert bridge["weak_root_equals_q_over_phi3"] is True
+    assert bridge["hypercharge_root_equals_theta_over_phi3"] is True
+    assert bridge["heawood_denominator_matches_root_gap"] is True
+
+
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["electroweak_lagrangian_bridge"]
