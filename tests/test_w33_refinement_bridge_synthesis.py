@@ -551,6 +551,44 @@ def test_synthesis_records_natural_units_root_gap_bridge() -> None:
     assert bridge["heawood_denominator_matches_root_gap"] is True
 
 
+def test_synthesis_records_heawood_electroweak_polarization_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_electroweak_polarization_bridge"]
+    assert bridge["operator_formula"] == "R_EW = (q Pi_- + Theta(W33) Pi_+) / Phi_3"
+    assert bridge["projector_form_formula"] == "R_EW = P_mid/2 + (Phi_6 / (2 Phi_3)) J_mid"
+    assert bridge["centered_gap_formula"] == "2 R_EW - P_mid = (Phi_6 / Phi_3) J_mid"
+    assert bridge["quadratic_formula"] == "R_EW^2 - R_EW + (q Theta(W33)/Phi_3^2) P_mid = 0"
+    assert bridge["reduced_packet_formula"] == "M_EW = [[1/2, Phi_6/(2 Phi_3)], [Phi_6/(2 Phi_3), 1/2]]"
+    assert bridge["q"] == 3
+    assert bridge["theta_w33"] == 10
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["middle_rank"] == 12
+    assert bridge["complex_rank"] == 6
+    assert bridge["weak_share"] == "3/13"
+    assert bridge["hypercharge_share"] == "10/13"
+    assert bridge["neutral_product"] == "30/169"
+    assert bridge["root_gap"] == "7/13"
+    assert bridge["polarization_amplitude"] == "7/26"
+    assert bridge["middle_trace"] == 36
+    assert bridge["reduced_trace"] == "1"
+    assert bridge["reduced_determinant"] == "30/169"
+    assert bridge["reduced_eigenvalue_minus"] == "3/13"
+    assert bridge["reduced_eigenvalue_plus"] == "10/13"
+    assert bridge["pi_plus_rank_is_6"] is True
+    assert bridge["pi_minus_rank_is_6"] is True
+    assert bridge["polarization_operator_has_expected_trace"] is True
+    assert bridge["average_trace_on_middle_shell_equals_half"] is True
+    assert bridge["operator_equals_projector_plus_polarization_form"] is True
+    assert bridge["centered_gap_is_atmospheric_selector"] is True
+    assert bridge["operator_satisfies_neutral_shell_quadratic"] is True
+    assert bridge["reduced_packet_trace_is_one"] is True
+    assert bridge["reduced_packet_determinant_is_neutral_product"] is True
+    assert bridge["reduced_packet_eigenvalues_match_weak_and_hypercharge"] is True
+    assert bridge["neutral_numerator_is_heawood_trace_minus_clifford_rank"] is True
+    assert bridge["clifford_packet_is_available"] is True
+
+
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["electroweak_lagrangian_bridge"]

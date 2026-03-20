@@ -169,6 +169,9 @@ from w33_natural_units_neutral_shell_bridge import (
 from w33_natural_units_root_gap_bridge import (
     build_natural_units_root_gap_summary,
 )
+from w33_heawood_electroweak_polarization_bridge import (
+    build_heawood_electroweak_polarization_summary,
+)
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
@@ -338,6 +341,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     natural_units_sigma_shell = build_natural_units_sigma_shell_summary()
     natural_units_neutral_shell = build_natural_units_neutral_shell_summary()
     natural_units_root_gap = build_natural_units_root_gap_summary()
+    heawood_electroweak_polarization = build_heawood_electroweak_polarization_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -916,6 +920,41 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "weak_root_equals_q_over_phi3": natural_units_root_gap["exact_factorizations"]["weak_root_equals_q_over_phi3"],
             "hypercharge_root_equals_theta_over_phi3": natural_units_root_gap["exact_factorizations"]["hypercharge_root_equals_theta_over_phi3"],
             "heawood_denominator_matches_root_gap": natural_units_root_gap["exact_factorizations"]["heawood_denominator_matches_root_gap"],
+        },
+        "heawood_electroweak_polarization_bridge": {
+            "operator_formula": heawood_electroweak_polarization["polarization_dictionary"]["operator_formula"],
+            "projector_form_formula": heawood_electroweak_polarization["polarization_dictionary"]["projector_form_formula"],
+            "centered_gap_formula": heawood_electroweak_polarization["polarization_dictionary"]["centered_gap_formula"],
+            "quadratic_formula": heawood_electroweak_polarization["polarization_dictionary"]["quadratic_formula"],
+            "reduced_packet_formula": heawood_electroweak_polarization["polarization_dictionary"]["reduced_packet_formula"],
+            "q": heawood_electroweak_polarization["polarization_dictionary"]["q"],
+            "theta_w33": heawood_electroweak_polarization["polarization_dictionary"]["theta_w33"],
+            "phi3": heawood_electroweak_polarization["polarization_dictionary"]["phi3"],
+            "phi6": heawood_electroweak_polarization["polarization_dictionary"]["phi6"],
+            "middle_rank": heawood_electroweak_polarization["polarization_dictionary"]["middle_rank"],
+            "complex_rank": heawood_electroweak_polarization["polarization_dictionary"]["complex_rank"],
+            "weak_share": heawood_electroweak_polarization["polarization_dictionary"]["weak_share"]["exact"],
+            "hypercharge_share": heawood_electroweak_polarization["polarization_dictionary"]["hypercharge_share"]["exact"],
+            "neutral_product": heawood_electroweak_polarization["polarization_dictionary"]["neutral_product"]["exact"],
+            "root_gap": heawood_electroweak_polarization["polarization_dictionary"]["root_gap"]["exact"],
+            "polarization_amplitude": heawood_electroweak_polarization["polarization_dictionary"]["polarization_amplitude"]["exact"],
+            "middle_trace": heawood_electroweak_polarization["polarization_dictionary"]["middle_trace"],
+            "reduced_trace": heawood_electroweak_polarization["reduced_packet_dictionary"]["trace"]["exact"],
+            "reduced_determinant": heawood_electroweak_polarization["reduced_packet_dictionary"]["determinant"]["exact"],
+            "reduced_eigenvalue_minus": heawood_electroweak_polarization["reduced_packet_dictionary"]["eigenvalue_minus"]["exact"],
+            "reduced_eigenvalue_plus": heawood_electroweak_polarization["reduced_packet_dictionary"]["eigenvalue_plus"]["exact"],
+            "pi_plus_rank_is_6": heawood_electroweak_polarization["exact_factorizations"]["pi_plus_rank_is_6"],
+            "pi_minus_rank_is_6": heawood_electroweak_polarization["exact_factorizations"]["pi_minus_rank_is_6"],
+            "polarization_operator_has_expected_trace": heawood_electroweak_polarization["exact_factorizations"]["polarization_operator_has_expected_trace"],
+            "average_trace_on_middle_shell_equals_half": heawood_electroweak_polarization["exact_factorizations"]["average_trace_on_middle_shell_equals_half"],
+            "operator_equals_projector_plus_polarization_form": heawood_electroweak_polarization["exact_factorizations"]["operator_equals_projector_plus_polarization_form"],
+            "centered_gap_is_atmospheric_selector": heawood_electroweak_polarization["exact_factorizations"]["centered_gap_is_atmospheric_selector"],
+            "operator_satisfies_neutral_shell_quadratic": heawood_electroweak_polarization["exact_factorizations"]["operator_satisfies_neutral_shell_quadratic"],
+            "reduced_packet_trace_is_one": heawood_electroweak_polarization["exact_factorizations"]["reduced_packet_trace_is_one"],
+            "reduced_packet_determinant_is_neutral_product": heawood_electroweak_polarization["exact_factorizations"]["reduced_packet_determinant_is_neutral_product"],
+            "reduced_packet_eigenvalues_match_weak_and_hypercharge": heawood_electroweak_polarization["exact_factorizations"]["reduced_packet_eigenvalues_match_weak_and_hypercharge"],
+            "neutral_numerator_is_heawood_trace_minus_clifford_rank": heawood_electroweak_polarization["exact_factorizations"]["neutral_numerator_is_heawood_trace_minus_clifford_rank"],
+            "clifford_packet_is_available": heawood_electroweak_polarization["exact_factorizations"]["clifford_packet_is_available"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -3267,7 +3306,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 691,
+        "focused_test_stack_size": 694,
     }
 
 
