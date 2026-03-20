@@ -221,6 +221,45 @@ def test_synthesis_records_natural_units_meaning_bridge() -> None:
     assert bridge["si_vacuum_is_reexpression_of_dimensionless_package"] is True
 
 
+def test_synthesis_records_natural_units_topological_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_topological_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["lambda"] == 2
+    assert bridge["mu"] == 4
+    assert bridge["phi6"] == 7
+    assert bridge["q_squared"] == 9
+    assert bridge["lambda_plus_phi6"] == 9
+    assert bridge["rk_formula"] == "1 / (lambda alpha)"
+    assert bridge["g0_formula"] == "mu alpha"
+    assert bridge["z0_unit_formula"] == "1 = lambda alpha R_K"
+    assert bridge["y0_unit_formula"] == "1 = G_0 / (mu alpha)"
+    assert bridge["flux_josephson_unit_formula"] == "Phi_0 K_J = 1"
+    assert bridge["rk"] == "152247/2222"
+    assert bridge["g0"] == "4444/152247"
+    assert bridge["rk_times_g0"] == "2"
+    assert bridge["mu_over_lambda"] == "2"
+    assert bridge["packet_dimension"] == 7
+    assert bridge["fano_selector_formula"] == "2I + J"
+    assert bridge["toroidal_shell_formula"] == "7I - J"
+    assert bridge["normalized_unit_formula"] == "I = ((2I + J) + (7I - J)) / 9"
+    assert bridge["vacuum_unit_from_local_shell"] == "1"
+    assert bridge["fano_nontrivial_trace"] == 12
+    assert bridge["toroidal_nontrivial_trace"] == 42
+    assert bridge["combined_nontrivial_trace"] == 54
+    assert bridge["rk_equals_one_over_lambda_alpha"] is True
+    assert bridge["g0_equals_mu_alpha"] is True
+    assert bridge["z0_unit_matches_lambda_alpha_rk"] is True
+    assert bridge["y0_unit_matches_g0_over_mu_alpha"] is True
+    assert bridge["rk_times_g0_equals_mu_over_lambda"] is True
+    assert bridge["lambda_plus_phi6_equals_q_squared"] is True
+    assert bridge["vacuum_unit_equals_lambda_plus_phi6_over_q_squared"] is True
+    assert bridge["normalized_complement_is_identity"] is True
+    assert bridge["flux_josephson_unit_matches_selector_line"] is True
+    assert bridge["unit_operator_matches_natural_vacuum"] is True
+    assert bridge["transport_standards_live_on_same_local_shell"] is True
+
+
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["electroweak_lagrangian_bridge"]

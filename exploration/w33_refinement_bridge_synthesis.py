@@ -144,6 +144,7 @@ from w33_triality_moonshine_spine_bridge import build_triality_moonshine_spine_s
 from w33_vacuum_unity_bridge import build_vacuum_unity_summary
 from w33_quantum_vacuum_standards_bridge import build_quantum_vacuum_standards_summary
 from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
+from w33_natural_units_topological_bridge import build_natural_units_topological_summary
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
@@ -302,6 +303,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     vacuum_unity = build_vacuum_unity_summary()
     quantum_vacuum_standards = build_quantum_vacuum_standards_summary()
     natural_units_meaning = build_natural_units_meaning_summary()
+    natural_units_topological = build_natural_units_topological_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -583,6 +585,42 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "topological_over_continuum": natural_units_meaning["dimensionless_graph_observables"]["topological_over_continuum"],
             "graphs_mean_couplings_and_mode_weights_in_natural_units": natural_units_meaning["dimensionless_graph_observables"]["graphs_mean_couplings_and_mode_weights_in_natural_units"],
             "si_vacuum_is_reexpression_of_dimensionless_package": natural_units_meaning["dimensionless_graph_observables"]["si_vacuum_is_reexpression_of_dimensionless_package"],
+        },
+        "natural_units_topological_bridge": {
+            "q": natural_units_topological["local_shell_dictionary"]["q"],
+            "lambda": natural_units_topological["local_shell_dictionary"]["lambda"],
+            "mu": natural_units_topological["local_shell_dictionary"]["mu"],
+            "phi6": natural_units_topological["local_shell_dictionary"]["phi6"],
+            "q_squared": natural_units_topological["local_shell_dictionary"]["q_squared"],
+            "lambda_plus_phi6": natural_units_topological["local_shell_dictionary"]["lambda_plus_phi6"],
+            "rk_formula": natural_units_topological["natural_unit_transport_dictionary"]["rk_formula"],
+            "g0_formula": natural_units_topological["natural_unit_transport_dictionary"]["g0_formula"],
+            "z0_unit_formula": natural_units_topological["natural_unit_transport_dictionary"]["z0_unit_formula"],
+            "y0_unit_formula": natural_units_topological["natural_unit_transport_dictionary"]["y0_unit_formula"],
+            "flux_josephson_unit_formula": natural_units_topological["natural_unit_transport_dictionary"]["flux_josephson_unit_formula"],
+            "rk": natural_units_topological["natural_unit_transport_dictionary"]["rk"]["exact"],
+            "g0": natural_units_topological["natural_unit_transport_dictionary"]["g0"]["exact"],
+            "rk_times_g0": natural_units_topological["natural_unit_transport_dictionary"]["rk_times_g0"]["exact"],
+            "mu_over_lambda": natural_units_topological["natural_unit_transport_dictionary"]["mu_over_lambda"]["exact"],
+            "packet_dimension": natural_units_topological["topological_unit_dictionary"]["packet_dimension"],
+            "fano_selector_formula": natural_units_topological["topological_unit_dictionary"]["fano_selector_formula"],
+            "toroidal_shell_formula": natural_units_topological["topological_unit_dictionary"]["toroidal_shell_formula"],
+            "normalized_unit_formula": natural_units_topological["topological_unit_dictionary"]["normalized_unit_formula"],
+            "vacuum_unit_from_local_shell": natural_units_topological["topological_unit_dictionary"]["vacuum_unit_from_local_shell"]["exact"],
+            "fano_nontrivial_trace": natural_units_topological["topological_unit_dictionary"]["fano_nontrivial_trace"],
+            "toroidal_nontrivial_trace": natural_units_topological["topological_unit_dictionary"]["toroidal_nontrivial_trace"],
+            "combined_nontrivial_trace": natural_units_topological["topological_unit_dictionary"]["combined_nontrivial_trace"],
+            "rk_equals_one_over_lambda_alpha": natural_units_topological["exact_factorizations"]["rk_equals_one_over_lambda_alpha"],
+            "g0_equals_mu_alpha": natural_units_topological["exact_factorizations"]["g0_equals_mu_alpha"],
+            "z0_unit_matches_lambda_alpha_rk": natural_units_topological["exact_factorizations"]["z0_unit_matches_lambda_alpha_rk"],
+            "y0_unit_matches_g0_over_mu_alpha": natural_units_topological["exact_factorizations"]["y0_unit_matches_g0_over_mu_alpha"],
+            "rk_times_g0_equals_mu_over_lambda": natural_units_topological["exact_factorizations"]["rk_times_g0_equals_mu_over_lambda"],
+            "lambda_plus_phi6_equals_q_squared": natural_units_topological["exact_factorizations"]["lambda_plus_phi6_equals_q_squared"],
+            "vacuum_unit_equals_lambda_plus_phi6_over_q_squared": natural_units_topological["exact_factorizations"]["vacuum_unit_equals_lambda_plus_phi6_over_q_squared"],
+            "normalized_complement_is_identity": natural_units_topological["exact_factorizations"]["normalized_complement_is_identity"],
+            "flux_josephson_unit_matches_selector_line": natural_units_topological["exact_factorizations"]["flux_josephson_unit_matches_selector_line"],
+            "unit_operator_matches_natural_vacuum": natural_units_topological["exact_factorizations"]["unit_operator_matches_natural_vacuum"],
+            "transport_standards_live_on_same_local_shell": natural_units_topological["exact_factorizations"]["transport_standards_live_on_same_local_shell"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -2934,7 +2972,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 520,
+        "focused_test_stack_size": 665,
     }
 
 
