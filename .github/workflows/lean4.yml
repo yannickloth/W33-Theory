@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   lean-build:
+    if: ${{ hashFiles('proofs/lean/lean-toolchain') != '' }}
     runs-on: ubuntu-latest
     env:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
