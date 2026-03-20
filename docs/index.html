@@ -112,12 +112,21 @@ nav.topnav .nav-toggle.open {
   box-shadow: 0 0 0 1px rgba(227,179,65,0.24), 0 14px 34px rgba(0,0,0,0.38);
   outline: none;
 }
+nav.topnav .nav-toggle.open {
+  background: linear-gradient(135deg, rgba(63,185,80,0.18), rgba(227,179,65,0.16));
+  animation: none;
+}
 nav.topnav .nav-toggle-icon {
   width: 2.2rem; height: 2.2rem; border-radius: 999px;
   display: inline-flex; align-items: center; justify-content: center;
   background: rgba(227,179,65,0.2); color: var(--gold);
   font-size: 1.15rem; flex: 0 0 auto;
   box-shadow: inset 0 0 0 1px rgba(227,179,65,0.35);
+}
+nav.topnav .nav-toggle.open .nav-toggle-icon {
+  background: rgba(63,185,80,0.18);
+  color: var(--accent2);
+  box-shadow: inset 0 0 0 1px rgba(63,185,80,0.35);
 }
 nav.topnav .nav-toggle-copy {
   display: flex; flex-direction: column; align-items: flex-start;
@@ -129,6 +138,9 @@ nav.topnav .nav-toggle-hint {
 }
 nav.topnav .nav-toggle-label {
   font-size: 0.96rem; color: var(--fg);
+}
+nav.topnav .nav-toggle.open .nav-toggle-label {
+  color: var(--gold);
 }
 nav.topnav .nav-toggle-state {
   font-size: 0.74rem; color: var(--fg2);
@@ -4929,7 +4941,13 @@ function setMobileNavState(open) {
   button.classList.toggle('open', open);
   button.setAttribute('aria-expanded', open ? 'true' : 'false');
   document.body.classList.toggle('nav-open', open && window.innerWidth < 1100);
+  var icon = button.querySelector('.nav-toggle-icon');
+  var hint = button.querySelector('.nav-toggle-hint');
+  var label = button.querySelector('.nav-toggle-label');
   var state = button.querySelector('.nav-toggle-state');
+  if (icon) icon.innerHTML = open ? '&times;' : '&#9776;';
+  if (hint) hint.textContent = open ? 'Navigator Open' : 'Use The Navigator';
+  if (label) label.textContent = open ? 'Close sections, proofs, and physics map' : 'Open sections, proofs, and physics map';
   if (state) state.textContent = open ? 'Tap to close' : 'Tap to open';
 }
 
