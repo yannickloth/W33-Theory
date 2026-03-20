@@ -83,10 +83,6 @@ nav.topnav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 1rem; height: 48px;
 }
-nav.topnav .nav-brand {
-  font-weight: 700; font-size: 0.95rem; color: var(--accent);
-  white-space: nowrap;
-}
 nav.topnav .nav-quick {
   display: flex; gap: 0.25rem; align-items: center;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -98,9 +94,49 @@ nav.topnav a {
 nav.topnav a:hover { background: var(--bg3); color: var(--fg); text-decoration: none; }
 nav.topnav a.active { background: var(--accent); color: #111; }
 nav.topnav .nav-toggle {
-  display: none; background: none; border: 1px solid var(--border);
-  color: var(--fg); padding: 0.3rem 0.6rem; border-radius: 6px;
-  cursor: pointer; font-size: 1rem;
+  display: none; align-items: center; gap: 0.8rem;
+  background: linear-gradient(135deg, rgba(88,166,255,0.18), rgba(227,179,65,0.18));
+  border: 1px solid rgba(88,166,255,0.45);
+  color: var(--fg); padding: 0.55rem 0.85rem; border-radius: 14px;
+  cursor: pointer; font-size: 1rem; font-weight: 700;
+  width: min(100%, 440px); min-height: 58px; justify-content: flex-start;
+  box-shadow: 0 0 0 1px rgba(88,166,255,0.18), 0 10px 26px rgba(0,0,0,0.34);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  animation: mobileNavPulse 2.8s ease-in-out infinite;
+}
+nav.topnav .nav-toggle:hover,
+nav.topnav .nav-toggle:focus-visible,
+nav.topnav .nav-toggle.open {
+  transform: translateY(-1px);
+  border-color: rgba(227,179,65,0.72);
+  box-shadow: 0 0 0 1px rgba(227,179,65,0.24), 0 14px 34px rgba(0,0,0,0.38);
+  outline: none;
+}
+nav.topnav .nav-toggle-icon {
+  width: 2.2rem; height: 2.2rem; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(227,179,65,0.2); color: var(--gold);
+  font-size: 1.15rem; flex: 0 0 auto;
+  box-shadow: inset 0 0 0 1px rgba(227,179,65,0.35);
+}
+nav.topnav .nav-toggle-copy {
+  display: flex; flex-direction: column; align-items: flex-start;
+  line-height: 1.15; text-align: left;
+}
+nav.topnav .nav-toggle-hint {
+  font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent2);
+}
+nav.topnav .nav-toggle-label {
+  font-size: 0.96rem; color: var(--fg);
+}
+nav.topnav .nav-toggle-state {
+  font-size: 0.74rem; color: var(--fg2);
+}
+
+@keyframes mobileNavPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(88,166,255,0.18), 0 10px 26px rgba(0,0,0,0.34); }
+  50% { box-shadow: 0 0 0 1px rgba(227,179,65,0.28), 0 12px 30px rgba(0,0,0,0.38); }
 }
 
 /* ── Sidebar TOC ── */
@@ -113,6 +149,28 @@ nav.topnav .nav-toggle {
   transition: transform 0.3s ease;
 }
 .sidebar-toc.open { transform: translateX(0); }
+.sidebar-toc .sidebar-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem 0.35rem;
+}
+.sidebar-toc .sidebar-title {
+  font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); font-weight: 800;
+}
+.sidebar-toc .sidebar-close {
+  border: 1px solid var(--border);
+  background: var(--bg3); color: var(--fg);
+  border-radius: 10px; min-width: 40px; min-height: 40px;
+  cursor: pointer; font-size: 1rem; font-weight: 700;
+}
+.sidebar-toc .sidebar-close:hover,
+.sidebar-toc .sidebar-close:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
 .sidebar-toc .toc-search {
   margin: 0 0.75rem 0.75rem; padding: 0.4rem 0.7rem;
   background: var(--bg3); border: 1px solid var(--border);
@@ -167,6 +225,7 @@ nav.topnav .nav-toggle {
   display: none;
 }
 .sidebar-overlay.open { display: block; }
+body.nav-open { overflow: hidden; }
 
 /* ── Content shift when sidebar open on desktop ── */
 @media (min-width: 1100px) {
@@ -188,12 +247,19 @@ nav.topnav .nav-toggle {
     margin-left: 260px;
     width: calc(100% - 260px);
   }
-  nav.topnav .nav-brand { display: none; }
   nav.topnav .nav-toggle { display: none; }
 }
 @media (max-width: 1099px) {
+  nav.topnav {
+    justify-content: center;
+    padding: 0.55rem 0.8rem;
+    height: auto;
+    min-height: 72px;
+  }
   nav.topnav .nav-quick { display: none; }
-  nav.topnav .nav-toggle { display: block; }
+  nav.topnav .nav-toggle { display: flex; }
+  .sidebar-toc { top: 80px; }
+  .sidebar-toc .sidebar-header { display: flex; }
 }
 
 /* ── Old nav hidden ── */
@@ -709,8 +775,14 @@ section h2::after {
 
 <!-- ═══════════════════════ TOP NAV ═══════════════════════ -->
 <nav class="topnav">
-  <span class="nav-brand">W(3,3)&ndash;E&#8328;</span>
-  <button class="nav-toggle" onclick="document.querySelector('.sidebar-toc').classList.toggle('open');document.querySelector('.sidebar-overlay').classList.toggle('open');">&#9776;</button>
+  <button class="nav-toggle" type="button" aria-controls="site-sidebar" aria-expanded="false" onclick="toggleMobileNav()">
+    <span class="nav-toggle-icon" aria-hidden="true">&#9776;</span>
+    <span class="nav-toggle-copy">
+      <span class="nav-toggle-hint">Use The Navigator</span>
+      <span class="nav-toggle-label">Open sections, proofs, and physics map</span>
+      <span class="nav-toggle-state">Tap to open</span>
+    </span>
+  </button>
   <div class="nav-quick">
     <a href="#reader-guide">Reader Guide</a>
     <a href="#hard-computation">Hard Computation</a>
@@ -725,8 +797,12 @@ section h2::after {
 </nav>
 
 <!-- ═══════════════════════ SIDEBAR TOC ═══════════════════════ -->
-<div class="sidebar-overlay" onclick="document.querySelector('.sidebar-toc').classList.remove('open');this.classList.remove('open');"></div>
-<aside class="sidebar-toc">
+<div class="sidebar-overlay" onclick="closeMobileNav()"></div>
+<aside class="sidebar-toc" id="site-sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">Navigator</div>
+    <button class="sidebar-close" type="button" aria-label="Close navigator" onclick="closeMobileNav()">&times;</button>
+  </div>
   <input type="text" class="toc-search" placeholder="Search sections..." oninput="filterToc(this.value)">
 
   <div class="toc-group expanded">
@@ -4843,6 +4919,30 @@ section h2::after {
 </footer>
 
 <script>
+function setMobileNavState(open) {
+  var sidebar = document.querySelector('.sidebar-toc');
+  var overlay = document.querySelector('.sidebar-overlay');
+  var button = document.querySelector('.nav-toggle');
+  if (!sidebar || !overlay || !button) return;
+  sidebar.classList.toggle('open', open);
+  overlay.classList.toggle('open', open);
+  button.classList.toggle('open', open);
+  button.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.classList.toggle('nav-open', open && window.innerWidth < 1100);
+  var state = button.querySelector('.nav-toggle-state');
+  if (state) state.textContent = open ? 'Tap to close' : 'Tap to open';
+}
+
+function toggleMobileNav() {
+  var sidebar = document.querySelector('.sidebar-toc');
+  if (!sidebar) return;
+  setMobileNavState(!sidebar.classList.contains('open'));
+}
+
+function closeMobileNav() {
+  setMobileNavState(false);
+}
+
 // ── Back to top button ──
 (function() {
   var btn = document.getElementById('backToTop');
@@ -4900,10 +5000,13 @@ function filterToc(query) {
 document.querySelectorAll('.sidebar-toc .toc-item').forEach(function(item) {
   item.addEventListener('click', function() {
     if (window.innerWidth < 1100) {
-      document.querySelector('.sidebar-toc').classList.remove('open');
-      document.querySelector('.sidebar-overlay').classList.remove('open');
+      closeMobileNav();
     }
   });
+});
+
+window.addEventListener('resize', function() {
+  if (window.innerWidth >= 1100) closeMobileNav();
 });
 
 // —— Hard-computation phase chips -> exact GitHub proof files ——
