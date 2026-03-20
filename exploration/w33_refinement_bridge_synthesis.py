@@ -152,8 +152,16 @@ from w33_heawood_weinberg_denominator_bridge import (
     build_heawood_weinberg_denominator_summary,
 )
 from w33_heawood_q_center_bridge import build_heawood_q_center_summary
+from w33_heawood_involution_bridge import build_heawood_involution_summary
+from w33_heawood_clifford_bridge import build_heawood_clifford_summary
 from w33_natural_units_projective_denominator_bridge import (
     build_natural_units_projective_denominator_summary,
+)
+from w33_natural_units_custodial_bridge import (
+    build_natural_units_custodial_summary,
+)
+from w33_natural_units_sigma_shell_bridge import (
+    build_natural_units_sigma_shell_summary,
 )
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
@@ -317,7 +325,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     natural_units_electroweak_split = build_natural_units_electroweak_split_summary()
     heawood_weinberg_denominator = build_heawood_weinberg_denominator_summary()
     heawood_q_center = build_heawood_q_center_summary()
+    heawood_involution = build_heawood_involution_summary()
+    heawood_clifford = build_heawood_clifford_summary()
     natural_units_projective_denominator = build_natural_units_projective_denominator_summary()
+    natural_units_custodial = build_natural_units_custodial_summary()
+    natural_units_sigma_shell = build_natural_units_sigma_shell_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -719,6 +731,42 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "middle_trace_equals_q_times_gauge_dimension": heawood_q_center["exact_factorizations"]["middle_trace_equals_q_times_gauge_dimension"],
             "middle_pseudodeterminant_equals_phi6_to_6": heawood_q_center["exact_factorizations"]["middle_pseudodeterminant_equals_phi6_to_6"],
         },
+        "heawood_involution_bridge": {
+            "middle_quadratic_polynomial": heawood_involution["centered_shell_dictionary"]["middle_quadratic_polynomial"],
+            "centered_quadratic_formula": heawood_involution["centered_shell_dictionary"]["centered_quadratic_formula"],
+            "operator_formula": heawood_involution["centered_shell_dictionary"]["operator_formula"],
+            "normalized_involution_formula": heawood_involution["centered_shell_dictionary"]["normalized_involution_formula"],
+            "q": heawood_involution["centered_shell_dictionary"]["q"],
+            "lambda": heawood_involution["centered_shell_dictionary"]["lambda"],
+            "phi6": heawood_involution["centered_shell_dictionary"]["phi6"],
+            "adjacency_quartic_polynomial": heawood_involution["centered_shell_dictionary"]["adjacency_quartic_polynomial"],
+            "middle_projector_rank": heawood_involution["centered_shell_dictionary"]["middle_projector_rank"],
+            "q_squared_minus_phi6_equals_lambda": heawood_involution["exact_factorizations"]["q_squared_minus_phi6_equals_lambda"],
+            "centered_shell_relation_holds": heawood_involution["exact_factorizations"]["centered_shell_relation_holds"],
+            "normalized_operator_is_involution": heawood_involution["exact_factorizations"]["normalized_operator_is_involution"],
+            "middle_projector_is_idempotent": heawood_involution["exact_factorizations"]["middle_projector_is_idempotent"],
+            "middle_shell_rank_is_12": heawood_involution["exact_factorizations"]["middle_shell_rank_is_12"],
+        },
+        "heawood_clifford_bridge": {
+            "gamma_formula": heawood_clifford["clifford_dictionary"]["gamma_formula"],
+            "gamma_mid_formula": heawood_clifford["clifford_dictionary"]["gamma_mid_formula"],
+            "j_mid_formula": heawood_clifford["clifford_dictionary"]["j_mid_formula"],
+            "k_mid_formula": heawood_clifford["clifford_dictionary"]["k_mid_formula"],
+            "pi_plus_formula": heawood_clifford["clifford_dictionary"]["pi_plus_formula"],
+            "pi_minus_formula": heawood_clifford["clifford_dictionary"]["pi_minus_formula"],
+            "middle_shell_rank": heawood_clifford["clifford_dictionary"]["middle_shell_rank"],
+            "complex_rank": heawood_clifford["clifford_dictionary"]["complex_rank"],
+            "gamma_mid_squared_equals_middle_projector": heawood_clifford["exact_factorizations"]["gamma_mid_squared_equals_middle_projector"],
+            "j_mid_squared_equals_middle_projector": heawood_clifford["exact_factorizations"]["j_mid_squared_equals_middle_projector"],
+            "gamma_and_j_anticommute": heawood_clifford["exact_factorizations"]["gamma_and_j_anticommute"],
+            "k_mid_squared_equals_minus_middle_projector": heawood_clifford["exact_factorizations"]["k_mid_squared_equals_minus_middle_projector"],
+            "pi_plus_is_projector": heawood_clifford["exact_factorizations"]["pi_plus_is_projector"],
+            "pi_minus_is_projector": heawood_clifford["exact_factorizations"]["pi_minus_is_projector"],
+            "pi_plus_pi_minus_zero": heawood_clifford["exact_factorizations"]["pi_plus_pi_minus_zero"],
+            "pi_plus_rank_is_6": heawood_clifford["exact_factorizations"]["pi_plus_rank_is_6"],
+            "pi_minus_rank_is_6": heawood_clifford["exact_factorizations"]["pi_minus_rank_is_6"],
+            "middle_shell_is_12_equals_6_plus_6": heawood_clifford["exact_factorizations"]["middle_shell_is_12_equals_6_plus_6"],
+        },
         "natural_units_projective_denominator_bridge": {
             "fano_selector_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["fano_selector_formula"],
             "metrology_selector_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["metrology_selector_formula"],
@@ -752,6 +800,62 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "weinberg_equals_q_over_projective_denominator": natural_units_projective_denominator["exact_factorizations"]["weinberg_equals_q_over_projective_denominator"],
             "cosine_equals_theta_over_projective_denominator": natural_units_projective_denominator["exact_factorizations"]["cosine_equals_theta_over_projective_denominator"],
             "projective_denominator_rebuilds_from_natural_units_shells": natural_units_projective_denominator["exact_factorizations"]["projective_denominator_rebuilds_from_natural_units_shells"],
+        },
+        "natural_units_custodial_bridge": {
+            "phi3": natural_units_custodial["custodial_shell_dictionary"]["phi3"],
+            "theta_w33": natural_units_custodial["custodial_shell_dictionary"]["theta_w33"],
+            "selector_line": natural_units_custodial["custodial_shell_dictionary"]["selector_line"],
+            "q": natural_units_custodial["custodial_shell_dictionary"]["q"],
+            "rk_times_g0": natural_units_custodial["custodial_shell_dictionary"]["rk_times_g0"]["exact"],
+            "phi6": natural_units_custodial["custodial_shell_dictionary"]["phi6"],
+            "custodial_numerator_formula": natural_units_custodial["custodial_shell_dictionary"]["custodial_numerator_formula"],
+            "denominator_formula": natural_units_custodial["custodial_shell_dictionary"]["denominator_formula"],
+            "mass_ratio_formula": natural_units_custodial["custodial_shell_dictionary"]["mass_ratio_formula"],
+            "gap_formula": natural_units_custodial["custodial_shell_dictionary"]["gap_formula"],
+            "mw_squared_over_mz_squared": natural_units_custodial["weak_mass_dictionary"]["mw_squared_over_mz_squared"]["exact"],
+            "z_gap_over_z_squared": natural_units_custodial["weak_mass_dictionary"]["z_gap_over_z_squared"]["exact"],
+            "sin2_theta_w": natural_units_custodial["weak_mass_dictionary"]["sin2_theta_w"]["exact"],
+            "cos2_theta_w": natural_units_custodial["weak_mass_dictionary"]["cos2_theta_w"]["exact"],
+            "theta_over_phi3": natural_units_custodial["weak_mass_dictionary"]["theta_over_phi3"]["exact"],
+            "q_over_phi3": natural_units_custodial["weak_mass_dictionary"]["q_over_phi3"]["exact"],
+            "rho_parameter": natural_units_custodial["weak_mass_dictionary"]["rho_parameter"]["exact"],
+            "theta_equals_selector_plus_metrology_plus_qcd": natural_units_custodial["exact_factorizations"]["theta_equals_selector_plus_metrology_plus_qcd"],
+            "phi3_equals_selector_plus_projective_plus_metrology_plus_qcd": natural_units_custodial["exact_factorizations"]["phi3_equals_selector_plus_projective_plus_metrology_plus_qcd"],
+            "mw_over_mz_squared_equals_cos2_theta_w": natural_units_custodial["exact_factorizations"]["mw_over_mz_squared_equals_cos2_theta_w"],
+            "z_gap_over_z_squared_equals_sin2_theta_w": natural_units_custodial["exact_factorizations"]["z_gap_over_z_squared_equals_sin2_theta_w"],
+            "cos2_equals_theta_over_phi3": natural_units_custodial["exact_factorizations"]["cos2_equals_theta_over_phi3"],
+            "sin2_equals_q_over_phi3": natural_units_custodial["exact_factorizations"]["sin2_equals_q_over_phi3"],
+            "custodial_split_sums_to_unity": natural_units_custodial["exact_factorizations"]["custodial_split_sums_to_unity"],
+            "rho_equals_one": natural_units_custodial["exact_factorizations"]["rho_equals_one"],
+        },
+        "natural_units_sigma_shell_bridge": {
+            "sigma_formula": natural_units_sigma_shell["sigma_shell_dictionary"]["sigma_formula"],
+            "sigma": natural_units_sigma_shell["sigma_shell_dictionary"]["sigma"],
+            "metrology_eigenvalue": natural_units_sigma_shell["sigma_shell_dictionary"]["metrology_eigenvalue"],
+            "toroidal_eigenvalue": natural_units_sigma_shell["sigma_shell_dictionary"]["toroidal_eigenvalue"],
+            "complement_eigenvalue": natural_units_sigma_shell["sigma_shell_dictionary"]["complement_eigenvalue"],
+            "phi3_formula": natural_units_sigma_shell["sigma_shell_dictionary"]["phi3_formula"],
+            "heawood_middle_rank_formula": natural_units_sigma_shell["sigma_shell_dictionary"]["heawood_middle_rank_formula"],
+            "heawood_middle_trace_formula": natural_units_sigma_shell["sigma_shell_dictionary"]["heawood_middle_trace_formula"],
+            "metrology_trace": natural_units_sigma_shell["trace_ladder_dictionary"]["metrology_trace"],
+            "toroidal_trace": natural_units_sigma_shell["trace_ladder_dictionary"]["toroidal_trace"],
+            "complement_trace": natural_units_sigma_shell["trace_ladder_dictionary"]["complement_trace"],
+            "heawood_middle_rank": natural_units_sigma_shell["trace_ladder_dictionary"]["heawood_middle_rank"],
+            "heawood_middle_trace": natural_units_sigma_shell["trace_ladder_dictionary"]["heawood_middle_trace"],
+            "single_surface_flags": natural_units_sigma_shell["trace_ladder_dictionary"]["single_surface_flags"],
+            "dual_pair_flags": natural_units_sigma_shell["trace_ladder_dictionary"]["dual_pair_flags"],
+            "full_heawood_order": natural_units_sigma_shell["trace_ladder_dictionary"]["full_heawood_order"],
+            "sigma_equals_selector_plus_projective_plus_metrology": natural_units_sigma_shell["exact_factorizations"]["sigma_equals_selector_plus_projective_plus_metrology"],
+            "phi3_equals_sigma_plus_phi6": natural_units_sigma_shell["exact_factorizations"]["phi3_equals_sigma_plus_phi6"],
+            "metrology_trace_equals_sigma_times_rk_times_g0": natural_units_sigma_shell["exact_factorizations"]["metrology_trace_equals_sigma_times_rk_times_g0"],
+            "toroidal_trace_equals_sigma_times_phi6": natural_units_sigma_shell["exact_factorizations"]["toroidal_trace_equals_sigma_times_phi6"],
+            "complement_trace_equals_sigma_times_q_squared": natural_units_sigma_shell["exact_factorizations"]["complement_trace_equals_sigma_times_q_squared"],
+            "complement_trace_equals_metrology_plus_toroidal_trace": natural_units_sigma_shell["exact_factorizations"]["complement_trace_equals_metrology_plus_toroidal_trace"],
+            "heawood_middle_rank_equals_two_sigma": natural_units_sigma_shell["exact_factorizations"]["heawood_middle_rank_equals_two_sigma"],
+            "heawood_middle_trace_equals_two_q_sigma": natural_units_sigma_shell["exact_factorizations"]["heawood_middle_trace_equals_two_q_sigma"],
+            "single_surface_flags_equals_two_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["single_surface_flags_equals_two_toroidal_traces"],
+            "dual_pair_flags_equals_four_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["dual_pair_flags_equals_four_toroidal_traces"],
+            "full_heawood_order_equals_eight_toroidal_traces": natural_units_sigma_shell["exact_factorizations"]["full_heawood_order_equals_eight_toroidal_traces"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -3103,7 +3207,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 678,
+        "focused_test_stack_size": 686,
     }
 
 

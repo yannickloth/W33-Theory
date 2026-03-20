@@ -352,6 +352,48 @@ def test_synthesis_records_heawood_q_center_bridge() -> None:
     assert bridge["middle_pseudodeterminant_equals_phi6_to_6"] is True
 
 
+def test_synthesis_records_heawood_involution_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_involution_bridge"]
+    assert bridge["middle_quadratic_polynomial"] == "x^2 - 6x + 7"
+    assert bridge["centered_quadratic_formula"] == "(x - q)^2 = lambda"
+    assert bridge["operator_formula"] == "(P_mid (L_H - qI) P_mid)^2 = lambda P_mid"
+    assert bridge["normalized_involution_formula"] == "J_mid = P_mid (L_H - qI) P_mid / sqrt(lambda)"
+    assert bridge["q"] == 3
+    assert bridge["lambda"] == 2
+    assert bridge["phi6"] == 7
+    assert bridge["adjacency_quartic_polynomial"] == "x^4 - 11*x^2 + 18"
+    assert bridge["middle_projector_rank"] == 12
+    assert bridge["q_squared_minus_phi6_equals_lambda"] is True
+    assert bridge["centered_shell_relation_holds"] is True
+    assert bridge["normalized_operator_is_involution"] is True
+    assert bridge["middle_projector_is_idempotent"] is True
+    assert bridge["middle_shell_rank_is_12"] is True
+
+
+def test_synthesis_records_heawood_clifford_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_clifford_bridge"]
+    assert bridge["gamma_formula"] == "Gamma = diag(I_7,-I_7)"
+    assert bridge["gamma_mid_formula"] == "Gamma_mid = P_mid Gamma P_mid"
+    assert bridge["j_mid_formula"] == "J_mid = P_mid (L_H - qI) P_mid / sqrt(lambda)"
+    assert bridge["k_mid_formula"] == "K_mid = Gamma_mid J_mid"
+    assert bridge["pi_plus_formula"] == "Pi_+ = (P_mid + J_mid)/2"
+    assert bridge["pi_minus_formula"] == "Pi_- = (P_mid - J_mid)/2"
+    assert bridge["middle_shell_rank"] == 12
+    assert bridge["complex_rank"] == 6
+    assert bridge["gamma_mid_squared_equals_middle_projector"] is True
+    assert bridge["j_mid_squared_equals_middle_projector"] is True
+    assert bridge["gamma_and_j_anticommute"] is True
+    assert bridge["k_mid_squared_equals_minus_middle_projector"] is True
+    assert bridge["pi_plus_is_projector"] is True
+    assert bridge["pi_minus_is_projector"] is True
+    assert bridge["pi_plus_pi_minus_zero"] is True
+    assert bridge["pi_plus_rank_is_6"] is True
+    assert bridge["pi_minus_rank_is_6"] is True
+    assert bridge["middle_shell_is_12_equals_6_plus_6"] is True
+
+
 def test_synthesis_records_natural_units_projective_denominator_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["natural_units_projective_denominator_bridge"]
@@ -387,6 +429,68 @@ def test_synthesis_records_natural_units_projective_denominator_bridge() -> None
     assert bridge["weinberg_equals_q_over_projective_denominator"] is True
     assert bridge["cosine_equals_theta_over_projective_denominator"] is True
     assert bridge["projective_denominator_rebuilds_from_natural_units_shells"] is True
+
+
+def test_synthesis_records_natural_units_custodial_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_custodial_bridge"]
+    assert bridge["phi3"] == 13
+    assert bridge["theta_w33"] == 10
+    assert bridge["selector_line"] == 1
+    assert bridge["q"] == 3
+    assert bridge["rk_times_g0"] == "2"
+    assert bridge["phi6"] == 7
+    assert bridge["custodial_numerator_formula"] == "Theta(W33) = 1 + R_K G_0 + Phi_6"
+    assert bridge["denominator_formula"] == "Phi_3 = 1 + q + R_K G_0 + Phi_6"
+    assert bridge["mass_ratio_formula"] == "m_W^2 / m_Z^2 = Theta(W33) / Phi_3"
+    assert bridge["gap_formula"] == "(m_Z^2 - m_W^2) / m_Z^2 = q / Phi_3"
+    assert bridge["mw_squared_over_mz_squared"] == "10/13"
+    assert bridge["z_gap_over_z_squared"] == "3/13"
+    assert bridge["sin2_theta_w"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["theta_over_phi3"] == "10/13"
+    assert bridge["q_over_phi3"] == "3/13"
+    assert bridge["rho_parameter"] == "1"
+    assert bridge["theta_equals_selector_plus_metrology_plus_qcd"] is True
+    assert bridge["phi3_equals_selector_plus_projective_plus_metrology_plus_qcd"] is True
+    assert bridge["mw_over_mz_squared_equals_cos2_theta_w"] is True
+    assert bridge["z_gap_over_z_squared_equals_sin2_theta_w"] is True
+    assert bridge["cos2_equals_theta_over_phi3"] is True
+    assert bridge["sin2_equals_q_over_phi3"] is True
+    assert bridge["custodial_split_sums_to_unity"] is True
+    assert bridge["rho_equals_one"] is True
+
+
+def test_synthesis_records_natural_units_sigma_shell_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_sigma_shell_bridge"]
+    assert bridge["sigma_formula"] == "sigma = 1 + q + R_K G_0"
+    assert bridge["sigma"] == 6
+    assert bridge["metrology_eigenvalue"] == 2
+    assert bridge["toroidal_eigenvalue"] == 7
+    assert bridge["complement_eigenvalue"] == 9
+    assert bridge["phi3_formula"] == "Phi_3 = sigma + Phi_6"
+    assert bridge["heawood_middle_rank_formula"] == "rank_mid(Heawood) = 2 sigma"
+    assert bridge["heawood_middle_trace_formula"] == "Tr(L_H|mid) = 2 q sigma"
+    assert bridge["metrology_trace"] == 12
+    assert bridge["toroidal_trace"] == 42
+    assert bridge["complement_trace"] == 54
+    assert bridge["heawood_middle_rank"] == 12
+    assert bridge["heawood_middle_trace"] == 36
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["dual_pair_flags"] == 168
+    assert bridge["full_heawood_order"] == 336
+    assert bridge["sigma_equals_selector_plus_projective_plus_metrology"] is True
+    assert bridge["phi3_equals_sigma_plus_phi6"] is True
+    assert bridge["metrology_trace_equals_sigma_times_rk_times_g0"] is True
+    assert bridge["toroidal_trace_equals_sigma_times_phi6"] is True
+    assert bridge["complement_trace_equals_sigma_times_q_squared"] is True
+    assert bridge["complement_trace_equals_metrology_plus_toroidal_trace"] is True
+    assert bridge["heawood_middle_rank_equals_two_sigma"] is True
+    assert bridge["heawood_middle_trace_equals_two_q_sigma"] is True
+    assert bridge["single_surface_flags_equals_two_toroidal_traces"] is True
+    assert bridge["dual_pair_flags_equals_four_toroidal_traces"] is True
+    assert bridge["full_heawood_order_equals_eight_toroidal_traces"] is True
 
 
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
