@@ -589,6 +589,67 @@ def test_synthesis_records_heawood_electroweak_polarization_bridge() -> None:
     assert bridge["clifford_packet_is_available"] is True
 
 
+def test_synthesis_records_natural_units_cosmological_complement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_cosmological_complement_bridge"]
+    assert bridge["reduced_complement_formula"] == "I_2 - (2 M_EW - I_2)^2 = ((Phi_3^2 - Phi_6^2)/Phi_3^2) I_2"
+    assert bridge["lifted_complement_formula"] == "P_mid - (2 R_EW - P_mid)^2 = ((Phi_3^2 - Phi_6^2)/Phi_3^2) P_mid"
+    assert bridge["numerator_formula"] == "Phi_3^2 - Phi_6^2 = 4 q Theta(W33)"
+    assert bridge["surface_formula"] == "120 = 84 + 36"
+    assert bridge["q"] == 3
+    assert bridge["theta_w33"] == 10
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["root_gap"] == "7/13"
+    assert bridge["cosmological_fraction"] == "120/169"
+    assert bridge["cosmological_numerator"] == 120
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["heawood_middle_trace"] == 36
+    assert bridge["middle_rank"] == 12
+    assert bridge["external_chain_density_limit"] == "120/19"
+    assert bridge["cosmological_numerator_equals_phi3_squared_minus_phi6_squared"] is True
+    assert bridge["cosmological_numerator_equals_4_q_theta"] is True
+    assert bridge["cosmological_fraction_equals_one_minus_gap_squared"] is True
+    assert bridge["reduced_complement_is_120_over_169_identity"] is True
+    assert bridge["four_det_equals_cosmological_fraction"] is True
+    assert bridge["surface_plus_middle_trace_equals_120"] is True
+    assert bridge["lifted_coefficient_matches_cosmological_fraction"] is True
+    assert bridge["lifted_average_trace_matches_cosmological_fraction"] is True
+    assert bridge["curved_bridge_uses_universal_120_mode"] is True
+
+
+def test_synthesis_records_natural_units_unit_balance_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_unit_balance_bridge"]
+    assert bridge["reduced_balance_formula"] == "I_2 = (2 M_EW - I_2)^2 + 4 det(M_EW) I_2"
+    assert bridge["lifted_balance_formula"] == "P_mid = (2 R_EW - P_mid)^2 + ((Phi_3^2 - Phi_6^2)/Phi_3^2) P_mid"
+    assert bridge["mixed_product_formula"] == "I_2 - (2 M_EW - I_2)^2 = 4 M_EW (I_2 - M_EW)"
+    assert bridge["fraction_formula"] == "1 = (Phi_6/Phi_3)^2 + (Phi_3^2 - Phi_6^2)/Phi_3^2"
+    assert bridge["numerator_formula"] == "Phi_3^2 = Phi_6^2 + (Phi_3^2 - Phi_6^2)"
+    assert bridge["shell_balance_formula"] == "169 = 84 + 36 + 49"
+    assert bridge["shell_formula"] == "169 = 84 + 36 + 42 + 7"
+    assert bridge["phi3"] == 13
+    assert bridge["phi6"] == 7
+    assert bridge["denominator_square"] == 169
+    assert bridge["polarization_fraction"] == "49/169"
+    assert bridge["cosmological_fraction"] == "120/169"
+    assert bridge["polarization_numerator"] == 49
+    assert bridge["cosmological_numerator"] == 120
+    assert bridge["single_surface_flags"] == 84
+    assert bridge["heawood_middle_trace"] == 36
+    assert bridge["toroidal_trace"] == 42
+    assert bridge["qcd_selector"] == 7
+    assert bridge["reduced_balance_is_identity"] is True
+    assert bridge["polarization_fraction_equals_gap_squared"] is True
+    assert bridge["cosmological_fraction_equals_four_det"] is True
+    assert bridge["unit_splits_into_polarization_plus_complement"] is True
+    assert bridge["denominator_square_equals_two_numerators"] is True
+    assert bridge["polarization_numerator_equals_toroidal_trace_plus_qcd_selector"] is True
+    assert bridge["cosmological_numerator_equals_surface_plus_heawood_trace"] is True
+    assert bridge["denominator_square_equals_surface_heawood_plus_polarization"] is True
+    assert bridge["denominator_square_equals_surface_heawood_toroidal_qcd_shells"] is True
+
+
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["electroweak_lagrangian_bridge"]

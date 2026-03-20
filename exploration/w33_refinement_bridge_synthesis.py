@@ -172,6 +172,12 @@ from w33_natural_units_root_gap_bridge import (
 from w33_heawood_electroweak_polarization_bridge import (
     build_heawood_electroweak_polarization_summary,
 )
+from w33_natural_units_cosmological_complement_bridge import (
+    build_natural_units_cosmological_complement_summary,
+)
+from w33_natural_units_unit_balance_bridge import (
+    build_natural_units_unit_balance_summary,
+)
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
@@ -342,6 +348,8 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     natural_units_neutral_shell = build_natural_units_neutral_shell_summary()
     natural_units_root_gap = build_natural_units_root_gap_summary()
     heawood_electroweak_polarization = build_heawood_electroweak_polarization_summary()
+    natural_units_cosmological_complement = build_natural_units_cosmological_complement_summary()
+    natural_units_unit_balance = build_natural_units_unit_balance_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -955,6 +963,61 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "reduced_packet_eigenvalues_match_weak_and_hypercharge": heawood_electroweak_polarization["exact_factorizations"]["reduced_packet_eigenvalues_match_weak_and_hypercharge"],
             "neutral_numerator_is_heawood_trace_minus_clifford_rank": heawood_electroweak_polarization["exact_factorizations"]["neutral_numerator_is_heawood_trace_minus_clifford_rank"],
             "clifford_packet_is_available": heawood_electroweak_polarization["exact_factorizations"]["clifford_packet_is_available"],
+        },
+        "natural_units_cosmological_complement_bridge": {
+            "reduced_complement_formula": natural_units_cosmological_complement["cosmological_complement_dictionary"]["reduced_complement_formula"],
+            "lifted_complement_formula": natural_units_cosmological_complement["cosmological_complement_dictionary"]["lifted_complement_formula"],
+            "numerator_formula": natural_units_cosmological_complement["cosmological_complement_dictionary"]["numerator_formula"],
+            "surface_formula": natural_units_cosmological_complement["cosmological_complement_dictionary"]["surface_formula"],
+            "q": natural_units_cosmological_complement["cosmological_complement_dictionary"]["q"],
+            "theta_w33": natural_units_cosmological_complement["cosmological_complement_dictionary"]["theta_w33"],
+            "phi3": natural_units_cosmological_complement["cosmological_complement_dictionary"]["phi3"],
+            "phi6": natural_units_cosmological_complement["cosmological_complement_dictionary"]["phi6"],
+            "root_gap": natural_units_cosmological_complement["cosmological_complement_dictionary"]["root_gap"]["exact"],
+            "cosmological_fraction": natural_units_cosmological_complement["cosmological_complement_dictionary"]["cosmological_fraction"]["exact"],
+            "cosmological_numerator": natural_units_cosmological_complement["cosmological_complement_dictionary"]["cosmological_numerator"],
+            "single_surface_flags": natural_units_cosmological_complement["cosmological_complement_dictionary"]["single_surface_flags"],
+            "heawood_middle_trace": natural_units_cosmological_complement["cosmological_complement_dictionary"]["heawood_middle_trace"],
+            "middle_rank": natural_units_cosmological_complement["cosmological_complement_dictionary"]["middle_rank"],
+            "external_chain_density_limit": natural_units_cosmological_complement["cosmological_complement_dictionary"]["external_chain_density_limit"],
+            "cosmological_numerator_equals_phi3_squared_minus_phi6_squared": natural_units_cosmological_complement["exact_factorizations"]["cosmological_numerator_equals_phi3_squared_minus_phi6_squared"],
+            "cosmological_numerator_equals_4_q_theta": natural_units_cosmological_complement["exact_factorizations"]["cosmological_numerator_equals_4_q_theta"],
+            "cosmological_fraction_equals_one_minus_gap_squared": natural_units_cosmological_complement["exact_factorizations"]["cosmological_fraction_equals_one_minus_gap_squared"],
+            "reduced_complement_is_120_over_169_identity": natural_units_cosmological_complement["exact_factorizations"]["reduced_complement_is_120_over_169_identity"],
+            "four_det_equals_cosmological_fraction": natural_units_cosmological_complement["exact_factorizations"]["four_det_equals_cosmological_fraction"],
+            "surface_plus_middle_trace_equals_120": natural_units_cosmological_complement["exact_factorizations"]["surface_plus_middle_trace_equals_120"],
+            "lifted_coefficient_matches_cosmological_fraction": natural_units_cosmological_complement["exact_factorizations"]["lifted_coefficient_matches_cosmological_fraction"],
+            "lifted_average_trace_matches_cosmological_fraction": natural_units_cosmological_complement["exact_factorizations"]["lifted_average_trace_matches_cosmological_fraction"],
+            "curved_bridge_uses_universal_120_mode": natural_units_cosmological_complement["exact_factorizations"]["curved_bridge_uses_universal_120_mode"],
+        },
+        "natural_units_unit_balance_bridge": {
+            "reduced_balance_formula": natural_units_unit_balance["unit_balance_dictionary"]["reduced_balance_formula"],
+            "lifted_balance_formula": natural_units_unit_balance["unit_balance_dictionary"]["lifted_balance_formula"],
+            "mixed_product_formula": natural_units_unit_balance["unit_balance_dictionary"]["mixed_product_formula"],
+            "fraction_formula": natural_units_unit_balance["unit_balance_dictionary"]["fraction_formula"],
+            "numerator_formula": natural_units_unit_balance["unit_balance_dictionary"]["numerator_formula"],
+            "shell_balance_formula": natural_units_unit_balance["unit_balance_dictionary"]["shell_balance_formula"],
+            "shell_formula": natural_units_unit_balance["unit_balance_dictionary"]["shell_formula"],
+            "phi3": natural_units_unit_balance["unit_balance_dictionary"]["phi3"],
+            "phi6": natural_units_unit_balance["unit_balance_dictionary"]["phi6"],
+            "denominator_square": natural_units_unit_balance["unit_balance_dictionary"]["denominator_square"],
+            "polarization_fraction": natural_units_unit_balance["unit_balance_dictionary"]["polarization_fraction"]["exact"],
+            "cosmological_fraction": natural_units_unit_balance["unit_balance_dictionary"]["cosmological_fraction"]["exact"],
+            "polarization_numerator": natural_units_unit_balance["unit_balance_dictionary"]["polarization_numerator"],
+            "cosmological_numerator": natural_units_unit_balance["unit_balance_dictionary"]["cosmological_numerator"],
+            "single_surface_flags": natural_units_unit_balance["unit_balance_dictionary"]["single_surface_flags"],
+            "heawood_middle_trace": natural_units_unit_balance["unit_balance_dictionary"]["heawood_middle_trace"],
+            "toroidal_trace": natural_units_unit_balance["unit_balance_dictionary"]["toroidal_trace"],
+            "qcd_selector": natural_units_unit_balance["unit_balance_dictionary"]["qcd_selector"],
+            "reduced_balance_is_identity": natural_units_unit_balance["exact_factorizations"]["reduced_balance_is_identity"],
+            "polarization_fraction_equals_gap_squared": natural_units_unit_balance["exact_factorizations"]["polarization_fraction_equals_gap_squared"],
+            "cosmological_fraction_equals_four_det": natural_units_unit_balance["exact_factorizations"]["cosmological_fraction_equals_four_det"],
+            "unit_splits_into_polarization_plus_complement": natural_units_unit_balance["exact_factorizations"]["unit_splits_into_polarization_plus_complement"],
+            "denominator_square_equals_two_numerators": natural_units_unit_balance["exact_factorizations"]["denominator_square_equals_two_numerators"],
+            "polarization_numerator_equals_toroidal_trace_plus_qcd_selector": natural_units_unit_balance["exact_factorizations"]["polarization_numerator_equals_toroidal_trace_plus_qcd_selector"],
+            "cosmological_numerator_equals_surface_plus_heawood_trace": natural_units_unit_balance["exact_factorizations"]["cosmological_numerator_equals_surface_plus_heawood_trace"],
+            "denominator_square_equals_surface_heawood_plus_polarization": natural_units_unit_balance["exact_factorizations"]["denominator_square_equals_surface_heawood_plus_polarization"],
+            "denominator_square_equals_surface_heawood_toroidal_qcd_shells": natural_units_unit_balance["exact_factorizations"]["denominator_square_equals_surface_heawood_toroidal_qcd_shells"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -3306,7 +3369,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 694,
+        "focused_test_stack_size": 700,
     }
 
 
