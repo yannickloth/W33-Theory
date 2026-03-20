@@ -61,6 +61,7 @@ from w33_minimal_triangulation_bridge import build_minimal_triangulation_summary
 from w33_mobius_fano_bridge import build_mobius_fano_summary
 from w33_mod7_fano_duality_bridge import build_mod7_fano_duality_summary
 from w33_heawood_harmonic_bridge import build_heawood_harmonic_summary
+from w33_heawood_tetra_radical_bridge import build_heawood_tetra_radical_summary
 from w33_heawood_klein_symmetry_bridge import build_heawood_klein_symmetry_summary
 from w33_heawood_shell_ladder_bridge import build_heawood_shell_ladder_summary
 from w33_klein_quartic_gf3_tetra_bridge import build_klein_quartic_gf3_tetra_summary
@@ -232,6 +233,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     mobius = build_mobius_fano_summary()
     mod7_fano_duality = build_mod7_fano_duality_summary()
     heawood_harmonic = build_heawood_harmonic_summary()
+    heawood_tetra_radical = build_heawood_tetra_radical_summary()
     heawood_klein_symmetry = build_heawood_klein_symmetry_summary()
     heawood_shell_ladder = build_heawood_shell_ladder_summary()
     klein_quartic_gf3_tetra = build_klein_quartic_gf3_tetra_summary()
@@ -2264,6 +2266,27 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "tetra_weight_for_same_gap_exact": heawood_harmonic["local_normalization"]["tetra_weight_for_same_gap_exact"],
             "weighted_tetra_nonzero_laplacian_equals_heawood_gap": heawood_harmonic["local_normalization"]["weighted_tetra_nonzero_laplacian_equals_heawood_gap"],
         },
+        "heawood_tetra_radical_bridge": {
+            "full_laplacian_minimal_polynomial": heawood_tetra_radical["heawood_middle_shell"]["full_laplacian_minimal_polynomial"],
+            "middle_shell_dimension": heawood_tetra_radical["heawood_middle_shell"]["middle_shell_dimension"],
+            "middle_quadratic_polynomial": heawood_tetra_radical["heawood_middle_shell"]["middle_quadratic_polynomial"],
+            "middle_quadratic_relation_holds": heawood_tetra_radical["heawood_middle_shell"]["middle_quadratic_relation_holds"],
+            "middle_branch_eigenvalues_exact": heawood_tetra_radical["heawood_middle_shell"]["middle_branch_eigenvalues_exact"],
+            "middle_branch_multiplicity_each": heawood_tetra_radical["heawood_middle_shell"]["middle_branch_multiplicity_each"],
+            "middle_shell_trace_exact": heawood_tetra_radical["heawood_middle_shell"]["middle_shell_trace_exact"],
+            "middle_shell_pseudodeterminant_exact": heawood_tetra_radical["heawood_middle_shell"]["middle_shell_pseudodeterminant_exact"],
+            "projector_three_rank": heawood_tetra_radical["heawood_spectral_projectors"]["projector_three_rank"],
+            "projector_sqrt2_rank": heawood_tetra_radical["heawood_spectral_projectors"]["projector_sqrt2_rank"],
+            "low_shell_projector_rank": heawood_tetra_radical["heawood_spectral_projectors"]["low_shell_projector_rank"],
+            "weighted_tetra_branch_weights_exact": heawood_tetra_radical["klein_tetra_local_packet"]["weighted_tetra_branch_weights_exact"],
+            "weighted_tetra_minus_spectrum_exact": heawood_tetra_radical["klein_tetra_local_packet"]["weighted_tetra_minus_spectrum_exact"],
+            "weighted_tetra_plus_spectrum_exact": heawood_tetra_radical["klein_tetra_local_packet"]["weighted_tetra_plus_spectrum_exact"],
+            "middle_shell_dimension_equals_gauge_dimension": heawood_tetra_radical["exact_factorizations"]["middle_shell_dimension_equals_gauge_dimension"],
+            "low_shell_rank_equals_toroidal_seed_order": heawood_tetra_radical["exact_factorizations"]["low_shell_rank_equals_toroidal_seed_order"],
+            "middle_branch_product_equals_phi6": heawood_tetra_radical["exact_factorizations"]["middle_branch_product_equals_phi6"],
+            "weighted_klein_tetra_minus_realizes_middle_minus_branch": heawood_tetra_radical["exact_factorizations"]["weighted_klein_tetra_minus_realizes_middle_minus_branch"],
+            "weighted_klein_tetra_plus_realizes_middle_plus_branch": heawood_tetra_radical["exact_factorizations"]["weighted_klein_tetra_plus_realizes_middle_plus_branch"],
+        },
         "heawood_klein_symmetry_bridge": {
             "bipartition_preserving_order": heawood_klein_symmetry["bipartition_preserving_symmetry"]["heawood_bipartition_preserving_order"],
             "full_heawood_order": heawood_klein_symmetry["full_symmetry"]["full_heawood_automorphism_order"],
@@ -2911,7 +2934,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 518,
+        "focused_test_stack_size": 520,
     }
 
 

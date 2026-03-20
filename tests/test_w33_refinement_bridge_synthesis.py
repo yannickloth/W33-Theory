@@ -2316,6 +2316,46 @@ def test_synthesis_records_heawood_harmonic_bridge() -> None:
     assert bridge["weighted_tetra_nonzero_laplacian_equals_heawood_gap"] is True
 
 
+def test_synthesis_records_heawood_tetra_radical_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_tetra_radical_bridge"]
+    assert bridge["full_laplacian_minimal_polynomial"] == "x (x - 6) (x^2 - 6x + 7)"
+    assert bridge["middle_shell_dimension"] == 12
+    assert bridge["middle_quadratic_polynomial"] == "x^2 - 6x + 7"
+    assert bridge["middle_quadratic_relation_holds"] is True
+    assert bridge["middle_branch_eigenvalues_exact"] == {
+        "minus": "3 - sqrt(2)",
+        "plus": "sqrt(2) + 3",
+    }
+    assert bridge["middle_branch_multiplicity_each"] == 6
+    assert bridge["middle_shell_trace_exact"] == "36"
+    assert bridge["middle_shell_pseudodeterminant_exact"] == "117649"
+    assert bridge["projector_three_rank"] == 1
+    assert bridge["projector_sqrt2_rank"] == 6
+    assert bridge["low_shell_projector_rank"] == 7
+    assert bridge["weighted_tetra_branch_weights_exact"] == {
+        "minus": "3/4 - sqrt(2)/4",
+        "plus": "sqrt(2)/4 + 3/4",
+    }
+    assert bridge["weighted_tetra_minus_spectrum_exact"] == [
+        "0",
+        "3 - sqrt(2)",
+        "3 - sqrt(2)",
+        "3 - sqrt(2)",
+    ]
+    assert bridge["weighted_tetra_plus_spectrum_exact"] == [
+        "0",
+        "sqrt(2) + 3",
+        "sqrt(2) + 3",
+        "sqrt(2) + 3",
+    ]
+    assert bridge["middle_shell_dimension_equals_gauge_dimension"] is True
+    assert bridge["low_shell_rank_equals_toroidal_seed_order"] is True
+    assert bridge["middle_branch_product_equals_phi6"] is True
+    assert bridge["weighted_klein_tetra_minus_realizes_middle_minus_branch"] is True
+    assert bridge["weighted_klein_tetra_plus_realizes_middle_plus_branch"] is True
+
+
 def test_synthesis_records_heawood_klein_symmetry_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["heawood_klein_symmetry_bridge"]
