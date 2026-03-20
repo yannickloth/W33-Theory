@@ -20,6 +20,8 @@ concurrency:
 jobs:
   lean-build:
     runs-on: ubuntu-latest
+    env:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
     defaults:
       run:
         working-directory: proofs/lean
@@ -154,15 +156,15 @@ jobs:
           fi
 
       - name: Login to GHCR (if GHCR_TOKEN provided)
-        if: ${{ secrets.GHCR_TOKEN != '' }}
+        if: ${{ env.GHCR_TOKEN != '' }}
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ env.GHCR_TOKEN }}
 
       - name: No GHCR token (info)
-        if: ${{ secrets.GHCR_TOKEN == '' }}
+        if: ${{ env.GHCR_TOKEN == '' }}
         run: |
           echo "GHCR_TOKEN not set; skipping GHCR login. To allow pulling protected images from ghcr.io, add a repository secret named GHCR_TOKEN (PAT with 'read:packages' scope)."
 
@@ -175,8 +177,8 @@ jobs:
           SLEEP=10
           CANDIDATES=()
           # Prefer pinned toolchain if present
-          if [ -f proofs/lean/lean-toolchain ]; then
-            TC="$(cat proofs/lean/lean-toolchain | tr -d '[:space:]')"
+          if [ -f lean-toolchain ]; then
+            TC="$(cat lean-toolchain | tr -d '[:space:]')"
             echo "Found toolchain pin: $TC"
             CANDIDATES+=("$TC")
             if ! echo "$TC" | grep -q '^ghcr.io/'; then

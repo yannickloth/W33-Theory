@@ -116,6 +116,8 @@ data/*
 !data/w33_e8_mapping.json
 
 # Small vendored test fixtures needed for offline/CI collection
+!artifacts/
+artifacts/*
 !artifacts/e6_cubic_affine_heisenberg_model.json
 !artifacts/firewall_filtered_trinification_section_sectors.json
 

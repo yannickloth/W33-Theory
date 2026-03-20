@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - master
       - main
 
 jobs:
@@ -40,7 +41,7 @@ jobs:
 
             If the generator has changed the output, please review the changes and
             merge if everything looks good.
-          base: main
+          base: master
           branch: "chore/gen-update-${{ github.run_id }}"
           paths:
             - proofs/lean/conjugators_generated.lean

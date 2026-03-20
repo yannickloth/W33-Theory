@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>W(3,3)-E8 Live Paper -- Exact Closure and Finite-Geometry Program</title>
 <meta name="description" content="Evidence-tiered live paper for the W(3,3)-E8 research program: verified geometry, full Dirac/Hodge spectral closure, exact PMNS cyclotomic formulas, and the remaining CE2/L-infinity residual gap.">
 <style>
@@ -21,11 +21,11 @@
   --gold: #e3b341;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; max-width: 100%; overflow-x: hidden; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Noto, Helvetica, Arial, sans-serif;
   background: var(--bg); color: var(--fg);
-  line-height: 1.65; max-width: 100%;
+  line-height: 1.65; max-width: 100%; overflow-x: hidden;
 }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -172,6 +172,11 @@ nav.topnav .nav-toggle-state {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.8rem 0.9rem 0.35rem;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
 }
 .sidebar-toc .sidebar-title {
   font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
@@ -233,7 +238,16 @@ nav.topnav .nav-toggle-state {
   text-decoration: none;
 }
 .back-to-top.visible { opacity: 1; transform: translateY(0); }
+body.nav-open .back-to-top {
+  opacity: 0 !important;
+  pointer-events: none;
+  transform: translateY(20px);
+}
 .back-to-top:hover { background: var(--gold); text-decoration: none; }
+img, svg, canvas, iframe, video {
+  max-width: 100%;
+  height: auto;
+}
 
 /* ── Sidebar overlay for mobile ── */
 .sidebar-overlay {
@@ -267,6 +281,17 @@ body.nav-open { overflow: hidden; }
   nav.topnav .nav-toggle { display: none; }
 }
 @media (max-width: 1099px) {
+  .page-content,
+  .container,
+  section,
+  .hero,
+  .card-grid,
+  .bridge-grid,
+  .highlight-rail,
+  .domain-grid {
+    max-width: 100%;
+    overflow-x: clip;
+  }
   nav.topnav {
     justify-content: center;
     padding: 0.55rem 0.8rem;
@@ -295,6 +320,22 @@ body.nav-open { overflow: hidden; }
   }
   .sidebar-toc { top: 80px; }
   .sidebar-toc .sidebar-header { display: flex; }
+  .sidebar-toc .toc-search { margin-top: 0.6rem; }
+  code,
+  .repo-file-link code,
+  th,
+  td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.nav-open nav.topnav { display: none; }
+  body.nav-open .sidebar-overlay { z-index: 109; }
+  body.nav-open .sidebar-toc { top: 0; z-index: 110; }
 }
 
 /* ── Old nav hidden ── */
@@ -4970,11 +5011,19 @@ function setMobileNavState(open) {
   var hint = button.querySelector('.nav-toggle-hint');
   var label = button.querySelector('.nav-toggle-label');
   var state = button.querySelector('.nav-toggle-state');
-  if (icon) icon.innerHTML = open ? '&times;' : '&#9776;';
-  if (shortLabel) shortLabel.textContent = open ? 'Close Navigator' : 'Navigator';
+  if (icon) icon.innerHTML = '&#9776;';
+  if (shortLabel) shortLabel.textContent = 'Navigator';
   if (hint) hint.textContent = open ? 'Navigator Open' : 'Use The Navigator';
   if (label) label.textContent = open ? 'Close sections, proofs, and physics map' : 'Open sections, proofs, and physics map';
   if (state) state.textContent = open ? 'Tap to close' : 'Tap to open';
+  if (open && window.innerWidth < 1100) {
+    var closeButton = sidebar.querySelector('.sidebar-close');
+    var search = sidebar.querySelector('.toc-search');
+    var focusTarget = search || closeButton;
+    if (focusTarget) window.setTimeout(function() { focusTarget.focus(); }, 0);
+  } else if (!open && window.innerWidth < 1100) {
+    window.setTimeout(function() { button.focus(); }, 0);
+  }
 }
 
 function toggleMobileNav() {
@@ -4986,6 +5035,12 @@ function toggleMobileNav() {
 function closeMobileNav() {
   setMobileNavState(false);
 }
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape' && document.body.classList.contains('nav-open')) {
+    closeMobileNav();
+  }
+});
 
 // ── Back to top button ──
 (function() {
