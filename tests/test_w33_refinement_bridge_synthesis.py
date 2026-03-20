@@ -260,6 +260,135 @@ def test_synthesis_records_natural_units_topological_bridge() -> None:
     assert bridge["transport_standards_live_on_same_local_shell"] is True
 
 
+def test_synthesis_records_natural_units_electroweak_split_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_electroweak_split_bridge"]
+    assert bridge["q"] == 3
+    assert bridge["lambda"] == 2
+    assert bridge["phi6"] == 7
+    assert bridge["q_squared"] == 9
+    assert bridge["theta_w33"] == 10
+    assert bridge["phi3"] == 13
+    assert bridge["local_unit_formula"] == "(lambda + Phi_6) / q^2 = 1"
+    assert bridge["electroweak_unit_formula"] == "1 = q/Phi_3 + Theta(W33)/Phi_3"
+    assert bridge["local_unit_value"] == "1"
+    assert bridge["electroweak_unit_value"] == "1"
+    assert bridge["weinberg_formula"] == "sin^2(theta_W) = q / Phi_3"
+    assert bridge["cosine_formula"] == "cos^2(theta_W) = Theta(W33) / Phi_3"
+    assert bridge["electric_reciprocal_formula"] == "(4 pi alpha) / e^2 = 1"
+    assert bridge["weak_reciprocal_formula"] == "(4 pi alpha) / g^2 = q / Phi_3"
+    assert bridge["hypercharge_reciprocal_formula"] == "(4 pi alpha) / g'^2 = Theta(W33) / Phi_3"
+    assert bridge["neutral_reciprocal_formula"] == "(4 pi alpha) / g_Z^2 = q Theta(W33) / Phi_3^2"
+    assert bridge["sin2_theta_w"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["q_over_phi3"] == "3/13"
+    assert bridge["theta_over_phi3"] == "10/13"
+    assert bridge["reciprocal_g"] == "3/13"
+    assert bridge["reciprocal_gprime"] == "10/13"
+    assert bridge["reciprocal_gz"] == "30/169"
+    assert bridge["tan2_theta_w"] == "3/10"
+    assert bridge["theta_over_q"] == "10/3"
+    assert bridge["lambda_plus_phi6_equals_q_squared"] is True
+    assert bridge["theta_equals_q_plus_phi6"] is True
+    assert bridge["q_plus_theta_equals_phi3"] is True
+    assert bridge["phi3_equals_2q_plus_phi6"] is True
+    assert bridge["weinberg_equals_q_over_phi3"] is True
+    assert bridge["cosine_equals_theta_over_phi3"] is True
+    assert bridge["sin2_plus_cos2_equals_unity"] is True
+    assert bridge["weak_reciprocal_matches_weinberg"] is True
+    assert bridge["hypercharge_reciprocal_matches_cosine"] is True
+    assert bridge["electric_reciprocal_harmonic_sum_closes"] is True
+    assert bridge["g_squared_over_gprime_squared_equals_theta_over_q"] is True
+    assert bridge["neutral_reciprocal_equals_q_theta_over_phi3_squared"] is True
+    assert bridge["local_and_electroweak_are_nested_unit_laws"] is True
+
+
+def test_synthesis_records_heawood_weinberg_denominator_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_weinberg_denominator_bridge"]
+    assert bridge["middle_quadratic_polynomial"] == "x^2 - 6x + 7"
+    assert bridge["shared_six_channel"] == 6
+    assert bridge["phi6"] == 7
+    assert bridge["phi3"] == 13
+    assert bridge["theta_w33"] == 10
+    assert bridge["denominator_formula"] == "Phi_3 = 6 + Phi_6"
+    assert bridge["theta_formula"] == "Theta(W33) = q + Phi_6"
+    assert bridge["weinberg_from_heawood_formula"] == "sin^2(theta_W) = q / (6 + Phi_6)"
+    assert bridge["cosine_from_heawood_formula"] == "cos^2(theta_W) = (q + Phi_6) / (6 + Phi_6)"
+    assert bridge["pmns23_from_heawood_formula"] == "sin^2(theta_23) = Phi_6 / (6 + Phi_6)"
+    assert bridge["sin2_theta_w"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["sin2_theta_23"] == "7/13"
+    assert bridge["q_over_heawood_denominator"] == "3/13"
+    assert bridge["theta_over_heawood_denominator"] == "10/13"
+    assert bridge["phi6_over_heawood_denominator"] == "7/13"
+    assert bridge["phi3_equals_shared_six_plus_phi6"] is True
+    assert bridge["theta_equals_q_plus_phi6"] is True
+    assert bridge["weinberg_equals_q_over_heawood_denominator"] is True
+    assert bridge["cosine_equals_theta_over_heawood_denominator"] is True
+    assert bridge["pmns23_equals_phi6_over_heawood_denominator"] is True
+
+
+def test_synthesis_records_heawood_q_center_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["heawood_q_center_bridge"]
+    assert bridge["middle_quadratic_polynomial"] == "x^2 - 6x + 7"
+    assert bridge["q_centered_formula"] == "x^2 - 2q x + Phi_6"
+    assert bridge["root_formula"] == "x = q +- sqrt(lambda)"
+    assert bridge["q"] == 3
+    assert bridge["lambda"] == 2
+    assert bridge["phi6"] == 7
+    assert bridge["phi3"] == 13
+    assert bridge["middle_branch_minus"] == "3 - sqrt(2)"
+    assert bridge["middle_branch_plus"] == "3 + sqrt(2)"
+    assert bridge["middle_shell_trace_exact"] == "36"
+    assert bridge["middle_shell_pseudodeterminant_exact"] == "117649"
+    assert bridge["linear_term_equals_2q"] is True
+    assert bridge["constant_term_equals_phi6"] is True
+    assert bridge["q_squared_minus_phi6_equals_lambda"] is True
+    assert bridge["roots_equal_q_plus_minus_sqrt_lambda"] is True
+    assert bridge["phi3_equals_2q_plus_phi6"] is True
+    assert bridge["middle_trace_equals_q_times_gauge_dimension"] is True
+    assert bridge["middle_pseudodeterminant_equals_phi6_to_6"] is True
+
+
+def test_synthesis_records_natural_units_projective_denominator_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["natural_units_projective_denominator_bridge"]
+    assert bridge["fano_selector_formula"] == "B B^T = 2I + J"
+    assert bridge["metrology_selector_formula"] == "B B^T = (R_K G_0) I + J"
+    assert bridge["toroidal_shell_formula"] == "L_K7 = Phi_6 I - J"
+    assert bridge["local_sum_formula"] == "B B^T + L_K7 = (R_K G_0 + Phi_6) I = q^2 I"
+    assert bridge["q_from_selector_and_metrology_formula"] == "q = 1 + R_K G_0"
+    assert bridge["shared_six_formula"] == "6 = 1 + q + R_K G_0"
+    assert bridge["selector_line"] == 1
+    assert bridge["q"] == 3
+    assert bridge["rk_times_g0"] == "2"
+    assert bridge["phi6"] == 7
+    assert bridge["q_squared"] == 9
+    assert bridge["phi3_formula"] == "Phi_3 = 1 + q + R_K G_0 + Phi_6"
+    assert bridge["theta_formula"] == "Theta(W33) = 1 + R_K G_0 + Phi_6"
+    assert bridge["phi3"] == 13
+    assert bridge["theta_w33"] == 10
+    assert bridge["selector_plus_projective_plus_shells"] == "13"
+    assert bridge["theta_from_selector_and_shells"] == "10"
+    assert bridge["sin2_theta_w_formula"] == "sin^2(theta_W) = q / (1 + q + R_K G_0 + Phi_6)"
+    assert bridge["cos2_theta_w_formula"] == "cos^2(theta_W) = (1 + R_K G_0 + Phi_6) / (1 + q + R_K G_0 + Phi_6)"
+    assert bridge["sin2_theta_w"] == "3/13"
+    assert bridge["cos2_theta_w"] == "10/13"
+    assert bridge["q_over_projective_denominator"] == "3/13"
+    assert bridge["theta_over_projective_denominator"] == "10/13"
+    assert bridge["selector_coefficient_equals_metrology_coefficient"] is True
+    assert bridge["q_equals_selector_line_plus_metrology_shell"] is True
+    assert bridge["shared_six_equals_selector_plus_projective_plus_metrology_shell"] is True
+    assert bridge["metrology_plus_qcd_shell_equals_q_squared"] is True
+    assert bridge["phi3_equals_selector_plus_projective_plus_shells"] is True
+    assert bridge["theta_equals_selector_plus_shells"] is True
+    assert bridge["weinberg_equals_q_over_projective_denominator"] is True
+    assert bridge["cosine_equals_theta_over_projective_denominator"] is True
+    assert bridge["projective_denominator_rebuilds_from_natural_units_shells"] is True
+
+
 def test_synthesis_records_electroweak_lagrangian_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["electroweak_lagrangian_bridge"]

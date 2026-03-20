@@ -145,6 +145,16 @@ from w33_vacuum_unity_bridge import build_vacuum_unity_summary
 from w33_quantum_vacuum_standards_bridge import build_quantum_vacuum_standards_summary
 from w33_natural_units_meaning_bridge import build_natural_units_meaning_summary
 from w33_natural_units_topological_bridge import build_natural_units_topological_summary
+from w33_natural_units_electroweak_split_bridge import (
+    build_natural_units_electroweak_split_summary,
+)
+from w33_heawood_weinberg_denominator_bridge import (
+    build_heawood_weinberg_denominator_summary,
+)
+from w33_heawood_q_center_bridge import build_heawood_q_center_summary
+from w33_natural_units_projective_denominator_bridge import (
+    build_natural_units_projective_denominator_summary,
+)
 from w33_electroweak_lagrangian_bridge import build_electroweak_lagrangian_summary
 from w33_one_scale_bosonic_bridge import build_one_scale_bosonic_summary
 from w33_bosonic_action_completion_bridge import build_bosonic_action_completion_summary
@@ -304,6 +314,10 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     quantum_vacuum_standards = build_quantum_vacuum_standards_summary()
     natural_units_meaning = build_natural_units_meaning_summary()
     natural_units_topological = build_natural_units_topological_summary()
+    natural_units_electroweak_split = build_natural_units_electroweak_split_summary()
+    heawood_weinberg_denominator = build_heawood_weinberg_denominator_summary()
+    heawood_q_center = build_heawood_q_center_summary()
+    natural_units_projective_denominator = build_natural_units_projective_denominator_summary()
     electroweak_lagrangian = build_electroweak_lagrangian_summary()
     one_scale_bosonic = build_one_scale_bosonic_summary()
     bosonic_action_completion = build_bosonic_action_completion_summary()
@@ -621,6 +635,123 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "flux_josephson_unit_matches_selector_line": natural_units_topological["exact_factorizations"]["flux_josephson_unit_matches_selector_line"],
             "unit_operator_matches_natural_vacuum": natural_units_topological["exact_factorizations"]["unit_operator_matches_natural_vacuum"],
             "transport_standards_live_on_same_local_shell": natural_units_topological["exact_factorizations"]["transport_standards_live_on_same_local_shell"],
+        },
+        "natural_units_electroweak_split_bridge": {
+            "q": natural_units_electroweak_split["nested_complement_dictionary"]["q"],
+            "lambda": natural_units_electroweak_split["nested_complement_dictionary"]["lambda"],
+            "phi6": natural_units_electroweak_split["nested_complement_dictionary"]["phi6"],
+            "q_squared": natural_units_electroweak_split["nested_complement_dictionary"]["q_squared"],
+            "theta_w33": natural_units_electroweak_split["nested_complement_dictionary"]["theta_w33"],
+            "phi3": natural_units_electroweak_split["nested_complement_dictionary"]["phi3"],
+            "local_unit_formula": natural_units_electroweak_split["nested_complement_dictionary"]["local_unit_formula"],
+            "electroweak_unit_formula": natural_units_electroweak_split["nested_complement_dictionary"]["electroweak_unit_formula"],
+            "local_unit_value": natural_units_electroweak_split["nested_complement_dictionary"]["local_unit_value"]["exact"],
+            "electroweak_unit_value": natural_units_electroweak_split["nested_complement_dictionary"]["electroweak_unit_value"]["exact"],
+            "weinberg_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["weinberg_formula"],
+            "cosine_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["cosine_formula"],
+            "electric_reciprocal_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["electric_reciprocal_formula"],
+            "weak_reciprocal_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["weak_reciprocal_formula"],
+            "hypercharge_reciprocal_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["hypercharge_reciprocal_formula"],
+            "neutral_reciprocal_formula": natural_units_electroweak_split["electroweak_split_dictionary"]["neutral_reciprocal_formula"],
+            "sin2_theta_w": natural_units_electroweak_split["electroweak_split_dictionary"]["sin2_theta_w"]["exact"],
+            "cos2_theta_w": natural_units_electroweak_split["electroweak_split_dictionary"]["cos2_theta_w"]["exact"],
+            "q_over_phi3": natural_units_electroweak_split["electroweak_split_dictionary"]["q_over_phi3"]["exact"],
+            "theta_over_phi3": natural_units_electroweak_split["electroweak_split_dictionary"]["theta_over_phi3"]["exact"],
+            "reciprocal_g": natural_units_electroweak_split["electroweak_split_dictionary"]["reciprocal_g"]["exact"],
+            "reciprocal_gprime": natural_units_electroweak_split["electroweak_split_dictionary"]["reciprocal_gprime"]["exact"],
+            "reciprocal_gz": natural_units_electroweak_split["electroweak_split_dictionary"]["reciprocal_gz"]["exact"],
+            "tan2_theta_w": natural_units_electroweak_split["electroweak_split_dictionary"]["tan2_theta_w"]["exact"],
+            "theta_over_q": natural_units_electroweak_split["electroweak_split_dictionary"]["theta_over_q"]["exact"],
+            "lambda_plus_phi6_equals_q_squared": natural_units_electroweak_split["exact_factorizations"]["lambda_plus_phi6_equals_q_squared"],
+            "theta_equals_q_plus_phi6": natural_units_electroweak_split["exact_factorizations"]["theta_equals_q_plus_phi6"],
+            "q_plus_theta_equals_phi3": natural_units_electroweak_split["exact_factorizations"]["q_plus_theta_equals_phi3"],
+            "phi3_equals_2q_plus_phi6": natural_units_electroweak_split["exact_factorizations"]["phi3_equals_2q_plus_phi6"],
+            "weinberg_equals_q_over_phi3": natural_units_electroweak_split["exact_factorizations"]["weinberg_equals_q_over_phi3"],
+            "cosine_equals_theta_over_phi3": natural_units_electroweak_split["exact_factorizations"]["cosine_equals_theta_over_phi3"],
+            "sin2_plus_cos2_equals_unity": natural_units_electroweak_split["exact_factorizations"]["sin2_plus_cos2_equals_unity"],
+            "weak_reciprocal_matches_weinberg": natural_units_electroweak_split["exact_factorizations"]["weak_reciprocal_matches_weinberg"],
+            "hypercharge_reciprocal_matches_cosine": natural_units_electroweak_split["exact_factorizations"]["hypercharge_reciprocal_matches_cosine"],
+            "electric_reciprocal_harmonic_sum_closes": natural_units_electroweak_split["exact_factorizations"]["electric_reciprocal_harmonic_sum_closes"],
+            "g_squared_over_gprime_squared_equals_theta_over_q": natural_units_electroweak_split["exact_factorizations"]["g_squared_over_gprime_squared_equals_theta_over_q"],
+            "neutral_reciprocal_equals_q_theta_over_phi3_squared": natural_units_electroweak_split["exact_factorizations"]["neutral_reciprocal_equals_q_theta_over_phi3_squared"],
+            "local_and_electroweak_are_nested_unit_laws": natural_units_electroweak_split["exact_factorizations"]["local_and_electroweak_are_nested_unit_laws"],
+        },
+        "heawood_weinberg_denominator_bridge": {
+            "middle_quadratic_polynomial": heawood_weinberg_denominator["heawood_shell_dictionary"]["middle_quadratic_polynomial"],
+            "shared_six_channel": heawood_weinberg_denominator["heawood_shell_dictionary"]["shared_six_channel"],
+            "phi6": heawood_weinberg_denominator["heawood_shell_dictionary"]["phi6"],
+            "phi3": heawood_weinberg_denominator["heawood_shell_dictionary"]["phi3"],
+            "theta_w33": heawood_weinberg_denominator["heawood_shell_dictionary"]["theta_w33"],
+            "denominator_formula": heawood_weinberg_denominator["heawood_shell_dictionary"]["denominator_formula"],
+            "theta_formula": heawood_weinberg_denominator["heawood_shell_dictionary"]["theta_formula"],
+            "weinberg_from_heawood_formula": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["weinberg_from_heawood_formula"],
+            "cosine_from_heawood_formula": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["cosine_from_heawood_formula"],
+            "pmns23_from_heawood_formula": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["pmns23_from_heawood_formula"],
+            "sin2_theta_w": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["sin2_theta_w"]["exact"],
+            "cos2_theta_w": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["cos2_theta_w"]["exact"],
+            "sin2_theta_23": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["sin2_theta_23"]["exact"],
+            "q_over_heawood_denominator": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["q_over_heawood_denominator"]["exact"],
+            "theta_over_heawood_denominator": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["theta_over_heawood_denominator"]["exact"],
+            "phi6_over_heawood_denominator": heawood_weinberg_denominator["electroweak_from_heawood_dictionary"]["phi6_over_heawood_denominator"]["exact"],
+            "phi3_equals_shared_six_plus_phi6": heawood_weinberg_denominator["exact_factorizations"]["phi3_equals_shared_six_plus_phi6"],
+            "theta_equals_q_plus_phi6": heawood_weinberg_denominator["exact_factorizations"]["theta_equals_q_plus_phi6"],
+            "weinberg_equals_q_over_heawood_denominator": heawood_weinberg_denominator["exact_factorizations"]["weinberg_equals_q_over_heawood_denominator"],
+            "cosine_equals_theta_over_heawood_denominator": heawood_weinberg_denominator["exact_factorizations"]["cosine_equals_theta_over_heawood_denominator"],
+            "pmns23_equals_phi6_over_heawood_denominator": heawood_weinberg_denominator["exact_factorizations"]["pmns23_equals_phi6_over_heawood_denominator"],
+        },
+        "heawood_q_center_bridge": {
+            "middle_quadratic_polynomial": heawood_q_center["heawood_q_center_dictionary"]["middle_quadratic_polynomial"],
+            "q_centered_formula": heawood_q_center["heawood_q_center_dictionary"]["q_centered_formula"],
+            "root_formula": heawood_q_center["heawood_q_center_dictionary"]["root_formula"],
+            "q": heawood_q_center["heawood_q_center_dictionary"]["q"],
+            "lambda": heawood_q_center["heawood_q_center_dictionary"]["lambda"],
+            "phi6": heawood_q_center["heawood_q_center_dictionary"]["phi6"],
+            "phi3": heawood_q_center["heawood_q_center_dictionary"]["phi3"],
+            "middle_branch_minus": heawood_q_center["heawood_q_center_dictionary"]["middle_branch_minus"],
+            "middle_branch_plus": heawood_q_center["heawood_q_center_dictionary"]["middle_branch_plus"],
+            "middle_shell_trace_exact": heawood_q_center["heawood_q_center_dictionary"]["middle_shell_trace_exact"],
+            "middle_shell_pseudodeterminant_exact": heawood_q_center["heawood_q_center_dictionary"]["middle_shell_pseudodeterminant_exact"],
+            "linear_term_equals_2q": heawood_q_center["exact_factorizations"]["linear_term_equals_2q"],
+            "constant_term_equals_phi6": heawood_q_center["exact_factorizations"]["constant_term_equals_phi6"],
+            "q_squared_minus_phi6_equals_lambda": heawood_q_center["exact_factorizations"]["q_squared_minus_phi6_equals_lambda"],
+            "roots_equal_q_plus_minus_sqrt_lambda": heawood_q_center["exact_factorizations"]["roots_equal_q_plus_minus_sqrt_lambda"],
+            "phi3_equals_2q_plus_phi6": heawood_q_center["exact_factorizations"]["phi3_equals_2q_plus_phi6"],
+            "middle_trace_equals_q_times_gauge_dimension": heawood_q_center["exact_factorizations"]["middle_trace_equals_q_times_gauge_dimension"],
+            "middle_pseudodeterminant_equals_phi6_to_6": heawood_q_center["exact_factorizations"]["middle_pseudodeterminant_equals_phi6_to_6"],
+        },
+        "natural_units_projective_denominator_bridge": {
+            "fano_selector_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["fano_selector_formula"],
+            "metrology_selector_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["metrology_selector_formula"],
+            "toroidal_shell_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["toroidal_shell_formula"],
+            "local_sum_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["local_sum_formula"],
+            "q_from_selector_and_metrology_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["q_from_selector_and_metrology_formula"],
+            "shared_six_formula": natural_units_projective_denominator["metrology_shell_dictionary"]["shared_six_formula"],
+            "selector_line": natural_units_projective_denominator["metrology_shell_dictionary"]["selector_line"],
+            "q": natural_units_projective_denominator["metrology_shell_dictionary"]["q"],
+            "rk_times_g0": natural_units_projective_denominator["metrology_shell_dictionary"]["rk_times_g0"]["exact"],
+            "phi6": natural_units_projective_denominator["metrology_shell_dictionary"]["phi6"],
+            "q_squared": natural_units_projective_denominator["metrology_shell_dictionary"]["q_squared"],
+            "phi3_formula": natural_units_projective_denominator["projective_denominator_dictionary"]["phi3_formula"],
+            "theta_formula": natural_units_projective_denominator["projective_denominator_dictionary"]["theta_formula"],
+            "phi3": natural_units_projective_denominator["projective_denominator_dictionary"]["phi3"],
+            "theta_w33": natural_units_projective_denominator["projective_denominator_dictionary"]["theta_w33"],
+            "selector_plus_projective_plus_shells": natural_units_projective_denominator["projective_denominator_dictionary"]["selector_plus_projective_plus_shells"]["exact"],
+            "theta_from_selector_and_shells": natural_units_projective_denominator["projective_denominator_dictionary"]["theta_from_selector_and_shells"]["exact"],
+            "sin2_theta_w_formula": natural_units_projective_denominator["projective_denominator_dictionary"]["sin2_theta_w_formula"],
+            "cos2_theta_w_formula": natural_units_projective_denominator["projective_denominator_dictionary"]["cos2_theta_w_formula"],
+            "sin2_theta_w": natural_units_projective_denominator["projective_denominator_dictionary"]["sin2_theta_w"]["exact"],
+            "cos2_theta_w": natural_units_projective_denominator["projective_denominator_dictionary"]["cos2_theta_w"]["exact"],
+            "q_over_projective_denominator": natural_units_projective_denominator["projective_denominator_dictionary"]["q_over_projective_denominator"]["exact"],
+            "theta_over_projective_denominator": natural_units_projective_denominator["projective_denominator_dictionary"]["theta_over_projective_denominator"]["exact"],
+            "selector_coefficient_equals_metrology_coefficient": natural_units_projective_denominator["exact_factorizations"]["selector_coefficient_equals_metrology_coefficient"],
+            "q_equals_selector_line_plus_metrology_shell": natural_units_projective_denominator["exact_factorizations"]["q_equals_selector_line_plus_metrology_shell"],
+            "shared_six_equals_selector_plus_projective_plus_metrology_shell": natural_units_projective_denominator["exact_factorizations"]["shared_six_equals_selector_plus_projective_plus_metrology_shell"],
+            "metrology_plus_qcd_shell_equals_q_squared": natural_units_projective_denominator["exact_factorizations"]["metrology_plus_qcd_shell_equals_q_squared"],
+            "phi3_equals_selector_plus_projective_plus_shells": natural_units_projective_denominator["exact_factorizations"]["phi3_equals_selector_plus_projective_plus_shells"],
+            "theta_equals_selector_plus_shells": natural_units_projective_denominator["exact_factorizations"]["theta_equals_selector_plus_shells"],
+            "weinberg_equals_q_over_projective_denominator": natural_units_projective_denominator["exact_factorizations"]["weinberg_equals_q_over_projective_denominator"],
+            "cosine_equals_theta_over_projective_denominator": natural_units_projective_denominator["exact_factorizations"]["cosine_equals_theta_over_projective_denominator"],
+            "projective_denominator_rebuilds_from_natural_units_shells": natural_units_projective_denominator["exact_factorizations"]["projective_denominator_rebuilds_from_natural_units_shells"],
         },
         "electroweak_lagrangian_bridge": {
             "vev_ew_gev": electroweak_lagrangian["graph_inputs"]["vev_ew_gev"],
@@ -2972,7 +3103,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "geometry must therefore come from an external factor or from a different "
             "genuinely 4D refinement family."
         ),
-        "focused_test_stack_size": 665,
+        "focused_test_stack_size": 678,
     }
 
 
