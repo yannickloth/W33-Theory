@@ -323,7 +323,7 @@ class TestW33Derivations:
         fiftyseven = 3 * nineteen
         onehundredseventy_one = nineteen * (nineteen - 1) // 2
         assert eleven              == V_11
-        assert nineteen            == eleven + Q + MU + 1             # 19 = 11 + 3 + 4 + 1 exactly
+        assert nineteen            == K + Q + MU                      # 19 = k + q + mu = 12+3+4 exactly
         assert fiftyseven          == V_57
         assert onehundredseventy_one == E_57
 
