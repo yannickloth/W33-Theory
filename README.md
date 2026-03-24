@@ -16,9 +16,9 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 | Metric | Count |
 |--------|-------|
 | Theorems proved | 3,029+ |
-| Test functions | 23,272 |
+| Test functions | 23,318 |
 | Test files | 858 |
-| Phases completed | CLXXIX (179) |
+| Phases completed | CLXXX (180) |
 | Mathematical domains covered | 259+ |
 | Key predictions matched | 40 |
 
@@ -570,7 +570,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         864 test files, 23,272 test functions (the proof)
+├── tests/         865 test files, 23,318 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
