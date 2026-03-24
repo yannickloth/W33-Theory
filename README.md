@@ -16,9 +16,9 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 | Metric | Count |
 |--------|-------|
 | Theorems proved | 3,029+ |
-| Test functions | 22,746 |
-| Test files | 852 |
-| Phases completed | CLXIX (169) |
+| Test functions | 22,791 |
+| Test files | 853 |
+| Phases completed | CLXX (170) |
 | Mathematical domains covered | 259+ |
 | Key predictions matched | 40 |
 
