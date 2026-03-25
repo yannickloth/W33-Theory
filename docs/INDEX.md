@@ -2,7 +2,7 @@
 
 Navigator for the repository's paper sections, reproducibility paths, and formal proof tracks.
 
-> Landing page note: the canonical project summary lives at `COMPLETE_SUMMARY.md` (root). If you prefer a different landing page — for example `W33_THEORY_DEFINITIVE_SUMMARY.md` or a GitHub Pages‑served version under `docs/` — tell me which file to use and I will update the docs/homepage accordingly. For convenience the canonical `COMPLETE_SUMMARY.md` is also copied into `docs/` so it can be used directly by GitHub Pages.
+> Live status note: the current public-facing source of truth is `docs/index.html`, especially `#current-synthesis`, `#verified`, and `#open`, together with `docs/march_2026_frontier_note.md`. Older summaries in this repo should be treated as preserved snapshots unless they explicitly say they are the live view.
 
 
 ## Primary Entry Points
@@ -17,7 +17,7 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 | First-time reader (short) | `README.md` | Browser-first overview and quick reproducibility path |
 | Full manuscript reader | `docs/README_LIVING_PAPER_2026_02_11.md` | Preserved long-form narrative and theorem flow |
 | Contributor | `CONTRIBUTING.md` | Local workflow, tests, and contribution standards |
-| Formalization contributor | `proofs/lean/README.md` | Lean 4 setup and current proof skeleton |
+| Formalization contributor | `docs/index.html#hard-computation` | Live proof-entry map; formal Lean path is not yet wired as a stable public entry point |
 
 ## Outreach & announcements
 
@@ -42,7 +42,7 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 ## High-Signal Status and Standards
 
 - Canonical naming and counts: `STANDARDIZATION.md`
-- Current status and open gaps: `docs/STATUS_AND_GAPS.md`
+- Current status and open gaps: `docs/index.html#current-synthesis`, `docs/march_2026_frontier_note.md`, `docs/STATUS_AND_GAPS.md` (conservative baseline)
 - Online-source separation log: `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`
 - CI workflows: `.github/workflows/`
 

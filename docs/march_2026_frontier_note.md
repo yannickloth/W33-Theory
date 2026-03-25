@@ -8,6 +8,10 @@ This note records the current exact, reproducible frontier of the project. It is
 - `Conjectural`: physics interpretation that fits the verified structure but is not yet a theorem.
 - `Historical`: older broad project claims preserved elsewhere in the repo and site archive.
 
+## New synthesis
+
+The strongest repo-native closure is best described as a **finite spectral-exceptional skeleton**, not yet a finished continuum-dynamical TOE. The cleanest reading is a three-shell reading: bare/internal formulas such as `1/4` or `3/8`, dressed/projective formulas such as `3/13`, and global/spectral formulas such as `137 + 40/1111`, `122`, or shell-dependent Euler counts should not be conflated.
+
 ## Verified
 
 ### Geometry and linear-algebra backbone

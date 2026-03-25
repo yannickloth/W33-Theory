@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
 
-A computational proof that the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices — encodes the full structure of the Standard Model, including gauge groups, coupling constants, mixing matrices, mass hierarchies, cosmological parameters, and the promoted vacuum/transport standards layer. Every claim is backed by automated tests.
+A computational research program centered on the finite symplectic polar space **W(3,3)** — a single strongly regular graph on 40 vertices. The strongest exact closure currently in hand is a finite spectral-exceptional skeleton for Standard-Model-like structure; the full continuum 4D / gravity lift and the last Yukawa spectral packet remain open.
 
 ## The Theory in One Paragraph
 
@@ -11,18 +11,22 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 **DOI:** [10.5281/zenodo.18652825](https://doi.org/10.5281/zenodo.18652825)
 
+## Status Snapshot
+
+The strongest repo-native result is a finite spectral-exceptional closure, not yet a finished continuum-dynamical TOE. For the live shell map and promoted status language, use [docs/index.html#current-synthesis](docs/index.html#current-synthesis) and [docs/march_2026_frontier_note.md](docs/march_2026_frontier_note.md).
+
 ## Current Scale
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 3,029+ |
-| Test functions | 24,762 |
-| Test files | 896 |
-| Phases completed | CCXIII (213) |
-| Mathematical domains covered | 259+ |
-| Key predictions matched | 40 |
+| Theorems proved | 3,000+ |
+| Test definitions / live checks | 24k+ / 2367 advertised live checks |
+| Test files under `tests/` | ~900 |
+| Phases completed | 200+ |
+| Mathematical domains covered | 250+ |
+| Public prediction inventory | evolving |
 
-The public release still includes **207+ pillar verification scripts** and **5500+ automated tests** as the long-form theorem archive behind the promoted frontier, including milestones through **Pillar 207** and beyond.
+The public release still includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond.
 
 ## Reader Route
 
@@ -47,7 +51,7 @@ The public release still includes **207+ pillar verification scripts** and **550
 
 ## Current Frontier
 
-The remaining open question is now very specific: the continuum bridge is no longer about where gravity lives, but about how to lift the exact discrete gravity channel to the genuine continuum spectral-action theorem. The internal side is exact on the full 480-dimensional chain complex: the full Dirac/Hodge spectrum, heat traces, and McKean-Singer supertrace are exact, and the finite spectral-action moments are now forced directly by the W(3,3) adjacency algebra plus clique-complex regularity. On the curved 4D barycentric tower, the first product moment splits exactly into a universal `120`-mode cosmological term, an Einstein-Hilbert-like `6`-mode, and a topological `1`-mode. The same tower is now an exact pole theorem too: its generating function has only the `120`, `6`, and `1` poles, and the normalized `6`-pole residue already recovers the exact discrete EH coefficient while its rank-39 normalization recovers the continuum EH coefficient. More sharply, the curved tower now reconstructs the electroweak generator itself: from any three successive refinement levels, `x = sin^2(theta_W) = 9 c_EH,cont / c_6 = 3/13`, and the same identity is already visible in the exceptional residue dictionary as `x = 9(40×8)/(40×6×52)`. Better still, those same curved inputs already reconstruct the native graph geometry: `q = 3`, `Phi_3 = 13`, `Phi_6 = 7`, `SRG(40,12,2,4)`, and the adjacency spectrum `(12,2,-4)`. Better again, they now reconstruct the full finite internal spectral package too: the same curved route recovers the chain dimensions `(40,240,160,40)`, Betti data `(1,81,0,0)`, boundary ranks `(39,120,40)`, the full finite `D_F^2` spectrum `{0^82,4^320,10^48,16^30}`, and the exact moments `a0 = 480`, `a2 = 2240`, `a4 = 17600`. Sharper still, that finite package now closes the loop exactly: it predicts back `c_EH,cont = 320`, `c_6 = 12480`, `a2 = 2240`, and `x = 3/13` on every curved sample, so the current discrete/continuum bridge is already a true roundtrip closure at the coefficient level. Tightest of all, the promoted package is now an exact three-sample master closure: once three successive curved samples fix `(12480,320,2240)`, everything else is forced — `x = 3/13`, `q = 3`, `Phi_3 = 13`, `Phi_6 = 7`, `SRG(40,12,2,4)`, `(12,2,-4)`, `{0^82,4^320,10^48,16^30}`, `(480,2240,17600)`, and the promoted exceptional data `(40,240,8,6,96)` — and the finite package predicts back the same curved data. The Monster/Landauer side is now cleaner too: the rigorous bridge is not the full Monster order, but the local `3B` shell `3^(1+12)`, whose exact ternary Landauer cost is `13 kT ln 3`; its Heisenberg irrep contributes `6 kT ln 3`, leaving a complementary `7 kT ln 3` shell, and the full Monster ternary part now closes as `3^20 = 3^13 * 3^7 = 3^(Phi_3 + Phi_6)`. More sharply, the same first moonshine gap is now exact in three live forms at once: `324 = 54*6 = 4*81 = |Aut(W33)|/160`, so `196884 = 728*270 + 54*6 = 729*270 + 54 = 728*270 + |Stab(Δ)|`. In plain terms, the same gap is simultaneously exceptional gauge return times the shared six-channel core, spacetime times the protected matter sector, and the native local W33 triangle symmetry. The algebra spine behind that moonshine story is now exact too: `24 = |Aut(Q8)| = |Roots(D4)| = |V(24-cell)|`, `192 = |W(D4)| = |Flags(Tomotope)|`, `1152 = |W(F4)| = 6×192 = 12×96`, `51840 = |W(E6)|`, and the same promoted top now compresses as `2160 = 51840 / 24` before lifting to `196560 = 2160×13×7` and completing to `196884 = 196560 + 324`. So the moonshine layer is no longer a separate ornament; it is the quotient-and-lift form of the same exact triality ladder. For the full finite W33 package, the discrete `6`-mode coefficient is exactly `12480 = 39 × 320`, and the same factors lock cyclotomically as `39 = qΦ₃ = 3×13` and `28 = (q+1)Φ₆ = 4×7 = q³+1`. More sharply, the bridge is now channel-aware rather than scalar-only: `320 = 40×8` is the exact l6 spinor `E6`/Cartan base block, the same shared six-channel core appears as the l6 `A2` slice, the transport Weyl(A2) order, the six firewall triplet fibers, and the tomotope triality factor in `96 = 16×6`, and the discrete curvature coefficient factors both as `320×39` and as `240×52 = 40×6×52`, tying the curved six-mode directly to the W33 edge/E8-root count and the F4 tomotope/24-cell route. That same triality/polytope ladder is now promoted too: `24 = |Aut(Q8)| = |Roots(D4)| = |V(24-cell)|`, `192 = |W(D4)| = |Flags(Tomotope)|`, and `1152 = |W(F4)| = 6×192 = 12×96`, while the Reye shadow is the same `12 / 16` tomotope package seen as 24-cell axes and hexagon-shadow pieces. Sharper still, that promoted `40 / 6 / 8` package is now operator-level: on `End(S_48)` the corrected l6 spinor action splits into pairwise Frobenius-orthogonal `E6`, `A2`, and Cartan channel spaces of exact ranks `40`, `6`, and `8`, so the curved coefficients are exact rank dressings of live internal projectors. Sharper still, the same promoted data is now a native tensor-rank and residue dictionary: `240 = 40×6`, `320 = 40×8`, `96 = 6×16`, the `6`-pole is exactly `40×6×52 = 240×52`, and the `1`-pole is exactly `40×56`. Sharper still, the bridge is already bidirectional on this promoted exceptional data: any three successive refinement levels reconstruct the W33 vertex count `40`, the edge / E8-root count `240`, the l6 spinor Cartan rank `8`, the shared six-channel core `6`, the tomotope automorphism order `96`, and now the full finite internal spectral package as well. These curved compression laws now provide additional unique `q = 3` selection theorems. The unresolved point is therefore the genuine continuum/refinement lift of this exact channel-aware `6`-mode law, not ambiguity in the discrete spectral triple itself.
+The strongest closed statement is a finite spectral-exceptional skeleton, and the remaining open question is the continuum lift: how to turn the exact discrete gravity channel into a genuine smooth 4D spectral-action theorem. The internal side is exact on the full 480-dimensional chain complex, and the curved barycentric tower already isolates a universal `120`-mode, an Einstein-Hilbert-like `6`-mode, and a topological `1`-mode with exact roundtrip identities. The live site now explains these claims with a three-shell map so that bare/internal formulas, dressed electroweak formulas, and global spectral closures are not conflated.
 
 The algebra side is sharper too. The promoted shell is now not just a transport/moonshine shell but an ambient projective shell: `27^2 = 729`, `728 = dim sl(27) = dim A_26`, and projectivizing the nonzero ternary Golay shell gives `364 = |PG(5,3)|`. That same ambient shell splits exactly as `364 = 40 + 324`, with the live W33 Klein slice and the same moonshine gap occupying one projective space. The harmonic-cube/Klein-quartic side then lands on the same shell: `7+7 = 14 = dim G2`, `56 = 14*4 = 2*28`, `84 = 14*6 = 4*21`, `168 = 2*84 = 8*21 = 24*7`, `364 = 14*26 = 28*13`, and `728 = 56*13 = 28*26`. More sharply, the same Klein/Clifford packet already lifts into the curved topological channel: the external plane contributes `13 = Phi_3`, the bitangent shell contributes `28 = q^3 + 1`, the quartic/E7 shell contributes `56 = 2*28`, and the live topological coefficient is exactly `2240 = 40*56`. The same quartic shell is now a full ladder law too: `364 = 28*13`, `728 = 28*26`, and `2240 = 28*80`, so the ambient Klein shell, the classical `A_26` shell, and the finite Euler/McKean-Singer channel are all one bitangent-shell theorem. So the final promoted algebra is best read as an `A_26` ambient Klein shell dressed by the live `G2 / D4 / F4 / E6` package, not as a pile of disconnected count coincidences.
 
@@ -592,4 +596,3 @@ W33-Theory/
 ## License
 
 MIT
-

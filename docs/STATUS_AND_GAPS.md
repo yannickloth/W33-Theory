@@ -1,5 +1,7 @@
 # Status and gaps (what’s computed vs what’s still physics)
 
+This file is a conservative baseline. It does not supersede the live promoted status language on `docs/index.html#current-synthesis`, `docs/index.html#verified`, or `docs/march_2026_frontier_note.md`.
+
 ## What’s currently *computationally verified in this repo*
 
 - `E8` root system is constructed explicitly (240 roots).

@@ -847,7 +847,7 @@ section h2::after {
     <div class="p" style="left:92%;animation-duration:11s;animation-delay:1.5s;width:2px;height:2px"></div>
   </div>
   <h1>W(3,3)&ndash;<span>E&#8328;</span> Theory</h1>
-  <div class="subtitle">3,029+ theorems &middot; 24,762 tests &middot; 40 predictions &middot; 896 test files &middot; 213 hard computation phases</div>
+  <div class="subtitle">3,000+ theorems &middot; 24k+ tests/checks &middot; frontier predictions &middot; ~900 test files &middot; 213 hard computation phases</div>
   <div class="tagline">
     A single finite geometry — the symplectic polar space <strong>W(3,3)</strong> on
     40 vertices with 240 edges — encodes the <strong>Standard Model</strong> gauge groups,
@@ -871,6 +871,7 @@ section h2::after {
   </button>
   <div class="nav-quick">
     <a href="#reader-guide">Reader Guide</a>
+    <a href="#current-synthesis">Current Synthesis</a>
     <a href="#hard-computation">Hard Computation</a>
     <a href="#verified">Verified Results</a>
     <a href="#bridge-2026">Refinement Bridge</a>
@@ -895,6 +896,7 @@ section h2::after {
     <div class="toc-group-title" onclick="this.parentElement.classList.toggle('expanded')">Overview</div>
     <div class="toc-items">
       <a class="toc-item" href="#reader-guide">Reader Guide</a>
+      <a class="toc-item" href="#current-synthesis">Current Synthesis</a>
       <a class="toc-item" href="#hard-computation">Hard Computation Phases</a>
       <a class="toc-item" href="#verified">Verified Results</a>
       <a class="toc-item" href="#conjectural">Physics Interpretation</a>
@@ -1213,9 +1215,33 @@ section h2::after {
   </div>
 </section>
 
+<section id="current-synthesis">
+  <h2><span class="icon">◎</span> Current Synthesis <span class="section-badge">March 2026</span></h2>
+  <div class="spotlight">
+    <p><strong>After rereading the full paper:</strong> the strongest repo-native closure is a <strong>finite spectral-exceptional unification skeleton</strong>. The exact spine is the W(3,3) graph itself, its clique complex, its transport quotients, its Hodge / Dirac packages, and the operator identities that recur across those layers.</p>
+    <p><strong>The cleanest reading is a three-shell reading.</strong> The <strong>bare/local shell</strong> contains raw combinatorial or unification-scale selectors such as <code>&Delta; = 4</code>, <code>N<sub>c</sub> = 3</code>, <code>4 + 8 = 12</code>, and the older internal <code>sin<sup>2</sup>(&theta;<sub>W</sub>) = 1/4</code> or <code>3/8</code> diagnostics. The <strong>projective/dressed shell</strong> contains the promoted electroweak and flavour ratios such as <code>sin<sup>2</sup>(&theta;<sub>W</sub>) = 3/13</code>, <code>&theta;<sub>C</sub> = arctan(3/13)</code>, and the PMNS package over <code>13</code> and <code>91</code>. The <strong>global/spectral shell</strong> contains statements like <code>&alpha;<sup>&minus;1</sup> = 137 + 40/1111</code>, the <code>40 / 6 / 8</code> exceptional channel dictionary, and shell-dependent Euler / zero-mode counts.</p>
+    <p><strong>That shell split resolves most apparent contradictions on the page.</strong> The promoted finite Dirac package is the full tetrahedral <code>480</code>-dimensional closure with <code>D<sub>F</sub><sup>2</sup> = {0<sup>82</sup>,4<sup>320</sup>,10<sup>48</sup>,16<sup>30</sup>}</code>, while the older <code>122</code> zero-mode count belongs to the truncated <code>C<sup>0</sup> &oplus; C<sup>1</sup> &oplus; C<sup>2</sup></code> shell. Likewise <code>&chi; = -40</code> is the truncated-shell Euler characteristic, while <code>&chi; = -80</code> belongs to the full clique-complex <code>f</code>-vector <code>(40,240,160,40)</code>.</p>
+    <p><strong>The real bottleneck is no longer finding more finite identities.</strong> It is proving the continuum lift. The open obligations are the smooth <code>4D</code> spectral-action / Einstein-Hilbert theorem, the last Yukawa spectral packet, and a broader uniqueness argument beyond the current repo-searched landscape. So the honest claim today is not “accepted TOE”; it is that the finite internal side is unusually rigid and the continuum-dynamical closure remains the live frontier.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="label">Exact Finite Spine</div>
+      <div class="detail"><code>SRG(40,12,2,4)</code>, <code>|V| = 40</code>, <code>|E| = 240</code>, <code>|T| = 160</code>, adjacency spectrum <code>{12<sup>1</sup>,2<sup>24</sup>,(-4)<sup>15</sup>}</code>, the Hodge split <code>C<sup>1</sup> = 39 + 81 + 120</code>, the <code>27 + 27 + 27</code> matter decomposition, and the propagator identity <code>&alpha;<sup>&minus;1</sup> = 137 + 40/1111</code> are the strongest exact closures.</div>
+    </div>
+    <div class="card">
+      <div class="label">Promoted Dressed Shell</div>
+      <div class="detail">The live electroweak / flavour package is strongest where multiple routes round-trip the same number: <code>3/13</code> reappears in the dressed weak share, Cabibbo denominator, PMNS package, and curved-refinement residue locks. This is the layer that should be read as promoted phenomenology.</div>
+    </div>
+    <div class="card">
+      <div class="label">Open Bridge</div>
+      <div class="detail">The remaining gap is not whether the finite graph has structure. It is whether the refinement family plus almost-commutative product can be turned into a rigorous continuum theorem with the right short-time asymptotics, dynamical gravity, and final Yukawa closure.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════ HIGHLIGHTS BANNER ═══════════════════════ -->
 <div class="highlights-banner">
-  <h3>Latest Results &mdash; 213 Phases, 24,762 Tests, 259+ Mathematical Domains</h3>
+  <h3>Latest Results &mdash; 213 Phases, 24k+ Tests/Checks, 250+ Mathematical Domains</h3>
   <div class="highlights-grid">
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>Spectral Action</strong> — Full NCG spectral action functionals from W(3,3)</span></div>
     <div class="highlight-item"><span class="hi-icon">★</span><span><strong>M-Theory</strong> — Exceptional structures &amp; 11D from SRG parameters</span></div>
@@ -1452,12 +1478,12 @@ section h2::after {
 
 <!-- ═══════════════════════ HARD COMPUTATION PHASES ═══════════════════════ -->
 <section id="hard-computation">
-  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">24,762 tests</span></h2>
+  <h2><span class="icon">&Sigma;</span> Hard Computation Phases <span class="check-badge">24k+ tests/checks</span></h2>
   <p>Every phase below constructs W(3,3) from scratch and proves exact graph-theoretic, algebraic, and topological properties through pure computation. No approximations, no external graph build shortcuts &mdash; just explicit matrix, chain-complex, and operator calculations.</p>
   <p style="color: var(--fg2); font-size: 0.95rem;">The chip grid below is the current continuous hard-computation window <code>LXIV&ndash;CC</code>. Click any tile to open the exact proof file in the <code>tests/</code> folder on GitHub. If you are new to the theory, read the plain-English map and verified layer first, then use the tiles as proof entry points.</p>
 
   <div class="progress-bar">
-    <div class="progress-fill" style="width:100%">213 phases &middot; 24,762 tests &middot; 100% pass</div>
+    <div class="progress-fill" style="width:100%">213 phases &middot; 24k+ tests/checks &middot; live ledger passing</div>
   </div>
 
   <div class="domain-grid">
@@ -1619,6 +1645,7 @@ section h2::after {
   <h2><span class="icon">↻</span> Verified Results — March 2026</h2>
   <div class="spotlight">
     <p>This top section is the live promoted layer of a much larger exact body preserved below. The archive is not throwaway context; it is the accumulated result set. The only items treated as residual gaps are the few that are named explicitly here. Monospace file references below now open the corresponding GitHub files directly.</p>
+    <p><strong>Reading rule:</strong> if two formulas disagree elsewhere on the page, default to the shell map in <a href="#current-synthesis">Current Synthesis</a> and to the promoted values here. The most common live split is <code>3/13</code> dressed versus <code>3/8</code> bare-shell, and full <code>480</code>-package versus truncated <code>122</code>-shell.</p>
     <p><strong>New:</strong> For a compact, interactive “complete theory” dashboard covering the same verified breakthroughs plus the latest session proofs, see <a href="w33_complete_theory.html">the Complete Theory page</a>.</p>
   </div>
   <div class="card-grid">
@@ -2043,15 +2070,15 @@ section h2::after {
 <!-- ═══════════════════════ CORE NUMBERS ═══════════════════════ -->
 <section id="numbers">
   <h2><span class="icon">⬡</span> Core Numbers</h2>
-  <p>Exact invariants of W(3,3) and their physical parallels, computationally verified.</p>
+  <p>Exact invariants of W(3,3) and their physical parallels, computationally verified. The live promoted electroweak share is <code>3/13</code>; the older <code>3/8</code> value is kept only as a bare internal / GUT-shell diagnostic. Likewise <code>&chi; = -40</code> belongs to the truncated shell and <code>&chi; = -80</code> to the full tetrahedral clique complex.</p>
   <div class="card-grid">
     <div class="card"><div class="num">240</div><div class="label">Edges = E₈ roots</div><div class="detail">The collinearity graph of W(3,3) has exactly 240 edges — the same count as the roots of the E₈ exceptional Lie algebra.</div></div>
     <div class="card"><div class="num">51,840</div><div class="label">|Aut| = |W(E₆)|</div><div class="detail">The automorphism group Sp(4,3) has order 51,840, isomorphic to the Weyl group of E₆.</div></div>
     <div class="card"><div class="num">81</div><div class="label">H₁ = ℤ⁸¹ = 27+27+27</div><div class="detail">First homology splits as three copies of 27 — three chiral generations, topologically protected.</div></div>
-    <div class="card"><div class="num">3/8</div><div class="label">sin²θ<sub>W</sub></div><div class="detail">The Weinberg angle emerges from SRG eigenvalues: sin²θ<sub>W</sub> = 2q/(q+1)² = 3/8, unique to q = 3.</div></div>
+    <div class="card"><div class="num">3/13</div><div class="label">sin²θ<sub>W</sub> (promoted)</div><div class="detail">The promoted electroweak share is <code>q/(q²+q+1) = 3/13</code>. The older <code>3/8</code> value remains an internal unification-shell diagnostic, not the live dressed electroweak number.</div></div>
     <div class="card"><div class="num">Δ = 4</div><div class="label">Spectral Mass Gap</div><div class="detail">The Hodge Laplacian has a gap of 4 separating massless matter (81) from gauge bosons (120).</div></div>
     <div class="card"><div class="num">137.036</div><div class="label">α⁻¹ from SRG</div><div class="detail">k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004 (experiment: 137.035999, diff: 4.5×10⁻⁶).</div></div>
-    <div class="card"><div class="num" style="color: #ffd700;">2367/2367</div><div class="label">All Checks Pass ★</div><div class="detail">THEORY_OF_EVERYTHING.py derives all 2367 checks from F₃ + ω alone. Every claim computationally verified. <strong style="color: #ffd700;">BROKE THROUGH 2000!</strong></div></div>
+    <div class="card"><div class="num" style="color: #ffd700;">2367/2367</div><div class="label">All Checks Pass ★</div><div class="detail">The current repo ledger passes its advertised 2367 checks. That count is a hard-computation milestone, but it is not by itself the missing continuum-QFT / GR theorem.</div></div>
     <div class="card"><div class="num">E₈ Dynkin</div><div class="label">Subgraph Found</div><div class="detail">E₈ Dynkin diagram found at vertices [7,1,0,13,24,28,37,16] with Gram matrix det = 1.</div></div>
   </div>
 
@@ -2064,7 +2091,7 @@ section h2::after {
     <tr><td>Spectral gap</td><td><strong>Δ = 4</strong></td><td>Yang–Mills mass gap</td></tr>
     <tr><td>Order-3 eigenspace split</td><td><strong>81 = 27+27+27</strong> (all 800 elements)</td><td>Three fermion generations</td></tr>
     <tr><td>E₆ Hessian tritangents</td><td><strong>45 = 36 + 9</strong></td><td>Heisenberg model ∩ fibers</td></tr>
-    <tr><td>Weinberg angle</td><td><strong>sin²θ<sub>W</sub> = 3/8</strong></td><td>SU(5) GUT boundary — unique to q = 3</td></tr>
+    <tr><td>Weinberg angle</td><td><strong>3/13 promoted, 3/8 bare-shell</strong></td><td><code>3/13</code> is the dressed/projective electroweak share; <code>3/8</code> is the internal GUT-shell diagnostic</td></tr>
     <tr><td>QEC parameters</td><td><strong>[240, 81, d<sub>Z</sub> = 4]</strong> over GF(3)</td><td>Exact ternary homological code</td></tr>
     <tr><td>Gauge coupling</td><td><strong>α<sub>GUT</sub> = 1/(8π) ≈ 1/25.1</strong></td><td>Within 3.6% of MSSM value</td></tr>
     <tr><td>E₈ ℤ₃-grading</td><td><strong>86 + 81 + 81 = 248</strong></td><td>Full E₈ Lie algebra decomposition</td></tr>
@@ -2087,6 +2114,9 @@ section h2::after {
 <section id="theory">
   <h2><span class="icon">△</span> The Theory</h2>
   <p>This section states the defensible backbone of the program: exact finite geometry on the internal side, and the current status of the curved <code>4D</code> bridge. Older broad phenomenology remains archive material unless it is promoted explicitly in the verified section above.</p>
+  <div class="spotlight">
+    <p><strong>Shell discipline matters here.</strong> <code>3/8</code> is the old bare/internal unification diagnostic; <code>3/13</code> is the promoted dressed/projective electroweak share. <code>&chi; = -40</code> belongs to the truncated shell; <code>&chi; = -80</code> belongs to the full tetrahedral clique complex. The older <code>122</code> zero-mode count is the truncated Dirac-K&auml;hler shell, while the promoted full finite package carries <code>82</code> zero modes on the <code>480</code>-dimensional closure.</p>
+  </div>
 
   <h3>Step 1 — The Geometry</h3>
   <p>W(3,3) is the symplectic polar space W(3, 𝔽₃). Its collinearity graph is the unique
@@ -2117,6 +2147,7 @@ section h2::after {
     <tr><td><strong>16</strong></td><td>15</td><td>Heavy Y bosons (SO(6) adjoint)</td></tr>
   </table>
   <p>The spectral gap Δ = 4 is exact and separates massless from massive modes. In the live promoted interpretation these are exact finite sectors first; the full continuum particle interpretation is still tied to the open curved <code>4D</code> bridge theorem.</p>
+  <p>On the full promoted tetrahedral package the corresponding finite Dirac square is <code>D<sub>F</sub><sup>2</sup> = {0<sup>82</sup>,4<sup>320</sup>,10<sup>48</sup>,16<sup>30</sup>}</code>. The older <code>122</code> zero-mode count is not a contradiction; it belongs to the truncated <code>C<sup>0</sup> &oplus; C<sup>1</sup> &oplus; C<sup>2</sup></code> shell.</p>
 
   <h3>Step 4 — Three Generations</h3>
   <p>Every order-3 element of PSp(4,3) decomposes H₁ = ℤ⁸¹ as <strong>27 ⊕ 27 ⊕ 27</strong>.
@@ -2124,12 +2155,13 @@ section h2::after {
   subspaces are cyclically permuted by a ℤ₃ automorphism, making the generation symmetry
   <strong>topologically protected</strong>.</p>
 
-  <h3>Step 5 — Weinberg Angle</h3>
-  <p>For any generalized quadrangle GQ(q, q), the adjacency eigenvalues give:</p>
+  <h3>Step 5 — Electroweak Shells</h3>
+  <p>Two exact electroweak formulas appear in the project, and they live on different shells:</p>
   <div class="math-block">
-    <span class="eq">sin²θ<sub>W</sub> = 2q / (q+1)² = 3/8</span> only for <span class="eq">q = 3</span>
+    <span class="eq">sin²θ<sub>W</sub> = 2q / (q+1)² = 3/8</span> &nbsp; (bare / internal shell)<br>
+    <span class="eq">sin²θ<sub>W</sub> = q / (q²+q+1) = 3/13</span> &nbsp; (dressed / projective shell)
   </div>
-  <p>No fitting is performed on the finite side: <code>q = 3</code> is fixed by the geometry, and the formula yields <code>3/8</code> as an internal unification-scale diagnostic. It is not the same claim as a low-energy electroweak measurement.</p>
+  <p>No fitting is performed on the finite side: <code>q = 3</code> is fixed by the geometry. The <code>3/8</code> formula is the internal unification-scale diagnostic inherited from the adjacency / generalized-quadrangle shell. The promoted live electroweak value on this page is <code>3/13</code>, which is the dressed/projective share used by the PMNS, Cabibbo, and curved-refinement roundtrip layer.</p>
 
   <h3>Step 6 — Edge–Root Correspondence</h3>
   <p>The 240 edges decompose as <strong>240 = 40 × 3 × 2</strong> (lines × matchings × edges/matching).
@@ -2172,7 +2204,7 @@ section h2::after {
     <tr><td>4</td><td>Non-neighbors = dim(E₆ fundamental)</td><td>v−k−1 = q³ = 27 → q = 3</td></tr>
     <tr><td>5</td><td>Aut(GQ(q,q)) ≅ W(E₆)</td><td>Classical: only q = 3</td></tr>
   </table>
-  <p><strong>Euler characteristic χ = 40 − 240 + 160 = −40 = −v</strong>: this is an exact simplicial invariant of the internal finite geometry.</p>
+  <p><strong>Euler-characteristic shell split:</strong> <code>40 − 240 + 160 = -40 = -v</code> is the exact truncated-shell Euler characteristic, while the full tetrahedral clique complex <code>(40,240,160,40)</code> carries <code>&chi; = 40 - 240 + 160 - 40 = -80</code>. Both are exact; they refer to different chain packages.</p>
   <p><strong>Legacy note:</strong> older direct identifications of low-energy observables such as Hubble parameters, Higgs mass formulas, or alternate electroweak formulas remain archive material below unless they are promoted explicitly in the verified section.</p>
 
 <h2><span class="icon">◈</span> Grand Architecture — Rosetta Stone</h2>
@@ -4967,12 +4999,12 @@ section h2::after {
   <h2 style="color: var(--gold);"><span class="icon">★</span> Verification Dashboard</h2>
 
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num">24,762</div><div class="stat-label">Automated Tests</div></div>
-    <div class="stat-card"><div class="stat-num">896</div><div class="stat-label">Test Files</div></div>
-    <div class="stat-card"><div class="stat-num">3,029+</div><div class="stat-label">Theorems Proved</div></div>
+    <div class="stat-card"><div class="stat-num">24k+</div><div class="stat-label">Tests / Checks</div></div>
+    <div class="stat-card"><div class="stat-num">~900</div><div class="stat-label">Test Files</div></div>
+    <div class="stat-card"><div class="stat-num">3,000+</div><div class="stat-label">Theorems Proved</div></div>
     <div class="stat-card"><div class="stat-num">213</div><div class="stat-label">Hard Computation Phases</div></div>
-    <div class="stat-card"><div class="stat-num">259+</div><div class="stat-label">Mathematical Domains</div></div>
-    <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">Pass Rate</div></div>
+    <div class="stat-card"><div class="stat-num">250+</div><div class="stat-label">Mathematical Domains</div></div>
+    <div class="stat-card"><div class="stat-num">Live</div><div class="stat-label">Current Ledger</div></div>
   </div>
 
   <div class="progress-bar">
@@ -5079,7 +5111,7 @@ section h2::after {
 <!-- ═══════════════════════ PREDICTIONS & RESULTS ═══════════════════════ -->
 <section id="predictions">
   <h2><span class="icon">◎</span> Key Predictions</h2>
-  <p>Every prediction below is derived from the 5 SRG parameters (v,k,λ,μ,q) = (40,12,2,4,3) — no free parameters.</p>
+  <p>This table is a frontier dashboard, not a uniform theorem ledger. It mixes exact finite identities, dressed electroweak closures, and bridge-level phenomenology derived from the 5 SRG parameters <code>(v,k,&lambda;,&mu;,q) = (40,12,2,4,3)</code>. Read it together with the shell map above and the open-problems table below.</p>
   <table>
     <tr><th>Quantity</th><th>W(3,3) Value</th><th>Experiment</th><th>Status</th></tr>
     <tr><td>sin²θ<sub>W</sub>(M<sub>Z</sub>)</td><td>3/13 = 0.23077</td><td>0.23127 ± 0.00003</td><td class="status-ok">✅ 0.19%</td></tr>
@@ -5140,6 +5172,7 @@ section h2::after {
 
 <section id="open">
   <h2><span class="icon">?</span> Open Problems</h2>
+  <p>The strongest closed statement at present is a finite spectral-exceptional skeleton with a sharpened curved bridge program, not yet a finished continuum-dynamical theory. The list below tracks what is still open or only partially closed.</p>
   <table>
     <tr><th>#</th><th>Problem</th><th>Current State</th></tr>
     <tr><td>1</td><td><del>Gauge coupling derivation</del></td><td>✅ <strong>SOLVED</strong> — α⁻¹ = k²−2μ+1+v/[(k−1)((k−λ)²+1)] = 137.036004; rigorous QFT derivation of WHY this formula holds remains open</td></tr>
@@ -5147,12 +5180,12 @@ section h2::after {
     <tr><td>3</td><td><del>Small Cabibbo angle</del></td><td>✅ <strong>SOLVED</strong> — θ<sub>C</sub> = arctan(q/(q²+q+1)) = arctan(3/13) = 13.0° (observed: 13.04° ± 0.05°); sin θ<sub>C</sub> = 3/√178 = 0.2249 (observed: 0.2250 ± 0.0007). Full CKM now derived: θ₂₃ = arcsin(A·λ²) with A=(q+1)/(q+2)=4/5 gives 2.32° (obs 2.38°); sin(θ₁₃) = A·λ⁴·√q = 0.00354 (obs 0.00351, within exp. error!); δ<sub>CP</sub> = arctan(q−1) = 63.4° (obs 65.5°); η̄ = 2λ√(q/5) = 0.3484 (obs 0.348, exact!).</td></tr>
     <tr><td>4</td><td><del>Gravity from graph curvature</del></td><td>✅ <strong>PARTIALLY SOLVED</strong> — κ = 2/k = 1/6 uniform Ollivier-Ricci curvature on all 240 edges; R = 1/vertex; discrete Gauss–Bonnet verified; W(3,3) is discrete de Sitter; full dynamical 4D GR emergence remains open</td></tr>
     <tr><td>5</td><td><del>Weinberg angle</del></td><td>✅ <strong>SOLVED</strong> — sin²θ<sub>W</sub> = q/(q²+q+1) = 3/13 = 0.23077 (observed: 0.23127 ± 0.00003, diff 0.19%). Running from tree-level 1/4 to low-energy 3/13 via correction −1/(μ·(q²+q+1)) = −1/52. Same algebraic number q²+q+1 = 13 = |PG(2,q)| controls both Weinberg and Cabibbo angles.</td></tr>
-    <tr><td>5</td><td><del>Uniqueness</del></td><td>✅ <strong>SOLVED</strong> — Phase LXIV (<code>test_uniqueness_srg_landscape.py</code>, 64 tests) proves W(3,3) is the unique SRG with parameters (40,12,2,4) that yields the full SM structure. No other graph in the landscape produces the same phenomenology.</td></tr>
-    <tr><td>6</td><td><strong>Rigorous α formula derivation</strong></td><td>The formula k²−2μ+1+v/L<sub>eff</sub> gives 137.036004 but WHY? <strong style="color:#00ff88;">✅ SOLVED:</strong> α = spectral identity from vertex propagator M = (k−1)((A−λI)²+I)</td></tr>
-    <tr><td>7</td><td><strong>Mass spectrum from spectral theory</strong></td><td>Laplacian eigenvalues 0(1)/10(24)/16(15); 10×16=160=triangles; 10+16=26; mass ratio √(8/5); full spectrum prediction in progress</td></tr>
-    <tr><td>8</td><td><strong>Explicit 240 bijection construction</strong></td><td>No Sp(4,3)-equivariant bijection possible (1 vs. multiple orbits); representation-theoretic map needed</td></tr>
-    <tr><td>9</td><td><strong>Hubble tension mechanism</strong></td><td>H₀ = 67 and 73 both derived; physical mechanism for the two values needs clarification</td></tr>
-    <tr><td>10</td><td><strong>Curved 4D refinement/scaling theorem</strong></td><td><strong style="color:#00ff88;">âœ… Narrowed:</strong> the tomotope gives an infinite cover family, the exact almost-commutative product gives the quartic external scale, and minimal triangulations of <code>CP2</code>/<code>K3</code> give curved 4D seed geometries. The remaining open part is the rigorous small-time or cutoff theorem that turns that package into the Einstein-Hilbert term.</td></tr>
+    <tr><td>6</td><td><del>Uniqueness</del></td><td>✅ <strong>SOLVED IN CURRENT LANDSCAPE</strong> — Phase LXIV (<code>test_uniqueness_srg_landscape.py</code>, 64 tests) proves W(3,3) is the unique SRG with parameters (40,12,2,4) that yields the repo's promoted structure across the searched landscape. Broader uniqueness beyond comparable finite geometries remains a live caution.</td></tr>
+    <tr><td>7</td><td><strong>Rigorous α formula derivation</strong></td><td>The formula k²−2μ+1+v/L<sub>eff</sub> gives 137.036004 but WHY? <strong style="color:#00ff88;">✅ SOLVED AT THE FINITE LEVEL</strong> — α is the spectral identity from vertex propagator <code>M = (k−1)((A−λI)²+I)</code>. The continuum-QFT interpretation of that identity remains open.</td></tr>
+    <tr><td>8</td><td><strong>Mass spectrum from spectral theory</strong></td><td>Laplacian eigenvalues 0(1)/10(24)/16(15); 10×16=160=triangles; 10+16=26; mass ratio √(8/5); full spectrum prediction in progress</td></tr>
+    <tr><td>9</td><td><strong>Explicit 240 bijection construction</strong></td><td>No Sp(4,3)-equivariant bijection possible (1 vs. multiple orbits); representation-theoretic map needed</td></tr>
+    <tr><td>10</td><td><strong>Hubble tension mechanism</strong></td><td>H₀ = 67 and 73 both derived; physical mechanism for the two values needs clarification</td></tr>
+    <tr><td>11</td><td><strong>Curved 4D refinement/scaling theorem</strong></td><td><strong style="color:#00ff88;">NARROWED</strong> — the tomotope gives an infinite cover family, the exact almost-commutative product gives the quartic external scale, and minimal triangulations of <code>CP2</code>/<code>K3</code> give curved 4D seed geometries. The remaining open part is the rigorous small-time or cutoff theorem that turns that package into the Einstein-Hilbert term.</td></tr>
   </table>
 </section>
 
@@ -5175,7 +5208,7 @@ section h2::after {
   <p><strong>Repository:</strong> <a href="https://github.com/wilcompute/W33-Theory">github.com/wilcompute/W33-Theory</a></p>
   <p><strong>License:</strong> MIT</p>
   <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18652825">10.5281/zenodo.18652825</a></p>
-  <p><strong>Scale:</strong> 213 phases of hard computation &middot; 896 test files &middot; 24,762 automated tests &middot; 3,029+ theorems &middot; 259+ mathematical domains &middot; 40 key predictions &middot; <strong style="color: #ffd700;">100% pass rate</strong></p>
+  <p><strong>Scale:</strong> 213 phases of hard computation &middot; ~900 test files &middot; 24k+ automated tests/checks &middot; 3,000+ theorems &middot; 250+ mathematical domains &middot; frontier prediction table &middot; <strong style="color: #ffd700;">live ledger currently passing</strong></p>
   <p><strong>Foundation:</strong> The entire theory derives from SRG(40,12,2,4) — five integers that encode the Standard Model, gravity, and cosmology with no free parameters.</p>
 </section>
 
@@ -5191,7 +5224,7 @@ section h2::after {
     <a href="https://doi.org/10.5281/zenodo.18652825">DOI</a> &middot;
     <a href="https://github.com/wilcompute/W33-Theory/blob/master/docs/march_2026_frontier_note.md">Frontier Note</a>
   </p>
-  <p style="margin-top: 0.4rem; font-size: 0.8rem;">24,762 tests &middot; 896 files &middot; 3,029+ theorems &middot; 213 phases &middot; 259+ domains &middot; 100% pass rate</p>
+  <p style="margin-top: 0.4rem; font-size: 0.8rem;">24k+ tests/checks &middot; ~900 files &middot; 3,000+ theorems &middot; 213 phases &middot; 250+ domains &middot; live ledger currently passing</p>
 </footer>
 
 <script>
@@ -5455,6 +5488,3 @@ window.addEventListener('resize', function() {
 
 </body>
 </html>
-
-
-
