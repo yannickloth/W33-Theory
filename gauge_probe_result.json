@@ -1,0 +1,11 @@
+{
+  "n_mid": 12,
+  "seed_ops": 3,
+  "closure": {
+    "final_rank": 38,
+    "basis_count": 38,
+    "ops_generated": 38,
+    "iterations": 6,
+    "max_possible_real_dim": 288
+  }
+}
