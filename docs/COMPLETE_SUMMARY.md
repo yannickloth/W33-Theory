@@ -1,5 +1,7 @@
 # THEORY OF EVERYTHING: COMPLETE SUMMARY
 
+> Snapshot note: this summary preserves an older project snapshot. For the live public status surface, use `docs/index.html#current-synthesis`, `docs/index.html#verified`, and `docs/march_2026_frontier_note.md`.
+
 ## W33 = GQ(3,3) = E8 Orbit Graph
 
 **The Central Discovery: 2-Qutrit Quantum Information = E8 Gauge Structure**

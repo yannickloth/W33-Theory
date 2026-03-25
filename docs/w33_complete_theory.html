@@ -47,9 +47,15 @@
 .cnode.p{background:#EEEDFE;border-color:#CECBF6;color:#3C3489}
 .cnode.w{background:var(--color-background-warning);border-color:var(--color-border-warning);color:var(--color-text-warning)}
 .arr{color:var(--color-text-secondary);font-size:12px}
+.snapshot{background:var(--color-background-warning);border:.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:.7rem 1rem;margin:.4rem 0 .7rem}
+.snapshot a{color:inherit;text-decoration:underline}
 </style>
 
 <div class="w">
+<div class="snapshot">
+  <div class="bl">Snapshot note</div>
+  <p class="bp">This page is a compact dashboard snapshot, not the live authoritative status surface. For current promoted status, shell separation, and open-problem language, use <a href="index.html#current-synthesis">the live paper’s Current Synthesis</a> and <a href="index.html#open">Open Problems</a>.</p>
+</div>
 <div class="tabs">
   <button class="tab on" onclick="sw('final')">Final scorecard</button>
   <button class="tab" onclick="sw('moonshine')">Leech-Monster chain</button>
@@ -62,8 +68,8 @@
 <!-- FINAL SCORECARD -->
 <div id="final" class="pane on">
   <div class="banner">
-    <div class="bl">Theory status — 25 predictions from 5 integers</div>
-    <p class="bp">W(3,3) over GF(3) with (v,k,λ,μ,q) = (40,12,2,4,3). Zero free parameters. All of the SM — gauge couplings, fermion masses, mixing angles, CC, inflation, dark matter — derived from five graph integers.</p>
+    <div class="bl">Snapshot dashboard — 25-row phenomenology table</div>
+    <p class="bp">W(3,3) over GF(3) with (v,k,λ,μ,q) = (40,12,2,4,3). This page preserves one compact 25-row dashboard view of the program; it should be read together with the live shell map on <a href="index.html#current-synthesis">index.html</a>, not as a separate source of truth.</p>
   </div>
 
   <div class="sl">Gauge sector</div>

@@ -6,7 +6,9 @@
 
 **Author:** Wil Dahn
 **Date:** January-February 2026
-**Status:** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
+**Snapshot status (2026-02-11):** 73 theorems verified, 120 computational tests passing, 50+ quantitative predictions
+
+> Snapshot note: this file preserves a February 2026 status model. For the current public-facing status language, use `docs/index.html#current-synthesis`, `docs/index.html#verified`, and `docs/march_2026_frontier_note.md`.
 
 **Canonical definitions:** see `STANDARDIZATION.md` (W(3,3) vs W33, incidence counts, group orders).
 
