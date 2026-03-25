@@ -16,9 +16,9 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 | Metric | Count |
 |--------|-------|
 | Theorems proved | 3,029+ |
-| Test functions | 24,545 |
-| Test files | 891 |
-| Phases completed | CCVIII (208) |
+| Test functions | 24,762 |
+| Test files | 896 |
+| Phases completed | CCXIII (213) |
 | Mathematical domains covered | 259+ |
 | Key predictions matched | 40 |
 
@@ -140,6 +140,11 @@ The newest exact lock on top of that frontier is cyclotomic rather than heuristi
 - **CXLI:** Vertex connectivity deep computation — edge/vertex connectivity=12, Menger's theorem, expansion, toughness (104 tests)
 - **CXLII:** Spectral moments deep computation — moment computation, trace formulas, Newton's identities, spectral measure (113 tests)
 - **CXLIII:** Continuum Bridge — almost-commutative product M^4 x F_{W33}, Chamseddine-Connes spectral action, Einstein-Hilbert + Yang-Mills + Higgs recovery, no-go circumvention, zero free parameters (98 tests)
+- **CCIX:** Hodge Spectral Democracy — Triangle partition property forces Delta_2 = mu*I_160 and Delta_3 = mu*I_40; full Dirac-Kahler spectrum {0^82, 4^320, 10^48, 16^30} on 480-dim chain complex entirely from SRG integers (45 tests)
+- **CCX:** Heat Kernel & Spectral Determinant — exact closed form K(t) = 82 + 320*exp(-4t) + 48*exp(-10t) + 30*exp(-16t); all spectral moments exact integers; cyclotomic ratios a2/a0 = 2*Phi_6/q = 14/3; moment recurrence S_n = 30*S_{n-1} - 264*S_{n-2} + 640*S_{n-3}; det'(D^2) = 2^808 * 5^48 (42 tests)
+- **CCXI:** Zero-Parameter SM Dictionary — every SM parameter an exact rational function of (v,k,lambda,mu); four independent channels (alpha, Weinberg, Higgs, cosmological) each uniquely select q=3; inverse problem solved: two observables reconstruct full SM (48 tests)
+- **CCXII:** Vacuum Constitutive Impedance — c^2 = v = 40, mu*eps = 1/v, alpha^-1 = 152247/1111 = 137.036004 (4.4 ppm from CODATA); Q-Lucas cascade {2,3,7,18} = {lambda,q,Phi_6,Perkel_mult} bridges SRG to 57-cell; impedance torus Z*R_K = 1 (41 tests)
+- **CCXIII:** 57-Cell Family & Tomotope 8+4 Split — 57 = 19_1+19_omega+19_omegabar; Perkel eigenvalues {2q,phi^2,1/phi^2,-q} with phi^2+1/phi^2 = q = 3; tomotope M_EV (12x4, rank 4) resolves 12 = 8_ker+4_im = SU(3)+(SU(2)xU(1)); q=3 unique (disc=5 prime) (41 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -570,7 +575,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         891 test files, 24,545 test functions (the proof)
+├── tests/         896 test files, 24,762 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
