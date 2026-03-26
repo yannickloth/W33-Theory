@@ -209,6 +209,27 @@ def test_synthesis_records_k3_primitive_plane_global_a4_bridge() -> None:
     assert bridge["sign_is_fixed_positive_on_the_canonical_oriented_plane"] is True
 
 
+def test_synthesis_records_k3_three_u_decomposition_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_three_u_decomposition_bridge"]
+    assert bridge["three_u_block_gram_matrix"] == [
+        [0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 1, 0],
+    ]
+    assert bridge["three_u_block_unit_minor_rows"] == [0, 1, 3, 7, 19, 21]
+    assert bridge["three_u_block_unit_minor_determinant"] == 1
+    assert bridge["three_u_block_has_signature_3_3"] is True
+    assert bridge["three_u_block_is_primitive_in_the_ambient_lattice"] is True
+    assert bridge["orthogonal_complement_rank"] == 16
+    assert bridge["orthogonal_complement_signature"] == [0, 16]
+    assert bridge["orthogonal_complement_is_even_negative_definite_unimodular"] is True
+    assert bridge["explicit_k3_seed_contains_primitive_orthogonal_3U_core"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

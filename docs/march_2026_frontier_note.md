@@ -429,6 +429,14 @@ So the explicit seed already realizes the full even unimodular K3 lattice. Insid
 
 This is a genuine lattice-level rank-2 bridge host, not only a real-signature shadow.
 
+More sharply, the same explicit integral lattice already contains three pairwise orthogonal primitive hyperbolic planes:
+
+- the resulting block Gram matrix is exactly `3U`
+- a unit `6 x 6` minor witnesses that this `3U` block is primitive in the ambient lattice
+- therefore the orthogonal complement is forced to be an even unimodular negative-definite rank-16 lattice
+
+So the explicit `K3` host now carries a full hyperbolic core, not merely one isolated primitive plane.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:

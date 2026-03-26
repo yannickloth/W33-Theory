@@ -73,6 +73,9 @@ from w33_k3_integral_h2_lattice_bridge import (
 from w33_k3_primitive_plane_global_a4_bridge import (
     build_k3_primitive_plane_global_a4_bridge_summary,
 )
+from w33_k3_three_u_decomposition_bridge import (
+    build_k3_three_u_decomposition_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -291,6 +294,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_refined_plane_persistence = build_k3_refined_plane_persistence_bridge_summary()
     k3_integral_h2_lattice = build_k3_integral_h2_lattice_bridge_summary()
     k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
+    k3_three_u_decomposition = build_k3_three_u_decomposition_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2897,6 +2901,46 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "sign_is_fixed_positive_on_the_canonical_oriented_plane": (
                 k3_primitive_plane_global_a4["global_a4_coupling_theorem"][
                     "sign_is_fixed_positive_on_the_canonical_oriented_plane"
+                ]
+            ),
+        },
+        "k3_three_u_decomposition_bridge": {
+            "three_u_block_gram_matrix": (
+                k3_three_u_decomposition["three_u_block_gram_matrix"]
+            ),
+            "three_u_block_unit_minor_rows": (
+                k3_three_u_decomposition["three_u_block_profile"]["unit_maximal_minor_rows"]
+            ),
+            "three_u_block_unit_minor_determinant": (
+                k3_three_u_decomposition["three_u_block_profile"]["unit_maximal_minor_determinant"]
+            ),
+            "three_u_block_has_signature_3_3": (
+                k3_three_u_decomposition["three_u_decomposition_theorem"][
+                    "three_u_block_has_signature_3_3"
+                ]
+            ),
+            "three_u_block_is_primitive_in_the_ambient_lattice": (
+                k3_three_u_decomposition["three_u_decomposition_theorem"][
+                    "three_u_block_is_primitive_in_the_ambient_lattice"
+                ]
+            ),
+            "orthogonal_complement_rank": (
+                k3_three_u_decomposition["orthogonal_complement_profile"]["rank"]
+            ),
+            "orthogonal_complement_signature": (
+                [
+                    k3_three_u_decomposition["orthogonal_complement_profile"]["positive_directions"],
+                    k3_three_u_decomposition["orthogonal_complement_profile"]["negative_directions"],
+                ]
+            ),
+            "orthogonal_complement_is_even_negative_definite_unimodular": (
+                k3_three_u_decomposition["three_u_decomposition_theorem"][
+                    "orthogonal_complement_is_even_negative_definite_unimodular"
+                ]
+            ),
+            "explicit_k3_seed_contains_primitive_orthogonal_3U_core": (
+                k3_three_u_decomposition["three_u_decomposition_theorem"][
+                    "explicit_k3_seed_contains_primitive_orthogonal_3U_core"
                 ]
             ),
         },
