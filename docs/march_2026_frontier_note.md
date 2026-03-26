@@ -445,6 +445,14 @@ In harmonic `H^2` coordinates, projecting the selector plane cup-orthogonally on
 
 So the selector plane is not itself one of the primitive `U` factors, and it is not contained entirely in the negative complement either. It genuinely straddles both exact K3 lattice pieces.
 
+### Refinement persistence of the selector/core split
+
+That selector/core split itself now survives the first exact refinement step.
+
+- On `sd^1(K3_16)`, the selector plane, its positive-definite `3U` shadow, and its negative-definite rank-16 residual all scale by the same exact factor `120 = 5!`.
+- So the normalized selector/core/complement decomposition is already refinement-invariant at first barycentric order.
+- The `3U` shadow stays positive-definite and the residual stays negative-definite after pullback, so the seed-level split is not a one-off artifact of the unrefined triangulation.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:

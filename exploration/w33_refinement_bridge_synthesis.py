@@ -79,6 +79,9 @@ from w33_k3_three_u_decomposition_bridge import (
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
+from w33_k3_selector_shadow_refinement_bridge import (
+    build_k3_selector_shadow_refinement_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -299,6 +302,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
     k3_three_u_decomposition = build_k3_three_u_decomposition_bridge_summary()
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
+    k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2979,6 +2983,51 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "selector_plane_straddles_both_k3_lattice_pieces": (
                 k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
                     "selector_plane_straddles_both_k3_lattice_pieces"
+                ]
+            ),
+        },
+        "k3_selector_shadow_refinement_bridge": {
+            "selector_seed_form": (
+                k3_selector_shadow_refinement["selector_seed_form"]
+            ),
+            "selector_first_refinement_form": (
+                k3_selector_shadow_refinement["selector_first_refinement_form"]
+            ),
+            "three_u_shadow_seed_form": (
+                k3_selector_shadow_refinement["three_u_shadow_seed_form"]
+            ),
+            "three_u_shadow_first_refinement_form": (
+                k3_selector_shadow_refinement["three_u_shadow_first_refinement_form"]
+            ),
+            "rank16_residual_seed_form": (
+                k3_selector_shadow_refinement["rank16_residual_seed_form"]
+            ),
+            "rank16_residual_first_refinement_form": (
+                k3_selector_shadow_refinement["rank16_residual_first_refinement_form"]
+            ),
+            "selector_plane_scales_by_120": (
+                k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
+                    "selector_plane_scales_by_120"
+                ]
+            ),
+            "three_u_shadow_scales_by_120": (
+                k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
+                    "three_u_shadow_scales_by_120"
+                ]
+            ),
+            "rank16_residual_scales_by_120": (
+                k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
+                    "rank16_residual_scales_by_120"
+                ]
+            ),
+            "three_u_shadow_stays_positive_definite": (
+                k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
+                    "three_u_shadow_stays_positive_definite"
+                ]
+            ),
+            "rank16_residual_stays_negative_definite": (
+                k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
+                    "rank16_residual_stays_negative_definite"
                 ]
             ),
         },

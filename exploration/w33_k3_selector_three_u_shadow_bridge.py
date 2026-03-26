@@ -95,14 +95,43 @@ def _canonical_selector_harmonic_data() -> tuple[np.ndarray, np.ndarray, np.ndar
 
 
 @lru_cache(maxsize=1)
-def build_k3_selector_three_u_shadow_bridge_summary() -> dict[str, Any]:
+def selector_three_u_shadow_bases() -> dict[str, np.ndarray]:
     harmonic_basis, cup_matrix, selector_basis = _canonical_selector_harmonic_data()
+    three_u_basis = harmonic_basis.T @ k3_three_u_block_cochains().astype(float)
+    three_u_projector = (
+        three_u_basis
+        @ np.linalg.inv(three_u_basis.T @ cup_matrix @ three_u_basis)
+        @ three_u_basis.T
+        @ cup_matrix
+    )
+
+    shadow_basis = three_u_projector @ selector_basis
+    residual_basis = selector_basis - shadow_basis
+
+    return {
+        "harmonic_basis": harmonic_basis,
+        "cup_matrix": cup_matrix,
+        "selector_harmonic_basis": selector_basis,
+        "three_u_shadow_harmonic_basis": shadow_basis,
+        "rank16_residual_harmonic_basis": residual_basis,
+        "selector_cochain_basis": harmonic_basis @ selector_basis,
+        "three_u_shadow_cochain_basis": harmonic_basis @ shadow_basis,
+        "rank16_residual_cochain_basis": harmonic_basis @ residual_basis,
+    }
+
+
+@lru_cache(maxsize=1)
+def build_k3_selector_three_u_shadow_bridge_summary() -> dict[str, Any]:
+    data = selector_three_u_shadow_bases()
+    harmonic_basis = data["harmonic_basis"]
+    cup_matrix = data["cup_matrix"]
+    selector_basis = data["selector_harmonic_basis"]
     three_u_basis = harmonic_basis.T @ k3_three_u_block_cochains().astype(float)
     three_u_gram = three_u_basis.T @ cup_matrix @ three_u_basis
     three_u_projector = three_u_basis @ np.linalg.inv(three_u_gram) @ three_u_basis.T @ cup_matrix
 
-    shadow_basis = three_u_projector @ selector_basis
-    residual_basis = selector_basis - shadow_basis
+    shadow_basis = data["three_u_shadow_harmonic_basis"]
+    residual_basis = data["rank16_residual_harmonic_basis"]
     selector_form = selector_basis.T @ cup_matrix @ selector_basis
     shadow_form = shadow_basis.T @ cup_matrix @ shadow_basis
     residual_form = residual_basis.T @ cup_matrix @ residual_basis

@@ -248,6 +248,24 @@ def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     assert bridge["selector_plane_straddles_both_k3_lattice_pieces"] is True
 
 
+def test_synthesis_records_k3_selector_shadow_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_shadow_refinement_bridge"]
+    assert bridge["selector_seed_form"][0][0] == pytest.approx(0.17052108282296116)
+    assert bridge["selector_seed_form"][1][1] == pytest.approx(-0.12621192674615103)
+    assert bridge["selector_first_refinement_form"][0][0] == pytest.approx(20.462529938755336)
+    assert bridge["selector_first_refinement_form"][1][1] == pytest.approx(-15.145431209538124)
+    assert bridge["three_u_shadow_seed_form"][0][0] == pytest.approx(2.80248518688132)
+    assert bridge["three_u_shadow_seed_form"][1][1] == pytest.approx(0.2518300163799555)
+    assert bridge["rank16_residual_seed_form"][0][0] == pytest.approx(-2.6319641040583783)
+    assert bridge["rank16_residual_seed_form"][1][1] == pytest.approx(-0.3780419431261282)
+    assert bridge["selector_plane_scales_by_120"] is True
+    assert bridge["three_u_shadow_scales_by_120"] is True
+    assert bridge["rank16_residual_scales_by_120"] is True
+    assert bridge["three_u_shadow_stays_positive_definite"] is True
+    assert bridge["rank16_residual_stays_negative_definite"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]
