@@ -170,6 +170,23 @@ So the honest continuum wall is now more specific than “derive gravity somehow
 - the remaining family/continuum problem is the refined `A4` density
 - not the leading `Λ^4` or `Λ^2` coefficients
 
+### Exact two-channel refined action
+
+The refined continuum side now compresses one step further too:
+
+- On both `CP2_9` and `K3_16` refinement towers,
+  - `A0_density(n) = fixed + C20/20^n + C120/120^n`
+- The first family-sensitive density is not a new external mode:
+  - `ΔA4_density(n) = ε^2 A0_density(n)`
+  - `ε^2 = 403/248238`
+- So `ΔA4_density` inherits exactly the same `20^-n` and `120^-n` modes as `A0_density`.
+
+Equivalently, through first family order the refined truncated action is still only a two-channel external packet:
+
+- `S_n = (2 f4 Λ^4 + ε^2 f0) A0_density(n) + 2 f2 Λ^2 A2_density(n)`
+
+So the first family-sensitive step renormalizes the geometric `A0` channel rather than creating a third external refinement channel.
+
 ## Reproduce
 
 ### PMNS
