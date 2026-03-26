@@ -265,6 +265,27 @@ The promoted finite and curved packages now compress one step further at the sel
 
 This is a selected-point master theorem, not yet a proof that the whole global bridge is finished. But it does mean the live `81 / 6 / 8`, `320 / 2240 / 12480`, and `3/13` package is now best read as one `q = 3` cyclotomic dictionary rather than three unrelated residue facts.
 
+### Balanced rank-2 bridge selector
+
+There is now also a clean exact selector on the active `2x2` bridge branch:
+
+- For singular-value squares `x, y >= 0`,
+  - `tr(C^* C) = x + y`
+  - `|det C|^2 = x y`
+  - `4 |det C|^2 = tr(C^* C)^2 - (x - y)^2 <= tr(C^* C)^2`
+- Equality holds iff the two singular-value squares agree:
+  - `x = y`
+- So at fixed branch radius the quartic bridge packet is uniquely maximized on the balanced rank-2 branch.
+- In the reduced branch action
+  - `V(C) = -mu tr(C^* C) + u tr(C^* C)^2 - v A |det C|^2`
+  the shape dependence rewrites exactly as
+  - `V = -mu r^2 + (u - A v / 4) r^4 + (A v / 4) (x - y)^2`
+  with `r^2 = x + y`
+- Hence if `mu > 0` and `4u > Av`, the nonzero balanced stationary radius is
+  - `r_*^2 = 2 mu / (4u - A v)`
+
+This does **not** finish the bridge theorem. The checked local `V29_output_q_stiffness/summary.json` is numerically near-isotropic at quadratic order (`diag_cv ~= 0.024`, `offdiag_rms_ratio ~= 0.0077`, `eig_std_ratio ~= 0.088`), which is consistent with the reduced selector picture, but only as observation. The exact open step is still the actual branch-realization / orientation theorem on the refinement tower.
+
 ## Reproduce
 
 ### PMNS
