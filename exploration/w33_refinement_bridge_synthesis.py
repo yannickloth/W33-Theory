@@ -56,7 +56,14 @@ from w33_curved_external_hodge_product import build_curved_external_hodge_produc
 from w33_curved_h2_host_bridge import build_curved_h2_host_bridge_summary
 from w33_curved_h2_qutrit_bridge import build_curved_h2_qutrit_bridge_summary
 from w33_curved_harmonic_qutrit_split_bridge import build_curved_harmonic_qutrit_split_bridge_summary
+from w33_curved_h2_cup_plane_bridge import build_curved_h2_cup_plane_bridge_summary
 from w33_k3_rank2_qutrit_plane_bridge import build_k3_rank2_qutrit_plane_bridge_summary
+from w33_transport_mixed_plane_obstruction_bridge import (
+    build_transport_mixed_plane_obstruction_summary,
+)
+from w33_k3_mixed_plane_a4_projection_bridge import (
+    build_k3_mixed_plane_a4_projection_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -268,7 +275,10 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     curved_h2_host = build_curved_h2_host_bridge_summary()
     curved_h2_qutrit = build_curved_h2_qutrit_bridge_summary()
     curved_harmonic_qutrit_split = build_curved_harmonic_qutrit_split_bridge_summary()
+    curved_h2_cup_plane = build_curved_h2_cup_plane_bridge_summary()
     k3_rank2_qutrit_plane = build_k3_rank2_qutrit_plane_bridge_summary()
+    transport_mixed_plane_obstruction = build_transport_mixed_plane_obstruction_summary()
+    k3_mixed_plane_a4_projection = build_k3_mixed_plane_a4_projection_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2705,6 +2715,30 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 curved_harmonic_qutrit_split["bridge_constraints"]["k3_minus_cp2_middle_degree_gap"]
             ),
         },
+        "curved_h2_cup_plane_bridge": {
+            "cp2_cup_signature": curved_h2_cup_plane["bridge_constraints"]["cp2_h2_signature_from_cup_form"],
+            "k3_cup_signature": curved_h2_cup_plane["bridge_constraints"]["k3_h2_signature_from_cup_form"],
+            "k3_positive_h2_directions_from_cup_form": (
+                curved_h2_cup_plane["bridge_constraints"]["k3_positive_h2_directions_from_cup_form"]
+            ),
+            "k3_negative_h2_directions_from_cup_form": (
+                curved_h2_cup_plane["bridge_constraints"]["k3_negative_h2_directions_from_cup_form"]
+            ),
+            "k3_canonical_mixed_plane_selector_triangle": (
+                curved_h2_cup_plane["k3_canonical_mixed_plane"]["selector_triangle"]
+            ),
+            "k3_canonical_mixed_plane_split": (
+                curved_h2_cup_plane["k3_canonical_mixed_plane"]["qutrit_lift_split"]
+            ),
+            "k3_canonical_mixed_plane_is_split": (
+                curved_h2_cup_plane["k3_canonical_mixed_plane"]["split_qutrit_package"]
+            ),
+            "canonical_k3_mixed_plane_has_nonzero_intersection_determinant": (
+                curved_h2_cup_plane["bridge_constraints"][
+                    "canonical_k3_mixed_plane_has_nonzero_intersection_determinant"
+                ]
+            ),
+        },
         "k3_rank2_qutrit_plane_bridge": {
             "minimal_rank2_qutrit_branch_dimension": (
                 k3_rank2_qutrit_plane["bridge_constraints"]["minimal_rank2_qutrit_branch_dimension"]
@@ -2723,6 +2757,55 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "minimal_rank2_branch_matches_transport_extension_size": (
                 k3_rank2_qutrit_plane["bridge_constraints"]["minimal_rank2_branch_matches_transport_extension_size"]
+            ),
+        },
+        "transport_mixed_plane_obstruction_bridge": {
+            "dimension_pattern_matches_exactly": (
+                transport_mixed_plane_obstruction["comparison_theorem"]["dimension_pattern_matches_exactly"]
+            ),
+            "internal_transport_162_is_nonsplit": (
+                transport_mixed_plane_obstruction["comparison_theorem"]["internal_transport_162_is_nonsplit"]
+            ),
+            "external_mixed_plane_162_is_split": (
+                transport_mixed_plane_obstruction["comparison_theorem"]["external_mixed_plane_162_is_split"]
+            ),
+            "exact_split_vs_nonsplit_obstruction_is_present": (
+                transport_mixed_plane_obstruction["comparison_theorem"][
+                    "exact_split_vs_nonsplit_obstruction_is_present"
+                ]
+            ),
+            "exact_identification_between_current_structures_is_supported": (
+                transport_mixed_plane_obstruction["comparison_theorem"][
+                    "exact_identification_between_current_structures_is_supported"
+                ]
+            ),
+        },
+        "k3_mixed_plane_a4_projection_bridge": {
+            "branch_dimension_is_162": (
+                k3_mixed_plane_a4_projection["projection_theorem"]["branch_dimension_is_162"]
+            ),
+            "finite_trace_multiplier_is_81": (
+                k3_mixed_plane_a4_projection["projection_theorem"]["finite_trace_multiplier_is_81"]
+            ),
+            "branch_dimension_equals_2_times_trace_multiplier": (
+                k3_mixed_plane_a4_projection["projection_theorem"][
+                    "branch_dimension_equals_2_times_trace_multiplier"
+                ]
+            ),
+            "factor_of_two_is_exact_rank2_external_factor": (
+                k3_mixed_plane_a4_projection["projection_theorem"][
+                    "factor_of_two_is_exact_rank2_external_factor"
+                ]
+            ),
+            "eightyone_vs_one_sixtytwo_is_dimension_vs_trace_split": (
+                k3_mixed_plane_a4_projection["projection_theorem"][
+                    "eightyone_vs_one_sixtytwo_is_dimension_vs_trace_split"
+                ]
+            ),
+            "projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162": (
+                k3_mixed_plane_a4_projection["projection_theorem"][
+                    "projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162"
+                ]
             ),
         },
         "curved_refinement_density_bridge": {

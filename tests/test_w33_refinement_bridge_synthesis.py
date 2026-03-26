@@ -125,6 +125,19 @@ def test_synthesis_records_curved_harmonic_qutrit_split_bridge() -> None:
     assert bridge["k3_minus_cp2_middle_degree_gap"] == 1701
 
 
+def test_synthesis_records_curved_h2_cup_plane_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_h2_cup_plane_bridge"]
+    assert bridge["cp2_cup_signature"] == 1
+    assert bridge["k3_cup_signature"] == -16
+    assert bridge["k3_positive_h2_directions_from_cup_form"] == 3
+    assert bridge["k3_negative_h2_directions_from_cup_form"] == 19
+    assert bridge["k3_canonical_mixed_plane_selector_triangle"] == (1, 2, 3)
+    assert bridge["k3_canonical_mixed_plane_split"] == (81, 81)
+    assert bridge["k3_canonical_mixed_plane_is_split"] is True
+    assert bridge["canonical_k3_mixed_plane_has_nonzero_intersection_determinant"] is True
+
+
 def test_synthesis_records_k3_rank2_qutrit_plane_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_rank2_qutrit_plane_bridge"]
@@ -134,6 +147,27 @@ def test_synthesis_records_k3_rank2_qutrit_plane_bridge() -> None:
     assert bridge["k3_supports_mixed_rank2_plane"] is True
     assert bridge["k3_supports_negative_rank2_plane"] is True
     assert bridge["minimal_rank2_branch_matches_transport_extension_size"] is True
+
+
+def test_synthesis_records_transport_mixed_plane_obstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_mixed_plane_obstruction_bridge"]
+    assert bridge["dimension_pattern_matches_exactly"] is True
+    assert bridge["internal_transport_162_is_nonsplit"] is True
+    assert bridge["external_mixed_plane_162_is_split"] is True
+    assert bridge["exact_split_vs_nonsplit_obstruction_is_present"] is True
+    assert bridge["exact_identification_between_current_structures_is_supported"] is False
+
+
+def test_synthesis_records_k3_mixed_plane_a4_projection_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_mixed_plane_a4_projection_bridge"]
+    assert bridge["branch_dimension_is_162"] is True
+    assert bridge["finite_trace_multiplier_is_81"] is True
+    assert bridge["branch_dimension_equals_2_times_trace_multiplier"] is True
+    assert bridge["factor_of_two_is_exact_rank2_external_factor"] is True
+    assert bridge["eightyone_vs_one_sixtytwo_is_dimension_vs_trace_split"] is True
+    assert bridge["projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162"] is True
 
 
 def test_synthesis_records_curved_refinement_density_bridge() -> None:

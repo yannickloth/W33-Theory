@@ -360,11 +360,50 @@ and the mixed branch splits exactly as
 
 - `81 + 81`
 
-So the first exact external rank-2 branch package is numerically compatible with the already-promoted internal transport extension
+### Chain-level H2 cup form
+
+The explicit curved chain complexes now carry the actual middle-degree cup form. Using the propagated fundamental class and the simplicial cup pairing on harmonic `H^2`:
+
+- `CP2_9` recovers signature `(1,0)`
+- `K3_16` recovers signature `(3,19)`
+
+So the old `H^2` host split is no longer only a Betti/signature bookkeeping statement. It is already visible on the explicit chain model.
+
+### Canonical mixed K3 plane
+
+On `K3_16`, the lexicographically first harmonic triangle already has both positive and negative harmonic projections. That determines a canonical ordered mixed plane:
+
+- positive line
+- negative line
+
+and tensoring it with the qutrit packet gives a split external branch package
+
+- `81 + 81 = 162`
+
+### Transport shadow obstruction
+
+That same result sharpens the transport comparison. The internal transport sector is still the exact non-split extension
 
 - `0 -> 81 -> 162 -> 81`
 
-This is still not the final global theorem, but it is the cleanest exact size/type lock so far on the unresolved external branch.
+but the canonical mixed `K3` plane is already split by construction. So the current exact statement is:
+
+- exact size-shadow match
+- exact split-versus-nonsplit obstruction
+
+not an exact identification of extension objects.
+
+### Local A4 resolution
+
+The chain-level mixed plane also settles the old local coefficient tension:
+
+- total external branch size: `162`
+- exact finite multiplier in `Delta A4 = 81 epsilon^2 a0`: `81`
+- missing factor: universal external rank-2 activation `2`
+
+So `162` is branch dimension, not a replacement for the finite trace multiplier `81`.
+
+This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
 ## Reproduce
 
