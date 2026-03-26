@@ -107,6 +107,21 @@ The certified coefficient hierarchy still looks layered rather than random:
 - `1/18`: diagonal / source compensation
 - `1/6`: large reflected transport branch
 
+### Exact Yukawa nonlinear frontier
+
+The Yukawa frontier is now compressed further than “one unknown last packet”:
+
+- On the replicated diagonal `l6` seed, the exact bottleneck is `response rank = 9`, `augmented rank = 10`.
+- Inside the native unit `A2` mixed-seed family, the minimal exact rank-lift seeds are `[8,246]`, `[8,247]`, `[9,246]`, `[9,247]`; these raise the ranks to `11` and `12`.
+- The minimal full-activation seeds are the two fans `[8,9]` and `[246,247]`; one exact nonlinear closure step turns each fan into a full `3x3`-support mixed seed with a slotwise isotropic off-diagonal shell.
+- After the exact `V4`, unipotent, Kronecker, and Gram reductions, the remaining nontrivial packet is already a finite `240^2`-shell problem: exact scalar channels `169`, `275`, `323`, plus residual blocks `[[367,-55],[-55,175]]` and `[[323,275],[275,659]]`.
+- Equivalently, the unresolved base spectrum is exactly two radical pairs with trace/determinant data `(542, 61200)` and `(982, 137232)`.
+
+The strongest conservative read is therefore:
+
+- the remaining Yukawa packet is not currently a missing linear `l6` mode;
+- it is the remaining nonlinear internal spectral data carried by those reduced blocks.
+
 ## Reproduce
 
 ### PMNS
@@ -143,6 +158,8 @@ The exact CE2 data continues to look like staged closure:
 That is suggestive, but still interpretive. It is not yet a proof that the full physical theory closes in the same way.
 
 Likewise, the SRG formulas for exceptional dimensions and electroweak quantities look real, but the strongest current reading is that they are shadows of a more fundamental Jordan / Freudenthal / TKK / projector mechanism, not standalone proofs by coincidence.
+
+The local `w33_followup_deliverable_v19.zip` bundle is structurally suggestive in this same direction: its toy `CP^2`-wired `3x3` Hermitian model reproduces the diagonal `9 -> 10` bottleneck by appending a wedge scalar. But that is not yet promoted here, because it has not been identified with the repo's exact `V4` / Kronecker / `240^2` Yukawa packet.
 
 ## Not yet proved
 
