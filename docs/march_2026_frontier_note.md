@@ -656,8 +656,10 @@ The carrier-only theorem is not yet the whole external story.
 - But the canonical ordered selector basis already projects to `U1` with unequal isotropic-line weights:
   about `0.29249917` versus `0.220630996`.
 - The exact dominance ratio is therefore `1.3257392335`.
+- That line selection is invariant under the natural sign/swap ambiguities of the selector basis.
+- And it survives first barycentric refinement, because both the `U1` carrier form and the `U1` selector packet form scale by exact factor `120`.
 
-So the full current external packet already selects a unique dominant isotropic-line candidate inside `U1`, even though the carrier metric alone is line-blind.
+So the full current external packet already selects a unique rigid dominant isotropic-line candidate inside `U1`, even though the carrier metric alone is line-blind.
 
 ### Family-flag visibility obstruction
 

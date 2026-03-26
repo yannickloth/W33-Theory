@@ -3902,6 +3902,12 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "u1_isotropic_line_weights": (
                 u1_selector_line_selection["u1_isotropic_line_weights"]
             ),
+            "u1_first_refinement_form": (
+                u1_selector_line_selection["u1_first_refinement_form"]
+            ),
+            "u1_selector_first_refinement_packet_form": (
+                u1_selector_line_selection["u1_selector_first_refinement_packet_form"]
+            ),
             "dominant_isotropic_line_index": (
                 u1_selector_line_selection["dominant_isotropic_line_index"]
             ),
@@ -3938,6 +3944,26 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis": (
                 u1_selector_line_selection["u1_selector_line_selection_theorem"][
                     "dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis"
+                ]
+            ),
+            "selector_line_weights_are_invariant_under_selector_basis_signs_and_swap": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "selector_line_weights_are_invariant_under_selector_basis_signs_and_swap"
+                ]
+            ),
+            "u1_carrier_form_scales_by_120_at_first_refinement": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "u1_carrier_form_scales_by_120_at_first_refinement"
+                ]
+            ),
+            "u1_selector_packet_form_scales_by_120_at_first_refinement": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "u1_selector_packet_form_scales_by_120_at_first_refinement"
+                ]
+            ),
+            "dominant_line_candidate_is_first_refinement_rigid": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "dominant_line_candidate_is_first_refinement_rigid"
                 ]
             ),
             "full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1": (

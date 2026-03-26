@@ -534,6 +534,10 @@ def test_synthesis_records_u1_selector_line_selection_bridge() -> None:
     assert bridge["canonical_selector_u1_component_assigns_unequal_weights_to_the_two_isotropic_lines"] is True
     assert bridge["there_is_a_unique_dominant_isotropic_line_inside_u1"] is True
     assert bridge["dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis"] is True
+    assert bridge["selector_line_weights_are_invariant_under_selector_basis_signs_and_swap"] is True
+    assert bridge["u1_carrier_form_scales_by_120_at_first_refinement"] is True
+    assert bridge["u1_selector_packet_form_scales_by_120_at_first_refinement"] is True
+    assert bridge["dominant_line_candidate_is_first_refinement_rigid"] is True
     assert bridge["full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1"] is True
 
 
