@@ -21,6 +21,7 @@ from scripts.ce2_global_cocycle import (
     predict_dual_a12_line_v_family_uvw,
     predict_dual_a12_line_w_family_uvw,
     predict_dual_a12_overlap_uv_family_uvw,
+    predict_dual_anchor_002_line_w_family_uvw,
     predict_dual_diagonal_fiber_family_uvw,
     predict_dual_g1g2g2_uvw,
     predict_dual_missing_focus_u_family_uvw,
@@ -272,6 +273,60 @@ def test_predict_dual_origin_same_fiber_uv_family_x_axis_sign() -> None:
     ]
     assert sorted((int(i), str(v)) for i, v in uvw.V) == [
         (323, "-1/108"),
+    ]
+
+
+def test_predict_dual_anchor_002_line_w_family_first_branch() -> None:
+    uvw = predict_dual_anchor_002_line_w_family_uvw((22, 0), (1, 0), (16, 1))
+    assert uvw is not None
+    assert uvw.U == []
+    assert uvw.V == []
+    assert sorted((int(i), str(v)) for i, v in uvw.W) == [
+        (432, "-1/54"),
+    ]
+
+
+def test_predict_dual_anchor_002_line_v_family_first_branch() -> None:
+    uvw = predict_dual_g1g2g2_uvw((22, 0), (1, 1), (16, 0))
+    assert uvw is not None
+    assert uvw.U == []
+    assert uvw.W == []
+    assert sorted((int(i), str(v)) for i, v in uvw.V) == [
+        (27, "-1/54"),
+    ]
+
+
+def test_predict_dual_anchor_002_overlap_uv_family_first_branch() -> None:
+    uvw = predict_dual_g1g2g2_uvw((22, 0), (1, 1), (23, 0))
+    assert uvw is not None
+    assert uvw.W == []
+    assert sorted((int(i), str(v)) for i, v in uvw.U) == [
+        (785, "-1/108"),
+    ]
+    assert sorted((int(i), str(v)) for i, v in uvw.V) == [
+        (29, "1/108"),
+    ]
+
+
+def test_predict_dual_anchor_002_overlap_uv_family_color_flip() -> None:
+    uvw = predict_dual_g1g2g2_uvw((22, 0), (1, 2), (23, 0))
+    assert uvw is not None
+    assert uvw.W == []
+    assert sorted((int(i), str(v)) for i, v in uvw.U) == [
+        (784, "1/108"),
+    ]
+    assert sorted((int(i), str(v)) for i, v in uvw.V) == [
+        (29, "1/108"),
+    ]
+
+
+def test_predict_dual_anchor_002_line_w_family_second_branch() -> None:
+    uvw = predict_dual_g1g2g2_uvw((22, 0), (4, 0), (13, 1))
+    assert uvw is not None
+    assert uvw.U == []
+    assert uvw.V == []
+    assert sorted((int(i), str(v)) for i, v in uvw.W) == [
+        (351, "1/54"),
     ]
 
 

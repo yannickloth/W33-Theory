@@ -2581,6 +2581,126 @@ def test_global_ce2_predictor_cancels_origin_same_fiber_uv_family_diagonal() -> 
     assert max_abs(repaired) < 1e-10
 
 
+def test_global_ce2_predictor_cancels_anchor_002_line_w_family_first_branch() -> None:
+    """Promote the first exact a=(0,0,2) W-only frontier witness."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g2(toe, (1, 0))
+    z = basis_elem_g2(toe, (16, 1))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
+def test_global_ce2_predictor_cancels_anchor_002_line_v_family_first_branch() -> None:
+    """Color-swapped companion of the first a=(0,0,2) line branch."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g2(toe, (1, 1))
+    z = basis_elem_g2(toe, (16, 0))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
+def test_global_ce2_predictor_cancels_anchor_002_overlap_uv_family_first_branch() -> None:
+    """Half-strength overlap branch on the first promoted a=(0,0,2) witness."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g2(toe, (1, 1))
+    z = basis_elem_g2(toe, (23, 0))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
+def test_global_ce2_predictor_cancels_anchor_002_overlap_uv_family_color_flip() -> None:
+    """Color-flipped overlap branch on the first promoted a=(0,0,2) witness."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g2(toe, (1, 2))
+    z = basis_elem_g2(toe, (23, 0))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
+def test_global_ce2_predictor_cancels_anchor_002_line_w_family_second_branch() -> None:
+    """Second exact a=(0,0,2) W-only witness from the frontier sample."""
+    toe = _load_bracket_tool()
+    e6_basis = np.load("artifacts/e6_27rep_basis_export/E6_basis_78.npy").astype(
+        np.complex128
+    )
+    proj = toe.E6Projector(e6_basis)
+    all_triads = toe._load_signed_cubic_triads()
+    bad9 = _load_bad9()
+
+    linfty = LInftyE8Extension(toe, proj, all_triads, bad9, l3_scale=1.0 / 9.0)
+
+    x = basis_elem_g1(toe, (22, 0))
+    y = basis_elem_g2(toe, (4, 0))
+    z = basis_elem_g2(toe, (13, 1))
+
+    baseline = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(baseline) > 1e-10
+
+    linfty.enable_ce2_global_predictor()
+    repaired = linfty.homotopy_jacobi(x, y, z)
+    assert max_abs(repaired) < 1e-10
+
+
 def test_global_ce2_predictor_cancels_anchor_002_triple() -> None:
     """Regression test for the missing a=(0,0,2) anchor coverage."""
     toe = _load_bracket_tool()

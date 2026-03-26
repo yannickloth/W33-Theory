@@ -15,6 +15,8 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 The strongest repo-native result is a finite spectral-exceptional closure, not yet a finished continuum-dynamical TOE. For the live shell map and promoted status language, use [docs/index.html#current-synthesis](docs/index.html#current-synthesis) and [docs/march_2026_frontier_note.md](docs/march_2026_frontier_note.md).
 
+As of the current frontier pass, the dual CE2 / L-infinity predictor now promotes the first exact `a = (0,0,2)` witness package, but that anchor is still narrowed rather than fully closed.
+
 ## Current Scale
 
 | Metric | Count |

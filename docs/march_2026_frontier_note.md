@@ -80,16 +80,24 @@ Verified in this pass:
 - The `a = (0,1,0)` anchor is fully closed.
 - The `a = (0,0,1)` anchor is fully closed.
 - The dual predictor now cancels the whole `(21,*)` anchor orbit through explicit sparse `1/54` line families and `1/108` overlap families.
+- The first `a = (0,0,2)` witness package is now promoted into the dual predictor:
+  - `((22,0),(1,0),(16,1)) -> W = -E_(16,0) / 54`
+  - `((22,0),(1,1),(16,0)) -> V = -E_(1,0) / 54`
+  - `((22,0),(1,1),(23,0)) -> U = -g1(15,2) / 108`, `V = E_(1,2) / 108`
+  - `((22,0),(1,2),(23,0)) -> U = g1(15,1) / 108`, `V = E_(1,2) / 108`
+  - `((22,0),(4,0),(13,1)) -> W = E_(13,0) / 54`
 
 The current first unresolved anchor is now:
 
 - `a = (0,0,2)` / basis `(22,*)`
 
-Representative unresolved rows:
+Representative rows already promoted from that anchor:
 
 - `((22,0),(1,0),(16,1)) -> W = -E_(16,0) / 54`
 - `((22,0),(1,1),(23,0)) -> U = -g1(15,2) / 108`, `V = E_(1,2) / 108`
 - `((22,0),(4,0),(13,1)) -> W = E_(13,0) / 54`
+
+Remaining uncovered rows still begin on that same `a = (0,0,2)` anchor; this is a genuine narrowing, not full closure.
 
 The certified coefficient hierarchy still looks layered rather than random:
 
