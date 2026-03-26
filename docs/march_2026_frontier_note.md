@@ -203,6 +203,30 @@ Equivalently, through first family order the refined truncated action is still o
 
 So the first family-sensitive step renormalizes the geometric `A0` channel rather than creating a third external refinement channel.
 
+### Exact local A4 normalization
+
+The local bridge packet is now normalized sharply enough to state a stronger conservative theorem:
+
+- The relevant product heat coefficient is exactly
+  - `A4*B0 + A2*B2 + A0*B4`
+- Explicit 4D Euclidean gamma matrices give the universal twisted-Dirac gauge factor
+  - `a4_gauge(x) = (4 pi)^(-2) * (1/12) Tr(F_{mu nu} F^{mu nu})`
+- For the twisted Dirac gauge endomorphism,
+  - `tr_S(E_F) = 0`
+- So this packet does not shift the `A2` / Einstein-Hilbert channel; it is purely an `A4` packet.
+- On a self-dual branch that universal factor becomes
+  - `1 / (96 pi^2)` per curved copy
+- The exact repo-native A4-entry theorem already fixes the finite multiplier:
+  - `Delta A4 = 81 epsilon^2 a0 = 1209 a0 / 9194`
+- Rank-1 external branches kill the packet automatically, while rank-2 activation is quartic:
+  - `C -> t C` gives scaling `t^4`
+- So before the already-isolated universal rank-2 factor `2`, the reduced local prefactor is
+  - `27 / (32 pi^2)`
+- And after that factor `2`, the reduced local prefactor is
+  - `27 / (16 pi^2)`
+
+So the honest open step is no longer the local coefficient. It is the global branch-counting / orientation theorem over the actual refinement tower.
+
 ## Reproduce
 
 ### PMNS
