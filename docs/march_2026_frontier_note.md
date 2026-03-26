@@ -471,6 +471,18 @@ The explicit `K3` host now goes one step further again.
 
 So the normalized full lattice split `H^2(K3,Z) = 3U (+) N16` is already refinement-invariant at `sd^1` on the explicit seed.
 
+### Naming the rank-16 complement
+
+The negative-definite complement is no longer just an unnamed `N16`.
+
+- The explicit complement has exactly `480` norm-2 roots.
+- Those roots span the full rank-16 lattice with Smith index `1`.
+- So, under the standard rank-16 even-unimodular classification, the explicit complement is `E8(-1) (+) E8(-1)`, not `D16^+(-1)`.
+
+So the explicit `K3` host now carries a named exact split:
+
+- `H^2(K3,Z) = 3U (+) E8(-1) (+) E8(-1)`.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:

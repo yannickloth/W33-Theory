@@ -82,6 +82,9 @@ from w33_k3_three_u_refinement_bridge import (
 from w33_k3_three_u_complement_refinement_bridge import (
     build_k3_three_u_complement_refinement_bridge_summary,
 )
+from w33_k3_n16_e8e8_bridge import (
+    build_k3_n16_e8e8_bridge_summary,
+)
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
@@ -311,6 +314,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_three_u_complement_refinement = (
         build_k3_three_u_complement_refinement_bridge_summary()
     )
+    k3_n16_e8e8 = build_k3_n16_e8e8_bridge_summary()
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
@@ -3049,6 +3053,41 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "explicit_k3_lattice_split_is_first_refinement_rigid": (
                 k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
                     "explicit_k3_lattice_split_is_first_refinement_rigid"
+                ]
+            ),
+        },
+        "k3_n16_e8e8_bridge": {
+            "root_representative_count": (
+                k3_n16_e8e8["root_representative_count"]
+            ),
+            "total_root_count": (
+                k3_n16_e8e8["total_root_count"]
+            ),
+            "root_span_smith_diagonal": (
+                k3_n16_e8e8["root_span_smith_diagonal"]
+            ),
+            "root_span_rank": (
+                k3_n16_e8e8["root_span_rank"]
+            ),
+            "root_span_index": (
+                k3_n16_e8e8["root_span_index"]
+            ),
+            "n16_has_480_roots": (
+                k3_n16_e8e8["n16_classification_theorem"]["n16_has_480_roots"]
+            ),
+            "root_span_equals_the_full_lattice": (
+                k3_n16_e8e8["n16_classification_theorem"][
+                    "root_span_equals_the_full_lattice"
+                ]
+            ),
+            "explicit_n16_is_not_d16_plus": (
+                k3_n16_e8e8["n16_classification_theorem"][
+                    "explicit_n16_is_not_d16_plus"
+                ]
+            ),
+            "explicit_n16_is_e8_plus_e8_by_rank16_even_unimodular_classification": (
+                k3_n16_e8e8["n16_classification_theorem"][
+                    "explicit_n16_is_e8_plus_e8_by_rank16_even_unimodular_classification"
                 ]
             ),
         },

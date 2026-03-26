@@ -282,6 +282,20 @@ def test_synthesis_records_k3_three_u_complement_refinement_bridge() -> None:
     assert bridge["explicit_k3_lattice_split_is_first_refinement_rigid"] is True
 
 
+def test_synthesis_records_k3_n16_e8e8_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_n16_e8e8_bridge"]
+    assert bridge["root_representative_count"] == 240
+    assert bridge["total_root_count"] == 480
+    assert bridge["root_span_smith_diagonal"] == [1] * 16
+    assert bridge["root_span_rank"] == 16
+    assert bridge["root_span_index"] == 1
+    assert bridge["n16_has_480_roots"] is True
+    assert bridge["root_span_equals_the_full_lattice"] is True
+    assert bridge["explicit_n16_is_not_d16_plus"] is True
+    assert bridge["explicit_n16_is_e8_plus_e8_by_rank16_even_unimodular_classification"] is True
+
+
 def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_three_u_shadow_bridge"]
