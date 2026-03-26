@@ -281,10 +281,16 @@ There is now also a clean exact selector on the active `2x2` bridge branch:
   the shape dependence rewrites exactly as
   - `V = -mu r^2 + (u - A v / 4) r^4 + (A v / 4) (x - y)^2`
   with `r^2 = x + y`
+- The nonzero stationary point is therefore forced to be balanced:
+  - `x = y = mu / (4u - vA)`
+- The Hessian at that point is exact:
+  - `H = [[2u, 2u-vA], [2u-vA, 2u]]`
+  - radial eigenvalue `lambda_radial = 4u - vA` on `(1,1)`
+  - shape eigenvalue `lambda_shape = vA` on `(1,-1)`
 - Hence if `mu > 0` and `4u > Av`, the nonzero balanced stationary radius is
   - `r_*^2 = 2 mu / (4u - A v)`
 
-This does **not** finish the bridge theorem. The checked local `V29_output_q_stiffness/summary.json` is numerically near-isotropic at quadratic order (`diag_cv ~= 0.024`, `offdiag_rms_ratio ~= 0.0077`, `eig_std_ratio ~= 0.088`), which is consistent with the reduced selector picture, but only as observation. The exact open step is still the actual branch-realization / orientation theorem on the refinement tower.
+This does **not** finish the bridge theorem. The checked local `V29_output_q_stiffness/summary.json` is numerically near-isotropic at quadratic order (`diag_cv ~= 0.024`, `offdiag_rms_ratio ~= 0.0077`, `eig_std_ratio ~= 0.088`), and the companion `V29_output_q_stiffness_validate/summary.json` keeps the finite-difference mean relative error near `0.017`, which is consistent with the reduced selector picture, but only as observation. The exact open step is still the actual branch-realization / orientation theorem on the refinement tower.
 
 ## Reproduce
 
