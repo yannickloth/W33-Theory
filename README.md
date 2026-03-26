@@ -160,6 +160,8 @@ The external K3 bridge is now sharper than that long summary alone suggests. The
 
 That named exceptional split is now itself first-refinement rigid: each explicit `E8(-1)` factor is carried by barycentric pullback to exactly `120` times its negative `E8` Cartan form, the two factors remain orthogonal, and the full split `3U (+) E8(-1) (+) E8(-1)` is carried exactly to `120` times itself. The global primitive plane is also no longer floating inside the hyperbolic core: it is exactly the first explicit `U` factor of `3U`. But the selector's positive `3U` shadow is not just that distinguished plane; it decomposes with nonzero support across all three explicit `U` factors. So the locked `351/(4*pi^2)` plane is a distinguished hyperbolic factor, while the selector-positive channel still mixes the whole `3U` core.
 
+That fine split is now exact too. The selector-side reduced `A4` packet resolves all the way down to `U1 (+) U2 (+) U3 (+) E8(-1) (+) E8(-1)`, and each of those five pieces survives the first barycentric pullback with exact scale `120`. So the current conservative coupling theorem is sharper than “the packet lives somewhere on K3”: `U1` is the minimal canonical external carrier of the first family-sensitive `A4` packet, while the full local selector packet remains distributed across the broader five-factor K3 split. The internal family side is still an exact one-versus-two flag with common line `span(1,1,0)` and invariant plane `x=y`, but the repo does not yet prove that this internal flag is literally the same object as the external `U1` plane.
+
 ## Key Results
 
 ### Exact Geometry

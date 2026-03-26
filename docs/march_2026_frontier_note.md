@@ -564,6 +564,47 @@ and those three contributions add back to the selector form exactly.
 
 So the reduced selector-side `A4` geometry is not carried by the hyperbolic core alone, and it is not carried by just one exceptional block either. On the explicit seed it is already tri-supported across `3U (+) E8(-1) (+) E8(-1)`.
 
+### Fine selector-side `A4` split
+
+The selector-side packet can now be resolved one step further inside the hyperbolic core.
+
+- The positive `3U` packet reconstructs exactly as `U1 + U2 + U3`.
+- Keeping the same locked scalar `351/(4 pi^2)`, the full selector-side reduced packet reconstructs exactly as
+  `U1 + U2 + U3 + E8_1 + E8_2`.
+- The `U1`, `U2`, and `U3` packet pieces are each mixed-sign `2 x 2` forms.
+- The `E8_1` and `E8_2` packet pieces are each negative-definite.
+- All five packet pieces are nonzero.
+
+So the canonical global plane `U1` is a genuine packet carrier, but it does not exhaust the local selector-side bridge geometry.
+
+### Fine selector-side refinement rigidity
+
+The finer five-factor split is not a seed-only phenomenon.
+
+- On the explicit `K3_16` chain model, the restricted form on each of `U1`, `U2`, `U3`, `E8_1`, and `E8_2` is carried by first barycentric pullback to exactly `120` times itself.
+- The normalized restricted form of each packet piece is therefore refinement-invariant at `sd^1`.
+- The three `U`-factor packet pieces stay mixed-sign, while the two `E8` pieces stay negative-definite.
+
+So the selector-side packet is already first-refinement rigid down to its current finest named decomposition.
+
+### Minimal `U1` carrier of the family `A4` entry
+
+The strongest conservative K3-to-family coupling theorem is now:
+
+- the internal family spurion is blind at `A0` and `A2` and first enters at `A4` with
+  `Delta A4 = 1209 a0 / 9194`
+- the reduced local bridge prefactor is already exact
+- the reduced global external coupling is already fixed on the canonical primitive plane
+- and that canonical primitive plane is exactly `U1`, the first explicit `U` factor of the `3U` core
+
+So the minimal canonical external carrier of the first family-sensitive packet is now explicit: `Delta A4` on `U1`.
+
+What is not yet proved is stronger:
+
+- the full local selector packet does not collapse to `U1`
+- the internal one-versus-two family flag `span(1,1,0) < {x=y}` is not yet identified exactly with the external `U1` plane
+- the split external `81 + 81` package is still obstructed from exact identification with the non-split internal transport `81 -> 162 -> 81` extension
+
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
 ## Reproduce

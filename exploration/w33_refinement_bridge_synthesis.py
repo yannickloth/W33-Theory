@@ -106,6 +106,15 @@ from w33_k3_selector_shadow_refinement_bridge import (
 from w33_k3_selector_a4_lattice_split_bridge import (
     build_k3_selector_a4_lattice_split_bridge_summary,
 )
+from w33_k3_selector_a4_five_factor_bridge import (
+    build_k3_selector_a4_five_factor_bridge_summary,
+)
+from w33_k3_selector_a4_five_factor_refinement_bridge import (
+    build_k3_selector_a4_five_factor_refinement_bridge_summary,
+)
+from w33_u1_family_a4_carrier_bridge import (
+    build_u1_family_a4_carrier_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -339,6 +348,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_selector_e8_shadow = build_k3_selector_e8_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
     k3_selector_a4_lattice_split = build_k3_selector_a4_lattice_split_bridge_summary()
+    k3_selector_a4_five_factor = build_k3_selector_a4_five_factor_bridge_summary()
+    k3_selector_a4_five_factor_refinement = (
+        build_k3_selector_a4_five_factor_refinement_bridge_summary()
+    )
+    u1_family_a4_carrier = build_u1_family_a4_carrier_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -3461,6 +3475,211 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "scalar_prefactor_remains_exactly_351_over_4_pi_squared": (
                 k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
                     "scalar_prefactor_remains_exactly_351_over_4_pi_squared"
+                ]
+            ),
+        },
+        "k3_selector_a4_five_factor_bridge": {
+            "common_scalar_prefactor": (
+                k3_selector_a4_five_factor["common_scalar_prefactor"]
+            ),
+            "u_factor_one_packet_form": (
+                k3_selector_a4_five_factor["u_factor_one_packet_form"]
+            ),
+            "u_factor_two_packet_form": (
+                k3_selector_a4_five_factor["u_factor_two_packet_form"]
+            ),
+            "u_factor_three_packet_form": (
+                k3_selector_a4_five_factor["u_factor_three_packet_form"]
+            ),
+            "e8_factor_one_packet_form": (
+                k3_selector_a4_five_factor["e8_factor_one_packet_form"]
+            ),
+            "e8_factor_two_packet_form": (
+                k3_selector_a4_five_factor["e8_factor_two_packet_form"]
+            ),
+            "reconstruction_error_linf": (
+                k3_selector_a4_five_factor["reconstruction_error_linf"]
+            ),
+            "three_u_packet_reconstructs_as_u1_plus_u2_plus_u3": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "three_u_packet_reconstructs_as_u1_plus_u2_plus_u3"
+                ]
+            ),
+            "selector_packet_reconstructs_as_u1_plus_u2_plus_u3_plus_e8_plus_e8": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "selector_packet_reconstructs_as_u1_plus_u2_plus_u3_plus_e8_plus_e8"
+                ]
+            ),
+            "u_factor_one_packet_piece_is_mixed_signature": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "u_factor_one_packet_piece_is_mixed_signature"
+                ]
+            ),
+            "u_factor_two_packet_piece_is_mixed_signature": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "u_factor_two_packet_piece_is_mixed_signature"
+                ]
+            ),
+            "u_factor_three_packet_piece_is_mixed_signature": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "u_factor_three_packet_piece_is_mixed_signature"
+                ]
+            ),
+            "all_five_packet_pieces_are_nonzero": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "all_five_packet_pieces_are_nonzero"
+                ]
+            ),
+            "distinguished_u1_plane_has_nonzero_selector_packet_piece": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "distinguished_u1_plane_has_nonzero_selector_packet_piece"
+                ]
+            ),
+            "selector_hyperbolic_packet_is_not_supported_on_u1_alone": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "selector_hyperbolic_packet_is_not_supported_on_u1_alone"
+                ]
+            ),
+            "reduced_selector_packet_is_five_supported_across_u_u_u_e8_e8": (
+                k3_selector_a4_five_factor["selector_a4_five_factor_theorem"][
+                    "reduced_selector_packet_is_five_supported_across_u_u_u_e8_e8"
+                ]
+            ),
+        },
+        "k3_selector_a4_five_factor_refinement_bridge": {
+            "u_factor_one_seed_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_one_seed_form"]
+            ),
+            "u_factor_one_first_refinement_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_one_first_refinement_form"]
+            ),
+            "u_factor_two_seed_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_two_seed_form"]
+            ),
+            "u_factor_two_first_refinement_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_two_first_refinement_form"]
+            ),
+            "u_factor_three_seed_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_three_seed_form"]
+            ),
+            "u_factor_three_first_refinement_form": (
+                k3_selector_a4_five_factor_refinement["u_factor_three_first_refinement_form"]
+            ),
+            "e8_factor_one_seed_form": (
+                k3_selector_a4_five_factor_refinement["e8_factor_one_seed_form"]
+            ),
+            "e8_factor_one_first_refinement_form": (
+                k3_selector_a4_five_factor_refinement["e8_factor_one_first_refinement_form"]
+            ),
+            "e8_factor_two_seed_form": (
+                k3_selector_a4_five_factor_refinement["e8_factor_two_seed_form"]
+            ),
+            "e8_factor_two_first_refinement_form": (
+                k3_selector_a4_five_factor_refinement["e8_factor_two_first_refinement_form"]
+            ),
+            "u_factor_one_packet_piece_scales_by_120": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "u_factor_one_packet_piece_scales_by_120"
+                ]
+            ),
+            "u_factor_two_packet_piece_scales_by_120": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "u_factor_two_packet_piece_scales_by_120"
+                ]
+            ),
+            "u_factor_three_packet_piece_scales_by_120": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "u_factor_three_packet_piece_scales_by_120"
+                ]
+            ),
+            "e8_factor_one_packet_piece_scales_by_120": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "e8_factor_one_packet_piece_scales_by_120"
+                ]
+            ),
+            "e8_factor_two_packet_piece_scales_by_120": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "e8_factor_two_packet_piece_scales_by_120"
+                ]
+            ),
+            "all_five_normalized_packet_forms_are_refinement_invariant": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "all_five_normalized_packet_forms_are_refinement_invariant"
+                ]
+            ),
+            "all_three_u_factor_packet_pieces_stay_mixed_signature": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "all_three_u_factor_packet_pieces_stay_mixed_signature"
+                ]
+            ),
+            "both_e8_packet_pieces_stay_negative_definite": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "both_e8_packet_pieces_stay_negative_definite"
+                ]
+            ),
+            "fine_selector_packet_split_is_first_refinement_rigid": (
+                k3_selector_a4_five_factor_refinement["selector_a4_five_factor_refinement_theorem"][
+                    "fine_selector_packet_split_is_first_refinement_rigid"
+                ]
+            ),
+        },
+        "u1_family_a4_carrier_bridge": {
+            "delta_A4": (
+                u1_family_a4_carrier["internal_family_entry"]["delta_A4"]
+            ),
+            "canonical_external_carrier": (
+                u1_family_a4_carrier["canonical_external_carrier"]["plane_name"]
+            ),
+            "normalized_global_prefactor": (
+                u1_family_a4_carrier["canonical_external_carrier"]["normalized_global_prefactor"]
+            ),
+            "common_line_generator": (
+                u1_family_a4_carrier["internal_family_boundary_condition"]["common_line_generator"]
+            ),
+            "common_plane_equation": (
+                u1_family_a4_carrier["internal_family_boundary_condition"]["common_plane_equation"]
+            ),
+            "distinguished_generation": (
+                u1_family_a4_carrier["internal_family_boundary_condition"]["distinguished_generation"]
+            ),
+            "first_family_entry_is_a4_only": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "first_family_entry_is_a4_only"
+                ]
+            ),
+            "canonical_external_carrier_equals_u_factor_one": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "canonical_external_carrier_equals_u_factor_one"
+                ]
+            ),
+            "canonical_u1_carrier_has_exact_351_over_4_pi_squared_coupling": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "canonical_u1_carrier_has_exact_351_over_4_pi_squared_coupling"
+                ]
+            ),
+            "u1_is_nonzero_piece_of_full_selector_packet": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "u1_is_nonzero_piece_of_full_selector_packet"
+                ]
+            ),
+            "full_selector_packet_is_not_supported_on_u1_alone": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "full_selector_packet_is_not_supported_on_u1_alone"
+                ]
+            ),
+            "internal_family_side_has_exact_one_vs_two_flag_boundary_condition": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "internal_family_side_has_exact_one_vs_two_flag_boundary_condition"
+                ]
+            ),
+            "exact_identification_of_u1_with_transport_162_extension_is_obstructed": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "exact_identification_of_u1_with_transport_162_extension_is_obstructed"
+                ]
+            ),
+            "minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1": (
+                u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
+                    "minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1"
                 ]
             ),
         },

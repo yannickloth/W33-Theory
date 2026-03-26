@@ -397,6 +397,64 @@ def test_synthesis_records_k3_selector_a4_lattice_split_bridge() -> None:
     assert bridge["scalar_prefactor_remains_exactly_351_over_4_pi_squared"] is True
 
 
+def test_synthesis_records_k3_selector_a4_five_factor_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_a4_five_factor_bridge"]
+    assert bridge["common_scalar_prefactor"] == "351/(4 pi^2)"
+    assert bridge["reconstruction_error_linf"] < 1e-10
+    assert bridge["u_factor_one_packet_form"][0][0] == pytest.approx(0.469558153807232)
+    assert bridge["u_factor_two_packet_form"][1][1] == pytest.approx(0.06475792755064227)
+    assert bridge["u_factor_three_packet_form"][0][0] == pytest.approx(2.3201042391973585)
+    assert bridge["e8_factor_one_packet_form"][0][0] == pytest.approx(-0.2369079021220062)
+    assert bridge["e8_factor_two_packet_form"][0][0] == pytest.approx(-2.3950562019433925)
+    assert bridge["three_u_packet_reconstructs_as_u1_plus_u2_plus_u3"] is True
+    assert bridge["selector_packet_reconstructs_as_u1_plus_u2_plus_u3_plus_e8_plus_e8"] is True
+    assert bridge["u_factor_one_packet_piece_is_mixed_signature"] is True
+    assert bridge["u_factor_two_packet_piece_is_mixed_signature"] is True
+    assert bridge["u_factor_three_packet_piece_is_mixed_signature"] is True
+    assert bridge["all_five_packet_pieces_are_nonzero"] is True
+    assert bridge["distinguished_u1_plane_has_nonzero_selector_packet_piece"] is True
+    assert bridge["selector_hyperbolic_packet_is_not_supported_on_u1_alone"] is True
+    assert bridge["reduced_selector_packet_is_five_supported_across_u_u_u_e8_e8"] is True
+
+
+def test_synthesis_records_k3_selector_a4_five_factor_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_a4_five_factor_refinement_bridge"]
+    assert bridge["u_factor_one_seed_form"][0][0] == pytest.approx(0.469558153807232)
+    assert bridge["u_factor_one_first_refinement_form"][0][0] == pytest.approx(56.34697845686784)
+    assert bridge["u_factor_three_first_refinement_form"][0][0] == pytest.approx(278.412508703683)
+    assert bridge["e8_factor_two_first_refinement_form"][0][0] == pytest.approx(-287.40674423320713)
+    assert bridge["u_factor_one_packet_piece_scales_by_120"] is True
+    assert bridge["u_factor_two_packet_piece_scales_by_120"] is True
+    assert bridge["u_factor_three_packet_piece_scales_by_120"] is True
+    assert bridge["e8_factor_one_packet_piece_scales_by_120"] is True
+    assert bridge["e8_factor_two_packet_piece_scales_by_120"] is True
+    assert bridge["all_five_normalized_packet_forms_are_refinement_invariant"] is True
+    assert bridge["all_three_u_factor_packet_pieces_stay_mixed_signature"] is True
+    assert bridge["both_e8_packet_pieces_stay_negative_definite"] is True
+    assert bridge["fine_selector_packet_split_is_first_refinement_rigid"] is True
+
+
+def test_synthesis_records_u1_family_a4_carrier_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["u1_family_a4_carrier_bridge"]
+    assert bridge["delta_A4"] == "1209/9194 a0"
+    assert bridge["canonical_external_carrier"] == "U1"
+    assert bridge["normalized_global_prefactor"] == "351/(4 pi^2)"
+    assert bridge["common_line_generator"] == [1, 1, 0]
+    assert bridge["common_plane_equation"] == "x = y"
+    assert bridge["distinguished_generation"] == 2
+    assert bridge["first_family_entry_is_a4_only"] is True
+    assert bridge["canonical_external_carrier_equals_u_factor_one"] is True
+    assert bridge["canonical_u1_carrier_has_exact_351_over_4_pi_squared_coupling"] is True
+    assert bridge["u1_is_nonzero_piece_of_full_selector_packet"] is True
+    assert bridge["full_selector_packet_is_not_supported_on_u1_alone"] is True
+    assert bridge["internal_family_side_has_exact_one_vs_two_flag_boundary_condition"] is True
+    assert bridge["exact_identification_of_u1_with_transport_162_extension_is_obstructed"] is True
+    assert bridge["minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]
