@@ -134,6 +134,42 @@ The reduced generation algebra now has a cleaner exact finite structure too:
 
 So the repo-native finite side already carries a common `1 ⊂ 2 ⊂ 3` flag before any continuum family model is chosen.
 
+### Exact finite family normal form
+
+The exact family packet is now sharper than just “there is a flag”:
+
+- The six ordered `l6` generation-transfer modes are the complete oriented three-generation graph.
+- On the replicated seed, the active quartet is exactly the star at generation `2`:
+  - `[0,2]`, `[2,0]`, `[1,2]`, `[2,1]`
+- The dormant pair is the opposite bidirectional edge:
+  - `[0,1]`, `[1,0]`
+- In the exact basis
+  - `u = (1,1,0)`
+  - `v = (0,0,1)`
+  - `w = (1,-1,0)`
+  the two universal generation matrices become
+  - `C_(+-) = [[1,1,-2],[0,1,2],[0,0,1]]`
+  - `C_(-+) = [[1,-1,-2],[0,1,-2],[0,0,1]]`
+- Their nilpotent parts have the same nonzero square:
+  - `N_(+-)^2 = N_(-+)^2 = 2 E_13`
+
+So the current exact family/Yukawa packet already has a canonical one-versus-two upper-unitriangular normal form before any continuum orbit language is added.
+
+### Exact A4 entry point
+
+The local product-heat bridge also sharpens the continuum bottleneck:
+
+- `A0 = 81 a0`
+- `A2 = -459 a0 + 81 a2`
+- so both `A0` and `A2` are family-blind
+- the first family correction is
+  - `ΔA4 = 81 ε^2 a0 = 1209 a0 / 9194`
+
+So the honest continuum wall is now more specific than “derive gravity somehow”:
+
+- the remaining family/continuum problem is the refined `A4` density
+- not the leading `Λ^4` or `Λ^2` coefficients
+
 ## Reproduce
 
 ### PMNS
