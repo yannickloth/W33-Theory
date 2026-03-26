@@ -76,6 +76,9 @@ from w33_k3_primitive_plane_global_a4_bridge import (
 from w33_k3_three_u_decomposition_bridge import (
     build_k3_three_u_decomposition_bridge_summary,
 )
+from w33_k3_three_u_refinement_bridge import (
+    build_k3_three_u_refinement_bridge_summary,
+)
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
@@ -301,6 +304,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_integral_h2_lattice = build_k3_integral_h2_lattice_bridge_summary()
     k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
     k3_three_u_decomposition = build_k3_three_u_decomposition_bridge_summary()
+    k3_three_u_refinement = build_k3_three_u_refinement_bridge_summary()
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
@@ -2949,6 +2953,44 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "explicit_k3_seed_contains_primitive_orthogonal_3U_core": (
                 k3_three_u_decomposition["three_u_decomposition_theorem"][
                     "explicit_k3_seed_contains_primitive_orthogonal_3U_core"
+                ]
+            ),
+        },
+        "k3_three_u_refinement_bridge": {
+            "three_u_seed_form": (
+                k3_three_u_refinement["three_u_seed_form"]
+            ),
+            "three_u_first_refinement_form": (
+                k3_three_u_refinement["three_u_first_refinement_form"]
+            ),
+            "three_u_block_scales_by_120": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "three_u_block_scales_by_120"
+                ]
+            ),
+            "seed_form_is_exact_3u": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "seed_form_is_exact_3u"
+                ]
+            ),
+            "first_refinement_form_is_exact_120_times_3u": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "first_refinement_form_is_exact_120_times_3u"
+                ]
+            ),
+            "normalized_three_u_block_is_refinement_invariant": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "normalized_three_u_block_is_refinement_invariant"
+                ]
+            ),
+            "three_u_signature_survives_first_refinement": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "three_u_signature_survives_first_refinement"
+                ]
+            ),
+            "three_u_determinant_scales_by_120_to_the_6": (
+                k3_three_u_refinement["three_u_refinement_theorem"][
+                    "three_u_determinant_scales_by_120_to_the_6"
                 ]
             ),
         },

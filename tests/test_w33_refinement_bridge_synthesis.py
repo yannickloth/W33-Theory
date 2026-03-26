@@ -230,6 +230,33 @@ def test_synthesis_records_k3_three_u_decomposition_bridge() -> None:
     assert bridge["explicit_k3_seed_contains_primitive_orthogonal_3U_core"] is True
 
 
+def test_synthesis_records_k3_three_u_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_three_u_refinement_bridge"]
+    assert bridge["three_u_seed_form"] == [
+        [0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 1, 0],
+    ]
+    assert bridge["three_u_first_refinement_form"] == [
+        [0, 120, 0, 0, 0, 0],
+        [120, 0, 0, 0, 0, 0],
+        [0, 0, 0, 120, 0, 0],
+        [0, 0, 120, 0, 0, 0],
+        [0, 0, 0, 0, 0, 120],
+        [0, 0, 0, 0, 120, 0],
+    ]
+    assert bridge["three_u_block_scales_by_120"] is True
+    assert bridge["seed_form_is_exact_3u"] is True
+    assert bridge["first_refinement_form_is_exact_120_times_3u"] is True
+    assert bridge["normalized_three_u_block_is_refinement_invariant"] is True
+    assert bridge["three_u_signature_survives_first_refinement"] is True
+    assert bridge["three_u_determinant_scales_by_120_to_the_6"] is True
+
+
 def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_three_u_shadow_bridge"]

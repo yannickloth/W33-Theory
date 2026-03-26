@@ -453,6 +453,14 @@ That selector/core split itself now survives the first exact refinement step.
 - So the normalized selector/core/complement decomposition is already refinement-invariant at first barycentric order.
 - The `3U` shadow stays positive-definite and the residual stays negative-definite after pullback, so the seed-level split is not a one-off artifact of the unrefined triangulation.
 
+### Refinement persistence of the full 3U core
+
+The same refinement law is now known on the whole explicit hyperbolic core, not only on the selector-derived shadows.
+
+- Restricting the first barycentric pullback to the six explicit `3U` cochain vectors gives exactly `120 * 3U`.
+- So the normalized hyperbolic core itself is already refinement-invariant at `sd^1`.
+- In particular, the primitive K3-side `3U` host is not merely present on the seed; it already survives the first exact refinement step as one coherent block.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:
