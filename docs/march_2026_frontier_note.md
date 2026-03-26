@@ -648,6 +648,17 @@ The bridge now separates two exact notions that should not be conflated.
 
 So `U1` is the canonical global carrier, but it is not the dominant local packet piece. That separation is already exact and refinement-invariant.
 
+### Canonical line candidate inside `U1`
+
+The carrier-only theorem is not yet the whole external story.
+
+- The metric carrier data on `U1` are still symmetric under swapping the two primitive isotropic lines.
+- But the canonical ordered selector basis already projects to `U1` with unequal isotropic-line weights:
+  about `0.29249917` versus `0.220630996`.
+- The exact dominance ratio is therefore `1.3257392335`.
+
+So the full current external packet already selects a unique dominant isotropic-line candidate inside `U1`, even though the carrier metric alone is line-blind.
+
 ### Family-flag visibility obstruction
 
 The finite family flag is now sharper than the current external bridge.
@@ -655,10 +666,10 @@ The finite family flag is now sharper than the current external bridge.
 - Internally, the reduced Yukawa side has exact line-plane data
   `span(1,1,0) < {x = y}`.
 - Externally, the current K3 bridge fixes the carrier plane `U1`.
-- But inside `U1`, the current exact data are still line-blind.
+- The full external packet now also picks a canonical dominant isotropic-line candidate inside `U1`.
 - And on the transport side, the exact match stops at the graded shadow `81 ⊕ 81`, not at the extension class.
 
-So the present bridge fixes the carrier plane and the graded shadow, but not the full internal family flag as an external object.
+So the present bridge fixes a carrier plane, a line candidate, and the graded shadow, but not yet an exact identification of that external line candidate with the internal line `span(1,1,0)`, and not the non-split extension object.
 
 ### Central `2E13` visibility wall
 
@@ -667,9 +678,10 @@ The status of the internal central channel is now explicit.
 - On the finite family side, the common square is exactly `2E13`.
 - Its image is exactly the common internal line `span(1,1,0)`.
 - The current external bridge fixes the canonical carrier plane `U1`.
-- But it still does not canonically pick an external line for that image, and it still does not promote the transport extension class.
+- The full current external packet also picks a canonical dominant isotropic-line candidate inside `U1`.
+- But it still does not identify that external line candidate with the internal line, and it still does not promote the transport extension class.
 
-So the conservative exact statement is now: the current bridge sees the carrier plane and the graded `81 ⊕ 81` shadow of the central `2E13` channel, but not the central channel itself as a canonical external object.
+So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the graded `81 ⊕ 81` shadow of the central `2E13` channel, but not yet the full central channel as an external extension object.
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 

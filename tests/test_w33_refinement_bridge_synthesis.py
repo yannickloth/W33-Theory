@@ -521,20 +521,38 @@ def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     assert bridge["global_local_carrier_split_is_refinement_invariant"] is True
 
 
+def test_synthesis_records_u1_selector_line_selection_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["u1_selector_line_selection_bridge"]
+    assert bridge["u1_isotropic_line_weights"][0] == pytest.approx(0.29249916729399683)
+    assert bridge["u1_isotropic_line_weights"][1] == pytest.approx(0.22063099582377832)
+    assert bridge["dominant_isotropic_line_index"] == 0
+    assert bridge["recessive_isotropic_line_index"] == 1
+    assert bridge["dominance_ratio"] == pytest.approx(1.3257392335192142)
+    assert bridge["carrier_metric_alone_is_line_blind"] is True
+    assert bridge["canonical_selector_u1_component_has_full_rank_2"] is True
+    assert bridge["canonical_selector_u1_component_assigns_unequal_weights_to_the_two_isotropic_lines"] is True
+    assert bridge["there_is_a_unique_dominant_isotropic_line_inside_u1"] is True
+    assert bridge["dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis"] is True
+    assert bridge["full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1"] is True
+
+
 def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["family_flag_visibility_obstruction_bridge"]
     assert bridge["internal_common_line_generator"] == [1, 1, 0]
     assert bridge["internal_common_plane_equation"] == "x = y"
     assert bridge["external_canonical_carrier_plane"] == "U1"
+    assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_semisimplified_shadow"] == [81, 81]
     assert bridge["internal_family_flag_is_exact_line_in_plane_data"] is True
     assert bridge["external_side_fixes_a_canonical_carrier_plane_u1"] is True
-    assert bridge["external_side_is_line_blind_inside_u1"] is True
+    assert bridge["carrier_metric_alone_is_line_blind_inside_u1"] is True
+    assert bridge["full_external_packet_selects_a_canonical_line_candidate_inside_u1"] is True
     assert bridge["external_side_matches_only_the_graded_shadow_of_the_transport_162_sector"] is True
     assert bridge["exact_external_identification_of_the_internal_common_line_is_not_yet_supported"] is True
     assert bridge["exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"] is True
-    assert bridge["current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object"] is True
+    assert bridge["current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object"] is True
 
 
 def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
@@ -543,13 +561,15 @@ def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
     assert bridge["internal_common_square"] == [[0, 0, 2], [0, 0, 0], [0, 0, 0]]
     assert bridge["internal_common_line_generator"] == [1, 1, 0]
     assert bridge["external_canonical_carrier_plane"] == "U1"
+    assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_graded_shadow"] == [81, 81]
     assert bridge["internal_common_square_is_exact_central_2e13_channel"] is True
     assert bridge["image_of_the_common_square_is_the_internal_common_line"] is True
     assert bridge["current_external_bridge_fixes_the_canonical_u1_carrier_plane"] is True
-    assert bridge["current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image"] is True
+    assert bridge["current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"] is True
+    assert bridge["exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"] is True
     assert bridge["current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"] is True
-    assert bridge["current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel"] is True
+    assert bridge["current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel"] is True
     assert bridge["exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported"] is True
 
 

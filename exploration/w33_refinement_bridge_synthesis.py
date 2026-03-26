@@ -133,6 +133,9 @@ from w33_family_flag_visibility_obstruction_bridge import (
 from w33_e13_visibility_obstruction_bridge import (
     build_e13_visibility_obstruction_bridge_summary,
 )
+from w33_u1_selector_line_selection_bridge import (
+    build_u1_selector_line_selection_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -377,6 +380,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
         build_transport_semisimplification_shadow_bridge_summary()
     )
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
+    u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     family_flag_visibility_obstruction = (
         build_family_flag_visibility_obstruction_bridge_summary()
     )
@@ -3891,6 +3895,57 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]
             ),
         },
+        "u1_selector_line_selection_bridge": {
+            "u1_selector_coordinate_matrix": (
+                u1_selector_line_selection["u1_selector_coordinate_matrix"]
+            ),
+            "u1_isotropic_line_weights": (
+                u1_selector_line_selection["u1_isotropic_line_weights"]
+            ),
+            "dominant_isotropic_line_index": (
+                u1_selector_line_selection["dominant_isotropic_line_index"]
+            ),
+            "recessive_isotropic_line_index": (
+                u1_selector_line_selection["recessive_isotropic_line_index"]
+            ),
+            "dominant_isotropic_line_coefficients": (
+                u1_selector_line_selection["dominant_isotropic_line_coefficients"]
+            ),
+            "recessive_isotropic_line_coefficients": (
+                u1_selector_line_selection["recessive_isotropic_line_coefficients"]
+            ),
+            "dominance_ratio": u1_selector_line_selection["dominance_ratio"],
+            "carrier_metric_alone_is_line_blind": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "carrier_metric_alone_is_line_blind"
+                ]
+            ),
+            "canonical_selector_u1_component_has_full_rank_2": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "canonical_selector_u1_component_has_full_rank_2"
+                ]
+            ),
+            "canonical_selector_u1_component_assigns_unequal_weights_to_the_two_isotropic_lines": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "canonical_selector_u1_component_assigns_unequal_weights_to_the_two_isotropic_lines"
+                ]
+            ),
+            "there_is_a_unique_dominant_isotropic_line_inside_u1": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "there_is_a_unique_dominant_isotropic_line_inside_u1"
+                ]
+            ),
+            "dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "dominant_isotropic_line_is_the_first_u1_line_in_the_current_canonical_basis"
+                ]
+            ),
+            "full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1": (
+                u1_selector_line_selection["u1_selector_line_selection_theorem"][
+                    "full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1"
+                ]
+            ),
+        },
         "family_flag_visibility_obstruction_bridge": {
             "internal_common_line_generator": (
                 family_flag_visibility_obstruction["internal_common_line_generator"]
@@ -3900,6 +3955,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "external_canonical_carrier_plane": (
                 family_flag_visibility_obstruction["external_canonical_carrier_plane"]
+            ),
+            "external_canonical_line_candidate": (
+                family_flag_visibility_obstruction["external_canonical_line_candidate"]
             ),
             "external_semisimplified_shadow": (
                 family_flag_visibility_obstruction["external_semisimplified_shadow"]
@@ -3914,9 +3972,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "external_side_fixes_a_canonical_carrier_plane_u1"
                 ]
             ),
-            "external_side_is_line_blind_inside_u1": (
+            "carrier_metric_alone_is_line_blind_inside_u1": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
-                    "external_side_is_line_blind_inside_u1"
+                    "carrier_metric_alone_is_line_blind_inside_u1"
+                ]
+            ),
+            "full_external_packet_selects_a_canonical_line_candidate_inside_u1": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "full_external_packet_selects_a_canonical_line_candidate_inside_u1"
                 ]
             ),
             "external_side_matches_only_the_graded_shadow_of_the_transport_162_sector": (
@@ -3934,9 +3997,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"
                 ]
             ),
-            "current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object": (
+            "current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
-                    "current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object"
+                    "current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object"
                 ]
             ),
         },
@@ -3947,6 +4010,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "external_canonical_carrier_plane": (
                 e13_visibility_obstruction["external_canonical_carrier_plane"]
+            ),
+            "external_canonical_line_candidate": (
+                e13_visibility_obstruction["external_canonical_line_candidate"]
             ),
             "external_graded_shadow": (
                 e13_visibility_obstruction["external_graded_shadow"]
@@ -3966,9 +4032,14 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "current_external_bridge_fixes_the_canonical_u1_carrier_plane"
                 ]
             ),
-            "current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image": (
+            "current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
-                    "current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image"
+                    "current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"
+                ]
+            ),
+            "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"
                 ]
             ),
             "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel": (
@@ -3976,9 +4047,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"
                 ]
             ),
-            "current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel": (
+            "current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
-                    "current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel"
+                    "current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel"
                 ]
             ),
             "exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported": (
