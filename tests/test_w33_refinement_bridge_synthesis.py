@@ -125,6 +125,17 @@ def test_synthesis_records_curved_harmonic_qutrit_split_bridge() -> None:
     assert bridge["k3_minus_cp2_middle_degree_gap"] == 1701
 
 
+def test_synthesis_records_k3_rank2_qutrit_plane_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_rank2_qutrit_plane_bridge"]
+    assert bridge["minimal_rank2_qutrit_branch_dimension"] == 162
+    assert bridge["mixed_rank2_qutrit_split"] == [81, 81]
+    assert bridge["k3_supports_positive_rank2_plane"] is True
+    assert bridge["k3_supports_mixed_rank2_plane"] is True
+    assert bridge["k3_supports_negative_rank2_plane"] is True
+    assert bridge["minimal_rank2_branch_matches_transport_extension_size"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

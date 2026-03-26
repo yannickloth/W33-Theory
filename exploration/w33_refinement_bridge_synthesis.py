@@ -56,6 +56,7 @@ from w33_curved_external_hodge_product import build_curved_external_hodge_produc
 from w33_curved_h2_host_bridge import build_curved_h2_host_bridge_summary
 from w33_curved_h2_qutrit_bridge import build_curved_h2_qutrit_bridge_summary
 from w33_curved_harmonic_qutrit_split_bridge import build_curved_harmonic_qutrit_split_bridge_summary
+from w33_k3_rank2_qutrit_plane_bridge import build_k3_rank2_qutrit_plane_bridge_summary
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -267,6 +268,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     curved_h2_host = build_curved_h2_host_bridge_summary()
     curved_h2_qutrit = build_curved_h2_qutrit_bridge_summary()
     curved_harmonic_qutrit_split = build_curved_harmonic_qutrit_split_bridge_summary()
+    k3_rank2_qutrit_plane = build_k3_rank2_qutrit_plane_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2701,6 +2703,26 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "k3_minus_cp2_middle_degree_gap": (
                 curved_harmonic_qutrit_split["bridge_constraints"]["k3_minus_cp2_middle_degree_gap"]
+            ),
+        },
+        "k3_rank2_qutrit_plane_bridge": {
+            "minimal_rank2_qutrit_branch_dimension": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["minimal_rank2_qutrit_branch_dimension"]
+            ),
+            "mixed_rank2_qutrit_split": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["mixed_rank2_qutrit_split"]
+            ),
+            "k3_supports_positive_rank2_plane": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["k3_supports_positive_rank2_plane"]
+            ),
+            "k3_supports_mixed_rank2_plane": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["k3_supports_mixed_rank2_plane"]
+            ),
+            "k3_supports_negative_rank2_plane": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["k3_supports_negative_rank2_plane"]
+            ),
+            "minimal_rank2_branch_matches_transport_extension_size": (
+                k3_rank2_qutrit_plane["bridge_constraints"]["minimal_rank2_branch_matches_transport_extension_size"]
             ),
         },
         "curved_refinement_density_bridge": {

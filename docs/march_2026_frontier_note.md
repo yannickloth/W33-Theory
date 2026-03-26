@@ -344,6 +344,28 @@ So all external growth is already concentrated in the middle-degree channel `81 
 
 which is entirely middle-degree.
 
+### K3 rank-2 qutrit plane types
+
+The K3 middle-degree host now supports exact minimal rank-2 branch types:
+
+- positive rank-2 plane `(2,0)`
+- mixed rank-2 plane `(1,1)`
+- negative rank-2 plane `(0,2)`
+
+Because the qutrit matter packet has dimension `81`, tensoring any such rank-2 plane gives
+
+- total branch size `81 * 2 = 162`
+
+and the mixed branch splits exactly as
+
+- `81 + 81`
+
+So the first exact external rank-2 branch package is numerically compatible with the already-promoted internal transport extension
+
+- `0 -> 81 -> 162 -> 81`
+
+This is still not the final global theorem, but it is the cleanest exact size/type lock so far on the unresolved external branch.
+
 ## Reproduce
 
 ### PMNS
