@@ -155,6 +155,22 @@ The exact family packet is now sharper than just “there is a flag”:
 
 So the current exact family/Yukawa packet already has a canonical one-versus-two upper-unitriangular normal form before any continuum orbit language is added.
 
+### Exact quadratic shadow
+
+The same normal form now gives a sharper nonlinear statement too:
+
+- Write the active simple-root packet as
+  - `A_(+-) = E_12 + 2 E_23`
+  - `A_(-+) = -E_12 - 2 E_23`
+- Then the first nonlinear closure is exact:
+  - `A_(+-)^2 = A_(-+)^2 = 2 E_13`
+  - equivalently `2 E_13 = [E_12, 2 E_23]`
+- The universal generation nilpotents are exactly
+  - `N_(+-) = A_(+-) - 2 E_13`
+  - `N_(-+) = A_(-+) - 2 E_13`
+
+So the first nonlinear family packet is not an independent extra mode. It is the exact quadratic central shadow of the active simple-root packet already present in the finite family normal form.
+
 ### Exact A4 entry point
 
 The local product-heat bridge also sharpens the continuum bottleneck:
