@@ -437,6 +437,14 @@ More sharply, the same explicit integral lattice already contains three pairwise
 
 So the explicit `K3` host now carries a full hyperbolic core, not merely one isolated primitive plane.
 
+### Selector plane versus the 3U core
+
+The canonical mixed harmonic selector is now separated from that lattice core cleanly.
+
+In harmonic `H^2` coordinates, projecting the selector plane cup-orthogonally onto the primitive `3U` block gives a positive-definite `2 x 2` form, while the residual plane in the orthogonal rank-16 complement is negative-definite.
+
+So the selector plane is not itself one of the primitive `U` factors, and it is not contained entirely in the negative complement either. It genuinely straddles both exact K3 lattice pieces.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:

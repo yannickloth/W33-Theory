@@ -230,6 +230,24 @@ def test_synthesis_records_k3_three_u_decomposition_bridge() -> None:
     assert bridge["explicit_k3_seed_contains_primitive_orthogonal_3U_core"] is True
 
 
+def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_three_u_shadow_bridge"]
+    assert bridge["selector_plane_form"][0][0] == pytest.approx(0.1705210828229612)
+    assert bridge["selector_plane_form"][0][1] == pytest.approx(0.0, abs=1e-10)
+    assert bridge["selector_plane_form"][1][1] == pytest.approx(-0.1262119267461511)
+    assert bridge["three_u_shadow_form"][0][0] == pytest.approx(2.8024851868813414)
+    assert bridge["three_u_shadow_form"][1][1] == pytest.approx(0.2518300163799658)
+    assert bridge["rank16_residual_form"][0][0] == pytest.approx(-2.6319641040583726)
+    assert bridge["rank16_residual_form"][1][1] == pytest.approx(-0.37804194312612105)
+    assert bridge["principal_cosines_against_three_u_core"][0] == pytest.approx(0.6939852722886527)
+    assert bridge["principal_cosines_against_three_u_core"][1] == pytest.approx(0.4318086483648292)
+    assert bridge["selector_plane_shadow_on_three_u_is_positive_definite"] is True
+    assert bridge["selector_plane_residual_on_rank16_complement_is_negative_definite"] is True
+    assert bridge["selector_plane_is_not_contained_in_three_u_core"] is True
+    assert bridge["selector_plane_straddles_both_k3_lattice_pieces"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

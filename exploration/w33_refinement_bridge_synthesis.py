@@ -76,6 +76,9 @@ from w33_k3_primitive_plane_global_a4_bridge import (
 from w33_k3_three_u_decomposition_bridge import (
     build_k3_three_u_decomposition_bridge_summary,
 )
+from w33_k3_selector_three_u_shadow_bridge import (
+    build_k3_selector_three_u_shadow_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -295,6 +298,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_integral_h2_lattice = build_k3_integral_h2_lattice_bridge_summary()
     k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
     k3_three_u_decomposition = build_k3_three_u_decomposition_bridge_summary()
+    k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2941,6 +2945,40 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "explicit_k3_seed_contains_primitive_orthogonal_3U_core": (
                 k3_three_u_decomposition["three_u_decomposition_theorem"][
                     "explicit_k3_seed_contains_primitive_orthogonal_3U_core"
+                ]
+            ),
+        },
+        "k3_selector_three_u_shadow_bridge": {
+            "selector_plane_form": (
+                k3_selector_three_u_shadow["selector_plane_form"]
+            ),
+            "three_u_shadow_form": (
+                k3_selector_three_u_shadow["three_u_shadow_form"]
+            ),
+            "rank16_residual_form": (
+                k3_selector_three_u_shadow["rank16_residual_form"]
+            ),
+            "principal_cosines_against_three_u_core": (
+                k3_selector_three_u_shadow["principal_cosines_against_three_u_core"]
+            ),
+            "selector_plane_shadow_on_three_u_is_positive_definite": (
+                k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
+                    "selector_plane_shadow_on_three_u_is_positive_definite"
+                ]
+            ),
+            "selector_plane_residual_on_rank16_complement_is_negative_definite": (
+                k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
+                    "selector_plane_residual_on_rank16_complement_is_negative_definite"
+                ]
+            ),
+            "selector_plane_is_not_contained_in_three_u_core": (
+                k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
+                    "selector_plane_is_not_contained_in_three_u_core"
+                ]
+            ),
+            "selector_plane_straddles_both_k3_lattice_pieces": (
+                k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
+                    "selector_plane_straddles_both_k3_lattice_pieces"
                 ]
             ),
         },
