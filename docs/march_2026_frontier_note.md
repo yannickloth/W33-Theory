@@ -309,6 +309,24 @@ The explicit curved seeds now sharpen that remaining external step more than the
 
 So the common exact part of the external bridge is the universal local `120`-mode law, not a common seed-level `H^2` host. The remaining global ambiguity is narrower: it is the actual selection, counting, and orientation of the relevant rank-2 harmonic plane inside the refined `K3` tower.
 
+### Middle-degree qutrit bridge
+
+That same host theorem now lands directly on the exact matter packet:
+
+- The finite W33 qutrit sector has exact dimension `81`
+- Tensoring with middle harmonic cohomology gives
+  - `CP2_9`: `81 * 1 = 81`
+  - `K3_16`: `81 * 22 = 1782`
+- The K3 middle-degree channel splits exactly by sign as
+  - positive: `81 * 3 = 243`
+  - negative: `81 * 19 = 1539`
+
+So the relevant exact bridge host is not just “the K3 side somewhere.” It is the concrete middle-degree package
+
+- `81 ⊗ H^2(K3)`
+
+rather than the coarser total-harmonic lift. This still does **not** fix the final global branch theorem, but it does mean the branch now has a sharply localized exact qutrit host before any continuum interpretation is added.
+
 ## Reproduce
 
 ### PMNS

@@ -95,6 +95,21 @@ def test_synthesis_records_curved_h2_host_bridge() -> None:
     assert host["first_explicit_rank2_h2_host_is_k3"] is True
 
 
+def test_synthesis_records_curved_h2_qutrit_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_h2_qutrit_bridge"]
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["cp2_middle_degree_qutrit_channel"] == 81
+    assert bridge["k3_middle_degree_qutrit_channel"] == 1782
+    assert bridge["k3_minus_cp2_middle_degree_gap"] == 1701
+    assert bridge["k3_positive_middle_degree_qutrit_channel"] == 243
+    assert bridge["k3_negative_middle_degree_qutrit_channel"] == 1539
+    assert bridge["cp2_is_not_rank2_middle_degree_host"] is True
+    assert bridge["k3_is_rank2_middle_degree_host"] is True
+    assert bridge["k3_has_both_middle_degree_sign_channels"] is True
+    assert bridge["first_exact_middle_degree_qutrit_host_is_k3"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

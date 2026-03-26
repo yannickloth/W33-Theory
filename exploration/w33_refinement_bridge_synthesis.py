@@ -54,6 +54,7 @@ from w33_curved_barycentric_density_bridge import build_curved_barycentric_densi
 from w33_curved_4d_curvature_budget import build_curved_4d_curvature_budget_summary
 from w33_curved_external_hodge_product import build_curved_external_hodge_product_summary
 from w33_curved_h2_host_bridge import build_curved_h2_host_bridge_summary
+from w33_curved_h2_qutrit_bridge import build_curved_h2_qutrit_bridge_summary
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -263,6 +264,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     curvature_budget = build_curved_4d_curvature_budget_summary()
     curved_operator = build_curved_external_hodge_product_summary()
     curved_h2_host = build_curved_h2_host_bridge_summary()
+    curved_h2_qutrit = build_curved_h2_qutrit_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2646,6 +2648,28 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 curved_h2_host["bridge_constraints"]["six_mode_sign_matches_signature_on_both_explicit_seeds"]
             ),
             "first_explicit_rank2_h2_host_is_k3": curved_h2_host["bridge_constraints"]["first_explicit_rank2_h2_host_is_k3"],
+        },
+        "curved_h2_qutrit_bridge": {
+            "logical_qutrits": curved_h2_qutrit["bridge_constraints"]["logical_qutrits"],
+            "cp2_middle_degree_qutrit_channel": curved_h2_qutrit["bridge_constraints"]["cp2_middle_degree_qutrit_channel"],
+            "k3_middle_degree_qutrit_channel": curved_h2_qutrit["bridge_constraints"]["k3_middle_degree_qutrit_channel"],
+            "k3_minus_cp2_middle_degree_gap": curved_h2_qutrit["bridge_constraints"]["k3_minus_cp2_middle_degree_gap"],
+            "k3_positive_middle_degree_qutrit_channel": (
+                curved_h2_qutrit["seed_profiles"][1]["positive_middle_degree_qutrit_channel"]
+            ),
+            "k3_negative_middle_degree_qutrit_channel": (
+                curved_h2_qutrit["seed_profiles"][1]["negative_middle_degree_qutrit_channel"]
+            ),
+            "cp2_is_not_rank2_middle_degree_host": (
+                curved_h2_qutrit["bridge_constraints"]["cp2_is_not_rank2_middle_degree_host"]
+            ),
+            "k3_is_rank2_middle_degree_host": curved_h2_qutrit["bridge_constraints"]["k3_is_rank2_middle_degree_host"],
+            "k3_has_both_middle_degree_sign_channels": (
+                curved_h2_qutrit["bridge_constraints"]["k3_has_both_middle_degree_sign_channels"]
+            ),
+            "first_exact_middle_degree_qutrit_host_is_k3": (
+                curved_h2_qutrit["bridge_constraints"]["first_exact_middle_degree_qutrit_host_is_k3"]
+            ),
         },
         "curved_refinement_density_bridge": {
             "vanishing_barycentric_modes": barycentric_density["neighborly_mode_formulas"]["vanishing_modes"],
