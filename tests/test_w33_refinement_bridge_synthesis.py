@@ -257,6 +257,31 @@ def test_synthesis_records_k3_three_u_refinement_bridge() -> None:
     assert bridge["three_u_determinant_scales_by_120_to_the_6"] is True
 
 
+def test_synthesis_records_k3_three_u_complement_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_three_u_complement_refinement_bridge"]
+    assert bridge["three_u_complement_basis_shape"] == [22, 16]
+    assert bridge["three_u_complement_seed_form"][0][0] == -2
+    assert bridge["three_u_complement_seed_form"][0][2] == -1
+    assert bridge["three_u_complement_seed_form"][4][4] == -4
+    assert bridge["three_u_complement_first_refinement_form"][0][0] == -240
+    assert bridge["three_u_complement_first_refinement_form"][0][2] == -120
+    assert bridge["three_u_complement_first_refinement_form"][4][4] == -480
+    assert bridge["full_split_seed_form"][0][1] == 1
+    assert bridge["full_split_seed_form"][5][4] == 1
+    assert bridge["full_split_seed_form"][6][6] == -2
+    assert bridge["full_split_first_refinement_form"][0][1] == 120
+    assert bridge["full_split_first_refinement_form"][5][4] == 120
+    assert bridge["full_split_first_refinement_form"][6][6] == -240
+    assert bridge["three_u_and_complement_are_exactly_orthogonal"] is True
+    assert bridge["complement_has_signature_0_16"] is True
+    assert bridge["complement_form_scales_by_120"] is True
+    assert bridge["full_split_form_scales_by_120"] is True
+    assert bridge["full_split_cross_terms_remain_zero"] is True
+    assert bridge["full_split_signature_survives_first_refinement"] is True
+    assert bridge["explicit_k3_lattice_split_is_first_refinement_rigid"] is True
+
+
 def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_three_u_shadow_bridge"]

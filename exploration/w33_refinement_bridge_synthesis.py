@@ -79,6 +79,9 @@ from w33_k3_three_u_decomposition_bridge import (
 from w33_k3_three_u_refinement_bridge import (
     build_k3_three_u_refinement_bridge_summary,
 )
+from w33_k3_three_u_complement_refinement_bridge import (
+    build_k3_three_u_complement_refinement_bridge_summary,
+)
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
@@ -305,6 +308,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
     k3_three_u_decomposition = build_k3_three_u_decomposition_bridge_summary()
     k3_three_u_refinement = build_k3_three_u_refinement_bridge_summary()
+    k3_three_u_complement_refinement = (
+        build_k3_three_u_complement_refinement_bridge_summary()
+    )
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
@@ -2991,6 +2997,58 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "three_u_determinant_scales_by_120_to_the_6": (
                 k3_three_u_refinement["three_u_refinement_theorem"][
                     "three_u_determinant_scales_by_120_to_the_6"
+                ]
+            ),
+        },
+        "k3_three_u_complement_refinement_bridge": {
+            "three_u_complement_basis_shape": (
+                k3_three_u_complement_refinement["three_u_complement_basis_shape"]
+            ),
+            "three_u_complement_seed_form": (
+                k3_three_u_complement_refinement["three_u_complement_seed_form"]
+            ),
+            "three_u_complement_first_refinement_form": (
+                k3_three_u_complement_refinement["three_u_complement_first_refinement_form"]
+            ),
+            "full_split_seed_form": (
+                k3_three_u_complement_refinement["full_split_seed_form"]
+            ),
+            "full_split_first_refinement_form": (
+                k3_three_u_complement_refinement["full_split_first_refinement_form"]
+            ),
+            "three_u_and_complement_are_exactly_orthogonal": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "three_u_and_complement_are_exactly_orthogonal"
+                ]
+            ),
+            "complement_has_signature_0_16": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "complement_has_signature_0_16"
+                ]
+            ),
+            "complement_form_scales_by_120": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "complement_form_scales_by_120"
+                ]
+            ),
+            "full_split_form_scales_by_120": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "full_split_form_scales_by_120"
+                ]
+            ),
+            "full_split_cross_terms_remain_zero": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "full_split_cross_terms_remain_zero"
+                ]
+            ),
+            "full_split_signature_survives_first_refinement": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "full_split_signature_survives_first_refinement"
+                ]
+            ),
+            "explicit_k3_lattice_split_is_first_refinement_rigid": (
+                k3_three_u_complement_refinement["three_u_complement_refinement_theorem"][
+                    "explicit_k3_lattice_split_is_first_refinement_rigid"
                 ]
             ),
         },

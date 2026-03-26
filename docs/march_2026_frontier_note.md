@@ -461,6 +461,16 @@ The same refinement law is now known on the whole explicit hyperbolic core, not 
 - So the normalized hyperbolic core itself is already refinement-invariant at `sd^1`.
 - In particular, the primitive K3-side `3U` host is not merely present on the seed; it already survives the first exact refinement step as one coherent block.
 
+### First-refinement rigidity of the full K3 lattice split
+
+The explicit `K3` host now goes one step further again.
+
+- Taking the integral kernel complement of the primitive `3U` block gives an exact orthogonal rank-16 negative-definite lattice `N16`.
+- That full complement also scales by the same exact factor `120` under first barycentric pullback.
+- In the combined split basis `3U (+) N16`, the full `22 x 22` restricted cup form stays block-diagonal and is carried exactly to `120` times itself.
+
+So the normalized full lattice split `H^2(K3,Z) = 3U (+) N16` is already refinement-invariant at `sd^1` on the explicit seed.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:
