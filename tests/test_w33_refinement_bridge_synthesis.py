@@ -110,6 +110,21 @@ def test_synthesis_records_curved_h2_qutrit_bridge() -> None:
     assert bridge["first_exact_middle_degree_qutrit_host_is_k3"] is True
 
 
+def test_synthesis_records_curved_harmonic_qutrit_split_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["curved_harmonic_qutrit_split_bridge"]
+    assert bridge["logical_qutrits"] == 81
+    assert bridge["universal_endpoint_qutrit_channel"] == 162
+    assert bridge["endpoint_qutrit_channel_matches_on_all_explicit_seeds"] is True
+    assert bridge["cp2_total_harmonic_qutrit_channel"] == 243
+    assert bridge["k3_total_harmonic_qutrit_channel"] == 1944
+    assert bridge["cp2_middle_degree_qutrit_channel"] == 81
+    assert bridge["k3_middle_degree_qutrit_channel"] == 1782
+    assert bridge["all_seed_dependence_is_middle_degree"] is True
+    assert bridge["k3_minus_cp2_total_harmonic_gap"] == 1701
+    assert bridge["k3_minus_cp2_middle_degree_gap"] == 1701
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

@@ -327,6 +327,23 @@ So the relevant exact bridge host is not just “the K3 side somewhere.” It is
 
 rather than the coarser total-harmonic lift. This still does **not** fix the final global branch theorem, but it does mean the branch now has a sharply localized exact qutrit host before any continuum interpretation is added.
 
+### Harmonic qutrit degree split
+
+The older protected-harmonic totals now separate cleanly into universal endpoints plus the live middle packet:
+
+- On both explicit seeds, `b0 = b4 = 1`
+- So the endpoint qutrit channel is always
+  - `81 b0 + 81 b4 = 162`
+- The full protected-harmonic qutrit counts therefore split as
+  - `CP2_9`: `243 = 162 + 81`
+  - `K3_16`: `1944 = 162 + 1782`
+
+So all external growth is already concentrated in the middle-degree channel `81 x H^2`, not in the endpoint topological lines. Equivalently, the full seed-to-seed harmonic gap is
+
+- `1944 - 243 = 1782 - 81 = 1701`
+
+which is entirely middle-degree.
+
 ## Reproduce
 
 ### PMNS

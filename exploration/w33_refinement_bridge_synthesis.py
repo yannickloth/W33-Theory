@@ -55,6 +55,7 @@ from w33_curved_4d_curvature_budget import build_curved_4d_curvature_budget_summ
 from w33_curved_external_hodge_product import build_curved_external_hodge_product_summary
 from w33_curved_h2_host_bridge import build_curved_h2_host_bridge_summary
 from w33_curved_h2_qutrit_bridge import build_curved_h2_qutrit_bridge_summary
+from w33_curved_harmonic_qutrit_split_bridge import build_curved_harmonic_qutrit_split_bridge_summary
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -265,6 +266,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     curved_operator = build_curved_external_hodge_product_summary()
     curved_h2_host = build_curved_h2_host_bridge_summary()
     curved_h2_qutrit = build_curved_h2_qutrit_bridge_summary()
+    curved_harmonic_qutrit_split = build_curved_harmonic_qutrit_split_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2669,6 +2671,36 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "first_exact_middle_degree_qutrit_host_is_k3": (
                 curved_h2_qutrit["bridge_constraints"]["first_exact_middle_degree_qutrit_host_is_k3"]
+            ),
+        },
+        "curved_harmonic_qutrit_split_bridge": {
+            "logical_qutrits": curved_harmonic_qutrit_split["bridge_constraints"]["logical_qutrits"],
+            "universal_endpoint_qutrit_channel": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["universal_endpoint_qutrit_channel"]
+            ),
+            "endpoint_qutrit_channel_matches_on_all_explicit_seeds": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["endpoint_qutrit_channel_matches_on_all_explicit_seeds"]
+            ),
+            "cp2_total_harmonic_qutrit_channel": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["cp2_total_harmonic_qutrit_channel"]
+            ),
+            "k3_total_harmonic_qutrit_channel": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["k3_total_harmonic_qutrit_channel"]
+            ),
+            "cp2_middle_degree_qutrit_channel": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["cp2_middle_degree_qutrit_channel"]
+            ),
+            "k3_middle_degree_qutrit_channel": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["k3_middle_degree_qutrit_channel"]
+            ),
+            "all_seed_dependence_is_middle_degree": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["all_seed_dependence_is_middle_degree"]
+            ),
+            "k3_minus_cp2_total_harmonic_gap": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["k3_minus_cp2_total_harmonic_gap"]
+            ),
+            "k3_minus_cp2_middle_degree_gap": (
+                curved_harmonic_qutrit_split["bridge_constraints"]["k3_minus_cp2_middle_degree_gap"]
             ),
         },
         "curved_refinement_density_bridge": {
