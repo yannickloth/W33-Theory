@@ -64,6 +64,15 @@ from w33_transport_mixed_plane_obstruction_bridge import (
 from w33_k3_mixed_plane_a4_projection_bridge import (
     build_k3_mixed_plane_a4_projection_summary,
 )
+from w33_k3_refined_plane_persistence_bridge import (
+    build_k3_refined_plane_persistence_bridge_summary,
+)
+from w33_k3_integral_h2_lattice_bridge import (
+    build_k3_integral_h2_lattice_bridge_summary,
+)
+from w33_k3_primitive_plane_global_a4_bridge import (
+    build_k3_primitive_plane_global_a4_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -279,6 +288,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     k3_rank2_qutrit_plane = build_k3_rank2_qutrit_plane_bridge_summary()
     transport_mixed_plane_obstruction = build_transport_mixed_plane_obstruction_summary()
     k3_mixed_plane_a4_projection = build_k3_mixed_plane_a4_projection_summary()
+    k3_refined_plane_persistence = build_k3_refined_plane_persistence_bridge_summary()
+    k3_integral_h2_lattice = build_k3_integral_h2_lattice_bridge_summary()
+    k3_primitive_plane_global_a4 = build_k3_primitive_plane_global_a4_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2805,6 +2817,86 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162": (
                 k3_mixed_plane_a4_projection["projection_theorem"][
                     "projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162"
+                ]
+            ),
+        },
+        "k3_refined_plane_persistence_bridge": {
+            "first_refinement_scale_factor": (
+                k3_refined_plane_persistence["first_refinement_scale_factor"]
+            ),
+            "first_barycentric_pullback_scales_restricted_form_by_120": (
+                k3_refined_plane_persistence["refinement_theorem"][
+                    "first_barycentric_pullback_scales_restricted_form_by_120"
+                ]
+            ),
+            "restricted_determinant_scales_by_120_squared": (
+                k3_refined_plane_persistence["refinement_theorem"][
+                    "restricted_determinant_scales_by_120_squared"
+                ]
+            ),
+            "normalized_restricted_form_is_refinement_invariant": (
+                k3_refined_plane_persistence["refinement_theorem"][
+                    "normalized_restricted_form_is_refinement_invariant"
+                ]
+            ),
+            "mixed_signature_survives_first_refinement": (
+                k3_refined_plane_persistence["refinement_theorem"][
+                    "mixed_signature_survives_first_refinement"
+                ]
+            ),
+        },
+        "k3_integral_h2_lattice_bridge": {
+            "h2_rank": k3_integral_h2_lattice["integral_lattice_profile"]["h2_rank"],
+            "cocycle_rank": k3_integral_h2_lattice["integral_lattice_profile"]["cocycle_rank"],
+            "exact_rank": k3_integral_h2_lattice["integral_lattice_profile"]["exact_rank"],
+            "determinant": k3_integral_h2_lattice["integral_lattice_profile"]["determinant"],
+            "positive_directions": (
+                k3_integral_h2_lattice["integral_lattice_profile"]["positive_directions"]
+            ),
+            "negative_directions": (
+                k3_integral_h2_lattice["integral_lattice_profile"]["negative_directions"]
+            ),
+            "diagonal_even": k3_integral_h2_lattice["integral_lattice_profile"]["diagonal_even"],
+            "unimodular": k3_integral_h2_lattice["integral_lattice_profile"]["unimodular"],
+            "primitive_plane_gram_matrix": (
+                k3_integral_h2_lattice["primitive_hyperbolic_plane"]["gram_matrix"]
+            ),
+            "primitive_plane_minor_gcd": (
+                k3_integral_h2_lattice["primitive_hyperbolic_plane"]["primitive_minor_gcd"]
+            ),
+            "explicit_k3_seed_realizes_full_even_unimodular_k3_lattice": (
+                k3_integral_h2_lattice["integral_h2_lattice_theorem"][
+                    "explicit_k3_seed_realizes_full_even_unimodular_k3_lattice"
+                ]
+            ),
+        },
+        "k3_primitive_plane_global_a4_bridge": {
+            "primitive_plane_seed_form": (
+                k3_primitive_plane_global_a4["primitive_plane_seed_form"]
+            ),
+            "primitive_plane_first_refinement_form": (
+                k3_primitive_plane_global_a4["primitive_plane_first_refinement_form"]
+            ),
+            "Q_curv": k3_primitive_plane_global_a4["curvature_quantum_lock"]["Q_curv"],
+            "normalized_global_prefactor": (
+                k3_primitive_plane_global_a4["reduced_prefactors"]["normalized_global"]
+            ),
+            "raw_first_refinement_prefactor": (
+                k3_primitive_plane_global_a4["reduced_prefactors"]["raw_first_refinement"]
+            ),
+            "primitive_plane_first_refinement_quantum_is_plus_120": (
+                k3_primitive_plane_global_a4["global_a4_coupling_theorem"][
+                    "primitive_plane_first_refinement_quantum_is_plus_120"
+                ]
+            ),
+            "reduced_global_prefactor_is_351_over_4_pi_squared": (
+                k3_primitive_plane_global_a4["global_a4_coupling_theorem"][
+                    "reduced_global_prefactor_is_351_over_4_pi_squared"
+                ]
+            ),
+            "sign_is_fixed_positive_on_the_canonical_oriented_plane": (
+                k3_primitive_plane_global_a4["global_a4_coupling_theorem"][
+                    "sign_is_fixed_positive_on_the_canonical_oriented_plane"
                 ]
             ),
         },

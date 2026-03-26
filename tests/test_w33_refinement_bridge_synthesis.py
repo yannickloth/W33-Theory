@@ -170,6 +170,45 @@ def test_synthesis_records_k3_mixed_plane_a4_projection_bridge() -> None:
     assert bridge["projecting_to_canonical_mixed_plane_does_not_promote_multiplier_to_162"] is True
 
 
+def test_synthesis_records_k3_refined_plane_persistence_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_refined_plane_persistence_bridge"]
+    assert bridge["first_refinement_scale_factor"] == 120
+    assert bridge["first_barycentric_pullback_scales_restricted_form_by_120"] is True
+    assert bridge["restricted_determinant_scales_by_120_squared"] is True
+    assert bridge["normalized_restricted_form_is_refinement_invariant"] is True
+    assert bridge["mixed_signature_survives_first_refinement"] is True
+
+
+def test_synthesis_records_k3_integral_h2_lattice_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_integral_h2_lattice_bridge"]
+    assert bridge["h2_rank"] == 22
+    assert bridge["cocycle_rank"] == 127
+    assert bridge["exact_rank"] == 105
+    assert bridge["determinant"] == -1
+    assert bridge["positive_directions"] == 3
+    assert bridge["negative_directions"] == 19
+    assert bridge["diagonal_even"] is True
+    assert bridge["unimodular"] is True
+    assert bridge["primitive_plane_gram_matrix"] == [[0, 1], [1, 0]]
+    assert bridge["primitive_plane_minor_gcd"] == 1
+    assert bridge["explicit_k3_seed_realizes_full_even_unimodular_k3_lattice"] is True
+
+
+def test_synthesis_records_k3_primitive_plane_global_a4_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_primitive_plane_global_a4_bridge"]
+    assert bridge["primitive_plane_seed_form"] == [[0, 1], [1, 0]]
+    assert bridge["primitive_plane_first_refinement_form"] == [[0, 120], [120, 0]]
+    assert bridge["Q_curv"] == "52"
+    assert bridge["normalized_global_prefactor"] == "351/(4 pi^2)"
+    assert bridge["raw_first_refinement_prefactor"] == "10530/pi^2"
+    assert bridge["primitive_plane_first_refinement_quantum_is_plus_120"] is True
+    assert bridge["reduced_global_prefactor_is_351_over_4_pi_squared"] is True
+    assert bridge["sign_is_fixed_positive_on_the_canonical_oriented_plane"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

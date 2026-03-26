@@ -401,6 +401,56 @@ The chain-level mixed plane also settles the old local coefficient tension:
 - exact finite multiplier in `Delta A4 = 81 epsilon^2 a0`: `81`
 - missing factor: universal external rank-2 activation `2`
 
+### First refinement persistence
+
+The canonical mixed K3 selector plane now survives the first barycentric pullback exactly:
+
+- seed restricted cup form: mixed and nondegenerate
+- first refinement restricted form: `120` times the seed form
+- normalized mixed signature: unchanged
+- determinant scaling: `120^2`
+
+So the rank-2 selector is not just a seed artifact; it survives `sd^1(K3_16)` after normalization.
+
+### Integral K3 lattice
+
+The explicit `K3_16` simplicial cochain complex now yields an actual integral `H^2(K3,Z)` basis by Smith reduction:
+
+- Smith data on the cocycle/exact quotient: `0^22, 1^105`
+- integral rank: `22`
+- cup-form determinant: `-1`
+- diagonal parity: even
+- signature: `(3,19)`
+
+So the explicit seed already realizes the full even unimodular K3 lattice. Inside that same lattice there is a deterministic primitive hyperbolic plane:
+
+- Gram matrix: `[[0,1],[1,0]]`
+- primitive minor gcd: `1`
+
+This is a genuine lattice-level rank-2 bridge host, not only a real-signature shadow.
+
+### Reduced global A4 coupling
+
+On that canonical oriented primitive K3 plane:
+
+- seed oriented cup quantum: `+1`
+- first refined quantum: `+120`
+- local reduced prefactor: `27/(16 pi^2)`
+- external curvature quantum: `Q_curv = 52`
+
+Therefore the reduced normalized external bridge coefficient is fixed as
+
+- `351/(4 pi^2)`
+
+with raw `sd^1` mass
+
+- `10530/pi^2`
+
+Honest caveat:
+
+- this does not yet prove that the primitive lattice plane is exactly the same 2-plane as the earlier harmonic-selector plane
+- it does prove that the explicit K3 seed now carries both a canonical real selector plane and a canonical integral primitive plane, and that the reduced external sign/count coupling is already fixed on the latter
+
 So `162` is branch dimension, not a replacement for the finite trace multiplier `81`.
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
