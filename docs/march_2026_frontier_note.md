@@ -227,6 +227,25 @@ The local bridge packet is now normalized sharply enough to state a stronger con
 
 So the honest open step is no longer the local coefficient. It is the global branch-counting / orientation theorem over the actual refinement tower.
 
+### Exact external exceptional quanta
+
+The promoted residue dictionary now fixes the external exceptional quanta too:
+
+- Internal exceptional ranks are already promoted as
+  - `(40, 6, 8)`
+- The continuum coefficients are already exact on the live surface:
+  - `c_EH = 320 = 40 * 8`
+  - `c_6 = 12480`
+  - `a2 = 2240`
+- So the external quanta are forced:
+  - `Q_curv = c_6 / (40 * 6) = 52`
+  - `Q_top = a2 / 40 = 56`
+- The same data satisfy the promoted ratio locks:
+  - `9 c_EH / c_6 = 3 / 13`
+  - `a2 / c_EH = 7`
+
+So the remaining ambiguity is not the local external normalization. It is which primitive external branches actually activate, with what sign and multiplicity, on the refined tower.
+
 ## Reproduce
 
 ### PMNS
