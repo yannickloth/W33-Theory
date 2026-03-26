@@ -122,6 +122,18 @@ The strongest conservative read is therefore:
 - the remaining Yukawa packet is not currently a missing linear `l6` mode;
 - it is the remaining nonlinear internal spectral data carried by those reduced blocks.
 
+### Exact Yukawa generation flag
+
+The reduced generation algebra now has a cleaner exact finite structure too:
+
+- The two universal generation matrices have nilpotent parts of rank `2`, share the same rank-`1` square, and satisfy `N^3 = 0`.
+- That common square defines a shared exact flag in `C^3`:
+  - line `L = span(1,1,0)`
+  - plane `P = {x = y} = span((1,1,0),(0,0,1))`
+- Both universal generation matrices preserve that line and that plane exactly.
+
+So the repo-native finite side already carries a common `1 ⊂ 2 ⊂ 3` flag before any continuum family model is chosen.
+
 ## Reproduce
 
 ### PMNS
@@ -159,7 +171,7 @@ That is suggestive, but still interpretive. It is not yet a proof that the full 
 
 Likewise, the SRG formulas for exceptional dimensions and electroweak quantities look real, but the strongest current reading is that they are shadows of a more fundamental Jordan / Freudenthal / TKK / projector mechanism, not standalone proofs by coincidence.
 
-The local `w33_followup_deliverable_v19.zip` bundle is structurally suggestive in this same direction: its toy `CP^2`-wired `3x3` Hermitian model reproduces the diagonal `9 -> 10` bottleneck by appending a wedge scalar. But that is not yet promoted here, because it has not been identified with the repo's exact `V4` / Kronecker / `240^2` Yukawa packet.
+The local `w33_followup_deliverable_v19.zip` and `w33_followup_deliverable_v20.zip` bundles are structurally suggestive in this same direction. `v19` reproduces the diagonal `9 -> 10` bottleneck in a toy `CP^2`-wired `3x3` Hermitian model by appending a wedge scalar; `v20` sharpens that toy picture to a light-plane / heavy-line flag variable. That is closer to the repo's current exact finite story, because the reduced generation algebra itself now carries a common exact line-plane flag. But those bundle-level continuum interpretations are still not promoted here, because they have not yet been identified with the repo's exact `V4` / Kronecker / `240^2` Yukawa packet as a finished theorem.
 
 ## Not yet proved
 
