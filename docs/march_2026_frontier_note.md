@@ -246,6 +246,25 @@ The promoted residue dictionary now fixes the external exceptional quanta too:
 
 So the remaining ambiguity is not the local external normalization. It is which primitive external branches actually activate, with what sign and multiplicity, on the refined tower.
 
+### Selected-point q-cyclotomic master lock
+
+The promoted finite and curved packages now compress one step further at the selected point `q = 3`:
+
+- Internal blocks align as
+  - `81 = q^4`
+  - `6 = 2q`
+  - `8 = q^2 - 1`
+  - `86 = q^4 + 2q - 1`
+  - `248 = 3q^4 + 2q - 1`
+- Curved coefficients align as
+  - `320 = v(q) (q^2 - 1)` with `v(q) = (q+1)(q^2+1)`
+  - `2240 = Phi_6(q) * 320`
+  - `12480 = q Phi_3(q) * 320`
+- So the promoted curved Weinberg lock is a direct corollary:
+  - `9 c_EH / c_6 = q / Phi_3(q) = 3 / 13`
+
+This is a selected-point master theorem, not yet a proof that the whole global bridge is finished. But it does mean the live `81 / 6 / 8`, `320 / 2240 / 12480`, and `3/13` package is now best read as one `q = 3` cyclotomic dictionary rather than three unrelated residue facts.
+
 ## Reproduce
 
 ### PMNS
