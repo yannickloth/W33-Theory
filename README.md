@@ -158,6 +158,8 @@ The exact fermion mass spectrum is still partially open, but the open part is no
 
 The external K3 bridge is now sharper than that long summary alone suggests. The negative-definite complement is not only named by classification as `E8(-1) (+) E8(-1)`; it is now constructively split on the explicit seed by its norm-2 roots. The root graph breaks into two `120`-representative packets, each packet admits an exact simple-root `E8` basis, and the canonical selector resolves orthogonally across `3U`, `E8_1`, and `E8_2`. So on the explicit seed the selector-side reduced `A4` geometry is already tri-supported across the full named K3 lattice split rather than living on the hyperbolic core alone.
 
+That named exceptional split is now itself first-refinement rigid: each explicit `E8(-1)` factor is carried by barycentric pullback to exactly `120` times its negative `E8` Cartan form, the two factors remain orthogonal, and the full split `3U (+) E8(-1) (+) E8(-1)` is carried exactly to `120` times itself. The global primitive plane is also no longer floating inside the hyperbolic core: it is exactly the first explicit `U` factor of `3U`. But the selector's positive `3U` shadow is not just that distinguished plane; it decomposes with nonzero support across all three explicit `U` factors. So the locked `351/(4*pi^2)` plane is a distinguished hyperbolic factor, while the selector-positive channel still mixes the whole `3U` core.
+
 ## Key Results
 
 ### Exact Geometry

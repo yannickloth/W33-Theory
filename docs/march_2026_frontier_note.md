@@ -495,6 +495,18 @@ That naming step is now constructive on the actual seed, not just forced by clas
 
 So the explicit complement is not merely abstractly of type `E8(-1) (+) E8(-1)`. The two `E8` factors are already concretely present in the current cochain-level bridge host.
 
+### Named refinement theorem
+
+That constructive exceptional split is now refinement-rigid too.
+
+- The first explicit `E8(-1)` factor is carried by barycentric pullback to exactly `120` times its negative `E8` Cartan form.
+- The second explicit `E8(-1)` factor does the same.
+- The two factors remain exactly orthogonal after pullback.
+- Together with the earlier `3U -> 120 * 3U` theorem, the full named split
+  `3U (+) E8(-1) (+) E8(-1)` is carried exactly to `120` times itself.
+
+So the K3 host is no longer only rigid in the coarse basis `3U (+) N16`. It is already rigid at the fully named `3U (+) E8(-1) (+) E8(-1)` level.
+
 ### Selector plane versus the two `E8` factors
 
 The selector/core theorem now resolves further against the named exceptional blocks.
@@ -529,6 +541,16 @@ Honest caveat:
 - it does prove that the explicit K3 seed now carries both a canonical real selector plane and a canonical integral primitive plane, and that the reduced external sign/count coupling is already fixed on the latter
 
 So `162` is branch dimension, not a replacement for the finite trace multiplier `81`.
+
+### Primitive plane inside the `3U` core
+
+The relation between the global primitive plane and the hyperbolic core is no longer open on the explicit seed.
+
+- The canonical primitive lattice plane is exactly the first explicit `U` factor of the `3U` block.
+- The selector's positive `3U` shadow decomposes orthogonally across all three explicit `U` factors.
+- Each `U` factor carries nonzero selector support.
+
+So the locked `351/(4 pi^2)` plane is a distinguished exact hyperbolic factor, but it is not the whole selector-positive channel.
 
 ### Selector-side `A4` split on the named lattice pieces
 

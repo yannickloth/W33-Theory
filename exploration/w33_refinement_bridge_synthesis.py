@@ -88,6 +88,12 @@ from w33_k3_n16_e8e8_bridge import (
 from w33_k3_e8_factor_split_bridge import (
     build_k3_e8_factor_split_bridge_summary,
 )
+from w33_k3_e8_factor_refinement_bridge import (
+    build_k3_e8_factor_refinement_bridge_summary,
+)
+from w33_k3_primitive_plane_three_u_alignment_bridge import (
+    build_k3_primitive_plane_three_u_alignment_bridge_summary,
+)
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
@@ -325,6 +331,10 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     )
     k3_n16_e8e8 = build_k3_n16_e8e8_bridge_summary()
     k3_e8_factor_split = build_k3_e8_factor_split_bridge_summary()
+    k3_e8_factor_refinement = build_k3_e8_factor_refinement_bridge_summary()
+    k3_primitive_plane_three_u_alignment = (
+        build_k3_primitive_plane_three_u_alignment_bridge_summary()
+    )
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
     k3_selector_e8_shadow = build_k3_selector_e8_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
@@ -3155,6 +3165,114 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "explicit_n16_is_constructively_split_as_e8_plus_e8": (
                 k3_e8_factor_split["e8_factor_split_theorem"][
                     "explicit_n16_is_constructively_split_as_e8_plus_e8"
+                ]
+            ),
+        },
+        "k3_e8_factor_refinement_bridge": {
+            "e8_factor_one_seed_form": (
+                k3_e8_factor_refinement["e8_factor_one_seed_form"]
+            ),
+            "e8_factor_one_first_refinement_form": (
+                k3_e8_factor_refinement["e8_factor_one_first_refinement_form"]
+            ),
+            "e8_factor_two_seed_form": (
+                k3_e8_factor_refinement["e8_factor_two_seed_form"]
+            ),
+            "e8_factor_two_first_refinement_form": (
+                k3_e8_factor_refinement["e8_factor_two_first_refinement_form"]
+            ),
+            "e8_factor_cross_seed_form": (
+                k3_e8_factor_refinement["e8_factor_cross_seed_form"]
+            ),
+            "full_named_seed_form": (
+                k3_e8_factor_refinement["full_named_seed_form"]
+            ),
+            "full_named_first_refinement_form": (
+                k3_e8_factor_refinement["full_named_first_refinement_form"]
+            ),
+            "factor_one_refined_form_is_exact_120_times_negative_e8_cartan": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "factor_one_refined_form_is_exact_120_times_negative_e8_cartan"
+                ]
+            ),
+            "factor_two_refined_form_is_exact_120_times_negative_e8_cartan": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "factor_two_refined_form_is_exact_120_times_negative_e8_cartan"
+                ]
+            ),
+            "e8_factors_remain_exactly_orthogonal_after_refinement": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "e8_factors_remain_exactly_orthogonal_after_refinement"
+                ]
+            ),
+            "full_named_split_scales_by_120": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "full_named_split_scales_by_120"
+                ]
+            ),
+            "normalized_named_split_is_refinement_invariant": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "normalized_named_split_is_refinement_invariant"
+                ]
+            ),
+            "explicit_named_k3_split_is_first_refinement_rigid": (
+                k3_e8_factor_refinement["e8_factor_refinement_theorem"][
+                    "explicit_named_k3_split_is_first_refinement_rigid"
+                ]
+            ),
+        },
+        "k3_primitive_plane_three_u_alignment_bridge": {
+            "primitive_plane_coefficients": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_coefficients"]
+            ),
+            "three_u_factor_one_coefficients": (
+                k3_primitive_plane_three_u_alignment["three_u_factor_one_coefficients"]
+            ),
+            "selector_u_factor_one_form": (
+                k3_primitive_plane_three_u_alignment["selector_u_factor_one_form"]
+            ),
+            "selector_u_factor_two_form": (
+                k3_primitive_plane_three_u_alignment["selector_u_factor_two_form"]
+            ),
+            "selector_u_factor_three_form": (
+                k3_primitive_plane_three_u_alignment["selector_u_factor_three_form"]
+            ),
+            "selector_three_u_shadow_reconstruction_error_linf": (
+                k3_primitive_plane_three_u_alignment["selector_three_u_shadow_reconstruction_error_linf"]
+            ),
+            "primitive_plane_equals_the_first_explicit_u_factor": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "primitive_plane_equals_the_first_explicit_u_factor"
+                ]
+            ),
+            "selector_three_u_shadow_decomposes_exactly_across_the_three_u_factors": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "selector_three_u_shadow_decomposes_exactly_across_the_three_u_factors"
+                ]
+            ),
+            "selector_has_nonzero_projection_on_u_factor_one": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "selector_has_nonzero_projection_on_u_factor_one"
+                ]
+            ),
+            "selector_has_nonzero_projection_on_u_factor_two": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "selector_has_nonzero_projection_on_u_factor_two"
+                ]
+            ),
+            "selector_has_nonzero_projection_on_u_factor_three": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "selector_has_nonzero_projection_on_u_factor_three"
+                ]
+            ),
+            "selector_three_u_shadow_is_not_supported_on_the_primitive_plane_alone": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "selector_three_u_shadow_is_not_supported_on_the_primitive_plane_alone"
+                ]
+            ),
+            "primitive_plane_is_distinguished_but_not_equal_to_the_selector_positive_channel": (
+                k3_primitive_plane_three_u_alignment["primitive_plane_three_u_alignment_theorem"][
+                    "primitive_plane_is_distinguished_but_not_equal_to_the_selector_positive_channel"
                 ]
             ),
         },

@@ -309,6 +309,31 @@ def test_synthesis_records_k3_e8_factor_split_bridge() -> None:
     assert bridge["explicit_n16_is_constructively_split_as_e8_plus_e8"] is True
 
 
+def test_synthesis_records_k3_e8_factor_refinement_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_e8_factor_refinement_bridge"]
+    assert bridge["factor_one_refined_form_is_exact_120_times_negative_e8_cartan"] is True
+    assert bridge["factor_two_refined_form_is_exact_120_times_negative_e8_cartan"] is True
+    assert bridge["e8_factors_remain_exactly_orthogonal_after_refinement"] is True
+    assert bridge["full_named_split_scales_by_120"] is True
+    assert bridge["normalized_named_split_is_refinement_invariant"] is True
+    assert bridge["explicit_named_k3_split_is_first_refinement_rigid"] is True
+
+
+def test_synthesis_records_k3_primitive_plane_three_u_alignment_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_primitive_plane_three_u_alignment_bridge"]
+    assert bridge["primitive_plane_coefficients"] == bridge["three_u_factor_one_coefficients"]
+    assert bridge["selector_three_u_shadow_reconstruction_error_linf"] < 1e-10
+    assert bridge["primitive_plane_equals_the_first_explicit_u_factor"] is True
+    assert bridge["selector_three_u_shadow_decomposes_exactly_across_the_three_u_factors"] is True
+    assert bridge["selector_has_nonzero_projection_on_u_factor_one"] is True
+    assert bridge["selector_has_nonzero_projection_on_u_factor_two"] is True
+    assert bridge["selector_has_nonzero_projection_on_u_factor_three"] is True
+    assert bridge["selector_three_u_shadow_is_not_supported_on_the_primitive_plane_alone"] is True
+    assert bridge["primitive_plane_is_distinguished_but_not_equal_to_the_selector_positive_channel"] is True
+
+
 def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_three_u_shadow_bridge"]
