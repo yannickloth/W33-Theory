@@ -605,6 +605,39 @@ What is not yet proved is stronger:
 - the internal one-versus-two family flag `span(1,1,0) < {x=y}` is not yet identified exactly with the external `U1` plane
 - the split external `81 + 81` package is still obstructed from exact identification with the non-split internal transport `81 -> 162 -> 81` extension
 
+### Isotropic-line obstruction inside `U1`
+
+The current `U1` carrier theorem does not yet select an external family line.
+
+- In the canonical integral basis, `U1` already has two primitive isotropic line generators.
+- Those two lines have unit hyperbolic pairing.
+- Swapping them leaves the seed form `[[0,1],[1,0]]` unchanged.
+- The same swap also leaves the first-refinement form and the reduced global prefactor unchanged.
+
+So the current K3-side data are still line-blind inside `U1`: they fix the hyperbolic carrier plane, not a distinguished internal family line.
+
+### Fine selector-packet weight hierarchy
+
+The five-factor split is not only exact; it is highly uneven.
+
+- Within the hyperbolic packet, the Frobenius-norm order is `U3 > U1 > U2`.
+- `U3` carries a little over `80%` of the hyperbolic packet weight.
+- Within the exceptional packet, the order is `E8_2 > E8_1`.
+- `E8_2` carries about `89.4%` of the exceptional packet weight.
+
+Since each packet piece scales by exact factor `120` at `sd^1`, that normalized hierarchy is already refinement-invariant.
+
+### Transport semisimplification shadow
+
+The transport comparison is now sharper than a size match but still weaker than object identity.
+
+- The internal transport packet is a non-split `81 -> 162 -> 81` extension.
+- The external canonical mixed K3 packet is a split `81 (+) ⊕ 81 (-)` object.
+- The exact common invariant is their semisimplified / graded shadow:
+  `81 ⊕ 81`.
+
+So the current bridge identifies the semisimplified shadow exactly, but not the full extension class.
+
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
 ## Reproduce

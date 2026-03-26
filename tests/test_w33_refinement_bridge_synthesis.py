@@ -455,6 +455,52 @@ def test_synthesis_records_u1_family_a4_carrier_bridge() -> None:
     assert bridge["minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1"] is True
 
 
+def test_synthesis_records_u1_isotropic_line_obstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["u1_isotropic_line_obstruction_bridge"]
+    assert bridge["u1_seed_form"] == [[0, 1], [1, 0]]
+    assert bridge["u1_swapped_seed_form"] == [[0, 1], [1, 0]]
+    assert bridge["internal_common_line_generator"] == [1, 1, 0]
+    assert bridge["line_one_is_primitive"] is True
+    assert bridge["line_two_is_primitive"] is True
+    assert bridge["line_one_is_isotropic"] is True
+    assert bridge["line_two_is_isotropic"] is True
+    assert bridge["line_pair_has_unit_hyperbolic_pairing"] is True
+    assert bridge["swapping_the_two_isotropic_lines_preserves_the_u1_seed_form"] is True
+    assert bridge["current_u1_data_do_not_distinguish_one_isotropic_line_from_the_other"] is True
+    assert bridge["exact_identification_of_the_internal_common_line_with_a_canonical_u1_line_is_not_yet_supported"] is True
+
+
+def test_synthesis_records_selector_a4_weight_hierarchy_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["selector_a4_weight_hierarchy_bridge"]
+    assert bridge["factor_frobenius_norms"]["U1"] == pytest.approx(0.5070148472753923)
+    assert bridge["factor_frobenius_norms"]["U2"] == pytest.approx(0.0814269981830142)
+    assert bridge["factor_frobenius_norms"]["U3"] == pytest.approx(2.4712362068942952)
+    assert bridge["factor_frobenius_norms"]["E8_1"] == pytest.approx(0.2957919585266082)
+    assert bridge["factor_frobenius_norms"]["E8_2"] == pytest.approx(2.505700578655349)
+    assert bridge["hyperbolic_weight_shares"]["U3"] == pytest.approx(0.8076785088529392)
+    assert bridge["exceptional_weight_shares"]["E8_2"] == pytest.approx(0.894416296099026)
+    assert bridge["hyperbolic_weight_order_is_u3_gt_u1_gt_u2"] is True
+    assert bridge["exceptional_weight_order_is_e8_factor_two_gt_e8_factor_one"] is True
+    assert bridge["u3_carries_more_than_four_fifths_of_hyperbolic_packet_weight"] is True
+    assert bridge["e8_factor_two_carries_more_than_eight_ninths_of_exceptional_packet_weight"] is True
+    assert bridge["fine_weight_hierarchy_is_refinement_invariant"] is True
+
+
+def test_synthesis_records_transport_semisimplification_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_semisimplification_shadow_bridge"]
+    assert bridge["internal_transport_semisimplification"] == [81, 81]
+    assert bridge["external_split_shadow"] == [81, 81]
+    assert bridge["internal_semisimplification_is_81_plus_81"] is True
+    assert bridge["external_split_shadow_is_81_plus_81"] is True
+    assert bridge["internal_and_external_objects_match_exactly_at_semisimplified_shadow_level"] is True
+    assert bridge["internal_extension_class_is_nonzero"] is True
+    assert bridge["external_extension_class_is_zero"] is True
+    assert bridge["transport_k3_match_is_semisimplified_shadow_not_extension_identity"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

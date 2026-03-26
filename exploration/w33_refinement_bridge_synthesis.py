@@ -115,6 +115,15 @@ from w33_k3_selector_a4_five_factor_refinement_bridge import (
 from w33_u1_family_a4_carrier_bridge import (
     build_u1_family_a4_carrier_bridge_summary,
 )
+from w33_u1_isotropic_line_obstruction_bridge import (
+    build_u1_isotropic_line_obstruction_bridge_summary,
+)
+from w33_selector_a4_weight_hierarchy_bridge import (
+    build_selector_a4_weight_hierarchy_bridge_summary,
+)
+from w33_transport_semisimplification_shadow_bridge import (
+    build_transport_semisimplification_shadow_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -353,6 +362,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
         build_k3_selector_a4_five_factor_refinement_bridge_summary()
     )
     u1_family_a4_carrier = build_u1_family_a4_carrier_bridge_summary()
+    u1_isotropic_line_obstruction = build_u1_isotropic_line_obstruction_bridge_summary()
+    selector_a4_weight_hierarchy = build_selector_a4_weight_hierarchy_bridge_summary()
+    transport_semisimplification_shadow = (
+        build_transport_semisimplification_shadow_bridge_summary()
+    )
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -3680,6 +3694,137 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1": (
                 u1_family_a4_carrier["u1_family_a4_carrier_theorem"][
                     "minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1"
+                ]
+            ),
+        },
+        "u1_isotropic_line_obstruction_bridge": {
+            "u1_seed_form": (
+                u1_isotropic_line_obstruction["u1_seed_form"]
+            ),
+            "u1_swapped_seed_form": (
+                u1_isotropic_line_obstruction["u1_swapped_seed_form"]
+            ),
+            "u1_line_one_coefficients": (
+                u1_isotropic_line_obstruction["u1_line_one_coefficients"]
+            ),
+            "u1_line_two_coefficients": (
+                u1_isotropic_line_obstruction["u1_line_two_coefficients"]
+            ),
+            "internal_common_line_generator": (
+                u1_isotropic_line_obstruction["internal_common_line_generator"]
+            ),
+            "line_one_is_primitive": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "line_one_is_primitive"
+                ]
+            ),
+            "line_two_is_primitive": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "line_two_is_primitive"
+                ]
+            ),
+            "line_one_is_isotropic": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "line_one_is_isotropic"
+                ]
+            ),
+            "line_two_is_isotropic": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "line_two_is_isotropic"
+                ]
+            ),
+            "line_pair_has_unit_hyperbolic_pairing": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "line_pair_has_unit_hyperbolic_pairing"
+                ]
+            ),
+            "swapping_the_two_isotropic_lines_preserves_the_u1_seed_form": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "swapping_the_two_isotropic_lines_preserves_the_u1_seed_form"
+                ]
+            ),
+            "current_u1_data_do_not_distinguish_one_isotropic_line_from_the_other": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "current_u1_data_do_not_distinguish_one_isotropic_line_from_the_other"
+                ]
+            ),
+            "exact_identification_of_the_internal_common_line_with_a_canonical_u1_line_is_not_yet_supported": (
+                u1_isotropic_line_obstruction["u1_isotropic_line_obstruction_theorem"][
+                    "exact_identification_of_the_internal_common_line_with_a_canonical_u1_line_is_not_yet_supported"
+                ]
+            ),
+        },
+        "selector_a4_weight_hierarchy_bridge": {
+            "factor_frobenius_norms": (
+                selector_a4_weight_hierarchy["factor_frobenius_norms"]
+            ),
+            "hyperbolic_weight_shares": (
+                selector_a4_weight_hierarchy["hyperbolic_weight_shares"]
+            ),
+            "exceptional_weight_shares": (
+                selector_a4_weight_hierarchy["exceptional_weight_shares"]
+            ),
+            "hyperbolic_weight_order_is_u3_gt_u1_gt_u2": (
+                selector_a4_weight_hierarchy["selector_a4_weight_hierarchy_theorem"][
+                    "hyperbolic_weight_order_is_u3_gt_u1_gt_u2"
+                ]
+            ),
+            "exceptional_weight_order_is_e8_factor_two_gt_e8_factor_one": (
+                selector_a4_weight_hierarchy["selector_a4_weight_hierarchy_theorem"][
+                    "exceptional_weight_order_is_e8_factor_two_gt_e8_factor_one"
+                ]
+            ),
+            "u3_carries_more_than_four_fifths_of_hyperbolic_packet_weight": (
+                selector_a4_weight_hierarchy["selector_a4_weight_hierarchy_theorem"][
+                    "u3_carries_more_than_four_fifths_of_hyperbolic_packet_weight"
+                ]
+            ),
+            "e8_factor_two_carries_more_than_eight_ninths_of_exceptional_packet_weight": (
+                selector_a4_weight_hierarchy["selector_a4_weight_hierarchy_theorem"][
+                    "e8_factor_two_carries_more_than_eight_ninths_of_exceptional_packet_weight"
+                ]
+            ),
+            "fine_weight_hierarchy_is_refinement_invariant": (
+                selector_a4_weight_hierarchy["selector_a4_weight_hierarchy_theorem"][
+                    "fine_weight_hierarchy_is_refinement_invariant"
+                ]
+            ),
+        },
+        "transport_semisimplification_shadow_bridge": {
+            "internal_transport_semisimplification": (
+                transport_semisimplification_shadow["internal_transport_semisimplification"]
+            ),
+            "external_split_shadow": (
+                transport_semisimplification_shadow["external_split_shadow"]
+            ),
+            "internal_semisimplification_is_81_plus_81": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "internal_semisimplification_is_81_plus_81"
+                ]
+            ),
+            "external_split_shadow_is_81_plus_81": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "external_split_shadow_is_81_plus_81"
+                ]
+            ),
+            "internal_and_external_objects_match_exactly_at_semisimplified_shadow_level": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "internal_and_external_objects_match_exactly_at_semisimplified_shadow_level"
+                ]
+            ),
+            "internal_extension_class_is_nonzero": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "internal_extension_class_is_nonzero"
+                ]
+            ),
+            "external_extension_class_is_zero": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "external_extension_class_is_zero"
+                ]
+            ),
+            "transport_k3_match_is_semisimplified_shadow_not_extension_identity": (
+                transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
+                    "transport_k3_match_is_semisimplified_shadow_not_extension_identity"
                 ]
             ),
         },

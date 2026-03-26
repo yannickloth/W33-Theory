@@ -162,6 +162,8 @@ That named exceptional split is now itself first-refinement rigid: each explicit
 
 That fine split is now exact too. The selector-side reduced `A4` packet resolves all the way down to `U1 (+) U2 (+) U3 (+) E8(-1) (+) E8(-1)`, and each of those five pieces survives the first barycentric pullback with exact scale `120`. So the current conservative coupling theorem is sharper than “the packet lives somewhere on K3”: `U1` is the minimal canonical external carrier of the first family-sensitive `A4` packet, while the full local selector packet remains distributed across the broader five-factor K3 split. The internal family side is still an exact one-versus-two flag with common line `span(1,1,0)` and invariant plane `x=y`, but the repo does not yet prove that this internal flag is literally the same object as the external `U1` plane.
 
+That gap is now sharper too. Inside `U1`, the current exact external data are still line-blind: the canonical hyperbolic plane already has two primitive isotropic lines, and the seed/refined coupling data are invariant under swapping them, so the repo still does not canonically select an external line matching the internal family line `span(1,1,0)`. The local selector packet is also very unevenly distributed: within the hyperbolic core the dominant carrier is `U3`, not `U1`, and within the exceptional side the dominant carrier is `E8_2`. Finally, the relation between the split K3 packet and the internal transport `162` is now best read as a semisimplification theorem: they match exactly at the graded shadow `81 ⊕ 81`, but not at the extension-class level.
+
 ## Key Results
 
 ### Exact Geometry
