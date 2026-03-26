@@ -292,6 +292,23 @@ There is now also a clean exact selector on the active `2x2` bridge branch:
 
 This does **not** finish the bridge theorem. The checked local `V29_output_q_stiffness/summary.json` is numerically near-isotropic at quadratic order (`diag_cv ~= 0.024`, `offdiag_rms_ratio ~= 0.0077`, `eig_std_ratio ~= 0.088`), and the companion `V29_output_q_stiffness_validate/summary.json` keeps the finite-difference mean relative error near `0.017`, which is consistent with the reduced selector picture, but only as observation. The exact open step is still the actual branch-realization / orientation theorem on the refinement tower.
 
+### External H2 host split
+
+The explicit curved seeds now sharpen that remaining external step more than the older wording admitted:
+
+- `CP2_9` has Betti profile `(1,0,1,0,1)` and signature `+1`
+- `K3_16` has Betti profile `(1,0,22,0,1)` and signature `-16`
+- So the harmonic `H^2` capacities split exactly as
+  - `CP2_9`: `b2 = 1`, hence `(b2^+, b2^-) = (1,0)`
+  - `K3_16`: `b2 = 22`, hence `(b2^+, b2^-) = (3,19)`
+- Therefore `CP2_9` cannot by itself host a genuine rank-2 harmonic bridge branch, while `K3_16` is the first exact seed in the repo that can.
+- The seed-level curvature sign is already sharp too:
+  - `six_mode(CP2_9) = 156/19`
+  - `six_mode(K3_16) = -880/19`
+- Those signs match the recorded seed signatures `+1` and `-16`.
+
+So the common exact part of the external bridge is the universal local `120`-mode law, not a common seed-level `H^2` host. The remaining global ambiguity is narrower: it is the actual selection, counting, and orientation of the relevant rank-2 harmonic plane inside the refined `K3` tower.
+
 ## Reproduce
 
 ### PMNS

@@ -77,6 +77,24 @@ def test_synthesis_records_explicit_curved_external_operator_bridge() -> None:
     assert operators["product_heat_factorizes_on_explicit_spectra"] is True
 
 
+def test_synthesis_records_curved_h2_host_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    host = summary["curved_h2_host_bridge"]
+    assert host["cp2_h2_dimension"] == 1
+    assert host["cp2_b2_plus"] == 1
+    assert host["cp2_b2_minus"] == 0
+    assert host["cp2_rank2_h2_branch_available"] is False
+    assert host["k3_h2_dimension"] == 22
+    assert host["k3_b2_plus"] == 3
+    assert host["k3_b2_minus"] == 19
+    assert host["k3_rank2_h2_branch_available"] is True
+    assert host["k3_mixed_sign_h2_plane_available"] is True
+    assert host["cp2_six_mode"] == "156/19"
+    assert host["k3_six_mode"] == "-880/19"
+    assert host["six_mode_sign_matches_signature_on_both_explicit_seeds"] is True
+    assert host["first_explicit_rank2_h2_host_is_k3"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]

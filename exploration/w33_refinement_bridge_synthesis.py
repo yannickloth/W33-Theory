@@ -53,6 +53,7 @@ from w33_exceptional_triad_bridge import build_exceptional_triad_summary
 from w33_curved_barycentric_density_bridge import build_curved_barycentric_density_bridge_summary
 from w33_curved_4d_curvature_budget import build_curved_4d_curvature_budget_summary
 from w33_curved_external_hodge_product import build_curved_external_hodge_product_summary
+from w33_curved_h2_host_bridge import build_curved_h2_host_bridge_summary
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -261,6 +262,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     barycentric_density = build_curved_barycentric_density_bridge_summary()
     curvature_budget = build_curved_4d_curvature_budget_summary()
     curved_operator = build_curved_external_hodge_product_summary()
+    curved_h2_host = build_curved_h2_host_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -2627,6 +2629,23 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "product_heat_factorizes_on_explicit_spectra": all(
                 row["abs_error"] < 1e-9 for row in curved_operator["product_heat_checks"]
             ),
+        },
+        "curved_h2_host_bridge": {
+            "cp2_h2_dimension": curved_h2_host["seed_profiles"][0]["h2_dimension"],
+            "cp2_b2_plus": curved_h2_host["seed_profiles"][0]["b2_plus"],
+            "cp2_b2_minus": curved_h2_host["seed_profiles"][0]["b2_minus"],
+            "cp2_rank2_h2_branch_available": curved_h2_host["seed_profiles"][0]["rank2_h2_branch_available"],
+            "k3_h2_dimension": curved_h2_host["seed_profiles"][1]["h2_dimension"],
+            "k3_b2_plus": curved_h2_host["seed_profiles"][1]["b2_plus"],
+            "k3_b2_minus": curved_h2_host["seed_profiles"][1]["b2_minus"],
+            "k3_rank2_h2_branch_available": curved_h2_host["seed_profiles"][1]["rank2_h2_branch_available"],
+            "k3_mixed_sign_h2_plane_available": curved_h2_host["seed_profiles"][1]["mixed_sign_h2_plane_available"],
+            "cp2_six_mode": curved_h2_host["seed_profiles"][0]["six_mode"]["exact"],
+            "k3_six_mode": curved_h2_host["seed_profiles"][1]["six_mode"]["exact"],
+            "six_mode_sign_matches_signature_on_both_explicit_seeds": (
+                curved_h2_host["bridge_constraints"]["six_mode_sign_matches_signature_on_both_explicit_seeds"]
+            ),
+            "first_explicit_rank2_h2_host_is_k3": curved_h2_host["bridge_constraints"]["first_explicit_rank2_h2_host_is_k3"],
         },
         "curved_refinement_density_bridge": {
             "vanishing_barycentric_modes": barycentric_density["neighborly_mode_formulas"]["vanishing_modes"],
