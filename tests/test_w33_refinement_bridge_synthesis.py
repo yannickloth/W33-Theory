@@ -296,6 +296,19 @@ def test_synthesis_records_k3_n16_e8e8_bridge() -> None:
     assert bridge["explicit_n16_is_e8_plus_e8_by_rank16_even_unimodular_classification"] is True
 
 
+def test_synthesis_records_k3_e8_factor_split_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_e8_factor_split_bridge"]
+    assert bridge["representative_root_component_sizes"] == [120, 120]
+    assert bridge["full_root_component_sizes"] == [240, 240]
+    assert bridge["combined_simple_root_change_of_basis_determinant"] in {-1, 1}
+    assert bridge["factor_one_has_exact_negative_e8_cartan"] is True
+    assert bridge["factor_two_has_exact_negative_e8_cartan"] is True
+    assert bridge["the_two_e8_factor_bases_are_exactly_orthogonal"] is True
+    assert bridge["combined_simple_root_basis_is_unimodular_in_the_explicit_complement"] is True
+    assert bridge["explicit_n16_is_constructively_split_as_e8_plus_e8"] is True
+
+
 def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_three_u_shadow_bridge"]
@@ -314,6 +327,20 @@ def test_synthesis_records_k3_selector_three_u_shadow_bridge() -> None:
     assert bridge["selector_plane_straddles_both_k3_lattice_pieces"] is True
 
 
+def test_synthesis_records_k3_selector_e8_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_e8_shadow_bridge"]
+    assert bridge["reconstruction_error_linf"] < 1e-10
+    assert bridge["selector_projection_on_three_u_is_positive_definite"] is True
+    assert bridge["selector_projection_on_e8_factor_one_is_negative_definite"] is True
+    assert bridge["selector_projection_on_e8_factor_two_is_negative_definite"] is True
+    assert bridge["selector_projection_on_e8_factor_one_is_nonzero"] is True
+    assert bridge["selector_projection_on_e8_factor_two_is_nonzero"] is True
+    assert bridge["selector_decomposes_orthogonally_across_three_u_and_both_e8_factors"] is True
+    assert bridge["selector_is_not_supported_on_single_e8_factor"] is True
+    assert bridge["selector_bridges_three_u_and_both_e8_factors"] is True
+
+
 def test_synthesis_records_k3_selector_shadow_refinement_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["k3_selector_shadow_refinement_bridge"]
@@ -330,6 +357,19 @@ def test_synthesis_records_k3_selector_shadow_refinement_bridge() -> None:
     assert bridge["rank16_residual_scales_by_120"] is True
     assert bridge["three_u_shadow_stays_positive_definite"] is True
     assert bridge["rank16_residual_stays_negative_definite"] is True
+
+
+def test_synthesis_records_k3_selector_a4_lattice_split_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["k3_selector_a4_lattice_split_bridge"]
+    assert bridge["common_scalar_prefactor"] == "351/(4 pi^2)"
+    assert bridge["selector_packet_reconstructs_as_three_u_plus_e8_plus_e8"] is True
+    assert bridge["three_u_packet_piece_is_positive_definite"] is True
+    assert bridge["e8_factor_one_packet_piece_is_negative_definite"] is True
+    assert bridge["e8_factor_two_packet_piece_is_negative_definite"] is True
+    assert bridge["all_three_packet_pieces_are_nonzero"] is True
+    assert bridge["reduced_selector_packet_is_tri_supported_across_the_named_k3_split"] is True
+    assert bridge["scalar_prefactor_remains_exactly_351_over_4_pi_squared"] is True
 
 
 def test_synthesis_records_curved_refinement_density_bridge() -> None:

@@ -85,11 +85,20 @@ from w33_k3_three_u_complement_refinement_bridge import (
 from w33_k3_n16_e8e8_bridge import (
     build_k3_n16_e8e8_bridge_summary,
 )
+from w33_k3_e8_factor_split_bridge import (
+    build_k3_e8_factor_split_bridge_summary,
+)
 from w33_k3_selector_three_u_shadow_bridge import (
     build_k3_selector_three_u_shadow_bridge_summary,
 )
+from w33_k3_selector_e8_shadow_bridge import (
+    build_k3_selector_e8_shadow_bridge_summary,
+)
 from w33_k3_selector_shadow_refinement_bridge import (
     build_k3_selector_shadow_refinement_bridge_summary,
+)
+from w33_k3_selector_a4_lattice_split_bridge import (
+    build_k3_selector_a4_lattice_split_bridge_summary,
 )
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
@@ -315,8 +324,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
         build_k3_three_u_complement_refinement_bridge_summary()
     )
     k3_n16_e8e8 = build_k3_n16_e8e8_bridge_summary()
+    k3_e8_factor_split = build_k3_e8_factor_split_bridge_summary()
     k3_selector_three_u_shadow = build_k3_selector_three_u_shadow_bridge_summary()
+    k3_selector_e8_shadow = build_k3_selector_e8_shadow_bridge_summary()
     k3_selector_shadow_refinement = build_k3_selector_shadow_refinement_bridge_summary()
+    k3_selector_a4_lattice_split = build_k3_selector_a4_lattice_split_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -3091,6 +3103,61 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]
             ),
         },
+        "k3_e8_factor_split_bridge": {
+            "representative_root_component_sizes": (
+                k3_e8_factor_split["representative_root_component_sizes"]
+            ),
+            "full_root_component_sizes": (
+                k3_e8_factor_split["full_root_component_sizes"]
+            ),
+            "e8_factor_one_gram_matrix": (
+                k3_e8_factor_split["e8_factor_one_gram_matrix"]
+            ),
+            "e8_factor_two_gram_matrix": (
+                k3_e8_factor_split["e8_factor_two_gram_matrix"]
+            ),
+            "cross_gram_matrix": (
+                k3_e8_factor_split["cross_gram_matrix"]
+            ),
+            "combined_simple_root_change_of_basis_determinant": (
+                k3_e8_factor_split["combined_simple_root_change_of_basis_determinant"]
+            ),
+            "representative_root_graph_splits_into_two_120_packets": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "representative_root_graph_splits_into_two_120_packets"
+                ]
+            ),
+            "full_root_graph_splits_into_two_240_packets": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "full_root_graph_splits_into_two_240_packets"
+                ]
+            ),
+            "factor_one_has_exact_negative_e8_cartan": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "factor_one_has_exact_negative_e8_cartan"
+                ]
+            ),
+            "factor_two_has_exact_negative_e8_cartan": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "factor_two_has_exact_negative_e8_cartan"
+                ]
+            ),
+            "the_two_e8_factor_bases_are_exactly_orthogonal": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "the_two_e8_factor_bases_are_exactly_orthogonal"
+                ]
+            ),
+            "combined_simple_root_basis_is_unimodular_in_the_explicit_complement": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "combined_simple_root_basis_is_unimodular_in_the_explicit_complement"
+                ]
+            ),
+            "explicit_n16_is_constructively_split_as_e8_plus_e8": (
+                k3_e8_factor_split["e8_factor_split_theorem"][
+                    "explicit_n16_is_constructively_split_as_e8_plus_e8"
+                ]
+            ),
+        },
         "k3_selector_three_u_shadow_bridge": {
             "selector_plane_form": (
                 k3_selector_three_u_shadow["selector_plane_form"]
@@ -3122,6 +3189,63 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "selector_plane_straddles_both_k3_lattice_pieces": (
                 k3_selector_three_u_shadow["selector_three_u_shadow_theorem"][
                     "selector_plane_straddles_both_k3_lattice_pieces"
+                ]
+            ),
+        },
+        "k3_selector_e8_shadow_bridge": {
+            "selector_plane_form": (
+                k3_selector_e8_shadow["selector_plane_form"]
+            ),
+            "three_u_component_form": (
+                k3_selector_e8_shadow["three_u_component_form"]
+            ),
+            "e8_factor_one_component_form": (
+                k3_selector_e8_shadow["e8_factor_one_component_form"]
+            ),
+            "e8_factor_two_component_form": (
+                k3_selector_e8_shadow["e8_factor_two_component_form"]
+            ),
+            "reconstruction_error_linf": (
+                k3_selector_e8_shadow["reconstruction_error_linf"]
+            ),
+            "selector_projection_on_three_u_is_positive_definite": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_projection_on_three_u_is_positive_definite"
+                ]
+            ),
+            "selector_projection_on_e8_factor_one_is_negative_definite": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_projection_on_e8_factor_one_is_negative_definite"
+                ]
+            ),
+            "selector_projection_on_e8_factor_two_is_negative_definite": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_projection_on_e8_factor_two_is_negative_definite"
+                ]
+            ),
+            "selector_projection_on_e8_factor_one_is_nonzero": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_projection_on_e8_factor_one_is_nonzero"
+                ]
+            ),
+            "selector_projection_on_e8_factor_two_is_nonzero": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_projection_on_e8_factor_two_is_nonzero"
+                ]
+            ),
+            "selector_decomposes_orthogonally_across_three_u_and_both_e8_factors": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_decomposes_orthogonally_across_three_u_and_both_e8_factors"
+                ]
+            ),
+            "selector_is_not_supported_on_single_e8_factor": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_is_not_supported_on_single_e8_factor"
+                ]
+            ),
+            "selector_bridges_three_u_and_both_e8_factors": (
+                k3_selector_e8_shadow["selector_e8_shadow_theorem"][
+                    "selector_bridges_three_u_and_both_e8_factors"
                 ]
             ),
         },
@@ -3167,6 +3291,58 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "rank16_residual_stays_negative_definite": (
                 k3_selector_shadow_refinement["selector_shadow_refinement_theorem"][
                     "rank16_residual_stays_negative_definite"
+                ]
+            ),
+        },
+        "k3_selector_a4_lattice_split_bridge": {
+            "common_scalar_prefactor": (
+                k3_selector_a4_lattice_split["common_scalar_prefactor"]
+            ),
+            "selector_packet_form": (
+                k3_selector_a4_lattice_split["selector_packet_form"]
+            ),
+            "three_u_packet_form": (
+                k3_selector_a4_lattice_split["three_u_packet_form"]
+            ),
+            "e8_factor_one_packet_form": (
+                k3_selector_a4_lattice_split["e8_factor_one_packet_form"]
+            ),
+            "e8_factor_two_packet_form": (
+                k3_selector_a4_lattice_split["e8_factor_two_packet_form"]
+            ),
+            "selector_packet_reconstructs_as_three_u_plus_e8_plus_e8": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "selector_packet_reconstructs_as_three_u_plus_e8_plus_e8"
+                ]
+            ),
+            "three_u_packet_piece_is_positive_definite": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "three_u_packet_piece_is_positive_definite"
+                ]
+            ),
+            "e8_factor_one_packet_piece_is_negative_definite": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "e8_factor_one_packet_piece_is_negative_definite"
+                ]
+            ),
+            "e8_factor_two_packet_piece_is_negative_definite": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "e8_factor_two_packet_piece_is_negative_definite"
+                ]
+            ),
+            "all_three_packet_pieces_are_nonzero": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "all_three_packet_pieces_are_nonzero"
+                ]
+            ),
+            "reduced_selector_packet_is_tri_supported_across_the_named_k3_split": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "reduced_selector_packet_is_tri_supported_across_the_named_k3_split"
+                ]
+            ),
+            "scalar_prefactor_remains_exactly_351_over_4_pi_squared": (
+                k3_selector_a4_lattice_split["selector_a4_lattice_split_theorem"][
+                    "scalar_prefactor_remains_exactly_351_over_4_pi_squared"
                 ]
             ),
         },

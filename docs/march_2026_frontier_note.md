@@ -483,6 +483,29 @@ So the explicit `K3` host now carries a named exact split:
 
 - `H^2(K3,Z) = 3U (+) E8(-1) (+) E8(-1)`.
 
+### Constructive `E8(-1) (+) E8(-1)` split
+
+That naming step is now constructive on the actual seed, not just forced by classification.
+
+- The explicit norm-2 root graph of the negative complement already splits into two connected `120`-representative packets.
+- After adjoining antipodes, that becomes two full `240`-root packets.
+- Each packet admits a deterministic simple-root basis with exact negative `E8` Cartan Gram.
+- The two simple-root systems are exactly orthogonal.
+- Together the `16` simple roots form a unimodular change of basis of the explicit complement.
+
+So the explicit complement is not merely abstractly of type `E8(-1) (+) E8(-1)`. The two `E8` factors are already concretely present in the current cochain-level bridge host.
+
+### Selector plane versus the two `E8` factors
+
+The selector/core theorem now resolves further against the named exceptional blocks.
+
+- The selector still has a positive-definite `3U` shadow.
+- Its projection onto the first explicit `E8(-1)` factor is nonzero and negative-definite.
+- Its projection onto the second explicit `E8(-1)` factor is also nonzero and negative-definite.
+- The `3U`, `E8_1`, and `E8_2` pieces are pairwise cup-orthogonal and reconstruct the selector exactly.
+
+So the canonical selector is not only a bridge between hyperbolic core and unnamed negative complement. It already bridges `3U` and both named `E8` blocks on the explicit seed.
+
 ### Reduced global A4 coupling
 
 On that canonical oriented primitive K3 plane:
@@ -506,6 +529,18 @@ Honest caveat:
 - it does prove that the explicit K3 seed now carries both a canonical real selector plane and a canonical integral primitive plane, and that the reduced external sign/count coupling is already fixed on the latter
 
 So `162` is branch dimension, not a replacement for the finite trace multiplier `81`.
+
+### Selector-side `A4` split on the named lattice pieces
+
+Keeping the already-fixed scalar coefficient `351/(4 pi^2)`, the selector-side external packet now decomposes directly over the full named K3 split:
+
+- one positive-definite `3U` piece
+- one negative-definite `E8_1` piece
+- one negative-definite `E8_2` piece
+
+and those three contributions add back to the selector form exactly.
+
+So the reduced selector-side `A4` geometry is not carried by the hyperbolic core alone, and it is not carried by just one exceptional block either. On the explicit seed it is already tri-supported across `3U (+) E8(-1) (+) E8(-1)`.
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
