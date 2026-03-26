@@ -124,6 +124,15 @@ from w33_selector_a4_weight_hierarchy_bridge import (
 from w33_transport_semisimplification_shadow_bridge import (
     build_transport_semisimplification_shadow_bridge_summary,
 )
+from w33_global_local_carrier_split_bridge import (
+    build_global_local_carrier_split_bridge_summary,
+)
+from w33_family_flag_visibility_obstruction_bridge import (
+    build_family_flag_visibility_obstruction_bridge_summary,
+)
+from w33_e13_visibility_obstruction_bridge import (
+    build_e13_visibility_obstruction_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -367,6 +376,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_semisimplification_shadow = (
         build_transport_semisimplification_shadow_bridge_summary()
     )
+    global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
+    family_flag_visibility_obstruction = (
+        build_family_flag_visibility_obstruction_bridge_summary()
+    )
+    e13_visibility_obstruction = build_e13_visibility_obstruction_bridge_summary()
     explicit_complexes = build_explicit_curved_4d_complexes_summary()
     triangulations = build_minimal_triangulation_summary()
     surface = build_surface_neighborly_summary()
@@ -3825,6 +3839,151 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "transport_k3_match_is_semisimplified_shadow_not_extension_identity": (
                 transport_semisimplification_shadow["transport_semisimplification_shadow_theorem"][
                     "transport_k3_match_is_semisimplified_shadow_not_extension_identity"
+                ]
+            ),
+        },
+        "global_local_carrier_split_bridge": {
+            "canonical_global_carrier": (
+                global_local_carrier_split["canonical_global_carrier"]
+            ),
+            "dominant_hyperbolic_packet_piece": (
+                global_local_carrier_split["dominant_hyperbolic_packet_piece"]
+            ),
+            "dominant_exceptional_packet_piece": (
+                global_local_carrier_split["dominant_exceptional_packet_piece"]
+            ),
+            "hyperbolic_dominance_ratio_u3_over_u1": (
+                global_local_carrier_split["hyperbolic_dominance_ratio_u3_over_u1"]
+            ),
+            "exceptional_dominance_ratio_e8_factor_two_over_e8_factor_one": (
+                global_local_carrier_split[
+                    "exceptional_dominance_ratio_e8_factor_two_over_e8_factor_one"
+                ]
+            ),
+            "canonical_global_carrier_is_u1": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "canonical_global_carrier_is_u1"
+                ]
+            ),
+            "dominant_hyperbolic_packet_piece_is_u3": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "dominant_hyperbolic_packet_piece_is_u3"
+                ]
+            ),
+            "dominant_exceptional_packet_piece_is_e8_factor_two": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "dominant_exceptional_packet_piece_is_e8_factor_two"
+                ]
+            ),
+            "canonical_global_carrier_differs_from_dominant_hyperbolic_packet_piece": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "canonical_global_carrier_differs_from_dominant_hyperbolic_packet_piece"
+                ]
+            ),
+            "first_family_packet_has_canonical_global_support_but_non_u1_local_dominance": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "first_family_packet_has_canonical_global_support_but_non_u1_local_dominance"
+                ]
+            ),
+            "global_local_carrier_split_is_refinement_invariant": (
+                global_local_carrier_split["global_local_carrier_split_theorem"][
+                    "global_local_carrier_split_is_refinement_invariant"
+                ]
+            ),
+        },
+        "family_flag_visibility_obstruction_bridge": {
+            "internal_common_line_generator": (
+                family_flag_visibility_obstruction["internal_common_line_generator"]
+            ),
+            "internal_common_plane_equation": (
+                family_flag_visibility_obstruction["internal_common_plane_equation"]
+            ),
+            "external_canonical_carrier_plane": (
+                family_flag_visibility_obstruction["external_canonical_carrier_plane"]
+            ),
+            "external_semisimplified_shadow": (
+                family_flag_visibility_obstruction["external_semisimplified_shadow"]
+            ),
+            "internal_family_flag_is_exact_line_in_plane_data": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "internal_family_flag_is_exact_line_in_plane_data"
+                ]
+            ),
+            "external_side_fixes_a_canonical_carrier_plane_u1": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_fixes_a_canonical_carrier_plane_u1"
+                ]
+            ),
+            "external_side_is_line_blind_inside_u1": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_is_line_blind_inside_u1"
+                ]
+            ),
+            "external_side_matches_only_the_graded_shadow_of_the_transport_162_sector": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_matches_only_the_graded_shadow_of_the_transport_162_sector"
+                ]
+            ),
+            "exact_external_identification_of_the_internal_common_line_is_not_yet_supported": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "exact_external_identification_of_the_internal_common_line_is_not_yet_supported"
+                ]
+            ),
+            "exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"
+                ]
+            ),
+            "current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object"
+                ]
+            ),
+        },
+        "e13_visibility_obstruction_bridge": {
+            "internal_common_square": e13_visibility_obstruction["internal_common_square"],
+            "internal_common_line_generator": (
+                e13_visibility_obstruction["internal_common_line_generator"]
+            ),
+            "external_canonical_carrier_plane": (
+                e13_visibility_obstruction["external_canonical_carrier_plane"]
+            ),
+            "external_graded_shadow": (
+                e13_visibility_obstruction["external_graded_shadow"]
+            ),
+            "internal_common_square_is_exact_central_2e13_channel": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "internal_common_square_is_exact_central_2e13_channel"
+                ]
+            ),
+            "image_of_the_common_square_is_the_internal_common_line": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "image_of_the_common_square_is_the_internal_common_line"
+                ]
+            ),
+            "current_external_bridge_fixes_the_canonical_u1_carrier_plane": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_external_bridge_fixes_the_canonical_u1_carrier_plane"
+                ]
+            ),
+            "current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image"
+                ]
+            ),
+            "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"
+                ]
+            ),
+            "current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel"
+                ]
+            ),
+            "exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported"
                 ]
             ),
         },

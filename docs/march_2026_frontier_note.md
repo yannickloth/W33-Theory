@@ -638,6 +638,39 @@ The transport comparison is now sharper than a size match but still weaker than 
 
 So the current bridge identifies the semisimplified shadow exactly, but not the full extension class.
 
+### Global carrier versus local packet dominance
+
+The bridge now separates two exact notions that should not be conflated.
+
+- Globally, the first family-sensitive packet has canonical minimal external carrier `U1`.
+- Locally, the selector-side packet is dominated by `U3` on the hyperbolic side and by `E8_2` on the exceptional side.
+- The exact Frobenius-norm ratios are `U3/U1 ≈ 4.8741` and `E8_2/E8_1 ≈ 8.4712`.
+
+So `U1` is the canonical global carrier, but it is not the dominant local packet piece. That separation is already exact and refinement-invariant.
+
+### Family-flag visibility obstruction
+
+The finite family flag is now sharper than the current external bridge.
+
+- Internally, the reduced Yukawa side has exact line-plane data
+  `span(1,1,0) < {x = y}`.
+- Externally, the current K3 bridge fixes the carrier plane `U1`.
+- But inside `U1`, the current exact data are still line-blind.
+- And on the transport side, the exact match stops at the graded shadow `81 ⊕ 81`, not at the extension class.
+
+So the present bridge fixes the carrier plane and the graded shadow, but not the full internal family flag as an external object.
+
+### Central `2E13` visibility wall
+
+The status of the internal central channel is now explicit.
+
+- On the finite family side, the common square is exactly `2E13`.
+- Its image is exactly the common internal line `span(1,1,0)`.
+- The current external bridge fixes the canonical carrier plane `U1`.
+- But it still does not canonically pick an external line for that image, and it still does not promote the transport extension class.
+
+So the conservative exact statement is now: the current bridge sees the carrier plane and the graded `81 ⊕ 81` shadow of the central `2E13` channel, but not the central channel itself as a canonical external object.
+
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
 ## Reproduce

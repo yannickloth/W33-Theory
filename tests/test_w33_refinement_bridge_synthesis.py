@@ -501,6 +501,58 @@ def test_synthesis_records_transport_semisimplification_shadow_bridge() -> None:
     assert bridge["transport_k3_match_is_semisimplified_shadow_not_extension_identity"] is True
 
 
+def test_synthesis_records_global_local_carrier_split_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["global_local_carrier_split_bridge"]
+    assert bridge["canonical_global_carrier"] == "U1"
+    assert bridge["dominant_hyperbolic_packet_piece"] == "U3"
+    assert bridge["dominant_exceptional_packet_piece"] == "E8_2"
+    assert bridge["hyperbolic_dominance_ratio_u3_over_u1"] == pytest.approx(
+        4.874090414066333
+    )
+    assert bridge["exceptional_dominance_ratio_e8_factor_two_over_e8_factor_one"] == (
+        pytest.approx(8.471158550545743)
+    )
+    assert bridge["canonical_global_carrier_is_u1"] is True
+    assert bridge["dominant_hyperbolic_packet_piece_is_u3"] is True
+    assert bridge["dominant_exceptional_packet_piece_is_e8_factor_two"] is True
+    assert bridge["canonical_global_carrier_differs_from_dominant_hyperbolic_packet_piece"] is True
+    assert bridge["first_family_packet_has_canonical_global_support_but_non_u1_local_dominance"] is True
+    assert bridge["global_local_carrier_split_is_refinement_invariant"] is True
+
+
+def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["family_flag_visibility_obstruction_bridge"]
+    assert bridge["internal_common_line_generator"] == [1, 1, 0]
+    assert bridge["internal_common_plane_equation"] == "x = y"
+    assert bridge["external_canonical_carrier_plane"] == "U1"
+    assert bridge["external_semisimplified_shadow"] == [81, 81]
+    assert bridge["internal_family_flag_is_exact_line_in_plane_data"] is True
+    assert bridge["external_side_fixes_a_canonical_carrier_plane_u1"] is True
+    assert bridge["external_side_is_line_blind_inside_u1"] is True
+    assert bridge["external_side_matches_only_the_graded_shadow_of_the_transport_162_sector"] is True
+    assert bridge["exact_external_identification_of_the_internal_common_line_is_not_yet_supported"] is True
+    assert bridge["exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"] is True
+    assert bridge["current_bridge_fixes_plane_and_graded_shadow_but_not_full_internal_flag_object"] is True
+
+
+def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["e13_visibility_obstruction_bridge"]
+    assert bridge["internal_common_square"] == [[0, 0, 2], [0, 0, 0], [0, 0, 0]]
+    assert bridge["internal_common_line_generator"] == [1, 1, 0]
+    assert bridge["external_canonical_carrier_plane"] == "U1"
+    assert bridge["external_graded_shadow"] == [81, 81]
+    assert bridge["internal_common_square_is_exact_central_2e13_channel"] is True
+    assert bridge["image_of_the_common_square_is_the_internal_common_line"] is True
+    assert bridge["current_external_bridge_fixes_the_canonical_u1_carrier_plane"] is True
+    assert bridge["current_external_bridge_does_not_pick_a_canonical_line_for_the_e13_image"] is True
+    assert bridge["current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"] is True
+    assert bridge["current_bridge_captures_only_carrier_plane_and_graded_shadow_of_the_central_channel"] is True
+    assert bridge["exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported"] is True
+
+
 def test_synthesis_records_curved_refinement_density_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     density = summary["curved_refinement_density_bridge"]
