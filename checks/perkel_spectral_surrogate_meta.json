@@ -1,0 +1,22 @@
+{
+  "constructed": true,
+  "note": "Spectral surrogate with Perkel eigenvalue multiplicities (not true adjacency)",
+  "requested_multiplicities": {
+    "6": 1,
+    "phi2": 18,
+    "inv_phi2": 18,
+    "-3": 20
+  },
+  "eigenvalues_sorted_sample": [
+    5.999999999999996,
+    -3.000000000000004,
+    -3.000000000000002,
+    -3.000000000000002,
+    -3.0000000000000018,
+    -3.0000000000000013,
+    -3.0000000000000004,
+    -3.0000000000000004,
+    -3.0,
+    -2.9999999999999996
+  ]
+}
