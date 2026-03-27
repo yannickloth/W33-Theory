@@ -26,9 +26,11 @@ from scripts.ce2_global_cocycle import (
     _f3_dot,
     _f3_omega,
     _f3_chi,
+    _eval_f3_poly_sw,
     all_symplectic_matrices,
     compute_phase,
     apply_matrix,
+    matinv,
 )
 
 # finite-field helpers -------------------------------------------------------
@@ -109,6 +111,8 @@ def regenerate_tables() -> dict[int, dict[tuple[int,int], dict[tuple[int,int],tu
             # choose a symplectic A with A*d0 == d
             A = next(M for M in all_symplectic_matrices() if apply_matrix(M, d0) == d)
             B = matinv(A)
+            import numpy as _np
+            B = _np.array(B, dtype=int)
             mu_B = compute_phase(A)
             mu_B[(0,0)] = 0
             table = {}
@@ -129,7 +133,7 @@ def verify_against_repo():
     regen = regenerate_tables()
     mismatches = []
     for t,d in regen.items():
-        for dvec, table in t.items():
+        for dvec, table in d.items():
             repo_e = _SIMPLE_FAMILY_WEIL_E_COEFF[t][dvec]
             repo_c0 = _SIMPLE_FAMILY_WEIL_C0_COEFF[t][dvec]
             for s,w in product(F3,F3):
@@ -150,8 +154,3 @@ if __name__ == "__main__":
         for m in mism[:10]:
             print(m)
         print(f"({len(mism)} total mismatches)")
-
-```
-
-Run this script to convince yourself; it will print success and produce no
-mismatches if everything is correct.
