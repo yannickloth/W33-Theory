@@ -584,6 +584,33 @@ def test_synthesis_records_transport_single_glue_slot_bridge() -> None:
     assert bridge["the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot"] is True
 
 
+def test_synthesis_records_external_glue_zero_forcing_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["external_glue_zero_forcing_bridge"]
+
+    assert bridge["source"] == "canonical_mixed_k3_plane_qutrit_lift"
+    assert bridge["qutrit_lift_split"] == [81, 81]
+    assert bridge["total_qutrit_lift_dimension"] == 162
+    assert bridge["ordered_line_types"] == ["positive", "negative"]
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["extension_class_zero"] is True
+    assert bridge["slot_direction"] == "tail_to_head"
+    assert bridge["slot_shape"] == [81, 81]
+    assert bridge["current_external_rank"] == 0
+    assert bridge["current_external_state"] == "zero_by_splitness"
+    assert bridge[
+        "current_external_162_sector_is_exactly_the_split_qutrit_lift_of_the_canonical_mixed_k3_plane"
+    ] is True
+    assert bridge["current_external_transport_shadow_has_zero_extension_class"] is True
+    assert bridge["split_vs_nonsplit_obstruction_is_already_exact_at_the_current_bridge_level"] is True
+    assert bridge[
+        "the_unique_external_tail_to_head_glue_slot_is_structurally_zero_on_the_present_bridge_object"
+    ] is True
+    assert bridge[
+        "any_nonzero_external_glue_operator_would_require_new_external_data_beyond_the_current_bridge_objects"
+    ] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]

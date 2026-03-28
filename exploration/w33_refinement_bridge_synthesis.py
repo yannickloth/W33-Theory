@@ -139,6 +139,9 @@ from w33_transport_jordan_shadow_bridge import (
 from w33_transport_single_glue_slot_bridge import (
     build_transport_single_glue_slot_bridge_summary,
 )
+from w33_external_glue_zero_forcing_bridge import (
+    build_external_glue_zero_forcing_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -409,6 +412,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     )
     transport_jordan_shadow = build_transport_jordan_shadow_bridge_summary()
     transport_single_glue_slot = build_transport_single_glue_slot_bridge_summary()
+    external_glue_zero_forcing = build_external_glue_zero_forcing_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4199,6 +4203,73 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot": (
                 transport_single_glue_slot["transport_single_glue_slot_theorem"][
                     "the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot"
+                ]
+            ),
+        },
+        "external_glue_zero_forcing_bridge": {
+            "source": (
+                external_glue_zero_forcing["current_external_transport_object"]["source"]
+            ),
+            "qutrit_lift_split": (
+                external_glue_zero_forcing["current_external_transport_object"][
+                    "qutrit_lift_split"
+                ]
+            ),
+            "total_qutrit_lift_dimension": (
+                external_glue_zero_forcing["current_external_transport_object"][
+                    "total_qutrit_lift_dimension"
+                ]
+            ),
+            "ordered_line_types": (
+                external_glue_zero_forcing["current_external_transport_object"][
+                    "ordered_line_types"
+                ]
+            ),
+            "ordered_filtration_dimensions": (
+                external_glue_zero_forcing["current_external_transport_object"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "extension_class_zero": (
+                external_glue_zero_forcing["current_external_transport_object"][
+                    "extension_class_zero"
+                ]
+            ),
+            "slot_direction": (
+                external_glue_zero_forcing["external_glue_slot"]["slot_direction"]
+            ),
+            "slot_shape": (
+                external_glue_zero_forcing["external_glue_slot"]["slot_shape"]
+            ),
+            "current_external_rank": (
+                external_glue_zero_forcing["external_glue_slot"]["current_external_rank"]
+            ),
+            "current_external_state": (
+                external_glue_zero_forcing["external_glue_slot"]["current_external_state"]
+            ),
+            "current_external_162_sector_is_exactly_the_split_qutrit_lift_of_the_canonical_mixed_k3_plane": (
+                external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
+                    "current_external_162_sector_is_exactly_the_split_qutrit_lift_of_the_canonical_mixed_k3_plane"
+                ]
+            ),
+            "current_external_transport_shadow_has_zero_extension_class": (
+                external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
+                    "current_external_transport_shadow_has_zero_extension_class"
+                ]
+            ),
+            "split_vs_nonsplit_obstruction_is_already_exact_at_the_current_bridge_level": (
+                external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
+                    "split_vs_nonsplit_obstruction_is_already_exact_at_the_current_bridge_level"
+                ]
+            ),
+            "the_unique_external_tail_to_head_glue_slot_is_structurally_zero_on_the_present_bridge_object": (
+                external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
+                    "the_unique_external_tail_to_head_glue_slot_is_structurally_zero_on_the_present_bridge_object"
+                ]
+            ),
+            "any_nonzero_external_glue_operator_would_require_new_external_data_beyond_the_current_bridge_objects": (
+                external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
+                    "any_nonzero_external_glue_operator_would_require_new_external_data_beyond_the_current_bridge_objects"
                 ]
             ),
         },

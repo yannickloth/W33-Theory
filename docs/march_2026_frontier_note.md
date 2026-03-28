@@ -756,6 +756,22 @@ What remains open is stronger than that:
   the internal line `span(1,1,0)`;
 - and realize the missing non-split tail-to-head glue externally.
 
+### External glue is structurally zero on the current bridge
+
+The transport wall is now sharper than “we have not found the glue yet.”
+
+- The current external transport `162` is exactly the split qutrit lift
+  `81(+) ⊕ 81(-)` of the canonical mixed K3 plane.
+- The current ordered external transport shadow therefore has zero extension
+  class by construction.
+- So the unique tail-to-head `81 x 81` glue slot is canonically zero on the
+  present external bridge object.
+
+That means any nonzero external glue operator would require genuinely new
+external data beyond the current bridge package. The current wall is no longer
+“locate the hidden external glue”; it is “decide what new external structure
+could create one without breaking the already-locked split shadow.”
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
