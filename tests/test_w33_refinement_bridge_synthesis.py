@@ -675,6 +675,20 @@ def test_synthesis_records_transport_internal_operator_normal_form_match_bridge(
     assert bridge["the_remaining_transport_wall_is_realization_of_the_nontrivial_cocycle_class_not_operator_shape"] is True
 
 
+def test_synthesis_records_transport_unique_nonzero_cocycle_orbit_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_unique_nonzero_cocycle_orbit_bridge"]
+
+    assert bridge["base_shift"] == [[0, 1], [0, 0]]
+    assert bridge["other_nonzero_scalar_multiple"] == [[0, 2], [0, 0]]
+    assert bridge["conjugating_basis_change"] == [[1, 0], [0, 2]]
+    assert bridge["the_internal_transport_cocycle_is_nontrivial"] is True
+    assert bridge["the_only_nonzero_scalar_multiples_of_the_fiber_shift_over_f3_are_n_and_2n"] is True
+    assert bridge["the_two_nonzero_scalar_multiples_are_gauge_equivalent_by_adapted_diagonal_basis_change"] is True
+    assert bridge["up_to_the_natural_head_tail_basis_gauge_there_is_a_unique_nonzero_ternary_glue_orbit"] is True
+    assert bridge["the_remaining_external_wall_is_existence_of_that_unique_nonzero_orbit_not_selection_among_several_nonzero_types"] is True
+
+
 def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["e13_rigid_avatar_bridge"]

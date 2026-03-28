@@ -154,6 +154,9 @@ from w33_transport_full_rank_glue_normal_form_bridge import (
 from w33_transport_internal_operator_normal_form_match_bridge import (
     build_transport_internal_operator_normal_form_match_bridge_summary,
 )
+from w33_transport_unique_nonzero_cocycle_orbit_bridge import (
+    build_transport_unique_nonzero_cocycle_orbit_bridge_summary,
+)
 from w33_e13_rigid_avatar_bridge import (
     build_e13_rigid_avatar_bridge_summary,
 )
@@ -437,6 +440,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     )
     transport_internal_operator_normal_form_match = (
         build_transport_internal_operator_normal_form_match_bridge_summary()
+    )
+    transport_unique_nonzero_cocycle_orbit = (
+        build_transport_unique_nonzero_cocycle_orbit_bridge_summary()
     )
     e13_rigid_avatar = build_e13_rigid_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
@@ -4505,6 +4511,48 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_internal_operator_normal_form_match[
                     "transport_internal_operator_normal_form_match_theorem"
                 ]["the_remaining_transport_wall_is_realization_of_the_nontrivial_cocycle_class_not_operator_shape"]
+            ),
+        },
+        "transport_unique_nonzero_cocycle_orbit_bridge": {
+            "base_shift": (
+                transport_unique_nonzero_cocycle_orbit["ternary_fiber_shift_orbit"][
+                    "base_shift"
+                ]
+            ),
+            "other_nonzero_scalar_multiple": (
+                transport_unique_nonzero_cocycle_orbit["ternary_fiber_shift_orbit"][
+                    "other_nonzero_scalar_multiple"
+                ]
+            ),
+            "conjugating_basis_change": (
+                transport_unique_nonzero_cocycle_orbit["ternary_fiber_shift_orbit"][
+                    "conjugating_basis_change"
+                ]
+            ),
+            "the_internal_transport_cocycle_is_nontrivial": (
+                transport_unique_nonzero_cocycle_orbit[
+                    "transport_unique_nonzero_cocycle_orbit_theorem"
+                ]["the_internal_transport_cocycle_is_nontrivial"]
+            ),
+            "the_only_nonzero_scalar_multiples_of_the_fiber_shift_over_f3_are_n_and_2n": (
+                transport_unique_nonzero_cocycle_orbit[
+                    "transport_unique_nonzero_cocycle_orbit_theorem"
+                ]["the_only_nonzero_scalar_multiples_of_the_fiber_shift_over_f3_are_n_and_2n"]
+            ),
+            "the_two_nonzero_scalar_multiples_are_gauge_equivalent_by_adapted_diagonal_basis_change": (
+                transport_unique_nonzero_cocycle_orbit[
+                    "transport_unique_nonzero_cocycle_orbit_theorem"
+                ]["the_two_nonzero_scalar_multiples_are_gauge_equivalent_by_adapted_diagonal_basis_change"]
+            ),
+            "up_to_the_natural_head_tail_basis_gauge_there_is_a_unique_nonzero_ternary_glue_orbit": (
+                transport_unique_nonzero_cocycle_orbit[
+                    "transport_unique_nonzero_cocycle_orbit_theorem"
+                ]["up_to_the_natural_head_tail_basis_gauge_there_is_a_unique_nonzero_ternary_glue_orbit"]
+            ),
+            "the_remaining_external_wall_is_existence_of_that_unique_nonzero_orbit_not_selection_among_several_nonzero_types": (
+                transport_unique_nonzero_cocycle_orbit[
+                    "transport_unique_nonzero_cocycle_orbit_theorem"
+                ]["the_remaining_external_wall_is_existence_of_that_unique_nonzero_orbit_not_selection_among_several_nonzero_types"]
             ),
         },
         "e13_rigid_avatar_bridge": {

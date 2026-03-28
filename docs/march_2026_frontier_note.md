@@ -844,6 +844,21 @@ That full-rank normal form now matches the internal transport operator exactly.
 So the remaining transport wall is no longer operator-shape mismatch. It is
 realization of the nontrivial transport cocycle class on the external side.
 
+### Unique nonzero ternary cocycle orbit
+
+That cocycle-class wall is now narrower too.
+
+- Over `F3` the fiber shift is `N = [[0,1],[0,0]]`.
+- The only nonzero scalar multiples are `N` and `2N`.
+- Those are gauge-equivalent by the adapted diagonal basis change
+  `diag(1,2)`.
+
+So up to the natural head/tail basis gauge there is only one nonzero ternary
+glue orbit.
+
+The remaining external wall is therefore existence of that unique nonzero orbit,
+not selection among several different nonzero ternary types.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -860,6 +875,8 @@ The status of the internal central channel is now explicit.
   glue normal form `J2^81`.
 - And that normal form now matches the already-explicit internal transport
   operator model `I_81 ⊗ [[0,1],[0,0]]` up to basis gauge.
+- And over `F3` that operator data itself now sits in one unique nonzero gauge
+  orbit.
 - But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
 
 So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
