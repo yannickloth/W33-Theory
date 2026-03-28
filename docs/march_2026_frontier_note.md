@@ -830,6 +830,20 @@ Equivalently, the completed polarized nilpotent has one canonical normal form:
 So the remaining transport wall is now existence of a non-split completion, not
 glue shape.
 
+### Internal operator normal-form match
+
+That full-rank normal form now matches the internal transport operator exactly.
+
+- The internal non-split ternary extension already has explicit fiber shift
+  `[[0,1],[0,0]]`.
+- Tensoring with the exact `81`-dimensional logical matter sector gives the
+  operator model `I_81 ⊗ [[0,1],[0,0]]` on the `162`-sector.
+- Any exact external completion now has the same polarized normal form
+  `J2^81` up to the natural head/tail basis gauge.
+
+So the remaining transport wall is no longer operator-shape mismatch. It is
+realization of the nontrivial transport cocycle class on the external side.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -844,6 +858,8 @@ The status of the internal central channel is now explicit.
   factors through the canonical rigid split transport avatar.
 - And any exact completion would have to pass through the same unique full-rank
   glue normal form `J2^81`.
+- And that normal form now matches the already-explicit internal transport
+  operator model `I_81 ⊗ [[0,1],[0,0]]` up to basis gauge.
 - But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
 
 So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.

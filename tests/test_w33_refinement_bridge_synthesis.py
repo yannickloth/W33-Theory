@@ -662,6 +662,19 @@ def test_synthesis_records_transport_full_rank_glue_normal_form_bridge() -> None
     assert bridge["the_remaining_transport_wall_is_existence_of_a_nonsplit_completion_not_glue_shape"] is True
 
 
+def test_synthesis_records_transport_internal_operator_normal_form_match_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_internal_operator_normal_form_match_bridge"]
+
+    assert bridge["fiber_shift_matrix"] == [[0, 1], [0, 0]]
+    assert bridge["operator_model"] == "I_81 ⊗ [[0,1],[0,0]]"
+    assert bridge["slot_matrix_normal_form"] == "I_81"
+    assert bridge["polarized_nilpotent_normal_form"] == "J2^81"
+    assert bridge["internal_transport_extension_has_exact_operator_normal_form_i81_tensor_fiber_shift"] is True
+    assert bridge["any_exact_external_completion_of_the_rigid_avatar_has_the_same_linear_algebraic_normal_form_up_to_head_tail_basis_gauge"] is True
+    assert bridge["the_remaining_transport_wall_is_realization_of_the_nontrivial_cocycle_class_not_operator_shape"] is True
+
+
 def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["e13_rigid_avatar_bridge"]
@@ -677,6 +690,7 @@ def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
     assert bridge["the_current_external_realization_of_the_central_channel_factors_through_the_canonical_rigid_split_avatar"] is True
     assert bridge["exact_external_realization_of_the_central_2e13_channel_would_require_a_nonsplit_deformation_of_that_avatar"] is True
     assert bridge["any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81"] is True
+    assert bridge["any_exact_completion_of_that_avatar_matches_the_internal_transport_operator_normal_form_up_to_basis_gauge"] is True
 
 
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:

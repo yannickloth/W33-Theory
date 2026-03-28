@@ -39,6 +39,9 @@ from w33_transport_avatar_deformation_wall_bridge import (
 from w33_transport_full_rank_glue_normal_form_bridge import (
     build_transport_full_rank_glue_normal_form_bridge_summary,
 )
+from w33_transport_internal_operator_normal_form_match_bridge import (
+    build_transport_internal_operator_normal_form_match_bridge_summary,
+)
 from w33_transport_rigid_split_avatar_bridge import (
     build_transport_rigid_split_avatar_bridge_summary,
 )
@@ -57,6 +60,7 @@ def build_e13_rigid_avatar_bridge_summary() -> dict[str, Any]:
     avatar = build_transport_rigid_split_avatar_bridge_summary()
     deformation = build_transport_avatar_deformation_wall_bridge_summary()
     normal_form = build_transport_full_rank_glue_normal_form_bridge_summary()
+    operator_match = build_transport_internal_operator_normal_form_match_bridge_summary()
 
     return {
         "status": "ok",
@@ -108,6 +112,13 @@ def build_e13_rigid_avatar_bridge_summary() -> dict[str, Any]:
                     "up_to_polarized_isomorphism_any_exact_completion_has_canonical_jordan_normal_form_two_power_81"
                 ]
             ),
+            "any_exact_completion_of_that_avatar_matches_the_internal_transport_operator_normal_form_up_to_basis_gauge": (
+                operator_match[
+                    "transport_internal_operator_normal_form_match_theorem"
+                ][
+                    "any_exact_external_completion_of_the_rigid_avatar_has_the_same_linear_algebraic_normal_form_up_to_head_tail_basis_gauge"
+                ]
+            ),
         },
         "bridge_verdict": (
             "The current bridge now packages the central 2E13 family channel "
@@ -115,7 +126,8 @@ def build_e13_rigid_avatar_bridge_summary() -> dict[str, Any]:
             "compatible external image of the internal common line is the "
             "head line of that avatar, and exact completion would require a "
             "non-split deformation of the same avatar in the unique full-rank "
-            "glue normal form rather than a new external carrier object."
+            "glue normal form, matching the internal transport operator model, "
+            "rather than a new external carrier object."
         ),
     }
 

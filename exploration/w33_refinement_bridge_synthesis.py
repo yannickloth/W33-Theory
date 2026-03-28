@@ -151,6 +151,9 @@ from w33_transport_avatar_deformation_wall_bridge import (
 from w33_transport_full_rank_glue_normal_form_bridge import (
     build_transport_full_rank_glue_normal_form_bridge_summary,
 )
+from w33_transport_internal_operator_normal_form_match_bridge import (
+    build_transport_internal_operator_normal_form_match_bridge_summary,
+)
 from w33_e13_rigid_avatar_bridge import (
     build_e13_rigid_avatar_bridge_summary,
 )
@@ -431,6 +434,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     )
     transport_full_rank_glue_normal_form = (
         build_transport_full_rank_glue_normal_form_bridge_summary()
+    )
+    transport_internal_operator_normal_form_match = (
+        build_transport_internal_operator_normal_form_match_bridge_summary()
     )
     e13_rigid_avatar = build_e13_rigid_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
@@ -4464,6 +4470,43 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]["the_remaining_transport_wall_is_existence_of_a_nonsplit_completion_not_glue_shape"]
             ),
         },
+        "transport_internal_operator_normal_form_match_bridge": {
+            "fiber_shift_matrix": (
+                transport_internal_operator_normal_form_match[
+                    "internal_transport_operator_normal_form"
+                ]["fiber_shift_matrix"]
+            ),
+            "operator_model": (
+                transport_internal_operator_normal_form_match[
+                    "internal_transport_operator_normal_form"
+                ]["operator_model"]
+            ),
+            "slot_matrix_normal_form": (
+                transport_internal_operator_normal_form_match[
+                    "external_completion_normal_form"
+                ]["slot_matrix_normal_form"]
+            ),
+            "polarized_nilpotent_normal_form": (
+                transport_internal_operator_normal_form_match[
+                    "external_completion_normal_form"
+                ]["polarized_nilpotent_normal_form"]
+            ),
+            "internal_transport_extension_has_exact_operator_normal_form_i81_tensor_fiber_shift": (
+                transport_internal_operator_normal_form_match[
+                    "transport_internal_operator_normal_form_match_theorem"
+                ]["internal_transport_extension_has_exact_operator_normal_form_i81_tensor_fiber_shift"]
+            ),
+            "any_exact_external_completion_of_the_rigid_avatar_has_the_same_linear_algebraic_normal_form_up_to_head_tail_basis_gauge": (
+                transport_internal_operator_normal_form_match[
+                    "transport_internal_operator_normal_form_match_theorem"
+                ]["any_exact_external_completion_of_the_rigid_avatar_has_the_same_linear_algebraic_normal_form_up_to_head_tail_basis_gauge"]
+            ),
+            "the_remaining_transport_wall_is_realization_of_the_nontrivial_cocycle_class_not_operator_shape": (
+                transport_internal_operator_normal_form_match[
+                    "transport_internal_operator_normal_form_match_theorem"
+                ]["the_remaining_transport_wall_is_realization_of_the_nontrivial_cocycle_class_not_operator_shape"]
+            ),
+        },
         "e13_rigid_avatar_bridge": {
             "common_square": (
                 e13_rigid_avatar["internal_central_channel"]["common_square"]
@@ -4510,6 +4553,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81": (
                 e13_rigid_avatar["e13_rigid_avatar_theorem"][
                     "any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81"
+                ]
+            ),
+            "any_exact_completion_of_that_avatar_matches_the_internal_transport_operator_normal_form_up_to_basis_gauge": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "any_exact_completion_of_that_avatar_matches_the_internal_transport_operator_normal_form_up_to_basis_gauge"
                 ]
             ),
         },

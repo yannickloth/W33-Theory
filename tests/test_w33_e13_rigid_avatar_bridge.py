@@ -36,3 +36,6 @@ def test_e13_rigid_avatar_bridge_summary() -> None:
     assert theorem[
         "any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81"
     ] is True
+    assert theorem[
+        "any_exact_completion_of_that_avatar_matches_the_internal_transport_operator_normal_form_up_to_basis_gauge"
+    ] is True
