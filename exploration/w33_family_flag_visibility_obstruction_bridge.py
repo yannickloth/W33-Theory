@@ -42,6 +42,9 @@ from w33_transport_filtered_shadow_bridge import (
 from w33_transport_nilpotent_glue_obstruction_bridge import (
     build_transport_nilpotent_glue_obstruction_bridge_summary,
 )
+from w33_transport_jordan_shadow_bridge import (
+    build_transport_jordan_shadow_bridge_summary,
+)
 from w33_u1_filtered_shadow_line_order_bridge import (
     build_u1_filtered_shadow_line_order_bridge_summary,
 )
@@ -70,6 +73,7 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
     semisimple = build_transport_semisimplification_shadow_bridge_summary()
     filtered = build_transport_filtered_shadow_bridge_summary()
     nilpotent = build_transport_nilpotent_glue_obstruction_bridge_summary()
+    jordan = build_transport_jordan_shadow_bridge_summary()
 
     return {
         "status": "ok",
@@ -82,6 +86,9 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
         ],
         "external_semisimplified_shadow": semisimple["external_split_shadow"],
         "external_filtered_split_shadow": filtered["external_canonical_split_filtration"][
+            "ordered_filtration_dimensions"
+        ],
+        "external_polarized_jordan_shadow": jordan["external_polarized_jordan_shadow"][
             "ordered_filtration_dimensions"
         ],
         "external_nilpotent_glue_visibility": {
@@ -135,6 +142,11 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
                     "current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"
                 ]
             ),
+            "external_side_matches_the_polarized_jordan_shadow_of_the_transport_162_sector": (
+                jordan["transport_jordan_shadow_theorem"][
+                    "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
+                ]
+            ),
             "exact_external_identification_of_the_internal_common_line_is_not_yet_supported": (
                 u1_obstruction["u1_isotropic_line_obstruction_theorem"][
                     "exact_identification_of_the_internal_common_line_with_a_canonical_u1_line_is_not_yet_supported"
@@ -152,8 +164,8 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
                 and u1_sign_order["u1_filtered_shadow_line_order_theorem"][
                     "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"
                 ]
-                and filtered["transport_filtered_shadow_theorem"][
-                    "current_bridge_reaches_filtered_split_shadow_but_not_nonsplit_extension_identity"
+                and jordan["transport_jordan_shadow_theorem"][
+                    "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
                 ]
                 and nilpotent["transport_nilpotent_glue_obstruction_theorem"][
                     "current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"
@@ -166,13 +178,14 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "external packet selects a canonical dominant isotropic-line "
             "candidate inside U1, that line candidate is canonically ordered by "
             "the positive/negative filtered-shadow basis, and the transport "
-            "comparison now fixes a "
-            "canonical ordered split filtered shadow 81 -> 162 -> 81 on the "
-            "external side. What is still missing is an exact identification of "
-            "that external line candidate with the internal line span(1,1,0), "
-            "and the nontrivial rank-81 nilpotent glue operator carried by the "
-            "internal transport 162-sector. So the present exact bridge reaches "
-            "plane, line candidate, and filtered shadow, but not the full "
+            "comparison now fixes the polarized Jordan shadow of the internal "
+            "transport packet: a canonical head/tail split shadow 81 -> 162 -> "
+            "81 together with head-biased/tail-biased external lines. What is "
+            "still missing is an exact identification of that external line "
+            "candidate with the internal line span(1,1,0), and the nontrivial "
+            "rank-81 nilpotent glue operator carried by the internal transport "
+            "162-sector. So the present exact bridge reaches plane, line "
+            "candidate, and polarized Jordan shadow, but not the full "
             "extension object."
         ),
     }

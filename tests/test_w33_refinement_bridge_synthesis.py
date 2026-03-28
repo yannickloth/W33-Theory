@@ -547,6 +547,24 @@ def test_synthesis_records_transport_polarized_line_shadow_bridge() -> None:
     assert bridge["polarized_shadow_is_stronger_than_filtered_dimension_match_but_weaker_than_extension_identity"] is True
 
 
+def test_synthesis_records_transport_jordan_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_jordan_shadow_bridge"]
+    assert bridge["internal_jordan_partition"] == "2^81"
+    assert bridge["internal_jordan_block_size_2_count"] == 81
+    assert bridge["internal_jordan_block_size_1_count"] == 0
+    assert bridge["internal_associated_graded_dimensions"] == [81, 81]
+    assert bridge["internal_head_type"] == "invariant"
+    assert bridge["internal_tail_type"] == "sign"
+    assert bridge["external_ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["external_ordered_filtered_shadow_line_types"] == ["positive", "negative"]
+    assert bridge["internal_transport_glue_has_exact_jordan_type_two_power_81"] is True
+    assert bridge["internal_transport_associated_graded_is_exactly_81_head_plus_81_tail"] is True
+    assert bridge["external_bridge_fixes_the_polarized_associated_graded_of_the_transport_jordan_packet"] is True
+    assert bridge["current_bridge_does_not_yet_realize_the_internal_nontrivial_size_two_jordan_blocks"] is True
+    assert bridge["current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]

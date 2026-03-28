@@ -133,6 +133,9 @@ from w33_transport_nilpotent_glue_obstruction_bridge import (
 from w33_transport_polarized_line_shadow_bridge import (
     build_transport_polarized_line_shadow_bridge_summary,
 )
+from w33_transport_jordan_shadow_bridge import (
+    build_transport_jordan_shadow_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -398,6 +401,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_polarized_line_shadow = (
         build_transport_polarized_line_shadow_bridge_summary()
     )
+    transport_jordan_shadow = build_transport_jordan_shadow_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4039,6 +4043,83 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_polarized_line_shadow[
                     "transport_polarized_line_shadow_theorem"
                 ]["polarized_shadow_is_stronger_than_filtered_dimension_match_but_weaker_than_extension_identity"]
+            ),
+        },
+        "transport_jordan_shadow_bridge": {
+            "internal_jordan_partition": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "exact_jordan_partition"
+                ]
+            ),
+            "internal_jordan_block_size_2_count": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "jordan_block_size_2_count"
+                ]
+            ),
+            "internal_jordan_block_size_1_count": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "jordan_block_size_1_count"
+                ]
+            ),
+            "internal_associated_graded_dimensions": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "associated_graded_dimensions"
+                ]
+            ),
+            "internal_head_type": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "head_type"
+                ]
+            ),
+            "internal_tail_type": (
+                transport_jordan_shadow["internal_transport_jordan_packet"][
+                    "tail_type"
+                ]
+            ),
+            "external_ordered_filtration_dimensions": (
+                transport_jordan_shadow["external_polarized_jordan_shadow"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "external_ordered_filtered_shadow_line_types": (
+                transport_jordan_shadow["external_polarized_jordan_shadow"][
+                    "ordered_filtered_shadow_line_types"
+                ]
+            ),
+            "external_head_biased_line_coefficients": (
+                transport_jordan_shadow["external_polarized_jordan_shadow"][
+                    "head_biased_line_coefficients"
+                ]
+            ),
+            "external_tail_biased_line_coefficients": (
+                transport_jordan_shadow["external_polarized_jordan_shadow"][
+                    "tail_biased_line_coefficients"
+                ]
+            ),
+            "internal_transport_glue_has_exact_jordan_type_two_power_81": (
+                transport_jordan_shadow["transport_jordan_shadow_theorem"][
+                    "internal_transport_glue_has_exact_jordan_type_two_power_81"
+                ]
+            ),
+            "internal_transport_associated_graded_is_exactly_81_head_plus_81_tail": (
+                transport_jordan_shadow["transport_jordan_shadow_theorem"][
+                    "internal_transport_associated_graded_is_exactly_81_head_plus_81_tail"
+                ]
+            ),
+            "external_bridge_fixes_the_polarized_associated_graded_of_the_transport_jordan_packet": (
+                transport_jordan_shadow["transport_jordan_shadow_theorem"][
+                    "external_bridge_fixes_the_polarized_associated_graded_of_the_transport_jordan_packet"
+                ]
+            ),
+            "current_bridge_does_not_yet_realize_the_internal_nontrivial_size_two_jordan_blocks": (
+                transport_jordan_shadow["transport_jordan_shadow_theorem"][
+                    "current_bridge_does_not_yet_realize_the_internal_nontrivial_size_two_jordan_blocks"
+                ]
+            ),
+            "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity": (
+                transport_jordan_shadow["transport_jordan_shadow_theorem"][
+                    "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
+                ]
             ),
         },
         "global_local_carrier_split_bridge": {

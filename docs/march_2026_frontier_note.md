@@ -705,6 +705,19 @@ The current bridge now reaches a stronger split-shadow theorem than a bare order
 
 So the current bridge already reaches a canonical head/tail polarized split shadow, but still not the internal tail-to-head nilpotent glue itself.
 
+### Transport Jordan shadow
+
+The internal transport obstruction is now rigid enough to have an exact Jordan reading.
+
+- Internally, the transport glue is a square-zero rank-`81` operator on dimension `162`.
+- Therefore its Jordan type is forced exactly to `2^81`.
+- So the internal associated graded is exactly `81(head) + 81(tail)`.
+- Externally, the current bridge already fixes the polarized associated graded of that packet:
+  head-biased `U1` line, tail-biased `U1` line, and the ordered split shadow
+  `81 -> 162 -> 81`.
+
+So the current bridge now reaches the polarized Jordan shadow of the internal transport packet, but not yet the nontrivial size-`2` Jordan blocks themselves.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -713,11 +726,11 @@ The status of the internal central channel is now explicit.
 - Its image is exactly the common internal line `span(1,1,0)`.
 - The current external bridge fixes the canonical carrier plane `U1`.
 - The full current external packet also picks a canonical dominant isotropic-line candidate inside `U1`, ordered by the positive/negative filtered-shadow basis.
-- And on the transport side it now reaches a canonical filtered split shadow
-  `81 -> 162 -> 81`.
+- And on the transport side it now reaches the canonical polarized Jordan shadow
+  of the transport packet.
 - But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
 
-So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and a filtered `81 -> 162 -> 81` shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
+So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 

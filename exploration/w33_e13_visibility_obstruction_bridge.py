@@ -44,6 +44,9 @@ from w33_transport_filtered_shadow_bridge import (
 from w33_transport_nilpotent_glue_obstruction_bridge import (
     build_transport_nilpotent_glue_obstruction_bridge_summary,
 )
+from w33_transport_jordan_shadow_bridge import (
+    build_transport_jordan_shadow_bridge_summary,
+)
 from w33_u1_filtered_shadow_line_order_bridge import (
     build_u1_filtered_shadow_line_order_bridge_summary,
 )
@@ -68,6 +71,7 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
     obstruction = build_family_flag_visibility_obstruction_bridge_summary()
     filtered = build_transport_filtered_shadow_bridge_summary()
     nilpotent = build_transport_nilpotent_glue_obstruction_bridge_summary()
+    jordan = build_transport_jordan_shadow_bridge_summary()
 
     return {
         "status": "ok",
@@ -78,6 +82,9 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
         "external_sign_ordered_line_candidate": line_order["dominant_isotropic_line_coefficients"],
         "external_graded_shadow": obstruction["external_semisimplified_shadow"],
         "external_filtered_shadow": filtered["external_canonical_split_filtration"][
+            "ordered_filtration_dimensions"
+        ],
+        "external_polarized_jordan_shadow": jordan["external_polarized_jordan_shadow"][
             "ordered_filtration_dimensions"
         ],
         "external_nilpotent_glue_visibility": {
@@ -121,6 +128,11 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
                     "current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"
                 ]
             ),
+            "current_external_bridge_matches_the_polarized_jordan_shadow_of_the_transport_channel": (
+                jordan["transport_jordan_shadow_theorem"][
+                    "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
+                ]
+            ),
             "current_bridge_captures_carrier_plane_line_candidate_and_filtered_shadow_of_the_central_channel": (
                 carrier["u1_family_a4_carrier_theorem"][
                     "minimal_canonical_family_bridge_carrier_is_delta_a4_on_u1"
@@ -128,8 +140,8 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
                 and line_order["u1_filtered_shadow_line_order_theorem"][
                     "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"
                 ]
-                and filtered["transport_filtered_shadow_theorem"][
-                    "current_bridge_reaches_filtered_split_shadow_but_not_nonsplit_extension_identity"
+                and jordan["transport_jordan_shadow_theorem"][
+                    "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
                 ]
             ),
             "exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported": (
@@ -147,13 +159,13 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "the current K3 bridge now fixes the carrier plane U1, a canonical "
             "dominant isotropic-line candidate inside that plane, sign-orders "
             "that candidate by the positive/negative filtered-shadow basis, and the "
-            "canonical filtered split shadow 81 -> 162 -> 81. What it still "
+            "canonical polarized Jordan shadow of the transport channel. What it still "
             "does not fix is an exact "
             "identification of that external line candidate with the internal "
             "line, or the nontrivial rank-81 nilpotent glue carried by the "
             "internal transport extension. So the central 2E13 channel is "
             "still exact internally, while externally it is presently visible "
-            "through its carrier plane, line candidate, and filtered shadow, "
+            "through its carrier plane, line candidate, and polarized Jordan shadow, "
             "but not yet as a full extension object."
         ),
     }
