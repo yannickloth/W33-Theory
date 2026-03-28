@@ -96,6 +96,38 @@ The script outputs JSON with:
 - top measured hits
 - decoded valid and invalid bitstrings
 
+## Batch Sweep
+
+Run a sweep across multiple sizes and iteration offsets:
+
+```bash
+qiskit-python tools/qiskit/permutation_grover_batch.py \
+  --min-size 3 \
+  --max-size 5 \
+  --mark-mode identity-reverse \
+  --iteration-offsets -1 0 1 \
+  --shots 512 \
+  --output /tmp/qiskit_batch.json
+```
+
+Then summarize it:
+
+```bash
+qiskit-python tools/qiskit/analyze_permutation_runs.py /tmp/qiskit_batch.json
+```
+
+## Upstream Patch
+
+I also included a concrete patch draft for the Qiskit setup flow:
+
+`tools/qiskit/qiskit_code_assistant_wsl_windows_ollama.patch`
+
+It fixes three things:
+
+- WSL + Windows Ollama readiness checks
+- model verification through `/v1/completions`
+- smaller default model selection on low-memory machines
+
 ## Tight Loop
 
 The intended loop is:

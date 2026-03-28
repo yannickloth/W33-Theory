@@ -1,0 +1,87 @@
+diff --git a/LOCAL_SETUP.md b/LOCAL_SETUP.md
+index 0000000..0000000 100644
+--- a/LOCAL_SETUP.md
++++ b/LOCAL_SETUP.md
+@@
+-| **Qwen2.5-Coder 14B** (Default) | ~9GB  | Best for code                                         | 16GB+        | `hf.co/Qiskit/Qwen2.5-Coder-14B-Qiskit-GGUF`     |
++| **Qwen2.5-Coder 14B** (Default on 12GB+ RAM) | ~9GB  | Best for code                           | 16GB+        | `hf.co/Qiskit/Qwen2.5-Coder-14B-Qiskit-GGUF`     |
+@@
++### WSL + Windows Ollama
++
++If you are running the setup from WSL while Ollama is installed on Windows:
++
++- the VS Code extension can still work correctly
++- `curl http://localhost:11434` from WSL may fail even though Windows Ollama is healthy
++- use the OpenAI-compatible endpoint test from Windows instead of relying on Linux-side localhost checks
++
++Recommended verification:
++
++```powershell
++Invoke-WebRequest -UseBasicParsing http://localhost:11434/v1/models
++Invoke-WebRequest -UseBasicParsing -Method POST `
++  -Uri http://localhost:11434/v1/completions `
++  -ContentType 'application/json' `
++  -Body '{"model":"granite-3.3-8b-qiskit-gguf:latest","prompt":"from qiskit import QuantumCircuit","stream":false}'
++```
++
+diff --git a/setup_local.sh b/setup_local.sh
+index 0000000..0000000 100755
+--- a/setup_local.sh
++++ b/setup_local.sh
+@@
++is_wsl() {
++    grep -qi microsoft /proc/version 2>/dev/null
++}
++
++service_ready() {
++    if is_wsl && command -v curl.exe >/dev/null 2>&1; then
++        curl.exe -fsS "http://localhost:11434/v1/models" > /dev/null 2>&1
++    else
++        curl -fsS "http://localhost:11434/v1/models" > /dev/null 2>&1
++    fi
++}
++
++choose_default_model() {
++    local mem_gib
++    mem_gib=$(free -g | awk '/^Mem:/ {print $2}')
++    if [ "$mem_gib" -lt 12 ]; then
++        MODEL="hf.co/Qiskit/Granite-3.3-8B-Qiskit-GGUF"
++    fi
++}
++
++verify_model_endpoint() {
++    local model_name="$1"
++    local payload
++    payload=$(printf '{"model":"%s","prompt":"from qiskit import QuantumCircuit","stream":false,"max_tokens":32}' "$model_name")
++
++    if is_wsl && command -v curl.exe >/dev/null 2>&1; then
++        printf '%s' "$payload" | curl.exe -fsS -X POST "http://localhost:11434/v1/completions" \
++            -H "Content-Type: application/json" --data-binary @- > /dev/null
++    else
++        printf '%s' "$payload" | curl -fsS -X POST "http://localhost:11434/v1/completions" \
++            -H "Content-Type: application/json" --data-binary @- > /dev/null
++    fi
++}
+@@
+-    sleep 3
++    for _ in $(seq 1 30); do
++        if service_ready; then
++            break
++        fi
++        sleep 1
++    done
+@@
+-    # Test the model
+-    print_info "Testing model..."
+-    if echo "from qiskit import QuantumCircuit" | ollama run "$MODEL_NAME" --verbose > /dev/null 2>&1; then
+-        print_success "Model test successful"
+-    else
+-        print_warning "Model test returned non-zero exit code (this may be normal)"
+-    fi
++    # Test the actual OpenAI-compatible endpoint used by the extension
++    print_info "Testing model via /v1/completions..."
++    if verify_model_endpoint "${MODEL_NAME}:latest"; then
++        print_success "Model test successful"
++    else
++        print_warning "Model endpoint test failed"
++    fi
