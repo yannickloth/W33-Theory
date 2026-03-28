@@ -772,6 +772,26 @@ external data beyond the current bridge package. The current wall is no longer
 “locate the hidden external glue”; it is “decide what new external structure
 could create one without breaking the already-locked split shadow.”
 
+### Canonical rigid split transport avatar
+
+The last two transport reductions now fit together into one sharper statement.
+
+- The current bridge fixes one head-compatible external `U1` line.
+- It also fixes the canonical tail-biased `U1` line.
+- It fixes the ordered split dimensions `81 -> 162 -> 81`.
+- And it forces the unique external tail-to-head glue slot to be zero.
+
+So the current bridge does not merely see an undifferentiated transport shadow.
+It fixes one canonical rigid split avatar of the internal packet:
+
+- head line;
+- split middle `162`;
+- tail line;
+- zero glue.
+
+This is still not the internal non-split transport object, but it is now the
+exact canonical split object that the present K3 bridge realizes.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.

@@ -142,6 +142,9 @@ from w33_transport_single_glue_slot_bridge import (
 from w33_external_glue_zero_forcing_bridge import (
     build_external_glue_zero_forcing_bridge_summary,
 )
+from w33_transport_rigid_split_avatar_bridge import (
+    build_transport_rigid_split_avatar_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -413,6 +416,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_jordan_shadow = build_transport_jordan_shadow_bridge_summary()
     transport_single_glue_slot = build_transport_single_glue_slot_bridge_summary()
     external_glue_zero_forcing = build_external_glue_zero_forcing_bridge_summary()
+    transport_rigid_split_avatar = build_transport_rigid_split_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4270,6 +4274,68 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "any_nonzero_external_glue_operator_would_require_new_external_data_beyond_the_current_bridge_objects": (
                 external_glue_zero_forcing["external_glue_zero_forcing_theorem"][
                     "any_nonzero_external_glue_operator_would_require_new_external_data_beyond_the_current_bridge_objects"
+                ]
+            ),
+        },
+        "transport_rigid_split_avatar_bridge": {
+            "head_line": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "head_line"
+                ]
+            ),
+            "tail_line": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "tail_line"
+                ]
+            ),
+            "ordered_filtration_dimensions": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "glue_direction": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "glue_direction"
+                ]
+            ),
+            "external_glue_rank": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "external_glue_rank"
+                ]
+            ),
+            "external_glue_state": (
+                transport_rigid_split_avatar["canonical_external_transport_avatar"][
+                    "external_glue_state"
+                ]
+            ),
+            "current_bridge_fixes_a_head_compatible_external_head_line": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "current_bridge_fixes_a_head_compatible_external_head_line"
+                ]
+            ),
+            "current_bridge_fixes_a_canonical_external_tail_line": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "current_bridge_fixes_a_canonical_external_tail_line"
+                ]
+            ),
+            "current_bridge_fixes_the_ordered_81_in_162_out_81_split_avatar_dimensions": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "current_bridge_fixes_the_ordered_81_in_162_out_81_split_avatar_dimensions"
+                ]
+            ),
+            "current_bridge_forces_the_external_glue_of_that_avatar_to_be_zero": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "current_bridge_forces_the_external_glue_of_that_avatar_to_be_zero"
+                ]
+            ),
+            "current_bridge_fixes_one_canonical_rigid_split_avatar_of_the_internal_transport_packet": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "current_bridge_fixes_one_canonical_rigid_split_avatar_of_the_internal_transport_packet"
+                ]
+            ),
+            "that_avatar_is_still_not_the_internal_nonsplit_transport_object": (
+                transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
+                    "that_avatar_is_still_not_the_internal_nonsplit_transport_object"
                 ]
             ),
         },

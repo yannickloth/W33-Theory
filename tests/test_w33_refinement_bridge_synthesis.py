@@ -611,6 +611,24 @@ def test_synthesis_records_external_glue_zero_forcing_bridge() -> None:
     ] is True
 
 
+def test_synthesis_records_transport_rigid_split_avatar_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_rigid_split_avatar_bridge"]
+
+    assert bridge["head_line"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["tail_line"] == [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0]
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["glue_direction"] == "tail_to_head"
+    assert bridge["external_glue_rank"] == 0
+    assert bridge["external_glue_state"] == "zero_by_splitness"
+    assert bridge["current_bridge_fixes_a_head_compatible_external_head_line"] is True
+    assert bridge["current_bridge_fixes_a_canonical_external_tail_line"] is True
+    assert bridge["current_bridge_fixes_the_ordered_81_in_162_out_81_split_avatar_dimensions"] is True
+    assert bridge["current_bridge_forces_the_external_glue_of_that_avatar_to_be_zero"] is True
+    assert bridge["current_bridge_fixes_one_canonical_rigid_split_avatar_of_the_internal_transport_packet"] is True
+    assert bridge["that_avatar_is_still_not_the_internal_nonsplit_transport_object"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]
