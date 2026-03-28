@@ -718,6 +718,21 @@ The internal transport obstruction is now rigid enough to have an exact Jordan r
 
 So the current bridge now reaches the polarized Jordan shadow of the internal transport packet, but not yet the nontrivial size-`2` Jordan blocks themselves.
 
+### Single missing glue slot
+
+The transport wall is now even narrower than that.
+
+- The semisimplified shadow is fixed.
+- The ordered filtered shadow is fixed.
+- The head/tail polarization is fixed.
+- The polarized Jordan shadow is fixed.
+
+So the only missing datum for exact transport identity is one operator slot:
+
+- a tail-to-head `81 x 81` glue map.
+
+Internally that slot is occupied by the nonzero rank-`81` square-zero glue. Externally it is currently forced to be zero by splitness.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.

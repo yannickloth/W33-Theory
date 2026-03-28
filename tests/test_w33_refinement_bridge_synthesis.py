@@ -565,6 +565,25 @@ def test_synthesis_records_transport_jordan_shadow_bridge() -> None:
     assert bridge["current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"] is True
 
 
+def test_synthesis_records_transport_single_glue_slot_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_single_glue_slot_bridge"]
+    assert bridge["internal_head_dimension"] == 81
+    assert bridge["internal_middle_dimension"] == 162
+    assert bridge["internal_tail_dimension"] == 81
+    assert bridge["slot_direction"] == "tail_to_head"
+    assert bridge["slot_shape"] == [81, 81]
+    assert bridge["required_internal_rank"] == 81
+    assert bridge["current_external_slot_rank"] == 0
+    assert bridge["current_external_slot_state"] == "zero_by_splitness"
+    assert bridge["current_bridge_fixes_the_semisimplified_shadow_of_the_transport_packet"] is True
+    assert bridge["current_bridge_fixes_the_ordered_filtered_shadow_of_the_transport_packet"] is True
+    assert bridge["current_bridge_fixes_the_polarized_jordan_shadow_of_the_transport_packet"] is True
+    assert bridge["exact_transport_identity_would_require_a_tail_to_head_rank_81_square_zero_glue_operator"] is True
+    assert bridge["the_current_external_bridge_forces_that_single_glue_slot_to_be_zero"] is True
+    assert bridge["the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]

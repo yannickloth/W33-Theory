@@ -136,6 +136,9 @@ from w33_transport_polarized_line_shadow_bridge import (
 from w33_transport_jordan_shadow_bridge import (
     build_transport_jordan_shadow_bridge_summary,
 )
+from w33_transport_single_glue_slot_bridge import (
+    build_transport_single_glue_slot_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -402,6 +405,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
         build_transport_polarized_line_shadow_bridge_summary()
     )
     transport_jordan_shadow = build_transport_jordan_shadow_bridge_summary()
+    transport_single_glue_slot = build_transport_single_glue_slot_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4119,6 +4123,78 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity": (
                 transport_jordan_shadow["transport_jordan_shadow_theorem"][
                     "current_bridge_reaches_the_polarized_jordan_shadow_but_not_the_internal_jordan_identity"
+                ]
+            ),
+        },
+        "transport_single_glue_slot_bridge": {
+            "internal_head_dimension": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "head_dimension"
+                ]
+            ),
+            "internal_middle_dimension": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "middle_dimension"
+                ]
+            ),
+            "internal_tail_dimension": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "tail_dimension"
+                ]
+            ),
+            "slot_direction": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "slot_direction"
+                ]
+            ),
+            "slot_shape": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "slot_shape"
+                ]
+            ),
+            "required_internal_rank": (
+                transport_single_glue_slot["internal_transport_operator_slot"][
+                    "required_internal_rank"
+                ]
+            ),
+            "current_external_slot_rank": (
+                transport_single_glue_slot["external_current_slot_state"][
+                    "current_external_slot_rank"
+                ]
+            ),
+            "current_external_slot_state": (
+                transport_single_glue_slot["external_current_slot_state"][
+                    "current_external_slot_state"
+                ]
+            ),
+            "current_bridge_fixes_the_semisimplified_shadow_of_the_transport_packet": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "current_bridge_fixes_the_semisimplified_shadow_of_the_transport_packet"
+                ]
+            ),
+            "current_bridge_fixes_the_ordered_filtered_shadow_of_the_transport_packet": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "current_bridge_fixes_the_ordered_filtered_shadow_of_the_transport_packet"
+                ]
+            ),
+            "current_bridge_fixes_the_polarized_jordan_shadow_of_the_transport_packet": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "current_bridge_fixes_the_polarized_jordan_shadow_of_the_transport_packet"
+                ]
+            ),
+            "exact_transport_identity_would_require_a_tail_to_head_rank_81_square_zero_glue_operator": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "exact_transport_identity_would_require_a_tail_to_head_rank_81_square_zero_glue_operator"
+                ]
+            ),
+            "the_current_external_bridge_forces_that_single_glue_slot_to_be_zero": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "the_current_external_bridge_forces_that_single_glue_slot_to_be_zero"
+                ]
+            ),
+            "the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot": (
+                transport_single_glue_slot["transport_single_glue_slot_theorem"][
+                    "the_only_missing_exact_transport_datum_is_one_tail_to_head_81_by_81_operator_slot"
                 ]
             ),
         },
