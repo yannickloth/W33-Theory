@@ -530,6 +530,23 @@ def test_synthesis_records_transport_nilpotent_glue_obstruction_bridge() -> None
     assert bridge["current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"] is True
 
 
+def test_synthesis_records_transport_polarized_line_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_polarized_line_shadow_bridge"]
+    assert bridge["internal_ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["internal_head_type"] == "invariant"
+    assert bridge["internal_tail_type"] == "sign"
+    assert bridge["internal_nilpotent_glue_direction"] == "tail_to_head"
+    assert bridge["external_ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["external_ordered_filtered_shadow_line_types"] == ["positive", "negative"]
+    assert bridge["internal_transport_has_canonical_head_middle_tail_structure"] is True
+    assert bridge["external_bridge_has_canonical_head_biased_and_tail_biased_u1_lines"] is True
+    assert bridge["dominant_u1_line_is_head_biased_and_recessive_u1_line_is_tail_biased"] is True
+    assert bridge["current_bridge_reaches_a_canonical_head_tail_polarized_split_shadow"] is True
+    assert bridge["current_bridge_does_not_yet_realize_the_internal_tail_to_head_nilpotent_glue"] is True
+    assert bridge["polarized_shadow_is_stronger_than_filtered_dimension_match_but_weaker_than_extension_identity"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]

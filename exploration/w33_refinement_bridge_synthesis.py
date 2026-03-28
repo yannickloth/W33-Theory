@@ -130,6 +130,9 @@ from w33_transport_filtered_shadow_bridge import (
 from w33_transport_nilpotent_glue_obstruction_bridge import (
     build_transport_nilpotent_glue_obstruction_bridge_summary,
 )
+from w33_transport_polarized_line_shadow_bridge import (
+    build_transport_polarized_line_shadow_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -391,6 +394,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_filtered_shadow = build_transport_filtered_shadow_bridge_summary()
     transport_nilpotent_glue_obstruction = (
         build_transport_nilpotent_glue_obstruction_bridge_summary()
+    )
+    transport_polarized_line_shadow = (
+        build_transport_polarized_line_shadow_bridge_summary()
     )
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
@@ -3961,6 +3967,78 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_nilpotent_glue_obstruction[
                     "transport_nilpotent_glue_obstruction_theorem"
                 ]["current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"]
+            ),
+        },
+        "transport_polarized_line_shadow_bridge": {
+            "internal_ordered_filtration_dimensions": (
+                transport_polarized_line_shadow["internal_transport_polarization"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "internal_head_type": (
+                transport_polarized_line_shadow["internal_transport_polarization"][
+                    "head_type"
+                ]
+            ),
+            "internal_tail_type": (
+                transport_polarized_line_shadow["internal_transport_polarization"][
+                    "tail_type"
+                ]
+            ),
+            "internal_nilpotent_glue_direction": (
+                transport_polarized_line_shadow["internal_transport_polarization"][
+                    "nilpotent_glue_direction"
+                ]
+            ),
+            "external_ordered_filtration_dimensions": (
+                transport_polarized_line_shadow["external_polarized_split_shadow"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "external_ordered_filtered_shadow_line_types": (
+                transport_polarized_line_shadow["external_polarized_split_shadow"][
+                    "ordered_filtered_shadow_line_types"
+                ]
+            ),
+            "external_head_biased_line_coefficients": (
+                transport_polarized_line_shadow["external_polarized_split_shadow"][
+                    "head_biased_line_coefficients"
+                ]
+            ),
+            "external_tail_biased_line_coefficients": (
+                transport_polarized_line_shadow["external_polarized_split_shadow"][
+                    "tail_biased_line_coefficients"
+                ]
+            ),
+            "internal_transport_has_canonical_head_middle_tail_structure": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["internal_transport_has_canonical_head_middle_tail_structure"]
+            ),
+            "external_bridge_has_canonical_head_biased_and_tail_biased_u1_lines": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["external_bridge_has_canonical_head_biased_and_tail_biased_u1_lines"]
+            ),
+            "dominant_u1_line_is_head_biased_and_recessive_u1_line_is_tail_biased": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["dominant_u1_line_is_head_biased_and_recessive_u1_line_is_tail_biased"]
+            ),
+            "current_bridge_reaches_a_canonical_head_tail_polarized_split_shadow": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["current_bridge_reaches_a_canonical_head_tail_polarized_split_shadow"]
+            ),
+            "current_bridge_does_not_yet_realize_the_internal_tail_to_head_nilpotent_glue": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["current_bridge_does_not_yet_realize_the_internal_tail_to_head_nilpotent_glue"]
+            ),
+            "polarized_shadow_is_stronger_than_filtered_dimension_match_but_weaker_than_extension_identity": (
+                transport_polarized_line_shadow[
+                    "transport_polarized_line_shadow_theorem"
+                ]["polarized_shadow_is_stronger_than_filtered_dimension_match_but_weaker_than_extension_identity"]
             ),
         },
         "global_local_carrier_split_bridge": {

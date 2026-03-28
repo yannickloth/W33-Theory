@@ -692,6 +692,19 @@ The finite family flag is now sharper than the current external bridge.
 
 So the present bridge fixes a carrier plane, a line candidate, and a filtered shadow, but not yet an exact identification of that external line candidate with the internal line `span(1,1,0)`, and not the nontrivial glue that makes the transport extension non-split.
 
+### Head/tail polarized transport shadow
+
+The current bridge now reaches a stronger split-shadow theorem than a bare ordered filtration.
+
+- Internally, the transport `162` has a canonical head/middle/tail structure
+  `81 -> 162 -> 81`.
+- The internal square-zero rank-`81` glue points from tail to head.
+- Externally, the current K3 bridge fixes a head-biased `U1` line and a tail-biased `U1` line.
+- And it fixes the same ordered split dimension pattern
+  `81 -> 162 -> 81`.
+
+So the current bridge already reaches a canonical head/tail polarized split shadow, but still not the internal tail-to-head nilpotent glue itself.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
