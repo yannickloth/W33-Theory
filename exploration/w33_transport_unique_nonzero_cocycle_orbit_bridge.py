@@ -39,15 +39,25 @@ else:
 from w33_transport_internal_operator_normal_form_match_bridge import (
     build_transport_internal_operator_normal_form_match_bridge_summary,
 )
-from w33_transport_ternary_cocycle_bridge import (
-    build_transport_ternary_cocycle_summary,
-)
 
 
 DEFAULT_OUTPUT_PATH = (
     ROOT / "data" / "w33_transport_unique_nonzero_cocycle_orbit_bridge_summary.json"
 )
 MODULUS = 3
+
+
+def _transport_cocycle_summary() -> dict[str, Any]:
+    try:
+        from w33_transport_ternary_cocycle_bridge import (
+            build_transport_ternary_cocycle_summary,
+        )
+    except ModuleNotFoundError as exc:
+        if exc.name != "networkx":
+            raise
+        fallback_path = ROOT / "data" / "w33_transport_ternary_cocycle_bridge_summary.json"
+        return json.loads(fallback_path.read_text(encoding="utf-8"))
+    return build_transport_ternary_cocycle_summary()
 
 
 def _conjugate(matrix: np.ndarray, basis_change: np.ndarray) -> np.ndarray:
@@ -67,7 +77,7 @@ def _conjugate(matrix: np.ndarray, basis_change: np.ndarray) -> np.ndarray:
 
 @lru_cache(maxsize=1)
 def build_transport_unique_nonzero_cocycle_orbit_bridge_summary() -> dict[str, Any]:
-    cocycle = build_transport_ternary_cocycle_summary()
+    cocycle = _transport_cocycle_summary()
     operator_match = build_transport_internal_operator_normal_form_match_bridge_summary()
 
     shift = np.array(cocycle["fiber_nilpotent_operator"]["matrix"], dtype=int) % MODULUS

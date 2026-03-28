@@ -157,6 +157,15 @@ from w33_transport_internal_operator_normal_form_match_bridge import (
 from w33_transport_unique_nonzero_cocycle_orbit_bridge import (
     build_transport_unique_nonzero_cocycle_orbit_bridge_summary,
 )
+from w33_refined_k3_zero_orbit_bridge import (
+    build_refined_k3_zero_orbit_bridge_summary,
+)
+from w33_common_line_exact_image_bridge import (
+    build_common_line_exact_image_bridge_summary,
+)
+from w33_e13_a4_support_stratification_bridge import (
+    build_e13_a4_support_stratification_bridge_summary,
+)
 from w33_e13_rigid_avatar_bridge import (
     build_e13_rigid_avatar_bridge_summary,
 )
@@ -443,6 +452,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     )
     transport_unique_nonzero_cocycle_orbit = (
         build_transport_unique_nonzero_cocycle_orbit_bridge_summary()
+    )
+    refined_k3_zero_orbit = build_refined_k3_zero_orbit_bridge_summary()
+    common_line_exact_image = build_common_line_exact_image_bridge_summary()
+    e13_a4_support_stratification = (
+        build_e13_a4_support_stratification_bridge_summary()
     )
     e13_rigid_avatar = build_e13_rigid_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
@@ -4553,6 +4567,133 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_unique_nonzero_cocycle_orbit[
                     "transport_unique_nonzero_cocycle_orbit_theorem"
                 ]["the_remaining_external_wall_is_existence_of_that_unique_nonzero_orbit_not_selection_among_several_nonzero_types"]
+            ),
+        },
+        "refined_k3_zero_orbit_bridge": {
+            "ordered_filtration_dimensions": (
+                refined_k3_zero_orbit["current_refined_k3_transport_shadow"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "extension_class_zero": (
+                refined_k3_zero_orbit["current_refined_k3_transport_shadow"][
+                    "extension_class_zero"
+                ]
+            ),
+            "first_refinement_scale_factor": (
+                refined_k3_zero_orbit["current_refined_k3_transport_shadow"][
+                    "first_refinement_scale_factor"
+                ]
+            ),
+            "current_refined_k3_shadow_is_split_with_zero_extension_class": (
+                refined_k3_zero_orbit["refined_k3_zero_orbit_theorem"][
+                    "current_refined_k3_shadow_is_split_with_zero_extension_class"
+                ]
+            ),
+            "current_refined_k3_shadow_remains_refinement_rigid_at_first_barycentric_step": (
+                refined_k3_zero_orbit["refined_k3_zero_orbit_theorem"][
+                    "current_refined_k3_shadow_remains_refinement_rigid_at_first_barycentric_step"
+                ]
+            ),
+            "the_unique_nonzero_ternary_orbit_is_not_realized_on_the_current_refined_k3_side": (
+                refined_k3_zero_orbit["refined_k3_zero_orbit_theorem"][
+                    "the_unique_nonzero_ternary_orbit_is_not_realized_on_the_current_refined_k3_side"
+                ]
+            ),
+            "any_realization_of_the_unique_nonzero_orbit_requires_new_external_data_beyond_the_current_refined_k3_bridge": (
+                refined_k3_zero_orbit["refined_k3_zero_orbit_theorem"][
+                    "any_realization_of_the_unique_nonzero_orbit_requires_new_external_data_beyond_the_current_refined_k3_bridge"
+                ]
+            ),
+        },
+        "common_line_exact_image_bridge": {
+            "generator": (
+                common_line_exact_image["internal_common_line"]["generator"]
+            ),
+            "carrier_plane": (
+                common_line_exact_image["forced_external_image_line"][
+                    "carrier_plane"
+                ]
+            ),
+            "line_coefficients": (
+                common_line_exact_image["forced_external_image_line"][
+                    "line_coefficients"
+                ]
+            ),
+            "internal_common_line_is_exactly_the_image_of_the_common_square": (
+                common_line_exact_image["common_line_exact_image_theorem"][
+                    "internal_common_line_is_exactly_the_image_of_the_common_square"
+                ]
+            ),
+            "internal_transport_operator_image_is_the_head_invariant_line": (
+                common_line_exact_image["common_line_exact_image_theorem"][
+                    "internal_transport_operator_image_is_the_head_invariant_line"
+                ]
+            ),
+            "the_head_compatible_u1_line_is_the_exact_bridge_image_of_the_internal_common_line_in_any_exact_completion": (
+                common_line_exact_image["common_line_exact_image_theorem"][
+                    "the_head_compatible_u1_line_is_the_exact_bridge_image_of_the_internal_common_line_in_any_exact_completion"
+                ]
+            ),
+            "what_remains_open_is_existence_of_that_exact_completion_not_choice_of_image_line": (
+                common_line_exact_image["common_line_exact_image_theorem"][
+                    "what_remains_open_is_existence_of_that_exact_completion_not_choice_of_image_line"
+                ]
+            ),
+        },
+        "e13_a4_support_stratification_bridge": {
+            "central_image_line": (
+                e13_a4_support_stratification["support_levels"]["central_image_line"]
+            ),
+            "minimal_a4_carrier_plane": (
+                e13_a4_support_stratification["support_levels"][
+                    "minimal_a4_carrier_plane"
+                ]
+            ),
+            "rigid_transport_avatar_dimensions": (
+                e13_a4_support_stratification["support_levels"][
+                    "rigid_transport_avatar_dimensions"
+                ]
+            ),
+            "broader_local_packet_dominant_piece": (
+                e13_a4_support_stratification["support_levels"][
+                    "broader_local_packet_dominant_piece"
+                ]
+            ),
+            "the_central_image_side_2e13_channel_localizes_to_the_head_line_in_any_exact_completion": (
+                e13_a4_support_stratification[
+                    "e13_a4_support_stratification_theorem"
+                ][
+                    "the_central_image_side_2e13_channel_localizes_to_the_head_line_in_any_exact_completion"
+                ]
+            ),
+            "the_first_family_sensitive_a4_bridge_packet_has_minimal_canonical_plane_carrier_u1": (
+                e13_a4_support_stratification[
+                    "e13_a4_support_stratification_theorem"
+                ][
+                    "the_first_family_sensitive_a4_bridge_packet_has_minimal_canonical_plane_carrier_u1"
+                ]
+            ),
+            "exact_transport_completion_uses_the_full_rigid_avatar_shell_81_to_162_to_81": (
+                e13_a4_support_stratification[
+                    "e13_a4_support_stratification_theorem"
+                ][
+                    "exact_transport_completion_uses_the_full_rigid_avatar_shell_81_to_162_to_81"
+                ]
+            ),
+            "the_broader_five_factor_packet_is_local_selector_context_not_the_minimal_exact_family_carrier": (
+                e13_a4_support_stratification[
+                    "e13_a4_support_stratification_theorem"
+                ][
+                    "the_broader_five_factor_packet_is_local_selector_context_not_the_minimal_exact_family_carrier"
+                ]
+            ),
+            "the_live_2e13_a4_bridge_is_exactly_stratified_as_head_line_inside_u1_inside_avatar": (
+                e13_a4_support_stratification[
+                    "e13_a4_support_stratification_theorem"
+                ][
+                    "the_live_2e13_a4_bridge_is_exactly_stratified_as_head_line_inside_u1_inside_avatar"
+                ]
             ),
         },
         "e13_rigid_avatar_bridge": {

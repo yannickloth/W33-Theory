@@ -689,6 +689,45 @@ def test_synthesis_records_transport_unique_nonzero_cocycle_orbit_bridge() -> No
     assert bridge["the_remaining_external_wall_is_existence_of_that_unique_nonzero_orbit_not_selection_among_several_nonzero_types"] is True
 
 
+def test_synthesis_records_refined_k3_zero_orbit_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["refined_k3_zero_orbit_bridge"]
+
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["extension_class_zero"] is True
+    assert bridge["first_refinement_scale_factor"] == 120
+    assert bridge["current_refined_k3_shadow_is_split_with_zero_extension_class"] is True
+    assert bridge["current_refined_k3_shadow_remains_refinement_rigid_at_first_barycentric_step"] is True
+    assert bridge["the_unique_nonzero_ternary_orbit_is_not_realized_on_the_current_refined_k3_side"] is True
+    assert bridge["any_realization_of_the_unique_nonzero_orbit_requires_new_external_data_beyond_the_current_refined_k3_bridge"] is True
+
+
+def test_synthesis_records_common_line_exact_image_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["common_line_exact_image_bridge"]
+
+    assert bridge["generator"] == [1, 1, 0]
+    assert bridge["carrier_plane"] == "U1"
+    assert bridge["internal_common_line_is_exactly_the_image_of_the_common_square"] is True
+    assert bridge["internal_transport_operator_image_is_the_head_invariant_line"] is True
+    assert bridge["the_head_compatible_u1_line_is_the_exact_bridge_image_of_the_internal_common_line_in_any_exact_completion"] is True
+    assert bridge["what_remains_open_is_existence_of_that_exact_completion_not_choice_of_image_line"] is True
+
+
+def test_synthesis_records_e13_a4_support_stratification_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["e13_a4_support_stratification_bridge"]
+
+    assert bridge["minimal_a4_carrier_plane"] == "U1"
+    assert bridge["rigid_transport_avatar_dimensions"] == [81, 162, 81]
+    assert bridge["broader_local_packet_dominant_piece"] == "U3"
+    assert bridge["the_central_image_side_2e13_channel_localizes_to_the_head_line_in_any_exact_completion"] is True
+    assert bridge["the_first_family_sensitive_a4_bridge_packet_has_minimal_canonical_plane_carrier_u1"] is True
+    assert bridge["exact_transport_completion_uses_the_full_rigid_avatar_shell_81_to_162_to_81"] is True
+    assert bridge["the_broader_five_factor_packet_is_local_selector_context_not_the_minimal_exact_family_carrier"] is True
+    assert bridge["the_live_2e13_a4_bridge_is_exactly_stratified_as_head_line_inside_u1_inside_avatar"] is True
+
+
 def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["e13_rigid_avatar_bridge"]

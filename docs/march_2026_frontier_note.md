@@ -859,6 +859,31 @@ glue orbit.
 The remaining external wall is therefore existence of that unique nonzero orbit,
 not selection among several different nonzero ternary types.
 
+### Refined K3 zero-orbit theorem
+
+The first external existence question is now answered negatively for the current
+refined K3 bridge itself.
+
+- The present refined K3 transport shadow is still split with zero extension
+  class.
+- That split shadow is already refinement-rigid at `sd^1`.
+
+So the current refined K3 side still realizes only the zero ternary glue orbit.
+Any realization of the unique nonzero ternary orbit would require genuinely new
+external data beyond the current refined K3 bridge package.
+
+### Exact image line in any completion
+
+The line-level wall is now sharper too.
+
+- Internally, `span(1,1,0)` is the exact image of the common square `2E13`.
+- The internal transport operator image is the head/invariant line.
+- Any exact external completion has the same operator normal form up to the
+  natural head/tail basis gauge.
+
+So in any exact completion of the current bridge shell, the bridge image of the
+internal common line is forced to be the head-compatible `U1` line.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -877,7 +902,24 @@ The status of the internal central channel is now explicit.
   operator model `I_81 ⊗ [[0,1],[0,0]]` up to basis gauge.
 - And over `F3` that operator data itself now sits in one unique nonzero gauge
   orbit.
-- But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
+- In any exact completion, the image of the internal common line is therefore
+  forced to be the head-compatible `U1` line.
+- But the current split bridge still does not realize the nontrivial rank-`81`
+  glue itself.
+
+### `2E13 / A4` support stratification
+
+The live family/transport bridge now has exact support layers.
+
+- The central image-side `2E13` channel localizes to the head line in any exact
+  completion.
+- The first family-sensitive `A4` bridge packet has minimal canonical plane
+  carrier `U1`.
+- Exact transport completion uses the full rigid avatar shell
+  `81 -> 162 -> 81`.
+
+So the live bridge is no longer ambiguous between line, plane, and avatar
+support. Those three roles are already stratified exactly.
 
 So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
 

@@ -32,9 +32,6 @@ else:
 from w33_transport_full_rank_glue_normal_form_bridge import (
     build_transport_full_rank_glue_normal_form_bridge_summary,
 )
-from w33_transport_ternary_cocycle_bridge import (
-    build_transport_ternary_cocycle_summary,
-)
 
 
 DEFAULT_OUTPUT_PATH = (
@@ -42,11 +39,24 @@ DEFAULT_OUTPUT_PATH = (
 )
 
 
+def _transport_cocycle_summary() -> dict[str, Any]:
+    try:
+        from w33_transport_ternary_cocycle_bridge import (
+            build_transport_ternary_cocycle_summary,
+        )
+    except ModuleNotFoundError as exc:
+        if exc.name != "networkx":
+            raise
+        fallback_path = ROOT / "data" / "w33_transport_ternary_cocycle_bridge_summary.json"
+        return json.loads(fallback_path.read_text(encoding="utf-8"))
+    return build_transport_ternary_cocycle_summary()
+
+
 @lru_cache(maxsize=1)
 def build_transport_internal_operator_normal_form_match_bridge_summary() -> (
     dict[str, Any]
 ):
-    internal = build_transport_ternary_cocycle_summary()
+    internal = _transport_cocycle_summary()
     completion = build_transport_full_rank_glue_normal_form_bridge_summary()
 
     fiber_shift = internal["fiber_nilpotent_operator"]["matrix"]
