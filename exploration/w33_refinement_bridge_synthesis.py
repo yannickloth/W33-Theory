@@ -148,6 +148,12 @@ from w33_transport_rigid_split_avatar_bridge import (
 from w33_transport_avatar_deformation_wall_bridge import (
     build_transport_avatar_deformation_wall_bridge_summary,
 )
+from w33_transport_full_rank_glue_normal_form_bridge import (
+    build_transport_full_rank_glue_normal_form_bridge_summary,
+)
+from w33_e13_rigid_avatar_bridge import (
+    build_e13_rigid_avatar_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -423,6 +429,10 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_avatar_deformation_wall = (
         build_transport_avatar_deformation_wall_bridge_summary()
     )
+    transport_full_rank_glue_normal_form = (
+        build_transport_full_rank_glue_normal_form_bridge_summary()
+    )
+    e13_rigid_avatar = build_e13_rigid_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4405,6 +4415,102 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_avatar_deformation_wall[
                     "transport_avatar_deformation_wall_theorem"
                 ]["the_remaining_transport_wall_is_a_nonsplit_deformation_problem_not_a_search_for_an_unfixed_external_packet"]
+            ),
+        },
+        "transport_full_rank_glue_normal_form_bridge": {
+            "slot_direction": (
+                transport_full_rank_glue_normal_form["fixed_polarized_shell"][
+                    "slot_direction"
+                ]
+            ),
+            "slot_shape": (
+                transport_full_rank_glue_normal_form["fixed_polarized_shell"][
+                    "slot_shape"
+                ]
+            ),
+            "required_rank": (
+                transport_full_rank_glue_normal_form["fixed_polarized_shell"][
+                    "required_rank"
+                ]
+            ),
+            "slot_matrix_normal_form": (
+                transport_full_rank_glue_normal_form[
+                    "canonical_full_rank_completion_normal_form"
+                ]["slot_matrix_normal_form"]
+            ),
+            "polarized_nilpotent_normal_form": (
+                transport_full_rank_glue_normal_form[
+                    "canonical_full_rank_completion_normal_form"
+                ]["polarized_nilpotent_normal_form"]
+            ),
+            "any_exact_completion_in_the_fixed_polarized_81_to_162_to_81_shell_has_full_rank_glue": (
+                transport_full_rank_glue_normal_form[
+                    "transport_full_rank_glue_normal_form_theorem"
+                ]["any_exact_completion_in_the_fixed_polarized_81_to_162_to_81_shell_has_full_rank_glue"]
+            ),
+            "up_to_independent_head_tail_basis_change_any_full_rank_glue_completion_has_identity_slot_matrix": (
+                transport_full_rank_glue_normal_form[
+                    "transport_full_rank_glue_normal_form_theorem"
+                ]["up_to_independent_head_tail_basis_change_any_full_rank_glue_completion_has_identity_slot_matrix"]
+            ),
+            "up_to_polarized_isomorphism_any_exact_completion_has_canonical_jordan_normal_form_two_power_81": (
+                transport_full_rank_glue_normal_form[
+                    "transport_full_rank_glue_normal_form_theorem"
+                ]["up_to_polarized_isomorphism_any_exact_completion_has_canonical_jordan_normal_form_two_power_81"]
+            ),
+            "the_remaining_transport_wall_is_existence_of_a_nonsplit_completion_not_glue_shape": (
+                transport_full_rank_glue_normal_form[
+                    "transport_full_rank_glue_normal_form_theorem"
+                ]["the_remaining_transport_wall_is_existence_of_a_nonsplit_completion_not_glue_shape"]
+            ),
+        },
+        "e13_rigid_avatar_bridge": {
+            "common_square": (
+                e13_rigid_avatar["internal_central_channel"]["common_square"]
+            ),
+            "common_line_generator": (
+                e13_rigid_avatar["internal_central_channel"]["common_line_generator"]
+            ),
+            "head_line": (
+                e13_rigid_avatar["current_external_avatar_realization"]["head_line"]
+            ),
+            "tail_line": (
+                e13_rigid_avatar["current_external_avatar_realization"]["tail_line"]
+            ),
+            "ordered_filtration_dimensions": (
+                e13_rigid_avatar["current_external_avatar_realization"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "external_glue_state": (
+                e13_rigid_avatar["current_external_avatar_realization"][
+                    "external_glue_state"
+                ]
+            ),
+            "internal_central_2e13_channel_is_exact": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "internal_central_2e13_channel_is_exact"
+                ]
+            ),
+            "the_unique_bridge_compatible_external_image_of_the_internal_common_line_is_the_head_line_of_the_rigid_avatar": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "the_unique_bridge_compatible_external_image_of_the_internal_common_line_is_the_head_line_of_the_rigid_avatar"
+                ]
+            ),
+            "the_current_external_realization_of_the_central_channel_factors_through_the_canonical_rigid_split_avatar": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "the_current_external_realization_of_the_central_channel_factors_through_the_canonical_rigid_split_avatar"
+                ]
+            ),
+            "exact_external_realization_of_the_central_2e13_channel_would_require_a_nonsplit_deformation_of_that_avatar": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "exact_external_realization_of_the_central_2e13_channel_would_require_a_nonsplit_deformation_of_that_avatar"
+                ]
+            ),
+            "any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81": (
+                e13_rigid_avatar["e13_rigid_avatar_theorem"][
+                    "any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81"
+                ]
             ),
         },
         "global_local_carrier_split_bridge": {

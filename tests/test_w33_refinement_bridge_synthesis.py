@@ -647,6 +647,38 @@ def test_synthesis_records_transport_avatar_deformation_wall_bridge() -> None:
     assert bridge["the_remaining_transport_wall_is_a_nonsplit_deformation_problem_not_a_search_for_an_unfixed_external_packet"] is True
 
 
+def test_synthesis_records_transport_full_rank_glue_normal_form_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_full_rank_glue_normal_form_bridge"]
+
+    assert bridge["slot_direction"] == "tail_to_head"
+    assert bridge["slot_shape"] == [81, 81]
+    assert bridge["required_rank"] == 81
+    assert bridge["slot_matrix_normal_form"] == "I_81"
+    assert bridge["polarized_nilpotent_normal_form"] == "J2^81"
+    assert bridge["any_exact_completion_in_the_fixed_polarized_81_to_162_to_81_shell_has_full_rank_glue"] is True
+    assert bridge["up_to_independent_head_tail_basis_change_any_full_rank_glue_completion_has_identity_slot_matrix"] is True
+    assert bridge["up_to_polarized_isomorphism_any_exact_completion_has_canonical_jordan_normal_form_two_power_81"] is True
+    assert bridge["the_remaining_transport_wall_is_existence_of_a_nonsplit_completion_not_glue_shape"] is True
+
+
+def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["e13_rigid_avatar_bridge"]
+
+    assert bridge["common_square"] == [[0, 0, 2], [0, 0, 0], [0, 0, 0]]
+    assert bridge["common_line_generator"] == [1, 1, 0]
+    assert bridge["head_line"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["tail_line"] == [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0]
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["external_glue_state"] == "zero_by_splitness"
+    assert bridge["internal_central_2e13_channel_is_exact"] is True
+    assert bridge["the_unique_bridge_compatible_external_image_of_the_internal_common_line_is_the_head_line_of_the_rigid_avatar"] is True
+    assert bridge["the_current_external_realization_of_the_central_channel_factors_through_the_canonical_rigid_split_avatar"] is True
+    assert bridge["exact_external_realization_of_the_central_2e13_channel_would_require_a_nonsplit_deformation_of_that_avatar"] is True
+    assert bridge["any_exact_completion_of_that_avatar_has_the_unique_full_rank_glue_normal_form_two_power_81"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]

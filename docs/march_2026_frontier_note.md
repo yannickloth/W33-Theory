@@ -811,6 +811,25 @@ So the remaining transport wall is now deformation-theoretic:
 That is narrower than “search for the right external packet.” It is one exact
 non-split deformation problem.
 
+### Full-rank glue normal form
+
+That deformation wall is now narrower than an arbitrary matrix problem.
+
+- The fixed polarized shell is `81 -> 162 -> 81`.
+- Exact completion requires a tail-to-head glue slot of shape `81 x 81`.
+- The required rank is exactly `81`.
+
+So any exact completion glue is automatically an isomorphism from tail to head.
+Up to independent basis change on the fixed head and tail shells, every such
+glue block is equivalent to `I_81`.
+
+Equivalently, the completed polarized nilpotent has one canonical normal form:
+
+- `J2^81`.
+
+So the remaining transport wall is now existence of a non-split completion, not
+glue shape.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -821,6 +840,10 @@ The status of the internal central channel is now explicit.
 - The full current external packet also picks a canonical dominant isotropic-line candidate inside `U1`, ordered by the positive/negative filtered-shadow basis.
 - And on the transport side it now reaches the canonical polarized Jordan shadow
   of the transport packet.
+- More sharply, the current external realization of that central channel now
+  factors through the canonical rigid split transport avatar.
+- And any exact completion would have to pass through the same unique full-rank
+  glue normal form `J2^81`.
 - But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
 
 So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
