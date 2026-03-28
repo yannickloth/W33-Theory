@@ -792,6 +792,25 @@ It fixes one canonical rigid split avatar of the internal packet:
 This is still not the internal non-split transport object, but it is now the
 exact canonical split object that the present K3 bridge realizes.
 
+### Transport deformation wall
+
+That sharpens the remaining transport frontier one step further.
+
+- The bridge no longer needs a new external transport object.
+- It already fixes one canonical rigid split avatar.
+- The only missing datum is a nonzero tail-to-head `81 x 81` square-zero glue
+  block on that avatar.
+
+So the remaining transport wall is now deformation-theoretic:
+
+- preserve the fixed head line;
+- preserve the fixed tail line;
+- preserve the ordered dimensions `81 -> 162 -> 81`;
+- replace zero glue by nonzero glue.
+
+That is narrower than “search for the right external packet.” It is one exact
+non-split deformation problem.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.

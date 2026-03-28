@@ -145,6 +145,9 @@ from w33_external_glue_zero_forcing_bridge import (
 from w33_transport_rigid_split_avatar_bridge import (
     build_transport_rigid_split_avatar_bridge_summary,
 )
+from w33_transport_avatar_deformation_wall_bridge import (
+    build_transport_avatar_deformation_wall_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -417,6 +420,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_single_glue_slot = build_transport_single_glue_slot_bridge_summary()
     external_glue_zero_forcing = build_external_glue_zero_forcing_bridge_summary()
     transport_rigid_split_avatar = build_transport_rigid_split_avatar_bridge_summary()
+    transport_avatar_deformation_wall = (
+        build_transport_avatar_deformation_wall_bridge_summary()
+    )
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
     u1_filtered_shadow_line_order = (
@@ -4337,6 +4343,68 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 transport_rigid_split_avatar["transport_rigid_split_avatar_theorem"][
                     "that_avatar_is_still_not_the_internal_nonsplit_transport_object"
                 ]
+            ),
+        },
+        "transport_avatar_deformation_wall_bridge": {
+            "ordered_filtration_dimensions": (
+                transport_avatar_deformation_wall["canonical_split_avatar"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "glue_direction": (
+                transport_avatar_deformation_wall["canonical_split_avatar"][
+                    "glue_direction"
+                ]
+            ),
+            "external_glue_rank": (
+                transport_avatar_deformation_wall["canonical_split_avatar"][
+                    "external_glue_rank"
+                ]
+            ),
+            "external_glue_state": (
+                transport_avatar_deformation_wall["canonical_split_avatar"][
+                    "external_glue_state"
+                ]
+            ),
+            "slot_direction": (
+                transport_avatar_deformation_wall["remaining_completion_datum"][
+                    "slot_direction"
+                ]
+            ),
+            "slot_shape": (
+                transport_avatar_deformation_wall["remaining_completion_datum"][
+                    "slot_shape"
+                ]
+            ),
+            "required_internal_rank": (
+                transport_avatar_deformation_wall["remaining_completion_datum"][
+                    "required_internal_rank"
+                ]
+            ),
+            "required_internal_square_zero": (
+                transport_avatar_deformation_wall["remaining_completion_datum"][
+                    "required_internal_square_zero"
+                ]
+            ),
+            "current_bridge_has_already_fixed_one_canonical_rigid_split_transport_avatar": (
+                transport_avatar_deformation_wall[
+                    "transport_avatar_deformation_wall_theorem"
+                ]["current_bridge_has_already_fixed_one_canonical_rigid_split_transport_avatar"]
+            ),
+            "exact_transport_identity_would_require_adjoining_a_nonzero_tail_to_head_81_by_81_glue_operator_to_that_avatar": (
+                transport_avatar_deformation_wall[
+                    "transport_avatar_deformation_wall_theorem"
+                ]["exact_transport_identity_would_require_adjoining_a_nonzero_tail_to_head_81_by_81_glue_operator_to_that_avatar"]
+            ),
+            "any_exact_completion_must_preserve_the_fixed_head_line_tail_line_and_ordered_dimensions_of_the_avatar": (
+                transport_avatar_deformation_wall[
+                    "transport_avatar_deformation_wall_theorem"
+                ]["any_exact_completion_must_preserve_the_fixed_head_line_tail_line_and_ordered_dimensions_of_the_avatar"]
+            ),
+            "the_remaining_transport_wall_is_a_nonsplit_deformation_problem_not_a_search_for_an_unfixed_external_packet": (
+                transport_avatar_deformation_wall[
+                    "transport_avatar_deformation_wall_theorem"
+                ]["the_remaining_transport_wall_is_a_nonsplit_deformation_problem_not_a_search_for_an_unfixed_external_packet"]
             ),
         },
         "global_local_carrier_split_bridge": {
