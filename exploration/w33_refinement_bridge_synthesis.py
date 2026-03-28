@@ -166,6 +166,12 @@ from w33_common_line_exact_image_bridge import (
 from w33_e13_a4_support_stratification_bridge import (
     build_e13_a4_support_stratification_bridge_summary,
 )
+from w33_formal_external_completion_avatar_bridge import (
+    build_formal_external_completion_avatar_bridge_summary,
+)
+from w33_minimal_external_completion_data_bridge import (
+    build_minimal_external_completion_data_bridge_summary,
+)
 from w33_e13_rigid_avatar_bridge import (
     build_e13_rigid_avatar_bridge_summary,
 )
@@ -186,6 +192,9 @@ from w33_u1_filtered_shadow_line_order_bridge import (
 )
 from w33_u1_head_compatible_line_bridge import (
     build_u1_head_compatible_line_bridge_summary,
+)
+from w33_yukawa_transport_coupling_hierarchy_bridge import (
+    build_yukawa_transport_coupling_hierarchy_bridge_summary,
 )
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
@@ -457,6 +466,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     common_line_exact_image = build_common_line_exact_image_bridge_summary()
     e13_a4_support_stratification = (
         build_e13_a4_support_stratification_bridge_summary()
+    )
+    minimal_external_completion_data = (
+        build_minimal_external_completion_data_bridge_summary()
+    )
+    formal_external_completion_avatar = (
+        build_formal_external_completion_avatar_bridge_summary()
+    )
+    yukawa_transport_coupling_hierarchy = (
+        build_yukawa_transport_coupling_hierarchy_bridge_summary()
     )
     e13_rigid_avatar = build_e13_rigid_avatar_bridge_summary()
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
@@ -4693,6 +4711,129 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "e13_a4_support_stratification_theorem"
                 ][
                     "the_live_2e13_a4_bridge_is_exactly_stratified_as_head_line_inside_u1_inside_avatar"
+                ]
+            ),
+        },
+        "minimal_external_completion_data_bridge": {
+            "ordered_filtration_dimensions": (
+                minimal_external_completion_data["locked_external_transport_shell"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "slot_direction": (
+                minimal_external_completion_data["locked_external_transport_shell"][
+                    "slot_direction"
+                ]
+            ),
+            "slot_shape": (
+                minimal_external_completion_data["locked_external_transport_shell"][
+                    "slot_shape"
+                ]
+            ),
+            "current_external_slot_state": (
+                minimal_external_completion_data["locked_external_transport_shell"][
+                    "current_external_slot_state"
+                ]
+            ),
+            "slot_matrix_normal_form": (
+                minimal_external_completion_data["minimal_new_external_data"][
+                    "slot_matrix_normal_form"
+                ]
+            ),
+            "polarized_nilpotent_normal_form": (
+                minimal_external_completion_data["minimal_new_external_data"][
+                    "polarized_nilpotent_normal_form"
+                ]
+            ),
+            "the_minimal_new_external_data_is_exactly_replacing_zero_by_the_unique_nonzero_orbit_in_the_existing_slot": (
+                minimal_external_completion_data[
+                    "minimal_external_completion_data_theorem"
+                ][
+                    "the_minimal_new_external_data_is_exactly_replacing_zero_by_the_unique_nonzero_orbit_in_the_existing_slot"
+                ]
+            ),
+            "no_additional_line_plane_or_dimension_choice_remains_after_the_current_bridge_reductions": (
+                minimal_external_completion_data[
+                    "minimal_external_completion_data_theorem"
+                ][
+                    "no_additional_line_plane_or_dimension_choice_remains_after_the_current_bridge_reductions"
+                ]
+            ),
+        },
+        "formal_external_completion_avatar_bridge": {
+            "head_line": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar"
+                ]["head_line"]
+            ),
+            "carrier_plane": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar"
+                ]["carrier_plane"]
+            ),
+            "ordered_filtration_dimensions": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar"
+                ]["ordered_filtration_dimensions"]
+            ),
+            "slot_matrix_normal_form": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar"
+                ]["slot_matrix_normal_form"]
+            ),
+            "polarized_nilpotent_normal_form": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar"
+                ]["polarized_nilpotent_normal_form"]
+            ),
+            "the_forced_image_line_and_the_nonzero_glue_live_on_one_common_formal_external_object": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar_theorem"
+                ][
+                    "the_forced_image_line_and_the_nonzero_glue_live_on_one_common_formal_external_object"
+                ]
+            ),
+            "the_missing_piece_is_now_current_k3_realization_not_common_object_design": (
+                formal_external_completion_avatar[
+                    "formal_external_completion_avatar_theorem"
+                ][
+                    "the_missing_piece_is_now_current_k3_realization_not_common_object_design"
+                ]
+            ),
+        },
+        "yukawa_transport_coupling_hierarchy_bridge": {
+            "line_level": (
+                yukawa_transport_coupling_hierarchy["coupling_levels"][
+                    "line_level"
+                ]
+            ),
+            "plane_level": (
+                yukawa_transport_coupling_hierarchy["coupling_levels"][
+                    "plane_level"
+                ]
+            ),
+            "avatar_level": (
+                yukawa_transport_coupling_hierarchy["coupling_levels"][
+                    "avatar_level"
+                ]
+            ),
+            "broader_local_context": (
+                yukawa_transport_coupling_hierarchy["coupling_levels"][
+                    "broader_local_context"
+                ]
+            ),
+            "the_live_unresolved_family_closure_is_support_filtered_as_line_inside_plane_inside_avatar": (
+                yukawa_transport_coupling_hierarchy[
+                    "yukawa_transport_coupling_hierarchy_theorem"
+                ][
+                    "the_live_unresolved_family_closure_is_support_filtered_as_line_inside_plane_inside_avatar"
+                ]
+            ),
+            "the_unresolved_family_packet_does_not_reduce_to_u3_even_though_u3_is_locally_dominant": (
+                yukawa_transport_coupling_hierarchy[
+                    "yukawa_transport_coupling_hierarchy_theorem"
+                ][
+                    "the_unresolved_family_packet_does_not_reduce_to_u3_even_though_u3_is_locally_dominant"
                 ]
             ),
         },

@@ -728,6 +728,55 @@ def test_synthesis_records_e13_a4_support_stratification_bridge() -> None:
     assert bridge["the_live_2e13_a4_bridge_is_exactly_stratified_as_head_line_inside_u1_inside_avatar"] is True
 
 
+def test_synthesis_records_minimal_external_completion_data_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["minimal_external_completion_data_bridge"]
+
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["slot_direction"] == "tail_to_head"
+    assert bridge["slot_shape"] == [81, 81]
+    assert bridge["current_external_slot_state"] == "zero_by_splitness"
+    assert bridge["slot_matrix_normal_form"] == "I_81"
+    assert bridge["polarized_nilpotent_normal_form"] == "J2^81"
+    assert bridge[
+        "the_minimal_new_external_data_is_exactly_replacing_zero_by_the_unique_nonzero_orbit_in_the_existing_slot"
+    ] is True
+    assert bridge[
+        "no_additional_line_plane_or_dimension_choice_remains_after_the_current_bridge_reductions"
+    ] is True
+
+
+def test_synthesis_records_formal_external_completion_avatar_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["formal_external_completion_avatar_bridge"]
+
+    assert bridge["carrier_plane"] == "U1"
+    assert bridge["ordered_filtration_dimensions"] == [81, 162, 81]
+    assert bridge["slot_matrix_normal_form"] == "I_81"
+    assert bridge["polarized_nilpotent_normal_form"] == "J2^81"
+    assert bridge[
+        "the_forced_image_line_and_the_nonzero_glue_live_on_one_common_formal_external_object"
+    ] is True
+    assert bridge[
+        "the_missing_piece_is_now_current_k3_realization_not_common_object_design"
+    ] is True
+
+
+def test_synthesis_records_yukawa_transport_coupling_hierarchy_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["yukawa_transport_coupling_hierarchy_bridge"]
+
+    assert bridge["plane_level"] == "U1"
+    assert bridge["avatar_level"] == [81, 162, 81]
+    assert bridge["broader_local_context"] == "U3"
+    assert bridge[
+        "the_live_unresolved_family_closure_is_support_filtered_as_line_inside_plane_inside_avatar"
+    ] is True
+    assert bridge[
+        "the_unresolved_family_packet_does_not_reduce_to_u3_even_though_u3_is_locally_dominant"
+    ] is True
+
+
 def test_synthesis_records_e13_rigid_avatar_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["e13_rigid_avatar_bridge"]

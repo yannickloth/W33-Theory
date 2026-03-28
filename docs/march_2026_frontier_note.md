@@ -884,6 +884,32 @@ The line-level wall is now sharper too.
 So in any exact completion of the current bridge shell, the bridge image of the
 internal common line is forced to be the head-compatible `U1` line.
 
+### Minimal external completion data
+
+The next completion datum is now exact too.
+
+- The shell `81 -> 162 -> 81` is already fixed.
+- The head-compatible and tail lines are already fixed.
+- The tail-to-head glue slot is already fixed.
+- The only nonzero ternary glue orbit is already fixed up to the natural
+  head/tail gauge.
+
+So the minimal new external data is exactly one replacement:
+the present zero slot must be replaced by the unique nonzero orbit in that
+already-fixed `81x81` tail-to-head slot.
+
+### Formal external completion avatar
+
+That immediately gives a minimal formal completion object.
+
+- It carries the forced head-compatible image line.
+- It sits inside the canonical plane `U1`.
+- It keeps the ordered shell `81 -> 162 -> 81`.
+- And it uses the unique nonzero completion normal form `J2^81`.
+
+So the missing piece is no longer common-object design. The missing piece is
+realization of that formal completion by actual K3-side data.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
@@ -920,6 +946,22 @@ The live family/transport bridge now has exact support layers.
 
 So the live bridge is no longer ambiguous between line, plane, and avatar
 support. Those three roles are already stratified exactly.
+
+### Yukawa / transport coupling hierarchy
+
+The support story is now better than a static stratification.
+
+- The central `2E13` image channel is line-level.
+- The first family-sensitive `A4` bridge packet is plane-level on `U1`.
+- The non-split transport identity is avatar-level on the formal completion
+  `81 -> 162 -> 81`.
+- The broader five-factor packet and the locally dominant `U3` piece remain
+  real, but they are context rather than the minimal exact carrier.
+
+So the unresolved family/transport closure is now best read as a support
+filtration:
+
+`head line  ⊂  U1  ⊂  formal completed avatar`.
 
 So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the polarized Jordan shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
 
