@@ -154,6 +154,9 @@ from w33_u1_selector_line_selection_bridge import (
 from w33_u1_filtered_shadow_line_order_bridge import (
     build_u1_filtered_shadow_line_order_bridge_summary,
 )
+from w33_u1_head_compatible_line_bridge import (
+    build_u1_head_compatible_line_bridge_summary,
+)
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
 from w33_fano_square_tomotope_bridge import build_fano_square_tomotope_summary
@@ -411,6 +414,7 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     u1_filtered_shadow_line_order = (
         build_u1_filtered_shadow_line_order_bridge_summary()
     )
+    u1_head_compatible_line = build_u1_head_compatible_line_bridge_summary()
     family_flag_visibility_obstruction = (
         build_family_flag_visibility_obstruction_bridge_summary()
     )
@@ -4387,6 +4391,61 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]
             ),
         },
+        "u1_head_compatible_line_bridge": {
+            "internal_common_line_generator": (
+                u1_head_compatible_line["internal_common_line"]["generator"]
+            ),
+            "internal_common_line_role": (
+                u1_head_compatible_line["internal_common_line"]["role"]
+            ),
+            "transport_head_type": (
+                u1_head_compatible_line["internal_transport_polarity"]["head_type"]
+            ),
+            "transport_tail_type": (
+                u1_head_compatible_line["internal_transport_polarity"]["tail_type"]
+            ),
+            "transport_glue_direction": (
+                u1_head_compatible_line["internal_transport_polarity"]["glue_direction"]
+            ),
+            "head_compatible_line_candidate": (
+                u1_head_compatible_line["external_u1_line_roles"][
+                    "head_compatible_line_candidate"
+                ]
+            ),
+            "tail_line_candidate": (
+                u1_head_compatible_line["external_u1_line_roles"]["tail_line_candidate"]
+            ),
+            "internal_common_line_is_exact_image_side_data": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "internal_common_line_is_exact_image_side_data"
+                ]
+            ),
+            "internal_transport_head_is_the_image_side_of_the_current_polarity_dictionary": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "internal_transport_head_is_the_image_side_of_the_current_polarity_dictionary"
+                ]
+            ),
+            "external_bridge_fixes_head_biased_and_tail_biased_u1_lines": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "external_bridge_fixes_head_biased_and_tail_biased_u1_lines"
+                ]
+            ),
+            "the_sign_ordered_rigid_u1_line_is_exactly_the_head_biased_line": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "the_sign_ordered_rigid_u1_line_is_exactly_the_head_biased_line"
+                ]
+            ),
+            "the_tail_biased_u1_line_is_not_compatible_with_an_image_side_realization_of_the_internal_common_line": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "the_tail_biased_u1_line_is_not_compatible_with_an_image_side_realization_of_the_internal_common_line"
+                ]
+            ),
+            "the_current_external_line_ambiguity_collapses_to_one_head_compatible_candidate": (
+                u1_head_compatible_line["u1_head_compatible_line_theorem"][
+                    "the_current_external_line_ambiguity_collapses_to_one_head_compatible_candidate"
+                ]
+            ),
+        },
         "family_flag_visibility_obstruction_bridge": {
             "internal_common_line_generator": (
                 family_flag_visibility_obstruction["internal_common_line_generator"]
@@ -4402,6 +4461,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             ),
             "external_sign_ordered_line_candidate": (
                 family_flag_visibility_obstruction["external_sign_ordered_line_candidate"]
+            ),
+            "external_head_compatible_line_candidate": (
+                family_flag_visibility_obstruction["external_head_compatible_line_candidate"]
             ),
             "external_semisimplified_shadow": (
                 family_flag_visibility_obstruction["external_semisimplified_shadow"]
@@ -4435,6 +4497,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
                     "filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate"
+                ]
+            ),
+            "transport_polarity_collapses_external_line_ambiguity_to_one_head_compatible_candidate": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "transport_polarity_collapses_external_line_ambiguity_to_one_head_compatible_candidate"
                 ]
             ),
             "external_side_still_matches_the_graded_shadow_of_the_transport_162_sector": (
@@ -4482,6 +4549,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "external_sign_ordered_line_candidate": (
                 e13_visibility_obstruction["external_sign_ordered_line_candidate"]
             ),
+            "external_head_compatible_line_candidate": (
+                e13_visibility_obstruction["external_head_compatible_line_candidate"]
+            ),
             "external_graded_shadow": (
                 e13_visibility_obstruction["external_graded_shadow"]
             ),
@@ -4514,6 +4584,11 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
                     "current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis"
+                ]
+            ),
+            "current_external_bridge_collapses_line_ambiguity_to_a_head_compatible_e13_candidate": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_external_bridge_collapses_line_ambiguity_to_a_head_compatible_e13_candidate"
                 ]
             ),
             "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported": (

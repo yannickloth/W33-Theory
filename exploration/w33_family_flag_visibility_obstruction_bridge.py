@@ -55,6 +55,9 @@ from w33_u1_isotropic_line_obstruction_bridge import (
 from w33_u1_selector_line_selection_bridge import (
     build_u1_selector_line_selection_bridge_summary,
 )
+from w33_u1_head_compatible_line_bridge import (
+    build_u1_head_compatible_line_bridge_summary,
+)
 from w33_yukawa_generation_flag_bridge import build_yukawa_generation_flag_summary
 
 
@@ -70,6 +73,7 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
     u1_obstruction = build_u1_isotropic_line_obstruction_bridge_summary()
     u1_selection = build_u1_selector_line_selection_bridge_summary()
     u1_sign_order = build_u1_filtered_shadow_line_order_bridge_summary()
+    u1_head_compatible = build_u1_head_compatible_line_bridge_summary()
     semisimple = build_transport_semisimplification_shadow_bridge_summary()
     filtered = build_transport_filtered_shadow_bridge_summary()
     nilpotent = build_transport_nilpotent_glue_obstruction_bridge_summary()
@@ -84,6 +88,9 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
         "external_sign_ordered_line_candidate": u1_sign_order[
             "dominant_isotropic_line_coefficients"
         ],
+        "external_head_compatible_line_candidate": u1_head_compatible[
+            "external_u1_line_roles"
+        ]["head_compatible_line_candidate"],
         "external_semisimplified_shadow": semisimple["external_split_shadow"],
         "external_filtered_split_shadow": filtered["external_canonical_split_filtration"][
             "ordered_filtration_dimensions"
@@ -125,6 +132,11 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate": (
                 u1_sign_order["u1_filtered_shadow_line_order_theorem"][
                     "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"
+                ]
+            ),
+            "transport_polarity_collapses_external_line_ambiguity_to_one_head_compatible_candidate": (
+                u1_head_compatible["u1_head_compatible_line_theorem"][
+                    "the_current_external_line_ambiguity_collapses_to_one_head_compatible_candidate"
                 ]
             ),
             "external_side_still_matches_the_graded_shadow_of_the_transport_162_sector": (
@@ -177,15 +189,18 @@ def build_family_flag_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "carrier theorem. It fixes a canonical carrier plane U1, the full "
             "external packet selects a canonical dominant isotropic-line "
             "candidate inside U1, that line candidate is canonically ordered by "
-            "the positive/negative filtered-shadow basis, and the transport "
-            "comparison now fixes the polarized Jordan shadow of the internal "
-            "transport packet: a canonical head/tail split shadow 81 -> 162 -> "
-            "81 together with head-biased/tail-biased external lines. What is "
-            "still missing is an exact identification of that external line "
+            "the positive/negative filtered-shadow basis, and the current "
+            "transport polarity already collapses the external line ambiguity "
+            "to one head-compatible candidate. The transport comparison now "
+            "also fixes the polarized Jordan shadow of the internal packet: a "
+            "canonical head/tail split shadow 81 -> 162 -> 81 together with "
+            "head-biased/tail-biased external lines. What is still missing is "
+            "an exact identification of that external head-compatible line "
             "candidate with the internal line span(1,1,0), and the nontrivial "
             "rank-81 nilpotent glue operator carried by the internal transport "
-            "162-sector. So the present exact bridge reaches plane, line "
-            "candidate, and polarized Jordan shadow, but not the full "
+            "162-sector. So the present exact bridge reaches plane, one "
+            "head-compatible line candidate, and polarized Jordan shadow, but "
+            "not the full "
             "extension object."
         ),
     }

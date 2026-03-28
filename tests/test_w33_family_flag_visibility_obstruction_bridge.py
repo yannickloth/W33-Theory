@@ -13,6 +13,7 @@ def test_family_flag_visibility_obstruction_bridge_summary() -> None:
     assert summary["external_canonical_carrier_plane"] == "U1"
     assert summary["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert summary["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert summary["external_head_compatible_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert summary["external_semisimplified_shadow"] == [81, 81]
     assert summary["external_filtered_split_shadow"] == [81, 162, 81]
     assert summary["external_nilpotent_glue_visibility"] == {
@@ -25,6 +26,7 @@ def test_family_flag_visibility_obstruction_bridge_summary() -> None:
     assert theorem["carrier_metric_alone_is_line_blind_inside_u1"] is True
     assert theorem["full_external_packet_selects_a_canonical_line_candidate_inside_u1"] is True
     assert theorem["filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate"] is True
+    assert theorem["transport_polarity_collapses_external_line_ambiguity_to_one_head_compatible_candidate"] is True
     assert theorem["external_side_still_matches_the_graded_shadow_of_the_transport_162_sector"] is True
     assert theorem["external_side_matches_a_canonical_filtered_split_shadow_of_the_transport_162_sector"] is True
     assert theorem["external_side_does_not_yet_realize_the_internal_rank_81_nilpotent_glue"] is True

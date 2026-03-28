@@ -13,6 +13,7 @@ def test_e13_visibility_obstruction_bridge_summary() -> None:
     assert summary["external_canonical_carrier_plane"] == "U1"
     assert summary["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert summary["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert summary["external_head_compatible_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert summary["external_graded_shadow"] == [81, 81]
     assert summary["external_filtered_shadow"] == [81, 162, 81]
     assert summary["external_nilpotent_glue_visibility"] == {
@@ -25,6 +26,7 @@ def test_e13_visibility_obstruction_bridge_summary() -> None:
     assert theorem["current_external_bridge_fixes_the_canonical_u1_carrier_plane"] is True
     assert theorem["current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"] is True
     assert theorem["current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis"] is True
+    assert theorem["current_external_bridge_collapses_line_ambiguity_to_a_head_compatible_e13_candidate"] is True
     assert theorem["exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"] is True
     assert theorem["current_external_bridge_matches_a_canonical_filtered_split_shadow_of_the_transport_channel"] is True
     assert theorem["current_external_bridge_does_not_yet_realize_the_rank_81_nilpotent_glue_of_the_transport_channel"] is True

@@ -649,6 +649,24 @@ def test_synthesis_records_u1_filtered_shadow_line_order_bridge() -> None:
     assert bridge["current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"] is True
 
 
+def test_synthesis_records_u1_head_compatible_line_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["u1_head_compatible_line_bridge"]
+    assert bridge["internal_common_line_generator"] == [1, 1, 0]
+    assert bridge["internal_common_line_role"] == "image_of_common_square"
+    assert bridge["transport_head_type"] == "invariant"
+    assert bridge["transport_tail_type"] == "sign"
+    assert bridge["transport_glue_direction"] == "tail_to_head"
+    assert bridge["head_compatible_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["tail_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0]
+    assert bridge["internal_common_line_is_exact_image_side_data"] is True
+    assert bridge["internal_transport_head_is_the_image_side_of_the_current_polarity_dictionary"] is True
+    assert bridge["external_bridge_fixes_head_biased_and_tail_biased_u1_lines"] is True
+    assert bridge["the_sign_ordered_rigid_u1_line_is_exactly_the_head_biased_line"] is True
+    assert bridge["the_tail_biased_u1_line_is_not_compatible_with_an_image_side_realization_of_the_internal_common_line"] is True
+    assert bridge["the_current_external_line_ambiguity_collapses_to_one_head_compatible_candidate"] is True
+
+
 def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["family_flag_visibility_obstruction_bridge"]
@@ -657,6 +675,7 @@ def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     assert bridge["external_canonical_carrier_plane"] == "U1"
     assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["external_head_compatible_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_semisimplified_shadow"] == [81, 81]
     assert bridge["external_filtered_split_shadow"] == [81, 162, 81]
     assert bridge["external_nilpotent_glue_visibility"] == {
@@ -668,6 +687,7 @@ def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     assert bridge["carrier_metric_alone_is_line_blind_inside_u1"] is True
     assert bridge["full_external_packet_selects_a_canonical_line_candidate_inside_u1"] is True
     assert bridge["filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate"] is True
+    assert bridge["transport_polarity_collapses_external_line_ambiguity_to_one_head_compatible_candidate"] is True
     assert bridge["external_side_still_matches_the_graded_shadow_of_the_transport_162_sector"] is True
     assert bridge["external_side_matches_a_canonical_filtered_split_shadow_of_the_transport_162_sector"] is True
     assert bridge["external_side_does_not_yet_realize_the_internal_rank_81_nilpotent_glue"] is True
@@ -684,6 +704,7 @@ def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
     assert bridge["external_canonical_carrier_plane"] == "U1"
     assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["external_head_compatible_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_graded_shadow"] == [81, 81]
     assert bridge["external_filtered_shadow"] == [81, 162, 81]
     assert bridge["external_nilpotent_glue_visibility"] == {
@@ -695,6 +716,7 @@ def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
     assert bridge["current_external_bridge_fixes_the_canonical_u1_carrier_plane"] is True
     assert bridge["current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"] is True
     assert bridge["current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis"] is True
+    assert bridge["current_external_bridge_collapses_line_ambiguity_to_a_head_compatible_e13_candidate"] is True
     assert bridge["exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"] is True
     assert bridge["current_external_bridge_matches_a_canonical_filtered_split_shadow_of_the_transport_channel"] is True
     assert bridge["current_external_bridge_does_not_yet_realize_the_rank_81_nilpotent_glue_of_the_transport_channel"] is True

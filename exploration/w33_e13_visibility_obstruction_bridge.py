@@ -50,6 +50,9 @@ from w33_transport_jordan_shadow_bridge import (
 from w33_u1_filtered_shadow_line_order_bridge import (
     build_u1_filtered_shadow_line_order_bridge_summary,
 )
+from w33_u1_head_compatible_line_bridge import (
+    build_u1_head_compatible_line_bridge_summary,
+)
 from w33_u1_selector_line_selection_bridge import (
     build_u1_selector_line_selection_bridge_summary,
 )
@@ -68,6 +71,7 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
     carrier = build_u1_family_a4_carrier_bridge_summary()
     line_selection = build_u1_selector_line_selection_bridge_summary()
     line_order = build_u1_filtered_shadow_line_order_bridge_summary()
+    head_compatible = build_u1_head_compatible_line_bridge_summary()
     obstruction = build_family_flag_visibility_obstruction_bridge_summary()
     filtered = build_transport_filtered_shadow_bridge_summary()
     nilpotent = build_transport_nilpotent_glue_obstruction_bridge_summary()
@@ -80,6 +84,9 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
         "external_canonical_carrier_plane": carrier["canonical_external_carrier"]["plane_name"],
         "external_canonical_line_candidate": line_selection["dominant_isotropic_line_coefficients"],
         "external_sign_ordered_line_candidate": line_order["dominant_isotropic_line_coefficients"],
+        "external_head_compatible_line_candidate": head_compatible["external_u1_line_roles"][
+            "head_compatible_line_candidate"
+        ],
         "external_graded_shadow": obstruction["external_semisimplified_shadow"],
         "external_filtered_shadow": filtered["external_canonical_split_filtration"][
             "ordered_filtration_dimensions"
@@ -111,6 +118,11 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis": (
                 line_order["u1_filtered_shadow_line_order_theorem"][
                     "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"
+                ]
+            ),
+            "current_external_bridge_collapses_line_ambiguity_to_a_head_compatible_e13_candidate": (
+                head_compatible["u1_head_compatible_line_theorem"][
+                    "the_current_external_line_ambiguity_collapses_to_one_head_compatible_candidate"
                 ]
             ),
             "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported": (
@@ -158,14 +170,16 @@ def build_e13_visibility_obstruction_bridge_summary() -> dict[str, Any]:
             "2E13 and its image is exactly the common family line. Externally, "
             "the current K3 bridge now fixes the carrier plane U1, a canonical "
             "dominant isotropic-line candidate inside that plane, sign-orders "
-            "that candidate by the positive/negative filtered-shadow basis, and the "
+            "that candidate by the positive/negative filtered-shadow basis, "
+            "and collapses the external line ambiguity to one head-compatible "
+            "candidate under the present transport polarity. It also fixes the "
             "canonical polarized Jordan shadow of the transport channel. What it still "
             "does not fix is an exact "
             "identification of that external line candidate with the internal "
             "line, or the nontrivial rank-81 nilpotent glue carried by the "
             "internal transport extension. So the central 2E13 channel is "
             "still exact internally, while externally it is presently visible "
-            "through its carrier plane, line candidate, and polarized Jordan shadow, "
+            "through its carrier plane, one head-compatible line candidate, and polarized Jordan shadow, "
             "but not yet as a full extension object."
         ),
     }

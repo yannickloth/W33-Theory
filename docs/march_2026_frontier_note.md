@@ -733,6 +733,29 @@ So the only missing datum for exact transport identity is one operator slot:
 
 Internally that slot is occupied by the nonzero rank-`81` square-zero glue. Externally it is currently forced to be zero by splitness.
 
+### Head-compatible external line candidate
+
+The current exact bridge dictionary now does more than say there is some external
+line candidate inside `U1`.
+
+- Internally, the common family line `span(1,1,0)` is exact image-side data,
+  because it is the image of the common square `2E13`.
+- Internally, the current transport polarity is exact and tail-to-head.
+- Externally, the bridge already fixes a head-biased `U1` line and a
+  tail-biased `U1` line.
+- And the sign-ordered rigid `U1` line selected by the current packet is exactly
+  the head-biased one.
+
+So the current external line ambiguity now collapses to one head-compatible
+candidate: any bridge-compatible external realization of the internal common
+line must use the head-biased `U1` line, not the tail-biased one.
+
+What remains open is stronger than that:
+
+- prove that this head-compatible external line is literally the same object as
+  the internal line `span(1,1,0)`;
+- and realize the missing non-split tail-to-head glue externally.
+
 ### Central `2E13` visibility wall
 
 The status of the internal central channel is now explicit.
