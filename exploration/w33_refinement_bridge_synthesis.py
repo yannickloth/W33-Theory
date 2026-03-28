@@ -124,6 +124,12 @@ from w33_selector_a4_weight_hierarchy_bridge import (
 from w33_transport_semisimplification_shadow_bridge import (
     build_transport_semisimplification_shadow_bridge_summary,
 )
+from w33_transport_filtered_shadow_bridge import (
+    build_transport_filtered_shadow_bridge_summary,
+)
+from w33_transport_nilpotent_glue_obstruction_bridge import (
+    build_transport_nilpotent_glue_obstruction_bridge_summary,
+)
 from w33_global_local_carrier_split_bridge import (
     build_global_local_carrier_split_bridge_summary,
 )
@@ -135,6 +141,9 @@ from w33_e13_visibility_obstruction_bridge import (
 )
 from w33_u1_selector_line_selection_bridge import (
     build_u1_selector_line_selection_bridge_summary,
+)
+from w33_u1_filtered_shadow_line_order_bridge import (
+    build_u1_filtered_shadow_line_order_bridge_summary,
 )
 from w33_explicit_curved_4d_complexes import build_explicit_curved_4d_complexes_summary
 from w33_fano_group_bridge import build_fano_group_summary
@@ -379,8 +388,15 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
     transport_semisimplification_shadow = (
         build_transport_semisimplification_shadow_bridge_summary()
     )
+    transport_filtered_shadow = build_transport_filtered_shadow_bridge_summary()
+    transport_nilpotent_glue_obstruction = (
+        build_transport_nilpotent_glue_obstruction_bridge_summary()
+    )
     global_local_carrier_split = build_global_local_carrier_split_bridge_summary()
     u1_selector_line_selection = build_u1_selector_line_selection_bridge_summary()
+    u1_filtered_shadow_line_order = (
+        build_u1_filtered_shadow_line_order_bridge_summary()
+    )
     family_flag_visibility_obstruction = (
         build_family_flag_visibility_obstruction_bridge_summary()
     )
@@ -3846,6 +3862,107 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]
             ),
         },
+        "transport_filtered_shadow_bridge": {
+            "internal_transport_filtration": (
+                transport_filtered_shadow["internal_transport_filtration"][
+                    "short_exact_sequence_dimensions"
+                ]
+            ),
+            "internal_distinguished_invariant_line": (
+                transport_filtered_shadow["internal_transport_filtration"][
+                    "distinguished_invariant_line"
+                ]
+            ),
+            "external_canonical_split_filtration": (
+                transport_filtered_shadow["external_canonical_split_filtration"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "external_ordered_line_types": (
+                transport_filtered_shadow["external_canonical_split_filtration"][
+                    "ordered_line_types"
+                ]
+            ),
+            "internal_transport_has_canonical_ordered_81_in_162_out_81_filtration": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "internal_transport_has_canonical_ordered_81_in_162_out_81_filtration"
+                ]
+            ),
+            "external_k3_mixed_plane_has_canonical_ordered_split_81_in_162_out_81_filtration": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "external_k3_mixed_plane_has_canonical_ordered_split_81_in_162_out_81_filtration"
+                ]
+            ),
+            "internal_and_external_match_at_ordered_filtered_dimension_level": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "internal_and_external_match_at_ordered_filtered_dimension_level"
+                ]
+            ),
+            "external_filtered_shadow_refines_old_81_plus_81_graded_shadow": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "external_filtered_shadow_refines_old_81_plus_81_graded_shadow"
+                ]
+            ),
+            "external_filtered_shadow_is_first_refinement_rigid": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "external_filtered_shadow_is_first_refinement_rigid"
+                ]
+            ),
+            "extension_class_mismatch_remains_exact": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "extension_class_mismatch_remains_exact"
+                ]
+            ),
+            "current_bridge_reaches_filtered_split_shadow_but_not_nonsplit_extension_identity": (
+                transport_filtered_shadow["transport_filtered_shadow_theorem"][
+                    "current_bridge_reaches_filtered_split_shadow_but_not_nonsplit_extension_identity"
+                ]
+            ),
+        },
+        "transport_nilpotent_glue_obstruction_bridge": {
+            "internal_transport_nilpotent_glue_rank": (
+                transport_nilpotent_glue_obstruction["internal_transport_nilpotent_glue"][
+                    "rank"
+                ]
+            ),
+            "internal_transport_nilpotent_glue_nullity": (
+                transport_nilpotent_glue_obstruction["internal_transport_nilpotent_glue"][
+                    "nullity"
+                ]
+            ),
+            "external_split_filtered_shadow": (
+                transport_nilpotent_glue_obstruction["external_split_filtered_shadow"][
+                    "ordered_filtration_dimensions"
+                ]
+            ),
+            "internal_transport_162_has_nontrivial_rank_81_square_zero_glue_operator": (
+                transport_nilpotent_glue_obstruction[
+                    "transport_nilpotent_glue_obstruction_theorem"
+                ]["internal_transport_162_has_nontrivial_rank_81_square_zero_glue_operator"]
+            ),
+            "external_transport_shadow_matches_the_ordered_81_in_162_out_81_filtration": (
+                transport_nilpotent_glue_obstruction[
+                    "transport_nilpotent_glue_obstruction_theorem"
+                ]["external_transport_shadow_matches_the_ordered_81_in_162_out_81_filtration"]
+            ),
+            "external_transport_shadow_is_split_and_has_zero_extension_class": (
+                transport_nilpotent_glue_obstruction[
+                    "transport_nilpotent_glue_obstruction_theorem"
+                ]["external_transport_shadow_is_split_and_has_zero_extension_class"]
+            ),
+            "internal_and_external_transport_packets_match_at_filtered_dimension_level_but_not_at_glue_operator_level": (
+                transport_nilpotent_glue_obstruction[
+                    "transport_nilpotent_glue_obstruction_theorem"
+                ][
+                    "internal_and_external_transport_packets_match_at_filtered_dimension_level_but_not_at_glue_operator_level"
+                ]
+            ),
+            "current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue": (
+                transport_nilpotent_glue_obstruction[
+                    "transport_nilpotent_glue_obstruction_theorem"
+                ]["current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"]
+            ),
+        },
         "global_local_carrier_split_bridge": {
             "canonical_global_carrier": (
                 global_local_carrier_split["canonical_global_carrier"]
@@ -3972,6 +4089,69 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                 ]
             ),
         },
+        "u1_filtered_shadow_line_order_bridge": {
+            "ordered_filtered_shadow_line_types": (
+                u1_filtered_shadow_line_order["ordered_filtered_shadow_line_types"]
+            ),
+            "u1_positive_selector_weights": (
+                u1_filtered_shadow_line_order["u1_positive_selector_weights"]
+            ),
+            "u1_negative_selector_weights": (
+                u1_filtered_shadow_line_order["u1_negative_selector_weights"]
+            ),
+            "u1_positive_minus_negative_selector_gaps": (
+                u1_filtered_shadow_line_order[
+                    "u1_positive_minus_negative_selector_gaps"
+                ]
+            ),
+            "dominant_isotropic_line_index": (
+                u1_filtered_shadow_line_order["dominant_isotropic_line_index"]
+            ),
+            "recessive_isotropic_line_index": (
+                u1_filtered_shadow_line_order["recessive_isotropic_line_index"]
+            ),
+            "dominant_isotropic_line_coefficients": (
+                u1_filtered_shadow_line_order["dominant_isotropic_line_coefficients"]
+            ),
+            "recessive_isotropic_line_coefficients": (
+                u1_filtered_shadow_line_order["recessive_isotropic_line_coefficients"]
+            ),
+            "filtered_shadow_basis_is_canonically_ordered_positive_then_negative": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "filtered_shadow_basis_is_canonically_ordered_positive_then_negative"
+                ]
+            ),
+            "dominant_u1_line_has_strictly_larger_positive_selector_weight": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "dominant_u1_line_has_strictly_larger_positive_selector_weight"
+                ]
+            ),
+            "dominant_u1_line_has_strictly_smaller_negative_selector_contamination": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "dominant_u1_line_has_strictly_smaller_negative_selector_contamination"
+                ]
+            ),
+            "dominant_u1_line_maximizes_positive_minus_negative_selector_gap": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "dominant_u1_line_maximizes_positive_minus_negative_selector_gap"
+                ]
+            ),
+            "sign_order_refines_total_weight_order": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "sign_order_refines_total_weight_order"
+                ]
+            ),
+            "sign_ordered_line_candidate_is_first_refinement_rigid": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "sign_ordered_line_candidate_is_first_refinement_rigid"
+                ]
+            ),
+            "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1": (
+                u1_filtered_shadow_line_order["u1_filtered_shadow_line_order_theorem"][
+                    "current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"
+                ]
+            ),
+        },
         "family_flag_visibility_obstruction_bridge": {
             "internal_common_line_generator": (
                 family_flag_visibility_obstruction["internal_common_line_generator"]
@@ -3985,8 +4165,17 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "external_canonical_line_candidate": (
                 family_flag_visibility_obstruction["external_canonical_line_candidate"]
             ),
+            "external_sign_ordered_line_candidate": (
+                family_flag_visibility_obstruction["external_sign_ordered_line_candidate"]
+            ),
             "external_semisimplified_shadow": (
                 family_flag_visibility_obstruction["external_semisimplified_shadow"]
+            ),
+            "external_filtered_split_shadow": (
+                family_flag_visibility_obstruction["external_filtered_split_shadow"]
+            ),
+            "external_nilpotent_glue_visibility": (
+                family_flag_visibility_obstruction["external_nilpotent_glue_visibility"]
             ),
             "internal_family_flag_is_exact_line_in_plane_data": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
@@ -4008,9 +4197,24 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "full_external_packet_selects_a_canonical_line_candidate_inside_u1"
                 ]
             ),
-            "external_side_matches_only_the_graded_shadow_of_the_transport_162_sector": (
+            "filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
-                    "external_side_matches_only_the_graded_shadow_of_the_transport_162_sector"
+                    "filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate"
+                ]
+            ),
+            "external_side_still_matches_the_graded_shadow_of_the_transport_162_sector": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_still_matches_the_graded_shadow_of_the_transport_162_sector"
+                ]
+            ),
+            "external_side_matches_a_canonical_filtered_split_shadow_of_the_transport_162_sector": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_matches_a_canonical_filtered_split_shadow_of_the_transport_162_sector"
+                ]
+            ),
+            "external_side_does_not_yet_realize_the_internal_rank_81_nilpotent_glue": (
+                family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
+                    "external_side_does_not_yet_realize_the_internal_rank_81_nilpotent_glue"
                 ]
             ),
             "exact_external_identification_of_the_internal_common_line_is_not_yet_supported": (
@@ -4023,9 +4227,9 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"
                 ]
             ),
-            "current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object": (
+            "current_bridge_fixes_plane_line_candidate_and_filtered_shadow_but_not_full_extension_object": (
                 family_flag_visibility_obstruction["family_flag_visibility_obstruction_theorem"][
-                    "current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object"
+                    "current_bridge_fixes_plane_line_candidate_and_filtered_shadow_but_not_full_extension_object"
                 ]
             ),
         },
@@ -4040,8 +4244,17 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
             "external_canonical_line_candidate": (
                 e13_visibility_obstruction["external_canonical_line_candidate"]
             ),
+            "external_sign_ordered_line_candidate": (
+                e13_visibility_obstruction["external_sign_ordered_line_candidate"]
+            ),
             "external_graded_shadow": (
                 e13_visibility_obstruction["external_graded_shadow"]
+            ),
+            "external_filtered_shadow": (
+                e13_visibility_obstruction["external_filtered_shadow"]
+            ),
+            "external_nilpotent_glue_visibility": (
+                e13_visibility_obstruction["external_nilpotent_glue_visibility"]
             ),
             "internal_common_square_is_exact_central_2e13_channel": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
@@ -4063,19 +4276,29 @@ def build_refinement_bridge_synthesis() -> dict[str, Any]:
                     "current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"
                 ]
             ),
+            "current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis"
+                ]
+            ),
             "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
                     "exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"
                 ]
             ),
-            "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel": (
+            "current_external_bridge_matches_a_canonical_filtered_split_shadow_of_the_transport_channel": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
-                    "current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"
+                    "current_external_bridge_matches_a_canonical_filtered_split_shadow_of_the_transport_channel"
                 ]
             ),
-            "current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel": (
+            "current_external_bridge_does_not_yet_realize_the_rank_81_nilpotent_glue_of_the_transport_channel": (
                 e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
-                    "current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel"
+                    "current_external_bridge_does_not_yet_realize_the_rank_81_nilpotent_glue_of_the_transport_channel"
+                ]
+            ),
+            "current_bridge_captures_carrier_plane_line_candidate_and_filtered_shadow_of_the_central_channel": (
+                e13_visibility_obstruction["e13_visibility_obstruction_theorem"][
+                    "current_bridge_captures_carrier_plane_line_candidate_and_filtered_shadow_of_the_central_channel"
                 ]
             ),
             "exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported": (

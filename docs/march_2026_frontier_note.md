@@ -627,16 +627,30 @@ The five-factor split is not only exact; it is highly uneven.
 
 Since each packet piece scales by exact factor `120` at `sd^1`, that normalized hierarchy is already refinement-invariant.
 
-### Transport semisimplification shadow
+### Transport filtered split shadow
 
-The transport comparison is now sharper than a size match but still weaker than object identity.
+The transport comparison is now sharper than a size match and sharper than a bare graded shadow, but still weaker than object identity.
 
 - The internal transport packet is a non-split `81 -> 162 -> 81` extension.
 - The external canonical mixed K3 packet is a split `81 (+) ⊕ 81 (-)` object.
-- The exact common invariant is their semisimplified / graded shadow:
-  `81 ⊕ 81`.
+- So externally there is already a canonical ordered split filtration
+  `81(+) -> 162 -> 81(-)`.
+- The exact common invariant is therefore not only the graded shadow
+  `81 ⊕ 81`,
+  but also the ordered filtered dimension pattern
+  `81 -> 162 -> 81`.
 
-So the current bridge identifies the semisimplified shadow exactly, but not the full extension class.
+So the current bridge identifies a canonical ordered split filtered shadow exactly, but not the full extension class.
+
+### Transport nilpotent-glue obstruction
+
+The remaining transport wall is now sharper than an abstract split-versus-nonsplit slogan.
+
+- Internally, the transport `162` already carries a canonical square-zero rank-`81` glue operator.
+- Its image and kernel are both exactly `81`.
+- Externally, the current K3 filtered shadow is split, so its extension class is zero.
+
+So the present bridge reaches head, middle, tail, and ordering, but not the nontrivial nilpotent glue that binds the internal transport packet.
 
 ### Global carrier versus local packet dominance
 
@@ -656,10 +670,13 @@ The carrier-only theorem is not yet the whole external story.
 - But the canonical ordered selector basis already projects to `U1` with unequal isotropic-line weights:
   about `0.29249917` versus `0.220630996`.
 - The exact dominance ratio is therefore `1.3257392335`.
+- The same ordered positive/negative selector basis now sign-orders the two `U1` null lines:
+  the dominant line has larger positive-selector weight, smaller negative contamination,
+  and larger positive-minus-negative gap than the recessive line.
 - That line selection is invariant under the natural sign/swap ambiguities of the selector basis.
 - And it survives first barycentric refinement, because both the `U1` carrier form and the `U1` selector packet form scale by exact factor `120`.
 
-So the full current external packet already selects a unique rigid dominant isotropic-line candidate inside `U1`, even though the carrier metric alone is line-blind.
+So the full current external packet already selects a unique rigid dominant isotropic-line candidate inside `U1`, and the filtered-shadow sign basis already orders that choice, even though the carrier metric alone is line-blind.
 
 ### Family-flag visibility obstruction
 
@@ -668,10 +685,12 @@ The finite family flag is now sharper than the current external bridge.
 - Internally, the reduced Yukawa side has exact line-plane data
   `span(1,1,0) < {x = y}`.
 - Externally, the current K3 bridge fixes the carrier plane `U1`.
-- The full external packet now also picks a canonical dominant isotropic-line candidate inside `U1`.
-- And on the transport side, the exact match stops at the graded shadow `81 ⊕ 81`, not at the extension class.
+- The full external packet now also picks a canonical dominant isotropic-line candidate inside `U1`, ordered by the positive/negative filtered-shadow basis.
+- And on the transport side, the exact match now reaches a canonical filtered split shadow
+  `81 -> 162 -> 81`,
+  but not the internal rank-`81` nilpotent glue.
 
-So the present bridge fixes a carrier plane, a line candidate, and the graded shadow, but not yet an exact identification of that external line candidate with the internal line `span(1,1,0)`, and not the non-split extension object.
+So the present bridge fixes a carrier plane, a line candidate, and a filtered shadow, but not yet an exact identification of that external line candidate with the internal line `span(1,1,0)`, and not the nontrivial glue that makes the transport extension non-split.
 
 ### Central `2E13` visibility wall
 
@@ -680,10 +699,12 @@ The status of the internal central channel is now explicit.
 - On the finite family side, the common square is exactly `2E13`.
 - Its image is exactly the common internal line `span(1,1,0)`.
 - The current external bridge fixes the canonical carrier plane `U1`.
-- The full current external packet also picks a canonical dominant isotropic-line candidate inside `U1`.
-- But it still does not identify that external line candidate with the internal line, and it still does not promote the transport extension class.
+- The full current external packet also picks a canonical dominant isotropic-line candidate inside `U1`, ordered by the positive/negative filtered-shadow basis.
+- And on the transport side it now reaches a canonical filtered split shadow
+  `81 -> 162 -> 81`.
+- But it still does not identify that external line candidate with the internal line, and it still does not promote the internal rank-`81` nilpotent glue.
 
-So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and the graded `81 ⊕ 81` shadow of the central `2E13` channel, but not yet the full central channel as an external extension object.
+So the conservative exact statement is now: the current bridge sees the carrier plane, a canonical line candidate, and a filtered `81 -> 162 -> 81` shadow of the central `2E13` channel, but not yet the full central channel as an external extension object with its internal glue.
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 

@@ -501,6 +501,35 @@ def test_synthesis_records_transport_semisimplification_shadow_bridge() -> None:
     assert bridge["transport_k3_match_is_semisimplified_shadow_not_extension_identity"] is True
 
 
+def test_synthesis_records_transport_filtered_shadow_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_filtered_shadow_bridge"]
+    assert bridge["internal_transport_filtration"] == [81, 162, 81]
+    assert bridge["internal_distinguished_invariant_line"] == [1, 2]
+    assert bridge["external_canonical_split_filtration"] == [81, 162, 81]
+    assert bridge["external_ordered_line_types"] == ["positive", "negative"]
+    assert bridge["internal_transport_has_canonical_ordered_81_in_162_out_81_filtration"] is True
+    assert bridge["external_k3_mixed_plane_has_canonical_ordered_split_81_in_162_out_81_filtration"] is True
+    assert bridge["internal_and_external_match_at_ordered_filtered_dimension_level"] is True
+    assert bridge["external_filtered_shadow_refines_old_81_plus_81_graded_shadow"] is True
+    assert bridge["external_filtered_shadow_is_first_refinement_rigid"] is True
+    assert bridge["extension_class_mismatch_remains_exact"] is True
+    assert bridge["current_bridge_reaches_filtered_split_shadow_but_not_nonsplit_extension_identity"] is True
+
+
+def test_synthesis_records_transport_nilpotent_glue_obstruction_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["transport_nilpotent_glue_obstruction_bridge"]
+    assert bridge["internal_transport_nilpotent_glue_rank"] == 81
+    assert bridge["internal_transport_nilpotent_glue_nullity"] == 81
+    assert bridge["external_split_filtered_shadow"] == [81, 162, 81]
+    assert bridge["internal_transport_162_has_nontrivial_rank_81_square_zero_glue_operator"] is True
+    assert bridge["external_transport_shadow_matches_the_ordered_81_in_162_out_81_filtration"] is True
+    assert bridge["external_transport_shadow_is_split_and_has_zero_extension_class"] is True
+    assert bridge["internal_and_external_transport_packets_match_at_filtered_dimension_level_but_not_at_glue_operator_level"] is True
+    assert bridge["current_bridge_reaches_head_middle_tail_and_ordering_but_not_nilpotent_glue"] is True
+
+
 def test_synthesis_records_global_local_carrier_split_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["global_local_carrier_split_bridge"]
@@ -541,6 +570,31 @@ def test_synthesis_records_u1_selector_line_selection_bridge() -> None:
     assert bridge["full_current_external_packet_selects_a_canonical_isotropic_line_candidate_inside_u1"] is True
 
 
+def test_synthesis_records_u1_filtered_shadow_line_order_bridge() -> None:
+    summary = build_refinement_bridge_synthesis()
+    bridge = summary["u1_filtered_shadow_line_order_bridge"]
+    assert bridge["ordered_filtered_shadow_line_types"] == ["positive", "negative"]
+    assert bridge["u1_positive_selector_weights"][0] == pytest.approx(0.2773869501109481)
+    assert bridge["u1_positive_selector_weights"][1] == pytest.approx(0.19871596313260903)
+    assert bridge["u1_negative_selector_weights"][0] == pytest.approx(0.015112217183048728)
+    assert bridge["u1_negative_selector_weights"][1] == pytest.approx(0.021915032691169296)
+    assert bridge["u1_positive_minus_negative_selector_gaps"][0] == pytest.approx(
+        0.2622747329278994
+    )
+    assert bridge["u1_positive_minus_negative_selector_gaps"][1] == pytest.approx(
+        0.17680093044143974
+    )
+    assert bridge["dominant_isotropic_line_index"] == 0
+    assert bridge["recessive_isotropic_line_index"] == 1
+    assert bridge["filtered_shadow_basis_is_canonically_ordered_positive_then_negative"] is True
+    assert bridge["dominant_u1_line_has_strictly_larger_positive_selector_weight"] is True
+    assert bridge["dominant_u1_line_has_strictly_smaller_negative_selector_contamination"] is True
+    assert bridge["dominant_u1_line_maximizes_positive_minus_negative_selector_gap"] is True
+    assert bridge["sign_order_refines_total_weight_order"] is True
+    assert bridge["sign_ordered_line_candidate_is_first_refinement_rigid"] is True
+    assert bridge["current_bridge_fixes_a_rigid_positive_ordered_line_candidate_inside_u1"] is True
+
+
 def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     summary = build_refinement_bridge_synthesis()
     bridge = summary["family_flag_visibility_obstruction_bridge"]
@@ -548,15 +602,24 @@ def test_synthesis_records_family_flag_visibility_obstruction_bridge() -> None:
     assert bridge["internal_common_plane_equation"] == "x = y"
     assert bridge["external_canonical_carrier_plane"] == "U1"
     assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_semisimplified_shadow"] == [81, 81]
+    assert bridge["external_filtered_split_shadow"] == [81, 162, 81]
+    assert bridge["external_nilpotent_glue_visibility"] == {
+        "matches_internal_nilpotent_glue": False,
+        "reason": "external_filtered_shadow_is_split",
+    }
     assert bridge["internal_family_flag_is_exact_line_in_plane_data"] is True
     assert bridge["external_side_fixes_a_canonical_carrier_plane_u1"] is True
     assert bridge["carrier_metric_alone_is_line_blind_inside_u1"] is True
     assert bridge["full_external_packet_selects_a_canonical_line_candidate_inside_u1"] is True
-    assert bridge["external_side_matches_only_the_graded_shadow_of_the_transport_162_sector"] is True
+    assert bridge["filtered_shadow_sign_order_fixes_the_same_canonical_u1_line_candidate"] is True
+    assert bridge["external_side_still_matches_the_graded_shadow_of_the_transport_162_sector"] is True
+    assert bridge["external_side_matches_a_canonical_filtered_split_shadow_of_the_transport_162_sector"] is True
+    assert bridge["external_side_does_not_yet_realize_the_internal_rank_81_nilpotent_glue"] is True
     assert bridge["exact_external_identification_of_the_internal_common_line_is_not_yet_supported"] is True
     assert bridge["exact_external_identification_of_the_internal_transport_extension_is_not_yet_supported"] is True
-    assert bridge["current_bridge_fixes_plane_line_candidate_and_graded_shadow_but_not_full_extension_object"] is True
+    assert bridge["current_bridge_fixes_plane_line_candidate_and_filtered_shadow_but_not_full_extension_object"] is True
 
 
 def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
@@ -566,14 +629,22 @@ def test_synthesis_records_e13_visibility_obstruction_bridge() -> None:
     assert bridge["internal_common_line_generator"] == [1, 1, 0]
     assert bridge["external_canonical_carrier_plane"] == "U1"
     assert bridge["external_canonical_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert bridge["external_sign_ordered_line_candidate"] == [0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert bridge["external_graded_shadow"] == [81, 81]
+    assert bridge["external_filtered_shadow"] == [81, 162, 81]
+    assert bridge["external_nilpotent_glue_visibility"] == {
+        "matches_internal_central_channel_glue": False,
+        "reason": "external_filtered_shadow_is_split",
+    }
     assert bridge["internal_common_square_is_exact_central_2e13_channel"] is True
     assert bridge["image_of_the_common_square_is_the_internal_common_line"] is True
     assert bridge["current_external_bridge_fixes_the_canonical_u1_carrier_plane"] is True
     assert bridge["current_external_bridge_picks_a_canonical_line_candidate_for_the_e13_image"] is True
+    assert bridge["current_external_bridge_sign_orders_that_line_candidate_by_the_filtered_shadow_basis"] is True
     assert bridge["exact_external_identification_of_the_e13_image_with_the_internal_common_line_is_not_yet_supported"] is True
-    assert bridge["current_external_bridge_matches_only_the_graded_shadow_of_the_transport_channel"] is True
-    assert bridge["current_bridge_captures_carrier_plane_line_candidate_and_graded_shadow_of_the_central_channel"] is True
+    assert bridge["current_external_bridge_matches_a_canonical_filtered_split_shadow_of_the_transport_channel"] is True
+    assert bridge["current_external_bridge_does_not_yet_realize_the_rank_81_nilpotent_glue_of_the_transport_channel"] is True
+    assert bridge["current_bridge_captures_carrier_plane_line_candidate_and_filtered_shadow_of_the_central_channel"] is True
     assert bridge["exact_external_realization_of_the_central_2e13_channel_is_not_yet_supported"] is True
 
 
