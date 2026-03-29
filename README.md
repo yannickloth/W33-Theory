@@ -673,6 +673,41 @@ So once the relaxed support sector gets too large, Grover amplification stops
 helping and the best operating point can collapse all the way to the uniform
 state on the padded shell.
 
+The next exact support-side refinement is
+[toe_support_enhancement_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_support_enhancement_relaxation_search.py).
+It tensors that same factorized support-relaxation shell with the exact
+three-state external enhancement hierarchy
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+on one discrete space of size `360 = 120 * 3`, padded to `9` qubits. The exact
+marked sector factorizes as
+
+`Marked(relaxation, mode) = Marked_support(relaxation) * {enhancement(mode)}`
+
+so the three enhancement modes are basis-conjugate to one another. The
+support-side marked-count profile stays exactly
+
+- `exact`: `2`
+- `interleaving-relaxed`: `20`
+- `core-order-relaxed`: `12`
+- `both-relaxed`: `120`
+
+and a representative two-seed study over seeds `7,8` on the
+`formal_completion_avatar` mode gives the clean operating points
+
+- `exact`: `12` iterations, mean target-hit `1.0`
+- `interleaving-relaxed`: `3` iterations, mean target-hit `0.970703125`
+- `core-order-relaxed`: `5` iterations, mean target-hit `0.982421875`
+- `both-relaxed`: `1` iteration, mean target-hit `0.994140625`
+
+So the enhancement hierarchy does not change the support-selectivity geometry,
+but the larger padded shell does shift the optimal Grover window. Most sharply,
+the fully relaxed sector moves from a `0`-step optimum on the bare
+`120`-state shell to a `1`-step optimum on the `360 -> 512` shell.
+
 The next exact search layer is
 [toe_bridge_product_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_product_search.py).
 It searches the product of:

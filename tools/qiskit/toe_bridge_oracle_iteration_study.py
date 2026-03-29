@@ -50,6 +50,22 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_factor_search.py",
         "base_args": ["--mode", "formal-completion-avatar"],
     },
+    "support-enhancement-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],
+    },
+    "support-enhancement-interleaving": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "interleaving-relaxed"],
+    },
+    "support-enhancement-core": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "core-order-relaxed"],
+    },
+    "support-enhancement-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-relaxed"],
+    },
 }
 
 

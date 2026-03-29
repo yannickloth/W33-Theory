@@ -1053,6 +1053,48 @@ So the relaxed support sectors expose a real padded-shell effect: once the
 marked sector gets too large, Grover amplification stops helping and the best
 point can collapse to the uniform state.
 
+### Qiskit support-enhancement relaxation search
+
+The next exact support-side refinement is now in
+`tools/qiskit/toe_support_enhancement_relaxation_search.py`.
+
+This tensors the same factorized support-relaxation shell with the exact
+three-state external enhancement hierarchy:
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+So the exact discrete space is
+
+`360 = 120 support states * 3 enhancement states`
+
+padded to `9` qubits. More sharply, the marked sector factorizes exactly as
+
+`Marked(relaxation, mode) = Marked_support(relaxation) * {enhancement(mode)}`
+
+so the three enhancement modes are basis-conjugate to one another. The
+support-side marked-count profile therefore stays exactly:
+
+- `exact`: `2`
+- `interleaving-relaxed`: `20`
+- `core-order-relaxed`: `12`
+- `both-relaxed`: `120`
+
+A representative two-seed study over seeds `7,8` on the
+`formal_completion_avatar` mode gives the clean operating points:
+
+- `exact`: `12` iterations, mean target-hit probability `1.0`
+- `interleaving-relaxed`: `3` iterations, mean target-hit probability `0.970703125`
+- `core-order-relaxed`: `5` iterations, mean target-hit probability `0.982421875`
+- `both-relaxed`: `1` iteration, mean target-hit probability `0.994140625`
+
+So the enhancement hierarchy does not change the exact support-selectivity
+geometry, but the larger `360 -> 512` padded shell does shift the optimal
+Grover windows. Most sharply, the fully relaxed sector moves from a `0`-step
+optimum on the bare-support `120`-state shell to a `1`-step optimum on the
+enlarged shell.
+
 ### Qiskit bridge product-state search
 
 The next exact search layer is now in

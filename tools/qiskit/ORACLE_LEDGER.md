@@ -10,6 +10,7 @@ search stack.
 | Support hierarchy | `toe_support_hierarchy_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.9973958333333334` on seeds `5,6,7` |
 | Support diagnostic | `toe_support_diagnostic_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.99609375` on seeds `7,8` |
 | Support diagnostic relaxation | `toe_support_diagnostic_relaxation_search.py` | `120` | `7` | `2/20/12/120` | two-seed family: `6 / 1 / 2 / 0` iterations for exact / interleaving / core-order / both |
+| Support enhancement relaxation | `toe_support_enhancement_relaxation_search.py` | `360` | `9` | `2/20/12/120` | representative formal-completion two-seed family: `12 / 3 / 5 / 1` iterations for exact / interleaving / core-order / both; exact mode-conjugacy across the 3 enhancement labels |
 | Product state | `toe_bridge_product_search.py` | `28800` | `15` | `20` | `31` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Line factor | `toe_bridge_line_factor_search.py` | `57600` | `16` | `20` | `44` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Joint weight filter | `toe_bridge_weight_filter_search.py` | `115200` | `17` | `20` | `63` iterations, mean target-hit `1.0` on seeds `7,8` |
@@ -32,6 +33,15 @@ search stack.
   - `interleaving-relaxed`: marked count `20`
   - `core-order-relaxed`: marked count `12`
   - `both-relaxed`: marked count `120`
+- `support enhancement relaxation`: tensors that same support-relaxation shell
+  with the exact 3-state external enhancement hierarchy:
+  - `current_k3_zero_orbit`
+  - `minimal_external_enhancement`
+  - `formal_completion_avatar`
+  - exact factorization:
+    `Marked(relaxation, mode) = Marked_support(relaxation) x {enhancement(mode)}`
+  - the three enhancement modes are exact basis-conjugates on the same
+    padded `9`-qubit shell
 - `product state`: adds the split-vs-formal glue factor
 - `line factor`: forces the head-compatible line inside `U1`
 - `joint weight filter`: forces the current concentration theorem as one bit
@@ -73,6 +83,11 @@ shell fixed and separates the current refined K3 object, the exact minimal new
 datum, and the resulting formal completion object inside one discrete state
 space.
 
+The support-enhancement relaxation oracle sits strictly below that larger wall:
+it proves that the exact support-selectivity profile survives unchanged across
+the 3-state enhancement hierarchy, while the clean Grover windows shift because
+`360` states pad to `512`.
+
 ## Reproduce
 
 ```bash
@@ -90,6 +105,15 @@ qiskit-python tools/qiskit/toe_support_diagnostic_relaxation_search.py \
   --shots 256 \
   --seed 7 \
   --top 8
+```
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target support-enhancement-exact \
+  --iterations 12 13 14 \
+  --seeds 7 8 \
+  --shots 256 \
+  --top 6
 ```
 
 ```bash
