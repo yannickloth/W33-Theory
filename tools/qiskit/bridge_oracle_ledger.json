@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -413,6 +413,53 @@
         },
         "nonzero-compatible": {
           "iterations": 90,
+          "target_hit_probability": 1.0
+        }
+      }
+    },
+    {
+      "name": "cocycle-compatibility-wall-relaxation",
+      "script": "tools/qiskit/toe_bridge_cocycle_compatibility_relaxation_search.py",
+      "theorem_surface": "corrected diagnostic-relaxation shell tensored with the exact 6-state cocycle-realization compatibility factor",
+      "state_count": 345600,
+      "padded_qubits": 19,
+      "wall_state_count": 6,
+      "marked_count_profile": {
+        "exact": {
+          "all-compatible": 60,
+          "nonzero-compatible": 40
+        },
+        "exceptional-order-relaxed": {
+          "all-compatible": 120,
+          "nonzero-compatible": 80
+        },
+        "hyperbolic-order-relaxed": {
+          "all-compatible": 360,
+          "nonzero-compatible": 240
+        },
+        "both-orders-relaxed": {
+          "all-compatible": 720,
+          "nonzero-compatible": 480
+        }
+      },
+      "promoted_operating_point": {
+        "kind": "seeded nonzero-wall family",
+        "seed": 7,
+        "shots": 256,
+        "exact": {
+          "iterations": 90,
+          "target_hit_probability": 1.0
+        },
+        "exceptional-order-relaxed": {
+          "iterations": 64,
+          "target_hit_probability": 1.0
+        },
+        "hyperbolic-order-relaxed": {
+          "iterations": 37,
+          "target_hit_probability": 1.0
+        },
+        "both-orders-relaxed": {
+          "iterations": 26,
           "target_hit_probability": 1.0
         }
       }

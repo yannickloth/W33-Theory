@@ -1447,6 +1447,33 @@ precise factor `2`. Seeded nonzero-wall checks at `256` shots give:
 - `core-order-relaxed`: `5` iterations, target-hit `0.96875`
 - `both-relaxed`: `1` iteration, target-hit `1.0`
 
+### Qiskit diagnostic-cocycle compatibility relaxation search
+
+The next exact lift is now in
+`tools/qiskit/toe_bridge_cocycle_compatibility_relaxation_search.py`.
+
+This tensors the corrected diagnostic-relaxation shell directly with the exact
+`6`-state cocycle-compatibility wall, so the shell is again
+`345600 = 57600·6`, padded to `19` qubits. The exact factorization is
+
+`Marked_diagnostic_relaxation(relaxation) x Compatible_wall(focus)`.
+
+On the live nonzero wall, the marked-count profile is now:
+
+- `exact`: `40`
+- `exceptional-order-relaxed`: `80`
+- `hyperbolic-order-relaxed`: `240`
+- `both-orders-relaxed`: `480`
+
+So the cocycle wall is now resolved directly against the hyperbolic-order and
+exceptional-order selectivity sectors rather than only the exact diagnostic
+shell. Seeded nonzero-wall checks at `256` shots give:
+
+- `exact`: `90` iterations, target-hit `1.0`
+- `exceptional-order-relaxed`: `64` iterations, target-hit `1.0`
+- `hyperbolic-order-relaxed`: `37` iterations, target-hit `1.0`
+- `both-orders-relaxed`: `26` iterations, target-hit `1.0`
+
 The promoted local bridge-oracle stack is now also recorded in
 `tools/qiskit/bridge_oracle_ledger.json`.
 

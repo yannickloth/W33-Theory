@@ -943,6 +943,30 @@ precise factor `2`. Seeded nonzero-wall checks at `256` shots give:
 - `core-order-relaxed`: `5` iterations, target-hit `0.96875`
 - `both-relaxed`: `1` iteration, target-hit `1.0`
 
+That same wall now lifts cleanly across the corrected diagnostic-relaxation
+family in
+[toe_bridge_cocycle_compatibility_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_cocycle_compatibility_relaxation_search.py).
+The exact shell is again `345600 = 57600·6` states on `19` qubits, but now the
+cocycle wall is resolved against the hyperbolic-order and exceptional-order
+relaxation sectors rather than only the exact diagnostic shell. On the live
+nonzero wall, the marked-count profile becomes:
+
+- `exact`: `40`
+- `exceptional-order-relaxed`: `80`
+- `hyperbolic-order-relaxed`: `240`
+- `both-orders-relaxed`: `480`
+
+The factorization is still exact:
+
+`Marked_diagnostic_relaxation(relaxation) x Compatible_wall(focus)`.
+
+Seeded nonzero-wall checks at `256` shots give:
+
+- `exact`: `90` iterations, target-hit `1.0`
+- `exceptional-order-relaxed`: `64` iterations, target-hit `1.0`
+- `hyperbolic-order-relaxed`: `37` iterations, target-hit `1.0`
+- `both-orders-relaxed`: `26` iterations, target-hit `1.0`
+
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable version, use

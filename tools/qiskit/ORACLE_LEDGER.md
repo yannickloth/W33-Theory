@@ -22,6 +22,7 @@ search stack.
 | Diagnostic enhancement relaxation | `toe_bridge_diagnostic_enhancement_relaxation_search.py` | `86400` | `17` | `20/40/120/240` | representative formal-completion-avatar two-seed family: `64 / 45 / 26 / 18` iterations for exact / exceptional / hyperbolic / both; exact mode-conjugacy across the 3 enhancement labels |
 | Enhancement factor | `toe_bridge_enhancement_factor_search.py` | `345600` | `19` | `20` | seeded `127`-iteration verification exact in all three enhancement modes |
 | Cocycle compatibility wall | `toe_bridge_cocycle_compatibility_search.py` | `345600` | `19` | `60/40` | seeded exact wall checks: `74` iterations gives target-hit `1.0` on the all-compatible wall, `90` gives `1.0` on the nonzero-compatible wall |
+| Cocycle compatibility wall relaxation | `toe_bridge_cocycle_compatibility_relaxation_search.py` | `345600` | `19` | `40/80/240/480` on live nonzero wall | seeded nonzero-wall family: `90 / 64 / 37 / 26` iterations gives `1.0 / 1.0 / 1.0 / 1.0` for exact / exceptional / hyperbolic / both |
 
 ## Exact Diagnostic Meaning
 
@@ -179,6 +180,17 @@ mode family. It is an exact compatibility theorem with forbidden corners on a
 `6`-state factor, and the live nonzero wall is the `2`-state subset given by
 the slot-replacement datum and the formal completion object, both paired with
 the unique nonzero orbit.
+
+The cocycle-compatibility wall relaxation oracle lifts that same wall directly
+across the corrected diagnostic-relaxation family. On the live nonzero wall,
+the marked-count profile becomes `40 / 80 / 240 / 480` for exact /
+exceptional-order-relaxed / hyperbolic-order-relaxed / both-orders-relaxed,
+and the representative seeded checks at `256` shots were exact at:
+
+- `exact`: `90` iterations, target-hit `1.0`
+- `exceptional-order-relaxed`: `64` iterations, target-hit `1.0`
+- `hyperbolic-order-relaxed`: `37` iterations, target-hit `1.0`
+- `both-orders-relaxed`: `26` iterations, target-hit `1.0`
 
 ## Reproduce
 
