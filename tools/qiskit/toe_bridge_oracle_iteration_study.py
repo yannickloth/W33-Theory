@@ -38,6 +38,10 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_split_weight_filter_search.py",
         "base_args": ["--mode", "formal-completion"],
     },
+    "diagnostic-order": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_order_search.py",
+        "base_args": ["--mode", "formal-completion"],
+    },
 }
 
 

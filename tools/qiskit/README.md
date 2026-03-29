@@ -317,6 +317,29 @@ hit only marked states with target-hit probability `1.0`. A local
 formal-completion probe at `89`, `90`, and `91` iterations stayed on the same
 `1.0` plateau for seed `7`.
 
+The next diagnostic refinement is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_diagnostic_order_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
+That keeps the same factor-state cardinality but factorizes the five-factor
+ordering exactly as:
+
+- hyperbolic order on `U1/U2/U3`
+- exceptional order on `E8_1/E8_2`
+- interleaving pattern choosing the `3` hyperbolic slots among `5`
+
+with `5! = C(5,3) * 3! * 2! = 10 * 6 * 2`. So the oracle becomes diagnostic by
+theorem sector without changing the underlying `120`-state factor space. The
+full product space is again `230400`, padded to `18` qubits. On the seeded
+verification runs (`seed = 7`, `256` shots), both `current-shadow` and
+`formal-completion` modes hit only marked states with target-hit probability
+`1.0`.
+
 For heavier bridge oracles, use the reusable study runner:
 
 ```bash
@@ -330,6 +353,9 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
 
 The first product study shows the `15`-qubit formal-completion oracle is
 cleanest at `31` iterations on seeds `7,8`.
+
+The current promoted bridge-oracle stack is summarized in
+[bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 
 ## Stronger TOE Search Target
 

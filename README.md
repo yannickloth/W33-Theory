@@ -722,6 +722,25 @@ formal-completion probe at `89`, `90`, and `91` iterations stayed on the same
 `1.0` plateau for that seed, so the heavier oracle also appears robust near the
 analytic Grover count.
 
+The next diagnostic refinement is
+[toe_bridge_diagnostic_order_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_order_search.py).
+It factorizes the five-factor ordering exactly as
+`5! = C(5,3) * 3! * 2! = 10 * 6 * 2`, so Qiskit now sees:
+
+- a hyperbolic order sector on `U1, U2, U3`
+- an exceptional order sector on `E8_1, E8_2`
+- an interleaving sector choosing the `3` hyperbolic slots among `5`
+
+without changing the underlying `120`-state factor space. Combined with the
+support hierarchy, glue state, forced head line, and split concentration bits,
+that again gives an exact search space of `230400` states on `18` qubits with
+marked count `20`. On seeded verification runs (`seed = 7`, `256` shots), both
+`current-shadow` and `formal-completion` modes hit only marked states with
+target-hit probability `1.0`.
+
+The committed oracle stack is summarized in
+[bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
+
 ## Authors
 
 **Wil Dahn** & **Claude** (Anthropic)

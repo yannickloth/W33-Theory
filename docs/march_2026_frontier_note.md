@@ -1139,6 +1139,47 @@ on the same `1.0` plateau for seed `7`, so the heavier `18`-qubit oracle looks
 robust near the analytic Grover count even though a broader two-seed study is
 more expensive in this environment.
 
+### Qiskit bridge diagnostic-order search
+
+The next exact diagnostic refinement is now in
+`tools/qiskit/toe_bridge_diagnostic_order_search.py`.
+
+This does not change the five-factor theorem sector. It factorizes it exactly:
+
+- hyperbolic order on `U1, U2, U3`
+- exceptional order on `E8_1, E8_2`
+- interleaving pattern choosing the `3` hyperbolic slots among `5`
+
+with the exact identity
+
+`5! = C(5,3) * 3! * 2! = 10 * 6 * 2`.
+
+So the diagnostic oracle localizes failures by theorem sector without changing
+the underlying `120`-state factor space from the earlier bridge searches. The
+marked sector keeps:
+
+- the strict support hierarchy
+- the marked hyperbolic order `U3 < U1 < U2`
+- the marked exceptional order `E8_2 < E8_1`
+- the forced head-compatible line
+- the chosen glue mode
+- the exact split concentration state `pass/pass`
+
+The explicit search space again has size `230400`, using `18` qubits after
+padding with marked count `20`.
+
+The seeded verification runs (`seed = 7`, `256` shots) gave:
+
+- `current-shadow`: Grover iterations `90`, target-hit probability `1.0`
+- `formal-completion`: Grover iterations `90`, target-hit probability `1.0`
+
+and in both modes the decoded outputs stayed inside the exact marked sector,
+with no non-target valid states and no invalid bitstrings in the kept top
+counts.
+
+The promoted local bridge-oracle stack is now also recorded in
+`tools/qiskit/bridge_oracle_ledger.json`.
+
 ## Reproduce
 
 ### PMNS

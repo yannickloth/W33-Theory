@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
+  "oracles": [
+    {
+      "name": "support-hierarchy",
+      "script": "tools/qiskit/toe_support_hierarchy_search.py",
+      "theorem_surface": "head_line < u1_plane < transport_avatar",
+      "state_count": 120,
+      "padded_qubits": 7,
+      "marked_count": 2,
+      "promoted_operating_point": {
+        "kind": "multi-seed-study",
+        "iterations": 6,
+        "seeds": [5, 6, 7],
+        "mean_target_hit_probability": 0.9973958333333334
+      }
+    },
+    {
+      "name": "product-state",
+      "script": "tools/qiskit/toe_bridge_product_search.py",
+      "theorem_surface": "support permutation x five-factor ordering x glue state",
+      "state_count": 28800,
+      "padded_qubits": 15,
+      "marked_count": 20,
+      "promoted_operating_point": {
+        "kind": "two-seed-study",
+        "iterations": 31,
+        "seeds": [7, 8],
+        "mean_target_hit_probability": 1.0
+      }
+    },
+    {
+      "name": "line-factor",
+      "script": "tools/qiskit/toe_bridge_line_factor_search.py",
+      "theorem_surface": "product-state plus exact U1 head/tail line choice",
+      "state_count": 57600,
+      "padded_qubits": 16,
+      "marked_count": 20,
+      "promoted_operating_point": {
+        "kind": "two-seed-study",
+        "iterations": 44,
+        "seeds": [7, 8],
+        "mean_target_hit_probability": 1.0
+      }
+    },
+    {
+      "name": "weight-filter",
+      "script": "tools/qiskit/toe_bridge_weight_filter_search.py",
+      "theorem_surface": "line-factor plus joint hyperbolic/exceptional concentration bit",
+      "state_count": 115200,
+      "padded_qubits": 17,
+      "marked_count": 20,
+      "promoted_operating_point": {
+        "kind": "two-seed-study",
+        "iterations": 63,
+        "seeds": [7, 8],
+        "mean_target_hit_probability": 1.0
+      }
+    },
+    {
+      "name": "split-weight-filter",
+      "script": "tools/qiskit/toe_bridge_split_weight_filter_search.py",
+      "theorem_surface": "line-factor plus separate hyperbolic and exceptional concentration bits",
+      "state_count": 230400,
+      "padded_qubits": 18,
+      "marked_count": 20,
+      "promoted_operating_point": {
+        "kind": "seeded-verification",
+        "iterations": 90,
+        "seed": 7,
+        "target_hit_probability": 1.0
+      },
+      "local_probe": {
+        "kind": "single-seed-plateau",
+        "iterations": [89, 90, 91],
+        "seed": 7,
+        "target_hit_probability": 1.0
+      }
+    },
+    {
+      "name": "diagnostic-order",
+      "script": "tools/qiskit/toe_bridge_diagnostic_order_search.py",
+      "theorem_surface": "factorized 5! = C(5,3) * 3! * 2! ordering sectors plus line, glue, and split weights",
+      "state_count": 230400,
+      "padded_qubits": 18,
+      "marked_count": 20,
+      "promoted_operating_point": {
+        "kind": "seeded-verification",
+        "iterations": 90,
+        "seed": 7,
+        "target_hit_probability": 1.0
+      }
+    }
+  ]
+}

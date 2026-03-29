@@ -15,6 +15,7 @@ preserved alongside them.
 - `exploration/`: exact theorem builders and bridge summaries
 - `tests/`: targeted theorem regressions and search checks
 - `tools/qiskit/`: local Qiskit workflow and discrete search/oracle tooling
+- `tools/qiskit/bridge_oracle_ledger.json`: promoted local Qiskit bridge-oracle stack and operating points
 - `tools/`: helper programs that are still part of the active research stack
 
 ## Heavy but Important Context
