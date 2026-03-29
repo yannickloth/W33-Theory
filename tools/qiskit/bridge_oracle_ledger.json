@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -102,6 +102,77 @@
         "both-relaxed": {
           "iterations": 1,
           "mean_target_hit_probability": 0.994140625
+        }
+      }
+    },
+    {
+      "name": "support-cocycle-compatibility-relaxation",
+      "script": "tools/qiskit/toe_support_cocycle_compatibility_relaxation_search.py",
+      "theorem_surface": "support-relaxation shell tensored with the exact cocycle-compatibility wall; focus on all-compatible or live nonzero-compatible wall states",
+      "state_count": 720,
+      "padded_qubits": 10,
+      "wall_state_count": 6,
+      "marked_count_profile": {
+        "all-compatible": {
+          "exact": 6,
+          "interleaving-relaxed": 60,
+          "core-order-relaxed": 36,
+          "both-relaxed": 360
+        },
+        "nonzero-compatible": {
+          "exact": 4,
+          "interleaving-relaxed": 40,
+          "core-order-relaxed": 24,
+          "both-relaxed": 240
+        }
+      },
+      "compatible_wall_states": {
+        "all-compatible": [
+          [
+            "current_refined_k3_object",
+            "zero_orbit"
+          ],
+          [
+            "slot_replacement_datum",
+            "unique_nonzero_orbit"
+          ],
+          [
+            "formal_completion_object",
+            "unique_nonzero_orbit"
+          ]
+        ],
+        "nonzero-compatible": [
+          [
+            "slot_replacement_datum",
+            "unique_nonzero_orbit"
+          ],
+          [
+            "formal_completion_object",
+            "unique_nonzero_orbit"
+          ]
+        ]
+      },
+      "exact_mode_relation": "Marked_support(relaxation) x Compatible_wall(focus)",
+      "promoted_operating_point": {
+        "kind": "seeded live nonzero-wall family",
+        "focus": "nonzero-compatible",
+        "seed": 7,
+        "shots": 256,
+        "exact": {
+          "iterations": 13,
+          "target_hit_probability": 0.97265625
+        },
+        "interleaving-relaxed": {
+          "iterations": 4,
+          "target_hit_probability": 0.953125
+        },
+        "core-order-relaxed": {
+          "iterations": 5,
+          "target_hit_probability": 0.96875
+        },
+        "both-relaxed": {
+          "iterations": 1,
+          "target_hit_probability": 1.0
         }
       }
     },

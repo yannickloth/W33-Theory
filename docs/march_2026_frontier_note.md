@@ -1421,6 +1421,32 @@ exact checks at `256` shots now give:
 In all three modes the kept top decoded outputs stayed inside the marked
 sector, with no non-target valid states and no invalid bitstrings.
 
+### Qiskit support-cocycle compatibility relaxation search
+
+The sharper support-side projection of that same wall is now in
+`tools/qiskit/toe_support_cocycle_compatibility_relaxation_search.py`.
+
+It tensors the factorized `120`-state support-relaxation shell directly with
+the exact `6`-state cocycle-compatibility wall, so the exact shell is
+`720 = 120·6`, padded to `10` qubits. The factorization is still exact:
+
+`Marked_support(relaxation) x Compatible_wall(focus)`.
+
+On the live nonzero wall, the marked-count profile becomes:
+
+- `exact`: `4`
+- `interleaving-relaxed`: `40`
+- `core-order-relaxed`: `24`
+- `both-relaxed`: `240`
+
+So the live nonzero wall multiplies the old support-relaxation profile by the
+precise factor `2`. Seeded nonzero-wall checks at `256` shots give:
+
+- `exact`: `13` iterations, target-hit `0.97265625`
+- `interleaving-relaxed`: `4` iterations, target-hit `0.953125`
+- `core-order-relaxed`: `5` iterations, target-hit `0.96875`
+- `both-relaxed`: `1` iteration, target-hit `1.0`
+
 The promoted local bridge-oracle stack is now also recorded in
 `tools/qiskit/bridge_oracle_ledger.json`.
 

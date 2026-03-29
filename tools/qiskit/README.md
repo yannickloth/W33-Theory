@@ -598,6 +598,38 @@ Seeded exact checks at `256` shots now give:
 - `all-compatible`: `60` marked states, `74` iterations, target-hit `1.0`
 - `nonzero-compatible`: `40` marked states, `90` iterations, target-hit `1.0`
 
+The sharper support-side projection of that same wall is:
+
+```bash
+qiskit-python tools/qiskit/toe_support_cocycle_compatibility_relaxation_search.py \
+  --focus nonzero-compatible \
+  --relaxation exact \
+  --iterations 13 \
+  --shots 256 \
+  --seed 7
+```
+
+This tensors the factorized `120`-state support-relaxation shell directly with
+the exact `6`-state cocycle wall, giving the exact `720`-state `10`-qubit
+search. The factorization is still exact:
+
+`Marked_support(relaxation) x Compatible_wall(focus)`.
+
+On the live nonzero wall the marked-count profile is:
+
+- `exact`: `4`
+- `interleaving-relaxed`: `40`
+- `core-order-relaxed`: `24`
+- `both-relaxed`: `240`
+
+So the live nonzero wall multiplies the old support-relaxation profile by the
+precise factor `2`. Seeded nonzero-wall checks at `256` shots now give:
+
+- `exact`: `13` iterations, target-hit `0.97265625`
+- `interleaving-relaxed`: `4` iterations, target-hit `0.953125`
+- `core-order-relaxed`: `5` iterations, target-hit `0.96875`
+- `both-relaxed`: `1` iteration, target-hit `1.0`
+
 The current promoted bridge-oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable surface, use

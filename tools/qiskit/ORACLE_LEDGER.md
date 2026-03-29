@@ -12,6 +12,7 @@ search stack.
 | Support diagnostic relaxation | `toe_support_diagnostic_relaxation_search.py` | `120` | `7` | `2/20/12/120` | two-seed family: `6 / 1 / 2 / 0` iterations for exact / interleaving / core-order / both |
 | Support enhancement relaxation | `toe_support_enhancement_relaxation_search.py` | `360` | `9` | `2/20/12/120` | representative formal-completion two-seed family: `12 / 3 / 5 / 1` iterations for exact / interleaving / core-order / both; exact mode-conjugacy across the 3 enhancement labels |
 | Double interleaving shadow | `toe_double_interleaving_shadow_search.py` | `100` | `7` | `10/100` | two-seed exact study: `2` iterations gives mean target-hit `0.97265625`; fully relaxed shell peaks at `0` iterations |
+| Support cocycle compatibility relaxation | `toe_support_cocycle_compatibility_relaxation_search.py` | `720` | `10` | `4/40/24/240` on live nonzero wall | seeded nonzero-wall family: `13 / 4 / 5 / 1` iterations gives `0.97265625 / 0.953125 / 0.96875 / 1.0` |
 | Product state | `toe_bridge_product_search.py` | `28800` | `15` | `20` | `31` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Line factor | `toe_bridge_line_factor_search.py` | `57600` | `16` | `20` | `44` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Joint weight filter | `toe_bridge_weight_filter_search.py` | `115200` | `17` | `20` | `63` iterations, mean target-hit `1.0` on seeds `7,8` |
@@ -53,6 +54,22 @@ search stack.
   - the joint shadow has size `100 = 10 * 10`
   - the current bridge freezes one support interleaving while leaving the
     factor copy free
+- `support cocycle compatibility relaxation`: tensors the factorized
+  support-relaxation shell with the exact `6`-state cocycle-compatibility wall
+  and then focuses on the live nonzero wall:
+  - all-compatible marked-count profile:
+    - `exact`: `6`
+    - `interleaving-relaxed`: `60`
+    - `core-order-relaxed`: `36`
+    - `both-relaxed`: `360`
+  - `nonzero-compatible` wall states:
+    - `slot_replacement_datum x unique_nonzero_orbit`
+    - `formal_completion_object x unique_nonzero_orbit`
+  - exact marked-count profile on that focus:
+    - `exact`: `4`
+    - `interleaving-relaxed`: `40`
+    - `core-order-relaxed`: `24`
+    - `both-relaxed`: `240`
 - `product state`: adds the split-vs-formal glue factor
 - `line factor`: forces the head-compatible line inside `U1`
 - `joint weight filter`: forces the current concentration theorem as one bit
@@ -130,6 +147,26 @@ the 3-state enhancement hierarchy, while the clean Grover windows shift because
 from a `0`-step optimum on the bare `120`-state shell to a `1`-step optimum on
 the enlarged shell.
 
+The support-cocycle compatibility relaxation oracle is stronger. It keeps the
+same support-relaxation family but adjoins the exact cocycle wall with
+forbidden corners instead of a free three-label enhancement axis. On the live
+nonzero wall the marked-count profile becomes `4 / 40 / 24 / 240`, and the
+seeded nonzero-wall checks at `256` shots came back:
+
+- `exact`: `13` iterations, target-hit `0.97265625`
+- `interleaving-relaxed`: `4` iterations, target-hit `0.953125`
+- `core-order-relaxed`: `5` iterations, target-hit `0.96875`
+- `both-relaxed`: `1` iteration, target-hit `1.0`
+
+Equivalently, the exact factorization is
+
+`Marked_support(relaxation) x Compatible_wall(focus)`,
+
+with the live nonzero focus keeping exactly:
+
+- `slot_replacement_datum x unique_nonzero_orbit`
+- `formal_completion_object x unique_nonzero_orbit`
+
 The double-interleaving shadow is a bounded exact side result rather than a new
 physics claim. It shows that the support and factor interleaving sectors are
 two canonical copies of the same `10`-vertex Johnson object `J(5,3)`, and that
@@ -204,6 +241,26 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
   --iterations 1 2 3 \
   --seeds 7 8 \
   --shots 256 \
+  --top 6
+```
+
+```bash
+qiskit-python tools/qiskit/toe_support_cocycle_compatibility_relaxation_search.py \
+  --focus nonzero-compatible \
+  --relaxation exact \
+  --iterations 13 \
+  --shots 256 \
+  --seed 7 \
+  --top 6
+```
+
+```bash
+qiskit-python tools/qiskit/toe_support_cocycle_compatibility_relaxation_search.py \
+  --focus nonzero-compatible \
+  --relaxation both-relaxed \
+  --iterations 1 \
+  --shots 256 \
+  --seed 7 \
   --top 6
 ```
 

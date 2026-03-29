@@ -146,6 +146,38 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",
         "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-relaxed"],
     },
+    "support-cocycle-nonzero-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "exact"],
+    },
+    "support-cocycle-nonzero-interleaving": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "interleaving-relaxed"],
+    },
+    "support-cocycle-nonzero-core": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "core-order-relaxed"],
+    },
+    "support-cocycle-nonzero-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "both-relaxed"],
+    },
+    "diagnostic-cocycle-nonzero-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "exact"],
+    },
+    "diagnostic-cocycle-nonzero-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "diagnostic-cocycle-nonzero-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "diagnostic-cocycle-nonzero-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_relaxation_search.py",
+        "base_args": ["--focus", "nonzero-compatible", "--relaxation", "both-orders-relaxed"],
+    },
 }
 
 
