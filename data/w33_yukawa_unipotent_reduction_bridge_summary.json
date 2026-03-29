@@ -1,0 +1,300 @@
+{
+  "status": "ok",
+  "slot_profiles": {
+    "H_2": {
+      "+-": {
+        "support_labels": [
+          "u_c_2",
+          "nu_c"
+        ],
+        "support_size": 2,
+        "compressed_rank": 6,
+        "compressed_rank_saturates_three_generation_support": true,
+        "block_span_rank": 2,
+        "template_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "template0_coefficients": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "template1_generation_matrix": [
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            -1,
+            2,
+            1
+          ],
+          [
+            1,
+            -1,
+            1
+          ]
+        ],
+        "reconstructs_exactly_from_two_templates": true,
+        "template0_rank": 2,
+        "template1_rank": 2
+      },
+      "-+": {
+        "support_labels": [
+          "u_c_1",
+          "u_c_3"
+        ],
+        "support_size": 2,
+        "compressed_rank": 6,
+        "compressed_rank_saturates_three_generation_support": true,
+        "block_span_rank": 2,
+        "template_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "template0_coefficients": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "template1_generation_matrix": [
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            -1,
+            2,
+            -1
+          ],
+          [
+            -1,
+            1,
+            1
+          ]
+        ],
+        "reconstructs_exactly_from_two_templates": true,
+        "template0_rank": 2,
+        "template1_rank": 2
+      }
+    },
+    "Hbar_2": {
+      "+-": {
+        "support_labels": [
+          "d_c_2",
+          "d_c_3",
+          "e_c"
+        ],
+        "support_size": 3,
+        "compressed_rank": 9,
+        "compressed_rank_saturates_three_generation_support": true,
+        "block_span_rank": 2,
+        "template_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "template0_coefficients": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "template1_generation_matrix": [
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            -1,
+            2,
+            1
+          ],
+          [
+            1,
+            -1,
+            1
+          ]
+        ],
+        "reconstructs_exactly_from_two_templates": true,
+        "template0_rank": 3,
+        "template1_rank": 3
+      },
+      "-+": {
+        "support_labels": [
+          "d_c_1"
+        ],
+        "support_size": 1,
+        "compressed_rank": 3,
+        "compressed_rank_saturates_three_generation_support": true,
+        "block_span_rank": 2,
+        "template_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "template0_coefficients": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "template1_generation_matrix": [
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            -1,
+            2,
+            -1
+          ],
+          [
+            -1,
+            1,
+            1
+          ]
+        ],
+        "reconstructs_exactly_from_two_templates": true,
+        "template0_rank": 1,
+        "template1_rank": 1
+      }
+    }
+  },
+  "universal_generation_algebra": {
+    "slot_independent_plus_minus_matrix": true,
+    "slot_independent_minus_plus_matrix": true,
+    "template0_coefficients_are_identity_for_both_active_sectors": true,
+    "plus_minus_generation_matrix": [
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        -1,
+        2,
+        1
+      ],
+      [
+        1,
+        -1,
+        1
+      ]
+    ],
+    "minus_plus_generation_matrix": [
+      [
+        0,
+        1,
+        -1
+      ],
+      [
+        -1,
+        2,
+        -1
+      ],
+      [
+        -1,
+        1,
+        1
+      ]
+    ],
+    "plus_minus_charpoly": "(lambda - 1)**3",
+    "minus_plus_charpoly": "(lambda - 1)**3",
+    "plus_minus_is_unipotent_jordan_type": true,
+    "minus_plus_is_unipotent_jordan_type": true,
+    "nilpotent_squares_match_exactly": true,
+    "common_nilpotent_square": [
+      [
+        1,
+        -1,
+        0
+      ],
+      [
+        1,
+        -1,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "generation_matrices_commute_exactly": true
+  },
+  "bridge_verdict": "The canonical Yukawa seed now reduces exactly to a small generation algebra. After the V4 split, the inactive right-handed sector vanishes, each active sector is generated by exactly two internal templates, and the generation-side coefficient matrices are slot-independent commuting unipotent 3x3 operators. So the remaining Yukawa problem is no longer the three-generation mixing pattern itself. It is the slot-specific internal template spectrum carried by those exact active sectors."
+}

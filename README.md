@@ -1014,6 +1014,38 @@ checks at `256` shots came back exact at `26` iterations:
 - `minimal-external-enhancement`: `1.0`, marked pair `['minimal_external_enhancement', 'unique_nonzero_orbit_in_existing_slot']`
 - `formal-completion-avatar`: `1.0`, marked pair `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
+The next exact refinement is now in
+[w33_carrier_preserving_k3_enhancement_bridge.py](/mnt/c/Repos/Theory%20of%20Everything/exploration/w33_carrier_preserving_k3_enhancement_bridge.py).
+This sharpens the live external wall itself. The head-compatible image line,
+the canonical carrier plane `U1`, the ordered shell `81 -> 162 -> 81`, and the
+existing tail-to-head `81x81` slot are already fixed before any genuine new
+realization. So any exact nonzero K3-side enhancement must be
+carrier-preserving: it can only replace the current zero slot by the unique
+nonzero orbit in that already-fixed slot. The missing theorem is therefore no
+longer “find a new carrier geometry”; it is realization of that already-fixed
+carrier package on the K3 side.
+
+The next exact refinement after that is now in
+[w33_completion_datum_avatar_lift_bridge.py](/mnt/c/Repos/Theory%20of%20Everything/exploration/w33_completion_datum_avatar_lift_bridge.py)
+with the matching oracle
+[toe_bridge_completion_datum_avatar_lift_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_completion_datum_avatar_lift_search.py).
+This isolates the actual live distinction inside the shared nonzero slot. The
+minimal and formal completion states already share the same nonzero orbit and
+the same completion normal form, so the difference is role:
+
+- `slot_replacement_datum`: only the required nonzero-orbit replacement in the fixed slot
+- `formal_completion_object`: the unique minimal common external object carrying that datum together with the already-forced head line in `U1` and the ordered shell `81 -> 162 -> 81`
+
+The matching shared-nonzero-wall oracle tensors that binary lift factor with
+the corrected diagnostic-relaxation shell, so the exact state count is
+`115200 = 57600·2`, padded to `17` qubits. The marked-count profile stays
+`20 / 40 / 120 / 240`, with exact mode relation
+`Marked_diagnostic_relaxation(relaxation) x {lift_state(mode)}`. Seeded exact
+checks at `256` shots came back clean at `64` iterations in both modes:
+
+- `slot-replacement-datum`: target-hit `1.0`
+- `formal-completion-object`: target-hit `1.0`
+
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable version, use

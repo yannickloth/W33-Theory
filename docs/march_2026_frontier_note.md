@@ -1533,6 +1533,46 @@ iterations:
 - `formal-completion-avatar`: `1.0`, marked pair
   `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
+### Carrier-preserving K3 enhancement theorem
+
+The next exact refinement is now in
+`exploration/w33_carrier_preserving_k3_enhancement_bridge.py`.
+
+This sharpens the live external realization wall itself. The exact-completion
+image line is already fixed to the head-compatible line in `U1`, the canonical
+family carrier plane is already fixed to `U1`, the ordered transport shell is
+already fixed as `81 -> 162 -> 81`, and the only missing operator datum is
+still the existing tail-to-head `81x81` slot.
+
+So any genuine K3-side enhancement that realizes the unique nonzero orbit must
+be carrier-preserving rather than carrier-replacing: it can only replace the
+current zero slot by the unique nonzero orbit in that already-fixed slot. The
+open theorem is therefore realization of that already-fixed carrier package on
+the K3 side, not discovery of a new line, plane, or shell.
+
+### Completion datum-to-avatar lift
+
+The next exact refinement is now in
+`exploration/w33_completion_datum_avatar_lift_bridge.py` and
+`tools/qiskit/toe_bridge_completion_datum_avatar_lift_search.py`.
+
+This isolates the actual live distinction inside the shared nonzero slot. The
+minimal and formal completion states already share the same nonzero orbit and
+the same completion normal form, so the difference is role:
+
+- `slot_replacement_datum`: only the required nonzero-orbit replacement in the fixed slot
+- `formal_completion_object`: the unique minimal common external object carrying that datum together with the already-forced head line in `U1` and the ordered shell `81 -> 162 -> 81`
+
+The matching shared-nonzero-wall oracle tensors that binary lift factor with
+the corrected diagnostic-relaxation shell, so the exact state count is
+`115200 = 57600·2`, padded to `17` qubits. The marked-count profile stays
+`20 / 40 / 120 / 240`, with exact mode relation
+`Marked_diagnostic_relaxation(relaxation) x {lift_state(mode)}`. Seeded exact
+checks at `256` shots came back clean at `64` iterations in both modes:
+
+- `slot-replacement-datum`: target-hit `1.0`
+- `formal-completion-object`: target-hit `1.0`
+
 ## Reproduce
 
 ### PMNS

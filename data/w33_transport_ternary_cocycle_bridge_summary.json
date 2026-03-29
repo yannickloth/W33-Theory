@@ -1,0 +1,48 @@
+{
+  "status": "ok",
+  "extension_cocycle": {
+    "field": "F3",
+    "adapted_group_order": 6,
+    "adapted_matrices_upper_triangular": true,
+    "twisted_cocycle_identity_exact": true,
+    "cocycle_values_on_sign_trivial_subgroup": [
+      0,
+      1,
+      2
+    ],
+    "cocycle_values_on_sign_nontrivial_coset": [
+      0,
+      1,
+      2
+    ],
+    "cocycle_is_not_a_coboundary": true
+  },
+  "fiber_nilpotent_operator": {
+    "matrix": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "rank": 1,
+    "square_zero": true,
+    "kernel_equals_image_equals_invariant_line": true,
+    "left_action_fixes_shift": true,
+    "right_action_twists_by_sign": true
+  },
+  "matter_extension_operator": {
+    "dimension": 162,
+    "rank": 81,
+    "nullity": 81,
+    "square_zero": true,
+    "image_dimension": 81,
+    "kernel_dimension": 81,
+    "image_equals_kernel": true,
+    "logical_qutrits": 81
+  },
+  "bridge_verdict": "The non-split ternary transport extension now has an explicit cohomology representative. In adapted basis every reduced holonomy matrix is [[1,c(g)],[0,s(g)]], and c(g) satisfies the exact twisted 1-cocycle law. It is not a coboundary, because it is already nonzero on sign-trivial group elements. The fiber shift N=[[0,1],[0,0]] is square-zero with image and kernel equal to the invariant line, and tensoring with the 81-dimensional logical matter sector gives a canonical 162-dimensional square-zero operator of rank 81. So the transport-twisted matter extension is now explicit as both a nontrivial cocycle class and a nilpotent operator package."
+}
