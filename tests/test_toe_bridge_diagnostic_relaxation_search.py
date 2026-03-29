@@ -30,7 +30,7 @@ def test_expected_marked_counts_are_exact() -> None:
 
 def test_relaxation_state_space_is_fixed_on_pass_pass_channel() -> None:
     _, diagnostic_states = build_relaxation_states()
-    assert len(diagnostic_states) == 57600
+    assert len(diagnostic_states) == 230400
 
 
 def test_marked_count_formula_holds_in_formal_completion_mode() -> None:

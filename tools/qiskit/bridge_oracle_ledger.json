@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -95,22 +95,38 @@
     {
       "name": "diagnostic-relaxation",
       "script": "tools/qiskit/toe_bridge_diagnostic_relaxation_search.py",
-      "theorem_surface": "accepted pass/pass concentration channel with hyperbolic and exceptional order theorems relaxed one sector at a time",
-      "state_count": 57600,
-      "padded_qubits": 16,
-      "marked_count_exact": 20,
-      "marked_count_by_relaxation": {
+      "theorem_surface": "fixed factorized 18-qubit bridge space with separate hyperbolic and exceptional order relaxations",
+      "state_count": 230400,
+      "padded_qubits": 18,
+      "marked_count_profile": {
         "exact": 20,
         "exceptional-order-relaxed": 40,
         "hyperbolic-order-relaxed": 120,
         "both-orders-relaxed": 240
       },
       "promoted_operating_point": {
-        "kind": "seeded-verification",
+        "kind": "seeded-diagnostic-family",
         "seed": 7,
         "shots": 256,
-        "modes": ["current-shadow", "formal-completion"],
-        "by_relaxation": {
+        "current_shadow": {
+          "exact": {
+            "iterations": 45,
+            "target_hit_probability": 1.0
+          },
+          "exceptional-order-relaxed": {
+            "iterations": 32,
+            "target_hit_probability": 1.0
+          },
+          "hyperbolic-order-relaxed": {
+            "iterations": 18,
+            "target_hit_probability": 1.0
+          },
+          "both-orders-relaxed": {
+            "iterations": 13,
+            "target_hit_probability": 0.99609375
+          }
+        },
+        "formal_completion": {
           "exact": {
             "iterations": 45,
             "target_hit_probability": 1.0
