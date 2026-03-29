@@ -762,6 +762,22 @@ operating points:
 - `18` iterations for `hyperbolic-order-relaxed` with target-hit probability `1.0`
 - `13` iterations for `both-orders-relaxed` with target-hit probability `0.99609375`
 
+The next exact bridge wall is now in
+[toe_bridge_enhancement_factor_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_enhancement_factor_search.py).
+This refines the old glue dichotomy into the exact three-state external
+enhancement hierarchy:
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+So the bridge search now distinguishes the current refined K3 object, the exact
+minimal new datum needed to realize the nonzero cocycle, and the resulting
+formal completion object. The exact search space is `345600` states on `19`
+qubits with marked count `20` in each mode. On seeded verification runs
+(`seed = 7`, `256` shots), all three modes hit only marked states with target-hit
+probability `1.0` at the analytic Grover count `127`.
+
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable version, use

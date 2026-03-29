@@ -1204,6 +1204,39 @@ points in both `current-shadow` and `formal-completion` modes:
 In all four sectors the kept top decoded outputs stayed inside the marked
 sector, with no non-target valid states and no invalid bitstrings.
 
+### Qiskit bridge enhancement-factor search
+
+The next exact bridge wall is now in
+`tools/qiskit/toe_bridge_enhancement_factor_search.py`.
+
+This does not just rephrase the old glue dichotomy. It refines that wall into
+the exact three-state enhancement hierarchy already proved on the theory side:
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+So the local Qiskit search now distinguishes:
+
+- the current refined K3 object, which still realizes only the zero orbit;
+- the minimal exact new datum, which is just replacing that zero slot by the
+  unique nonzero orbit in the already-fixed shell;
+- the resulting formal completion avatar carrying the forced head line and the
+  nonzero completion normal form.
+
+The explicit search space has size `345600`, using `19` qubits after padding,
+with marked count `20` in each mode.
+
+The seeded verification runs (`seed = 7`, `256` shots) gave the same exact
+operating point in all three modes:
+
+- `current-k3-zero-orbit`: `127` iterations, target-hit probability `1.0`
+- `minimal-external-enhancement`: `127` iterations, target-hit probability `1.0`
+- `formal-completion-avatar`: `127` iterations, target-hit probability `1.0`
+
+In all three modes the kept top decoded outputs stayed inside the marked
+sector, with no non-target valid states and no invalid bitstrings.
+
 The promoted local bridge-oracle stack is now also recorded in
 `tools/qiskit/bridge_oracle_ledger.json`.
 

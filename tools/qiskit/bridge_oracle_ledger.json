@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -143,6 +143,34 @@
             "iterations": 13,
             "target_hit_probability": 0.99609375
           }
+        }
+      }
+    },
+    {
+      "name": "enhancement-factor",
+      "script": "tools/qiskit/toe_bridge_enhancement_factor_search.py",
+      "theorem_surface": "three-state external enhancement hierarchy: current K3 object, minimal exact enhancement, and formal completion avatar",
+      "state_count": 345600,
+      "padded_qubits": 19,
+      "marked_count": 20,
+      "enhancement_states": [
+        "current_k3_zero_orbit",
+        "minimal_external_enhancement",
+        "formal_completion_avatar"
+      ],
+      "promoted_operating_point": {
+        "kind": "seeded-three-mode-verification",
+        "seed": 7,
+        "shots": 256,
+        "iterations": 127,
+        "current-k3-zero-orbit": {
+          "target_hit_probability": 1.0
+        },
+        "minimal-external-enhancement": {
+          "target_hit_probability": 1.0
+        },
+        "formal-completion-avatar": {
+          "target_hit_probability": 1.0
         }
       }
     }

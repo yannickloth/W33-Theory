@@ -381,6 +381,29 @@ combined permutation rule: the exceptional order contributes the exact binary
 factor, the hyperbolic order contributes the exact 6-fold factor, and the
 interleaving sector is already free in the diagnostic-order oracle.
 
+The next exact bridge wall is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_enhancement_factor_search.py \
+  --mode formal-completion-avatar \
+  --shots 256 \
+  --seed 7
+```
+
+This refines the old glue dichotomy into the exact three-state external
+enhancement hierarchy:
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+So the oracle now distinguishes the current refined K3 object, the minimal
+exact new datum needed for nonzero completion, and the resulting formal
+completion object. The exact search space has size `345600`, padded to `19`
+qubits, with marked count `20` in each mode. On seeded verification runs
+(`seed = 7`, `256` shots), all three modes hit only marked states with
+target-hit probability `1.0` at `127` iterations.
+
 The current promoted bridge-oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable surface, use

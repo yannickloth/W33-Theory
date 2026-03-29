@@ -42,6 +42,10 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_order_search.py",
         "base_args": ["--mode", "formal-completion"],
     },
+    "enhancement-factor": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_factor_search.py",
+        "base_args": ["--mode", "formal-completion-avatar"],
+    },
 }
 
 
