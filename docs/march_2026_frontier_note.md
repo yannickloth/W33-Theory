@@ -1095,6 +1095,26 @@ Grover windows. Most sharply, the fully relaxed sector moves from a `0`-step
 optimum on the bare-support `120`-state shell to a `1`-step optimum on the
 enlarged shell.
 
+### Qiskit double-interleaving shadow search
+
+A bounded exact side result now sits between that support stack and the larger
+bridge shell in `tools/qiskit/toe_double_interleaving_shadow_search.py`.
+
+The support-core interleavings and the hyperbolic-factor interleavings are
+isolated as a joint `100 = 10 * 10` shell of two canonical `J(5,3)` copies.
+So the exact bridge now carries two separate `10`-state `3-of-5` Johnson
+objects at once.
+
+The current bridge is asymmetric there:
+
+- the support theorem freezes one support interleaving
+- the factor copy remains free
+
+A two-seed study over seeds `7,8` shows the exact mode is cleanest at `2`
+iterations, with mean target-hit probability `0.97265625`. If the support
+interleaving theorem is relaxed too, the padded-shell optimum collapses to `0`
+iterations.
+
 ### Qiskit bridge product-state search
 
 The next exact search layer is now in
@@ -1363,6 +1383,40 @@ operating point in all three modes:
 - `current-k3-zero-orbit`: `127` iterations, target-hit probability `1.0`
 - `minimal-external-enhancement`: `127` iterations, target-hit probability `1.0`
 - `formal-completion-avatar`: `127` iterations, target-hit probability `1.0`
+
+### Qiskit cocycle-compatibility wall search
+
+The stronger replacement for that free three-state axis is now in
+`tools/qiskit/toe_bridge_cocycle_compatibility_search.py`.
+
+Instead of a bare enhancement label, it uses the exact `6`-state wall factor
+
+`wall_layer x orbit_state`
+
+with wall layers
+
+- `current_refined_k3_object`
+- `slot_replacement_datum`
+- `formal_completion_object`
+
+and orbit states
+
+- `zero_orbit`
+- `unique_nonzero_orbit`
+
+Only `3` wall states are admissible, and only `2` of those are nonzero:
+
+- `current_refined_k3_object x zero_orbit`
+- `slot_replacement_datum x unique_nonzero_orbit`
+- `formal_completion_object x unique_nonzero_orbit`
+
+So the wall is no longer just a relabeled enhancement family. It is an exact
+compatibility theorem with forbidden corners. Tensoring that factor with the
+corrected diagnostic shell again gives `345600` states on `19` qubits. Seeded
+exact checks at `256` shots now give:
+
+- `all-compatible`: `60` marked states, `74` iterations, target-hit `1.0`
+- `nonzero-compatible`: `40` marked states, `90` iterations, target-hit `1.0`
 
 In all three modes the kept top decoded outputs stayed inside the marked
 sector, with no non-target valid states and no invalid bitstrings.

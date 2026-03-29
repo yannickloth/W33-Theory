@@ -26,6 +26,14 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_support_diagnostic_search.py",
         "base_args": [],
     },
+    "double-interleaving-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_double_interleaving_shadow_search.py",
+        "base_args": ["--relaxation", "exact"],
+    },
+    "double-interleaving-support-relaxed": {
+        "script": ROOT / "tools" / "qiskit" / "toe_double_interleaving_shadow_search.py",
+        "base_args": ["--relaxation", "support-interleaving-relaxed"],
+    },
     "product": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_product_search.py",
         "base_args": ["--mode", "formal-completion"],
@@ -66,6 +74,14 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_factor_search.py",
         "base_args": ["--mode", "formal-completion-avatar"],
     },
+    "cocycle-compatibility-all": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_search.py",
+        "base_args": ["--focus", "all-compatible"],
+    },
+    "cocycle-compatibility-nonzero": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_search.py",
+        "base_args": ["--focus", "nonzero-compatible"],
+    },
     "diagnostic-enhancement-exact": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
         "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],
@@ -80,6 +96,22 @@ TARGETS = {
     },
     "diagnostic-enhancement-both": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
+    },
+    "diagnostic-slot-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],
+    },
+    "diagnostic-slot-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "diagnostic-slot-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "diagnostic-slot-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
         "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
     },
     "enhancement-relaxation-exact": {

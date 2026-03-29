@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -102,6 +102,31 @@
         "both-relaxed": {
           "iterations": 1,
           "mean_target_hit_probability": 0.994140625
+        }
+      }
+    },
+    {
+      "name": "double-interleaving-shadow",
+      "script": "tools/qiskit/toe_double_interleaving_shadow_search.py",
+      "theorem_surface": "double-Johnson interleaving shadow J(5,3) x J(5,3); support copy frozen, factor copy free",
+      "state_count": 100,
+      "padded_qubits": 7,
+      "marked_count_profile": {
+        "exact": 10,
+        "support-interleaving-relaxed": 100
+      },
+      "promoted_operating_point": {
+        "kind": "two-seed exact study plus seeded relaxed verification",
+        "seeds": [7, 8],
+        "shots": 256,
+        "exact": {
+          "iterations": 2,
+          "mean_target_hit_probability": 0.97265625
+        },
+        "support-interleaving-relaxed": {
+          "iterations": 0,
+          "seed": 7,
+          "target_hit_probability": 0.7734375
         }
       }
     },
@@ -281,6 +306,42 @@
           "target_hit_probability": 1.0
         },
         "formal-completion-avatar": {
+          "target_hit_probability": 1.0
+        }
+      }
+    },
+    {
+      "name": "cocycle-compatibility-wall",
+      "script": "tools/qiskit/toe_bridge_cocycle_compatibility_search.py",
+      "theorem_surface": "corrected diagnostic shell tensored with the exact 6-state cocycle-realization compatibility factor",
+      "state_count": 345600,
+      "padded_qubits": 19,
+      "wall_state_count": 6,
+      "marked_count_profile": {
+        "all-compatible": 60,
+        "nonzero-compatible": 40
+      },
+      "compatible_wall_states": {
+        "all-compatible": [
+          ["current_refined_k3_object", "zero_orbit"],
+          ["slot_replacement_datum", "unique_nonzero_orbit"],
+          ["formal_completion_object", "unique_nonzero_orbit"]
+        ],
+        "nonzero-compatible": [
+          ["slot_replacement_datum", "unique_nonzero_orbit"],
+          ["formal_completion_object", "unique_nonzero_orbit"]
+        ]
+      },
+      "promoted_operating_point": {
+        "kind": "seeded wall verification",
+        "seed": 7,
+        "shots": 256,
+        "all-compatible": {
+          "iterations": 74,
+          "target_hit_probability": 1.0
+        },
+        "nonzero-compatible": {
+          "iterations": 90,
           "target_hit_probability": 1.0
         }
       }

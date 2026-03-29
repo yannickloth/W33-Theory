@@ -322,6 +322,29 @@ but the larger `360 -> 512` padded shell shifts the clean Grover windows.
 Most sharply, the fully relaxed sector moves from a `0`-step optimum on the
 bare-support `120`-state family to a `1`-step optimum on the enlarged shell.
 
+The next bounded exact side result is:
+
+```bash
+qiskit-python tools/qiskit/toe_double_interleaving_shadow_search.py \
+  --relaxation exact \
+  --shots 256 \
+  --seed 7
+```
+
+This isolates the two exact `10`-state interleaving layers already present in
+the bridge:
+
+- the support-core interleavings
+- the hyperbolic-factor interleavings
+
+Both are exact copies of `J(5,3)`, so the joint interleaving shadow has size
+`100 = 10 * 10`. The current bridge is asymmetric there: the support theorem
+freezes one support interleaving, while the factor copy remains free. A
+two-seed study over seeds `7,8` shows the exact mode is cleanest at `2`
+iterations with mean target-hit probability `0.97265625`. If the support
+interleaving theorem is relaxed too, the marked count jumps to `100` and the
+padded-shell optimum collapses to the uniform state at `0` iterations.
+
 The next exact search layer is:
 
 ```bash
@@ -535,6 +558,45 @@ completion object. The exact search space has size `345600`, padded to `19`
 qubits, with marked count `20` in each mode. On seeded verification runs
 (`seed = 7`, `256` shots), all three modes hit only marked states with
 target-hit probability `1.0` at `127` iterations.
+
+The stronger replacement for that free three-label axis is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_cocycle_compatibility_search.py \
+  --focus nonzero-compatible \
+  --iterations 90 \
+  --shots 256 \
+  --seed 7
+```
+
+This resolves the wall as an exact compatibility theorem on a `6`-state factor
+
+`wall_layer x orbit_state`
+
+with wall layers
+
+- `current_refined_k3_object`
+- `slot_replacement_datum`
+- `formal_completion_object`
+
+and orbit states
+
+- `zero_orbit`
+- `unique_nonzero_orbit`
+
+Only `3` wall states are admissible, and only `2` of those are nonzero:
+
+- `current_refined_k3_object x zero_orbit`
+- `slot_replacement_datum x unique_nonzero_orbit`
+- `formal_completion_object x unique_nonzero_orbit`
+
+So the wall is no longer just a relabeled three-mode family. It is a
+compatibility factor with forbidden corners. Tensoring that factor with the
+corrected diagnostic shell gives the exact `345600`-state `19`-qubit search.
+Seeded exact checks at `256` shots now give:
+
+- `all-compatible`: `60` marked states, `74` iterations, target-hit `1.0`
+- `nonzero-compatible`: `40` marked states, `90` iterations, target-hit `1.0`
 
 The current promoted bridge-oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
