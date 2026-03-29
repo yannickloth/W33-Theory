@@ -1384,6 +1384,32 @@ operating point in all three modes:
 - `minimal-external-enhancement`: `127` iterations, target-hit probability `1.0`
 - `formal-completion-avatar`: `127` iterations, target-hit probability `1.0`
 
+### Qiskit diagnostic-enhancement-slot search
+
+The three-state enhancement hierarchy is now projected sharply onto the older
+binary slot wall in
+`exploration/w33_enhancement_slot_hierarchy_bridge.py` and
+`tools/qiskit/toe_bridge_diagnostic_enhancement_slot_search.py`.
+
+The exact law is:
+
+- `current_k3_zero_orbit -> zero_by_splitness`
+- `minimal_external_enhancement -> unique_nonzero_orbit_in_existing_slot`
+- `formal_completion_avatar -> unique_nonzero_orbit_in_existing_slot`
+
+So the enhancement hierarchy is not another copy of the binary slot wall. It
+is a strict refinement of it: one zero-slot state and two distinct nonzero-slot
+states. The diagnostic enhancement shell refined by slot status has exact size
+`172800 = 86400·2`, padded to `18` qubits, and its marked-count profile stays
+`20 / 40 / 120 / 240`. What changes is the exact marked pair projection: each
+mode lands on one enhancement/slot singleton. Seeded exact checks at `256`
+shots and `90` iterations returned target-hit probability `1.0` in all three
+exact modes:
+
+- `current-k3-zero-orbit -> (current_k3_zero_orbit, zero_by_splitness)`
+- `minimal-external-enhancement -> (minimal_external_enhancement, unique_nonzero_orbit_in_existing_slot)`
+- `formal-completion-avatar -> (formal_completion_avatar, unique_nonzero_orbit_in_existing_slot)`
+
 ### Qiskit cocycle-compatibility wall search
 
 The stronger replacement for that free three-state axis is now in
@@ -1476,6 +1502,36 @@ shell. Seeded nonzero-wall checks at `256` shots give:
 
 The promoted local bridge-oracle stack is now also recorded in
 `tools/qiskit/bridge_oracle_ledger.json`.
+
+### Enhancement-slot hierarchy bridge
+
+The next exact refinement is now in
+`exploration/w33_enhancement_slot_hierarchy_bridge.py` and
+`tools/qiskit/toe_bridge_diagnostic_enhancement_slot_search.py`.
+
+The exact compatibility law is:
+
+- `current_k3_zero_orbit -> zero_by_splitness`
+- `minimal_external_enhancement -> unique_nonzero_orbit_in_existing_slot`
+- `formal_completion_avatar -> unique_nonzero_orbit_in_existing_slot`
+
+So the three-state enhancement hierarchy strictly refines the older two-state
+slot wall rather than duplicating it. The current K3 state is separated from
+both completion-side states by slot status, while the minimal and formal
+completion states share the same nonzero slot but not the same support role.
+
+The Qiskit shell for that theorem is `172800 = 86400·2`, padded to `18`
+qubits. The marked-count profile stays the same as the diagnostic-enhancement
+family inside each mode, but the marked pair itself is now exact. Seeded
+`both-orders-relaxed` checks at `256` shots came back exact at `26`
+iterations:
+
+- `current-k3-zero-orbit`: `1.0`, marked pair
+  `['current_k3_zero_orbit', 'zero_by_splitness']`
+- `minimal-external-enhancement`: `1.0`, marked pair
+  `['minimal_external_enhancement', 'unique_nonzero_orbit_in_existing_slot']`
+- `formal-completion-avatar`: `1.0`, marked pair
+  `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
 ## Reproduce
 

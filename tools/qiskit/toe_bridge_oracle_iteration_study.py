@@ -178,6 +178,18 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_cocycle_compatibility_relaxation_search.py",
         "base_args": ["--focus", "nonzero-compatible", "--relaxation", "both-orders-relaxed"],
     },
+    "diagnostic-enhancement-slot-current-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "current-k3-zero-orbit", "--relaxation", "both-orders-relaxed"],
+    },
+    "diagnostic-enhancement-slot-minimal-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "minimal-external-enhancement", "--relaxation", "both-orders-relaxed"],
+    },
+    "diagnostic-enhancement-slot-formal-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
+    },
 }
 
 

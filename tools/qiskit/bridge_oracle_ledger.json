@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -461,6 +461,50 @@
         "both-orders-relaxed": {
           "iterations": 26,
           "target_hit_probability": 1.0
+        }
+      }
+    },
+    {
+      "name": "enhancement-slot-hierarchy",
+      "script": "tools/qiskit/toe_bridge_diagnostic_enhancement_slot_search.py",
+      "theorem_surface": "diagnostic-enhancement shell refined by the exact binary cocycle-slot law",
+      "state_count": 172800,
+      "padded_qubits": 18,
+      "slot_state_count": 2,
+      "marked_count_profile": {
+        "exact": 20,
+        "exceptional-order-relaxed": 40,
+        "hyperbolic-order-relaxed": 120,
+        "both-orders-relaxed": 240
+      },
+      "compatible_enhancement_slot_pairs": [
+        ["current_k3_zero_orbit", "zero_by_splitness"],
+        ["minimal_external_enhancement", "unique_nonzero_orbit_in_existing_slot"],
+        ["formal_completion_avatar", "unique_nonzero_orbit_in_existing_slot"]
+      ],
+      "promoted_operating_point": {
+        "kind": "seeded three-mode both-orders-relaxed verification",
+        "seed": 7,
+        "shots": 256,
+        "relaxation": "both-orders-relaxed",
+        "iterations": 26,
+        "current-k3-zero-orbit": {
+          "target_hit_probability": 1.0,
+          "marked_pair_projection": [
+            ["current_k3_zero_orbit", "zero_by_splitness"]
+          ]
+        },
+        "minimal-external-enhancement": {
+          "target_hit_probability": 1.0,
+          "marked_pair_projection": [
+            ["minimal_external_enhancement", "unique_nonzero_orbit_in_existing_slot"]
+          ]
+        },
+        "formal-completion-avatar": {
+          "target_hit_probability": 1.0,
+          "marked_pair_projection": [
+            ["formal_completion_avatar", "unique_nonzero_orbit_in_existing_slot"]
+          ]
         }
       }
     }

@@ -889,6 +889,29 @@ qubits with marked count `20` in each mode. On seeded verification runs
 (`seed = 7`, `256` shots), all three modes hit only marked states with target-hit
 probability `1.0` at the analytic Grover count `127`.
 
+That hierarchy is now projected sharply onto the older binary slot wall in
+[w33_enhancement_slot_hierarchy_bridge.py](/mnt/c/Repos/Theory%20of%20Everything/exploration/w33_enhancement_slot_hierarchy_bridge.py)
+and
+[toe_bridge_diagnostic_enhancement_slot_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_enhancement_slot_search.py).
+The exact law is:
+
+- `current_k3_zero_orbit -> zero_by_splitness`
+- `minimal_external_enhancement -> unique_nonzero_orbit_in_existing_slot`
+- `formal_completion_avatar -> unique_nonzero_orbit_in_existing_slot`
+
+So the three-state enhancement hierarchy is not another copy of the binary slot
+wall. It is a strict refinement of it: one zero-slot state and two distinct
+nonzero-slot states. The diagnostic enhancement shell refined by slot status
+has exact size `172800 = 86400·2`, padded to `18` qubits, and the marked-count
+profile stays `20 / 40 / 120 / 240`. What changes is the exact marked pair
+projection: each mode lands on one enhancement/slot singleton. Seeded exact
+checks at `256` shots and `90` iterations returned target-hit probability `1.0`
+in all three exact modes:
+
+- `current-k3-zero-orbit -> (current_k3_zero_orbit, zero_by_splitness)`
+- `minimal-external-enhancement -> (minimal_external_enhancement, unique_nonzero_orbit_in_existing_slot)`
+- `formal-completion-avatar -> (formal_completion_avatar, unique_nonzero_orbit_in_existing_slot)`
+
 The stronger replacement for that free three-state axis is now in
 [toe_bridge_cocycle_compatibility_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_cocycle_compatibility_search.py).
 Instead of a bare enhancement label, it uses the exact `6`-state wall factor
@@ -966,6 +989,30 @@ Seeded nonzero-wall checks at `256` shots give:
 - `exceptional-order-relaxed`: `64` iterations, target-hit `1.0`
 - `hyperbolic-order-relaxed`: `37` iterations, target-hit `1.0`
 - `both-orders-relaxed`: `26` iterations, target-hit `1.0`
+
+The next exact refinement is the enhancement-slot hierarchy in
+[w33_enhancement_slot_hierarchy_bridge.py](/mnt/c/Repos/Theory%20of%20Everything/exploration/w33_enhancement_slot_hierarchy_bridge.py)
+and the matching oracle
+[toe_bridge_diagnostic_enhancement_slot_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_enhancement_slot_search.py).
+The exact compatibility law is:
+
+- `current_k3_zero_orbit -> zero_by_splitness`
+- `minimal_external_enhancement -> unique_nonzero_orbit_in_existing_slot`
+- `formal_completion_avatar -> unique_nonzero_orbit_in_existing_slot`
+
+So the three-state enhancement hierarchy strictly refines the older two-state
+slot wall rather than duplicating it. The current K3 state is separated from
+both completion-side states by slot status, while the minimal and formal
+completion states share the same nonzero slot but not the same support role.
+
+The Qiskit shell for that theorem is `172800 = 86400·2` states on `18` qubits.
+Its marked-count profile stays the same as the diagnostic-enhancement family
+inside each mode, but the marked pair is now exact. Seeded `both-orders-relaxed`
+checks at `256` shots came back exact at `26` iterations:
+
+- `current-k3-zero-orbit`: `1.0`, marked pair `['current_k3_zero_orbit', 'zero_by_splitness']`
+- `minimal-external-enhancement`: `1.0`, marked pair `['minimal_external_enhancement', 'unique_nonzero_orbit_in_existing_slot']`
+- `formal-completion-avatar`: `1.0`, marked pair `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).

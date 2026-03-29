@@ -23,6 +23,7 @@ search stack.
 | Enhancement factor | `toe_bridge_enhancement_factor_search.py` | `345600` | `19` | `20` | seeded `127`-iteration verification exact in all three enhancement modes |
 | Cocycle compatibility wall | `toe_bridge_cocycle_compatibility_search.py` | `345600` | `19` | `60/40` | seeded exact wall checks: `74` iterations gives target-hit `1.0` on the all-compatible wall, `90` gives `1.0` on the nonzero-compatible wall |
 | Cocycle compatibility wall relaxation | `toe_bridge_cocycle_compatibility_relaxation_search.py` | `345600` | `19` | `40/80/240/480` on live nonzero wall | seeded nonzero-wall family: `90 / 64 / 37 / 26` iterations gives `1.0 / 1.0 / 1.0 / 1.0` for exact / exceptional / hyperbolic / both |
+| Enhancement-slot hierarchy | `toe_bridge_diagnostic_enhancement_slot_search.py` | `172800` | `18` | `20/40/120/240` inside each mode | seeded three-mode `both-orders-relaxed` verification: `26` iterations gives `1.0` for current / minimal / formal with exact marked enhancement-slot pairs |
 
 ## Exact Diagnostic Meaning
 
@@ -191,6 +192,25 @@ and the representative seeded checks at `256` shots were exact at:
 - `exceptional-order-relaxed`: `64` iterations, target-hit `1.0`
 - `hyperbolic-order-relaxed`: `37` iterations, target-hit `1.0`
 - `both-orders-relaxed`: `26` iterations, target-hit `1.0`
+
+The enhancement-slot hierarchy is the next exact refinement. It does not add a
+free label. It sharpens the relationship between the exact three-state
+enhancement hierarchy and the older binary slot wall:
+
+- `current_k3_zero_orbit -> zero_by_splitness`
+- `minimal_external_enhancement -> unique_nonzero_orbit_in_existing_slot`
+- `formal_completion_avatar -> unique_nonzero_orbit_in_existing_slot`
+
+So the current K3 state is separated from both completion-side states by slot
+status, while the minimal and formal completion states share the same nonzero
+slot but not the same support role. The matching `172800`-state oracle is the
+diagnostic-enhancement shell tensored with the binary slot factor. In seeded
+`both-orders-relaxed` checks at `256` shots and `26` iterations, all three
+modes returned target-hit probability `1.0`, with exact marked pairs:
+
+- `['current_k3_zero_orbit', 'zero_by_splitness']`
+- `['minimal_external_enhancement', 'unique_nonzero_orbit_in_existing_slot']`
+- `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
 ## Reproduce
 
