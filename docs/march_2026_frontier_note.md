@@ -967,6 +967,44 @@ So the conservative exact statement is now: the current bridge sees the carrier 
 
 This is still not the final global theorem, but it is the sharpest exact local/global split so far on the unresolved external branch.
 
+### Qiskit support-hierarchy search
+
+The repo now has a first TOE-specific local Qiskit search workflow in
+`tools/qiskit/toe_support_hierarchy_search.py`.
+
+This is deliberately conservative. It does not guess new continuum physics. It
+encodes the exact support hierarchy already proved in the bridge stack:
+
+- `2E13` image channel on the head-compatible line
+- first family-sensitive `A4` packet on minimal plane carrier `U1`
+- transport completion on the full avatar shell
+
+So the oracle marks exactly the support permutations whose first three slots are
+
+- `head_line`
+- `u1_plane`
+- `transport_avatar`
+
+with the local `U3` / `E8_2` order left free.
+
+The first verified run on the explicit five-support search space had:
+
+- permutation count `120`
+- marked count `2`
+- qubit count `7`
+- Grover iterations `6`
+- seeded target hit probability `255/256 = 0.99609375` at `256` shots
+
+with the two exact marked permutations dominant, one residual non-target valid
+permutation, and no invalid bitstrings.
+
+A nearby iteration study over seeds `5, 6, 7` also peaks exactly at the
+analytic Grover count:
+
+- `5` iterations: mean target-hit probability `0.9609375`
+- `6` iterations: mean target-hit probability `0.9973958333333334`
+- `7` iterations: mean target-hit probability `0.8984375`
+
 ## Reproduce
 
 ### PMNS

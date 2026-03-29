@@ -1,10 +1,137 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Integrative Geometry — E6 / Double‑sixes / Fano</title>
+  <style>
+    body{font-family:Inter,Arial,Helvetica,sans-serif;margin:24px;color:#111}
+    header{display:flex;align-items:center;gap:12px}
+    h1{margin:0;font-size:20px}
+    .card{border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin:12px 0;background:#fff}
+    pre{background:#f7fafc;padding:10px;border-radius:6px;overflow:auto}
+    .missing{color:#b00020}
+    a{color:#0366d6}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Integrative Geometry: E6 / Double‑sixes / Fano / Császár‑Szilassi</h1>
+  </header>
+  <p id="status">Loading integrative summary...</p>
+  <div id="content"></div>
+
+  <script>
+    async function loadSummary(){
+    const url = '../artifacts/integrative_geometry_summary.json';
+    try{
+      const r = await fetch(url);
+      if(!r.ok) throw new Error('not-ok');
+      const data = await r.json();
+      document.getElementById('status').textContent = 'Loaded integrative summary.';
+      render(data);
+      // try loading relations
+      try{
+        const rel = await fetch('../artifacts/integrative_relations.json');
+        if(rel.ok){
+          const rd = await rel.json();
+          document.getElementById('content').appendChild(createCard('Related files (automated scan)', renderRelationsHtml(rd)));
+        }
+      }catch(e){/* ignore */}
+    }catch(err){
+      document.getElementById('status').innerHTML = '<span class="missing">Aggregator JSON not found.</span> Run <code>python scripts/aggregate_geometry_e6.py</code> and refresh.';
+      renderFallback();
+    }
+  }
+
+  function createCard(title, inner){
+    const d = document.createElement('div'); d.className='card';
+    const h = document.createElement('h3'); h.textContent = title; d.appendChild(h);
+    const c = document.createElement('div'); c.innerHTML = inner; d.appendChild(c);
+    return d;
+  }
+
+  function pretty(obj){ return '<pre>' + JSON.stringify(obj,null,2) + '</pre>'; }
+
+  function render(data){
+    const root = document.getElementById('content'); root.innerHTML = '';
+    if(data.missing && data.missing.length){ root.appendChild(createCard('Missing artifacts', '<p class="missing">'+data.missing.join(', ')+'</p>')); }
+    const coll = data.collected || {};
+    for(const key of Object.keys(coll)){
+      const v = coll[key];
+      let html = '';
+      if(key.endsWith('we6_double_six_stabilizer_summary.json')){
+        html += '<p><strong>W(E6) order:</strong> ' + (v.we6_group_order||'n/a') + '</p>';
+        html += '<p><strong>Double‑sixes:</strong> ' + (v.n_double_sixes||'n/a') + '</p>';
+        html += '<p><strong>Stabilizer:</strong> ' + (v.double_six_stabilizer_size_allow_swap||'n/a') + '</p>';
+        html += '<h4>Example</h4>' + pretty(v.example_double_six||{});
+      } else if(key.includes('csaszars_szilassi')){
+        html = pretty(v);
+      } else if(key.includes('heawood')){
+        html = pretty(v);
+      } else {
+        html = pretty(v);
+      }
+      root.appendChild(createCard(key, html));
+    }
+    root.appendChild(createCard('Run aggregator', '<p>To refresh the integrative summary run: <code>python scripts/aggregate_geometry_e6.py</code></p><p>See docs: <a href="INTEGRATIVE_GEOMETRY_E6.md">INTEGRATIVE_GEOMETRY_E6.md</a></p>'));
+  }
+
+  function renderRelationsHtml(rd){
+    if(!rd || !rd.tokens) return '<p>No relations found.</p>';
+    const nodes = [];
+    for(const t of rd.tokens.slice(0,200)){
+      const items = rd.matches[t] || [];
+      if(items.length===0) continue;
+      let html = `<strong>${t}</strong> — ${items.length} matches<hr>`;
+      html += '<ul>';
+      for(const it of items.slice(0,8)){
+        html += `<li><code>${it.path}</code> (line ${it.line_no}): <span style="font-family:monospace">${escapeHtml(it.snippet)}</span></li>`;
+      }
+      if(items.length>8) html += `<li>... ${items.length-8} more</li>`;
+      html += '</ul>';
+      nodes.push(html);
+    }
+    return nodes.join('\n');
+  }
+
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  async function renderFallback(){
+    const root = document.getElementById('content'); root.innerHTML = '';
+    const files = [
+      '../tools/we6_double_six_stabilizer_summary.json',
+      '../csaszars_szilassi_spectral_summary.json',
+      '../heawood_tetra_oscillator.json',
+      '../heawood_fano7_tetra_alignment.json',
+      '../tetrahedral_harmonic_comparison.json',
+      '../artifacts/e6_27_connection.json'
+    ];
+    for(const p of files){
+      try{
+        const r = await fetch(p);
+        if(!r.ok) continue;
+        const j = await r.json();
+        root.appendChild(createCard(p, pretty(j)));
+      }catch(e){}
+    }
+    root.appendChild(createCard('Run aggregator', '<pre>python scripts/aggregate_geometry_e6.py</pre>'));
+  }
+
+  loadSummary();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>W(3,3)-E8 Live Paper -- Exact Closure and Finite-Geometry Program</title>
 <meta name="description" content="Evidence-tiered live paper for the W(3,3)-E8 research program: verified geometry, full Dirac/Hodge spectral closure, exact PMNS cyclotomic formulas, and the remaining CE2/L-infinity residual gap.">
+<meta name="theme-color" content="#0d1117">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://github.com/wilcompute/W33-Theory/blob/master/docs/index.html">
 <style>
 
 :root {
@@ -19,6 +146,14 @@
   --accent4: #f0883e;
   --border: #30363d;
   --gold: #e3b341;
+}
+/* Accessibility: skip-to-content link (visible on focus) */
+.skip-link {
+  position: absolute; left: -999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+}
+.skip-link:focus {
+  position: static; left: auto; width: auto; height: auto; padding: 0.5rem 0.75rem;
+  background: var(--accent); color: #111; border-radius: 6px; z-index: 9999;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; max-width: 100%; overflow-x: hidden; }
@@ -831,6 +966,7 @@ section h2::after {
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#page-content">Skip to content</a>
 
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
 <header class="hero">
@@ -885,7 +1021,7 @@ section h2::after {
 
 <!-- ═══════════════════════ SIDEBAR TOC ═══════════════════════ -->
 <div class="sidebar-overlay" onclick="closeMobileNav()"></div>
-<aside class="sidebar-toc" id="site-sidebar">
+<aside class="sidebar-toc" id="site-sidebar" role="navigation" aria-label="Site navigation">
   <div class="sidebar-header">
     <div class="sidebar-title">Navigator</div>
     <button class="sidebar-close" type="button" aria-label="Close navigator" onclick="closeMobileNav()">&times;</button>
@@ -1026,7 +1162,7 @@ section h2::after {
 <!-- ═══════════════════════ BACK TO TOP ═══════════════════════ -->
 <a href="#" class="back-to-top" id="backToTop" title="Back to top">&uarr;</a>
 
-<div class="page-content">
+<main id="page-content" class="page-content" role="main">
 <div class="container">
 
 <!-- Old nav removed -->
@@ -2069,11 +2205,17 @@ section h2::after {
     <tr><td>Full-rank glue normal form</td><td>Inside that fixed polarized shell, the remaining completion datum is no longer an arbitrary matrix problem. Exact completion requires a tail-to-head <code>81&times;81</code> glue block of rank <code>81</code>, so any such block is automatically an isomorphism from tail to head. Up to independent head/tail basis change it is therefore equivalent to <code>I<sub>81</sub></code>, and the completed polarized nilpotent has the single canonical normal form <code>J2<sup>81</sup></code>. So the remaining transport wall is now existence of a non-split completion, not glue shape.</td><td class="status-ok">✅ exact reduction of the glue-shape ambiguity to one canonical full-rank normal form</td></tr>
     <tr><td>Internal operator normal-form match</td><td>The internal transport extension already has explicit operator model <code>I<sub>81</sub> &otimes; [[0,1],[0,0]]</code> on the <code>162</code>-sector, coming from the nontrivial ternary transport cocycle. Any exact external completion of the rigid avatar now has the same polarized normal form <code>J2<sup>81</sup></code> up to independent head/tail basis change. So the remaining transport wall is no longer operator-shape mismatch; it is realization of the nontrivial transport cocycle class on the external side.</td><td class="status-ok">✅ exact match between the internal transport operator model and the unique external completion normal form</td></tr>
     <tr><td>Unique nonzero ternary cocycle orbit</td><td>Over <code>F3</code> the internal fiber shift is <code>N = [[0,1],[0,0]]</code>, and the only nonzero scalar multiples are <code>N</code> and <code>2N</code>. Those are not different gauge types: they are conjugate by the adapted diagonal basis change <code>diag(1,2)</code>. So up to the natural head/tail basis gauge there is only one nonzero ternary glue orbit. The remaining external wall is therefore existence of that unique nonzero orbit, not selection among several different nonzero ternary types.</td><td class="status-ok">✅ exact reduction of the ternary glue-class ambiguity to one unique nonzero gauge orbit</td></tr>
+    <tr><td>Refined K3 zero-orbit theorem</td><td>The current refined K3 bridge does not already realize that unique nonzero ternary orbit. Its refined transport shadow is still split with zero extension class, and that split shadow is itself first-refinement rigid. So the present refined K3 side still realizes only the zero orbit, and any realization of the unique nonzero orbit would require genuinely new external data beyond the current refined K3 package.</td><td class="status-ok">✅ exact non-realization of the unique nonzero ternary orbit on the current refined K3 side</td></tr>
     <tr><td>Head-compatible external line candidate</td><td>The current bridge dictionary now collapses the external line ambiguity. Internally the common line <code>span(1,1,0)</code> is exact image-side data because it is the image of the common square <code>2E13</code>, and the current transport polarity is exact and tail-to-head. Externally the bridge already fixes a head-biased <code>U1</code> line and a tail-biased <code>U1</code> line, and the sign-ordered rigid line is exactly the head-biased one. So any bridge-compatible external realization of the internal common line must use the head-biased <code>U1</code> line, not the tail-biased one.</td><td class="status-ok">✅ exact collapse of the current external line ambiguity to one head-compatible candidate</td></tr>
+    <tr><td>Exact image line in any completion</td><td>The line wall is now sharper than a bare candidate theorem. Internally the common line <code>span(1,1,0)</code> is exactly the image of the common square <code>2E13</code>, and the internal transport operator image is the head/invariant line. Any exact external completion now has the same transport operator normal form up to the natural head/tail basis gauge. So in any exact completion of the current bridge shell, the bridge image of the internal common line is forced to be the head-compatible <code>U1</code> line.</td><td class="status-ok">✅ exact forcing of the common-line image to the head-compatible <code>U1</code> line in any exact completion</td></tr>
+    <tr><td>Minimal external completion data</td><td>The shell, lines, slot shape, and completion normal form are now all fixed already. The current bridge leaves no further line, plane, or dimension choice. The minimal new external data is exactly one replacement: the present zero tail-to-head glue slot must be replaced by the unique nonzero ternary orbit in that already-fixed <code>81&times;81</code> slot.</td><td class="status-ok">✅ exact reduction of the missing external completion data to one nonzero slot choice</td></tr>
     <tr><td>Global carrier versus local packet dominance</td><td>The first family-sensitive packet now has two exact support notions. The canonical minimal external carrier is <code>U1</code>, but the fine selector-side packet is dominated locally by <code>U3</code> on the hyperbolic side and by <code>E8<sub>2</sub></code> on the exceptional side, with exact Frobenius-norm ratios <code>U3/U1 ≈ 4.8741</code> and <code>E8<sub>2</sub>/E8<sub>1</sub> ≈ 8.4712</code>.</td><td class="status-ok">✅ exact separation between global carrier and local dominant packet piece</td></tr>
     <tr><td>Family-flag visibility obstruction</td><td>The internal reduced Yukawa packet already carries exact line-plane data <code>span(1,1,0) &lt; {x = y}</code>. Externally, the current K3 bridge now fixes the carrier plane <code>U1</code>, one head-compatible rigid line candidate inside that plane, and the polarized Jordan shadow of the transport packet. What it still does not reproduce is an exact identification of that external line candidate with the internal line, or the nontrivial rank-<code>81</code> glue that makes the internal transport object non-split.</td><td class="status-ok">✅ exact bridge reaches plane, one head-compatible line candidate, and polarized Jordan shadow but not full extension identity</td></tr>
     <tr><td>Central <code>2E13</code> visibility wall</td><td>On the finite family side, the common square is exactly <code>2E13</code> and its image is the common line <code>span(1,1,0)</code>. The current external bridge fixes the carrier plane <code>U1</code>, one head-compatible rigid line candidate inside that plane, and the polarized Jordan shadow of the transport channel. More sharply, the current exact external realization of that central channel now factors through the canonical rigid split transport avatar, and any exact completion would have to pass through the same unique full-rank glue normal form <code>J2<sup>81</sup></code>, matching the internal transport operator model <code>I<sub>81</sub> &otimes; [[0,1],[0,0]]</code> up to basis gauge. Sharper still, over <code>F3</code> that operator data itself now sits in one unique nonzero gauge orbit, and in any exact completion the image of the internal common line is forced to be the head-compatible <code>U1</code> line. What the current split bridge still does not do is realize the nontrivial rank-<code>81</code> glue itself. So the central channel is presently visible externally through its carrier plane, forced image line, polarized Jordan shadow, rigid-avatar factorization, operator normal-form match, and unique nonzero ternary orbit, but not yet as a fully realized external extension object.</td><td class="status-ok">✅ exact visibility wall for the current external realization of the central family channel</td></tr>
     <tr><td><code>2E13 / A4</code> support stratification</td><td>The live family/transport bridge is now support-stratified rather than ambiguous. The central image-side <code>2E13</code> channel localizes to the head-compatible line in any exact completion, the first family-sensitive <code>A4</code> bridge packet has minimal canonical plane carrier <code>U1</code>, and exact transport completion uses the full rigid avatar shell <code>81 &rarr; 162 &rarr; 81</code>. The broader five-factor packet remains real, but it is local selector context rather than the minimal exact carrier.</td><td class="status-ok">✅ exact stratification of the live <code>2E13 / A4</code> bridge by line, plane, and avatar support</td></tr>
+    <tr><td>Formal external completion avatar</td><td>Once the shell, forced image line, and unique nonzero glue orbit are all fixed, there is one minimal formal external completion object up to head/tail basis gauge. It carries the head-compatible line inside <code>U1</code>, preserves the ordered shell <code>81 &rarr; 162 &rarr; 81</code>, and uses the unique nonzero completion normal form <code>J2<sup>81</sup></code>. So the missing piece is now K3-side realization of that object, not its design.</td><td class="status-ok">✅ exact minimal common external object carrying the forced line and nonzero glue</td></tr>
+    <tr><td>Yukawa / transport coupling hierarchy</td><td>The unresolved family closure is now support-filtered rather than attached to one undifferentiated carrier. The central image-side <code>2E13</code> channel is line-level, the first family-sensitive <code>A4</code> packet is plane-level on <code>U1</code>, and the non-split transport identity is avatar-level on the formal completion <code>81 &rarr; 162 &rarr; 81</code>. The broader five-factor packet and the locally dominant <code>U3</code> piece remain real, but they are context rather than the minimal exact carrier.</td><td class="status-ok">✅ exact coupling hierarchy: head line inside <code>U1</code> inside formal completion avatar</td></tr>
+    <tr><td>Qiskit support-hierarchy search</td><td>The repo now carries a first TOE-specific local Qiskit oracle over the exact bridge-support stack. On the five support labels <code>head_line</code>, <code>U1</code>, <code>transport_avatar</code>, <code>U3</code>, and <code>E8_2</code>, the oracle marks exactly the permutations whose first three slots realize the proved support hierarchy <code>head_line &lt; U1 &lt; transport_avatar</code>, leaving the local <code>U3 / E8_2</code> order free. The explicit search space has <code>120</code> permutations, the marked set has size <code>2</code>, and the seeded verification run (<code>seed = 7</code>) returned the two exact marked permutations with target-hit probability <code>255/256 = 0.99609375</code>, one residual non-target valid permutation, and no invalid bitstrings at <code>256</code> shots. A nearby iteration study over seeds <code>5,6,7</code> peaks exactly at the analytic Grover count <code>6</code>, with mean target-hit probabilities <code>0.9609375</code> at <code>5</code> iterations, <code>0.9973958333333334</code> at <code>6</code>, and <code>0.8984375</code> at <code>7</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current bridge support theorem</td></tr>
     <tr><td>K3 rank-2 qutrit planes</td><td>Inside the exact K3 middle-degree host, the rank-<code>2</code> harmonic branch types are already classified by signature: positive <code>(2,0)</code>, mixed <code>(1,1)</code>, and negative <code>(0,2)</code>. Tensoring any of them with the qutrit packet gives a minimal branch packet of exact size <code>162</code>; the mixed branch splits as <code>81 + 81</code>.</td><td class="status-ok">✅ exact minimal branch types on K3</td></tr>
     <tr><td>Curved barycentric density theorem</td><td>For the neighborly curved <code>4D</code> seeds, the barycentric subdivision matrix has only the <code>1</code>-, <code>6</code>-, and <code>120</code>-modes present; the <code>2</code>- and <code>24</code>-modes vanish exactly. Therefore the chain density and first Dirac-K&auml;hler squared moment per top simplex converge exactly to the universal limits <code>120/19</code> and <code>860/19</code>.</td><td class="status-ok">✅ exact local-density theorem</td></tr>
     <tr><td>Surface/Fano bridge</td><td><code>21</code> Fano flags = common edge count of <code>Cs&aacute;sz&aacute;r</code> and <code>Szilassi</code>; each toroidal map has <code>84</code> flags; the dual pair has <code>168</code> flags.</td><td class="status-ok">✅ exact count lift</td></tr>
@@ -2206,16 +2348,11 @@ section h2::after {
 
   <h3>Step 5 — Electroweak Shells</h3>
   <p>Two exact electroweak formulas appear in the project, and they live on different shells:</p>
-    <tr><td>Refined K3 zero-orbit theorem</td><td>The current refined K3 bridge does not already realize that unique nonzero ternary orbit. Its refined transport shadow is still split with zero extension class, and that split shadow is itself first-refinement rigid. So the present refined K3 side still realizes only the zero orbit, and any realization of the unique nonzero orbit would require genuinely new external data beyond the current refined K3 package.</td><td class="status-ok">✅ exact non-realization of the unique nonzero ternary orbit on the current refined K3 side</td></tr>
   <div class="math-block">
-    <tr><td>Exact image line in any completion</td><td>The line wall is now sharper than a bare candidate theorem. Internally the common line <code>span(1,1,0)</code> is exactly the image of the common square <code>2E13</code>, and the internal transport operator image is the head/invariant line. Any exact external completion now has the same transport operator normal form up to the natural head/tail basis gauge. So in any exact completion of the current bridge shell, the bridge image of the internal common line is forced to be the head-compatible <code>U1</code> line.</td><td class="status-ok">✅ exact forcing of the common-line image to the head-compatible <code>U1</code> line in any exact completion</td></tr>
-    <tr><td>Minimal external completion data</td><td>The shell, lines, slot shape, and completion normal form are now all fixed already. The current bridge leaves no further line, plane, or dimension choice. The minimal new external data is exactly one replacement: the present zero tail-to-head glue slot must be replaced by the unique nonzero ternary orbit in that already-fixed <code>81&times;81</code> slot.</td><td class="status-ok">✅ exact reduction of the missing external completion data to one nonzero slot choice</td></tr>
     <span class="eq">sin²θ<sub>W</sub> = 2q / (q+1)² = 3/8</span> &nbsp; (bare / internal shell)<br>
     <span class="eq">sin²θ<sub>W</sub> = q / (q²+q+1) = 3/13</span> &nbsp; (dressed / projective shell)
   </div>
   <p>No fitting is performed on the finite side: <code>q = 3</code> is fixed by the geometry. The <code>3/8</code> formula is the internal unification-scale diagnostic inherited from the adjacency / generalized-quadrangle shell. The promoted live electroweak value on this page is <code>3/13</code>, which is the dressed/projective share used by the PMNS, Cabibbo, and curved-refinement roundtrip layer.</p>
-    <tr><td>Formal external completion avatar</td><td>Once the shell, forced image line, and unique nonzero glue orbit are all fixed, there is one minimal formal external completion object up to head/tail basis gauge. It carries the head-compatible line inside <code>U1</code>, preserves the ordered shell <code>81 &rarr; 162 &rarr; 81</code>, and uses the unique nonzero completion normal form <code>J2<sup>81</sup></code>. So the missing piece is now K3-side realization of that object, not its design.</td><td class="status-ok">✅ exact minimal common external object carrying the forced line and nonzero glue</td></tr>
-    <tr><td>Yukawa / transport coupling hierarchy</td><td>The unresolved family closure is now support-filtered rather than attached to one undifferentiated carrier. The central image-side <code>2E13</code> channel is line-level, the first family-sensitive <code>A4</code> packet is plane-level on <code>U1</code>, and the non-split transport identity is avatar-level on the formal completion <code>81 &rarr; 162 &rarr; 81</code>. The broader five-factor packet and the locally dominant <code>U3</code> piece remain real, but they are context rather than the minimal exact carrier.</td><td class="status-ok">✅ exact coupling hierarchy: head line inside <code>U1</code> inside formal completion avatar</td></tr>
 
   <h3>Step 6 — Edge–Root Correspondence</h3>
   <p>The 240 edges decompose as <strong>240 = 40 × 3 × 2</strong> (lines × matchings × edges/matching).
@@ -5267,7 +5404,7 @@ section h2::after {
 </section>
 
 </div><!-- /container -->
-</div><!-- /page-content -->
+</main><!-- /page-content -->
 
 
 

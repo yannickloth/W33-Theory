@@ -603,6 +603,31 @@ W33-Theory/
 └── THEORY_OF_EVERYTHING.py       2429-check master verification
 ```
 
+## Local Qiskit Search
+
+The repo now also carries a local Qiskit workflow under
+[tools/qiskit](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit) for small
+exact search experiments.
+
+The first TOE-specific oracle is
+[toe_support_hierarchy_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_support_hierarchy_search.py).
+It encodes the exact bridge support hierarchy already proved in the live stack:
+
+- `2E13` image channel on the head-compatible line
+- first family-sensitive `A4` packet on minimal plane carrier `U1`
+- transport completion on the full avatar shell
+
+On the current five-support search space, the marked set has size `2` out of
+`120`. On the seeded verification run (`seed = 7`), the search returned the two
+exact marked permutations with total hit probability `255/256 = 0.99609375` at
+`256` shots, with one residual non-target valid permutation and no invalid
+bitstrings. A nearby iteration study over seeds `5, 6, 7` peaks exactly at the
+analytic Grover count `6`, with mean target-hit probabilities:
+
+- `5` iterations: `0.9609375`
+- `6` iterations: `0.9973958333333334`
+- `7` iterations: `0.8984375`
+
 ## Authors
 
 **Wil Dahn** & **Claude** (Anthropic)
