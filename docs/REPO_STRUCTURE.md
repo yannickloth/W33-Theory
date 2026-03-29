@@ -16,6 +16,7 @@ preserved alongside them.
 - `tests/`: targeted theorem regressions and search checks
 - `tools/qiskit/`: local Qiskit workflow and discrete search/oracle tooling
 - `tools/qiskit/bridge_oracle_ledger.json`: promoted local Qiskit bridge-oracle stack and operating points
+- `tools/qiskit/ORACLE_LEDGER.md`: GitHub-readable summary of the promoted local Qiskit bridge-oracle stack
 - `tools/`: helper programs that are still part of the active research stack
 
 ## Heavy but Important Context

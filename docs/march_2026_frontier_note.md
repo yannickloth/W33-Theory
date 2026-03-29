@@ -1141,41 +1141,68 @@ more expensive in this environment.
 
 ### Qiskit bridge diagnostic-order search
 
-The next exact diagnostic refinement is now in
+The next exact diagnostic layer is now in
 `tools/qiskit/toe_bridge_diagnostic_order_search.py`.
 
-This does not change the five-factor theorem sector. It factorizes it exactly:
+This does not enlarge the five-factor ordering sector. Instead, it factorizes
+that same exact `120`-state space into three theorem-facing pieces:
 
-- hyperbolic order on `U1, U2, U3`
-- exceptional order on `E8_1, E8_2`
-- interleaving pattern choosing the `3` hyperbolic slots among `5`
+- a hyperbolic order on `U1/U2/U3`
+- an exceptional order on `E8_1/E8_2`
+- an interleaving pattern choosing which `3` of the `5` slots carry the
+  hyperbolic sector
 
-with the exact identity
+The exact identity is
 
 `5! = C(5,3) * 3! * 2! = 10 * 6 * 2`.
 
-So the diagnostic oracle localizes failures by theorem sector without changing
-the underlying `120`-state factor space from the earlier bridge searches. The
-marked sector keeps:
-
-- the strict support hierarchy
-- the marked hyperbolic order `U3 < U1 < U2`
-- the marked exceptional order `E8_2 < E8_1`
-- the forced head-compatible line
-- the chosen glue mode
-- the exact split concentration state `pass/pass`
-
-The explicit search space again has size `230400`, using `18` qubits after
-padding with marked count `20`.
+So the oracle becomes diagnostic by theorem sector rather than only by one
+combined five-factor permutation. The full bridge product space remains
+`230400`, using `18` qubits after padding.
 
 The seeded verification runs (`seed = 7`, `256` shots) gave:
 
-- `current-shadow`: Grover iterations `90`, target-hit probability `1.0`
-- `formal-completion`: Grover iterations `90`, target-hit probability `1.0`
+- `current-shadow`: marked count `20`, Grover iterations `90`, target-hit probability `1.0`
+- `formal-completion`: marked count `20`, Grover iterations `90`, target-hit probability `1.0`
 
 and in both modes the decoded outputs stayed inside the exact marked sector,
 with no non-target valid states and no invalid bitstrings in the kept top
 counts.
+
+### Qiskit bridge diagnostic-relaxation search
+
+The next exact diagnostic layer is now in
+`tools/qiskit/toe_bridge_diagnostic_relaxation_search.py`.
+
+This search does **not** reopen the whole `18`-qubit split-weight state space.
+Instead, it keeps the same factorized `18`-qubit bridge space fixed and
+relaxes the two order theorems one sector at a time, while the interleaving
+sector stays free just as it already does in the diagnostic-order oracle. The
+exact diagnostic state space therefore still has size `230400`, using `18`
+qubits after padding.
+
+The marked counts are exact and theorem-facing:
+
+- `exact`: `20`
+- `exceptional-order-relaxed`: `40`
+- `hyperbolic-order-relaxed`: `120`
+- `both-orders-relaxed`: `240`
+
+So the narrowing power of the two order theorems is now visible quantitatively,
+not just structurally: the exceptional sector contributes the exact binary
+factor, the hyperbolic sector contributes the exact 6-fold factor, and the
+interleaving sector contributes no additional theorem restriction here.
+
+The seeded verification runs (`seed = 7`, `256` shots) gave the same operating
+points in both `current-shadow` and `formal-completion` modes:
+
+- `exact`: `45` iterations, target-hit probability `1.0`
+- `exceptional-order-relaxed`: `32` iterations, target-hit probability `1.0`
+- `hyperbolic-order-relaxed`: `18` iterations, target-hit probability `1.0`
+- `both-orders-relaxed`: `13` iterations, target-hit probability `0.99609375`
+
+In all four sectors the kept top decoded outputs stayed inside the marked
+sector, with no non-target valid states and no invalid bitstrings.
 
 The promoted local bridge-oracle stack is now also recorded in
 `tools/qiskit/bridge_oracle_ledger.json`.

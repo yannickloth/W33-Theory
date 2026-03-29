@@ -354,8 +354,37 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
 The first product study shows the `15`-qubit formal-completion oracle is
 cleanest at `31` iterations on seeds `7,8`.
 
+The next exact diagnostic layer is
+[toe_bridge_diagnostic_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_relaxation_search.py).
+It keeps the same factorized `18`-qubit bridge space fixed and relaxes the two
+order theorems one sector at a time, while the interleaving sector stays free
+just as it already does in the diagnostic-order oracle. That gives a fixed
+exact state space of `230400` states on `18` qubits with marked counts
+`20 / 40 / 120 / 240` for:
+
+- `exact`
+- `exceptional-order-relaxed`
+- `hyperbolic-order-relaxed`
+- `both-orders-relaxed`
+
+On seeded verification runs (`seed = 7`, `256` shots), both
+`current-shadow` and `formal-completion` modes gave the same sector-by-sector
+operating points:
+
+- `45` iterations for `exact` with target-hit probability `1.0`
+- `32` iterations for `exceptional-order-relaxed` with target-hit probability `1.0`
+- `18` iterations for `hyperbolic-order-relaxed` with target-hit probability `1.0`
+- `13` iterations for `both-orders-relaxed` with target-hit probability `0.99609375`
+
+So the theorem-facing selectivity is explicit rather than buried in one
+combined permutation rule: the exceptional order contributes the exact binary
+factor, the hyperbolic order contributes the exact 6-fold factor, and the
+interleaving sector is already free in the diagnostic-order oracle.
+
 The current promoted bridge-oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
+For a GitHub-readable surface, use
+[ORACLE_LEDGER.md](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/ORACLE_LEDGER.md).
 
 ## Stronger TOE Search Target
 
