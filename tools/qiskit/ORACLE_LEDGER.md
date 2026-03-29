@@ -9,6 +9,7 @@ search stack.
 |---|---|---:|---:|---:|---|
 | Support hierarchy | `toe_support_hierarchy_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.9973958333333334` on seeds `5,6,7` |
 | Support diagnostic | `toe_support_diagnostic_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.99609375` on seeds `7,8` |
+| Support diagnostic relaxation | `toe_support_diagnostic_relaxation_search.py` | `120` | `7` | `2/20/12/120` | two-seed family: `6 / 1 / 2 / 0` iterations for exact / interleaving / core-order / both |
 | Product state | `toe_bridge_product_search.py` | `28800` | `15` | `20` | `31` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Line factor | `toe_bridge_line_factor_search.py` | `57600` | `16` | `20` | `44` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Joint weight filter | `toe_bridge_weight_filter_search.py` | `115200` | `17` | `20` | `63` iterations, mean target-hit `1.0` on seeds `7,8` |
@@ -24,6 +25,13 @@ search stack.
   - `10` support interleavings
   - `6` line/plane/avatar core orders
   - `2` free local-context tail orders
+- `support diagnostic relaxation`: keeps that same factorized `120`-state support shell
+  fixed and relaxes the exact support interleaving theorem and the exact
+  line/plane/avatar core-order theorem one sector at a time:
+  - `exact`: marked count `2`
+  - `interleaving-relaxed`: marked count `20`
+  - `core-order-relaxed`: marked count `12`
+  - `both-relaxed`: marked count `120`
 - `product state`: adds the split-vs-formal glue factor
 - `line factor`: forces the head-compatible line inside `U1`
 - `joint weight filter`: forces the current concentration theorem as one bit
@@ -74,6 +82,14 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
   --seeds 7 8 \
   --shots 256 \
   --top 6
+```
+
+```bash
+qiskit-python tools/qiskit/toe_support_diagnostic_relaxation_search.py \
+  --relaxation exact \
+  --shots 256 \
+  --seed 7 \
+  --top 8
 ```
 
 ```bash

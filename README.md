@@ -651,6 +651,28 @@ with the local `U3 / E8_2` tail still free. A two-seed study over seeds `7,8`
 shows the cleanest operating point is `6` iterations, with mean target-hit
 probability `0.99609375`.
 
+The next exact support-side refinement is
+[toe_support_diagnostic_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_support_diagnostic_relaxation_search.py).
+It keeps that same factorized `120`-state shell fixed and relaxes the two exact
+support theorems one sector at a time:
+
+- `exact`: marked count `2`
+- `interleaving-relaxed`: marked count `20`
+- `core-order-relaxed`: marked count `12`
+- `both-relaxed`: marked count `120`
+
+The interesting part is not just the counts. The clean operating points now
+separate by theorem sector on seeds `7,8`:
+
+- `exact`: `6` iterations, mean target-hit `0.99609375`
+- `interleaving-relaxed`: `1` iteration, mean target-hit `0.88671875`
+- `core-order-relaxed`: `2` iterations, mean target-hit `1.0`
+- `both-relaxed`: `0` iterations, mean target-hit `0.939453125`
+
+So once the relaxed support sector gets too large, Grover amplification stops
+helping and the best operating point can collapse all the way to the uniform
+state on the padded shell.
+
 The next exact search layer is
 [toe_bridge_product_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_product_search.py).
 It searches the product of:

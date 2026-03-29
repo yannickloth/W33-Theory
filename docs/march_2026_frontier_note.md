@@ -1024,6 +1024,35 @@ with the local tail order free.
 A two-seed study over seeds `7,8` gave the cleanest operating point at
 `6` iterations, with mean target-hit probability `0.99609375`.
 
+### Qiskit support-diagnostic relaxation search
+
+The next exact support-side refinement is now in
+`tools/qiskit/toe_support_diagnostic_relaxation_search.py`.
+
+This keeps the same factorized `120`-state support shell fixed and relaxes the
+two exact support theorems one sector at a time:
+
+- the support interleaving theorem
+- the line/plane/avatar core-order theorem
+
+The exact marked-count profile is:
+
+- `exact`: `2`
+- `interleaving-relaxed`: `20`
+- `core-order-relaxed`: `12`
+- `both-relaxed`: `120`
+
+The two-seed study over seeds `7,8` gave the following clean operating points:
+
+- `exact`: `6` iterations, mean target-hit probability `0.99609375`
+- `interleaving-relaxed`: `1` iteration, mean target-hit probability `0.88671875`
+- `core-order-relaxed`: `2` iterations, mean target-hit probability `1.0`
+- `both-relaxed`: `0` iterations, mean target-hit probability `0.939453125`
+
+So the relaxed support sectors expose a real padded-shell effect: once the
+marked sector gets too large, Grover amplification stops helping and the best
+point can collapse to the uniform state.
+
 ### Qiskit bridge product-state search
 
 The next exact search layer is now in

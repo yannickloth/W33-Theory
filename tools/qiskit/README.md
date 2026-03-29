@@ -251,6 +251,34 @@ with the local tail order still free. A two-seed study over seeds `7,8` shows
 the cleanest operating point is `6` iterations, with mean target-hit
 probability `0.99609375`.
 
+The next exact support-side refinement is:
+
+```bash
+qiskit-python tools/qiskit/toe_support_diagnostic_relaxation_search.py \
+  --relaxation exact \
+  --shots 256 \
+  --seed 7
+```
+
+That keeps the same factorized `120`-state shell fixed and relaxes the two
+support theorems one sector at a time:
+
+- `exact`: marked count `2`
+- `interleaving-relaxed`: marked count `20`
+- `core-order-relaxed`: marked count `12`
+- `both-relaxed`: marked count `120`
+
+The clean operating points over seeds `7,8` are:
+
+- `exact`: `6` iterations, mean target-hit `0.99609375`
+- `interleaving-relaxed`: `1` iteration, mean target-hit `0.88671875`
+- `core-order-relaxed`: `2` iterations, mean target-hit `1.0`
+- `both-relaxed`: `0` iterations, mean target-hit `0.939453125`
+
+So this is not only a count theorem. It shows where Grover amplification stops
+helping once the relaxed marked sector becomes too large relative to the padded
+shell.
+
 The next exact search layer is:
 
 ```bash

@@ -163,7 +163,11 @@ def main() -> None:
     states, marked_indices = build_marked_indices()
     search_space_size = 1 << math.ceil(math.log2(len(states)))
     num_qubits = int(math.log2(search_space_size))
-    iterations = args.iterations or grover_iteration_count(search_space_size, len(marked_indices))
+    iterations = (
+        args.iterations
+        if args.iterations is not None
+        else grover_iteration_count(search_space_size, len(marked_indices))
+    )
 
     circuit = build_grover_circuit(num_qubits, marked_indices, iterations)
     simulator = AerSimulator(seed_simulator=args.seed)

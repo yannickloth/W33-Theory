@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -28,6 +28,40 @@
         "iterations": 6,
         "seeds": [7, 8],
         "mean_target_hit_probability": 0.99609375
+      }
+    },
+    {
+      "name": "support-diagnostic-relaxation",
+      "script": "tools/qiskit/toe_support_diagnostic_relaxation_search.py",
+      "theorem_surface": "fixed factorized support shell with separate interleaving and line/plane/avatar core-order relaxations",
+      "state_count": 120,
+      "padded_qubits": 7,
+      "marked_count_profile": {
+        "exact": 2,
+        "interleaving-relaxed": 20,
+        "core-order-relaxed": 12,
+        "both-relaxed": 120
+      },
+      "promoted_operating_point": {
+        "kind": "two-seed-diagnostic-family",
+        "seeds": [7, 8],
+        "shots": 256,
+        "exact": {
+          "iterations": 6,
+          "mean_target_hit_probability": 0.99609375
+        },
+        "interleaving-relaxed": {
+          "iterations": 1,
+          "mean_target_hit_probability": 0.88671875
+        },
+        "core-order-relaxed": {
+          "iterations": 2,
+          "mean_target_hit_probability": 1.0
+        },
+        "both-relaxed": {
+          "iterations": 0,
+          "mean_target_hit_probability": 0.939453125
+        }
       }
     },
     {
