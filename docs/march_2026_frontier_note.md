@@ -1005,6 +1005,30 @@ analytic Grover count:
 - `6` iterations: mean target-hit probability `0.9973958333333334`
 - `7` iterations: mean target-hit probability `0.8984375`
 
+### Qiskit bridge product-state search
+
+The next exact search layer is now in
+`tools/qiskit/toe_bridge_product_search.py`.
+
+This combines three theorem-backed discrete sectors on one product space:
+
+- strict support hierarchy on the bridge side
+- five-factor ordering inside the selector-side packet
+- glue state `{zero_split_shadow, unique_nonzero_orbit}`
+
+So the current split-shadow theorem and the formal completion theorem are both
+encoded on one search space of size `28800`, using `15` qubits after power-of-2
+padding.
+
+The seeded verification run (`seed = 7`, `256` shots) gave:
+
+- `current-shadow`: marked count `20`, Grover iterations `32`, target-hit probability `1.0`
+- `formal-completion`: marked count `20`, Grover iterations `32`, target-hit probability `1.0`
+
+and in both modes the decoded outputs stayed entirely inside the exact marked
+sector, with no non-target valid states and no invalid bitstrings in the kept
+top counts.
+
 ## Reproduce
 
 ### PMNS

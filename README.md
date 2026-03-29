@@ -628,6 +628,22 @@ analytic Grover count `6`, with mean target-hit probabilities:
 - `6` iterations: `0.9973958333333334`
 - `7` iterations: `0.8984375`
 
+The next exact search layer is
+[toe_bridge_product_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_product_search.py).
+It searches the product of:
+
+- strict support permutations
+- five-factor packet permutations
+- glue state `{zero_split_shadow, unique_nonzero_orbit}`
+
+So the current split-shadow theorem and the formal nonzero-completion theorem
+are both represented on one discrete search space of size `28800`, using `15`
+qubits after padding. On the seeded verification run (`seed = 7`, `256` shots),
+both modes hit only marked states with target-hit probability `1.0`:
+
+- `current-shadow`: exact current zero-glue bridge sector
+- `formal-completion`: exact unique-nonzero-orbit completion sector
+
 ## Authors
 
 **Wil Dahn** & **Claude** (Anthropic)

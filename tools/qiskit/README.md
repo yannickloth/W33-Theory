@@ -232,6 +232,22 @@ So the oracle marks exactly the support permutations whose first three slots are
 - `u1_plane`
 - `transport_avatar`
 
+The next exact search layer is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_product_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
+That product-state oracle combines three exact theorem sectors on one search
+space:
+
+- strict support hierarchy
+- five-factor packet ordering
+- glue state: current zero split shadow vs unique nonzero formal completion
+
 ## Stronger TOE Search Target
 
 The next exact search target is the five-factor external packet hierarchy:
