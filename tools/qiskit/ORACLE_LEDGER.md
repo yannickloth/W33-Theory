@@ -86,7 +86,9 @@ space.
 The support-enhancement relaxation oracle sits strictly below that larger wall:
 it proves that the exact support-selectivity profile survives unchanged across
 the 3-state enhancement hierarchy, while the clean Grover windows shift because
-`360` states pad to `512`.
+`360` states pad to `512`. Most sharply, the fully relaxed support sector moves
+from a `0`-step optimum on the bare `120`-state shell to a `1`-step optimum on
+the enlarged shell.
 
 ## Reproduce
 
@@ -114,6 +116,15 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
   --seeds 7 8 \
   --shots 256 \
   --top 6
+```
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target support-enhancement-both \
+  --iterations 0 1 2 \
+  --seeds 7 8 \
+  --shots 256 \
+  --top 4
 ```
 
 ```bash
