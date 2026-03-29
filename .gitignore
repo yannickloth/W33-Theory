@@ -24,6 +24,7 @@ wheels/
 venv/
 ENV/
 env/
+.venv/
 
 # IDE
 .vscode/
@@ -79,11 +80,20 @@ nul
 bundles/
 .tmp*
 tmp*
-# allow TOE bundles, they're important artifacts
-!TOE_*.zip
+
+# Local bundle drops and deliverables belong outside the repo root unless force-added.
 *.zip
-!TOE_*.zip
-!TOE_edge_orient_map_v01_20260227_bundle.zip
+/TOE_*_bundle*/
+/TOE_*_deliverable*/
+/TOE_*deliverable*/
+/toe_session_*/
+/extracted_v*/
+/w33_followup_*/
+/w33_followup_*.zip
+/Pasted text.txt
+/archive/data/C:\\Users\\*/
+/tools/artifacts/
+/tools/l8_sample/
 .ci-logs/
 .claude/
 .logs/
@@ -128,10 +138,6 @@ PG33_OUTER_TWIST_GEOMETRY_BUNDLE_v01/
 WE6_EVEN_to_PSp43_CONJUGACY_BUNDLE_v01/
 WE6_EVEN_to_PSp43_CONJUGACY_BUNDLE_v01 (1)/
 SP43_TO_WE6_TRUE_FIXED_BUNDLE_v01_2026-02-25/
-TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle/
-TOE_holonomy_Z2_flatZ3_v01_20260227_bundle/
-TOE_pocket_transport_glue_orbit480_v01_20260227_bundle/
-TOE_duad_algebra_v06_20260227_bundle/
 TOE_duad_algebra_v06_20260227_bundle.zip
 TOE_E6pair_SRG_triangle_decomp_v01_20260227_bundle.zip
 TOE_edge_orient_map_v01_20260227_bundle.zip

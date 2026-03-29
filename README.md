@@ -17,6 +17,15 @@ The strongest repo-native result is a finite spectral-exceptional closure, not y
 
 As of the current frontier pass, the dual CE2 / L-infinity predictor now promotes the first exact `a = (0,0,2)` witness package, but that anchor is still narrowed rather than fully closed.
 
+## Repository Layout
+
+The live entrypoints are deliberately narrower than the full repo mass.
+
+- Start with [docs/index.html](docs/index.html), then [docs/march_2026_frontier_note.md](docs/march_2026_frontier_note.md).
+- Use [docs/REPO_STRUCTURE.md](docs/REPO_STRUCTURE.md) for a map of active theorem surfaces versus archive weight.
+- Treat `exploration/`, `tests/`, and `tools/qiskit/` as the active research stack.
+- Treat `archive/`, `bundles/`, and `V*_output*/` as preserved historical or generated context unless a result is explicitly promoted.
+
 ## Current Scale
 
 | Metric | Count |
@@ -688,19 +697,19 @@ iterations `64`, target-hit probability `1.0`, and no non-target valid or
 invalid states in the kept top counts.
 
 The next exact filter is
-[toe_bridge_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_weight_filter_search.py).
-It adds one theorem-backed binary concentration factor:
+[toe_bridge_split_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_split_weight_filter_search.py).
+It separates that concentration theorem into two exact binary factors:
 
-- `dominant_weight_filter_pass`
-- `dominant_weight_filter_fail`
+- `hyperbolic_dominance_pass` / `hyperbolic_dominance_fail`
+- `exceptional_dominance_pass` / `exceptional_dominance_fail`
 
-where the pass state means the exact packet-concentration theorem is enforced:
-`U3` carries the hyperbolic majority and `E8_2` carries the exceptional
-majority. That raises the product space to `115200` states, padded to `17`
-qubits. On the seeded formal-completion verification run (`seed = 7`, `256`
-shots), the oracle had marked count `20`, Grover iterations `64`, and
-target-hit probability `1.0`, again with no non-target valid or invalid states
-in the kept top counts.
+So the oracle can now distinguish the exact mixed cases instead of only the
+joint pass/fail bit. The marked sector still keeps only the theorem-compatible
+`pass/pass` state together with the strict support hierarchy, five-factor
+ordering, forced head line, and chosen glue mode. That raises the product space
+to `230400` states, padded to `18` qubits. The seeded verification runs
+(`seed = 7`, `256` shots) keep both `current-shadow` and `formal-completion`
+entirely inside the marked sector with target-hit probability `1.0`.
 
 ## Authors
 

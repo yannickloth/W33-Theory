@@ -30,6 +30,14 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_line_factor_search.py",
         "base_args": ["--mode", "formal-completion"],
     },
+    "weight-filter": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_weight_filter_search.py",
+        "base_args": ["--mode", "formal-completion"],
+    },
+    "split-weight": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_split_weight_filter_search.py",
+        "base_args": ["--mode", "formal-completion"],
+    },
 }
 
 

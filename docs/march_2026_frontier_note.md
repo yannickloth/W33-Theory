@@ -1098,32 +1098,29 @@ and in both modes the decoded outputs stayed entirely inside the exact marked
 sector, with no non-target valid states and no invalid bitstrings in the kept
 top counts.
 
-### Qiskit bridge weight-filter search
+### Qiskit bridge split-weight-filter search
 
 The next exact filter is now in
-`tools/qiskit/toe_bridge_weight_filter_search.py`.
+`tools/qiskit/toe_bridge_split_weight_filter_search.py`.
 
-This adds one theorem-backed binary concentration factor:
+This splits the same concentration theorem into two independent exact binary
+factors:
 
-- `dominant_weight_filter_pass`
-- `dominant_weight_filter_fail`
+- `hyperbolic_dominance_pass` / `hyperbolic_dominance_fail`
+- `exceptional_dominance_pass` / `exceptional_dominance_fail`
 
-The pass state enforces the exact packet-concentration theorem from
-`w33_selector_a4_weight_hierarchy_bridge.py`:
+So the current bridge hierarchy now has an exact mixed-case search mode rather
+than only the joint concentration bit. The marked sector keeps only the exact
+`pass/pass` state, together with the already-forced support hierarchy,
+five-factor ordering, head-compatible line, and chosen glue mode. The explicit
+search space has size `230400`, using `18` qubits after padding.
 
-- `U3` carries the hyperbolic majority
-- `E8_2` carries the exceptional majority
+The seeded verification runs (`seed = 7`, `256` shots) gave:
 
-So the current bridge hierarchy now has an exact concentration-aware search
-mode rather than only support / line / glue admissibility. The explicit search
-space has size `115200`, using `17` qubits after padding.
+- `current-shadow`: marked count `20`, Grover iterations `90`, target-hit probability `1.0`
+- `formal-completion`: marked count `20`, Grover iterations `90`, target-hit probability `1.0`
 
-The seeded formal-completion verification run (`seed = 7`, `256` shots) gave:
-
-- marked count `20`
-- Grover iterations `64`
-- target-hit probability `1.0`
-
+and in both modes the decoded outputs stayed inside the exact marked sector,
 with no non-target valid states and no invalid bitstrings in the kept top
 counts.
 

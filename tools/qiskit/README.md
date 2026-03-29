@@ -292,6 +292,27 @@ seeded verification runs (`seed = 7`, `256` shots), both `current-shadow` and
 `formal-completion` modes hit only marked states with target-hit probability
 `1.0`.
 
+The next exact refinement is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_split_weight_filter_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
+That splits the concentration theorem into two independent exact factors:
+
+- `hyperbolic_dominance_pass` / `hyperbolic_dominance_fail`
+- `exceptional_dominance_pass` / `exceptional_dominance_fail`
+
+The marked sector keeps only the exact `pass/pass` state, so Qiskit can now
+distinguish "hyperbolic only" and "exceptional only" filter failures instead
+of collapsing everything to one joint fail bit. The explicit product space has
+size `230400`, padded to `18` qubits. On the seeded verification runs
+(`seed = 7`, `256` shots), both `current-shadow` and `formal-completion` modes
+hit only marked states with target-hit probability `1.0`.
+
 For heavier bridge oracles, use the reusable study runner:
 
 ```bash
@@ -305,29 +326,6 @@ qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
 
 The first product study shows the `15`-qubit formal-completion oracle is
 cleanest at `31` iterations on seeds `7,8`.
-
-The next exact filter is:
-
-```bash
-qiskit-python tools/qiskit/toe_bridge_weight_filter_search.py \
-  --mode formal-completion \
-  --shots 256 \
-  --seed 7
-```
-
-That search adds one theorem-backed binary concentration filter:
-
-- `dominant_weight_filter_pass`
-- `dominant_weight_filter_fail`
-
-The pass state enforces the exact packet-concentration theorem:
-
-- `U3` carries the hyperbolic majority
-- `E8_2` carries the exceptional majority
-
-The explicit product space has size `115200`, padded to `17` qubits. On the
-seeded formal-completion verification run (`seed = 7`, `256` shots), the
-oracle hit only marked states with target-hit probability `1.0`.
 
 ## Stronger TOE Search Target
 
