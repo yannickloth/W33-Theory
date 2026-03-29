@@ -1061,6 +1061,35 @@ A local probe of the formal-completion mode at `44`, `45`, and `46` iterations
 also stayed on the same `1.0` plateau for that seed, so the refined oracle is
 not hypersensitive to one exact iteration choice.
 
+### Qiskit bridge weight-filter search
+
+The next exact filter is now in
+`tools/qiskit/toe_bridge_weight_filter_search.py`.
+
+This adds one theorem-backed binary concentration factor:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+The pass state enforces the exact packet-concentration theorem from
+`w33_selector_a4_weight_hierarchy_bridge.py`:
+
+- `U3` carries the hyperbolic majority
+- `E8_2` carries the exceptional majority
+
+So the current bridge hierarchy now has an exact concentration-aware search
+mode rather than only support / line / glue admissibility. The explicit search
+space has size `115200`, using `17` qubits after padding.
+
+The seeded formal-completion verification run (`seed = 7`, `256` shots) gave:
+
+- marked count `20`
+- Grover iterations `64`
+- target-hit probability `1.0`
+
+with no non-target valid states and no invalid bitstrings in the kept top
+counts.
+
 ## Reproduce
 
 ### PMNS

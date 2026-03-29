@@ -268,6 +268,29 @@ verification runs (`seed = 7`, `256` shots), both `current-shadow` and
 `formal-completion` modes hit only marked states with target-hit probability
 `1.0`.
 
+The next exact filter is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_weight_filter_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
+That search adds one theorem-backed binary concentration filter:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+The pass state enforces the exact packet-concentration theorem:
+
+- `U3` carries the hyperbolic majority
+- `E8_2` carries the exceptional majority
+
+The explicit product space has size `115200`, padded to `17` qubits. On the
+seeded formal-completion verification run (`seed = 7`, `256` shots), the
+oracle hit only marked states with target-hit probability `1.0`.
+
 ## Stronger TOE Search Target
 
 The next exact search target is the five-factor external packet hierarchy:

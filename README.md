@@ -660,6 +660,21 @@ kept top counts. A local probe of the formal-completion mode at `44`, `45`, and
 `46` iterations stayed on the same `1.0` plateau for that seed, so the refined
 oracle is not hypersensitive to one exact iteration choice.
 
+The next exact filter is
+[toe_bridge_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_weight_filter_search.py).
+It adds one theorem-backed binary concentration factor:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+where the pass state means the exact packet-concentration theorem is enforced:
+`U3` carries the hyperbolic majority and `E8_2` carries the exceptional
+majority. That raises the product space to `115200` states, padded to `17`
+qubits. On the seeded formal-completion verification run (`seed = 7`, `256`
+shots), the oracle had marked count `20`, Grover iterations `64`, and
+target-hit probability `1.0`, again with no non-target valid or invalid states
+in the kept top counts.
+
 ## Authors
 
 **Wil Dahn** & **Claude** (Anthropic)
