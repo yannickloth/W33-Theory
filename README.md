@@ -644,6 +644,15 @@ both modes hit only marked states with target-hit probability `1.0`:
 - `current-shadow`: exact current zero-glue bridge sector
 - `formal-completion`: exact unique-nonzero-orbit completion sector
 
+The repo now also has a reusable study runner in
+[toe_bridge_oracle_iteration_study.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_oracle_iteration_study.py).
+The first two-seed product study over seeds `7,8` shows that the `15`-qubit
+product oracle is actually cleanest at `31` iterations, not the rounded `32`:
+
+- `31` iterations: mean target-hit probability `1.0`
+- `32` iterations: mean target-hit probability `0.998046875`
+- `33` iterations: mean target-hit probability `0.9921875`
+
 The next refinement is
 [toe_bridge_line_factor_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_line_factor_search.py).
 It adds the exact binary line-choice factor inside `U1`:
@@ -659,6 +668,24 @@ target-hit probability `1.0`, with no non-target valid or invalid states in the
 kept top counts. A local probe of the formal-completion mode at `44`, `45`, and
 `46` iterations stayed on the same `1.0` plateau for that seed, so the refined
 oracle is not hypersensitive to one exact iteration choice.
+
+The next exact filter is
+[toe_bridge_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_weight_filter_search.py).
+It adds one theorem-backed concentration bit:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+where `pass` means the exact current inequalities
+
+- `U3` carries more than `4/5` of the hyperbolic selector packet
+- `E8_2` carries more than `8/9` of the exceptional selector packet
+
+This raises the discrete search space to `115200` states, padded to `17`
+qubits. On seeded verification runs (`seed = 7`, `256` shots), both
+`current-shadow` and `formal-completion` modes had marked count `20`, Grover
+iterations `64`, target-hit probability `1.0`, and no non-target valid or
+invalid states in the kept top counts.
 
 The next exact filter is
 [toe_bridge_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_weight_filter_search.py).

@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Grover-style search with exact packet-concentration filter.
 
-This refines the TOE bridge line-factor search by adding one binary filter
-state encoding the exact concentration theorem from
-`w33_selector_a4_weight_hierarchy_bridge.py`.
+This refines the line-factor oracle by adding one theorem-backed concentration
+bit:
 
-The marked sector keeps only the theorem-compatible filter state:
+- dominant_weight_filter_pass
+- dominant_weight_filter_fail
 
-- `U3` carries the hyperbolic majority packet share
-- `E8_2` carries the exceptional majority packet share
+The marked sector keeps only the exact pass state justified by the current
+bridge theorems:
+
+- U3 carries more than 4/5 of the hyperbolic selector packet
+- E8_2 carries more than 8/9 of the exceptional selector packet
 """
 
 from __future__ import annotations
@@ -32,8 +35,8 @@ from toe_bridge_line_factor_search import (
 from toe_bridge_permutation_search import five_factor_items, five_factor_predicate
 
 
-WEIGHT_FILTER_PASS = "dominant_weight_filter_pass"
-WEIGHT_FILTER_FAIL = "dominant_weight_filter_fail"
+WEIGHT_PASS = "dominant_weight_filter_pass"
+WEIGHT_FAIL = "dominant_weight_filter_fail"
 
 
 def grover_iteration_count(search_space_size: int, marked_count: int) -> int:
@@ -43,7 +46,11 @@ def grover_iteration_count(search_space_size: int, marked_count: int) -> int:
 
 
 def weight_filter_states() -> list[str]:
-    return [WEIGHT_FILTER_PASS, WEIGHT_FILTER_FAIL]
+    return [WEIGHT_PASS, WEIGHT_FAIL]
+
+
+def line_states() -> list[str]:
+    return [HEAD_LINE, TAIL_LINE]
 
 
 def build_weight_filter_states() -> tuple[list[tuple[str, ...]], list[tuple[str, ...]], list[tuple[int, int, str, str, str]]]:
@@ -54,7 +61,7 @@ def build_weight_filter_states() -> tuple[list[tuple[str, ...]], list[tuple[str,
             range(len(support_permutations)),
             range(len(factor_permutations)),
             [ZERO_GLUE, NONZERO_GLUE],
-            [HEAD_LINE, TAIL_LINE],
+            line_states(),
             weight_filter_states(),
         )
     )
@@ -76,12 +83,12 @@ def build_marked_indices(
 
     marked_indices = {
         idx
-        for idx, (support_idx, factor_idx, glue_state, line_state, weight_filter_state) in enumerate(product_states)
+        for idx, (support_idx, factor_idx, glue_state, line_state, weight_state) in enumerate(product_states)
         if support_idx in support_marks
         and factor_idx in factor_marks
         and glue_state == glue_target
         and line_state == HEAD_LINE
-        and weight_filter_state == WEIGHT_FILTER_PASS
+        and weight_state == WEIGHT_PASS
     }
     return support_permutations, factor_permutations, product_states, marked_indices
 
@@ -105,12 +112,12 @@ def decode_weight_filter_states(
             invalid.append(payload)
             continue
 
-        support_idx, factor_idx, glue_state, line_state, weight_filter_state = product_states[index]
+        support_idx, factor_idx, glue_state, line_state, weight_state = product_states[index]
         payload["support_permutation"] = list(support_permutations[support_idx])
         payload["factor_permutation"] = list(factor_permutations[factor_idx])
         payload["glue_state"] = glue_state
         payload["line_state"] = line_state
-        payload["weight_filter_state"] = weight_filter_state
+        payload["weight_filter_state"] = weight_state
 
         if index in marked_indices:
             target_hits.append(payload)
@@ -122,16 +129,19 @@ def decode_weight_filter_states(
 
 def theorem_sources_for_mode(mode: str) -> list[str]:
     common = [
+        "exploration/w33_selector_a4_weight_hierarchy_bridge.py",
+        "exploration/w33_global_local_carrier_split_bridge.py",
         "exploration/w33_u1_head_compatible_line_bridge.py",
         "exploration/w33_common_line_exact_image_bridge.py",
-        "exploration/w33_selector_a4_weight_hierarchy_bridge.py",
-        "exploration/w33_transport_polarized_line_shadow_bridge.py",
     ]
     if mode == MODE_CURRENT_SHADOW:
-        return common + ["exploration/w33_refined_k3_zero_orbit_bridge.py"]
+        return common + [
+            "exploration/w33_transport_rigid_split_avatar_bridge.py",
+            "exploration/w33_refined_k3_zero_orbit_bridge.py",
+        ]
     return common + [
-        "exploration/w33_transport_unique_nonzero_cocycle_orbit_bridge.py",
         "exploration/w33_formal_external_completion_avatar_bridge.py",
+        "exploration/w33_transport_unique_nonzero_cocycle_orbit_bridge.py",
     ]
 
 
@@ -194,7 +204,7 @@ def main() -> None:
         "seed": args.seed,
         "marked_count": len(marked_indices),
         "forced_line_state": HEAD_LINE,
-        "forced_weight_filter_state": WEIGHT_FILTER_PASS,
+        "forced_weight_filter_state": WEIGHT_PASS,
         "top_counts": normalize_counts(counts, args.shots)[: args.top],
         "decoded_target_hits": decoded_target,
         "decoded_nontarget_valid_hits": decoded_nontarget_valid,

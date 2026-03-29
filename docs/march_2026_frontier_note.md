@@ -1029,6 +1029,16 @@ and in both modes the decoded outputs stayed entirely inside the exact marked
 sector, with no non-target valid states and no invalid bitstrings in the kept
 top counts.
 
+The repo now also has a reusable iteration-study runner in
+`tools/qiskit/toe_bridge_oracle_iteration_study.py`.
+
+The first two-seed product study over seeds `7,8` shows that the `15`-qubit
+product oracle is actually cleanest at `31` iterations:
+
+- `31` iterations: mean target-hit probability `1.0`
+- `32` iterations: mean target-hit probability `0.998046875`
+- `33` iterations: mean target-hit probability `0.9921875`
+
 ### Qiskit bridge line-factor search
 
 The next exact refinement is now in
@@ -1060,6 +1070,33 @@ top counts.
 A local probe of the formal-completion mode at `44`, `45`, and `46` iterations
 also stayed on the same `1.0` plateau for that seed, so the refined oracle is
 not hypersensitive to one exact iteration choice.
+
+### Qiskit bridge weight-filter search
+
+The next exact refinement is now in
+`tools/qiskit/toe_bridge_weight_filter_search.py`.
+
+This adds one theorem-backed concentration bit:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+and the pass state means the exact current inequalities
+
+- `U3` carries more than `4/5` of the hyperbolic selector packet
+- `E8_2` carries more than `8/9` of the exceptional selector packet
+
+So the current exact concentration hierarchy is now encoded directly on one
+search space of size `115200`, using `17` qubits after power-of-2 padding.
+
+The seeded verification runs (`seed = 7`, `256` shots) gave:
+
+- `current-shadow`: marked count `20`, Grover iterations `64`, target-hit probability `1.0`
+- `formal-completion`: marked count `20`, Grover iterations `64`, target-hit probability `1.0`
+
+and in both modes the decoded outputs stayed entirely inside the exact marked
+sector, with no non-target valid states and no invalid bitstrings in the kept
+top counts.
 
 ### Qiskit bridge weight-filter search
 

@@ -277,6 +277,44 @@ qiskit-python tools/qiskit/toe_bridge_weight_filter_search.py \
   --seed 7
 ```
 
+That adds one theorem-backed concentration bit:
+
+- `dominant_weight_filter_pass`
+- `dominant_weight_filter_fail`
+
+with `pass` meaning the exact current inequalities:
+
+- `U3` carries more than `4/5` of the hyperbolic packet
+- `E8_2` carries more than `8/9` of the exceptional packet
+
+The explicit product space has size `115200`, padded to `17` qubits. On the
+seeded verification runs (`seed = 7`, `256` shots), both `current-shadow` and
+`formal-completion` modes hit only marked states with target-hit probability
+`1.0`.
+
+For heavier bridge oracles, use the reusable study runner:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target product \
+  --iterations 31 32 33 \
+  --seeds 7 8 \
+  --shots 256 \
+  --top 6
+```
+
+The first product study shows the `15`-qubit formal-completion oracle is
+cleanest at `31` iterations on seeds `7,8`.
+
+The next exact filter is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_weight_filter_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
 That search adds one theorem-backed binary concentration filter:
 
 - `dominant_weight_filter_pass`
