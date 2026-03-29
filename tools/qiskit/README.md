@@ -446,10 +446,10 @@ cleanest at `31` iterations on seeds `7,8`.
 
 The next exact diagnostic layer is
 [toe_bridge_diagnostic_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_relaxation_search.py).
-It keeps the same factorized `18`-qubit bridge space fixed and relaxes the two
+It keeps the accepted pass/pass concentration channel fixed and relaxes the two
 order theorems one sector at a time, while the interleaving sector stays free
-just as it already does in the diagnostic-order oracle. That gives a fixed
-exact state space of `230400` states on `18` qubits with marked counts
+just as it already does in the diagnostic-order oracle. The corrected exact
+state space is `57600` states, padded to `16` qubits, with marked counts
 `20 / 40 / 120 / 240` for:
 
 - `exact`
@@ -457,19 +457,61 @@ exact state space of `230400` states on `18` qubits with marked counts
 - `hyperbolic-order-relaxed`
 - `both-orders-relaxed`
 
-On seeded verification runs (`seed = 7`, `256` shots), both
-`current-shadow` and `formal-completion` modes gave the same sector-by-sector
-operating points:
+On a representative two-seed study over seeds `7,8` on the
+`formal-completion` mode, the clean operating points are:
 
-- `45` iterations for `exact` with target-hit probability `1.0`
-- `32` iterations for `exceptional-order-relaxed` with target-hit probability `1.0`
-- `18` iterations for `hyperbolic-order-relaxed` with target-hit probability `1.0`
-- `13` iterations for `both-orders-relaxed` with target-hit probability `0.99609375`
+- `45` iterations for `exact` with mean target-hit probability `0.998046875`
+- `32` iterations for `exceptional-order-relaxed` with mean target-hit probability `0.998046875`
+- `18` iterations for `hyperbolic-order-relaxed` with mean target-hit probability `1.0`
+- `13` iterations for `both-orders-relaxed` with mean target-hit probability `0.99609375`
 
 So the theorem-facing selectivity is explicit rather than buried in one
 combined permutation rule: the exceptional order contributes the exact binary
 factor, the hyperbolic order contributes the exact 6-fold factor, and the
 interleaving sector is already free in the diagnostic-order oracle.
+
+The next exact refinement is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_diagnostic_enhancement_relaxation_search.py \
+  --mode formal-completion-avatar \
+  --relaxation exact \
+  --shots 256 \
+  --seed 7
+```
+
+This tensors that corrected diagnostic-relaxation shell with the exact
+three-state enhancement hierarchy:
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+So the exact discrete space is `86400 = 57600 * 3`, padded to `17` qubits. The
+marked sector factorizes exactly as
+
+`Marked(relaxation, mode) = Marked_diagnostic_relaxation(relaxation) * {enhancement(mode)}`
+
+so the three enhancement modes are basis-conjugate and the
+order-relaxation marked-count profile stays exactly:
+
+- `exact`: `20`
+- `exceptional-order-relaxed`: `40`
+- `hyperbolic-order-relaxed`: `120`
+- `both-orders-relaxed`: `240`
+
+A representative two-seed study over seeds `7,8` on the
+`formal_completion_avatar` mode gives the clean operating points:
+
+- `exact`: `64` iterations, mean target-hit `0.998046875`
+- `exceptional-order-relaxed`: `45` iterations, mean target-hit `0.998046875`
+- `hyperbolic-order-relaxed`: `26` iterations, mean target-hit `0.998046875`
+- `both-orders-relaxed`: `18` iterations, mean target-hit `1.0`
+
+So the enhancement hierarchy now sits exactly above both lower discrete
+geometries: it preserves the order-selectivity profile just as it preserved the
+support-selectivity profile, while shifting the padded-shell Grover windows
+from `57600 -> 65536` to `86400 -> 131072`.
 
 The next exact bridge wall is:
 

@@ -46,9 +46,57 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_order_search.py",
         "base_args": ["--mode", "formal-completion"],
     },
+    "diagnostic-relaxation-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion", "--relaxation", "exact"],
+    },
+    "diagnostic-relaxation-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "diagnostic-relaxation-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "diagnostic-relaxation-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion", "--relaxation", "both-orders-relaxed"],
+    },
     "enhancement-factor": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_factor_search.py",
         "base_args": ["--mode", "formal-completion-avatar"],
+    },
+    "diagnostic-enhancement-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],
+    },
+    "diagnostic-enhancement-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "diagnostic-enhancement-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "diagnostic-enhancement-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
+    },
+    "enhancement-relaxation-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],
+    },
+    "enhancement-relaxation-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "enhancement-relaxation-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "enhancement-relaxation-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_relaxation_search.py",
+        "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
     },
     "support-enhancement-exact": {
         "script": ROOT / "tools" / "qiskit" / "toe_support_enhancement_relaxation_search.py",

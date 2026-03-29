@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -184,9 +184,9 @@
     {
       "name": "diagnostic-relaxation",
       "script": "tools/qiskit/toe_bridge_diagnostic_relaxation_search.py",
-      "theorem_surface": "fixed factorized 18-qubit bridge space with separate hyperbolic and exceptional order relaxations",
-      "state_count": 230400,
-      "padded_qubits": 18,
+      "theorem_surface": "corrected pass/pass diagnostic shell with separate hyperbolic and exceptional order relaxations",
+      "state_count": 57600,
+      "padded_qubits": 16,
       "marked_count_profile": {
         "exact": 20,
         "exceptional-order-relaxed": 40,
@@ -194,44 +194,66 @@
         "both-orders-relaxed": 240
       },
       "promoted_operating_point": {
-        "kind": "seeded-diagnostic-family",
-        "seed": 7,
+        "kind": "two-seed representative-family",
+        "representative_mode": "formal-completion",
+        "seeds": [7, 8],
         "shots": 256,
-        "current_shadow": {
-          "exact": {
-            "iterations": 45,
-            "target_hit_probability": 1.0
-          },
-          "exceptional-order-relaxed": {
-            "iterations": 32,
-            "target_hit_probability": 1.0
-          },
-          "hyperbolic-order-relaxed": {
-            "iterations": 18,
-            "target_hit_probability": 1.0
-          },
-          "both-orders-relaxed": {
-            "iterations": 13,
-            "target_hit_probability": 0.99609375
-          }
+        "exact": {
+          "iterations": 45,
+          "mean_target_hit_probability": 0.998046875
         },
-        "formal_completion": {
-          "exact": {
-            "iterations": 45,
-            "target_hit_probability": 1.0
-          },
-          "exceptional-order-relaxed": {
-            "iterations": 32,
-            "target_hit_probability": 1.0
-          },
-          "hyperbolic-order-relaxed": {
-            "iterations": 18,
-            "target_hit_probability": 1.0
-          },
-          "both-orders-relaxed": {
-            "iterations": 13,
-            "target_hit_probability": 0.99609375
-          }
+        "exceptional-order-relaxed": {
+          "iterations": 32,
+          "mean_target_hit_probability": 0.998046875
+        },
+        "hyperbolic-order-relaxed": {
+          "iterations": 18,
+          "mean_target_hit_probability": 1.0
+        },
+        "both-orders-relaxed": {
+          "iterations": 13,
+          "mean_target_hit_probability": 0.99609375
+        }
+      }
+    },
+    {
+      "name": "diagnostic-enhancement-relaxation",
+      "script": "tools/qiskit/toe_bridge_diagnostic_enhancement_relaxation_search.py",
+      "theorem_surface": "diagnostic-relaxation shell tensored with the exact three-state enhancement hierarchy; modes are basis-conjugate",
+      "state_count": 86400,
+      "padded_qubits": 17,
+      "marked_count_profile": {
+        "exact": 20,
+        "exceptional-order-relaxed": 40,
+        "hyperbolic-order-relaxed": 120,
+        "both-orders-relaxed": 240
+      },
+      "enhancement_states": [
+        "current_k3_zero_orbit",
+        "minimal_external_enhancement",
+        "formal_completion_avatar"
+      ],
+      "exact_mode_relation": "Marked_diagnostic_relaxation(relaxation) x {enhancement(mode)}",
+      "promoted_operating_point": {
+        "kind": "two-seed representative-family plus exact mode-conjugacy",
+        "representative_mode": "formal-completion-avatar",
+        "seeds": [7, 8],
+        "shots": 256,
+        "exact": {
+          "iterations": 64,
+          "mean_target_hit_probability": 0.998046875
+        },
+        "exceptional-order-relaxed": {
+          "iterations": 45,
+          "mean_target_hit_probability": 0.998046875
+        },
+        "hyperbolic-order-relaxed": {
+          "iterations": 26,
+          "mean_target_hit_probability": 0.998046875
+        },
+        "both-orders-relaxed": {
+          "iterations": 18,
+          "mean_target_hit_probability": 1.0
         }
       }
     },

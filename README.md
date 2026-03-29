@@ -811,10 +811,11 @@ target-hit probability `1.0`.
 
 The next exact diagnostic is
 [toe_bridge_diagnostic_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_relaxation_search.py).
-It keeps the same factorized `18`-qubit bridge space fixed and relaxes the two
+It keeps the accepted pass/pass concentration channel fixed and relaxes the two
 order theorems one sector at a time, while the interleaving sector stays free
-just as it already does in the diagnostic-order oracle. That gives a fixed
-exact state space of `230400` states on `18` qubits. The marked counts become:
+just as it already does in the diagnostic-order oracle. The corrected exact
+diagnostic state space is `57600` states, padded to `16` qubits. The marked
+counts become:
 
 - `20` for `exact`
 - `40` for `exceptional-order-relaxed`
@@ -824,14 +825,42 @@ exact state space of `230400` states on `18` qubits. The marked counts become:
 So the theorem-facing selectivity is now explicit: the exceptional order
 contributes the exact binary factor, the hyperbolic order contributes the exact
 6-fold factor, and only the combined `6 * 2` relaxation loses the exact
-20-state bridge shell. On seeded verification runs (`seed = 7`, `256` shots),
-both `current-shadow` and `formal-completion` modes shared the same clean
-operating points:
+20-state bridge shell. A representative two-seed study over seeds `7,8` on the
+`formal-completion` mode gives the clean operating points:
 
-- `45` iterations for `exact` with target-hit probability `1.0`
-- `32` iterations for `exceptional-order-relaxed` with target-hit probability `1.0`
-- `18` iterations for `hyperbolic-order-relaxed` with target-hit probability `1.0`
-- `13` iterations for `both-orders-relaxed` with target-hit probability `0.99609375`
+- `45` iterations for `exact` with mean target-hit probability `0.998046875`
+- `32` iterations for `exceptional-order-relaxed` with mean target-hit probability `0.998046875`
+- `18` iterations for `hyperbolic-order-relaxed` with mean target-hit probability `1.0`
+- `13` iterations for `both-orders-relaxed` with mean target-hit probability `0.99609375`
+
+The next exact refinement is
+[toe_bridge_diagnostic_enhancement_relaxation_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_diagnostic_enhancement_relaxation_search.py).
+It tensors that corrected diagnostic-relaxation shell with the exact
+three-state enhancement hierarchy
+
+- `current_k3_zero_orbit`
+- `minimal_external_enhancement`
+- `formal_completion_avatar`
+
+on a discrete space of `86400 = 57600 * 3` states, padded to `17` qubits. The
+exact marked sector factorizes as
+
+`Marked(relaxation, mode) = Marked_diagnostic_relaxation(relaxation) * {enhancement(mode)}`
+
+so the three enhancement modes are basis-conjugate and the order-relaxation
+marked-count profile stays exactly `20 / 40 / 120 / 240`. A representative
+two-seed study over seeds `7,8` on the `formal_completion_avatar` mode gives
+the clean operating points:
+
+- `64` iterations for `exact` with mean target-hit probability `0.998046875`
+- `45` iterations for `exceptional-order-relaxed` with mean target-hit probability `0.998046875`
+- `26` iterations for `hyperbolic-order-relaxed` with mean target-hit probability `0.998046875`
+- `18` iterations for `both-orders-relaxed` with mean target-hit probability `1.0`
+
+So the enhancement hierarchy is now exact above both lower discrete
+geometries: it preserves the order-selectivity profile just as it preserved the
+support-selectivity profile, while shifting the padded-shell Grover windows
+from `57600 -> 65536` to `86400 -> 131072`.
 
 The next exact bridge wall is now in
 [toe_bridge_enhancement_factor_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_enhancement_factor_search.py).

@@ -16,7 +16,8 @@ search stack.
 | Joint weight filter | `toe_bridge_weight_filter_search.py` | `115200` | `17` | `20` | `63` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Split weight filter | `toe_bridge_split_weight_filter_search.py` | `230400` | `18` | `20` | seeded `90`-iteration verification exact in both modes; local formal probe `89/90/91` plateau on seed `7` |
 | Diagnostic order | `toe_bridge_diagnostic_order_search.py` | `230400` | `18` | `20` | seeded `90`-iteration verification exact in both modes |
-| Diagnostic relaxation | `toe_bridge_diagnostic_relaxation_search.py` | `230400` | `18` | `20/40/120/240` | seeded `45/32/18/13`-iteration family on seed `7` in both modes |
+| Diagnostic relaxation | `toe_bridge_diagnostic_relaxation_search.py` | `57600` | `16` | `20/40/120/240` | representative formal-completion two-seed family: `45 / 32 / 18 / 13` iterations for exact / exceptional / hyperbolic / both |
+| Diagnostic enhancement relaxation | `toe_bridge_diagnostic_enhancement_relaxation_search.py` | `86400` | `17` | `20/40/120/240` | representative formal-completion-avatar two-seed family: `64 / 45 / 26 / 18` iterations for exact / exceptional / hyperbolic / both; exact mode-conjugacy across the 3 enhancement labels |
 | Enhancement factor | `toe_bridge_enhancement_factor_search.py` | `345600` | `19` | `20` | seeded `127`-iteration verification exact in all three enhancement modes |
 
 ## Exact Diagnostic Meaning
@@ -50,13 +51,22 @@ search stack.
   - hyperbolic order on `U1/U2/U3`
   - exceptional order on `E8_1/E8_2`
   - interleaving pattern of the two sectors
-- `diagnostic relaxation`: keeps the same factorized `18`-qubit bridge space
+- `diagnostic relaxation`: keeps the corrected pass/pass diagnostic shell
   fixed and relaxes the exact hyperbolic and exceptional order theorems one
   sector at a time:
   - `exact`: marked count `20`
   - `exceptional-order-relaxed`: marked count `40`
   - `hyperbolic-order-relaxed`: marked count `120`
   - `both-orders-relaxed`: marked count `240`
+- `diagnostic enhancement relaxation`: tensors that corrected diagnostic shell
+  with the exact 3-state enhancement hierarchy:
+  - `current_k3_zero_orbit`
+  - `minimal_external_enhancement`
+  - `formal_completion_avatar`
+  - exact factorization:
+    `Marked_diagnostic_relaxation(relaxation) x {enhancement(mode)}`
+  - the three enhancement modes are exact basis-conjugates on the same
+    padded `17`-qubit shell
 - `enhancement factor`: replaces the old glue dichotomy by the exact three-state
   external enhancement hierarchy:
   - `current_k3_zero_orbit`
@@ -71,12 +81,18 @@ It reconstructs the exact `120`-state factor sector as:
 That makes order failures localizable by theorem sector rather than only by one
 combined five-factor permutation.
 
-The diagnostic-relaxation oracle keeps that same space fixed, so the theorem
-selectivity factors become explicit inside the full bridge shell:
+The diagnostic-relaxation oracle keeps the pass/pass diagnostic shell fixed, so
+the theorem selectivity factors become explicit inside that corrected bridge
+space:
 
 - exceptional order contributes the exact binary factor
 - hyperbolic order contributes the exact 6-fold factor
 - interleaving is already free in the diagnostic-order oracle
+
+The diagnostic-enhancement relaxation oracle sits one level above that shell:
+it preserves the same order-selectivity profile across the exact three-state
+enhancement hierarchy while shifting the padded-shell Grover windows from
+`57600 -> 65536` to `86400 -> 131072`.
 
 The enhancement-factor oracle resolves a different wall: it keeps the theorem
 shell fixed and separates the current refined K3 object, the exact minimal new
@@ -154,12 +170,21 @@ qiskit-python tools/qiskit/toe_bridge_diagnostic_order_search.py \
 ```
 
 ```bash
-qiskit-python tools/qiskit/toe_bridge_diagnostic_relaxation_search.py \
-  --mode formal-completion \
-  --relaxation exact \
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target diagnostic-relaxation-exact \
+  --iterations 44 45 46 \
+  --seeds 7 8 \
   --shots 256 \
-  --seed 7 \
-  --top 8
+  --top 6
+```
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target diagnostic-enhancement-exact \
+  --iterations 63 64 65 \
+  --seeds 7 8 \
+  --shots 256 \
+  --top 6
 ```
 
 ```bash
