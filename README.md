@@ -1049,6 +1049,23 @@ iterations with mean target-hit probability `1.0`:
 - `formal-completion-object`: target-hit `1.0` at `64` on seed `7`
 - `formal-completion-object`: mean target-hit `1.0` at `63` on seeds `7,8`
 
+The next exact geometric localization is now in
+[w33_carrier_preserving_transport_twisted_k3_enhancement_bridge.py](/mnt/c/Repos/Theory%20of%20Everything/exploration/w33_carrier_preserving_transport_twisted_k3_enhancement_bridge.py).
+This is the strongest honest step I can promote past the discrete wall. The
+external carrier package is already fixed, the current external K3 shadow is
+still only the split harmonic `81 + 81` package, and the missing internal
+datum is already explicit as a nontrivial transport-twisted cocycle/operator
+package.
+
+So the honest remaining wall is no longer a generic K3-enhancement problem.
+It is a carrier-preserving transport-twisted nonzero-slot enhancement of the
+current K3 shadow.
+
+So any exact K3-side realization compatible with the current bridge must be a
+carrier-preserving **transport-twisted lift** of that fixed external package.
+The open wall is now existence of that lift on the K3 side, not the slot, the
+line, the shell, or the internal operator shape.
+
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
 For a GitHub-readable version, use

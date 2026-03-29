@@ -1,0 +1,54 @@
+{
+  "status": "ok",
+  "cochain_dimensions": {
+    "quotient_vertices": 45,
+    "transport_edges": 720,
+    "transport_triangles": 5280,
+    "c0_dimension": 90,
+    "c1_dimension": 1440,
+    "c2_dimension": 10560,
+    "fiber_rank": 2
+  },
+  "adapted_block_decomposition": {
+    "invariant_line": [
+      1,
+      2
+    ],
+    "d0_lower_left_block_vanishes": true,
+    "d1_lower_left_block_vanishes": true,
+    "d0_trivial_rank": 44,
+    "d0_extension_rank": 36,
+    "d0_sign_rank": 45,
+    "d1_trivial_rank": 676,
+    "d1_extension_rank": 457,
+    "d1_sign_rank": 717,
+    "full_d0_rank": 89,
+    "full_d1_rank": 1393
+  },
+  "invariant_line_subcomplex": {
+    "c0_dimension": 45,
+    "c1_dimension": 720,
+    "c2_dimension": 5280,
+    "d1_d0_vanishes_exactly": true,
+    "h0_dimension": 1,
+    "h1_dimension": 0
+  },
+  "sign_shadow_precomplex": {
+    "c0_dimension": 45,
+    "c1_dimension": 720,
+    "c2_dimension": 5280,
+    "h0_flat_dimension": 0,
+    "semisimple_curvature_rank": 42,
+    "semisimple_curvature_support_triangles": 2160,
+    "semisimple_curvature_support_equals_parity1_triangles": true
+  },
+  "curved_extension_package": {
+    "full_curvature_rank": 42,
+    "off_diagonal_curvature_rank": 36,
+    "curvature_kills_invariant_columns": true,
+    "curvature_factors_through_sign_quotient": true,
+    "upper_right_curvature_identity_exact": true,
+    "off_diagonal_curvature_support_rows": 4046
+  },
+  "bridge_verdict": "The transport package now exists as the right algebraic object: a curved upper-triangular precomplex over F3. In the adapted basis of the unique invariant line [1,2], the invariant-line block is the ordinary simplicial transport-graph complex with h0 = 1 and h1 = 0, the sign-shadow block has no flat 0-sections and carries the genuine curvature channel, and the cocycle block is exactly the extension coupling the two. The full curvature d1 d0 has rank 42, kills the invariant columns pointwise, and therefore factors through the sign quotient. Its semisimple quotient block is supported exactly on the 2160 parity-1 triangles, while the off-diagonal block is the explicit cocycle-driven curvature coupling. So the repo now has the actual transport-twisted sheaf/cochain object, not only its separate holonomy, cocycle, and curvature shadows."
+}
