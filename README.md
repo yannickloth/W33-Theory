@@ -674,9 +674,12 @@ raises the exact product space to `57600` states, padded to `16` qubits. On the
 seeded verification runs (`seed = 7`, `256` shots), both `current-shadow` and
 `formal-completion` modes had marked count `20`, Grover iterations `45`, and
 target-hit probability `1.0`, with no non-target valid or invalid states in the
-kept top counts. A local probe of the formal-completion mode at `44`, `45`, and
-`46` iterations stayed on the same `1.0` plateau for that seed, so the refined
-oracle is not hypersensitive to one exact iteration choice.
+kept top counts. A two-seed study over seeds `7,8` shows the `16`-qubit
+line-factor oracle is actually cleanest at `44` iterations:
+
+- `44` iterations: mean target-hit probability `1.0`
+- `45` iterations: mean target-hit probability `0.998046875`
+- `46` iterations: mean target-hit probability `0.998046875`
 
 The next exact filter is
 [toe_bridge_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_weight_filter_search.py).
@@ -694,7 +697,12 @@ This raises the discrete search space to `115200` states, padded to `17`
 qubits. On seeded verification runs (`seed = 7`, `256` shots), both
 `current-shadow` and `formal-completion` modes had marked count `20`, Grover
 iterations `64`, target-hit probability `1.0`, and no non-target valid or
-invalid states in the kept top counts.
+invalid states in the kept top counts. A two-seed study over seeds `7,8`
+showed the `17`-qubit oracle is actually cleanest at `63` iterations:
+
+- `63` iterations: mean target-hit probability `1.0`
+- `64` iterations: mean target-hit probability `0.998046875`
+- `65` iterations: mean target-hit probability `0.998046875`
 
 The next exact filter is
 [toe_bridge_split_weight_filter_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_split_weight_filter_search.py).
@@ -709,7 +717,10 @@ joint pass/fail bit. The marked sector still keeps only the theorem-compatible
 ordering, forced head line, and chosen glue mode. That raises the product space
 to `230400` states, padded to `18` qubits. The seeded verification runs
 (`seed = 7`, `256` shots) keep both `current-shadow` and `formal-completion`
-entirely inside the marked sector with target-hit probability `1.0`.
+entirely inside the marked sector with target-hit probability `1.0`. A local
+formal-completion probe at `89`, `90`, and `91` iterations stayed on the same
+`1.0` plateau for that seed, so the heavier oracle also appears robust near the
+analytic Grover count.
 
 ## Authors
 

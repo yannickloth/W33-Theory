@@ -266,7 +266,8 @@ and keeps only the theorem-compatible head line in the marked sector. The
 explicit product space has size `57600`, padded to `16` qubits. On the seeded
 verification runs (`seed = 7`, `256` shots), both `current-shadow` and
 `formal-completion` modes hit only marked states with target-hit probability
-`1.0`.
+`1.0`. A two-seed study over seeds `7,8` shows the `16`-qubit oracle is
+cleanest at `44` iterations rather than `45`.
 
 The next exact filter is:
 
@@ -290,7 +291,8 @@ with `pass` meaning the exact current inequalities:
 The explicit product space has size `115200`, padded to `17` qubits. On the
 seeded verification runs (`seed = 7`, `256` shots), both `current-shadow` and
 `formal-completion` modes hit only marked states with target-hit probability
-`1.0`.
+`1.0`. A two-seed study over seeds `7,8` shows the `17`-qubit oracle is
+cleanest at `63` iterations rather than `64`.
 
 The next exact refinement is:
 
@@ -311,7 +313,9 @@ distinguish "hyperbolic only" and "exceptional only" filter failures instead
 of collapsing everything to one joint fail bit. The explicit product space has
 size `230400`, padded to `18` qubits. On the seeded verification runs
 (`seed = 7`, `256` shots), both `current-shadow` and `formal-completion` modes
-hit only marked states with target-hit probability `1.0`.
+hit only marked states with target-hit probability `1.0`. A local
+formal-completion probe at `89`, `90`, and `91` iterations stayed on the same
+`1.0` plateau for seed `7`.
 
 For heavier bridge oracles, use the reusable study runner:
 

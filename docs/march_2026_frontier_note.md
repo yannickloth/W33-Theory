@@ -1067,9 +1067,12 @@ and in both modes the decoded outputs stayed entirely inside the exact marked
 sector, with no non-target valid states and no invalid bitstrings in the kept
 top counts.
 
-A local probe of the formal-completion mode at `44`, `45`, and `46` iterations
-also stayed on the same `1.0` plateau for that seed, so the refined oracle is
-not hypersensitive to one exact iteration choice.
+A two-seed study over seeds `7,8` shows that the `16`-qubit line-factor oracle
+is actually cleanest at `44` iterations:
+
+- `44` iterations: mean target-hit probability `1.0`
+- `45` iterations: mean target-hit probability `0.998046875`
+- `46` iterations: mean target-hit probability `0.998046875`
 
 ### Qiskit bridge weight-filter search
 
@@ -1098,6 +1101,13 @@ and in both modes the decoded outputs stayed entirely inside the exact marked
 sector, with no non-target valid states and no invalid bitstrings in the kept
 top counts.
 
+A two-seed study over seeds `7,8` shows that the `17`-qubit weight-filter
+oracle is actually cleanest at `63` iterations:
+
+- `63` iterations: mean target-hit probability `1.0`
+- `64` iterations: mean target-hit probability `0.998046875`
+- `65` iterations: mean target-hit probability `0.998046875`
+
 ### Qiskit bridge split-weight-filter search
 
 The next exact filter is now in
@@ -1123,6 +1133,11 @@ The seeded verification runs (`seed = 7`, `256` shots) gave:
 and in both modes the decoded outputs stayed inside the exact marked sector,
 with no non-target valid states and no invalid bitstrings in the kept top
 counts.
+
+A local formal-completion probe at `89`, `90`, and `91` iterations also stayed
+on the same `1.0` plateau for seed `7`, so the heavier `18`-qubit oracle looks
+robust near the analytic Grover count even though a broader two-seed study is
+more expensive in this environment.
 
 ## Reproduce
 
