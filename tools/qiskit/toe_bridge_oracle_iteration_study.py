@@ -22,6 +22,10 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_support_hierarchy_search.py",
         "base_args": [],
     },
+    "support-diagnostic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_support_diagnostic_search.py",
+        "base_args": [],
+    },
     "product": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_product_search.py",
         "base_args": ["--mode", "formal-completion"],

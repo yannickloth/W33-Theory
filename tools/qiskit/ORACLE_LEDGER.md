@@ -8,6 +8,7 @@ search stack.
 | Oracle | Script | Exact Search Space | Qubits | Marked Count | Best Verified Operating Point |
 |---|---|---:|---:|---:|---|
 | Support hierarchy | `toe_support_hierarchy_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.9973958333333334` on seeds `5,6,7` |
+| Support diagnostic | `toe_support_diagnostic_search.py` | `120` | `7` | `2` | `6` iterations, mean target-hit `0.99609375` on seeds `7,8` |
 | Product state | `toe_bridge_product_search.py` | `28800` | `15` | `20` | `31` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Line factor | `toe_bridge_line_factor_search.py` | `57600` | `16` | `20` | `44` iterations, mean target-hit `1.0` on seeds `7,8` |
 | Joint weight filter | `toe_bridge_weight_filter_search.py` | `115200` | `17` | `20` | `63` iterations, mean target-hit `1.0` on seeds `7,8` |
@@ -19,6 +20,10 @@ search stack.
 ## Exact Diagnostic Meaning
 
 - `support hierarchy`: forces `head_line < U1 < transport_avatar`
+- `support diagnostic`: factorizes the same `5!` support shell into:
+  - `10` support interleavings
+  - `6` line/plane/avatar core orders
+  - `2` free local-context tail orders
 - `product state`: adds the split-vs-formal glue factor
 - `line factor`: forces the head-compatible line inside `U1`
 - `joint weight filter`: forces the current concentration theorem as one bit
@@ -61,6 +66,15 @@ datum, and the resulting formal completion object inside one discrete state
 space.
 
 ## Reproduce
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \
+  --target support-diagnostic \
+  --iterations 5 6 7 \
+  --seeds 7 8 \
+  --shots 256 \
+  --top 6
+```
 
 ```bash
 qiskit-python tools/qiskit/toe_bridge_oracle_iteration_study.py \

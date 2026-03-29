@@ -232,6 +232,25 @@ So the oracle marks exactly the support permutations whose first three slots are
 - `u1_plane`
 - `transport_avatar`
 
+The next exact refinement of that same `120`-state shell is:
+
+```bash
+qiskit-python tools/qiskit/toe_support_diagnostic_search.py --shots 256 --seed 7
+```
+
+That oracle does not change the support state count. It factorizes the same
+support shell exactly as:
+
+- `10` support interleavings choosing which `3` of `5` slots carry the bridge core
+- `6` orders on `(head_line, u1_plane, transport_avatar)`
+- `2` free local-context orders on `(u3_local, e8_2_local)`
+
+So the exact identity is `5! = C(5,3) * 3! * 2! = 10 * 6 * 2`, and the marked
+sector keeps one support interleaving and one line/plane/avatar core order,
+with the local tail order still free. A two-seed study over seeds `7,8` shows
+the cleanest operating point is `6` iterations, with mean target-hit
+probability `0.99609375`.
+
 The next exact search layer is:
 
 ```bash

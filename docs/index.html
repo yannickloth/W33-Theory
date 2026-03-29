@@ -22,6 +22,11 @@
   --accent4: #f0883e;
   --border: #30363d;
   --gold: #e3b341;
+  --sidebar-width: 260px;
+  --topnav-height: 56px;
+  --mobile-topnav-height: 62px;
+  --mobile-sidebar-offset: 80px;
+  --safe-top: env(safe-area-inset-top, 0px);
 }
 /* Accessibility: skip-to-content link (visible on focus) */
 .skip-link {
@@ -32,7 +37,13 @@
   background: var(--accent); color: #111; border-radius: 6px; z-index: 9999;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; max-width: 100%; overflow-x: hidden; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  max-width: 100%;
+  overflow-x: hidden;
+  scroll-padding-top: calc(var(--topnav-height) + 1rem);
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Noto, Helvetica, Arial, sans-serif;
   background: var(--bg); color: var(--fg);
@@ -65,7 +76,7 @@ code {
 
 /* ── Hero ── */
 .hero {
-  text-align: center; padding: 5rem 2rem 3rem;
+  text-align: center; padding: clamp(3rem, 7vw, 5rem) 1.5rem clamp(2rem, 4vw, 3rem);
   background: linear-gradient(135deg, #0d1117 0%, #1a1e2e 50%, #0d1117 100%);
   border-bottom: 1px solid var(--border);
   position: relative; overflow: hidden;
@@ -75,13 +86,25 @@ code {
   background: radial-gradient(circle at 30% 40%, rgba(88,166,255,0.08) 0%, transparent 50%),
               radial-gradient(circle at 70% 60%, rgba(210,168,255,0.06) 0%, transparent 50%);
 }
-.hero h1 { font-size: 3.5rem; font-weight: 800; position: relative; letter-spacing: -0.02em; }
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  position: relative;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  max-width: 12ch;
+  margin: 0 auto;
+}
 .hero h1 span { color: var(--accent); }
 .hero .subtitle {
-  font-size: 1.25rem; color: var(--fg2); margin-top: 0.5rem; position: relative;
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  color: var(--fg2);
+  margin: 0.85rem auto 0;
+  position: relative;
+  max-width: 900px;
 }
 .hero .tagline {
-  max-width: 720px; margin: 2rem auto 0; font-size: 1.05rem;
+  max-width: 860px; margin: 1.4rem auto 0; font-size: clamp(0.95rem, 1.35vw, 1.05rem);
   color: var(--fg); position: relative; line-height: 1.8;
 }
 .hero .tagline strong { color: var(--accent3); }
@@ -92,12 +115,14 @@ nav.topnav {
   background: rgba(22,27,34,0.95); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 1rem; height: 48px;
+  padding: 0 1rem; height: var(--topnav-height);
 }
 nav.topnav .nav-quick {
   display: flex; gap: 0.25rem; align-items: center;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+nav.topnav .nav-quick::-webkit-scrollbar { display: none; }
 nav.topnav a {
   padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.8rem;
   color: var(--fg2); transition: all 0.15s; white-space: nowrap;
@@ -169,12 +194,12 @@ nav.topnav .nav-toggle-state {
 
 /* ── Sidebar TOC ── */
 .sidebar-toc {
-  position: fixed; top: 48px; left: 0; bottom: 0;
-  width: 260px; background: var(--bg2);
+  position: fixed; top: var(--topnav-height); left: 0; bottom: 0;
+  width: var(--sidebar-width); background: var(--bg2);
   border-right: 1px solid var(--border);
   overflow-y: auto; z-index: 140;
   padding: 1rem 0; transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, top 0.3s ease;
 }
 .sidebar-toc.open { transform: translateX(0); }
 .sidebar-toc .sidebar-header {
@@ -274,8 +299,7 @@ body.nav-open { overflow: hidden; }
   .sidebar-toc { transform: translateX(0); }
   .sidebar-overlay { display: none !important; }
   .hero {
-    margin-left: 260px;
-    width: calc(100% - 260px);
+    margin-left: var(--sidebar-width);
   }
   .hero h1,
   .hero .subtitle,
@@ -284,16 +308,18 @@ body.nav-open { overflow: hidden; }
     margin-left: auto;
     margin-right: auto;
   }
-  .page-content { margin-left: 260px; }
+  .page-content { margin-left: var(--sidebar-width); }
   nav.topnav {
-    margin-left: 260px;
-    width: calc(100% - 260px);
+    margin-left: var(--sidebar-width);
   }
   nav.topnav .nav-toggle { display: none; }
 }
 @media (max-width: 1099px) {
+  html {
+    scroll-padding-top: calc(var(--mobile-topnav-height) + var(--safe-top) + 1rem);
+  }
   body {
-    padding-top: calc(62px + env(safe-area-inset-top, 0px));
+    padding-top: calc(var(--mobile-topnav-height) + var(--safe-top));
   }
   .page-content,
   .container,
@@ -313,9 +339,9 @@ body.nav-open { overflow: hidden; }
     right: 0;
     width: 100%;
     justify-content: center;
-    padding: 0.55rem 0.8rem;
+    padding: calc(0.55rem + var(--safe-top)) 0.8rem 0.55rem;
     height: auto;
-    min-height: 62px;
+    min-height: calc(var(--mobile-topnav-height) + var(--safe-top));
     z-index: 150;
   }
   nav.topnav .nav-quick,
@@ -338,7 +364,8 @@ body.nav-open { overflow: hidden; }
     height: 1.95rem;
     font-size: 1rem;
   }
-  .sidebar-toc { top: 80px; }
+  .hero-particles { display: none; }
+  .sidebar-toc { top: calc(var(--mobile-sidebar-offset) + var(--safe-top)); }
   .sidebar-toc .sidebar-header { display: flex; }
   .sidebar-toc .toc-search { margin-top: 0.6rem; }
   code,
@@ -353,9 +380,12 @@ body.nav-open { overflow: hidden; }
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  body.nav-open nav.topnav { display: none; }
-  body.nav-open .sidebar-overlay { z-index: 109; }
-  body.nav-open .sidebar-toc { top: 0; z-index: 110; transform: none; }
+  body.nav-open .sidebar-overlay { z-index: 139; }
+  body.nav-open .sidebar-toc {
+    top: calc(var(--mobile-sidebar-offset) + var(--safe-top));
+    z-index: 140;
+    transform: none;
+  }
 }
 
 /* ── Old nav hidden ── */
@@ -707,8 +737,8 @@ section {
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  .hero h1 { font-size: 2.2rem; }
-  .hero { padding: 3rem 1rem 2rem; }
+  .hero h1 { font-size: 2rem; }
+  .hero { padding: 2.6rem 1rem 2rem; }
   .card-grid { grid-template-columns: 1fr; }
   nav { gap: 0.1rem; }
   nav a { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
@@ -2092,13 +2122,14 @@ section h2::after {
     <tr><td>Formal external completion avatar</td><td>Once the shell, forced image line, and unique nonzero glue orbit are all fixed, there is one minimal formal external completion object up to head/tail basis gauge. It carries the head-compatible line inside <code>U1</code>, preserves the ordered shell <code>81 &rarr; 162 &rarr; 81</code>, and uses the unique nonzero completion normal form <code>J2<sup>81</sup></code>. So the missing piece is now K3-side realization of that object, not its design.</td><td class="status-ok">✅ exact minimal common external object carrying the forced line and nonzero glue</td></tr>
     <tr><td>Yukawa / transport coupling hierarchy</td><td>The unresolved family closure is now support-filtered rather than attached to one undifferentiated carrier. The central image-side <code>2E13</code> channel is line-level, the first family-sensitive <code>A4</code> packet is plane-level on <code>U1</code>, and the non-split transport identity is avatar-level on the formal completion <code>81 &rarr; 162 &rarr; 81</code>. The broader five-factor packet and the locally dominant <code>U3</code> piece remain real, but they are context rather than the minimal exact carrier.</td><td class="status-ok">✅ exact coupling hierarchy: head line inside <code>U1</code> inside formal completion avatar</td></tr>
     <tr><td>Qiskit support-hierarchy search</td><td>The repo now carries a first TOE-specific local Qiskit oracle over the exact bridge-support stack. On the five support labels <code>head_line</code>, <code>U1</code>, <code>transport_avatar</code>, <code>U3</code>, and <code>E8_2</code>, the oracle marks exactly the permutations whose first three slots realize the proved support hierarchy <code>head_line &lt; U1 &lt; transport_avatar</code>, leaving the local <code>U3 / E8_2</code> order free. The explicit search space has <code>120</code> permutations, the marked set has size <code>2</code>, and the seeded verification run (<code>seed = 7</code>) returned the two exact marked permutations with target-hit probability <code>255/256 = 0.99609375</code>, one residual non-target valid permutation, and no invalid bitstrings at <code>256</code> shots. A nearby iteration study over seeds <code>5,6,7</code> peaks exactly at the analytic Grover count <code>6</code>, with mean target-hit probabilities <code>0.9609375</code> at <code>5</code> iterations, <code>0.9973958333333334</code> at <code>6</code>, and <code>0.8984375</code> at <code>7</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current bridge support theorem</td></tr>
-    <tr><td>Qiskit bridge product-state search</td><td>The repo now carries a second TOE-specific local Qiskit oracle over the exact product of three discrete bridge sectors: strict support permutations, five-factor selector ordering, and glue state <code>{zero_split_shadow, unique_nonzero_orbit}</code>. This puts the current split-shadow theorem and the formal nonzero-completion theorem on one search space of size <code>28800</code>, using <code>15</code> qubits after padding. In the seeded verification run (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>32</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A reusable study runner now probes nearby iteration windows, and the first two-seed formal-completion study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>31</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>32</code> and <code>0.9921875</code> at <code>33</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current split-shadow vs formal-completion bridge sectors</td></tr>
-    <tr><td>Qiskit bridge line-factor search</td><td>The repo now carries a third TOE-specific local Qiskit oracle that refines the bridge product search by adding the exact binary line-choice factor inside <code>U1</code>: <code>head_compatible_u1_line</code> versus <code>tail_biased_u1_line</code>. The marked sector keeps only the theorem-compatible head line together with the strict support hierarchy, five-factor ordering, and one glue mode. That raises the exact search space to <code>57600</code> states, using <code>16</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>45</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A two-seed study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>44</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>45</code> and <code>46</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the forced head-line bridge sector</td></tr>
-    <tr><td>Qiskit bridge weight-filter search</td><td>The repo now carries a fourth TOE-specific local Qiskit oracle that adds one theorem-backed concentration bit on top of the line-factor bridge search: <code>dominant_weight_filter_pass</code> versus <code>dominant_weight_filter_fail</code>. The pass state means the exact current inequalities <code>U3 &gt; 4/5</code> of the hyperbolic selector packet and <code>E8_2 &gt; 8/9</code> of the exceptional packet. That raises the exact search space to <code>115200</code> states, using <code>17</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>64</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A two-seed study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>63</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>64</code> and <code>65</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current bridge concentration filter</td></tr>
-    <tr><td>Qiskit bridge split-weight-filter search</td><td>The repo now carries a fifth TOE-specific local Qiskit oracle that refines the bridge weight-filter search by splitting the concentration theorem into two exact binary factors: <code>hyperbolic_dominance_pass/fail</code> and <code>exceptional_dominance_pass/fail</code>. So the search can distinguish mixed concentration failures rather than only one joint pass bit. The marked sector keeps only the theorem-compatible <code>pass/pass</code> state together with the strict support hierarchy, five-factor ordering, forced head line, and one glue mode. That raises the exact search space to <code>230400</code> states, using <code>18</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>90</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A local formal-completion probe at <code>89</code>, <code>90</code>, and <code>91</code> iterations stayed on the same <code>1.0</code> plateau for that seed.</td><td class="status-ok">✅ exact local quantum-search encoding of the mixed concentration-filter bridge sector</td></tr>
-    <tr><td>Qiskit bridge diagnostic-order search</td><td>The repo now carries a sixth TOE-specific local Qiskit oracle that keeps the same <code>120</code>-state five-factor sector but factorizes it exactly into three theorem-localized pieces: a hyperbolic order on <code>U1,U2,U3</code>, an exceptional order on <code>E8_1,E8_2</code>, and an interleaving pattern choosing which <code>3</code> of the <code>5</code> slots belong to the hyperbolic sector. The exact identity is <code>5! = C(5,3)·3!·2! = 10·6·2</code>, so this is diagnostic rather than approximate. Combined with the support hierarchy, glue mode, forced head line, and split concentration bits, the full search space again has size <code>230400</code> on <code>18</code> qubits with marked count <code>20</code>. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had Grover iterations <code>90</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts.</td><td class="status-ok">✅ exact local quantum-search encoding of hyperbolic order, exceptional order, and interleaving as separate theorem sectors</td></tr>
-    <tr><td>Qiskit bridge diagnostic-relaxation search</td><td>The repo now carries a seventh TOE-specific local Qiskit oracle that keeps that same factorized <code>18</code>-qubit bridge space fixed and relaxes the two order theorems one sector at a time, while the interleaving sector remains free. The exact marked counts are therefore <code>20</code> in the exact mode, <code>40 = 20·2</code> when the exceptional order is relaxed, <code>120 = 20·6</code> when the hyperbolic order is relaxed, and <code>240 = 20·6·2</code> when both are relaxed. So the exceptional sector contributes the exact binary selectivity, the hyperbolic sector contributes the exact sixfold selectivity, and the interleaving sector contributes no additional theorem restriction here. In seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes gave target-hit probability <code>1.0</code> at <code>45</code>, <code>32</code>, and <code>18</code> iterations for the first three modes, while the fully relaxed case gave <code>255/256 = 0.99609375</code> at <code>13</code> iterations.</td><td class="status-ok">✅ exact local quantum-search resolution of the hyperbolic and exceptional order selectivity factors</td></tr>
-    <tr><td>Qiskit bridge enhancement-factor search</td><td>The repo now carries an eighth TOE-specific local Qiskit oracle that resolves the actual external-enhancement wall instead of only the old glue dichotomy. It replaces that two-state split by the exact three-state hierarchy <code>{current_k3_zero_orbit, minimal_external_enhancement, formal_completion_avatar}</code>, while keeping the theorem-backed support, order, line, and concentration shell fixed. So the search now distinguishes the current refined K3 object, the exact minimal new datum needed to realize the nonzero cocycle, and the resulting formal completion object. The explicit search space has size <code>345600</code>, using <code>19</code> qubits after padding, with marked count <code>20</code> in each mode. In seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), all three modes had Grover iterations <code>127</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts.</td><td class="status-ok">✅ exact local quantum-search encoding of the three-state external enhancement hierarchy</td></tr>
+    <tr><td>Qiskit support-diagnostic search</td><td>The repo now carries a second exact search on that same <code>120</code>-state support shell, but factorized into theorem-localized pieces rather than one undifferentiated support permutation. The exact identity is <code>5! = C(5,3)·3!·2! = 10·6·2</code>: <code>10</code> support interleavings choosing which <code>3</code> of <code>5</code> slots carry the bridge core, <code>6</code> orders on <code>(head_line, U1, transport_avatar)</code>, and <code>2</code> free local tail orders on <code>(U3, E8_2)</code>. The marked sector keeps one support interleaving and one line/plane/avatar core order, with the local tail order free. A two-seed study over seeds <code>7,8</code> stays cleanest at <code>6</code> iterations, with mean target-hit probability <code>0.99609375</code>.</td><td class="status-ok">✅ exact local quantum-search factorization of the bridge support shell</td></tr>
+    <tr><td>Qiskit bridge product-state search</td><td>The repo now carries a third TOE-specific local Qiskit oracle over the exact product of three discrete bridge sectors: strict support permutations, five-factor selector ordering, and glue state <code>{zero_split_shadow, unique_nonzero_orbit}</code>. This puts the current split-shadow theorem and the formal nonzero-completion theorem on one search space of size <code>28800</code>, using <code>15</code> qubits after padding. In the seeded verification run (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>32</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A reusable study runner now probes nearby iteration windows, and the first two-seed formal-completion study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>31</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>32</code> and <code>0.9921875</code> at <code>33</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current split-shadow vs formal-completion bridge sectors</td></tr>
+    <tr><td>Qiskit bridge line-factor search</td><td>The repo now carries a fourth TOE-specific local Qiskit oracle that refines the bridge product search by adding the exact binary line-choice factor inside <code>U1</code>: <code>head_compatible_u1_line</code> versus <code>tail_biased_u1_line</code>. The marked sector keeps only the theorem-compatible head line together with the strict support hierarchy, five-factor ordering, and one glue mode. That raises the exact search space to <code>57600</code> states, using <code>16</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>45</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A two-seed study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>44</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>45</code> and <code>46</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the forced head-line bridge sector</td></tr>
+    <tr><td>Qiskit bridge weight-filter search</td><td>The repo now carries a fifth TOE-specific local Qiskit oracle that adds one theorem-backed concentration bit on top of the line-factor bridge search: <code>dominant_weight_filter_pass</code> versus <code>dominant_weight_filter_fail</code>. The pass state means the exact current inequalities <code>U3 &gt; 4/5</code> of the hyperbolic selector packet and <code>E8_2 &gt; 8/9</code> of the exceptional packet. That raises the exact search space to <code>115200</code> states, using <code>17</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>64</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A two-seed study over seeds <code>7,8</code> shows the cleanest operating point is actually <code>63</code> iterations, with mean target-hit probability <code>1.0</code> versus <code>0.998046875</code> at <code>64</code> and <code>65</code>.</td><td class="status-ok">✅ exact local quantum-search encoding of the current bridge concentration filter</td></tr>
+    <tr><td>Qiskit bridge split-weight-filter search</td><td>The repo now carries a sixth TOE-specific local Qiskit oracle that refines the bridge weight-filter search by splitting the concentration theorem into two exact binary factors: <code>hyperbolic_dominance_pass/fail</code> and <code>exceptional_dominance_pass/fail</code>. So the search can distinguish mixed concentration failures rather than only one joint pass bit. The marked sector keeps only the theorem-compatible <code>pass/pass</code> state together with the strict support hierarchy, five-factor ordering, forced head line, and one glue mode. That raises the exact search space to <code>230400</code> states, using <code>18</code> qubits after padding. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had marked count <code>20</code>, Grover iterations <code>90</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts. A local formal-completion probe at <code>89</code>, <code>90</code>, and <code>91</code> iterations stayed on the same <code>1.0</code> plateau for that seed.</td><td class="status-ok">✅ exact local quantum-search encoding of the mixed concentration-filter bridge sector</td></tr>
+    <tr><td>Qiskit bridge diagnostic-order search</td><td>The repo now carries a seventh TOE-specific local Qiskit oracle that keeps the same <code>120</code>-state five-factor sector but factorizes it exactly into three theorem-localized pieces: a hyperbolic order on <code>U1,U2,U3</code>, an exceptional order on <code>E8_1,E8_2</code>, and an interleaving pattern choosing which <code>3</code> of the <code>5</code> slots belong to the hyperbolic sector. The exact identity is <code>5! = C(5,3)·3!·2! = 10·6·2</code>, so this is diagnostic rather than approximate. Combined with the support hierarchy, glue mode, forced head line, and split concentration bits, the full search space again has size <code>230400</code> on <code>18</code> qubits with marked count <code>20</code>. In the seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes had Grover iterations <code>90</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts.</td><td class="status-ok">✅ exact local quantum-search encoding of hyperbolic order, exceptional order, and interleaving as separate theorem sectors</td></tr>
+    <tr><td>Qiskit bridge diagnostic-relaxation search</td><td>The repo now carries an eighth TOE-specific local Qiskit oracle that keeps that same factorized <code>18</code>-qubit bridge space fixed and relaxes the two order theorems one sector at a time, while the interleaving sector remains free. The exact marked counts are therefore <code>20</code> in the exact mode, <code>40 = 20·2</code> when the exceptional order is relaxed, <code>120 = 20·6</code> when the hyperbolic order is relaxed, and <code>240 = 20·6·2</code> when both are relaxed. So the exceptional sector contributes the exact binary selectivity, the hyperbolic sector contributes the exact sixfold selectivity, and the interleaving sector contributes no additional theorem restriction here. In seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), both <code>current-shadow</code> and <code>formal-completion</code> modes gave target-hit probability <code>1.0</code> at <code>45</code>, <code>32</code>, and <code>18</code> iterations for the first three modes, while the fully relaxed case gave <code>255/256 = 0.99609375</code> at <code>13</code> iterations.</td><td class="status-ok">✅ exact local quantum-search resolution of the hyperbolic and exceptional order selectivity factors</td></tr>
+    <tr><td>Qiskit bridge enhancement-factor search</td><td>The repo now carries a ninth TOE-specific local Qiskit oracle that resolves the actual external-enhancement wall instead of only the old glue dichotomy. It replaces that two-state split by the exact three-state hierarchy <code>{current_k3_zero_orbit, minimal_external_enhancement, formal_completion_avatar}</code>, while keeping the theorem-backed support, order, line, and concentration shell fixed. So the search now distinguishes the current refined K3 object, the exact minimal new datum needed to realize the nonzero cocycle, and the resulting formal completion object. The explicit search space has size <code>345600</code>, using <code>19</code> qubits after padding, with marked count <code>20</code> in each mode. In seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), all three modes had Grover iterations <code>127</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts.</td><td class="status-ok">✅ exact local quantum-search encoding of the three-state external enhancement hierarchy</td></tr>
     <tr><td>K3 rank-2 qutrit planes</td><td>Inside the exact K3 middle-degree host, the rank-<code>2</code> harmonic branch types are already classified by signature: positive <code>(2,0)</code>, mixed <code>(1,1)</code>, and negative <code>(0,2)</code>. Tensoring any of them with the qutrit packet gives a minimal branch packet of exact size <code>162</code>; the mixed branch splits as <code>81 + 81</code>.</td><td class="status-ok">✅ exact minimal branch types on K3</td></tr>
     <tr><td>Curved barycentric density theorem</td><td>For the neighborly curved <code>4D</code> seeds, the barycentric subdivision matrix has only the <code>1</code>-, <code>6</code>-, and <code>120</code>-modes present; the <code>2</code>- and <code>24</code>-modes vanish exactly. Therefore the chain density and first Dirac-K&auml;hler squared moment per top simplex converge exactly to the universal limits <code>120/19</code> and <code>860/19</code>.</td><td class="status-ok">✅ exact local-density theorem</td></tr>
     <tr><td>Surface/Fano bridge</td><td><code>21</code> Fano flags = common edge count of <code>Cs&aacute;sz&aacute;r</code> and <code>Szilassi</code>; each toroidal map has <code>84</code> flags; the dual pair has <code>168</code> flags.</td><td class="status-ok">✅ exact count lift</td></tr>

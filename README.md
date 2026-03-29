@@ -637,6 +637,20 @@ analytic Grover count `6`, with mean target-hit probabilities:
 - `6` iterations: `0.9973958333333334`
 - `7` iterations: `0.8984375`
 
+The next exact refinement of that same `120`-state support shell is
+[toe_support_diagnostic_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_support_diagnostic_search.py).
+It does not change the support-state count. It factorizes the shell exactly as
+
+- `10` support interleavings choosing which `3` of `5` slots carry the bridge core
+- `6` line/plane/avatar core orders
+- `2` free local-context tail orders
+
+So the exact identity is `5! = C(5,3) * 3! * 2! = 10 * 6 * 2`, and the marked
+sector keeps one support interleaving and one line/plane/avatar core order,
+with the local `U3 / E8_2` tail still free. A two-seed study over seeds `7,8`
+shows the cleanest operating point is `6` iterations, with mean target-hit
+probability `0.99609375`.
+
 The next exact search layer is
 [toe_bridge_product_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_product_search.py).
 It searches the product of:

@@ -1005,6 +1005,25 @@ analytic Grover count:
 - `6` iterations: mean target-hit probability `0.9973958333333334`
 - `7` iterations: mean target-hit probability `0.8984375`
 
+### Qiskit support-diagnostic search
+
+The exact next refinement of that same support shell is now in
+`tools/qiskit/toe_support_diagnostic_search.py`.
+
+This does not enlarge the support space. It factorizes the same `120` support
+states exactly as:
+
+- `10` support interleavings choosing which `3` of `5` slots carry the bridge core
+- `6` orders on `(head_line, u1_plane, transport_avatar)`
+- `2` free local-context orders on `(u3_local, e8_2_local)`
+
+So the exact identity is `5! = C(5,3) * 3! * 2! = 10 * 6 * 2`. The marked
+sector keeps one support interleaving and one line/plane/avatar core order,
+with the local tail order free.
+
+A two-seed study over seeds `7,8` gave the cleanest operating point at
+`6` iterations, with mean target-hit probability `0.99609375`.
+
 ### Qiskit bridge product-state search
 
 The next exact search layer is now in
