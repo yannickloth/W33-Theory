@@ -114,6 +114,22 @@ TARGETS = {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_diagnostic_enhancement_slot_search.py",
         "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "both-orders-relaxed"],
     },
+    "completion-lift-exact": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_completion_datum_avatar_lift_search.py",
+        "base_args": ["--mode", "formal-completion-object", "--relaxation", "exact"],
+    },
+    "completion-lift-exceptional": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_completion_datum_avatar_lift_search.py",
+        "base_args": ["--mode", "formal-completion-object", "--relaxation", "exceptional-order-relaxed"],
+    },
+    "completion-lift-hyperbolic": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_completion_datum_avatar_lift_search.py",
+        "base_args": ["--mode", "formal-completion-object", "--relaxation", "hyperbolic-order-relaxed"],
+    },
+    "completion-lift-both": {
+        "script": ROOT / "tools" / "qiskit" / "toe_bridge_completion_datum_avatar_lift_search.py",
+        "base_args": ["--mode", "formal-completion-object", "--relaxation", "both-orders-relaxed"],
+    },
     "enhancement-relaxation-exact": {
         "script": ROOT / "tools" / "qiskit" / "toe_bridge_enhancement_relaxation_search.py",
         "base_args": ["--mode", "formal-completion-avatar", "--relaxation", "exact"],

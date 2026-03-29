@@ -212,6 +212,29 @@ modes returned target-hit probability `1.0`, with exact marked pairs:
 - `['minimal_external_enhancement', 'unique_nonzero_orbit_in_existing_slot']`
 - `['formal_completion_avatar', 'unique_nonzero_orbit_in_existing_slot']`
 
+The next exact refinement isolates the shared nonzero-slot lift. The minimal
+and formal completion states already share the same nonzero orbit and the same
+completion normal form, so the remaining distinction is role:
+
+- `slot_replacement_datum`
+- `formal_completion_object`
+
+The matching oracle is
+`tools/qiskit/toe_bridge_completion_datum_avatar_lift_search.py`. It tensors
+that binary lift factor with the corrected diagnostic-relaxation shell, so the
+exact state count is `115200 = 57600·2`, padded to `17` qubits, while the
+marked-count profile stays `20 / 40 / 120 / 240`. The exact mode relation is:
+
+`Marked_diagnostic_relaxation(relaxation) x {lift_state(mode)}`
+
+Seeded exact checks at `256` shots came back clean in both modes, and a
+two-seed `63/64/65` probe on the formal completion side is now cleanest at
+`63` iterations with mean target-hit probability `1.0`:
+
+- `slot-replacement-datum`: `1.0` at `64` on seed `7`
+- `formal-completion-object`: `1.0` at `64` on seed `7`
+- `formal-completion-object`: mean `1.0` at `63` on seeds `7,8`
+
 ## Reproduce
 
 ```bash

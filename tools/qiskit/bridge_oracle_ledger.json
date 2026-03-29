@@ -1,5 +1,5 @@
 {
-  "version": 11,
+  "version": 12,
   "description": "Promoted local Qiskit bridge oracles and their current exact operating points.",
   "oracles": [
     {
@@ -505,6 +505,54 @@
           "marked_pair_projection": [
             ["formal_completion_avatar", "unique_nonzero_orbit_in_existing_slot"]
           ]
+        }
+      }
+    },
+    {
+      "name": "completion-datum-avatar-lift",
+      "script": "tools/qiskit/toe_bridge_completion_datum_avatar_lift_search.py",
+      "theorem_surface": "shared nonzero completion wall refined by datum-only versus common-object role on the corrected diagnostic-relaxation shell",
+      "state_count": 115200,
+      "padded_qubits": 17,
+      "lift_state_count": 2,
+      "lift_states": [
+        "slot_replacement_datum",
+        "formal_completion_object"
+      ],
+      "marked_count_profile": {
+        "exact": 20,
+        "exceptional-order-relaxed": 40,
+        "hyperbolic-order-relaxed": 120,
+        "both-orders-relaxed": 240
+      },
+      "exact_mode_relation": "Marked_diagnostic_relaxation(relaxation) x {lift_state(mode)}",
+      "promoted_operating_point": {
+        "kind": "two-seed exact study plus seeded mode verification",
+        "shots": 256,
+        "relaxation": "exact",
+        "slot-replacement-datum": {
+          "seed": 7,
+          "iterations": 64,
+          "target_hit_probability": 1.0,
+          "marked_lift_projection": [
+            "slot_replacement_datum"
+          ]
+        },
+        "formal-completion-object": {
+          "seeded_verification": {
+            "seed": 7,
+            "iterations": 64,
+            "target_hit_probability": 1.0,
+            "marked_lift_projection": [
+              "formal_completion_object"
+            ]
+          },
+          "two_seed_exact_study": {
+            "seeds": [7, 8],
+            "iteration_window": [63, 64, 65],
+            "best_iterations": 63,
+            "mean_target_hit_probability": 1.0
+          }
         }
       }
     }

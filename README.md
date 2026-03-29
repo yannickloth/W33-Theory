@@ -1041,10 +1041,13 @@ the corrected diagnostic-relaxation shell, so the exact state count is
 `115200 = 57600·2`, padded to `17` qubits. The marked-count profile stays
 `20 / 40 / 120 / 240`, with exact mode relation
 `Marked_diagnostic_relaxation(relaxation) x {lift_state(mode)}`. Seeded exact
-checks at `256` shots came back clean at `64` iterations in both modes:
+checks at `256` shots came back clean in both modes, and a two-seed
+`63/64/65` probe on the formal completion side is now cleanest at `63`
+iterations with mean target-hit probability `1.0`:
 
-- `slot-replacement-datum`: target-hit `1.0`
-- `formal-completion-object`: target-hit `1.0`
+- `slot-replacement-datum`: target-hit `1.0` at `64` on seed `7`
+- `formal-completion-object`: target-hit `1.0` at `64` on seed `7`
+- `formal-completion-object`: mean target-hit `1.0` at `63` on seeds `7,8`
 
 The committed oracle stack is summarized in
 [bridge_oracle_ledger.json](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/bridge_oracle_ledger.json).
