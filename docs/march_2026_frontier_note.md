@@ -1029,6 +1029,38 @@ and in both modes the decoded outputs stayed entirely inside the exact marked
 sector, with no non-target valid states and no invalid bitstrings in the kept
 top counts.
 
+### Qiskit bridge line-factor search
+
+The next exact refinement is now in
+`tools/qiskit/toe_bridge_line_factor_search.py`.
+
+This adds the exact binary line-choice factor inside `U1`:
+
+- `head_compatible_u1_line`
+- `tail_biased_u1_line`
+
+and the marked sector keeps only the theorem-compatible head line together with:
+
+- strict support hierarchy
+- five-factor packet ordering
+- glue mode (`current-shadow` or `formal-completion`)
+
+So the forced-image-line theorem is now encoded directly on one search space of
+size `57600`, using `16` qubits after power-of-2 padding.
+
+The seeded verification runs (`seed = 7`, `256` shots) gave:
+
+- `current-shadow`: marked count `20`, Grover iterations `45`, target-hit probability `1.0`
+- `formal-completion`: marked count `20`, Grover iterations `45`, target-hit probability `1.0`
+
+and in both modes the decoded outputs stayed entirely inside the exact marked
+sector, with no non-target valid states and no invalid bitstrings in the kept
+top counts.
+
+A local probe of the formal-completion mode at `44`, `45`, and `46` iterations
+also stayed on the same `1.0` plateau for that seed, so the refined oracle is
+not hypersensitive to one exact iteration choice.
+
 ## Reproduce
 
 ### PMNS

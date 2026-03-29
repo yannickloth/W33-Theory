@@ -248,6 +248,26 @@ space:
 - five-factor packet ordering
 - glue state: current zero split shadow vs unique nonzero formal completion
 
+The next refinement is:
+
+```bash
+qiskit-python tools/qiskit/toe_bridge_line_factor_search.py \
+  --mode formal-completion \
+  --shots 256 \
+  --seed 7
+```
+
+That line-factor oracle adds the exact `U1` line choice:
+
+- `head_compatible_u1_line`
+- `tail_biased_u1_line`
+
+and keeps only the theorem-compatible head line in the marked sector. The
+explicit product space has size `57600`, padded to `16` qubits. On the seeded
+verification runs (`seed = 7`, `256` shots), both `current-shadow` and
+`formal-completion` modes hit only marked states with target-hit probability
+`1.0`.
+
 ## Stronger TOE Search Target
 
 The next exact search target is the five-factor external packet hierarchy:

@@ -644,6 +644,22 @@ both modes hit only marked states with target-hit probability `1.0`:
 - `current-shadow`: exact current zero-glue bridge sector
 - `formal-completion`: exact unique-nonzero-orbit completion sector
 
+The next refinement is
+[toe_bridge_line_factor_search.py](/mnt/c/Repos/Theory%20of%20Everything/tools/qiskit/toe_bridge_line_factor_search.py).
+It adds the exact binary line-choice factor inside `U1`:
+
+- `head_compatible_u1_line`
+- `tail_biased_u1_line`
+
+and keeps only the theorem-compatible head line in the marked sector. That
+raises the exact product space to `57600` states, padded to `16` qubits. On the
+seeded verification runs (`seed = 7`, `256` shots), both `current-shadow` and
+`formal-completion` modes had marked count `20`, Grover iterations `45`, and
+target-hit probability `1.0`, with no non-target valid or invalid states in the
+kept top counts. A local probe of the formal-completion mode at `44`, `45`, and
+`46` iterations stayed on the same `1.0` plateau for that seed, so the refined
+oracle is not hypersensitive to one exact iteration choice.
+
 ## Authors
 
 **Wil Dahn** & **Claude** (Anthropic)
