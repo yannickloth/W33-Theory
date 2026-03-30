@@ -88,9 +88,9 @@ The live entrypoints are deliberately narrower than the full repo mass.
 | Metric | Count |
 |--------|-------|
 | Theorems proved | 3,000+ |
-| Test definitions / live checks | 24k+ / 2367 advertised live checks |
-| Test files under `tests/` | ~900 |
-| Phases completed | 200+ |
+| Test definitions / live checks | 25k+ / 2367 advertised live checks |
+| Test files under `tests/` | ~1,000 |
+| Phases completed | 215 |
 | Mathematical domains covered | 250+ |
 | Public prediction inventory | evolving |
 
@@ -217,6 +217,8 @@ The newest exact lock on top of that frontier is cyclotomic rather than heuristi
 - **CCXI:** Zero-Parameter SM Dictionary — every SM parameter an exact rational function of (v,k,lambda,mu); four independent channels (alpha, Weinberg, Higgs, cosmological) each uniquely select q=3; inverse problem solved: two observables reconstruct full SM (48 tests)
 - **CCXII:** Vacuum Constitutive Impedance — c^2 = v = 40, mu*eps = 1/v, alpha^-1 = 152247/1111 = 137.036004 (4.4 ppm from CODATA); Q-Lucas cascade {2,3,7,18} = {lambda,q,Phi_6,Perkel_mult} bridges SRG to 57-cell; impedance torus Z*R_K = 1 (41 tests)
 - **CCXIII:** 57-Cell Family & Tomotope 8+4 Split — 57 = 19_1+19_omega+19_omegabar; Perkel eigenvalues {2q,phi^2,1/phi^2,-q} with phi^2+1/phi^2 = q = 3; tomotope M_EV (12x4, rank 4) resolves 12 = 8_ker+4_im = SU(3)+(SU(2)xU(1)); q=3 unique (disc=5 prime) (41 tests)
+- **CCXIV:** The Skeleton Key — mu=lambda^2 master cascade: (q-1)^2=q+1 solved uniquely by q=3; three independent alpha^-1=137 decompositions (lambda*Phi4+(v+1)+mu*(Phi6+k), Phi3+mu*(f+Phi6), (k-1)^2+mu^2=N(11+4i)); GF odd-core recurrence O_{t+3}=41*O_{t+2}-184*O_{t+1}+144*O_t with Vieta roots {1,mu,mu*q^2}={1,4,36}; transition matrix A=[[k,mu],[lambda*f,mu*Phi6]] has eigenvalues {mu,mu*q^2}; spectral zeta f*E2^n+g*E3^n divisible by 480 for all n>=1 (68 tests)
+- **CCXV:** Sporadic Tower Closure — tau=252=Ramanujan tau(3)=sigma_3(6)=k*q*Phi6=E+k links modular forms to W(3,3); Suzuki two-generator theorem: v_Suz=Phi6*tau+lambda*q^2=1782 and k_Suz=q*alpha^-1+(q+2)=416 from (tau,alpha) alone; Suzuki eigenvalues r'=mu*(q+2)=lambda*Phi4=20, s'=-mu^2=-16; arc-stabilizer chain J2<G2(4)<Suz with coset indices 1782,416; Co1 tau-simplex I2=tau*C(v,2)/2=98280, I3=tau*2^r_c*Phi3*Phi4=8386560; Monster 196883=(v+Phi6)(v+k+Phi6)(Phi12-lambda)=47*59*71 (three supersingular primes); 744=q*E+f (57 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
@@ -659,7 +661,7 @@ python -m pytest tests/test_master_derivation.py -k "pmns" -q
 
 ```
 W33-Theory/
-├── tests/         896 test files, 24,762 test functions (the proof)
+├── tests/         ~1,000 test files, 25,121 test functions (the proof)
 ├── scripts/       core symbolic and computational derivations
 ├── tools/         geometry and L-infinity utilities
 ├── artifacts/     generated exact data and exported bases
