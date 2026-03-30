@@ -5736,6 +5736,47 @@ section h2::after {
         <div class="detail"><strong>W(3,3) &rarr; E<sub>8</sub> lattice &rarr; &Theta;<sub>E8</sub> = E<sub>4</sub> &rarr; j = E<sub>4</sub>&sup3;/&Delta; &rarr; V&sharp; &rarr; Monster</strong>. At every step, Fourier coefficients are W(3,3) invariants: E<sub>4</sub> = 1+<strong>240</strong>q (E), E<sub>6</sub> = 1&minus;<strong>504</strong>q (&Phi;<sub>6</sub>&times;|Roots(E<sub>6</sub>)|), &Delta; = q&minus;<strong>24</strong>q&sup2; (f), j = q<sup>&minus;1</sup>+<strong>744</strong>+<strong>196884</strong>q. The entire Monstrous Moonshine tower is encoded in one graph.</div>
       </div>
     </div>
+
+    <h3>The Leech Lattice Connection</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="label" style="color: var(--accent);">196884 = E &times; C(v+1,2) + &Phi;<sub>6</sub>&times;k</div>
+        <div class="detail">196884 = 240 &times; C(41,2) + 7&times;12 = 240 &times; 820 + 84. The first term uses E<sub>8</sub> roots times the complete graph edges on v+1 vertices; the second term uses the atmospheric cyclotomic times the valency. This decomposes the McKay coefficient into graph-theoretic primitives.</div>
+      </div>
+      <div class="card">
+        <div class="label" style="color: var(--accent);">Leech kissing number: 196560 = q &times; E &times; q&Phi;<sub>3</sub>&Phi;<sub>6</sub></div>
+        <div class="detail">Wilson's octonionic factorization: 196560 = 3&times;240&times;273 = q &times; E &times; (1+&mu;&sup2;+&mu;&sup4;), where 273 = q&times;&Phi;<sub>3</sub>&times;&Phi;<sub>6</sub> = 3&times;13&times;7. Then 196884 = 196560 + &mu;&times;q&sup4; = Leech kissing number + 4&times;81. The Leech lattice's minimal vectors factorize entirely through W(3,3).</div>
+      </div>
+    </div>
+
+    <h3>Eigenvalue Multiplicities = Lattice Dimensions</h3>
+    <div class="spotlight" style="border-left-color: var(--accent3);">
+      <p><strong>mult(+2) = 24 = dim(&Lambda;<sub>24</sub>)</strong> &mdash; the Leech lattice dimension. <strong>mult(&minus;4) = 15 = #{moonshine primes}</strong> &mdash; the exact count of prime divisors of |Monster|. And 1 + 24 + 15 = 40 = v. The eigenvalue spectrum of one graph encodes the dimensions of the two deepest objects in the moonshine hierarchy.</p>
+    </div>
+
+    <h3>All 15 Moonshine Primes from W(3,3)</h3>
+    <table>
+      <thead><tr><th>Prime</th><th>Graph Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>&Phi;<sub>1</sub>(3) = &lambda;</td><td>2</td></tr>
+        <tr><td>3</td><td>q (field characteristic)</td><td>3</td></tr>
+        <tr><td>5</td><td>&mu; &minus; &lambda; + q</td><td>5</td></tr>
+        <tr><td>7</td><td>&Phi;<sub>6</sub>(3)</td><td>7</td></tr>
+        <tr><td>11</td><td>k &minus; 1</td><td>11</td></tr>
+        <tr><td>13</td><td>&Phi;<sub>3</sub>(3)</td><td>13</td></tr>
+        <tr><td>17</td><td>&Phi;<sub>3</sub> + &Phi;<sub>6</sub> &minus; q</td><td>17</td></tr>
+        <tr><td>19</td><td>k + &Phi;<sub>6</sub></td><td>19</td></tr>
+        <tr><td>23</td><td>&Phi;<sub>3</sub> + k &minus; &lambda;</td><td>23</td></tr>
+        <tr><td>29</td><td>k + &mu; + &Phi;<sub>3</sub></td><td>29</td></tr>
+        <tr><td>31</td><td>k + &mu; + &lambda; + &Phi;<sub>3</sub></td><td>31</td></tr>
+        <tr><td>41</td><td>v + 1</td><td>41</td></tr>
+        <tr style="color: var(--gold); font-weight: 600;"><td>47</td><td>v + &Phi;<sub>6</sub></td><td>47</td></tr>
+        <tr style="color: var(--gold); font-weight: 600;"><td>59</td><td>v + k + &Phi;<sub>6</sub></td><td>59</td></tr>
+        <tr style="color: var(--gold); font-weight: 600;"><td>71</td><td>&Phi;<sub>12</sub> &minus; &lambda;</td><td>71</td></tr>
+      </tbody>
+    </table>
+    <p>Every prime dividing the Monster's order is a linear combination of W(3,3) parameters with small integer coefficients. The moonshine primes ARE the arithmetic of the graph.</p>
+
   </div>
 </section>
 
