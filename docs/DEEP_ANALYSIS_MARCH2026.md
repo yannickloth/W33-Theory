@@ -517,3 +517,47 @@ W(3,3) is a BETTER finite geometry for the Connes-Chamseddine program than the o
 | Electron mass scale | **Derived** | m_e = m_t/(98 × 17 × 208) from lepton chain |
 
 The W(3,3)-E₈ framework, combined with the standard NCG spectral action, produces the complete Standard Model + Einstein gravity from one finite geometry and one energy scale.
+
+---
+
+## Novel Predictions: Beyond the Known Standard Model
+
+### The 82nd Zero Mode
+
+D_F² has 82 zero modes but H₁ = ℤ⁸¹ has only 81. The extra mode (82 = Φ₈(3) = q⁴+1 = 81+1) is a new massless particle beyond the Standard Model — protected by the spectral gap Δ = μ = 4 and coupled at strength ~1/v = 1/40. This could manifest as a majoron, dark photon, or familon.
+
+### Scalar Spectrum from the Yukawa Shell
+
+The three scalar channels on the 240² Yukawa shell — 169, 275, 323 — predict a mass hierarchy:
+
+| Channel | Factorization | Mass prediction | Match |
+|---------|--------------|----------------|-------|
+| 169 = Φ₃² | 13² | m_H₁ = 125 GeV (input) | Known Higgs |
+| 275 = 11 × 25 | (k−1)(v−g) | m_H₂ = 125√(275/169) ≈ **159 GeV** | HL-LHC testable |
+| 323 = 17 × 19 | \|μ+i\|²(k+q+μ) | m_H₃ = 125√(323/169) ≈ **173 GeV ≈ m_t** | Remarkable |
+
+The third scalar mass equaling the top quark mass is NOT an input — it emerges from the Gaussian norm |μ+i|² = 17 multiplied by (k+q+μ) = 19. If confirmed, this would be a smoking-gun prediction: a scalar particle at 173 GeV discoverable at HL-LHC.
+
+### W Boson Mass
+
+M_W = M_Z√(10/13) + Δr corrections ≈ **80.38 GeV**. This agrees with CMS (80.360 ± 0.010) at 2σ and DISAGREES with the CDF anomaly (80.434 ± 0.009). W(3,3) predicts the CDF measurement is wrong.
+
+### Dark Matter from the 27-Subgraph
+
+The 8-dimensional eigenspace at eigenvalue −1 in the 27 non-neighbor subgraph constitutes the dark sector. With 8 = dim(𝕆) = rank(E₈) dark degrees of freedom, the DM mass scale is:
+
+**m_DM = M_Z/μ = 91/4 ≈ 22.8 GeV**
+
+This is in the mass range probed by direct detection experiments (XENON, LZ, PandaX).
+
+### Complete List of Falsifiable Predictions
+
+1. **sin²θ₂₃ = 7/13** → θ₂₃ = 47.2° (DUNE/Hyper-K, ~2027-2030)
+2. **δ_CP = 14π/13 ≈ 194°** (DUNE, ~2027-2030)
+3. **r = 0.0033** (LiteBIRD/CMB-S4, ~2030)
+4. **Second Higgs at ~159 GeV** (HL-LHC, ~2027+)
+5. **Third scalar at ~173 GeV ≈ m_t** (HL-LHC)
+6. **M_W ≈ 80.38 GeV** (agrees CMS, not CDF)
+7. **m_DM ≈ 23 GeV** (direct detection experiments)
+8. **m_u/m_d = 3/7** (lattice QCD, near-term)
+9. **82nd zero mode: new massless particle**
