@@ -441,4 +441,3 @@ print(f"{'='*70}")
 
 if checks_pass == checks_total:
     print(f"\nALL CHECKS PASS. The theorem is verified. □")
-
