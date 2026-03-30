@@ -118,3 +118,71 @@ The strongest achievements:
 5. **Five independent q=3 selection principles** from different mathematical domains
 
 The genuine open problems remain: the Yukawa spectral packet, the continuum gravity lift, and establishing whether these are derivations or post-hoc numerical identifications.
+
+---
+
+## The Bernoulli–J-Homomorphism–Eisenstein Triangle
+
+### Discovery
+
+The image of the J-homomorphism (Adams' theorem) maps the homotopy groups of the orthogonal group O(∞) onto cyclic subgroups of the stable homotopy groups of spheres. The ORDER of im(J_{4n-1}) equals the denominator of B_{2n}/4n, where B_{2n} is the 2n-th Bernoulli number.
+
+The first four values are ALL W(3,3) graph invariants:
+
+| n | im(J_{4n-1}) | Order | W(3,3) invariant | Bernoulli |
+|---|-------------|-------|-----------------|-----------|
+| 1 | im(J₃) | **24** | f = gauge multiplicity = χ(K3) | B₂ = 1/6 = 1/(2q) |
+| 2 | im(J₇) | **240** | E = edges = E₈ roots | B₄ = -1/30 = -1/h(E₈) |
+| 3 | im(J₁₁) | **504** | Φ₆ × |Roots(E₆)| = 7×72 | B₆ = 1/42 |
+| 4 | im(J₁₅) | **480** | 2E = directed edges = S_EH | B₈ = -1/30 |
+
+This means the gauge sector (24), root sector (240), Eisenstein sector (504), and gravity sector (480) of W(3,3) are indexed by the Bernoulli numbers through the J-homomorphism.
+
+### The Eisenstein Series Encode W(3,3)
+
+The Eisenstein series Fourier coefficients are W(3,3) invariants:
+
+- **E₄(τ) = 1 + 240q + ...** → 240 = E (edges = E₈ roots)
+- **E₆(τ) = 1 - 504q + ...** → 504 = Φ₆ × |Roots(E₆)| = 7 × 72
+- **E₈(τ) = 1 + 480q + ...** → 480 = 2E (directed edges = S_EH)
+
+The discriminant:
+- **Δ(τ) = q - 24q² + 252q³ - ...** → 24 = f, 252 = E + k = 240 + 12
+
+The Ramanujan tau function:
+- τ(2) = -24 = -f
+- τ(3) = 252 = E + k = μ × q² × Φ₆
+
+The j-invariant:
+- j = q⁻¹ + 744 + 196884q + ... where 744 = 3 × 248 = q × dim(E₈)
+
+### The Chain
+
+The complete chain connecting these objects:
+
+**W(3,3) → E₈ lattice → Θ_{E₈} = E₄ → E₆, E₈ → j = E₄³/Δ → V♮ → Monster**
+
+At every step, the Fourier coefficients are W(3,3) graph invariants. The J-homomorphism provides the homotopy-theoretic bridge: it maps O(∞) → π_*^s and produces exactly the W(3,3) invariants 24, 240, 504, 480 at the first four levels. The Bernoulli numbers B₂ = 1/6 = 1/(2q) and B₄ = -1/30 = -1/h(E₈) complete the link to number theory.
+
+This suggests that the W(3,3) graph doesn't merely MATCH these numbers — it is the combinatorial skeleton underlying the Bernoulli → Eisenstein → J-homomorphism → moonshine hierarchy.
+
+---
+
+## The 11th Uniqueness Condition: Gaussian Norm
+
+### Discovery
+
+The tree-level coupling k² - 2μ + 1 equals the Gaussian integer norm |(k-1) + iμ|² = (k-1)² + μ² if and only if q = 3.
+
+**Proof:** For GQ(q,q), k² - 2μ + 1 = q⁴ + 2q³ + q² - 2q - 1, while (k-1)² + μ² = q⁴ + 2q³ + 2. Setting them equal: q² - 2q - 3 = 0, which factors as (q-3)(q+1) = 0. For positive q, uniquely q = 3.
+
+This means the Gaussian integer structure of α — the fact that 137 = 11² + 4² is a sum of two squares (unique by Fermat) — is NOT an optional decoration. It is a structural property that SELECTS q = 3 among all generalized quadrangles.
+
+Combined with:
+- q⁵ - q = GQ edges (q = 3 uniquely)
+- μ² = 2(k-μ) (q = 3 uniquely)
+- sin²θ₂₃ = sin²θ_W + sin²θ₁₂ (q = 3 uniquely)
+- Gauss-Bonnet E×κ = v (q = 3 uniquely)
+- ...
+
+This is now the **11th independent** algebraic condition selecting q = 3.
