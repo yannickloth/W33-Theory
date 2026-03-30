@@ -561,3 +561,37 @@ This is in the mass range probed by direct detection experiments (XENON, LZ, Pan
 7. **m_DM ≈ 23 GeV** (direct detection experiments)
 8. **m_u/m_d = 3/7** (lattice QCD, near-term)
 9. **82nd zero mode: new massless particle**
+
+---
+
+## The Foundational Principle: Why W(3,3)?
+
+### The Uniqueness Theorem
+
+**Theorem:** Among all self-dual generalized quadrangles GQ(q,q) with q a prime power, W(3,3) is the unique one whose tree-level coupling constant k²−2μ+1 equals the Gaussian integer norm (k−1)²+μ².
+
+**Proof:** The identity μ² = 2(k−μ) with the GQ parametrization k = q(q+1), μ = q+1 gives (q+1)² = 2q(q+1)−2(q+1) = 2(q+1)(q−1), hence q+1 = 2(q−1), hence **q = 3** uniquely. □
+
+### The Physical Principle
+
+The principle that selects the physics is:
+
+**"The internal geometry of spacetime is a self-dual generalized quadrangle whose electromagnetic coupling constant is the norm of a Gaussian prime."**
+
+This principle has a unique solution: GQ(3,3) = W(3,3).
+
+### The Chain of Determination
+
+α determines z = 11+4i ∈ ℤ[i] (by Fermat's two-square theorem, 137 = 11²+4² uniquely)
+
+z determines (k−1, μ) = (11, 4)
+
+(k−1, μ) determines (v, k, λ, μ) = (40, 12, 2, 4) via the GQ relations
+
+(40, 12, 2, 4) determines W(3,3)
+
+W(3,3) determines the Standard Model + Einstein gravity
+
+**The fine-structure constant is the DNA of the universe.**
+
+Every particle mass, mixing angle, and coupling constant is encoded in the single Gaussian prime π = 11 + 4i, whose norm |π|² = 137 is the electromagnetic coupling, whose real and imaginary parts determine the graph that IS spacetime's internal geometry.
