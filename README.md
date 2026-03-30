@@ -11,6 +11,41 @@ The collinearity graph of W(3,3) is SRG(40,12,2,4) with 240 edges = |Roots(E₈)
 
 **DOI:** [10.5281/zenodo.18652825](https://doi.org/10.5281/zenodo.18652825)
 
+## 🔬 Independent External Verification — March 2026
+
+### Verification Summary
+
+An independent deep audit of the W(3,3)-E₈ correspondence was conducted in March 2026, cross-referencing all major claims against peer-reviewed literature (PDG 2024, CODATA 2022, NuFIT 6.0, Planck 2018, arXiv) and performing original mathematical analysis.
+
+### Verified Correct (Literature-Confirmed)
+- ✅ **SRG(40,12,2,4)** parameters: Exact match with GQ(3,3) theory (Spence 2000, E-JC)
+- ✅ **|Aut(W33)| = |W(E₆)| = 51840**: Confirmed via Sp(4,3) order formula (Groupprops)
+- ✅ **Z₃-grading E₈ = 86⊕81⊕81**: Confirmed (Truini et al., arXiv:1403.5120)
+- ✅ **q=3 uniqueness**: Algebraically proven — q⁵−q = GQ(q,q) edges only for q=3
+- ✅ **sin²θ₁₃(PMNS) = 2/91**: Agreement to 0.09σ against PDG 2024 — the theory's strongest prediction
+- ✅ **sin²θ₁₂(PMNS) = 4/13**: Agreement to 0.4σ against NuFIT 6.0
+- ✅ **Cabibbo angle**: tan(θ_C) = 3/13 gives 12.995° vs observed 13.04°±0.05° (0.9σ)
+- ✅ **Dark matter fraction**: Ω_DM = 4/15 = 0.267 vs Planck 0.264±0.006 (0.5σ)
+
+### Under Tension
+- ⚠️ **Weinberg angle** sin²θ_W = 3/13: Off by 15σ from PDG 2024 MS-bar value (0.23077 vs 0.23122±0.00003). Was within 2.9σ of 2004 data.
+- ⚠️ **sin²θ₂₃(PMNS) = 7/13**: Depends on octant — 1.6σ (upper) vs 4.9σ (lower, SK-ATM)
+
+### Corrections Required
+- ❌ **α⁻¹ = 137+40/1111**: Ruled out at 210σ by CODATA 2022 (137.035999177 vs 137.036004). Impressive to 7 digits but α also runs with energy, making any fixed exact value physically incomplete.
+- ❌ **27 non-neighbors ≅ complement Schläfli**: The second subconstituent is 8-regular (not 10-regular like SRG(27,10,1,5)). Connection to Schläfli is through W(E₆) symmetry, not graph isomorphism.
+
+### Key Original Finding
+The cyclotomic package Φ₃(3)=13, Φ₆(3)=7 generates **five** independent mixing observables from two integers. The internal consistency relation sin²θ₂₃ = sin²θ_W + sin²θ₁₂ (requiring q=3 uniquely) is the strongest structural argument. The reactor angle sin²θ₁₃ = 2/91 outperforms tribimaximal mixing (which predicted θ₁₃=0, now ruled out at >30σ) and is the single most falsifiable success of the framework.
+
+### Sources
+- PDG 2024: [pdg.lbl.gov](https://pdg.lbl.gov/)
+- CODATA 2022: [NIST](https://physics.nist.gov/cgi-bin/cuu/Value?alphinv)
+- NuFIT 6.0: [arXiv:2410.05380](https://arxiv.org/abs/2410.05380)
+- Planck 2018: [arXiv:1807.06209](https://arxiv.org/abs/1807.06209)
+- Truini et al.: [arXiv:1403.5120](https://arxiv.org/abs/1403.5120)
+
+
 ## Status Snapshot
 
 The strongest repo-native result is a finite spectral-exceptional closure, not yet a finished continuum-dynamical TOE. For the live shell map and promoted status language, use [docs/index.html#current-synthesis](docs/index.html#current-synthesis) and [docs/march_2026_frontier_note.md](docs/march_2026_frontier_note.md).
