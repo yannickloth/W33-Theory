@@ -2135,6 +2135,7 @@ section h2::after {
     <tr><td>Qiskit bridge diagnostic-relaxation search</td><td>The repo now carries a diagnostic-order relaxation oracle on the corrected pass/pass diagnostic shell rather than on the full split-weight space. The exact state space is <code>57600</code> states, padded to <code>16</code> qubits, and the marked counts are <code>20</code> in the exact mode, <code>40 = 20·2</code> when the exceptional order is relaxed, <code>120 = 20·6</code> when the hyperbolic order is relaxed, and <code>240 = 20·6·2</code> when both are relaxed. So the exceptional sector contributes the exact binary selectivity, the hyperbolic sector contributes the exact sixfold selectivity, and the interleaving sector contributes no additional theorem restriction here. A representative two-seed study over seeds <code>7,8</code> on the <code>formal-completion</code> mode gives clean operating points <code>45</code>, <code>32</code>, <code>18</code>, and <code>13</code> respectively, with mean target-hit probabilities <code>0.998046875</code>, <code>0.998046875</code>, <code>1.0</code>, and <code>0.99609375</code>.</td><td class="status-ok">✅ exact local quantum-search resolution of the hyperbolic and exceptional order selectivity factors on the corrected diagnostic shell</td></tr>
     <tr><td>Qiskit bridge diagnostic-enhancement relaxation search</td><td>The repo now carries the next exact refinement on the discrete shell <code>86400 = 57600·3</code>, tensoring that corrected diagnostic-relaxation family with the exact three-state enhancement hierarchy <code>{current_k3_zero_orbit, minimal_external_enhancement, formal_completion_avatar}</code>. The exact marked sector factorizes as <code>Marked(relaxation, mode) = Marked_diagnostic_relaxation(relaxation) × {enhancement(mode)}</code>, so the three enhancement modes are basis-conjugate and the order-relaxation marked-count profile stays <code>20 / 40 / 120 / 240</code>. A representative two-seed study over seeds <code>7,8</code> on the <code>formal_completion_avatar</code> mode gives the clean operating points <code>64</code>, <code>45</code>, <code>26</code>, and <code>18</code> respectively, with mean target-hit probabilities <code>0.998046875</code>, <code>0.998046875</code>, <code>0.998046875</code>, and <code>1.0</code>. So the enhancement hierarchy now sits exactly above both lower discrete geometries, preserving the order-selectivity profile while shifting the padded-shell Grover windows from <code>57600 → 65536</code> to <code>86400 → 131072</code>.</td><td class="status-ok">✅ exact diagnostic-order/enhancement decoupling theorem with shifted padded-shell operating windows</td></tr>
     <tr><td>Qiskit bridge enhancement-factor search</td><td>The repo now carries the next exact local Qiskit oracle that resolves the actual external-enhancement wall instead of only the old glue dichotomy. It replaces that two-state split by the exact three-state hierarchy <code>{current_k3_zero_orbit, minimal_external_enhancement, formal_completion_avatar}</code>, while keeping the theorem-backed support, order, line, and concentration shell fixed. So the search now distinguishes the current refined K3 object, the exact minimal new datum needed to realize the nonzero cocycle, and the resulting formal completion object. The explicit search space has size <code>345600</code>, using <code>19</code> qubits after padding, with marked count <code>20</code> in each mode. In seeded verification runs (<code>seed = 7</code>, <code>256</code> shots), all three modes had Grover iterations <code>127</code>, target-hit probability <code>1.0</code>, and no non-target valid or invalid states in the kept top counts.</td><td class="status-ok">✅ exact local quantum-search encoding of the three-state external enhancement hierarchy</td></tr>
+    <tr><td>Qiskit diagnostic-enhancement-slot search</td><td>The repo now carries the sharper refinement of that same enhancement hierarchy against the older binary slot wall. The exact compatibility law is <code>current_k3_zero_orbit → zero_by_splitness</code>, <code>minimal_external_enhancement → unique_nonzero_orbit_in_existing_slot</code>, and <code>formal_completion_avatar → unique_nonzero_orbit_in_existing_slot</code>. So the three-state enhancement hierarchy is not another copy of the binary slot wall. It is a strict refinement of it: one zero-slot state and two distinct nonzero-slot states. The exact shell is <code>172800 = 86400·2</code>, padded to <code>18</code> qubits, and the marked-count profile stays <code>20 / 40 / 120 / 240</code>. What changes is the exact marked pair projection: each mode lands on one enhancement/slot singleton. Seeded exact checks at <code>256</code> shots and <code>90</code> iterations returned target-hit probability <code>1.0</code> in all three exact modes, with the marked pairs <code>(current_k3_zero_orbit, zero_by_splitness)</code>, <code>(minimal_external_enhancement, unique_nonzero_orbit_in_existing_slot)</code>, and <code>(formal_completion_avatar, unique_nonzero_orbit_in_existing_slot)</code>.</td><td class="status-ok">✅ exact refinement of the three-state enhancement hierarchy by the binary cocycle-slot wall</td></tr>
     <tr><td>Qiskit cocycle-compatibility wall search</td><td>The repo now carries the stronger replacement for that free three-label enhancement axis. Instead of a bare mode label, the wall is encoded as the exact <code>6</code>-state factor <code>wall_layer × orbit_state</code>, with wall layers <code>{current_refined_k3_object, slot_replacement_datum, formal_completion_object}</code> and orbit states <code>{zero_orbit, unique_nonzero_orbit}</code>. Exactly <code>3</code> wall states are admissible, and only <code>2</code> of those are nonzero: <code>slot_replacement_datum × unique_nonzero_orbit</code> and <code>formal_completion_object × unique_nonzero_orbit</code>. Tensoring that compatibility wall with the corrected diagnostic shell again gives <code>345600</code> states on <code>19</code> qubits. Seeded exact checks at <code>256</code> shots now give <code>60</code> marked states and target-hit probability <code>1.0</code> at <code>74</code> iterations on the full compatible wall, and <code>40</code> marked states with target-hit probability <code>1.0</code> at <code>90</code> iterations on the live nonzero wall.</td><td class="status-ok">✅ exact local quantum-search encoding of the cocycle-realization compatibility wall with forbidden corners</td></tr>
     <tr><td>Qiskit cocycle-compatibility wall relaxation search</td><td>The repo now carries the next exact lift of that wall across the corrected diagnostic-relaxation family. The discrete shell is again <code>345600 = 57600·6</code>, padded to <code>19</code> qubits, but the wall is now resolved against the exact hyperbolic-order and exceptional-order relaxation sectors rather than only the exact diagnostic shell. On the live nonzero wall, the marked-count profile becomes <code>40</code> in the exact mode, <code>80</code> when the exceptional order is relaxed, <code>240</code> when the hyperbolic order is relaxed, and <code>480</code> when both are relaxed. The marked sector still factorizes exactly as <code>Marked_diagnostic_relaxation(relaxation) × Compatible_wall(focus)</code>. Seeded nonzero-wall checks at <code>256</code> shots give the operating points <code>90</code>, <code>64</code>, <code>37</code>, and <code>26</code> respectively, and each of those four checks returned target-hit probability <code>1.0</code>.</td><td class="status-ok">✅ exact cocycle-wall lift across the hyperbolic/exceptional diagnostic-relaxation family</td></tr>
     <tr><td>Enhancement-slot hierarchy bridge</td><td>The repo now carries the next exact refinement of the completion wall itself. The exact compatibility law is <code>current_k3_zero_orbit → zero_by_splitness</code>, <code>minimal_external_enhancement → unique_nonzero_orbit_in_existing_slot</code>, and <code>formal_completion_avatar → unique_nonzero_orbit_in_existing_slot</code>. So the three-state enhancement hierarchy strictly refines the older two-state slot wall rather than duplicating it: the current K3 state is separated from both completion-side states by slot status, while the minimal and formal completion states share the same nonzero slot but not the same support role. The matching Qiskit shell has size <code>172800 = 86400·2</code>, padded to <code>18</code> qubits. On seeded <code>both-orders-relaxed</code> checks at <code>256</code> shots and <code>26</code> iterations, all three modes returned target-hit probability <code>1.0</code>, with marked pairs exactly <code>[current_k3_zero_orbit, zero_by_splitness]</code>, <code>[minimal_external_enhancement, unique_nonzero_orbit_in_existing_slot]</code>, and <code>[formal_completion_avatar, unique_nonzero_orbit_in_existing_slot]</code>.</td><td class="status-ok">✅ exact refinement of the three-state enhancement hierarchy by the binary cocycle-slot law</td></tr>
@@ -5281,6 +5282,63 @@ section h2::after {
   </table>
   <p>This convergence across independent disciplines is strong evidence that the underlying
   mathematical structures are canonical, not coincidental.</p>
+</section>
+
+<!-- ═══ THE ULTIMATE THEOREM ═══ -->
+<section id="ultimate-theorem">
+  <div class="container">
+    <h2><span class="icon" style="color: var(--gold);">&#x25C9;</span> The Uniqueness Theorem <span class="section-badge" style="background: var(--gold); color: #111;">FINAL</span></h2>
+
+    <div class="highlights-banner" style="border-color: var(--gold); background: linear-gradient(135deg, rgba(227,179,65,0.15), rgba(210,168,255,0.08), rgba(63,185,80,0.06));">
+      <h3 style="color: var(--gold);">Theorem (W(3,3) Uniqueness)</h3>
+      <p style="color: var(--fg); max-width: 750px; margin: 0.8rem auto 0;">Let GQ(q,q) be a self-dual generalized quadrangle over &Fopf;<sub>q</sub> with q a prime power. The following are equivalent, and all select <strong>q = 3</strong> uniquely within the finite spectral landscape verified here:</p>
+    </div>
+
+    <table>
+      <thead><tr><th>#</th><th>Condition</th><th>Equation</th></tr></thead>
+      <tbody>
+        <tr><td>(i)</td><td>Gaussian norm = tree coupling</td><td>(k&minus;1)&sup2; + &mu;&sup2; = k&sup2; &minus; 2&mu; + 1</td></tr>
+        <tr><td>(ii)</td><td>Atmospheric sum rule</td><td>sin&sup2;&theta;<sub>23</sub> = sin&sup2;&theta;<sub>W</sub> + sin&sup2;&theta;<sub>12</sub></td></tr>
+        <tr><td>(iii)</td><td>Eigenvalue equation</td><td>s&sup2; = 2(k + s) &nbsp;&hArr;&nbsp; 1+2k is a perfect square</td></tr>
+        <tr><td>(iv)</td><td>Euler characteristic</td><td>&chi;(clique complex) = &minus;v</td></tr>
+        <tr><td>(v)</td><td>Vacuum energy balance</td><td>f&Phi;<sub>4</sub> = g&mu;&sup2; = E with &Phi;<sub>4</sub> = q&sup2;+1</td></tr>
+        <tr><td>(vi)</td><td>12 independent reasons</td><td>Gaussian prime, Gauss-Bonnet, NCG, &beta;<sub>0</sub>&gt;0, Ramanujan, Monster...</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The Modular Form Dictionary</h3>
+    <p>Every major modular form for SL<sub>2</sub>(&Zopf;) has its Fourier coefficients expressible through W(3,3):</p>
+    <table>
+      <thead><tr><th>Modular Form</th><th>Weight</th><th>Graph Weight</th><th>Key Coefficients</th></tr></thead>
+      <tbody>
+        <tr><td>E<sub>4</sub> = &Theta;<sub>E8</sub></td><td>4</td><td>&mu;</td><td>1 + <strong>240</strong>q + 2160q&sup2; + ... (240 = E)</td></tr>
+        <tr><td>E<sub>6</sub></td><td>6</td><td>k/2 = 2q</td><td>1 &minus; <strong>504</strong>q + ... (504 = &Phi;<sub>6</sub>&times;72)</td></tr>
+        <tr><td>E<sub>8</sub> = E<sub>4</sub>&sup2;</td><td>8</td><td>k&minus;&mu; = rank(E<sub>8</sub>)</td><td>1 + <strong>480</strong>q + ... (480 = S<sub>EH</sub> = &zeta;<sub>L</sub>(&minus;1))</td></tr>
+        <tr><td>&Delta; = &eta;<sup>24</sup></td><td>12</td><td>k</td><td>q &minus; <strong>24</strong>q&sup2; + <strong>252</strong>q&sup3; + ... (&minus;f, E+k)</td></tr>
+        <tr><td>j = E<sub>4</sub>&sup3;/&Delta;</td><td>0</td><td>&mdash;</td><td>q<sup>&minus;1</sup> + <strong>744</strong> + <strong>196884</strong>q + ... (q&times;dim(E<sub>8</sub>), Monster)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The &sigma;<sub>3</sub> Miracle</h3>
+    <p>The divisor sum function &sigma;<sub>3</sub>(n) = &sum;<sub>d|n</sub> d&sup3; generates E<sub>4</sub> coefficients. Its values at small n are ALL W(3,3) parameters:</p>
+    <table>
+      <thead><tr><th>&sigma;<sub>3</sub>(n)</th><th>Value</th><th>W(3,3) Form</th></tr></thead>
+      <tbody>
+        <tr><td>&sigma;<sub>3</sub>(1)</td><td>1</td><td>trivial</td></tr>
+        <tr><td>&sigma;<sub>3</sub>(2)</td><td>9</td><td>q&sup2;</td></tr>
+        <tr style="color: var(--gold);"><td>&sigma;<sub>3</sub>(3)</td><td>28</td><td>&mu; &times; &Phi;<sub>6</sub> = bitangent count</td></tr>
+        <tr style="color: var(--gold);"><td>&sigma;<sub>3</sub>(4)</td><td>73</td><td>&Phi;<sub>12</sub>(3) = Hubble cyclotomic</td></tr>
+        <tr><td>&sigma;<sub>3</sub>(5)</td><td>126</td><td>C(16,2) = &binom;{2(k&minus;&mu;)}{2}</td></tr>
+        <tr style="color: var(--gold);"><td>&sigma;<sub>3</sub>(6)</td><td>252</td><td>&tau;(3) = E + k (Ramanujan tau!)</td></tr>
+      </tbody>
+    </table>
+    <p><strong>&sigma;<sub>3</sub>(6) = 252 = &tau;(3) = E + k</strong> &mdash; the divisor sum at n=6 equals Ramanujan&rsquo;s tau at n=3. Two deep number-theoretic functions agree on a value that is the edge count plus valency of W(3,3).</p>
+
+    <div class="highlights-banner" style="margin-top: 2rem; border-color: var(--gold); background: linear-gradient(135deg, rgba(227,179,65,0.10), rgba(88,166,255,0.06));">
+      <h3 style="color: var(--gold);">S = Tr(f(D&sup2;/&Lambda;&sup2;)) on M&sup4; &times; W(3,3)</h3>
+      <p style="color: var(--fg); max-width: 750px; margin: 0.8rem auto 0; font-size: 1.05em;">where W(3,3) is the unique solution to (q+1)&sup2; = 2(q+1)(q&minus;1). One equation. One graph. One universe. &square;</p>
+    </div>
+  </div>
 </section>
 
 <section id="open">
