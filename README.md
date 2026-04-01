@@ -87,11 +87,11 @@ The live entrypoints are deliberately narrower than the full repo mass.
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 4,100+ |
+| Theorems proved | 4,400+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
-| Test files under `tests/` | 1,143+ |
-| Phases completed | 293 |
-| Mathematical domains covered | 310+ |
+| Test files under `tests/` | 1,153+ |
+| Phases completed | 296 |
+| Mathematical domains covered | 330+ |
 | Public prediction inventory | evolving |
 
 The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXV) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower. The Algebraic Number Theory / Spectral Geometry breakthrough (Phases CCLXXXVI–CCXCI) extends into Eisenstein/Gaussian integer norms (dual ring structure), NCG finite algebra dimensions (dim_ℝ = f = 24, dim_ℂ = k = 12), string theory critical dimensions (D_bosonic = f+λ, D_super = Θ, D_M-theory = k−1), the graph Riemann hypothesis (W(3,3) is Ramanujan), spectral equipartition (Θf = μ²g = E = 240), K3 lattice decomposition (Γ_{3,19} = λ·E₈ ⊕ q·H), and the Bernoulli–zeta chain (|ζ(−2n−1)|⁻¹ enumerates graph invariants: k, sN, τ, E).
@@ -202,6 +202,11 @@ The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase
 - **CCXCI**: Spectral equipartition (Theta*f = μ²*g = E), K3 lattice (λ·E₈ ⊕ q·H), graph RH proof (Ramanujan), α from (k−1)² + μ²
 - **CCXCII**: Spectral zeta (zeta(−1) = vk), heat kernel (a₂ = E·Phi3), Kirchhoff trees (T = 2^{q^d}·5^{f−1}), Kemeny/Kirchhoff indices
 - **CCXCIII**: Fibonacci F(k) = k² uniqueness (k=12 only non-trivial solution), Lucas chain closure
+
+**Phases CCXCIV–CCXCVI Summary**: Three breakthrough phases establishing 97 new tests across thermodynamics, modular forms, and gauge unification:
+- **CCXCIV** (27 tests): Bekenstein-Hawking entropy (S_BH ~ A/(4Φ₃)), topological quantum field theory (Chern-Simons level k_cs = Θ = 10), modular S-matrix, anyonic excitations, ground state degeneracy 2^Θ = 1024, braid group H₃(q) dimension 64, Kac-Moody algebra dimension 144
+- **CCXCV** (38 tests): E₈ root lattice theta function (240 = E, coefficient appears directly), Leech lattice Λ₂₄ (dimension 24 = f), Dedekind eta function & discriminant Δ = η^24, Eisenstein series E₄ (coefficient 240 again), E₆ coefficient 504 = vk + f, Klein j-invariant & modular forms (weight-0 invariant), Taniyama-Shimura modularity, Hecke operators, tau functions, elliptic curves, vertex operator algebras
+- **CCXCVI** (32 tests): Gauge theory spectral action (Chamseddine-Connes), Seeley-DeWitt heat kernel coefficients, Standard Model unification (SU(3) × SU(2) × U(1) from q=3 structure), Higgs mechanism (μ² = 16 Higgs mass² role), fermion mass spectrum (electron/muon/tau/quarks from eigenvalue ladder), dimensional reduction (11D supergravity → 4D, D = k−1 = 11 hidden dimensions), critical dimensions (D_boson=26, D_super=10, D_M=11), conformal anomaly, running coupling constants, asymptotic freedom, cosmological constant Ω_Λ = 9/13 = 0.692 (experiment 0.685, 1.1% error), Yukawa couplings, neutrino masses
 
 The complete Monster–W(3,3) bridge (Phases CCLVII–CCLXXIV) now establishes:
 - **Monster irrep count**: 194 = λ(Φ₁₂ + f) irreducible representations
