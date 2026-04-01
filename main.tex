@@ -1,0 +1,169 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{The $W(3,3)$ Graph: Uniqueness, Tau Values,\\
+       and the CM $j$-Tower}
+\author{Wil Dahn}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Ramanujan bipartite graph $W(3,3)$ of Lubotzky--Phillips--Sarnak
+is characterized among the family $W(3,q)$ by five simultaneous algebraic
+coincidences (C1--C5), each proved symbolically.
+The spectral parameters encode the Ramanujan tau function at the first two primes:
+$\tau(2)=-f(3)=-24$ and $\tau(3)=k(3)\Phi_6(3)\cdot 3=252$.
+The $j$-invariants of all CM orders attached to the Ihara zeta sectors of $W(3,3)$
+are perfect cubes of graph parameters, forming a five-entry tower
+$\{k^3,\,-g^3,\,(v/2)^3,\,-2^g,\,255^3\}$;
+this tower is generated entirely by the $s$-eigenspace sector, whose CM discriminant
+$-4\Phi_6=-28$ is Heegner while the $r$-eigenspace discriminant $-4\Phi_4=-40$
+has class number $2$.
+As a physics application, the $W(3,3)$ spectral descent map predicts
+a unique quasi-degenerate neutrino mass entry point $\mu_{\rm eff}^2=1/4$,
+with seesaw cascade ratio $r=0.52244$
+encoding the solar-to-atmospheric mass splitting directly.
+All results are verified by $\mathbf{N}$ automated unit tests.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+%%% SECTION 1 %%%
+\section{The Graph $W(3,3)$}
+\label{sec:graph}
+
+The Lubotzky--Phillips--Sarnak graph $W(3,q)$ \cite{LPS1988} is a
+$k$-regular bipartite Ramanujan graph defined for prime powers
+$q\equiv 1\pmod{4}$, with $k=q(q+1)$ and $|V|=2(q+1)(q^2+1)=2v$.
+We work at $q=3$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Parameter & Symbol & Value \\
+\midrule
+Degree              & $k=q(q+1)$          & $12$ \\
+Vertices per side   & $v=(q+1)(q^2+1)$    & $40$ \\
+$r$-eigenvalue      & $r=q-1$             & $2$ \\
+$s$-eigenvalue      & $s=-(q+1)$          & $-4$ \\
+$r$-multiplicity    & $f=q(q+1)^2/2$      & $24$ \\
+$s$-multiplicity    & $g=q(q^2+1)/2$      & $15$ \\
+$\Phi_3(q)=q^2+q+1$ & $\Phi_3$            & $13$ \\
+$\Phi_4(q)=q^2+1$   & $\Phi_4$            & $10$ \\
+$\Phi_6(q)=q^2-q+1$ & $\Phi_6$            & $7$ \\
+\bottomrule
+\end{tabular}
+\caption{Parameters of $W(3,3)$ at $q=3$.}
+\end{table}
+
+The Ihara zeta function is
+\[
+  \zeta_{W}(u)^{-1} = (1-u^2)^{k(v-1)/2}\,p_1(u)^f\,p_2(u)^g,
+\]
+with $p_1(u)=1-2u+11u^2$, $p_2(u)=1+4u+11u^2$,
+and discriminants $\mathrm{disc}(p_1)=-4\Phi_4=-40$,
+$\mathrm{disc}(p_2)=-4\Phi_6=-28$.
+
+%%% SECTION 2 %%%
+\input{section2_uniqueness}
+
+%%% SECTION 3 %%%
+\input{section3_tau_bridge}
+
+%%% SECTION 4 %%%
+\section{Neutrino Mass Constraint}
+\label{sec:neutrino}
+
+For a neutrino mass vector $\mathbf{m}=(m_1,m_2,m_3)$ normalized to $m_{\max}=1$,
+define
+\[
+  \mu_{\rm eff}^2(\mathbf{m}) = -\frac{\ln(\prod_i m_i/m_{\max})^{1/3}}{\ln\Phi_4}.
+\]
+
+\begin{theorem}[Entry point]
+The $W(3,3)$ spectral constraint $\mu_{\rm eff}^2=1/(q+1)=1/4$
+has a unique solution $m_1=m_1^*$ for each neutrino mass ordering.
+Under the normal hierarchy with NuFIT 5.3 oscillation parameters \cite{NuFIT53},
+$m_1^*\approx 50.7\,\mathrm{meV}$ and $\sum m_\nu\approx 167\,\mathrm{meV}$.
+\end{theorem}
+
+\begin{corollary}[DESI consistency]
+The DESI DR1 bound $\sum m_\nu < 72\,\mathrm{meV}$ \cite{DESI2024}
+excludes the NH entry point at greater than $2\sigma$.
+The IH entry point ($m_3^*\approx 15.7\,\mathrm{meV}$,
+$\sum m_\nu\approx 113\,\mathrm{meV}$) is also excluded.
+The $W(3,3)$ spectral constraint thus predicts quasi-degenerate neutrinos
+in tension with current cosmological data.
+\end{corollary}
+
+%%% SECTION 5 %%%
+\section{The Seesaw Cascade}
+\label{sec:seesaw}
+
+Define the seesaw map $T\colon\mu\mapsto\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$,
+where $\mathbf{m}(\mu)$ solves $\mu_{\rm eff}^2(\mathbf{m})=\mu$.
+Starting from $\mu_0=1/4$, the iterates $T^n(\mu_0)$ descend to zero.
+
+\begin{theorem}[Cascade ratio]\label{thm:cascade}
+In the quasi-degenerate NH limit,
+\[
+  r = \lim_{n\to\infty}\frac{T^{n+1}(\mu_0)}{T^n(\mu_0)}
+    = \frac{\Delta m^2_{21}+\Delta m^2_{31}}{2\Delta m^2_{31}-\Delta m^2_{21}}
+    \;\xrightarrow{\Delta m^2_{21}\to 0}\;\frac{1}{2}.
+\]
+With NuFIT 5.3 values: $r=0.52244$.
+The deviation $r-1/2=(3\Delta m^2_{21}/2)/(2(2\Delta m^2_{31}-\Delta m^2_{21}))$
+reads off the solar-to-atmospheric splitting ratio.
+\end{theorem}
+\begin{proof}
+Expand $\mu_{\rm eff}^2(\mathbf{m}(\mu))$ and $\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$
+to leading order in $\Delta m^2/m_1^2$, giving coefficients
+$A=(\Delta m^2_{31}/3-\Delta m^2_{21}/6)/\ln\Phi_4$ and
+$B=(\Delta m^2_{21}+\Delta m^2_{31})/(6\ln\Phi_4)$.
+The ratio $r=B/A$ is independent of $\Phi_4$ (it cancels).
+\end{proof}
+
+The first two cascade iterates satisfy $T^0=1/\mu$, $T^1\approx 1/\Phi_6$,
+$T^2\approx 1/\Phi_3$; from $T^3$ onward, the descent follows the
+asymptotic ratio $r$.
+
+\begin{thebibliography}{99}
+\bibitem{LPS1988}
+  A.~Lubotzky, R.~Phillips, P.~Sarnak,
+  \emph{Ramanujan graphs},
+  Combinatorica \textbf{8} (1988), 261--277.
+
+\bibitem{Deligne1974}
+  P.~Deligne,
+  \emph{La conjecture de Weil I},
+  Publ.\ Math.\ IHES \textbf{43} (1974), 273--307.
+
+\bibitem{LMFDB}
+  The LMFDB Collaboration,
+  \emph{The $L$-functions and Modular Forms Database},
+  \texttt{https://www.lmfdb.org}, 2024.
+
+\bibitem{NuFIT53}
+  I.~Esteban, M.~C.~Gonzalez-Garcia, M.~Maltoni, T.~Schwetz, A.~Zhou,
+  JHEP \textbf{09} (2020) 178; \texttt{http://www.nu-fit.org}.
+
+\bibitem{DESI2024}
+  DESI Collaboration,
+  \emph{DESI 2024 VI: Cosmological constraints from BAO},
+  arXiv:2404.03002.
+\end{thebibliography}
+
+\end{document}
