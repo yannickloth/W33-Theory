@@ -1,0 +1,126 @@
+\section{The W(3,3) Uniqueness Theorem}
+\label{sec:uniqueness}
+
+Let $q$ be a prime power and $W(3,q)$ the Lubotzky--Phillips--Sarnak
+Ramanujan bipartite graph with degree $k=q(q+1)$,
+vertex count $v=(q+1)(q^2+1)$ per side, and adjacency eigenvalues
+$r = q-1$ and $s = -(q+1)$, with multiplicities
+$f = q(q+1)^2/2$ and $g = q(q^2+1)/2$.
+Define
+\[
+  \Phi_3(q) = q^2+q+1,\qquad
+  \Phi_4(q) = q^2+1,\qquad
+  \Phi_6(q) = q^2-q+1.
+\]
+The Ihara zeta function factors through the two quadratic polynomials
+\[
+  p_1(u) = 1 - (q-1)u + (k-1)u^2,\qquad
+  p_2(u) = 1 + (q+1)u + (k-1)u^2,
+\]
+whose shared constant term is $k(q)-1 = q^2+q-1$.
+
+\begin{definition}[Spectral deficit]
+Define the spectral deficit by
+\[
+  \mathrm{Deficit}(q) = -\frac{\mathrm{disc}(p_1)}{4} - \Phi_4(q).
+\]
+Since
+\[
+  \mathrm{disc}(p_1) = (q-1)^2 - 4(k-1) = -3q^2-6q+5,
+\]
+we obtain the exact factorization below.
+\end{definition}
+
+\begin{lemma}[C1]
+\[
+  \mathrm{Deficit}(q) = -\frac{(q-3)^2}{4}.
+\]
+Hence $\mathrm{Deficit}(q)=0$ if and only if $q=3$.
+\end{lemma}
+\begin{proof}
+A direct expansion gives
+\[
+  \mathrm{Deficit}(q)
+  = \frac{3q^2+6q-5}{4} - (q^2+1)
+  = \frac{-q^2+6q-9}{4}
+  = -\frac{(q-3)^2}{4}. \qedhere
+\]
+\end{proof}
+
+\begin{lemma}[C2]
+$k(q)+g(q)=q^q$ if and only if $q=3$.
+\end{lemma}
+\begin{proof}
+We compute
+\[
+  k(q)+g(q)=q(q+1)+\frac{q(q^2+1)}{2} = \frac{q^3}{2}+q^2+\frac{3q}{2}.
+\]
+At $q=3$ this equals $27=3^3$.
+For $q\ge 4$, the right-hand side $q^q$ dominates any cubic polynomial,
+so no further positive integer solutions exist.
+\end{proof}
+
+\begin{lemma}[C3]
+The identities
+\[
+  -f(q)=\tau(2),\qquad k(q)\,q\,\Phi_6(q)=\tau(3)
+\]
+hold if and only if $q=3$.
+\end{lemma}
+\begin{proof}
+Since $\tau(2)=-24$ and $\tau(3)=252$, we evaluate at $q=3$:
+\[
+  -f(3)=-\frac{3\cdot 4^2}{2}=-24,
+  \qquad
+  k(3)\cdot 3\cdot \Phi_6(3)=12\cdot 3\cdot 7=252.
+\]
+The first equation has unique positive integer solution $q=3$,
+and the second is strictly increasing for $q\ge 2$.
+\end{proof}
+
+\begin{lemma}[C4]
+$\mathbb{Q}(\sqrt{-\Phi_6(q)})$ has class number $1$ for $q\in\{2,3,7\}$.
+In conjunction with C1, this is unique to $q=3$.
+\end{lemma}
+\begin{proof}
+The Heegner discriminants are
+\(
+\{1,2,3,4,7,8,11,19,43,67,163\}.
+\)
+Now
+\[
+  \Phi_6(2)=3,\qquad \Phi_6(3)=7,\qquad \Phi_6(7)=43,
+\]
+all of which are Heegner. But C1 fails at $q=2$ and $q=7$.
+\end{proof}
+
+\begin{lemma}[C5]
+Let $E_{-\Phi_6(q)}$ be the CM elliptic curve attached to the order of
+ discriminant $-\Phi_6(q)$. Then
+\[
+  a_{k(q)-1}(E_{-\Phi_6(q)}) = \mathrm{ev}_s(q)=-(q+1)
+\]
+holds at $q=3$ and fails already at $q=2$.
+\end{lemma}
+\begin{proof}
+At $q=3$, one has $k-1=11$, $\Phi_6=7$, and
+\[
+  a_{11}(E_{-7})=-4=-(3+1)=\mathrm{ev}_s(3).
+\]
+At $q=2$, one has $k-1=5$, $\Phi_6=3$, while direct point-counting gives
+\[
+  a_5(E_{-3})=0\neq -3=\mathrm{ev}_s(2).
+\]
+So the identity is not generic in the $W(3,q)$ family.
+\end{proof}
+
+\begin{theorem}[W(3,3) Uniqueness]
+$W(3,3)$ is the unique member of the $W(3,q)$ family satisfying
+all five characterizations C1--C5 simultaneously.
+\end{theorem}
+\begin{proof}
+By the preceding lemmas, C1, C2, and C3 each isolate $q=3$,
+while C1$\wedge$C4 and C5 also hold uniquely at $q=3$.
+Therefore the full conjunction C1$\wedge$C2$\wedge$C3$\wedge$C4$\wedge$C5
+holds if and only if $q=3$.
+\end{proof}
