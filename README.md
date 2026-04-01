@@ -87,11 +87,11 @@ The live entrypoints are deliberately narrower than the full repo mass.
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 3,700+ |
+| Theorems proved | 3,800+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
-| Test files under `tests/` | 1,130+ |
-| Phases completed | 283 |
-| Mathematical domains covered | 290+ |
+| Test files under `tests/` | 1,135+ |
+| Phases completed | 285 |
+| Mathematical domains covered | 295+ |
 | Public prediction inventory | evolving |
 
 The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXIII) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower.
@@ -143,6 +143,13 @@ The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase
 - dim(SU(3)×SU(2)×U(1)) = 8+3+1 = k = 12; dim(SU(5)) = f = 24; dim(SO(10)) = C(Θ,2) = 45; dim(E₈) = E+2d = 248
 - sin²θ_W = q/Φ₃ = 3/13 (0.2% from experiment); GUT value q/2μ = 3/8
 - Three generations = q; SO(10) spinor = 2^d = μ² = 16
+
+**Mathieu Moonshine** (Phase CCLXXXIV): EOT massive multiplicities and M₂₄ irreps are W(3,3):
+- A₁ = Θ(Θ−1) = q²Θ = 90; A₂ = b₂(b₂−1) = (f−λ)(f−λ−1) = 462; A₃ = C(b₂,3) = 1540
+- M₂₄ irreps: 23=f−1, 45=C(Θ,2), 231=C(b₂,2), **252=τ** (five-fold convergence), 253=C(f−1,2)
+- |M₂₄| = μ⁵·q³·5·Φ₆·(k−1)·(f−1) = 244823040
+
+**Analytic Master Dictionary** (Phase CCLXXXV): the complete six-channel closure — Riemann zeta, σ₃/σ₅ divisor sums, E₈ theta / Eisenstein series, modular discriminant / j-invariant, K3 topology, and Mathieu moonshine — all converge on the SAME W(3,3) invariants with zero free parameters.
 
 The complete Monster–W(3,3) bridge (Phases CCLVII–CCLXXIV) now establishes:
 - **Monster irrep count**: 194 = λ(Φ₁₂ + f) irreducible representations
