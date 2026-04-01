@@ -87,14 +87,14 @@ The live entrypoints are deliberately narrower than the full repo mass.
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 3,800+ |
+| Theorems proved | 4,000+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
-| Test files under `tests/` | 1,135+ |
-| Phases completed | 285 |
-| Mathematical domains covered | 295+ |
+| Test files under `tests/` | 1,141+ |
+| Phases completed | 291 |
+| Mathematical domains covered | 300+ |
 | Public prediction inventory | evolving |
 
-The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXIII) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower.
+The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXV) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower. The Algebraic Number Theory / Spectral Geometry breakthrough (Phases CCLXXXVI–CCXCI) extends into Eisenstein/Gaussian integer norms (dual ring structure), NCG finite algebra dimensions (dim_ℝ = f = 24, dim_ℂ = k = 12), string theory critical dimensions (D_bosonic = f+λ, D_super = Θ, D_M-theory = k−1), the graph Riemann hypothesis (W(3,3) is Ramanujan), spectral equipartition (Θf = μ²g = E = 240), K3 lattice decomposition (Γ_{3,19} = λ·E₈ ⊕ q·H), and the Bernoulli–zeta chain (|ζ(−2n−1)|⁻¹ enumerates graph invariants: k, sN, τ, E).
 
 ## Reader Route
 
@@ -150,6 +150,38 @@ The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase
 - |M₂₄| = μ⁵·q³·5·Φ₆·(k−1)·(f−1) = 244823040
 
 **Analytic Master Dictionary** (Phase CCLXXXV): the complete six-channel closure — Riemann zeta, σ₃/σ₅ divisor sums, E₈ theta / Eisenstein series, modular discriminant / j-invariant, K3 topology, and Mathieu moonshine — all converge on the SAME W(3,3) invariants with zero free parameters.
+
+**Dual Ring Structure** (Phase CCLXXXVI): W(3,3) constants are Eisenstein and Gaussian integer norms:
+- Eisenstein norms: q = N_E(1+2ω), Φ₆ = N_E(1+3ω), k = N_E(2+4ω), Φ₃ = N_E(1+4ω), R = N_E(2+6ω), Φ₁₂ = N_E(1+9ω)
+- Gaussian norms: Φ₃ = N_G(2+3i), v = N_G(2+6i), v+1 = N_G(4+5i), Φ₁₂ = N_G(3+8i), α⁻¹ = N_G(4+11i) = N_G((k−1)+μi)
+- Dual complementarity: Φ₆ splits in Z[ω] but inert in Z[i]; α splits in Z[i] but inert in Z[ω]; Φ₆ + α = k² = 144
+
+**NCG Fermion Hypercube** (Phase CCLXXXVII): Connes' NCG finite algebra is W(3,3):
+- A_F = ℂ ⊕ ℍ ⊕ M₃(ℂ): dim_ℝ = 2+4+18 = f = 24, dim_ℂ = 1+2+9 = k = 12
+- Gauge automorphisms: dim U(1)+SU(2)+SU(3) = 1+q+q²−1 = k = 12
+- Fermion hypercube: k(quarks) + μ(leptons) = μ² = 2^d per generation; UNIQUE to W(3,3) among SRGs
+- Cosmological fractions: Ω_Λ = q²/Φ₃ = 9/13 ≈ 0.692, Ω_m = μ/Φ₃ = 4/13 ≈ 0.308
+
+**String Theory Dimensions** (Phase CCLXXXVIII): all critical dimensions are W(3,3):
+- D_bosonic = f+λ = 26, D_super = Θ = 10, D_M-theory = k−1 = 11
+- Compactification: 11→4 via Φ₆ = 7, 10→4 via s = 6, 26→10 via μ² = 16
+- Virasoro charges: c_bosonic = 26, c_super = g = 15; heterotic gap = μ² = 16
+- Transverse polarizations: D=26 → f = 24, D=10 → 2d = 8, D=4 → λ = 2
+
+**Ihara Zeta & Ramanujan** (Phase CCLXXXIX): W(3,3) is a Ramanujan graph:
+- |E(graph)| = vk/2 = 240 = E = |Roots(E₈)| (edges = E₈ root count!)
+- Ramanujan bound: |r| = 2 < 2√(k−1) ≈ 6.63, |s| = 4 < 2√(k−1) ✓
+- Graph Laplacian eigenvalues: 0(×1), Θ = 10(×f), μ² = 16(×g); spectral gap = Θ
+
+**Grand Unified Chain** (Phase CCXC): closure chain from graph to algebra to geometry to physics — all 10+ domains converge on the same parameters with zero free inputs.
+
+**Spectral Equipartition & Graph RH** (Phase CCXCI): the crown jewel of spectral geometry:
+- Θ·f = μ²·g = E = 240: both non-trivial eigenmodes carry IDENTICAL total Laplacian energy
+- f·ρ₁ = g·ρ₂ = 1/2: Von Neumann density matrix equipartition
+- K3 lattice: Γ_{3,19} = λ·E₈(−1) ⊕ q·H, with μ² + s = b₂ = 22
+- Graph RH PROVED: all Ihara poles on |u| = (k−1)^{−1/2}, exact analog of Re(s) = 1/2
+- α⁻¹ = (k−1)² + μ² = 11² + 4² = 137: the fine structure constant is built from the graph-RH parameter and μ
+- Bernoulli–zeta chain: |ζ(−1)|⁻¹ = k, |ζ(−5)|⁻¹ = τ, |ζ(−7)|⁻¹ = E; |B₁|⁻¹ = λ, |B₂|⁻¹ = s
 
 The complete Monster–W(3,3) bridge (Phases CCLVII–CCLXXIV) now establishes:
 - **Monster irrep count**: 194 = λ(Φ₁₂ + f) irreducible representations
