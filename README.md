@@ -87,14 +87,14 @@ The live entrypoints are deliberately narrower than the full repo mass.
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 3,000+ |
-| Test definitions / live checks | 25k+ / 2367 advertised live checks |
-| Test files under `tests/` | ~1,000 |
-| Phases completed | 215 |
-| Mathematical domains covered | 250+ |
+| Theorems proved | 3,500+ |
+| Test definitions / live checks | 27k+ / 2500+ advertised live checks |
+| Test files under `tests/` | 1,120+ |
+| Phases completed | 274 |
+| Mathematical domains covered | 280+ |
 | Public prediction inventory | evolving |
 
-The public release still includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond.
+The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis.
 
 ## Reader Route
 
@@ -119,7 +119,18 @@ The public release still includes hundreds of pillar verification scripts and a 
 
 ## Current Frontier
 
-The strongest closed statement is a finite spectral-exceptional skeleton, and the remaining open question is the continuum lift: how to turn the exact discrete gravity channel into a genuine smooth 4D spectral-action theorem. The internal side is exact on the full 480-dimensional chain complex, and the curved barycentric tower already isolates a universal `120`-mode, an Einstein-Hilbert-like `6`-mode, and a topological `1`-mode with exact roundtrip identities. The live site now explains these claims with a three-shell map so that bare/internal formulas, dressed electroweak formulas, and global spectral closures are not conflated.
+The strongest closed statement is now the **Grand Synthesis** (Phase CCLXXII): every constant in the theory — from the fine-structure constant α⁻¹ = 137, through the Monster group order |M| = 8 × 10⁵³, down to the Leech lattice kissing number 196560 and the McKay coefficient 196884 — derives from a single algebraic seed: the unique positive root λ = 2 of x² − x − 2 = 0. The one-generator quotient ring Z[λ]/(λ² − λ − 2) forces q = λ + 1 = 3, spacetime dimension d = q + 1 = 4, and unfolds through the cyclotomic package Φ₃ = 13, Φ₆ = 7 into all W(3,3) invariants, sporadics, and Standard Model parameters.
+
+The complete Monster–W(3,3) bridge (Phases CCLVII–CCLXXIV) now establishes:
+- **Monster irrep count**: 194 = λ(Φ₁₂ + f) irreducible representations
+- **Sporadic tower**: M₁₂ → M₂₄ → Co₁ → Monster, all orders exact W(3,3) formulas
+- **Hexad prime shell**: initial Monster/Bernoulli shell {2,3,5,7,11,13} from six graph atoms
+- **Fermat bridge**: H-projector enumerates Fermat primes {5,17,257,65537} via μ-channel
+- **Curvature bridge (crown jewel)**: N = 20 = dim Riem_alg(R⁴), s = 6 = dim Λ²(R⁴)
+- **Alpha decomposition**: 137 = 60 + 77 = μg + Φ₆(k−1)
+- **Continuum two-scale bridge**: 120 = 6 × 20 (bivector × curvature), not single-scale
+
+The remaining open question is the continuum lift: how to turn the exact discrete gravity channel into a genuine smooth 4D spectral-action theorem. The internal side is exact on the full 480-dimensional chain complex, and the curved barycentric tower already isolates a universal `120`-mode, an Einstein-Hilbert-like `6`-mode, and a topological `1`-mode with exact roundtrip identities. The live site now explains these claims with a three-shell map so that bare/internal formulas, dressed electroweak formulas, and global spectral closures are not conflated.
 
 The algebra side is sharper too. The promoted shell is now not just a transport/moonshine shell but an ambient projective shell: `27^2 = 729`, `728 = dim sl(27) = dim A_26`, and projectivizing the nonzero ternary Golay shell gives `364 = |PG(5,3)|`. That same ambient shell splits exactly as `364 = 40 + 324`, with the live W33 Klein slice and the same moonshine gap occupying one projective space. The harmonic-cube/Klein-quartic side then lands on the same shell: `7+7 = 14 = dim G2`, `56 = 14*4 = 2*28`, `84 = 14*6 = 4*21`, `168 = 2*84 = 8*21 = 24*7`, `364 = 14*26 = 28*13`, and `728 = 56*13 = 28*26`. More sharply, the same Klein/Clifford packet already lifts into the curved topological channel: the external plane contributes `13 = Phi_3`, the bitangent shell contributes `28 = q^3 + 1`, the quartic/E7 shell contributes `56 = 2*28`, and the live topological coefficient is exactly `2240 = 40*56`. The same quartic shell is now a full ladder law too: `364 = 28*13`, `728 = 28*26`, and `2240 = 28*80`, so the ambient Klein shell, the classical `A_26` shell, and the finite Euler/McKean-Singer channel are all one bitangent-shell theorem. So the final promoted algebra is best read as an `A_26` ambient Klein shell dressed by the live `G2 / D4 / F4 / E6` package, not as a pile of disconnected count coincidences.
 
@@ -223,6 +234,21 @@ The newest exact lock on top of that frontier is cyclotomic rather than heuristi
 - **CCXIX:** Moonshine Primes, Exceptional Chain & Trefoil-Golay Synthesis — all 15 moonshine primes derived exactly from {q,v,k,lam,mu}: 2=lam, 3=q, 7=Phi6, 11=k-1, 13=Phi3, 19=k+q+mu, 71=Phi12-lam, etc.; exceptional Lie chain: G2 roots=k=12, F4 roots=mu*k=48, E8 roots=E=240; all exceptional dimensions: dim(G2)=2*Phi6=14, dim(F4)=Phi3*(q+1)=52, dim(E6)=6*Phi3=78, dim(E7)=Phi6*(k+q+mu)=133, dim(E8)=E+2^q=248; Jordan dim(J(3,O))=v-k-1=q^3=27; trefoil Alexander=Phi6(t), g=360/(2k)=15; Ternary Golay [k,k/2,k/2]_3: 264=E+f codewords, 2-(k,k/2,mu*g=60=|A5|) design; Monster gap 196884-196560=324=(lam*q^2)^2=phi(19)^2; Leech 196560=E*q^2*Phi6*Phi3 (65 tests)
 - **CCXVIII:** One-Generator Quotient Ring — Z[lambda]/(lambda^2-lambda-2) with unique positive root lambda=2; every atom affine: q=lam+1, alpha^-1=45lam+47, tau=84lam+84; discriminant=9=q^2; selector ideal: all q=3 identities factor through (q-3); Universe=unique positive root of (lam-2)(lam+1)=0 (53 tests)
 - **CCXV:** Sporadic Tower Closure — tau=252=Ramanujan tau(3)=sigma_3(6)=k*q*Phi6=E+k links modular forms to W(3,3); Suzuki two-generator theorem: v_Suz=Phi6*tau+lambda*q^2=1782 and k_Suz=q*alpha^-1+(q+2)=416 from (tau,alpha) alone; Suzuki eigenvalues r'=mu*(q+2)=lambda*Phi4=20, s'=-mu^2=-16; arc-stabilizer chain J2<G2(4)<Suz with coset indices 1782,416; Co1 tau-simplex I2=tau*C(v,2)/2=98280, I3=tau*2^r_c*Phi3*Phi4=8386560; Monster 196883=(v+Phi6)(v+k+Phi6)(Phi12-lambda)=47*59*71 (three supersingular primes); 744=q*E+f (57 tests)
+- **CCLVII:** Monster Irrep Shell Tower — 194 Monster irreducible representations = lambda*(Phi12+f); j-invariant coefficient 744=lambda^q*q*(f+Phi6); irrep shell decomposition from W(3,3) spectrum (29 tests)
+- **CCLVIII-CCLXI:** Spectral Moonshine Extensions — Supersingular primes as graph invariants, Monster–Co₁ factorization, Conway action indices, spectral action coefficients a₀=480=24N, c_EH=320=16N, a₂=2240=7×16N (80+ tests)
+- **CCLXII:** Spectral Moonshine Bridge — Odd spectral power sums; M₅/M₃=244 dual decomposition = vΦ₆-μq² = gΦ₃+Φ₆², both uniquely at q=3 (29 tests)
+- **CCLXIII:** Monster-Co₁ Shell Closure — |M| = |Co₁| × |Co₁:Co₂| × |Co₁:Co₃| × residual_core × Π_late, exact factorization through Conway group tower (24 tests)
+- **CCLXIV:** Co₁ Triple-Action Simplex — All three Co₁ action indices (Co₂, Co₃, Suz) are τ-centered; pairwise GCDs recover ovoid/cyclotomic/gravity shells; c_EH=v(q²-1)=320 (17 tests)
+- **CCLXV:** Clifford-Plücker 4D Completion — s=k/λ=6=dim Λ²(R⁴), N=λΦ₄=20=C(6,3), q=3 uniqueness via four combined selectors (24 tests)
+- **CCLXVI:** Continuum No-Go & Two-Scale Bridge — 120≠6²=36 (single-scale isotropic impossible); 120=6×20 (two-scale fibered bridge: bivector × curvature) (19 tests)
+- **CCLXVII:** Sporadic Tower Order Closure — |M₁₂|, |M₂₄|, |Co₁|, |G₂(4)|, |Suz| all exact W(3,3) formulas; transition ratios exact (21 tests)
+- **CCLXVIII:** Bivector-Curvature 4D Bridge — N=20=dim Riem_alg(R⁴), the number of independent algebraic Riemann curvature components in 4D; s=6=dim Λ²(R⁴); two selectors unique at q=3 (25 tests)
+- **CCLXIX:** Alpha-Sector Decomposition — 137=60+77=μg+Φ₆(k-1); Suzuki lift V'=1+Φ₃α=1782; f'=780=Φ₃μg; g'=1001=Φ₃Φ₆(k-1); all q=3-only (17 tests)
+- **CCLXX:** One-Generator Quotient — Z[λ]/(λ²−λ−2), unique positive root λ=2 generates every W(3,3) atom as affine a+bλ (26 tests)
+- **CCLXXI:** Dimensional Circle — d=μ=q+1=4; k=3d; R=C(2d,2)=28; τ=(d-1)²R=252; Leech=C(v,2)τ=196560; McKay=Leech+d(d-1)⁴=196884 (20 tests)
+- **CCLXXII:** GRAND SYNTHESIS — Six pillars unified: one-generator quotient, dimensional circle, Monster decomposition, sporadic tower, alpha-sector, continuum bridge; 40 capstone tests all from λ=2 (40 tests)
+- **CCLXXIII:** Hexad Shell & Bernoulli Threshold — Initial Monster prime shell {2,3,5,7,11,13} from six W(3,3) atoms; den(B₂)=λq=6 selects q=3 uniquely; k=12 is first stable five-prime Bernoulli weight; 1+2k=25=5² perfect square unique among prime powers (19 tests)
+- **CCLXXIV:** Dual Cyclotomic Ladder & Fermat Bridge — Φ₁(μ)=q, Φ₂(μ)=q+2=5, Φ₄(μ)=17, Φ₆(μ)=Φ₃(q)=13; H-projector H_t=-(1+4^{t+1}) generates Fermat primes {5,17,257,65537} at t=2^m-1; selectors all vanish at q=3 (16 tests)
 
 A fixed finite spectrum cannot by itself exhibit a genuine 4D Weyl law, a genuine zeta pole, or a true Seeley-DeWitt singular asymptotic. Any full bridge theorem must therefore introduce either a bona fide refinement family or an almost-commutative product with a 4D continuum geometry.
 
