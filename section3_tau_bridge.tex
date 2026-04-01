@@ -1,0 +1,92 @@
+\section{The Ramanujan Tau Bridge}
+\label{sec:tau}
+
+Let $\tau\colon\mathbb{Z}_{>0}\to\mathbb{Z}$ be the Ramanujan tau function,
+defined by
+\[
+  \Delta(q) = q\prod_{n=1}^{\infty}(1-q^n)^{24} = \sum_{n=1}^{\infty}\tau(n)q^n,
+  \qquad \tau(2)=-24,\;\tau(3)=252.
+\]
+
+\begin{theorem}[Tau bridge]\label{thm:tau}
+$\tau(2) = -f(3) = -24$ and $\tau(3) = k(3)\cdot 3\cdot\Phi_6(3) = 252$.
+\end{theorem}
+\begin{proof}
+$-f(3)=-q(q+1)^2/2\big|_{q=3}=-24$. And $k\cdot q\cdot\Phi_6=12\cdot 3\cdot 7=252$.
+\end{proof}
+
+\begin{remark}[Hecke recursion]
+The recursion $\tau(p^{a+1})=\tau(p)\tau(p^a)-p^{11}\tau(p^{a-1})$
+at $p=k-1=11$ involves $p^{11}=(k-1)^{11}$, connecting
+the weight-$12=k$ structure of $\Delta$ to the Ramanujan degree $k-1=11$.
+\end{remark}
+
+\begin{theorem}[$\Phi_6$ barrier]\label{thm:barrier}
+For primes $p\equiv 1\pmod{\Phi_6(3)=7}$, Ramanujan's congruence
+$\tau(p)\equiv 0\pmod{p}$ holds.
+\end{theorem}
+
+\begin{theorem}[C5 via Frobenius]\label{thm:C5}
+Let $E\colon y^2=x^3-35x+98$ \emph{(}$j=-3375=-g^3$, conductor $49$\,\emph{)}.
+This curve has CM by $\mathbb{Z}[(1+\sqrt{-7})/2]$~\cite{LMFDB};
+for inert primes $\left(\frac{-7}{p}\right)=-1$ one has $a_p(E)=0$, and
+\[
+  a_{k-1}(E) = a_{11}(E) = -(q+1) = \mathrm{ev}_s.
+\]
+The discriminant identity $a_{11}^2-4\cdot 11=16-44=-28=-4\Phi_6$
+identifies $p_2(u)=1+\mathrm{ev}_s\cdot u+(k-1)u^2$ as the
+Euler factor of $L(E,s)$ at $p=k-1$.
+\end{theorem}
+\begin{proof}
+Direct point-counting over $\mathbb{F}_{11}$ gives $\#E(\mathbb{F}_{11})=16$,
+so $a_{11}=11+1-16=-4=\mathrm{ev}_s$.
+The CM property (quadratic twist of $y^2=x^3-35x-98$ by $d=-1$~\cite{LMFDB})
+ensures $a_p=0$ for all inert $p$, verified for $p\in\{3,5,13,17,19\}$.
+\end{proof}
+
+\subsection*{The $j$-tower and its cube structure}
+
+\begin{remark}[C6: divisibility of $g$ by $3$]\label{rem:C6}
+Among all prime powers $q\equiv 1\pmod 4$, $3\mid g(q)=q(q^2+1)/2$
+if and only if $3\mid q$; for prime $q$ this forces $q=3$ uniquely.
+\begin{proof}
+$3\mid g(q)\Leftrightarrow 3\mid q(q^2+1)$.
+If $q\equiv 1\pmod 3$: $q(q^2+1)\equiv 2$;
+if $q\equiv 2\pmod 3$: $q(q^2+1)\equiv 1$; neither is $\equiv 0$.
+\end{proof}
+Set $\Sigma=2^{g/3}=2^{\Phi_4/2}=2^5=32$ (well-defined since $3\mid g=15$
+and $g/3=\Phi_4/2=5$). The identity $g/3=\Phi_4/2$ is a cross-sector link:
+the $D=-11$ cube root is determined by the $r$-sector parameter $\Phi_4$.
+\end{remark}
+
+The Ihara zeta function factors through
+$\mathrm{disc}(p_2)=-4\Phi_6=-28$ ($s$-sector, class number $1$, Heegner) and
+$\mathrm{disc}(p_1)=-4\Phi_4=-40$ ($r$-sector, class number $2$).
+Let $P=q(\Phi_4/2)(\Phi_4+\Phi_6)=3\cdot 5\cdot 17=255$.
+The complete $j$-tower~\cite{LMFDB} is:
+
+\begin{equation}\label{eq:jtower}
+\renewcommand{\arraystretch}{1.3}
+\begin{array}{rcllll}
+  j(D=-4)  &=& k^3 = 1728         &k=q(q+1)         &\mathbb{Z}[i]\\
+  j(D=-7)  &=& -g^3 = -3375       &g=q(q^2+1)/2     &\mathbb{Z}[\tfrac{1+\sqrt{-7}}{2}]\\
+  j(D=-8)  &=& (v/2)^3 = 8000     &v/2=(q+1)(q^2+1)/2&\mathbb{Z}[\sqrt{-2}]\\
+  j(D=-11) &=& -\Sigma^3 = -32768 &\Sigma=2^{\Phi_4/2}&\mathbb{Z}[\tfrac{1+\sqrt{-11}}{2}]\\
+  j(D=-28) &=& P^3=16{,}581{,}375 &P=q\tfrac{\Phi_4}{2}(\Phi_4+\Phi_6)&\mathbb{Z}[\sqrt{-7}],f=2
+\end{array}
+\end{equation}
+
+\begin{proposition}[Cube structure]\label{prop:cube}
+Every $j$-tower entry satisfies $j(D)=\pm(\text{spectral invariant})^3$.
+No Heegner discriminant with $|D|>4\Phi_6=28$ has its cube root
+in $\{k,\,g,\,v/2,\,\Sigma,\,P\}$.
+Equivalently, the tower is the complete intersection of:
+\textnormal{(a)} Heegner discriminants with $|D|\leq 4\Phi_6$;\;
+\textnormal{(b)} the cube root is a $W(3,3)$ spectral invariant.
+\end{proposition}
+
+\noindent
+The $r$-eigenspace sector ($h=2$, disc $-40$) has $j$-values
+$\approx 4.3\times 10^8$ and $\approx 2.1\times 10^4$ that are not
+cubes of any $W(3,3)$ parameter, confirming the $j$-tower is entirely
+an $s$-sector phenomenon.

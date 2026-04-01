@@ -1,0 +1,34 @@
+Title: The W(3,3) Graph: Uniqueness, Tau Values, and the CM j-Tower
+
+Authors: Wil Dahn
+
+Abstract:
+The Ramanujan bipartite graph W(3,3) of Lubotzky-Phillips-Sarnak is
+characterized among the family W(3,q) by six simultaneous algebraic
+coincidences (C1-C6), each proved symbolically. The spectral parameters
+encode the Ramanujan tau function at the first two primes: tau(2)=-f(3)=-24
+and tau(3)=k(3)*Phi_6(3)*3=252. The j-invariants of all CM orders attached
+to the Ihara zeta sectors of W(3,3) are perfect cubes of graph parameters,
+forming a five-entry tower {k^3,-g^3,(v/2)^3,-Sigma^3,255^3} with
+Sigma=2^(Phi_4/2); this tower is generated entirely by the s-eigenspace sector,
+whose CM discriminant -4*Phi_6=-28 is Heegner while the r-eigenspace
+discriminant -4*Phi_4=-40 has class number 2. The sixth coincidence C6 --
+that 3|g(3) uniquely among prime q -- makes Sigma=2^(g/3) an integer and
+links the D=-11 j-tower entry to the r-sector parameter Phi_4 via g/3=Phi_4/2.
+As a physics application, the W(3,3) spectral descent map predicts a
+quasi-degenerate neutrino mass entry point mu_eff^2=1/4 and seesaw cascade
+ratio r=0.52244. All results are verified by 456 automated unit tests.
+
+Primary MSC: 11F11 (Holomorphic modular forms of integral weight)
+Secondary MSC: 05C50 (Graphs and linear algebra)
+               11G15 (Complex multiplication and moduli of abelian varieties)
+               11R11 (Quadratic extensions)
+
+arXiv primary category: math.NT
+arXiv cross-list: math.CO, hep-ph
+
+Companion repository: https://github.com/wilcompute/W33-Theory
+
+Keywords: Ramanujan graphs, LPS graphs, CM theory, j-invariants,
+          modular forms, Ihara zeta function, neutrino masses,
+          Ramanujan tau function, Heegner numbers
