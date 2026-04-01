@@ -1,4 +1,4 @@
-\section{The W(3,3) Uniqueness Theorem}
+\section{The $W(3,3)$ Uniqueness Theorem}
 \label{sec:uniqueness}
 
 Let $q$ be a prime power and $W(3,q)$ the Lubotzky--Phillips--Sarnak
@@ -17,7 +17,7 @@ The Ihara zeta function factors through the two quadratic polynomials
   p_1(u) = 1 - (q-1)u + (k-1)u^2,\qquad
   p_2(u) = 1 + (q+1)u + (k-1)u^2,
 \]
-whose shared constant term is $k(q)-1 = q^2+q-1$.
+whose constant term in the Euler factor is $k(q)-1 = q^2+q-1$.
 
 \begin{definition}[Spectral deficit]
 Define the spectral deficit by
@@ -31,7 +31,7 @@ Since
 we obtain the exact factorization below.
 \end{definition}
 
-\begin{lemma}[C1]
+\begin{lemma}[C1]\label{lem:C1}
 \[
   \mathrm{Deficit}(q) = -\frac{(q-3)^2}{4}.
 \]
@@ -47,7 +47,7 @@ A direct expansion gives
 \]
 \end{proof}
 
-\begin{lemma}[C2]
+\begin{lemma}[C2]\label{lem:C2}
 $k(q)+g(q)=q^q$ if and only if $q=3$.
 \end{lemma}
 \begin{proof}
@@ -60,7 +60,7 @@ For $q\ge 4$, the right-hand side $q^q$ dominates any cubic polynomial,
 so no further positive integer solutions exist.
 \end{proof}
 
-\begin{lemma}[C3]
+\begin{lemma}[C3]\label{lem:C3}
 The identities
 \[
   -f(q)=\tau(2),\qquad k(q)\,q\,\Phi_6(q)=\tau(3)
@@ -78,15 +78,13 @@ The first equation has unique positive integer solution $q=3$,
 and the second is strictly increasing for $q\ge 2$.
 \end{proof}
 
-\begin{lemma}[C4]
+\begin{lemma}[C4]\label{lem:C4}
 $\mathbb{Q}(\sqrt{-\Phi_6(q)})$ has class number $1$ for $q\in\{2,3,7\}$.
 In conjunction with C1, this is unique to $q=3$.
 \end{lemma}
 \begin{proof}
 The Heegner discriminants are
-\(
-\{1,2,3,4,7,8,11,19,43,67,163\}.
-\)
+$\{1,2,3,4,7,8,11,19,43,67,163\}$.
 Now
 \[
   \Phi_6(2)=3,\qquad \Phi_6(3)=7,\qquad \Phi_6(7)=43,
@@ -94,33 +92,29 @@ Now
 all of which are Heegner. But C1 fails at $q=2$ and $q=7$.
 \end{proof}
 
-\begin{lemma}[C5]
-Let $E_{-\Phi_6(q)}$ be the CM elliptic curve attached to the order of
- discriminant $-\Phi_6(q)$. Then
+\begin{lemma}[C5]\label{lem:C5}
+Let $E$ be a CM elliptic curve with $j(E)=-\Phi_6(q)^3$
+\emph{(}see Theorem~\ref{thm:C5} for the explicit model at $q=3$\emph{)}. Then
 \[
-  a_{k(q)-1}(E_{-\Phi_6(q)}) = \mathrm{ev}_s(q)=-(q+1)
+  a_{k(q)-1}(E) = \mathrm{ev}_s(q)=-(q+1)
 \]
-holds at $q=3$ and fails already at $q=2$.
+holds at $q=3$ and fails at $q=2$.
 \end{lemma}
 \begin{proof}
-At $q=3$, one has $k-1=11$, $\Phi_6=7$, and
-\[
-  a_{11}(E_{-7})=-4=-(3+1)=\mathrm{ev}_s(3).
-\]
-At $q=2$, one has $k-1=5$, $\Phi_6=3$, while direct point-counting gives
-\[
-  a_5(E_{-3})=0\neq -3=\mathrm{ev}_s(2).
-\]
-So the identity is not generic in the $W(3,q)$ family.
+At $q=3$, the curve $E\colon y^2=x^3-35x+98$ has $j=-3375=-g^3$,
+conductor $49$, and direct point-counting over $\mathbb{F}_{11}$ gives
+$\#E(\mathbb{F}_{11})=16$, so $a_{11}=-4=\mathrm{ev}_s(3)$
+(Theorem~\ref{thm:C5}).
+At $q=2$, one has $k-1=5$, $\Phi_6=3$, and $a_5(E_{-3})=0\neq -3$.
 \end{proof}
 
-\begin{theorem}[W(3,3) Uniqueness]
+\begin{theorem}[W(3,3) Uniqueness]\label{thm:uniqueness}
 $W(3,3)$ is the unique member of the $W(3,q)$ family satisfying
 all five characterizations C1--C5 simultaneously.
 \end{theorem}
 \begin{proof}
-By the preceding lemmas, C1, C2, and C3 each isolate $q=3$,
+By Lemmas~\ref{lem:C1}--\ref{lem:C5}, each of C1, C2, C3 individually isolates $q=3$,
 while C1$\wedge$C4 and C5 also hold uniquely at $q=3$.
-Therefore the full conjunction C1$\wedge$C2$\wedge$C3$\wedge$C4$\wedge$C5
+Therefore the conjunction C1$\wedge$C2$\wedge$C3$\wedge$C4$\wedge$C5
 holds if and only if $q=3$.
 \end{proof}
