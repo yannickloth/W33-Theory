@@ -34,7 +34,7 @@ As a physics application, the $W(3,3)$ spectral descent map predicts
 a unique quasi-degenerate neutrino mass entry point $\mu_{\rm eff}^2=1/4$,
 with seesaw cascade ratio $r=0.52244$
 encoding the solar-to-atmospheric mass splitting directly.
-All results are verified by $\mathbf{N}$ automated unit tests.
+All results are verified by $\mathbf{442}$ automated unit tests.
 \end{abstract}
 
 \tableofcontents
@@ -125,20 +125,23 @@ In the quasi-degenerate NH limit,
     \;\xrightarrow{\Delta m^2_{21}\to 0}\;\frac{1}{2}.
 \]
 With NuFIT 5.3 values: $r=0.52244$.
-The deviation $r-1/2=(3\Delta m^2_{21}/2)/(2(2\Delta m^2_{31}-\Delta m^2_{21}))$
-reads off the solar-to-atmospheric splitting ratio.
+The exact correction is
+\[
+  r - \tfrac{1}{2} = \frac{3\Delta m^2_{21}}{2(2\Delta m^2_{31}-\Delta m^2_{21})},
+\]
+which reads off the solar-to-atmospheric splitting ratio.
 \end{theorem}
 \begin{proof}
 Expand $\mu_{\rm eff}^2(\mathbf{m}(\mu))$ and $\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$
-to leading order in $\Delta m^2/m_1^2$, giving coefficients
+to leading order in $\Delta m^2/m_1^2$, giving
 $A=(\Delta m^2_{31}/3-\Delta m^2_{21}/6)/\ln\Phi_4$ and
 $B=(\Delta m^2_{21}+\Delta m^2_{31})/(6\ln\Phi_4)$.
-The ratio $r=B/A$ is independent of $\Phi_4$ (it cancels).
+Then $r=B/A$ is independent of $\Phi_4$.
+The correction follows from $r-\tfrac{1}{2}=(A+B)/(2B-A)-\tfrac{1}{2}=3A/[2(2B-A)]$.
 \end{proof}
 
 The first two cascade iterates satisfy $T^0=1/\mu$, $T^1\approx 1/\Phi_6$,
-$T^2\approx 1/\Phi_3$; from $T^3$ onward, the descent follows the
-asymptotic ratio $r$.
+$T^2\approx 1/\Phi_3$; from $T^3$ onward, descent follows the asymptotic ratio $r$.
 
 \begin{thebibliography}{99}
 \bibitem{LPS1988}
