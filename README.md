@@ -87,14 +87,14 @@ The live entrypoints are deliberately narrower than the full repo mass.
 
 | Metric | Count |
 |--------|-------|
-| Theorems proved | 4,400+ |
+| Theorems proved | 4,700+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
-| Test files under `tests/` | 1,153+ |
-| Phases completed | 296 |
-| Mathematical domains covered | 330+ |
+| Test files under `tests/` | 1,156+ |
+| Phases completed | 299 |
+| Mathematical domains covered | 340+ |
 | Public prediction inventory | evolving |
 
-The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXV) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower. The Algebraic Number Theory / Spectral Geometry breakthrough (Phases CCLXXXVI–CCXCI) extends into Eisenstein/Gaussian integer norms (dual ring structure), NCG finite algebra dimensions (dim_ℝ = f = 24, dim_ℂ = k = 12), string theory critical dimensions (D_bosonic = f+λ, D_super = Θ, D_M-theory = k−1), the graph Riemann hypothesis (W(3,3) is Ramanujan), spectral equipartition (Θf = μ²g = E = 240), K3 lattice decomposition (Γ_{3,19} = λ·E₈ ⊕ q·H), and the Bernoulli–zeta chain (|ζ(−2n−1)|⁻¹ enumerates graph invariants: k, sN, τ, E).
+The public release includes hundreds of pillar verification scripts and a much larger archived test corpus behind the promoted frontier, including milestones through **Pillar 207** and beyond. The latest Monster–W(3,3) connection (Phases CCLVII–CCLXXIV) establishes the complete sporadic-group bridge, one-generator quotient ring, and grand synthesis. The Analytic Number Theory breakthrough (Phases CCLXXVIII–CCLXXXV) establishes the Riemann zeta dictionary, E₈ theta series / σ₃ closure, modular form quartet, K3 surface bridge, and GUT gauge tower. The Algebraic Number Theory / Spectral Geometry breakthrough (Phases CCLXXXVI–CCXCI) extends into Eisenstein/Gaussian integer norms (dual ring structure), NCG finite algebra dimensions (dim_ℝ = f = 24, dim_ℂ = k = 12), string theory critical dimensions (D_bosonic = f+λ, D_super = Θ, D_M-theory = k−1), the graph Riemann hypothesis (W(3,3) is Ramanujan), spectral equipartition (Θf = μ²g = E = 240), K3 lattice decomposition (Γ_{3,19} = λ·E₈ ⊕ q·H), and the Bernoulli–zeta chain (|ζ(−2n−1)|⁻¹ enumerates graph invariants: k, sN, τ, E). Phases CCXCVII–CCXCIX establish the lattice root system / Leech connection (E₈ roots = 240 edges, Leech kissing = Φ₆·q²·Φ₃·E = 196560, Coxeter h(E₆)=K, |W(E₆)|=(2q)³·E, Von Staudt–Clausen denom(B_K)=2·q·5·Φ₆·Φ₃), information theory & quantum codes ([[40,12,5]] stabilizer code with Singleton room=f=24, Von Neumann entropy S≈ 5.25 bits), and knot invariants & quantum groups (SU(2) at level K yields Φ₃ anyons, (K+1)(K+2)/2=Φ₆·Φ₃=91, det(P)=−E=−240, Jones polynomial |J|=1 at q-th root).
 
 ## Reader Route
 
