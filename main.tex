@@ -19,26 +19,71 @@
 \maketitle
 
 \begin{abstract}
-The Ramanujan bipartite graph $W(3,3)$ of Lubotzky--Phillips--Sarnak
-is characterized among the family $W(3,q)$ by five simultaneous algebraic
-coincidences (C1--C5), each proved symbolically.
+The Ramanujan bipartite graph $W(3,3)$ of Lubotzky--Phillips--Sarnak is
+characterized among the family $W(3,q)$ by six simultaneous algebraic
+coincidences (C1--C6), each proved symbolically.
 The spectral parameters encode the Ramanujan tau function at the first two primes:
 $\tau(2)=-f(3)=-24$ and $\tau(3)=k(3)\Phi_6(3)\cdot 3=252$.
 The $j$-invariants of all CM orders attached to the Ihara zeta sectors of $W(3,3)$
 are perfect cubes of graph parameters, forming a five-entry tower
-$\{k^3,\,-g^3,\,(v/2)^3,\,-2^g,\,255^3\}$;
+$\{k^3,\,-g^3,\,(v/2)^3,\,-\Sigma^3,\,255^3\}$ with $\Sigma=2^{\Phi_4/2}$;
 this tower is generated entirely by the $s$-eigenspace sector, whose CM discriminant
 $-4\Phi_6=-28$ is Heegner while the $r$-eigenspace discriminant $-4\Phi_4=-40$
-has class number $2$.
+has class number $2$. The sixth coincidence C6 --- that $3\mid g(3)$ uniquely
+among prime $q$ --- makes $\Sigma=2^{g/3}$ an integer and links the $D=-11$
+$j$-tower entry to the $r$-sector parameter $\Phi_4$ via $g/3=\Phi_4/2$.
 As a physics application, the $W(3,3)$ spectral descent map predicts
-a unique quasi-degenerate neutrino mass entry point $\mu_{\rm eff}^2=1/4$,
-with seesaw cascade ratio $r=0.52244$
-encoding the solar-to-atmospheric mass splitting directly.
-All results are verified by $\mathbf{442}$ automated unit tests.
+a quasi-degenerate neutrino mass entry point $\mu_{\rm eff}^2=1/4$ and
+seesaw cascade ratio $r=0.52244$. All results are verified by
+$\mathbf{456}$ automated unit tests~\cite{Dahn2026repo}.
 \end{abstract}
 
 \tableofcontents
 \bigskip
+
+%%% INTRODUCTION %%%
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+\label{sec:intro}
+
+The Lubotzky--Phillips--Sarnak graph $W(3,3)$ is the unique member of the
+infinite family $\{W(3,q)\}_{q\equiv 1(4)}$ for which the following six
+algebraic coincidences hold simultaneously:
+\begin{itemize}
+\item[\textbf{C1.}] The $r$-eigenvalue discriminant equals $-4\Phi_4$:
+  the eigenvalue equation $\mathrm{ev}_r^2-4(k-1)=-4\Phi_4$ holds only at $q=3$.
+\item[\textbf{C2.}] $k+g = q^q=27$: degree plus $s$-multiplicity equals $3^3$.
+\item[\textbf{C3.}] $-f=\tau(2)=-24$ and $kq\Phi_6=\tau(3)=252$:
+  the spectral multiplicities encode the Ramanujan tau function at the first two primes.
+\item[\textbf{C4.}] $\Phi_6(3)=7$ is a Heegner number:
+  the CM field $\mathbb{Q}(\sqrt{-7})$ of the $s$-sector has class number $1$.
+\item[\textbf{C5.}] $a_{k-1}(E)=\mathrm{ev}_s$: the Frobenius trace at $p=k-1=11$
+  on the CM curve $E\colon y^2=x^3-35x+98$ ($j=-g^3$) equals the $s$-eigenvalue.
+\item[\textbf{C6.}] $3\mid g(3)$: among all prime $q$, only $q=3$ has $3\mid g(q)$,
+  making $\Sigma=2^{g/3}=2^{\Phi_4/2}$ an integer spectral invariant.
+\end{itemize}
+Together C1--C6 characterize $W(3,3)$ uniquely in $\{W(3,q)\}$
+(Theorems~\ref{thm:uniqueness}--\ref{rem:C6}).
+
+A consequence of C4--C6 is a five-entry \emph{$j$-tower}: the $j$-invariants
+of all CM orders attached to the Ihara zeta sectors are perfect cubes of graph
+parameters, $\{k^3,-g^3,(v/2)^3,-\Sigma^3,P^3\}$ with $P=255$
+(Proposition~\ref{prop:cube}). No Heegner discriminant with $|D|>4\Phi_6=28$
+contributes a cube root to the $W(3,3)$ spectral ring.
+
+As a physics application (Sections~\ref{sec:neutrino}--\ref{sec:seesaw}),
+the spectral descent map of $W(3,3)$ predicts a quasi-degenerate neutrino mass
+entry point $\mu_{\rm eff}^2=1/4$ with seesaw cascade ratio $r=0.52244$,
+in tension with the DESI DR1 bound $\sum m_\nu<72\,\mathrm{meV}$~\cite{DESI2024}.
+
+All results are verified by $\mathbf{456}$ automated unit tests~\cite{Dahn2026repo}.
+
+\medskip
+\noindent\textit{Structure.}
+\S\ref{sec:graph} defines $W(3,3)$ and its parameter table.
+\S\ref{sec:uniqueness} proves C1--C5 symbolically.
+\S\ref{sec:tau} establishes C3, C5--C6, the tau bridge, and the $j$-tower.
+\S\S\ref{sec:neutrino}--\ref{sec:seesaw} develop the neutrino application.
 
 %%% SECTION 1 %%%
 \section{The Graph $W(3,3)$}
@@ -64,6 +109,8 @@ $s$-multiplicity    & $g=q(q^2+1)/2$      & $15$ \\
 $\Phi_3(q)=q^2+q+1$ & $\Phi_3$            & $13$ \\
 $\Phi_4(q)=q^2+1$   & $\Phi_4$            & $10$ \\
 $\Phi_6(q)=q^2-q+1$ & $\Phi_6$            & $7$ \\
+$\Sigma=2^{\Phi_4/2}$& $\Sigma$            & $32$ \\
+$P=q(\Phi_4/2)(\Phi_4{+}\Phi_6)$ & $P$ & $255$ \\
 \bottomrule
 \end{tabular}
 \caption{Parameters of $W(3,3)$ at $q=3$.}
@@ -103,9 +150,7 @@ $m_1^*\approx 50.7\,\mathrm{meV}$ and $\sum m_\nu\approx 167\,\mathrm{meV}$.
 \begin{corollary}[DESI consistency]
 The DESI DR1 bound $\sum m_\nu < 72\,\mathrm{meV}$ \cite{DESI2024}
 excludes the NH entry point at greater than $2\sigma$.
-The IH entry point ($m_3^*\approx 15.7\,\mathrm{meV}$,
-$\sum m_\nu\approx 113\,\mathrm{meV}$) is also excluded.
-The $W(3,3)$ spectral constraint thus predicts quasi-degenerate neutrinos
+The $W(3,3)$ spectral constraint predicts quasi-degenerate neutrinos
 in tension with current cosmological data.
 \end{corollary}
 
@@ -113,35 +158,27 @@ in tension with current cosmological data.
 \section{The Seesaw Cascade}
 \label{sec:seesaw}
 
-Define the seesaw map $T\colon\mu\mapsto\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$,
-where $\mathbf{m}(\mu)$ solves $\mu_{\rm eff}^2(\mathbf{m})=\mu$.
-Starting from $\mu_0=1/4$, the iterates $T^n(\mu_0)$ descend to zero.
+Define the seesaw map $T\colon\mu\mapsto\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$.
 
 \begin{theorem}[Cascade ratio]\label{thm:cascade}
 In the quasi-degenerate NH limit,
 \[
-  r = \lim_{n\to\infty}\frac{T^{n+1}(\mu_0)}{T^n(\mu_0)}
-    = \frac{\Delta m^2_{21}+\Delta m^2_{31}}{2\Delta m^2_{31}-\Delta m^2_{21}}
-    \;\xrightarrow{\Delta m^2_{21}\to 0}\;\frac{1}{2}.
+  r = \frac{\Delta m^2_{21}+\Delta m^2_{31}}{2\Delta m^2_{31}-\Delta m^2_{21}}
+  \;\xrightarrow{\Delta m^2_{21}\to 0}\;\frac{1}{2},
+  \qquad r-\tfrac{1}{2} = \frac{3\Delta m^2_{21}}{2(2\Delta m^2_{31}-\Delta m^2_{21})}.
 \]
-With NuFIT 5.3 values: $r=0.52244$.
-The exact correction is
-\[
-  r - \tfrac{1}{2} = \frac{3\Delta m^2_{21}}{2(2\Delta m^2_{31}-\Delta m^2_{21})},
-\]
-which reads off the solar-to-atmospheric splitting ratio.
+With NuFIT 5.3 values~\cite{NuFIT53}: $r=0.52244$.
 \end{theorem}
 \begin{proof}
-Expand $\mu_{\rm eff}^2(\mathbf{m}(\mu))$ and $\mu_{\rm eff}^2(1/\mathbf{m}(\mu))$
-to leading order in $\Delta m^2/m_1^2$, giving
-$A=(\Delta m^2_{31}/3-\Delta m^2_{21}/6)/\ln\Phi_4$ and
-$B=(\Delta m^2_{21}+\Delta m^2_{31})/(6\ln\Phi_4)$.
-Then $r=B/A$ is independent of $\Phi_4$.
-The correction follows from $r-\tfrac{1}{2}=(A+B)/(2B-A)-\tfrac{1}{2}=3A/[2(2B-A)]$.
+Expand $\mu_{\rm eff}^2$ to leading order in $\Delta m^2/m_1^2$;
+the ratio $r=B/A$ with $A=(\Delta m^2_{31}/3-\Delta m^2_{21}/6)/\ln\Phi_4$
+and $B=(\Delta m^2_{21}+\Delta m^2_{31})/(6\ln\Phi_4)$.
+$\Phi_4$ cancels; $r-1/2=3A'/(2(2B'-A'))$ follows algebraically.
 \end{proof}
 
-The first two cascade iterates satisfy $T^0=1/\mu$, $T^1\approx 1/\Phi_6$,
-$T^2\approx 1/\Phi_3$; from $T^3$ onward, descent follows the asymptotic ratio $r$.
+The first cascade iterates land near $W(3,3)$ values:
+$T^0=1/4=1/m$, $T^1\approx 1/\Phi_6$, $T^2\approx 1/\Phi_3$;
+asymptotically $T^{n+1}/T^n\to r$.
 
 \begin{thebibliography}{99}
 \bibitem{LPS1988}
@@ -167,6 +204,11 @@ $T^2\approx 1/\Phi_3$; from $T^3$ onward, descent follows the asymptotic ratio $
   DESI Collaboration,
   \emph{DESI 2024 VI: Cosmological constraints from BAO},
   arXiv:2404.03002.
+
+\bibitem{Dahn2026repo}
+  W.~Dahn,
+  \emph{$W(3,3)$-Theory: Automated tests and computations},
+  \texttt{https://github.com/wilcompute/W33-Theory}, 2026.
 \end{thebibliography}
 
 \end{document}
