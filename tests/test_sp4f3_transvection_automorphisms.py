@@ -77,7 +77,7 @@ def make_perm_matrix(a_vec, c_val, pts, q=3):
 
 
 pts, A = build_pts_and_adj()
-eighvals_A, eigvecs_A = np.linalg.eigh(A.astype(float))
+eigvals_A, eigvecs_A = np.linalg.eigh(A.astype(float))
 ev_arr = np.round(eigvals_A).astype(int)
 P0 = eigvecs_A[:, ev_arr==k]  @ eigvecs_A[:, ev_arr==k].T
 P1 = eigvecs_A[:, ev_arr==2]  @ eigvecs_A[:, ev_arr==2].T

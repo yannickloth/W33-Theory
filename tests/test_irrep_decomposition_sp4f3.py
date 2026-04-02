@@ -57,7 +57,7 @@ def make_adj():
 
 
 pts, A = make_adj()
-eighvals_A, eigvecs_A = np.linalg.eigh(A.astype(float))
+eigvals_A, eigvecs_A = np.linalg.eigh(A.astype(float))
 ev_r = np.round(eigvals_A).astype(int)
 P0 = eigvecs_A[:, ev_r==k]  @ eigvecs_A[:, ev_r==k].T
 P1 = eigvecs_A[:, ev_r==2]  @ eigvecs_A[:, ev_r==2].T
