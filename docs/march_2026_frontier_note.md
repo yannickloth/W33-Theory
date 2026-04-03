@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXVIII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXIX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -33,6 +33,10 @@ speculative:
   `S_single=12, I_adj=4, S_page_max=240, GSD=9, D_dim=81, gap=6, width=16, chi=-40`
   reconstructs that same packet uniquely, so the finite spectral core now
   closes in both directions.
+- **CCCLXXIX — Six-observable spectral reconstruction:** the inverse packet
+  compresses further to
+  `S_single=12, S_page_max=240, D_dim=81, gap=6, width=16, chi=-40`, with
+  `I_adj=mu` and `GSD=q^2` now derived instead of primitive.
 
 ### Geometry and linear-algebra backbone
 
