@@ -125,6 +125,7 @@ The newest public closure on `master` is:
 - **CCCXCVII — Current K3 tail exactness failure certificate:** the present refined K3 object already sits on the fixed carrier package and satisfies the tail syzygies only trivially at the zero point, but it still realizes only the zero orbit and therefore fails the exactness test solely by missing the nonzero transport arithmetic pair `(12,217)`. So any exact realization now requires genuinely new K3-side tail data on the same fixed package.
 - **CCCXCVIII — Minimal K3 tail enhancement datum:** the positive target is now exact too. On that same fixed carrier-preserving package, any exact realization must first add one unique nonzero tail datum in the existing slot, with primitive direction `(780,7944,62600,53979)` and transport arithmetic pair `(12,217)`. No new line, plane, shell, or dimension choice remains; any larger completion avatar is only a lift of that same datum.
 - **CCCXCIX — Minimal K3 tail realization equivalence:** the wall now collapses one step further. On the fixed carrier-preserving package, exact K3 tail realization is equivalent to realizing that one unique minimal datum, because the datum already lies on the exact tail line and already has the forced pair `(12,217)`. So the live external question is now exactly existence of that one datum from genuine K3-side data.
+- **CD — K3 tail single-coordinate witness criterion:** the wall is now smaller again. On the fixed exact tail line, any one promoted coordinate witness `C=14105`, `L=143654`, `Q_seed=3396050/3`, or `Q_sd1=3904481/4` already recovers the same exact scale `217/12` and therefore identifies the unique minimal datum. So the live external question is now existence of any one exact coordinate witness from genuine K3-side data on the fixed line class.
 
 ## Reader Route
 
@@ -149,8 +150,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **minimal K3 tail
-realization equivalence** statement of `CCCXCIX`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **K3 tail single-coordinate
+witness criterion** statement of `CD`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -198,7 +199,13 @@ the wall one step further: on the fixed carrier package, exact K3 tail
 realization is equivalent to realizing that one datum, because the datum
 already lies on the exact tail line and already has the forced pair `(12,217)`.
 So the live external question is now exactly existence of that one minimal
-datum from genuine K3-side data.
+datum from genuine K3-side data. `CD` sharpens that one last step on the
+current line: because that datum already lies on the fixed primitive tail line,
+any one promoted coordinate witness `C=14105`, `L=143654`,
+`Q_seed=3396050/3`, or `Q_sd1=3904481/4` recovers the same exact scale
+`217/12` and therefore identifies the unique datum. The live external wall is
+now existence of any one exact coordinate witness from genuine K3-side data on
+the fixed line class.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

@@ -108,9 +108,15 @@ def _find_chromium_binary() -> str | None:
 def _launch_env() -> dict[str, str]:
     env = dict(os.environ)
     lib_path = os.environ.get("W33_PLAYWRIGHT_LD_LIBRARY_PATH")
-    fallback = Path("/tmp/pw-libs/usr/lib/x86_64-linux-gnu")
-    if not lib_path and fallback.exists():
-        lib_path = str(fallback)
+    fallback_candidates = [
+        Path.home() / ".cache" / "w33-playwright-libs" / "usr" / "lib" / "x86_64-linux-gnu",
+        Path("/tmp/pw-libs/usr/lib/x86_64-linux-gnu"),
+    ]
+    if not lib_path:
+        for fallback in fallback_candidates:
+            if fallback.exists():
+                lib_path = str(fallback)
+                break
     if lib_path:
         current = env.get("LD_LIBRARY_PATH")
         env["LD_LIBRARY_PATH"] = (

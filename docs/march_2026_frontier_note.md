@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CCCXCIX`)
+### Latest promoted closure (`CCCLXXVI–CD`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -161,6 +161,13 @@ speculative:
   datum, because the datum already lies on the exact tail line and already
   has the forced pair `(12,217)`. So the live external question is now
   exactly existence of that one datum from genuine K3-side data.
+- **CD — K3 tail single-coordinate witness criterion:** the wall is now
+  smaller again. On the fixed exact tail line, any one promoted coordinate
+  witness `C=14105`, `L=143654`, `Q_seed=3396050/3`, or `Q_sd1=3904481/4`
+  already recovers the same exact scale `217/12` and therefore identifies
+  the unique minimal datum. So the live external question is now existence
+  of any one exact coordinate witness from genuine K3-side data on the fixed
+  line class.
 
 ### Geometry and linear-algebra backbone
 
