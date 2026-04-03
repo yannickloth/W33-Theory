@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXC`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXCI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -102,6 +102,12 @@ speculative:
   the promoted nonzero witness criterion, this forces the exact realized
   operator. So the live wall is now exact projective tail-line membership plus
   forced nonzero normalization.
+- **CCCXCI — Continuum tail single-coordinate criterion:** once those exact
+  tail-line syzygies hold, any one promoted coordinate normalization
+  `C=14105`, `L=143654`, `Q_seed=3396050/3`, or `Q_sd1=3904481/4` already
+  forces the other three, and therefore the exact realized transport operator.
+  So the live wall is now exact tail-line membership plus any one promoted
+  coordinate normalization.
 
 ### Geometry and linear-algebra backbone
 
