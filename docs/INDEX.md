@@ -2,26 +2,26 @@
 
 Navigator for the repository's paper sections, reproducibility paths, and formal proof tracks.
 
-> Live status note: the current public-facing source of truth is `docs/index.html`, especially `#current-synthesis`, `#verified`, and `#open`, together with `docs/march_2026_frontier_note.md`. Older summaries in this repo should be treated as preserved snapshots unless they explicitly say they are the live view.
+> Live status note: the current public-facing source of truth is [docs/index.html](./index.html), especially `#current-synthesis`, `#verified`, and `#open`, together with [docs/march_2026_frontier_note.md](./march_2026_frontier_note.md). Older summaries in this repo should be treated as preserved snapshots unless they explicitly say they are the live view.
 
 
 ## Primary Entry Points
 
 | Audience | Start Here | Why |
 |---|---|---|
-| First-time reader (1-page) | `docs/LAYPERSON_ONE_PAGE_MAP.md` | Fast orientation with immediate run path |
-| First-time reader | `docs/LAYPERSON_TEXTBOOK_GUIDE.md` | Full beginner textbook path with zero assumed physics background |
-| Beginner practice | `docs/LAYPERSON_WORKBOOK.md` | Step-by-step learning tasks with evidence collection |
-| Beginner claim audit | `docs/LAYPERSON_EVIDENCE_AUDIT_TEMPLATE.md` | Reproducibility-first template for scoring claim strength |
-| Beginner concept navigation | `docs/LAYPERSON_CONCEPT_MAP.md` | Visual/structural map from objects to evidence paths |
-| First-time reader (short) | `README.md` | Browser-first overview and quick reproducibility path |
-| Full manuscript reader | `docs/README_LIVING_PAPER_2026_02_11.md` | Preserved long-form narrative and theorem flow |
-| Contributor | `CONTRIBUTING.md` | Local workflow, tests, and contribution standards |
-| Formalization contributor | `docs/index.html#hard-computation` | Live proof-entry map; formal Lean path is not yet wired as a stable public entry point |
+| First-time reader (1-page) | [docs/LAYPERSON_ONE_PAGE_MAP.md](./LAYPERSON_ONE_PAGE_MAP.md) | Fast orientation with immediate run path |
+| First-time reader | [docs/LAYPERSON_TEXTBOOK_GUIDE.md](./LAYPERSON_TEXTBOOK_GUIDE.md) | Full beginner textbook path with zero assumed physics background |
+| Beginner practice | [docs/LAYPERSON_WORKBOOK.md](./LAYPERSON_WORKBOOK.md) | Step-by-step learning tasks with evidence collection |
+| Beginner claim audit | [docs/LAYPERSON_EVIDENCE_AUDIT_TEMPLATE.md](./LAYPERSON_EVIDENCE_AUDIT_TEMPLATE.md) | Reproducibility-first template for scoring claim strength |
+| Beginner concept navigation | [docs/LAYPERSON_CONCEPT_MAP.md](./LAYPERSON_CONCEPT_MAP.md) | Visual/structural map from objects to evidence paths |
+| First-time reader (short) | [README.md](../README.md) | Browser-first overview and quick reproducibility path |
+| Full manuscript reader | [docs/README_LIVING_PAPER_2026_02_11.md](./README_LIVING_PAPER_2026_02_11.md) | Preserved long-form narrative and theorem flow |
+| Contributor | [CONTRIBUTING.md](../CONTRIBUTING.md) | Local workflow, tests, and contribution standards |
+| Formalization contributor | [docs/index.html#hard-computation](./index.html#hard-computation) | Live proof-entry map; formal Lean path is not yet wired as a stable public entry point |
 
 ## Outreach & announcements
 
-- Release announcement: `docs/outreach/pillar-45-qec.md` — Pillar‑45 (GF(3) QEC + MLUT) release and DOI
+- Release announcement: [docs/outreach/pillar-45-qec.md](./outreach/pillar-45-qec.md) — Pillar‑45 (GF(3) QEC + MLUT) release and DOI
 
 ## Core Research Tracks
 
@@ -41,10 +41,10 @@ Navigator for the repository's paper sections, reproducibility paths, and formal
 
 ## High-Signal Status and Standards
 
-- Canonical naming and counts: `STANDARDIZATION.md`
-- Current status and open gaps: `docs/index.html#current-synthesis`, `docs/march_2026_frontier_note.md`, `docs/STATUS_AND_GAPS.md` (conservative baseline)
-- Online-source separation log: `docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md`
-- CI workflows: `.github/workflows/`
+- Canonical naming and counts: [STANDARDIZATION.md](../STANDARDIZATION.md)
+- Current status and open gaps: [docs/index.html#current-synthesis](./index.html#current-synthesis), [docs/march_2026_frontier_note.md](./march_2026_frontier_note.md), [docs/STATUS_AND_GAPS.md](./STATUS_AND_GAPS.md) (conservative baseline)
+- Online-source separation log: [docs/README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md](./README_EXTENSION_ONLINE_FINDINGS_2026_02_10.md)
+- CI workflows: [`.github/workflows/`](../.github/workflows/)
 
 ## Common Commands
 
@@ -66,4 +66,4 @@ python -m pytest -q
 ## Notes
 
 - "Verified" claims are computational theorems within this repository's model and code paths.
-- GitHub browser branding assets are in `docs/assets/`, including `docs/assets/w33-social-preview.png`.
+- GitHub browser branding assets are in [docs/assets/](./assets/), including [docs/assets/w33-social-preview.png](./assets/w33-social-preview.png).

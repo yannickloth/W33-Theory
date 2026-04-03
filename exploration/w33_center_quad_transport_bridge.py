@@ -32,8 +32,6 @@ from pathlib import Path
 import sys
 from typing import Any
 
-import networkx as nx
-
 
 if __package__ in {None, ""}:
     ROOT = Path(__file__).resolve().parents[1]
@@ -43,9 +41,13 @@ if __package__ in {None, ""}:
 else:
     ROOT = Path(__file__).resolve().parents[1]
 
+from exploration._optional_deps import require_networkx
 from THEORY_PART_CCIII_S3_SHEET_TRANSPORT import analyze as analyze_s3_sheet_transport
 from THEORY_PART_CXCVII_TRANSPORT_LAW import analyse_transport
 from w33_center_quad_gq42_e6_bridge import center_quads, quotient_points
+
+
+nx = require_networkx("exploration/w33_center_quad_transport_bridge.py")
 
 
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_center_quad_transport_bridge_summary.json"

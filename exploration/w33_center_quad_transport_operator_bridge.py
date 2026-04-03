@@ -25,9 +25,9 @@ from __future__ import annotations
 from collections import Counter
 import json
 from pathlib import Path
+import sys
 from typing import Any
 
-import networkx as nx
 import numpy as np
 
 from w33_center_quad_transport_bridge import (
@@ -39,6 +39,14 @@ from w33_center_quad_transport_holonomy_bridge import edge_line_matching
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from exploration._optional_deps import require_networkx
+
+
+nx = require_networkx("exploration/w33_center_quad_transport_operator_bridge.py")
+
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_center_quad_transport_operator_bridge_summary.json"
 TOL = 1e-8
 

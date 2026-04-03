@@ -23,15 +23,23 @@ from collections import Counter, defaultdict
 import json
 from itertools import combinations
 from pathlib import Path
+import sys
 from typing import Any
 
-import networkx as nx
 
 from w33_center_quad_gq42_e6_bridge import quotient_incidence
 from w33_center_quad_transport_bridge import reconstructed_quotient_graph
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from exploration._optional_deps import require_networkx
+
+
+nx = require_networkx("exploration/w33_center_quad_transport_complement_bridge.py")
+
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_center_quad_transport_complement_bridge_summary.json"
 
 

@@ -1,4 +1,25 @@
-.PHONY: generate-summary test check-json verify-root-edge build-pdf
+.DEFAULT_GOAL := help
+.PHONY: bootstrap doctor audit generate-summary test check-json verify-root-edge build-pdf
+
+help:
+	@printf '%s\n' \
+	"bootstrap           Create/reuse .venv and install requirements-dev.txt" \
+	"doctor              Check dependencies, heavy data resolution, and repo hygiene" \
+	"audit               Classify dirty worktree entries without modifying anything" \
+	"generate-summary    Refresh summary artifacts" \
+	"test                Run pytest after summary generation" \
+	"check-json          Run JSON-safety checks" \
+	"verify-root-edge    Verify root-edge mapping script" \
+	"build-pdf           Build the PDF surface"
+
+bootstrap:
+	./scripts/bootstrap_repo_env.sh
+
+doctor:
+	python3 tools/repo_doctor.py
+
+audit:
+	python3 tools/repo_cleanup_audit.py
 
 generate-summary:
 	python scripts/collect_results.py

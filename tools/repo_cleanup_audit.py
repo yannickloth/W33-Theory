@@ -37,6 +37,14 @@ def classify_path(path: str) -> str:
     top = path.split("/", 1)[0]
     root_level = "/" not in path
 
+    if root_level and path in {
+        "README.md",
+        "LICENSE",
+        "Makefile",
+        "CITATION.cff",
+        "CONTRIBUTING.md",
+    }:
+        return "repo_entrypoint"
     if root_level and path == "Pasted text.txt":
         return "root_drop"
     if root_level and path.endswith(".zip"):
@@ -45,6 +53,10 @@ def classify_path(path: str) -> str:
         "deliverable" in path or "bundle" in path
     ):
         return "root_drop"
+    if root_level and path.endswith(".py") and (
+        path.startswith("SOLVE_") or path.replace(".py", "").isupper()
+    ):
+        return "legacy_root_script"
     if path.startswith("archive/"):
         return "archive"
     if path.startswith("bundles/"):

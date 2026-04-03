@@ -90,7 +90,7 @@ The live entrypoints are deliberately narrower than the full repo mass.
 | Theorems proved | 4,700+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
 | Test files under `tests/` | 1,156+ |
-| Phases completed | 299 |
+| Publicly promoted phases | 375+ |
 | Mathematical domains covered | 340+ |
 | Public prediction inventory | evolving |
 
@@ -411,10 +411,25 @@ That gap is now sharper too. The carrier-only data on `U1` are still line-blind:
 
 ## Reproduce
 
+Fast local setup:
+
+```bash
+./scripts/bootstrap_repo_env.sh
+make doctor
+python3 tools/repo_cleanup_audit.py
+```
+
+If your heavyweight artifacts live in another checkout or worktree, point the
+repo at them explicitly before running bridge-heavy modules:
+
+```bash
+export W33_DATA_ROOT=/path/to/repo-with-artifacts
+```
+
 Install dependencies:
 
 ```bash
-pip install numpy sympy networkx pytest scipy
+python -m pip install -r requirements-dev.txt
 ```
 
 Run the full test suite:

@@ -6,9 +6,9 @@ preserved alongside them.
 
 ## Start Here
 
-- [README.md](/mnt/c/Repos/Theory of Everything/README.md): top-level project summary and reading route
-- [docs/index.html](/mnt/c/Repos/Theory of Everything/docs/index.html): live public paper / promoted theorem surface
-- [docs/march_2026_frontier_note.md](/mnt/c/Repos/Theory of Everything/docs/march_2026_frontier_note.md): current frontier and open wall
+- [README.md](../README.md): top-level project summary and reading route
+- [docs/index.html](./index.html): live public paper / promoted theorem surface
+- [docs/march_2026_frontier_note.md](./march_2026_frontier_note.md): current frontier and open wall
 
 ## Active Research Surfaces
 
@@ -32,10 +32,24 @@ preserved alongside them.
 - `V*_output*/`: phase or pilot output drops
 - `extracted_v*/`: preserved extracted snapshots
 
+## Bootstrap and Doctor
+
+- `./scripts/bootstrap_repo_env.sh`: reproducible local setup for the repo
+- `python3 tools/repo_doctor.py`: health check for dependencies, artifacts, and worktree hygiene
+- `python3 tools/repo_cleanup_audit.py`: non-destructive audit of root clutter and dirty entries
+
+If heavyweight theorem artifacts live in another checkout or worktree, set:
+
+```bash
+export W33_DATA_ROOT=/path/to/repo-with-artifacts
+```
+
 ## Local Hygiene Policy
 
 - Root-level deliverable zips and extracted bundle drops are treated as local
   drop artifacts, not primary repo structure.
+- Root-level one-off uppercase / `SOLVE_*` scripts are preserved legacy research
+  context, not the recommended entrypoint for new readers.
 - Generated helper output under `tools/artifacts/` is local scratch unless
   deliberately promoted elsewhere.
 - If you need an inventory of current worktree clutter, run:

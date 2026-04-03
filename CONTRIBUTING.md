@@ -6,8 +6,9 @@
 # Clone and set up
 git clone https://github.com/wilcompute/W33-Theory.git
 cd W33-Theory
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+./scripts/bootstrap_repo_env.sh
+source .venv/bin/activate  # Windows: .venv\Scripts\Activate.ps1
+make doctor
 
 # Run the test suite
 python -m pytest tests/test_e8_embedding.py -q

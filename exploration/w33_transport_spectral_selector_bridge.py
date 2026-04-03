@@ -28,9 +28,9 @@ from fractions import Fraction
 from functools import lru_cache
 import json
 from pathlib import Path
+import sys
 from typing import Any
 
-import networkx as nx
 import numpy as np
 
 from w33_center_quad_transport_a2_bridge import build_center_quad_transport_a2_summary
@@ -46,6 +46,14 @@ from w33_transport_twisted_precomplex_bridge import adapted_transport_precomplex
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from exploration._optional_deps import require_networkx
+
+
+nx = require_networkx("exploration/w33_transport_spectral_selector_bridge.py")
+
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "w33_transport_spectral_selector_bridge_summary.json"
 MODULUS = 3
 
