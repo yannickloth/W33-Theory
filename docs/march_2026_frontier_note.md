@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXVIII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -91,6 +91,11 @@ speculative:
   operator is its exact `81`-fold qutrit lift. So the live wall is now
   existence of one unique nonzero tail-operator gauge class from genuine
   realization data.
+- **CCCLXXXIX — Continuum tail realization equivalence:** transport
+  realization, witness realization, scalar realization, and operator-normal-form
+  realization are now all equivalent on the fixed avatar. The realizable tail
+  operators form one exact one-dimensional line, so the live continuum wall is
+  exactly existence of one nonzero point on that fixed tail-operator line.
 
 ### Geometry and linear-algebra backbone
 
