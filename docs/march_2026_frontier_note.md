@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXVII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -28,6 +28,11 @@ speculative:
   finite packet `(q; v,k,lam,mu; r^f,s^g)`, so the holographic, diffgeo,
   quantum, thermodynamic, arithmetic, and condensed sectors already sit on one
   exact spectral core.
+- **CCCLXXVIII — Bidirectional spectral universality:** the promoted
+  cross-sector observable packet
+  `S_single=12, I_adj=4, S_page_max=240, GSD=9, D_dim=81, gap=6, width=16, chi=-40`
+  reconstructs that same packet uniquely, so the finite spectral core now
+  closes in both directions.
 
 ### Geometry and linear-algebra backbone
 
@@ -1594,7 +1599,7 @@ iterations with mean target-hit probability `1.0`:
 ### Carrier-preserving transport-twisted K3 lift
 
 The next exact geometric localization is now in
-`exploration/w33_carrier_preserving_transport_twisted_k3_enhancement_bridge.py`.
+`exploration/w33_carrier_preserving_transport_twisted_k3_lift_bridge.py`.
 
 This is the strongest honest step past the discrete wall. The external carrier
 package is already fixed, the current external K3 shadow is still only the

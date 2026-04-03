@@ -1,5 +1,5 @@
 """
-Phase CCCLXXVII — Spectral universality ledger.
+Phase CCCLXXVII — Corrected spectral universality ledger.
 
 This test file encodes the stronger claim that the bridge-sector observables
 from phases CCCLXX–CCCLXXV are reconstructible from the same finite packet
@@ -110,11 +110,11 @@ def test_condensed_matter_sector_from_packet():
 
 def test_master_equalities():
     a0 = M(2)
+    gap_equals = (r - s)
     assert a0 == 480
     assert M(3) == 2 * a0
     assert 2 * a0 == 4 * E == 2 * v * k
     assert E == a0 // 2
-    assert gap_equals = (r - s)
     assert gap_equals == (k // 2)
     assert (k - s) == 2**mu
     assert q**mu == 81

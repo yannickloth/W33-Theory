@@ -91,7 +91,7 @@ The live entrypoints are deliberately narrower than the full repo mass.
 | Theorems proved | 4,700+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
 | Test files under `tests/` | 1,156+ |
-| Publicly promoted phases | 377+ |
+| Publicly promoted phases | 378+ |
 | Mathematical domains covered | 340+ |
 | Public prediction inventory | evolving |
 
@@ -103,6 +103,7 @@ The newest public closure on `master` is:
 
 - **CCCLXXVI — Symbolic closure ledger:** the latest bridge packet is now compressed to exact finite identities such as `2a0 = 4E = 2vk = 960`, `E = a0/2 = 240`, `r-s = k/2 = 6`, `k-s = 2^mu = 16`, `q^mu = 81`, and `q^2 = 9`.
 - **CCCLXXVII — Corrected spectral universality ledger:** the bridge-sector observables from `CCCLXX–CCCLXXV` are now recoverable from the same finite packet `(q; v,k,lam,mu; r^f,s^g)`, so the holographic, diffgeo, quantum, thermodynamic, arithmetic, and condensed sectors are all controlled by one exact spectral core.
+- **CCCLXXVIII — Bidirectional spectral universality:** the promoted cross-sector observable packet `S_single=12`, `I_adj=4`, `S_page_max=240`, `GSD=9`, `D_dim=81`, `gap=6`, `width=16`, `chi=-40` now reconstructs the same finite packet uniquely, so the spectral core is no longer only generative but invertible.
 
 ## Reader Route
 
@@ -126,6 +127,13 @@ The newest public closure on `master` is:
 - Treat the preserved archive below the verified layer as context unless a result is explicitly promoted.
 
 ## Current Frontier
+
+The sharpest finite closure on `master` is now the **bidirectional spectral
+packet** of `CCCLXXVIII`: a small promoted cross-sector observable packet
+already reconstructs the full `W(3,3)` spectral data
+`(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` exactly. So the live
+remaining wall is no longer finite packet selection. It is still the continuum
+bridge / refined external realization.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
@@ -1249,7 +1257,7 @@ iterations with mean target-hit probability `1.0`:
 - `formal-completion-object`: mean target-hit `1.0` at `63` on seeds `7,8`
 
 The next exact geometric localization is now in
-[w33_carrier_preserving_transport_twisted_k3_enhancement_bridge.py](exploration/w33_carrier_preserving_transport_twisted_k3_enhancement_bridge.py).
+[w33_carrier_preserving_transport_twisted_k3_lift_bridge.py](exploration/w33_carrier_preserving_transport_twisted_k3_lift_bridge.py).
 This is the strongest honest step I can promote past the discrete wall. The
 external carrier package is already fixed, the current external K3 shadow is
 still only the split harmonic `81 + 81` package, and the missing internal
