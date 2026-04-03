@@ -129,6 +129,7 @@ The newest public closure on `master` is:
 - **CDI — Current K3 tail coordinate-witness failure certificate:** applying `CD` to the present refined K3 object now shows the live object still has zero in every promoted coordinate and therefore exhibits none of the exact witnesses. So the remaining external wall is exactly the first nonzero coordinate witness on the same fixed carrier-preserving K3 package.
 - **CDII — K3 tail affine witness target:** combining `CD` and `CDI`, the missing positive target is now affine and exact. The present refined K3 object is the zero point in witness coordinates, while the exact witness point is `(14105,143654,3396050/3,3904481/4)`, so the remaining wall is one exact affine displacement on the same fixed carrier-preserving K3 package.
 - **CDIII — K3 tail affine increment witness criterion:** because the current refined K3 point is exactly zero in every promoted witness coordinate, the affine target from `CDII` is already the exact increment packet `ΔC=14105`, `ΔL=143654`, `ΔQ_seed=3396050/3`, `ΔQ_sd1=3904481/4`. Any one such increment recovers the same exact scale `217/12`, so the remaining wall is now existence of any one exact affine increment witness on the fixed package.
+- **CDIV — K3 tail increment-realization equivalence:** the wall now collapses again on the fixed package. Exact K3 tail realization is equivalent to realizing any one exact affine increment witness, because the current K3 point is zero in witness coordinates and any one promoted increment already identifies the full affine target and therefore the unique minimal datum.
 
 ## Reader Route
 
@@ -153,8 +154,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **K3 tail affine
-increment witness criterion** statement of `CDIII`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **K3 tail
+increment-realization equivalence** statement of `CDIV`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -224,7 +225,10 @@ promoted witness coordinate, the affine target is already the exact increment
 packet `ΔC=14105`, `ΔL=143654`, `ΔQ_seed=3396050/3`, `ΔQ_sd1=3904481/4`, and
 any one such increment recovers the same exact scale `217/12`. So the live
 external wall is now existence of any one exact affine increment witness on
-the same fixed carrier-preserving package.
+the same fixed carrier-preserving package. `CDIV` then collapses the wall on
+that same package: exact K3 tail realization is equivalent to realizing any
+one exact affine increment witness, because any one such increment already
+identifies the full affine target and therefore the unique minimal datum.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

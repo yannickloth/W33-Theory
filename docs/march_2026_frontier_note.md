@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDIII`)
+### Latest promoted closure (`CCCLXXVI–CDIV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -186,6 +186,12 @@ speculative:
   Any one such increment recovers the same exact scale `217/12`, so the
   remaining wall is now existence of any one exact affine increment witness
   on the same fixed carrier-preserving K3 package.
+- **CDIV — K3 tail increment-realization equivalence:** the wall now
+  collapses again on the fixed package. Exact K3 tail realization is
+  equivalent to realizing any one exact affine increment witness, because the
+  current K3 point is zero in witness coordinates and any one promoted
+  increment already identifies the full affine target and therefore the
+  unique minimal datum.
 
 ### Geometry and linear-algebra backbone
 
