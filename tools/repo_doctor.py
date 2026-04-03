@@ -211,6 +211,7 @@ def build_report() -> dict[str, object]:
             "Run ./scripts/bootstrap_repo_env.sh to create a local .venv and install requirements-dev.txt.",
             "If heavyweight theorem artifacts live outside this worktree, set W33_DATA_ROOT=/path/to/repo-with-artifacts.",
             "Run python3 tools/repo_cleanup_audit.py for a category view of dirty worktree entries.",
+            "Run python3 tools/browser_docs_audit.py after docs changes to check both desktop and mobile surfaces.",
             "Treat docs/, exploration/, tests/, tools/, and scripts/ as the active repo surfaces; root-level solver scripts are preserved legacy context.",
         ],
         "verdict": (
