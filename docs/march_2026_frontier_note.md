@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXI`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -47,6 +47,13 @@ speculative:
   localizes the open wall to the curvature-sensitive tail `81` on the fixed
   avatar shell `81 -> 162 -> 81`. So the live gap is no longer carrier or
   coefficient selection; it is actual realization of that fixed package.
+- **CCCLXXXII — Continuum seed isolation and refinement contraction:** at first
+  order, the transport and matter-coupled CP2/K3 bridges already share the
+  same universal limit term and the same `r^120` topological correction, so
+  all seed dependence is isolated to the local `r^20` correction. At second
+  order, the remaining CP2/K3 quadratic gap contracts at `sd^1` for both
+  packages. So the live continuum wall is now a contracting local tail-channel
+  effect, not a free seed-scale ambiguity.
 
 ### Geometry and linear-algebra backbone
 
