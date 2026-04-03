@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXCI`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXCII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -108,6 +108,14 @@ speculative:
   forces the other three, and therefore the exact realized transport operator.
   So the live wall is now exact tail-line membership plus any one promoted
   coordinate normalization.
+- **CCCXCII — Continuum tail primitive generator:** clearing denominators on
+  the exact tail line gives the integer vector
+  `(169260,1723848,13584200,11713443)` with exact gcd `217`, so the fixed tail
+  line has the unique primitive integral generator `(780,7944,62600,53979)`.
+  The exact transport operator is precisely `(217/12)` times that generator,
+  and the matter-coupled operator is the exact `81`-fold lift. So the live
+  wall is now one fixed primitive tail lattice direction plus one rational
+  scale.
 
 ### Geometry and linear-algebra backbone
 
