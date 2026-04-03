@@ -99,20 +99,43 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-ROOT = Path(__file__).resolve().parent.parent
-L3_PATH = ROOT / "V24_output_v13_full" / "l3_patch_triples_full.jsonl"
-L4_PATH = ROOT / "V24_output_v13_full" / "l4_patch_quads_full.jsonl"
-L5_PATH = ROOT / "extracted_v20" / "v19" / "V19" / "l5_patch_quintuples_full.jsonl"
-L6_PATH = ROOT / "extracted_v20" / "V20" / "l6_patch_sextuples_full.jsonl"
-L9_BUCKET_DIR = ROOT / "V30_output_v13_full" / "l9_buckets"
-META_PATH = ROOT / "extracted_v13" / "W33-Theory-master" / "artifacts" / "e8_root_metadata_table.json"
-SC_PATH = ROOT / "artifacts" / "e8_structure_constants_w33_discrete.json"
+from exploration._artifact_paths import resolve_repo_data_path
 
-# Skip all tests if data files are not present
-pytestmark = pytest.mark.skipif(
-    not L3_PATH.exists() or not META_PATH.exists() or not SC_PATH.exists(),
-    reason="V24 output or metadata files not found",
+ROOT = Path(__file__).resolve().parent.parent
+L3_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("V24_output_v13_full") / "l3_patch_triples_full.jsonl",
 )
+L4_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("V24_output_v13_full") / "l4_patch_quads_full.jsonl",
+)
+L5_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("extracted_v20") / "v19" / "V19" / "l5_patch_quintuples_full.jsonl",
+)
+L6_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("extracted_v20") / "V20" / "l6_patch_sextuples_full.jsonl",
+)
+L9_BUCKET_DIR = resolve_repo_data_path(
+    ROOT,
+    Path("V30_output_v13_full") / "l9_buckets",
+)
+META_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("extracted_v13")
+    / "W33-Theory-master"
+    / "artifacts"
+    / "e8_root_metadata_table.json",
+)
+SC_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("artifacts") / "e8_structure_constants_w33_discrete.json",
+)
+
+# Skip the l9-specific tests if the bucket directory is absent.
+l9_only = pytest.mark.skipif(not L9_BUCKET_DIR.exists(), reason="V30 l9 buckets not found")
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────

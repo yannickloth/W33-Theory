@@ -106,6 +106,7 @@ The newest public closure on `master` is:
 - **CCCLXXVIII — Bidirectional spectral universality:** the promoted cross-sector observable packet `S_single=12`, `I_adj=4`, `S_page_max=240`, `GSD=9`, `D_dim=81`, `gap=6`, `width=16`, `chi=-40` now reconstructs the same finite packet uniquely, so the spectral core is no longer only generative but invertible.
 - **CCCLXXIX — Six-observable spectral reconstruction:** the inverse packet compresses further to six promoted observables `S_single=12`, `S_page_max=240`, `D_dim=81`, `gap=6`, `width=16`, `chi=-40`, with `I_adj=mu` and `GSD=q^2` now derived rather than primitive.
 - **CCCLXXX — Six-observable continuum coefficient lock:** the same six-observable shell already fixes the promoted continuum coefficient package `a0=480`, `c_EH=320`, `a2=2240`, `a4=17600`, `c6=12480`, and `m_H^2/v^2=14/55`, so the finite wall is no longer coefficient ambiguity but actual continuum realization.
+- **CCCLXXXI — Continuum transport realization wall:** the promoted continuum package is already fixed before any genuine external realization, and the remaining wall localizes to the curvature-sensitive tail `81` on the fixed avatar shell `81 -> 162 -> 81`, not to any new coefficient or carrier choice.
 
 ## Reader Route
 
@@ -130,15 +131,16 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest finite closure on `master` is now the **six-observable continuum
-packet** of `CCCLXXX`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **continuum transport
+realization wall** of `CCCLXXXI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
 continuum-facing coefficient package
 `(a0, c_EH, a2, a4, c6, m_H^2/v^2) = (480,320,2240,17600,12480,14/55)`.
-So the live remaining wall is no longer finite packet or coefficient
-selection. It is still the continuum bridge / refined external realization.
+What remains is sharper than generic continuum ambiguity: realization of that
+locked package through the curvature-sensitive tail `81` on the already-fixed
+head/tail avatar shell `81 -> 162 -> 81`.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

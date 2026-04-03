@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from exploration._artifact_paths import load_json_from_repo_data
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,7 +53,7 @@ TWICE_FLAG_BASIS_INVERSE = np.array(
 
 
 def _read_json(filename: str) -> dict[str, Any]:
-    return json.loads((DATA_DIR / filename).read_text(encoding="utf-8"))
+    return load_json_from_repo_data(ROOT, Path("data") / filename)
 
 
 def _sorted_pairs(pairs: set[tuple[int, int]]) -> list[list[int]]:

@@ -27,18 +27,25 @@ from pathlib import Path
 from typing import Sequence
 
 import numpy as np
+from exploration._artifact_paths import resolve_repo_data_path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-META_PATH = (
-    REPO_ROOT
-    / "extracted_v13"
+META_PATH = resolve_repo_data_path(
+    REPO_ROOT,
+    Path("extracted_v13")
     / "W33-Theory-master"
     / "artifacts"
-    / "e8_root_metadata_table.json"
+    / "e8_root_metadata_table.json",
 )
-SC_PATH = REPO_ROOT / "artifacts" / "e8_structure_constants_w33_discrete.json"
-L3_PATH = REPO_ROOT / "V24_output_v13_full" / "l3_patch_triples_full.jsonl"
+SC_PATH = resolve_repo_data_path(
+    REPO_ROOT,
+    Path("artifacts") / "e8_structure_constants_w33_discrete.json",
+)
+L3_PATH = resolve_repo_data_path(
+    REPO_ROOT,
+    Path("V24_output_v13_full") / "l3_patch_triples_full.jsonl",
+)
 
 PER_GENERATION_DIM = 27
 GENERATION_COUNT = 3

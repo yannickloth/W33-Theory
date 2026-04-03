@@ -25,6 +25,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from exploration._artifact_paths import load_json_from_repo_data
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -32,7 +34,7 @@ DEFAULT_OUTPUT_PATH = DATA_DIR / "w33_yukawa_nonlinear_frontier_bridge_summary.j
 
 
 def _read_json(filename: str) -> dict[str, Any]:
-    return json.loads((DATA_DIR / filename).read_text(encoding="utf-8"))
+    return load_json_from_repo_data(ROOT, Path("data") / filename)
 
 
 def _block_packet(

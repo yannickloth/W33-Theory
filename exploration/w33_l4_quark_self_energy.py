@@ -31,6 +31,7 @@ from pathlib import Path
 import numpy as np
 import sympy as sp
 
+from exploration._artifact_paths import resolve_repo_data_path
 from w33_finite_spectral_triple import (
     canonical_cubic_tensor_27,
     canonical_generation_basis,
@@ -42,15 +43,21 @@ from w33_quark_firewall_obstruction import firewall_triad_records
 
 
 ROOT = Path(__file__).resolve().parents[1]
-L4_PATH = ROOT / "V24_output_v13_full" / "l4_patch_quads_full.jsonl"
-META_PATH = (
-    ROOT
-    / "extracted_v13"
+L4_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("V24_output_v13_full") / "l4_patch_quads_full.jsonl",
+)
+META_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("extracted_v13")
     / "W33-Theory-master"
     / "artifacts"
-    / "e8_root_metadata_table.json"
+    / "e8_root_metadata_table.json",
 )
-SC_PATH = ROOT / "artifacts" / "e8_structure_constants_w33_discrete.json"
+SC_PATH = resolve_repo_data_path(
+    ROOT,
+    Path("artifacts") / "e8_structure_constants_w33_discrete.json",
+)
 FLOAT_TOL = 1e-10
 TRIPLET_FAMILIES = ("quark_triplet", "antiquark_triplet")
 QUARK_SECTORS = ("Q", "u_c", "d_c")

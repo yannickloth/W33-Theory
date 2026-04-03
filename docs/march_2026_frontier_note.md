@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXX`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -42,6 +42,11 @@ speculative:
   package `a0=480`, `c_EH=320`, `a2=2240`, `a4=17600`, `c6=12480`, and
   `m_H^2/v^2=14/55`. So the remaining wall is no longer coefficient ambiguity;
   it is realization of the continuum bridge itself.
+- **CCCLXXXI — Continuum transport realization wall:** the coefficient package
+  is already fixed before external realization, and the transport bridge now
+  localizes the open wall to the curvature-sensitive tail `81` on the fixed
+  avatar shell `81 -> 162 -> 81`. So the live gap is no longer carrier or
+  coefficient selection; it is actual realization of that fixed package.
 
 ### Geometry and linear-algebra backbone
 
