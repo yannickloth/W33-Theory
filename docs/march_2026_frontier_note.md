@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CD`)
+### Latest promoted closure (`CCCLXXVI–CDI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -168,6 +168,11 @@ speculative:
   the unique minimal datum. So the live external question is now existence
   of any one exact coordinate witness from genuine K3-side data on the fixed
   line class.
+- **CDI — Current K3 tail coordinate-witness failure certificate:** applying
+  `CD` to the present refined K3 object now shows the live K3 data still has
+  zero in every promoted coordinate and therefore exhibits none of the exact
+  witnesses. So the remaining external wall is now exactly the first nonzero
+  coordinate witness on the same fixed carrier-preserving K3 package.
 
 ### Geometry and linear-algebra backbone
 

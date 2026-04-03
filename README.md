@@ -126,6 +126,7 @@ The newest public closure on `master` is:
 - **CCCXCVIII — Minimal K3 tail enhancement datum:** the positive target is now exact too. On that same fixed carrier-preserving package, any exact realization must first add one unique nonzero tail datum in the existing slot, with primitive direction `(780,7944,62600,53979)` and transport arithmetic pair `(12,217)`. No new line, plane, shell, or dimension choice remains; any larger completion avatar is only a lift of that same datum.
 - **CCCXCIX — Minimal K3 tail realization equivalence:** the wall now collapses one step further. On the fixed carrier-preserving package, exact K3 tail realization is equivalent to realizing that one unique minimal datum, because the datum already lies on the exact tail line and already has the forced pair `(12,217)`. So the live external question is now exactly existence of that one datum from genuine K3-side data.
 - **CD — K3 tail single-coordinate witness criterion:** the wall is now smaller again. On the fixed exact tail line, any one promoted coordinate witness `C=14105`, `L=143654`, `Q_seed=3396050/3`, or `Q_sd1=3904481/4` already recovers the same exact scale `217/12` and therefore identifies the unique minimal datum. So the live external question is now existence of any one exact coordinate witness from genuine K3-side data on the fixed line class.
+- **CDI — Current K3 tail coordinate-witness failure certificate:** applying `CD` to the present refined K3 object now shows the live object still has zero in every promoted coordinate and therefore exhibits none of the exact witnesses. So the remaining external wall is exactly the first nonzero coordinate witness on the same fixed carrier-preserving K3 package.
 
 ## Reader Route
 
@@ -150,8 +151,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **K3 tail single-coordinate
-witness criterion** statement of `CD`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **current K3 tail
+coordinate-witness failure certificate** statement of `CDI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -205,7 +206,11 @@ any one promoted coordinate witness `C=14105`, `L=143654`,
 `Q_seed=3396050/3`, or `Q_sd1=3904481/4` recovers the same exact scale
 `217/12` and therefore identifies the unique datum. The live external wall is
 now existence of any one exact coordinate witness from genuine K3-side data on
-the fixed line class.
+the fixed line class. `CDI` applies that criterion back to the present refined
+K3 object itself: the current candidate still has zero in every promoted
+coordinate and therefore exhibits none of those exact witnesses. So the live
+external wall is now stated in its sharpest repo-native form: the first
+nonzero coordinate witness on the same fixed carrier-preserving K3 package.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
