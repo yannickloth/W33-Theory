@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXCV`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXCVI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -137,6 +137,12 @@ speculative:
   curvature-sensitive tail channel, with induced matter pair `(4,5859)`. So
   the remaining wall is now existence of genuine K3-side data satisfying one
   fixed tail arithmetic obstruction.
+- **CCCXCVI — Continuum K3 tail exactness criterion:** on the fixed
+  carrier-preserving K3 channel, exact tail realization is now equivalent to
+  the tail-line syzygies together with the exact transport pair `(12,217)`.
+  A wrong-scale candidate on the same line fails, and a broken-syzygy
+  candidate fails. The induced matter realization then follows automatically
+  with pair `(4,5859)`.
 
 ### Geometry and linear-algebra backbone
 

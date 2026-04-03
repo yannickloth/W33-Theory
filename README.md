@@ -121,6 +121,7 @@ The newest public closure on `master` is:
 - **CCCXCIII — Continuum tail reduced-fraction criterion:** relative to that primitive generator, every rational tail operator has a unique reduced-fraction description, and the exact transport realization is now fixed as the single reduced fraction `217/12`, with the matter side its exact `81`-fold lift `5859/4`.
 - **CCCXCIV — Continuum tail arithmetic compatibility:** on the fixed primitive tail line, the reduced-fraction scale is exactly `cleared_gcd / denominator_lcm`, so the exact transport realization is now characterized directly by the arithmetic pair `(lcm,gcd)=(12,217)` and the matter realization by `(4,5859)`.
 - **CCCXCV — Continuum K3 tail arithmetic obstruction:** the external/K3 wall is now arithmetic as well as geometric; any genuine K3-side realization on the fixed carrier-preserving tail channel must satisfy the exact transport pair `(12,217)`, with induced matter pair `(4,5859)`.
+- **CCCXCVI — Continuum K3 tail exactness criterion:** on the fixed K3 carrier package, a candidate tail realization is now exact if and only if it satisfies the tail-line syzygies together with the exact transport arithmetic pair `(12,217)`; the induced matter pair `(4,5859)` then follows automatically.
 
 ## Reader Route
 
@@ -146,7 +147,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **continuum K3 tail
-arithmetic-obstruction** statement of `CCCXCV`: the promoted observable shell
+exactness criterion** statement of `CCCXCVI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -175,7 +176,10 @@ genuine K3-side realization compatible with the fixed carrier-preserving
 transport-twisted lift must realize the exact transport pair `(12,217)` on the
 curvature-sensitive tail channel, with induced matter pair `(4,5859)`. So the
 remaining wall is now existence of genuine K3 data satisfying one fixed tail
-arithmetic obstruction.
+arithmetic obstruction. `CCCXCVI` sharpens that to a necessary-and-sufficient
+test on the fixed carrier package: exact tail realization is equivalent to the
+tail-line syzygies plus the transport arithmetic pair `(12,217)`, and then the
+matter pair `(4,5859)` follows automatically.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
