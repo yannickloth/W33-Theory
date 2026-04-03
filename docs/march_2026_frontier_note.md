@@ -14,6 +14,21 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXVII`)
+
+The newest public increment on `master` is finite and conservative rather than
+speculative:
+
+- **CCCLXXVI — Symbolic closure ledger:** the current bridge packet compresses
+  to exact finite identities
+  `2a0 = 4E = 2vk = 960`, `E = a0/2 = 240`, `r-s = k/2 = 6`,
+  `k-s = 2^mu = 16`, `q^mu = 81`, and `q^2 = 9`.
+- **CCCLXXVII — Corrected spectral universality ledger:** the sector
+  observables promoted in `CCCLXX–CCCLXXV` are reconstructible from the same
+  finite packet `(q; v,k,lam,mu; r^f,s^g)`, so the holographic, diffgeo,
+  quantum, thermodynamic, arithmetic, and condensed sectors already sit on one
+  exact spectral core.
+
 ### Geometry and linear-algebra backbone
 
 The finite geometry layer remains stable:

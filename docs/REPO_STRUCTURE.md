@@ -27,7 +27,12 @@ preserved alongside them.
 
 ## Historical / Archive Weight
 
+- `legacy/root_solvers/`: preserved root-era standalone solver scripts moved off the GitHub landing surface
+- `legacy/one_off_root/`: preserved root-level scratch drivers and helpers moved off the GitHub landing surface
 - `archive/`: preserved historical notes, bundles, and migrated material
+- `archive/snapshots/`: archived pilot-output directories moved off the repo root
+- `archive/extracted/`: archived extracted snapshot directories moved off the repo root
+- `archive/misc/`: archived notes, logs, and assistant-era drop files moved off the repo root
 - `bundles/`: large generated or staged computation output
 - `V*_output*/`: phase or pilot output drops
 - `extracted_v*/`: preserved extracted snapshots
