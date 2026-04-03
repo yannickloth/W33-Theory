@@ -12,11 +12,12 @@
 <meta property="og:title" content="W(3,3)-E8 Live Paper">
 <meta property="og:description" content="Evidence-tiered live paper for the W(3,3)-E8 research program and its promoted theorem frontier.">
 <meta property="og:url" content="https://wilcompute.github.io/W33-Theory/">
-<meta property="og:image" content="https://wilcompute.github.io/W33-Theory/docs/assets/w33-social-preview.png">
+<meta property="og:image" content="https://wilcompute.github.io/W33-Theory/assets/w33-social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="W(3,3)-E8 Live Paper">
 <meta name="twitter:description" content="Evidence-tiered live paper for the W(3,3)-E8 research program and its promoted theorem frontier.">
-<meta name="twitter:image" content="https://wilcompute.github.io/W33-Theory/docs/assets/w33-social-preview.png">
+<meta name="twitter:image" content="https://wilcompute.github.io/W33-Theory/assets/w33-social-preview.png">
+<link rel="icon" href="assets/w33-social-preview.png">
 <style>
 
 :root {
@@ -33,8 +34,7 @@
   --gold: #e3b341;
   --sidebar-width: 260px;
   --topnav-height: 56px;
-  --mobile-topnav-height: 62px;
-  --mobile-sidebar-offset: 80px;
+  --current-topnav-height: var(--topnav-height);
   --safe-top: env(safe-area-inset-top, 0px);
 }
 /* Accessibility: skip-to-content link (visible on focus) */
@@ -51,7 +51,7 @@ html {
   font-size: 16px;
   max-width: 100%;
   overflow-x: hidden;
-  scroll-padding-top: calc(var(--topnav-height) + 1rem);
+  scroll-padding-top: calc(var(--current-topnav-height) + 1rem);
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Noto, Helvetica, Arial, sans-serif;
@@ -192,6 +192,9 @@ nav.topnav .nav-toggle-label {
 nav.topnav .nav-toggle.open .nav-toggle-label {
   color: var(--gold);
 }
+nav.topnav .nav-toggle.open .nav-toggle-short {
+  color: var(--gold);
+}
 nav.topnav .nav-toggle-state {
   font-size: 0.74rem; color: var(--fg2);
 }
@@ -203,11 +206,11 @@ nav.topnav .nav-toggle-state {
 
 /* ── Sidebar TOC ── */
 .sidebar-toc {
-  position: fixed; top: var(--topnav-height); left: 0; bottom: 0;
+  position: fixed; top: 0; left: 0; bottom: 0;
   width: var(--sidebar-width); background: var(--bg2);
   border-right: 1px solid var(--border);
   overflow-y: auto; z-index: 140;
-  padding: 1rem 0; transform: translateX(-100%);
+  padding: calc(var(--current-topnav-height) + 1rem) 0 1rem; transform: translateX(-100%);
   transition: transform 0.3s ease, top 0.3s ease;
 }
 .sidebar-toc.open { transform: translateX(0); }
@@ -324,11 +327,8 @@ body.nav-open { overflow: hidden; }
   nav.topnav .nav-toggle { display: none; }
 }
 @media (max-width: 1099px) {
-  html {
-    scroll-padding-top: calc(var(--mobile-topnav-height) + var(--safe-top) + 1rem);
-  }
   body {
-    padding-top: calc(var(--mobile-topnav-height) + var(--safe-top));
+    padding-top: var(--current-topnav-height);
   }
   .page-content,
   .container,
@@ -350,7 +350,7 @@ body.nav-open { overflow: hidden; }
     justify-content: center;
     padding: calc(0.55rem + var(--safe-top)) 0.8rem 0.55rem;
     height: auto;
-    min-height: calc(var(--mobile-topnav-height) + var(--safe-top));
+    min-height: calc(var(--topnav-height) + var(--safe-top));
     z-index: 150;
   }
   nav.topnav .nav-quick,
@@ -374,7 +374,10 @@ body.nav-open { overflow: hidden; }
     font-size: 1rem;
   }
   .hero-particles { display: none; }
-  .sidebar-toc { top: calc(var(--mobile-sidebar-offset) + var(--safe-top)); }
+  .sidebar-toc {
+    top: var(--current-topnav-height);
+    padding: 1rem 0;
+  }
   .sidebar-toc .sidebar-header { display: flex; }
   .sidebar-toc .toc-search { margin-top: 0.6rem; }
   code,
@@ -391,7 +394,7 @@ body.nav-open { overflow: hidden; }
   }
   body.nav-open .sidebar-overlay { z-index: 139; }
   body.nav-open .sidebar-toc {
-    top: calc(var(--mobile-sidebar-offset) + var(--safe-top));
+    top: var(--current-topnav-height);
     z-index: 140;
     transform: none;
   }
@@ -6530,6 +6533,14 @@ section h2::after {
 </footer>
 
 <script>
+function syncNavMetrics() {
+  var nav = document.querySelector('nav.topnav');
+  var root = document.documentElement;
+  if (!nav || !root) return;
+  var navHeight = Math.max(nav.offsetHeight || 0, 56);
+  root.style.setProperty('--current-topnav-height', navHeight + 'px');
+}
+
 function setMobileNavState(open) {
   var sidebar = document.querySelector('.sidebar-toc');
   var overlay = document.querySelector('.sidebar-overlay');
@@ -6545,8 +6556,8 @@ function setMobileNavState(open) {
   var hint = button.querySelector('.nav-toggle-hint');
   var label = button.querySelector('.nav-toggle-label');
   var state = button.querySelector('.nav-toggle-state');
-  if (icon) icon.innerHTML = '&#9776;';
-  if (shortLabel) shortLabel.textContent = 'Navigator';
+  if (icon) icon.innerHTML = open ? '&#10005;' : '&#9776;';
+  if (shortLabel) shortLabel.textContent = open ? 'Close' : 'Navigator';
   if (hint) hint.textContent = open ? 'Navigator Open' : 'Use The Navigator';
   if (label) label.textContent = open ? 'Close sections, proofs, and physics map' : 'Open sections, proofs, and physics map';
   if (state) state.textContent = open ? 'Tap to close' : 'Tap to open';
@@ -6570,6 +6581,8 @@ function closeMobileNav() {
   setMobileNavState(false);
 }
 
+syncNavMetrics();
+window.addEventListener('load', syncNavMetrics);
 document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape' && document.body.classList.contains('nav-open')) {
     closeMobileNav();
@@ -6639,8 +6652,10 @@ document.querySelectorAll('.sidebar-toc .toc-item').forEach(function(item) {
 });
 
 window.addEventListener('resize', function() {
+  syncNavMetrics();
   if (window.innerWidth >= 1100) closeMobileNav();
 });
+window.addEventListener('orientationchange', syncNavMetrics);
 
 // —— Hard-computation phase chips -> exact GitHub proof files ——
 (function() {

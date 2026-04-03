@@ -1,4 +1,11 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W(3,3) Apex Snapshot</title>
+<link rel="stylesheet" href="assets/snapshot-shell.css">
+<link rel="icon" href="assets/w33-social-preview.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 .w{font-family:var(--font-mono);font-size:13px;padding:1rem 0}
@@ -42,7 +49,14 @@
 .apex-rhs{color:var(--color-text-success);font-weight:500}
 .apex-note{color:var(--color-text-secondary);font-size:11px;font-style:italic}
 </style>
-
+ </head>
+<body>
+<div class="snapshot-shell">
+<div class="snapshot-nav">
+  <a class="snapshot-back" href="index.html">← Back to Live Paper</a>
+  <div class="snapshot-meta">Supplemental theorem-compression snapshot. Use the live paper for current promoted status, separation language, and frontier wording.</div>
+  <div class="snapshot-badge">Supplemental Snapshot</div>
+</div>
 <div class="w">
 <div class="tabs">
   <button class="tab on" onclick="sw('zeta')">Riemann ζ = W33</button>
@@ -271,3 +285,6 @@ function sw(id){
   event.target.classList.add('on');
 }
 </script>
+</div>
+</body>
+</html>

@@ -1,4 +1,11 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W(3,3) Complete Theory Snapshot</title>
+<link rel="stylesheet" href="assets/snapshot-shell.css">
+<link rel="icon" href="assets/w33-social-preview.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 .w{font-family:var(--font-mono);font-size:13px;padding:1rem 0}
@@ -50,7 +57,14 @@
 .snapshot{background:var(--color-background-warning);border:.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:.7rem 1rem;margin:.4rem 0 .7rem}
 .snapshot a{color:inherit;text-decoration:underline}
 </style>
-
+ </head>
+<body>
+<div class="snapshot-shell">
+<div class="snapshot-nav">
+  <a class="snapshot-back" href="index.html">← Back to Live Paper</a>
+  <div class="snapshot-meta">Compact dashboard snapshot for the W(3,3) program. The live authoritative status surface is <a href="index.html#current-synthesis">index.html</a>, not this archived dashboard view.</div>
+  <div class="snapshot-badge">Supplemental Snapshot</div>
+</div>
 <div class="w">
 <div class="snapshot">
   <div class="bl">Snapshot note</div>
@@ -391,3 +405,6 @@ completionData.forEach(function(it) {
 var total = completionData.reduce(function(s,x){return s+x[1]},0)/completionData.length;
 cbars.innerHTML += '<div style="margin-top:.75rem;display:flex;justify-content:space-between;align-items:center;font-size:13px"><span style="color:var(--color-text-secondary)">Theory completion</span><span style="font-weight:600;color:var(--color-text-success);font-size:17px">'+total.toFixed(0)+'%</span></div>';
 </script>
+</div>
+</body>
+</html>
