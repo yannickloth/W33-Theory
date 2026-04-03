@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXCIV`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXCV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -130,6 +130,13 @@ speculative:
   `(lcm,gcd)=(12,217)`, and the matter-coupled realization by `(4,5859)`. So
   the live wall is now exact tail-line membership plus one denominator/gcd
   compatibility pair.
+- **CCCXCV — Continuum K3 tail arithmetic obstruction:** the external/K3 wall
+  is now arithmetic as well as geometric. Any genuine K3-side realization
+  compatible with the fixed carrier-preserving transport-twisted lift must
+  realize the exact transport compatibility pair `(lcm,gcd)=(12,217)` on the
+  curvature-sensitive tail channel, with induced matter pair `(4,5859)`. So
+  the remaining wall is now existence of genuine K3-side data satisfying one
+  fixed tail arithmetic obstruction.
 
 ### Geometry and linear-algebra backbone
 
