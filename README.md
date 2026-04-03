@@ -91,7 +91,7 @@ The live entrypoints are deliberately narrower than the full repo mass.
 | Theorems proved | 4,700+ |
 | Test definitions / live checks | 27k+ / 2500+ advertised live checks |
 | Test files under `tests/` | 1,156+ |
-| Publicly promoted phases | 379+ |
+| Publicly promoted phases | 380+ |
 | Mathematical domains covered | 340+ |
 | Public prediction inventory | evolving |
 
@@ -105,6 +105,7 @@ The newest public closure on `master` is:
 - **CCCLXXVII — Corrected spectral universality ledger:** the bridge-sector observables from `CCCLXX–CCCLXXV` are now recoverable from the same finite packet `(q; v,k,lam,mu; r^f,s^g)`, so the holographic, diffgeo, quantum, thermodynamic, arithmetic, and condensed sectors are all controlled by one exact spectral core.
 - **CCCLXXVIII — Bidirectional spectral universality:** the promoted cross-sector observable packet `S_single=12`, `I_adj=4`, `S_page_max=240`, `GSD=9`, `D_dim=81`, `gap=6`, `width=16`, `chi=-40` now reconstructs the same finite packet uniquely, so the spectral core is no longer only generative but invertible.
 - **CCCLXXIX — Six-observable spectral reconstruction:** the inverse packet compresses further to six promoted observables `S_single=12`, `S_page_max=240`, `D_dim=81`, `gap=6`, `width=16`, `chi=-40`, with `I_adj=mu` and `GSD=q^2` now derived rather than primitive.
+- **CCCLXXX — Six-observable continuum coefficient lock:** the same six-observable shell already fixes the promoted continuum coefficient package `a0=480`, `c_EH=320`, `a2=2240`, `a4=17600`, `c6=12480`, and `m_H^2/v^2=14/55`, so the finite wall is no longer coefficient ambiguity but actual continuum realization.
 
 ## Reader Route
 
@@ -129,14 +130,15 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest finite closure on `master` is now the **six-observable inverse
-packet** of `CCCLXXIX`: the promoted observable shell
+The sharpest finite closure on `master` is now the **six-observable continuum
+packet** of `CCCLXXX`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
-already reconstructs the full `W(3,3)` spectral data
-`(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` exactly, with the old
-`I_adj=4` and `GSD=9` now derived. So the live remaining wall is no longer
-finite packet selection. It is still the continuum bridge / refined external
-realization.
+already reconstructs both the full spectral packet
+`(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
+continuum-facing coefficient package
+`(a0, c_EH, a2, a4, c6, m_H^2/v^2) = (480,320,2240,17600,12480,14/55)`.
+So the live remaining wall is no longer finite packet or coefficient
+selection. It is still the continuum bridge / refined external realization.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

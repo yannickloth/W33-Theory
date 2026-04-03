@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXIX`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -37,6 +37,11 @@ speculative:
   compresses further to
   `S_single=12, S_page_max=240, D_dim=81, gap=6, width=16, chi=-40`, with
   `I_adj=mu` and `GSD=q^2` now derived instead of primitive.
+- **CCCLXXX — Six-observable continuum coefficient lock:** the same
+  six-observable shell already fixes the promoted continuum-facing coefficient
+  package `a0=480`, `c_EH=320`, `a2=2240`, `a4=17600`, `c6=12480`, and
+  `m_H^2/v^2=14/55`. So the remaining wall is no longer coefficient ambiguity;
+  it is realization of the continuum bridge itself.
 
 ### Geometry and linear-algebra backbone
 
