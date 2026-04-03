@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXCIII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXCIV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -123,6 +123,13 @@ speculative:
   matter-coupled realization is the exact `81`-fold lift `5859/4`. So the
   live wall is now one fixed primitive tail direction plus one exact reduced
   fraction.
+- **CCCXCIV — Continuum tail arithmetic compatibility:** because that
+  primitive generator is integral and primitive, the reduced-fraction scale on
+  the fixed tail line is exactly `cleared_gcd / denominator_lcm`. The exact
+  transport realization is therefore characterized by the arithmetic pair
+  `(lcm,gcd)=(12,217)`, and the matter-coupled realization by `(4,5859)`. So
+  the live wall is now exact tail-line membership plus one denominator/gcd
+  compatibility pair.
 
 ### Geometry and linear-algebra backbone
 
