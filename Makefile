@@ -1,11 +1,12 @@
 .DEFAULT_GOAL := help
-.PHONY: bootstrap doctor audit generate-summary test check-json verify-root-edge build-pdf
+.PHONY: bootstrap doctor audit browser-audit generate-summary test check-json verify-root-edge build-pdf
 
 help:
 	@printf '%s\n' \
 	"bootstrap           Create/reuse .venv and install requirements-dev.txt" \
 	"doctor              Check dependencies, heavy data resolution, and repo hygiene" \
 	"audit               Classify dirty worktree entries without modifying anything" \
+	"browser-audit       Run desktop/mobile browser audit over docs pages" \
 	"generate-summary    Refresh summary artifacts" \
 	"test                Run pytest after summary generation" \
 	"check-json          Run JSON-safety checks" \
@@ -20,6 +21,9 @@ doctor:
 
 audit:
 	python3 tools/repo_cleanup_audit.py
+
+browser-audit:
+	python3 tools/browser_docs_audit.py
 
 generate-summary:
 	python scripts/collect_results.py

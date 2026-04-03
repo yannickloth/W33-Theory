@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIV`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -64,6 +64,12 @@ speculative:
   continuum wall introduces no new independent continuum scale. So the live
   existence problem is transport-first, with the family-sensitive side already
   forced by exact replication.
+- **CCCLXXXV — Continuum tail-profile rigidity:** the residual transport-side
+  local `r^20` CP2/K3 seed-gap vector is already one primitive ray
+  `217*(65,662)`, the matter-coupled vector is exactly `81` times the same
+  ray, and the seed-to-`sd^1` quadratic contraction law is the universal ratio
+  `53979/62600`. So the remaining wall is now a one-parameter tail-profile
+  realization problem, not a free channel-valued ambiguity.
 
 ### Geometry and linear-algebra backbone
 

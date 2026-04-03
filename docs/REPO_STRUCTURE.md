@@ -42,6 +42,7 @@ preserved alongside them.
 - `./scripts/bootstrap_repo_env.sh`: reproducible local setup for the repo
 - `python3 tools/repo_doctor.py`: health check for dependencies, artifacts, and worktree hygiene
 - `python3 tools/repo_cleanup_audit.py`: non-destructive audit of root clutter and dirty entries
+- `python3 tools/browser_docs_audit.py`: automated desktop/mobile browser audit for the public docs surfaces
 
 If heavyweight theorem artifacts live in another checkout or worktree, set:
 
