@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXVI`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXVII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -78,6 +78,12 @@ speculative:
   same scalar family. So the live continuum wall is now existence of one
   scalar tail realization datum on the fixed avatar, not a free residual
   package.
+- **CCCLXXXVII — Continuum tail witness criterion:** any one promoted nonzero
+  transport-tail witness already recovers the same scalar amplitude `A=217`:
+  `14105/65 = 143654/662 = (3396050/3)/(15650/3) = (3904481/4)/(17993/4) = 217`.
+  So a genuine realization only has to produce one nonzero witness on the
+  fixed curvature-sensitive tail avatar; the full transport residual package
+  and the exact `81`-fold matter lift are then forced.
 
 ### Geometry and linear-algebra backbone
 
