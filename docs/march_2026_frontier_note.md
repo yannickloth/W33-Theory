@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CCCXCVII`)
+### Latest promoted closure (`CCCLXXVI–CCCXCVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -149,6 +149,12 @@ speculative:
   only the zero orbit and therefore fails the exactness test solely because
   the nonzero transport pair `(12,217)` is absent. So the live wall is now
   existence of genuinely new K3-side tail data on that same fixed package.
+- **CCCXCVIII — Minimal K3 tail enhancement datum:** the positive target is
+  now exact too. On that same fixed carrier-preserving package, any exact
+  realization must first add one unique nonzero datum in the existing tail
+  slot, with primitive direction `(780,7944,62600,53979)` and transport pair
+  `(12,217)`. No new line, plane, shell, or dimension choice remains; any
+  larger completion avatar is only a lift of that same datum.
 
 ### Geometry and linear-algebra backbone
 

@@ -69,6 +69,12 @@ def _local_docs_server(docs_dir: Path) -> Any:
     class ReusableTCPServer(socketserver.TCPServer):
         allow_reuse_address = True
 
+        def handle_error(self, request: object, client_address: tuple[str, int]) -> None:
+            _, exc, _ = sys.exc_info()
+            if isinstance(exc, (BrokenPipeError, ConnectionResetError)):
+                return
+            super().handle_error(request, client_address)
+
     server = ReusableTCPServer(
         ("127.0.0.1", 0),
         lambda *args, **kwargs: _DocsRequestHandler(
