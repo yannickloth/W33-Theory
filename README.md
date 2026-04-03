@@ -108,6 +108,7 @@ The newest public closure on `master` is:
 - **CCCLXXX — Six-observable continuum coefficient lock:** the same six-observable shell already fixes the promoted continuum coefficient package `a0=480`, `c_EH=320`, `a2=2240`, `a4=17600`, `c6=12480`, and `m_H^2/v^2=14/55`, so the finite wall is no longer coefficient ambiguity but actual continuum realization.
 - **CCCLXXXI — Continuum transport realization wall:** the promoted continuum package is already fixed before any genuine external realization, and the remaining wall localizes to the curvature-sensitive tail `81` on the fixed avatar shell `81 -> 162 -> 81`, not to any new coefficient or carrier choice.
 - **CCCLXXXII — Continuum seed isolation and refinement contraction:** the first-order CP2/K3 bridge already has zero limit-gap and zero `r^120` topological gap, so all seed dependence is isolated to the local `r^20` channel, and the remaining quadratic CP2/K3 gap contracts at `sd^1` for both the transport and matter-coupled packages.
+- **CCCLXXXIII — Continuum qutrit scaling:** the residual first-order local `r^20` gaps and the quadratic seed/`sd^1` CP2/K3 gaps all scale by exactly `81`, so the matter-coupled continuum ambiguity is just the transport tail-channel residual tensored by the exact logical-qutrit packet.
 
 ## Reader Route
 
@@ -132,18 +133,17 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **continuum seed
-isolation / refinement contraction** statement of `CCCLXXXII`: the promoted
-observable shell
+The sharpest promoted closure on `master` is now the **continuum qutrit
+scaling** statement of `CCCLXXXIII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
 continuum-facing coefficient package
 `(a0, c_EH, a2, a4, c6, m_H^2/v^2) = (480,320,2240,17600,12480,14/55)`.
-The remaining ambiguity is now sharply localized: the first-order universal and
-topological sectors are already seed-independent, and the residual CP2/K3
-difference sits only in the local `r^20` tail channel while the quadratic gap
-contracts under first refinement.
+The remaining ambiguity is now sharper again: the residual first-order local
+and quadratic CP2/K3 seed gaps are all exactly `81` times the transport gaps,
+so the family-sensitive continuum residual is the transport tail-channel
+residual tensored by the already-fixed logical-qutrit packet.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -54,6 +54,11 @@ speculative:
   order, the remaining CP2/K3 quadratic gap contracts at `sd^1` for both
   packages. So the live continuum wall is now a contracting local tail-channel
   effect, not a free seed-scale ambiguity.
+- **CCCLXXXIII — Continuum qutrit scaling:** the residual first-order local
+  `r^20` seed gaps and the quadratic seed/`sd^1` CP2/K3 gaps all scale by
+  exactly `81`. So the matter-coupled continuum ambiguity is not a new
+  independent seed effect; it is the transport tail-channel residual tensored
+  by the exact logical-qutrit packet.
 
 ### Geometry and linear-algebra backbone
 
