@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCXCVI`)
+### Latest promoted closure (`CCCLXXVI–CCCXCVII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -143,6 +143,12 @@ speculative:
   A wrong-scale candidate on the same line fails, and a broken-syzygy
   candidate fails. The induced matter realization then follows automatically
   with pair `(4,5859)`.
+- **CCCXCVII — Current K3 tail exactness failure certificate:** the present
+  refined K3 object already sits on the fixed carrier package and satisfies
+  the tail syzygies only trivially at the zero point, but it still realizes
+  only the zero orbit and therefore fails the exactness test solely because
+  the nonzero transport pair `(12,217)` is absent. So the live wall is now
+  existence of genuinely new K3-side tail data on that same fixed package.
 
 ### Geometry and linear-algebra backbone
 

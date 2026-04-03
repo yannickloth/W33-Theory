@@ -122,6 +122,7 @@ The newest public closure on `master` is:
 - **CCCXCIV — Continuum tail arithmetic compatibility:** on the fixed primitive tail line, the reduced-fraction scale is exactly `cleared_gcd / denominator_lcm`, so the exact transport realization is now characterized directly by the arithmetic pair `(lcm,gcd)=(12,217)` and the matter realization by `(4,5859)`.
 - **CCCXCV — Continuum K3 tail arithmetic obstruction:** the external/K3 wall is now arithmetic as well as geometric; any genuine K3-side realization on the fixed carrier-preserving tail channel must satisfy the exact transport pair `(12,217)`, with induced matter pair `(4,5859)`.
 - **CCCXCVI — Continuum K3 tail exactness criterion:** on the fixed K3 carrier package, a candidate tail realization is now exact if and only if it satisfies the tail-line syzygies together with the exact transport arithmetic pair `(12,217)`; the induced matter pair `(4,5859)` then follows automatically.
+- **CCCXCVII — Current K3 tail exactness failure certificate:** the present refined K3 object already sits on the fixed carrier package and satisfies the tail syzygies only trivially at the zero point, but it still realizes only the zero orbit and therefore fails the exactness test solely by missing the nonzero transport arithmetic pair `(12,217)`. So any exact realization now requires genuinely new K3-side tail data on the same fixed package.
 
 ## Reader Route
 
@@ -146,8 +147,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **continuum K3 tail
-exactness criterion** statement of `CCCXCVI`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **current K3 tail
+exactness failure certificate** statement of `CCCXCVII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -179,7 +180,13 @@ remaining wall is now existence of genuine K3 data satisfying one fixed tail
 arithmetic obstruction. `CCCXCVI` sharpens that to a necessary-and-sufficient
 test on the fixed carrier package: exact tail realization is equivalent to the
 tail-line syzygies plus the transport arithmetic pair `(12,217)`, and then the
-matter pair `(4,5859)` follows automatically.
+matter pair `(4,5859)` follows automatically. `CCCXCVII` then applies that test
+to the present refined K3 object itself: the current K3-side data already lies
+on the syzygy locus only trivially at the zero point, but it still realizes
+only the zero orbit and therefore fails the exactness test solely because the
+nonzero transport pair `(12,217)` is absent. So the live wall is no longer
+carrier ambiguity or even criterion ambiguity; it is existence of genuinely new
+K3-side tail data on the same fixed carrier-preserving package.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
