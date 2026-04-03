@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDI`)
+### Latest promoted closure (`CCCLXXVI–CDII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -173,6 +173,12 @@ speculative:
   zero in every promoted coordinate and therefore exhibits none of the exact
   witnesses. So the remaining external wall is now exactly the first nonzero
   coordinate witness on the same fixed carrier-preserving K3 package.
+- **CDII — K3 tail affine witness target:** combining `CD` and `CDI`, the
+  missing positive target is now affine and exact. The present refined K3
+  object is the zero point in witness coordinates, while the exact witness
+  point is `(14105,143654,3396050/3,3904481/4)`, so the remaining wall is
+  one exact affine displacement on the same fixed carrier-preserving K3
+  package.
 
 ### Geometry and linear-algebra backbone
 
