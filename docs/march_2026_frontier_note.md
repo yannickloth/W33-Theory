@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIX`)
+### Latest promoted finite closure (`CCCLXXVI–CCCXC`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -96,6 +96,12 @@ speculative:
   realization are now all equivalent on the fixed avatar. The realizable tail
   operators form one exact one-dimensional line, so the live continuum wall is
   exactly existence of one nonzero point on that fixed tail-operator line.
+- **CCCXC — Continuum tail syzygy criterion:** the fixed tail-operator line is
+  now written directly as an exact obstruction system on the avatar itself:
+  `662C-65L=0`, `15650C-195Q_seed=0`, and `17993C-260Q_sd1=0`. Combined with
+  the promoted nonzero witness criterion, this forces the exact realized
+  operator. So the live wall is now exact projective tail-line membership plus
+  forced nonzero normalization.
 
 ### Geometry and linear-algebra backbone
 
