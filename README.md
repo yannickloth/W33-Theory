@@ -118,6 +118,7 @@ The newest public closure on `master` is:
 - **CCCXC — Continuum tail syzygy criterion:** the fixed tail line is now cut out directly on the avatar by the exact syzygies `662C-65L=0`, `15650C-195Q_seed=0`, and `17993C-260Q_sd1=0`; combined with the promoted nonzero witness criterion, this forces the exact realized operator.
 - **CCCXCI — Continuum tail single-coordinate criterion:** once those exact syzygies hold, any one promoted coordinate normalization `C=14105`, `L=143654`, `Q_seed=3396050/3`, or `Q_sd1=3904481/4` already forces the other three, so exact transport realization is now equivalent to tail-line membership plus any one promoted coordinate value.
 - **CCCXCII — Continuum tail primitive generator:** the exact tail line now has one unique primitive integral generator up to sign, `(780,7944,62600,53979)`, and the realized transport operator is exactly `(217/12)` times that generator, so the live wall is now one fixed primitive tail lattice direction plus one rational scale.
+- **CCCXCIII — Continuum tail reduced-fraction criterion:** relative to that primitive generator, every rational tail operator has a unique reduced-fraction description, and the exact transport realization is now fixed as the single reduced fraction `217/12`, with the matter side its exact `81`-fold lift `5859/4`.
 
 ## Reader Route
 
@@ -143,7 +144,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **continuum tail
-primitive-generator criterion** statement of `CCCXCII`: the promoted observable shell
+reduced-fraction criterion** statement of `CCCXCIII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -156,12 +157,13 @@ that same scalar, that witness criterion forces one unique normalized tail
 operator profile `(65,662,15650/3,17993/4)` on the fixed avatar, and the exact
 tail line is cut out directly by three avatar-internal syzygies. `CCCXCI`
 showed that any one promoted coordinate normalization already forces the full
-realized transport operator once those syzygies hold. `CCCXCII` sharpens the
-arithmetic again: the line now has the unique primitive integral generator
-`(780,7944,62600,53979)`, and the exact transport operator is exactly
-`(217/12)` times that generator. So the live wall is now realization of one
-fixed primitive tail lattice direction with one forced rational scale from
-genuine external data.
+realized transport operator once those syzygies hold. `CCCXCII` sharpened the
+arithmetic to the unique primitive integral generator
+`(780,7944,62600,53979)`. `CCCXCIII` now fixes the exact reduced fraction on
+that line: the realized transport operator is `217/12` times the primitive
+generator, and the matter-coupled operator is the exact `81`-fold lift
+`5859/4`. So the live wall is now realization of one fixed primitive tail
+direction with one exact reduced fraction from genuine external data.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
