@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXVII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -84,6 +84,13 @@ speculative:
   So a genuine realization only has to produce one nonzero witness on the
   fixed curvature-sensitive tail avatar; the full transport residual package
   and the exact `81`-fold matter lift are then forced.
+- **CCCLXXXVIII — Continuum tail operator normal form:** the witness criterion
+  already forces one unique normalized tail operator profile
+  `(65,662,15650/3,17993/4)` on the fixed avatar. The realized transport
+  operator is exactly `217` times that normal form, and the matter-coupled
+  operator is its exact `81`-fold qutrit lift. So the live wall is now
+  existence of one unique nonzero tail-operator gauge class from genuine
+  realization data.
 
 ### Geometry and linear-algebra backbone
 
