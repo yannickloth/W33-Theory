@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIII`)
+### Latest promoted finite closure (`CCCLXXVI–CCCLXXXIV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -59,6 +59,11 @@ speculative:
   exactly `81`. So the matter-coupled continuum ambiguity is not a new
   independent seed effect; it is the transport tail-channel residual tensored
   by the exact logical-qutrit packet.
+- **CCCLXXXIV — Continuum qutrit-lift rigidity:** because every promoted
+  residual seed gap is exactly the transport gap times `81`, the matter-coupled
+  continuum wall introduces no new independent continuum scale. So the live
+  existence problem is transport-first, with the family-sensitive side already
+  forced by exact replication.
 
 ### Geometry and linear-algebra backbone
 
