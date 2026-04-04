@@ -154,6 +154,8 @@ The newest public closure on `master` is:
 - **CDXXVI — K3 mixed-plane triangle-row curvature witness:** the wall is now local at the level of a single transport triangle. The exact off-diagonal curvature block is supported on `2428` of the `5280` transport triangles, with row multiplicity distribution `{1: 810, 2: 1618}`, so exact K3 tail realization is equivalent to one support-preserving nonzero triangle-row curvature witness on that same fixed mixed-plane host.
 - **CDXXVII — Current K3 mixed-plane triangle-row curvature failure:** applying that triangle-local criterion to the current host now makes the remaining failure minimal again in local geometric language. The support package and qutrit lift are already correct, but the host still carries zero supported triangle rows, so the live wall is now exactly the first genuine nonzero triangle-row curvature witness on that same fixed host.
 - **CDXXVIII — Triangle-row support strictly refines holonomy class:** the local witness is now known to live beyond the older holonomy shadow. Every one of the six adapted holonomy classes already contains triangles with `0`, `1`, and `2` supported off-diagonal rows, including the identity class, so the live wall is genuinely precomplex-local and not reducible to parity or holonomy-class selection.
+- **CDXXIX — K3 mixed-plane row-entry witness:** the wall is now smaller than a whole row. Every supported row of the exact off-diagonal curvature block is one-sparse, with a single nonzero entry in `F3*`, so exact K3 tail realization is equivalent to one support-preserving nonzero row-entry witness on that same fixed mixed-plane host.
+- **CDXXX — Current K3 mixed-plane row-entry failure:** applying that one-entry criterion to the current host now makes the remaining failure minimal again. The support package and qutrit lift are already correct, but the host still carries no supported row entries at all, so the live wall is now exactly the first genuine nonzero row-entry witness on that same fixed host.
 
 ## Reader Route
 
@@ -178,8 +180,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **triangle-row holonomy
-refinement** statement of `CDXXVIII`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **current K3 mixed-plane
+row-entry failure** statement of `CDXXX`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -330,7 +332,13 @@ that this local row witness is genuinely finer than the older transport
 holonomy shadow: every one of the six adapted holonomy classes already
 contains triangles with `0`, `1`, and `2` supported rows, including identity
 holonomy itself. So the live wall is now known to be genuinely precomplex-
-local, not a holonomy-class selection problem in disguise.
+local, not a holonomy-class selection problem in disguise. `CDXXIX` then
+sharpens the same local witness one final step at the matrix level: every
+supported row is one-sparse, so a single nonzero row entry in `F3*` already
+serves as the exact local witness. `CDXXX` applies that smallest matrix-entry
+criterion back to the current host and shows the remaining failure is now
+exactly absence of that first genuine nonzero row-entry witness on the same
+fixed mixed-plane host.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

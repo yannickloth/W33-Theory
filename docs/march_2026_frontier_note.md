@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXVIII`)
+### Latest promoted closure (`CCCLXXVI–CDXXX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -332,6 +332,17 @@ speculative:
   `1`, and `2` supported off-diagonal rows, including the identity class, so
   the live wall is genuinely precomplex-local and not reducible to parity or
   holonomy-class selection.
+- **CDXXIX — K3 mixed-plane row-entry witness:** the wall is now smaller than
+  a whole row. Every supported row of the exact off-diagonal curvature block
+  is one-sparse, with a single nonzero entry in `F3*`, so exact K3 tail
+  realization is equivalent to one support-preserving nonzero row-entry
+  witness on that same fixed mixed-plane host.
+- **CDXXX — Current K3 mixed-plane row-entry failure:** applying that
+  one-entry criterion to the current mixed-plane host now makes the remaining
+  failure minimal again. The support package and qutrit lift are already
+  correct, but the host still carries no supported row entries at all, so the
+  live wall is now exactly the first genuine nonzero row-entry witness on that
+  same fixed host.
 
 ### Geometry and linear-algebra backbone
 
