@@ -149,6 +149,8 @@ The newest public closure on `master` is:
 - **CDXXI — Current K3 mixed-plane holonomy failure:** applying that adapted-holonomy criterion to the current host now makes the remaining failure smallest again in holonomy language. The support package and qutrit lift are already correct, but the host still carries only the identity sign-trivial holonomy, so the live wall is now exactly the first genuine non-identity unipotent sign-trivial holonomy witness on that same fixed host.
 - **CDXXII — K3 mixed-plane nilpotent holonomy increment:** the wall is now concrete in the smallest adapted matrix language too. A non-identity sign-trivial holonomy is exactly `I + N` with nonzero nilpotent increment `N`, and over `F3` the two nonzero increments `[[0,1],[0,0]]` and `[[0,2],[0,0]]` are gauge-equivalent, so exact K3 tail realization is equivalent to one support-preserving nonzero nilpotent holonomy increment on that same fixed host.
 - **CDXXIII — Current K3 mixed-plane nilpotent holonomy increment failure:** applying that smallest matrix criterion to the current host now makes the remaining failure minimal again. The support package and qutrit lift are already correct, but the host still carries only the zero nilpotent increment, so the live wall is now exactly the first genuine nonzero nilpotent holonomy increment on that same fixed host.
+- **CDXXIV — K3 mixed-plane off-diagonal curvature witness:** the wall is now localized at the level of the actual transport-twisted precomplex too. The missing datum already appears internally as a nonzero off-diagonal curvature block of rank `36` with support on `4046` rows, so exact K3 tail realization is equivalent to one support-preserving nonzero off-diagonal curvature witness on that same fixed mixed-plane host.
+- **CDXXV — Current K3 mixed-plane off-diagonal curvature failure:** applying that geometric criterion to the current host now makes the remaining failure explicit in precomplex language too. The support package and qutrit lift are already correct, but the host still carries only zero off-diagonal curvature coupling, so the live wall is now exactly the first genuine nonzero off-diagonal curvature witness on that same fixed host.
 
 ## Reader Route
 
@@ -174,7 +176,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-nilpotent holonomy increment failure** statement of `CDXXIII`: the promoted observable shell
+off-diagonal curvature failure** statement of `CDXXV`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -308,7 +310,12 @@ smaller again in matrix language: one nonzero nilpotent increment `N` with
 holonomy `I+N`. `CDXXIII` applies that smallest matrix criterion back to the
 current host and shows the remaining failure is now exactly absence of that
 first genuine nonzero nilpotent holonomy increment on the same fixed
-mixed-plane host.
+mixed-plane host. `CDXXIV` then ties the wall back to the actual
+transport-twisted precomplex already present in the repo: the missing datum
+appears as a nonzero off-diagonal curvature block of rank `36` with support on
+`4046` rows. `CDXXV` applies that geometric criterion back to the current host
+and shows the remaining failure is now exactly absence of that first genuine
+nonzero off-diagonal curvature witness on the same fixed mixed-plane host.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

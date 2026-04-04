@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXIII`)
+### Latest promoted closure (`CCCLXXVI–CDXXV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -301,6 +301,18 @@ speculative:
   lift are already correct, but the host still carries only the zero
   nilpotent increment, so the live wall is now exactly the first genuine
   nonzero nilpotent holonomy increment on that same fixed host.
+- **CDXXIV — K3 mixed-plane off-diagonal curvature witness:** the wall is now
+  localized at the level of the actual transport-twisted precomplex too. The
+  missing datum already appears internally as a nonzero off-diagonal
+  curvature block of rank `36` with support on `4046` rows, so exact K3 tail
+  realization is equivalent to one support-preserving nonzero off-diagonal
+  curvature witness on that same fixed mixed-plane host.
+- **CDXXV — Current K3 mixed-plane off-diagonal curvature failure:** applying
+  that geometric criterion to the current mixed-plane host now makes the
+  remaining failure explicit in precomplex language too. The support package
+  and qutrit lift are already correct, but the host still carries only zero
+  off-diagonal curvature coupling, so the live wall is now exactly the first
+  genuine nonzero off-diagonal curvature witness on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
