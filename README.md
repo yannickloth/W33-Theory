@@ -151,6 +151,8 @@ The newest public closure on `master` is:
 - **CDXXIII — Current K3 mixed-plane nilpotent holonomy increment failure:** applying that smallest matrix criterion to the current host now makes the remaining failure minimal again. The support package and qutrit lift are already correct, but the host still carries only the zero nilpotent increment, so the live wall is now exactly the first genuine nonzero nilpotent holonomy increment on that same fixed host.
 - **CDXXIV — K3 mixed-plane off-diagonal curvature witness:** the wall is now localized at the level of the actual transport-twisted precomplex too. The missing datum already appears internally as a nonzero off-diagonal curvature block of rank `36` with support on `4046` rows, so exact K3 tail realization is equivalent to one support-preserving nonzero off-diagonal curvature witness on that same fixed mixed-plane host.
 - **CDXXV — Current K3 mixed-plane off-diagonal curvature failure:** applying that geometric criterion to the current host now makes the remaining failure explicit in precomplex language too. The support package and qutrit lift are already correct, but the host still carries only zero off-diagonal curvature coupling, so the live wall is now exactly the first genuine nonzero off-diagonal curvature witness on that same fixed host.
+- **CDXXVI — K3 mixed-plane triangle-row curvature witness:** the wall is now local at the level of a single transport triangle. The exact off-diagonal curvature block is supported on `2428` of the `5280` transport triangles, with row multiplicity distribution `{1: 810, 2: 1618}`, so exact K3 tail realization is equivalent to one support-preserving nonzero triangle-row curvature witness on that same fixed mixed-plane host.
+- **CDXXVII — Current K3 mixed-plane triangle-row curvature failure:** applying that triangle-local criterion to the current host now makes the remaining failure minimal again in local geometric language. The support package and qutrit lift are already correct, but the host still carries zero supported triangle rows, so the live wall is now exactly the first genuine nonzero triangle-row curvature witness on that same fixed host.
 
 ## Reader Route
 
@@ -176,7 +178,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-off-diagonal curvature failure** statement of `CDXXV`: the promoted observable shell
+triangle-row curvature failure** statement of `CDXXVII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -316,6 +318,13 @@ appears as a nonzero off-diagonal curvature block of rank `36` with support on
 `4046` rows. `CDXXV` applies that geometric criterion back to the current host
 and shows the remaining failure is now exactly absence of that first genuine
 nonzero off-diagonal curvature witness on the same fixed mixed-plane host.
+`CDXXVI` then localizes the same coupling triangle by triangle: the exact
+off-diagonal curvature block is supported on `2428` of the `5280` transport
+triangles, with row multiplicity distribution `{1: 810, 2: 1618}`, so one
+supported triangle row already serves as a local witness. `CDXXVII` applies
+that triangle-local criterion back to the current host and shows the remaining
+failure is now exactly absence of that first genuine nonzero triangle-row
+curvature witness on the same fixed mixed-plane host.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

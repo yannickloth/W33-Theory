@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXV`)
+### Latest promoted closure (`CCCLXXVI–CDXXVII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -313,6 +313,19 @@ speculative:
   and qutrit lift are already correct, but the host still carries only zero
   off-diagonal curvature coupling, so the live wall is now exactly the first
   genuine nonzero off-diagonal curvature witness on that same fixed host.
+- **CDXXVI — K3 mixed-plane triangle-row curvature witness:** the wall is now
+  local at the level of a single transport triangle too. The exact
+  off-diagonal curvature block is supported on `2428` of the `5280` transport
+  triangles, with row multiplicity distribution `{1: 810, 2: 1618}`, so exact
+  K3 tail realization is equivalent to one support-preserving nonzero
+  triangle-row curvature witness on that same fixed mixed-plane host.
+- **CDXXVII — Current K3 mixed-plane triangle-row curvature failure:**
+  applying that triangle-local criterion to the current mixed-plane host now
+  makes the remaining failure minimal again in local geometric language. The
+  support package and qutrit lift are already correct, but the host still
+  carries zero supported triangle rows, so the live wall is now exactly the
+  first genuine nonzero triangle-row curvature witness on that same fixed
+  host.
 
 ### Geometry and linear-algebra backbone
 
