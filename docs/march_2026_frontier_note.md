@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXIX`)
+### Latest promoted closure (`CCCLXXVI–CDXX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -276,6 +276,12 @@ speculative:
   are already correct, but the host still carries only the zero sign-trivial
   cocycle value, so the live wall is exactly the first genuine nonzero
   sign-trivial cocycle witness on that same fixed host.
+- **CDXX — K3 mixed-plane holonomy witness:** the wall is now concrete in
+  adapted holonomy language too. A nonzero sign-trivial cocycle value is
+  exactly a non-identity unipotent sign-trivial holonomy matrix, and over
+  `F3` the two nontrivial such matrices are gauge-equivalent. So exact K3
+  tail realization is equivalent to one support-preserving nontrivial
+  sign-trivial holonomy witness on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
