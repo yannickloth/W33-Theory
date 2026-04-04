@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXXVIII`)
+### Latest promoted closure (`CCCLXXVI–CDXL`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -387,6 +387,15 @@ speculative:
   correction back to the current host shows the remote shell still vanishes
   too. So the current K3 side fails in both active sectors: the fan-adjacent
   sector and the full-rank remote `12`-point shell.
+- **CDXXXIX — K3 mixed-plane remote bipartite split:** the remote shell is
+  not irreducible either. It splits exactly into two disjoint `K3,3` witness
+  components, `{3,4,5} x {12,13,14}` on lines `9..17` and `{6,7,8} x
+  {9,10,11}` on lines `18..26`, and each component already carries full
+  curvature rank `6`.
+- **CDXL — Current K3 mixed-plane remote bipartite failure:** applying that
+  split back to the current host shows both exact remote `K3,3` components
+  still vanish. So on the remote side the live wall is now reduced to the
+  first nonzero row-entry witness in either of those two rank-`6` components.
 
 ### Geometry and linear-algebra backbone
 

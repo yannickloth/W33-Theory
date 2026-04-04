@@ -164,6 +164,8 @@ The newest public closure on `master` is:
 - **CDXXXVI — Current K3 mixed-plane inert-fan failure:** applying that geometric localization back to the current host shows the active complement to that rigid fan still vanishes. The support package and qutrit lift are already correct, so the live wall is now exactly the first genuine nonzero row-entry witness off that inert fan.
 - **CDXXXVII — K3 mixed-plane remote shell:** the anchored fan is exact but not exhaustive. The `12` points `3..14` completely off the `9` core/spoke lines already form a `3`-regular quotient subgraph on `18` lines, and the restricted off-diagonal curvature on those `12` columns already has full rank `12`, so the live wall is not confined to the fan sector.
 - **CDXXXVIII — Current K3 mixed-plane remote-shell failure:** applying that correction back to the current host shows the remote shell still vanishes too. So the current K3 side fails in both active sectors: the fan-adjacent sector and the full-rank remote `12`-point shell.
+- **CDXXXIX — K3 mixed-plane remote bipartite split:** the remote shell is not irreducible either. It splits exactly into two disjoint `K3,3` witness components, `{3,4,5} x {12,13,14}` on lines `9..17` and `{6,7,8} x {9,10,11}` on lines `18..26`, and each component already carries full curvature rank `6`.
+- **CDXL — Current K3 mixed-plane remote bipartite failure:** applying that split back to the current host shows both exact remote `K3,3` components still vanish. So on the remote side the live wall is now reduced to the first nonzero row-entry witness in either of those two rank-`6` components.
 
 ## Reader Route
 
@@ -189,7 +191,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-remote-shell failure** statement of `CDXXXVIII`: the promoted observable shell
+remote bipartite failure** statement of `CDXL`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -363,6 +365,10 @@ fan still vanishes. `CDXXXVII` then corrects the obvious tunnel-vision risk:
 the `12` points `3..14` completely off the fan already form a `3`-regular
 remote shell on `18` lines with full curvature rank `12`. `CDXXXVIII` applies
 that back to the present host and shows this remote shell still vanishes too.
+`CDXXXIX` then sharpens the remote side again: the 12-point shell splits into
+two exact `K3,3` components, each already carrying rank `6`. `CDXL` applies
+that back to the present host and shows both remote `K3,3` components still
+vanish.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
