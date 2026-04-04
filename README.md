@@ -168,6 +168,8 @@ The newest public closure on `master` is:
 - **CDXL — Current K3 mixed-plane remote bipartite failure:** applying that split back to the current host shows both exact remote `K3,3` components still vanish. So on the remote side the live wall is now reduced to the first nonzero row-entry witness in either of those two rank-`6` components.
 - **CDXLI — K3 mixed-plane active sector trisection:** the full live `36`-column active complement now splits exactly as `24 + 6 + 6`: a fan-adjacent rank-`24` sector on columns `0,1,2,15..35`, plus the two remote `K3,3` sectors of rank `6` each. So the live wall is now mapped as three exact full-rank sectors, not one undifferentiated `36`-column block.
 - **CDXLII — Current K3 mixed-plane active sector failure:** applying that trisection back to the current host shows all three live sectors still vanish: the fan-adjacent rank-`24` block and both remote rank-`6` blocks. So the current K3 side now fails the exact three-sector test for one reason only.
+- **CDXLIII — K3 mixed-plane fan shell split:** the fan-adjacent rank-`24` sector is not irreducible either. It splits exactly as anchor `1` plus spokes `3` plus outer shell `20`, and each shell already has full rank equal to its size.
+- **CDXLIV — Current K3 mixed-plane fan shell failure:** applying that shell split back to the current host shows the anchor, spoke, and outer-shell pieces all still vanish. So the fan-adjacent side of the current K3 wall now fails its exact shell test uniformly too.
 
 ## Reader Route
 
@@ -193,7 +195,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-active sector failure** statement of `CDXLII`: the promoted observable shell
+fan shell failure** statement of `CDXLIV`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -372,7 +374,10 @@ two exact `K3,3` components, each already carrying rank `6`. `CDXL` applies
 that back to the present host and shows both remote `K3,3` components still
 vanish. `CDXLI` then promotes the exact `24 + 6 + 6` trisection of the whole
 live `36`-column active block, and `CDXLII` applies that back to the present
-host, showing all three exact live sectors still vanish.
+host, showing all three exact live sectors still vanish. `CDXLIII` then
+resolves the fan-adjacent rank-`24` sector itself into an exact full-rank
+`1 + 3 + 20` shell split, and `CDXLIV` applies that back to the present host,
+showing the anchor, spoke, and outer-shell pieces all still vanish.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

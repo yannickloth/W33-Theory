@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXLII`)
+### Latest promoted closure (`CCCLXXVI–CDXLIV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -403,6 +403,12 @@ speculative:
 - **CDXLII — Current K3 mixed-plane active sector failure:** applying that
   trisection back to the current host shows all three live sectors still
   vanish: the fan-adjacent rank-`24` block and both remote rank-`6` blocks.
+- **CDXLIII — K3 mixed-plane fan shell split:** the fan-adjacent rank-`24`
+  sector is not irreducible either. It splits exactly as anchor `1` plus
+  spokes `3` plus outer shell `20`, and each shell already has full rank.
+- **CDXLIV — Current K3 mixed-plane fan shell failure:** applying that shell
+  split back to the current host shows the anchor, spoke, and outer-shell
+  pieces all still vanish.
 
 ### Geometry and linear-algebra backbone
 
