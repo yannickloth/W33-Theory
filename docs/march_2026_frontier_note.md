@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXVII`)
+### Latest promoted closure (`CCCLXXVI–CDXVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -265,6 +265,11 @@ speculative:
   are already correct, but the host still carries only the zero fiber shift,
   so the live wall is exactly the first genuine nonzero reduced fiber-shift
   witness on that same fixed host.
+- **CDXVIII — K3 mixed-plane cocycle witness:** the wall is now smaller than
+  the reduced fiber shift itself. Because the adapted transport cocycle is
+  nontrivial precisely by being nonzero on sign-trivial elements, exact K3
+  tail realization is equivalent to one support-preserving nonzero cocycle-
+  value witness on that same fixed mixed-plane host.
 
 ### Geometry and linear-algebra backbone
 
