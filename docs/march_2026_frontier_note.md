@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDVI`)
+### Latest promoted closure (`CCCLXXVI–CDVII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -203,6 +203,11 @@ speculative:
   charts are exactly `ΔC=14105` and `ΔL=143654`, and `ΔC` is the smaller one,
   so the remaining wall is one canonical integral extension problem:
   realizing `ΔC=14105` on the fixed carrier-preserving K3 package.
+- **CDVII — K3 tail canonical-chart realization equivalence:** the wall now
+  collapses again in that chart. Exact K3 tail realization is equivalent to
+  solving the one canonical integral equation `ΔC=14105` on the fixed
+  carrier-preserving package, since that chart is already an exact affine
+  increment witness chart and all other promoted charts are equivalent to it.
 
 ### Geometry and linear-algebra backbone
 
