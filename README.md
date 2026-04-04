@@ -146,6 +146,7 @@ The newest public closure on `master` is:
 - **CDXVIII — K3 mixed-plane cocycle witness:** the wall is now smaller than the reduced fiber shift itself. Because the adapted transport cocycle is nontrivial precisely by being nonzero on sign-trivial elements, exact K3 tail realization is equivalent to one support-preserving nonzero cocycle-value witness on that same fixed mixed-plane host; the reduced fiber shift and full qutrit-lifted slot operator then follow automatically.
 - **CDXIX — Current K3 mixed-plane cocycle failure:** the remaining gap is now as small as the repo can currently state it. The current mixed-plane host already preserves the full support package and qutrit lift, but it still carries only the zero sign-trivial cocycle value, so the live wall is now exactly the first genuine nonzero sign-trivial cocycle witness on that same fixed host.
 - **CDXX — K3 mixed-plane holonomy witness:** the wall is now concrete in adapted holonomy language too. A nonzero sign-trivial cocycle value is exactly a non-identity unipotent holonomy matrix `[[1,1],[0,1]]` or `[[1,2],[0,1]]`, and those two are gauge-equivalent over `F3`, so exact K3 tail realization is equivalent to one support-preserving nontrivial sign-trivial holonomy witness on that same fixed host.
+- **CDXXI — Current K3 mixed-plane holonomy failure:** applying that adapted-holonomy criterion to the current host now makes the remaining failure smallest again in holonomy language. The support package and qutrit lift are already correct, but the host still carries only the identity sign-trivial holonomy, so the live wall is now exactly the first genuine non-identity unipotent sign-trivial holonomy witness on that same fixed host.
 
 ## Reader Route
 
@@ -170,8 +171,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **K3 mixed-plane
-holonomy witness** statement of `CDXX`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **current K3 mixed-plane
+holonomy failure** statement of `CDXXI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -297,7 +298,10 @@ host: the support package is already right, the qutrit lift is already right,
 and the only thing still missing is the first nonzero sign-trivial cocycle
 value itself. `CDXX` then makes that smallest cohomological datum concrete in
 adapted holonomy language: one non-identity unipotent sign-trivial holonomy on
-that same fixed mixed-plane host.
+that same fixed mixed-plane host. `CDXXI` applies that holonomy criterion back
+to the actual current host and shows the remaining failure is now exactly
+absence of that first genuine non-identity unipotent sign-trivial holonomy
+witness on the same fixed mixed-plane host.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

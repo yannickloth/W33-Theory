@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXX`)
+### Latest promoted closure (`CCCLXXVI–CDXXI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -282,6 +282,13 @@ speculative:
   `F3` the two nontrivial such matrices are gauge-equivalent. So exact K3
   tail realization is equivalent to one support-preserving nontrivial
   sign-trivial holonomy witness on that same fixed host.
+- **CDXXI — Current K3 mixed-plane holonomy failure:** applying that adapted
+  holonomy criterion to the current mixed-plane host now makes the remaining
+  failure smallest again in holonomy language. The support package and qutrit
+  lift are already correct, but the host still carries only the identity
+  sign-trivial holonomy, so the live wall is now exactly the first genuine
+  non-identity unipotent sign-trivial holonomy witness on that same fixed
+  host.
 
 ### Geometry and linear-algebra backbone
 
