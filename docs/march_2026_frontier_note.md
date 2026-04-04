@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDIX`)
+### Latest promoted closure (`CCCLXXVI–CDX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -220,6 +220,11 @@ speculative:
   existing tail slot, because the present refined K3 shadow is still split
   with zero extension class while the exact target is the unique nonzero
   orbit in that same slot.
+- **CDX — K3 tail nonzero-extension criterion:** the positive existence
+  condition is now explicit too. On that same fixed carrier-preserving
+  package, exact K3 tail realization is equivalent to any nonzero
+  extension-class witness in the existing tail slot, because over `F3` there
+  is only one nonzero gauge orbit available there.
 
 ### Geometry and linear-algebra backbone
 

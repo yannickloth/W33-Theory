@@ -135,6 +135,7 @@ The newest public closure on `master` is:
 - **CDVII — K3 tail canonical-chart realization equivalence:** the wall now collapses again in that chart. Exact K3 tail realization is equivalent to solving the one canonical integral equation `ΔC=14105` on the fixed carrier-preserving package, since that chart is already an exact affine increment witness chart and all other promoted charts are equivalent to it.
 - **CDVIII — K3 tail canonical-chart slot equivalence:** the canonical chart is now visibly external too. On the fixed carrier-preserving package, solving `ΔC=14105` is equivalent to activating the unique nonzero tail slot, because the unique minimal exact datum already has `C=780*(217/12)=14105`. So the live wall is now one exact slot-activation problem on genuine K3-side data.
 - **CDIX — K3 tail splitness-breaking criterion:** the remaining external wall is now even sharper. On the same fixed carrier-preserving package, exact K3 tail realization is equivalent to breaking splitness in the existing tail slot, because the present K3 shadow is still split with zero extension class while the exact target is the unique nonzero orbit in that same slot.
+- **CDX — K3 tail nonzero-extension criterion:** the positive existence condition is now explicit too. On the same fixed package, exact K3 tail realization is equivalent to any nonzero extension-class witness in the existing tail slot, because over `F3` there is only one nonzero gauge orbit available there.
 
 ## Reader Route
 
@@ -160,7 +161,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **K3 tail
-splitness-breaking criterion** statement of `CDIX`: the promoted observable shell
+nonzero-extension criterion** statement of `CDX`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -251,7 +252,10 @@ genuinely external: the unique minimal exact datum already has
 unique nonzero tail slot on the same fixed K3 package. `CDIX` sharpens the
 same wall one step further: since the present refined K3 shadow is still split
 with zero extension class, exact K3 tail realization is equivalent to
-breaking splitness in that existing tail slot.
+breaking splitness in that existing tail slot. `CDX` then turns that into the
+cleanest positive existence test yet: because there is only one nonzero orbit
+up to gauge in that fixed slot, exact K3 tail realization is equivalent to
+any nonzero extension-class witness there.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
