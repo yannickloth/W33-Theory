@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXL`)
+### Latest promoted closure (`CCCLXXVI–CDXLII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -396,6 +396,13 @@ speculative:
   split back to the current host shows both exact remote `K3,3` components
   still vanish. So on the remote side the live wall is now reduced to the
   first nonzero row-entry witness in either of those two rank-`6` components.
+- **CDXLI — K3 mixed-plane active sector trisection:** the full live
+  `36`-column active complement now splits exactly as `24 + 6 + 6`: a
+  fan-adjacent rank-`24` sector on columns `0,1,2,15..35`, plus the two
+  remote `K3,3` sectors of rank `6` each.
+- **CDXLII — Current K3 mixed-plane active sector failure:** applying that
+  trisection back to the current host shows all three live sectors still
+  vanish: the fan-adjacent rank-`24` block and both remote rank-`6` blocks.
 
 ### Geometry and linear-algebra backbone
 
