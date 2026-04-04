@@ -137,6 +137,7 @@ The newest public closure on `master` is:
 - **CDIX — K3 tail splitness-breaking criterion:** the remaining external wall is now even sharper. On the same fixed carrier-preserving package, exact K3 tail realization is equivalent to breaking splitness in the existing tail slot, because the present K3 shadow is still split with zero extension class while the exact target is the unique nonzero orbit in that same slot.
 - **CDX — K3 tail nonzero-extension criterion:** the positive existence condition is now explicit too. On the same fixed package, exact K3 tail realization is equivalent to any nonzero extension-class witness in the existing tail slot, because over `F3` there is only one nonzero gauge orbit available there.
 - **CDXI — K3 mixed-plane extension witness:** the positive existence test is now attached to the actual external geometry. The current external `162`-sector is already the split qutrit lift of the canonical mixed K3 plane, so exact K3 tail realization is equivalent to a nonzero extension witness on that same mixed-plane lift, not a search for a new external host.
+- **CDXII — K3 mixed-plane support-preserving witness:** the witness localization is now support-rigid too. Any exact K3 tail witness on that mixed-plane lift must preserve the canonical selector triangle, ordered positive/negative line types, mixed signature `(1,1)`, qutrit split `81+81`, and first-refinement support data, and only change the extension class in the existing tail slot.
 
 ## Reader Route
 
@@ -162,7 +163,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **K3 mixed-plane
-extension witness** statement of `CDXI`: the promoted observable shell
+support-preserving witness** statement of `CDXII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -259,7 +260,10 @@ up to gauge in that fixed slot, exact K3 tail realization is equivalent to
 any nonzero extension-class witness there. `CDXI` finally attaches that witness
 to the actual external geometry: the current `162`-sector is already the split
 qutrit lift of the canonical mixed K3 plane, so the live wall is a mixed-plane
-deformation witness problem on that fixed K3 object.
+deformation witness problem on that fixed K3 object. `CDXII` then shows the
+host data are rigid too: any exact witness must preserve the selector triangle,
+ordered line types, mixed signature, qutrit split, and first-refinement
+support data, and only change the extension class in the existing slot.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXI`)
+### Latest promoted closure (`CCCLXXVI–CDXII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -231,6 +231,12 @@ speculative:
   plane, so exact K3 tail realization is equivalent to a nonzero extension
   witness on that same mixed-plane lift, not a search for a new external
   host.
+- **CDXII — K3 mixed-plane support-preserving witness:** the witness
+  localization is now support-rigid too. Any exact K3 tail witness on that
+  mixed-plane lift must preserve the canonical selector triangle, ordered
+  positive/negative line types, mixed signature `(1,1)`, qutrit split
+  `81+81`, and first-refinement support data, and only change the extension
+  class in the existing tail slot.
 
 ### Geometry and linear-algebra backbone
 
