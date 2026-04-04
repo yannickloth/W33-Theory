@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXVIII`)
+### Latest promoted closure (`CCCLXXVI–CDXIX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -270,6 +270,12 @@ speculative:
   nontrivial precisely by being nonzero on sign-trivial elements, exact K3
   tail realization is equivalent to one support-preserving nonzero cocycle-
   value witness on that same fixed mixed-plane host.
+- **CDXIX — Current K3 mixed-plane cocycle failure:** applying that smallest
+  cohomological criterion to the current mixed-plane host now makes the
+  remaining failure maximally explicit. The support package and qutrit lift
+  are already correct, but the host still carries only the zero sign-trivial
+  cocycle value, so the live wall is exactly the first genuine nonzero
+  sign-trivial cocycle witness on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
