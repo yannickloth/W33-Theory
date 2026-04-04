@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXV`)
+### Latest promoted closure (`CCCLXXVI–CDXVI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -254,6 +254,11 @@ speculative:
   and carries the right `81×81` slot, but that slot still carries only the
   split zero operator, so the live wall is now the first genuine nonzero
   mixed-plane slot-operator witness on that same fixed host.
+- **CDXVI — K3 mixed-plane fiber-shift witness:** the wall is smaller still.
+  Because the exact mixed-plane slot operator is already forced to be the
+  qutrit lift `I_81 ⊗ [[0,1],[0,0]]`, the only genuinely nontrivial missing
+  datum is now the reduced nonzero fiber shift `[[0,1],[0,0]]` itself on
+  that same fixed mixed-plane host.
 
 ### Geometry and linear-algebra backbone
 

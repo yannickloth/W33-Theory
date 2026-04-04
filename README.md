@@ -141,6 +141,7 @@ The newest public closure on `master` is:
 - **CDXIII — K3 mixed-plane unique slot-only deformation:** the remaining wall is now unique in form too. Because the mixed-plane support package is already frozen and the existing tail slot has only one nonzero orbit up to gauge, exact K3 tail realization is equivalent to one unique support-preserving slot-only deformation class on that canonical mixed-plane lift.
 - **CDXIV — K3 mixed-plane operator witness:** the wall is now concrete in the exact operator language the repo can recognize. That unique support-preserving slot-only deformation already has the forced rank-81 square-zero normal form `I_81 ⊗ [[0,1],[0,0]]`, equivalently `J2^81`, so exact K3 tail realization is equivalent to one unique support-preserving slot-operator witness on that same mixed-plane lift.
 - **CDXV — Current K3 mixed-plane operator-witness failure:** the remaining gap is now explicit on the actual current host. The canonical mixed-plane lift already preserves the full support package and carries the right `81×81` slot, but it still carries only the split zero operator there, so the live wall is now the first genuine nonzero mixed-plane slot-operator witness on that same fixed host.
+- **CDXVI — K3 mixed-plane fiber-shift witness:** the wall is smaller still. Because the exact slot operator is already forced to be the qutrit lift `I_81 ⊗ [[0,1],[0,0]]`, the only genuinely nontrivial missing datum is one unique nonzero fiber-shift witness `[[0,1],[0,0]]` on that same mixed-plane host; the full rank-81 slot operator then follows automatically.
 
 ## Reader Route
 
@@ -165,8 +166,8 @@ The newest public closure on `master` is:
 
 ## Current Frontier
 
-The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-operator-witness failure** statement of `CDXV`: the promoted observable shell
+The sharpest promoted closure on `master` is now the **K3 mixed-plane
+fiber-shift witness** statement of `CDXVI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -278,7 +279,10 @@ criterion back to the actual current host: the mixed-plane lift is already
 right, the support is already right, and the slot is already right, but the
 current slot operator is still the split zero operator. So the live wall is
 now the first genuine nonzero mixed-plane slot-operator witness on that same
-fixed host.
+fixed host. `CDXVI` then removes the last forced tensor factor: since the
+exact slot witness is already `I_81 ⊗ [[0,1],[0,0]]`, the only genuinely
+nontrivial missing datum is now the reduced nonzero fiber shift
+`[[0,1],[0,0]]` itself on that same mixed-plane host.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
