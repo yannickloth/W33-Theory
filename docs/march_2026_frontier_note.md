@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXXIV`)
+### Latest promoted closure (`CCCLXXVI–CDXXXVI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -367,6 +367,17 @@ speculative:
   lift are already correct, but the entire full-rank `36`-column active
   complement still vanishes, so the live wall is now exactly the first genuine
   nonzero row-entry witness on that active basis block.
+- **CDXXXV — K3 mixed-plane inert-fan geometry:** the inert `9` are now
+  identified geometrically, not just arithmetically. They are exactly the
+  non-anchor, non-spoke points on the three quotient lines through anchor
+  point `0`, with active spokes `15,16,17`, so exact K3 tail realization
+  lives on the complement of one rigid anchored `3`-line fan in the exact
+  `45`-point quotient geometry.
+- **CDXXXVI — Current K3 mixed-plane inert-fan failure:** applying that
+  geometric localization back to the current host shows the active complement
+  to that rigid fan still vanishes. The support package and qutrit lift are
+  already correct, so the live wall is now exactly the first genuine nonzero
+  row-entry witness off that inert fan.
 
 ### Geometry and linear-algebra backbone
 
