@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXII`)
+### Latest promoted closure (`CCCLXXVI–CDXIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -237,6 +237,11 @@ speculative:
   positive/negative line types, mixed signature `(1,1)`, qutrit split
   `81+81`, and first-refinement support data, and only change the extension
   class in the existing tail slot.
+- **CDXIII — K3 mixed-plane unique slot-only deformation:** the wall is now
+  unique in form too. Because the mixed-plane support package is already
+  frozen and the existing tail slot has only one nonzero orbit up to gauge,
+  exact K3 tail realization is equivalent to one unique support-preserving
+  slot-only deformation class on that same canonical mixed-plane lift.
 
 ### Geometry and linear-algebra backbone
 
