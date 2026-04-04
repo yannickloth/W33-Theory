@@ -158,6 +158,8 @@ The newest public closure on `master` is:
 - **CDXXX — Current K3 mixed-plane row-entry failure:** applying that one-entry criterion to the current host now makes the remaining failure minimal again. The support package and qutrit lift are already correct, but the host still carries no supported row entries at all, so the live wall is now exactly the first genuine nonzero row-entry witness on that same fixed host.
 - **CDXXXI — K3 mixed-plane active-column universality:** the wall is now known not to be a choice among the active columns either. The curvature block has `45` columns total, but exactly `36` are active, and each active column already carries supported row entries, both row components, and both nonzero `F3` values, so exact K3 tail realization is equivalent to a nonzero row-entry witness in any fixed supported curvature column.
 - **CDXXXII — Current K3 mixed-plane active-column failure:** applying that universality back to the current host shows the failure is uniform across all `36` active local charts. The support package and qutrit lift are already correct, but every active curvature column remains zero, so the live wall is now exactly the first genuine nonzero active-column-anchored row-entry witness on that same fixed host.
+- **CDXXXIII — K3 mixed-plane active-column basis:** the wall is now known to live on a full-rank basis block. The off-diagonal curvature block has rank `36`, the `36` active columns already realize that full rank, and the remaining `9` inactive columns form a rigid inert block split into three complement triples, so exact K3 tail realization is equivalent to the first nonzero row-entry witness on the full-rank `36`-column active complement.
+- **CDXXXIV — Current K3 mixed-plane active-basis failure:** applying that basis decomposition back to the current host shows the failure is now uniform across the whole live basis block. The support package and qutrit lift are already correct, but the entire full-rank `36`-column active complement still vanishes, so the live wall is now exactly the first genuine nonzero row-entry witness on that active basis block.
 
 ## Reader Route
 
@@ -183,7 +185,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-active-column failure** statement of `CDXXXII`: the promoted observable shell
+active-basis failure** statement of `CDXXXIV`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -345,6 +347,11 @@ supported curvature columns: the block has `45` columns total, but all `36`
 active columns already carry both row components and both nonzero `F3`
 values. `CDXXXII` applies that back to the present host and shows the
 remaining failure is now uniform across every active local column chart.
+`CDXXXIII` then shows those `36` active columns already realize the full
+off-diagonal curvature rank `36`, while the remaining `9` inactive columns
+split into three inert complement triples. `CDXXXIV` applies that basis split
+back to the current host and shows the entire live `36`-column basis block
+still vanishes.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

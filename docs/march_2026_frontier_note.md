@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXXII`)
+### Latest promoted closure (`CCCLXXVI–CDXXXIV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -355,6 +355,18 @@ speculative:
   already correct, but every active curvature column remains zero, so the live
   wall is now exactly the first genuine nonzero active-column-anchored
   row-entry witness on that same fixed host.
+- **CDXXXIII — K3 mixed-plane active-column basis:** the wall is now known to
+  live on a full-rank basis block. The off-diagonal curvature block has rank
+  `36`, the `36` active columns already realize that full rank, and the
+  remaining `9` inactive columns form a rigid inert block split into three
+  complement triples, so exact K3 tail realization is equivalent to the first
+  nonzero row-entry witness on the full-rank `36`-column active complement.
+- **CDXXXIV — Current K3 mixed-plane active-basis failure:** applying that
+  basis decomposition back to the current host shows the failure is now
+  uniform across the whole live basis block. The support package and qutrit
+  lift are already correct, but the entire full-rank `36`-column active
+  complement still vanishes, so the live wall is now exactly the first genuine
+  nonzero row-entry witness on that active basis block.
 
 ### Geometry and linear-algebra backbone
 
