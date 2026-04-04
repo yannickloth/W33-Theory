@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXIV`)
+### Latest promoted closure (`CCCLXXVI–CDXV`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -248,6 +248,12 @@ speculative:
   `J2^81`, so exact K3 tail realization is equivalent to one unique
   support-preserving slot-operator witness on that same canonical mixed-plane
   lift.
+- **CDXV — Current K3 mixed-plane operator-witness failure:** applying that
+  criterion to the actual current mixed-plane host now makes the remaining
+  failure fully explicit. The host already preserves the full support package
+  and carries the right `81×81` slot, but that slot still carries only the
+  split zero operator, so the live wall is now the first genuine nonzero
+  mixed-plane slot-operator witness on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
