@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXVII`)
+### Latest promoted closure (`CCCLXXVI–CDXXVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -326,6 +326,12 @@ speculative:
   carries zero supported triangle rows, so the live wall is now exactly the
   first genuine nonzero triangle-row curvature witness on that same fixed
   host.
+- **CDXXVIII — Triangle-row support strictly refines holonomy class:** the
+  local witness is now known to live beyond the older holonomy shadow. Every
+  one of the six adapted holonomy classes already contains triangles with `0`,
+  `1`, and `2` supported off-diagonal rows, including the identity class, so
+  the live wall is genuinely precomplex-local and not reducible to parity or
+  holonomy-class selection.
 
 ### Geometry and linear-algebra backbone
 
