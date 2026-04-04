@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDVII`)
+### Latest promoted closure (`CCCLXXVI–CDVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -208,6 +208,12 @@ speculative:
   solving the one canonical integral equation `ΔC=14105` on the fixed
   carrier-preserving package, since that chart is already an exact affine
   increment witness chart and all other promoted charts are equivalent to it.
+- **CDVIII — K3 tail canonical-chart slot equivalence:** the canonical chart
+  is now visibly external too. On the fixed carrier-preserving package,
+  solving `ΔC=14105` is equivalent to activating the unique nonzero tail
+  slot, because the unique minimal exact datum already has
+  `C = 780 * (217/12) = 14105`. So the live wall is now one exact
+  slot-activation problem on genuine K3-side data.
 
 ### Geometry and linear-algebra backbone
 
