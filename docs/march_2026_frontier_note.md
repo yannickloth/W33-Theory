@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXXVI`)
+### Latest promoted closure (`CCCLXXVI–CDXXXVIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -371,13 +371,22 @@ speculative:
   identified geometrically, not just arithmetically. They are exactly the
   non-anchor, non-spoke points on the three quotient lines through anchor
   point `0`, with active spokes `15,16,17`, so exact K3 tail realization
-  lives on the complement of one rigid anchored `3`-line fan in the exact
-  `45`-point quotient geometry.
+  lives on the active complement to one rigid anchored `3`-line inert fan in
+  the exact `45`-point quotient geometry.
 - **CDXXXVI — Current K3 mixed-plane inert-fan failure:** applying that
   geometric localization back to the current host shows the active complement
   to that rigid fan still vanishes. The support package and qutrit lift are
   already correct, so the live wall is now exactly the first genuine nonzero
   row-entry witness off that inert fan.
+- **CDXXXVII — K3 mixed-plane remote shell:** the anchored fan is exact but
+  not exhaustive. The `12` points `3..14` completely off the `9` core/spoke
+  lines already form a `3`-regular quotient subgraph on `18` lines, and the
+  restricted off-diagonal curvature on those `12` columns already has full
+  rank `12`, so the live wall is not confined to the fan sector.
+- **CDXXXVIII — Current K3 mixed-plane remote-shell failure:** applying that
+  correction back to the current host shows the remote shell still vanishes
+  too. So the current K3 side fails in both active sectors: the fan-adjacent
+  sector and the full-rank remote `12`-point shell.
 
 ### Geometry and linear-algebra backbone
 

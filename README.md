@@ -160,8 +160,10 @@ The newest public closure on `master` is:
 - **CDXXXII — Current K3 mixed-plane active-column failure:** applying that universality back to the current host shows the failure is uniform across all `36` active local charts. The support package and qutrit lift are already correct, but every active curvature column remains zero, so the live wall is now exactly the first genuine nonzero active-column-anchored row-entry witness on that same fixed host.
 - **CDXXXIII — K3 mixed-plane active-column basis:** the wall is now known to live on a full-rank basis block. The off-diagonal curvature block has rank `36`, the `36` active columns already realize that full rank, and the remaining `9` inactive columns form a rigid inert block split into three complement triples, so exact K3 tail realization is equivalent to the first nonzero row-entry witness on the full-rank `36`-column active complement.
 - **CDXXXIV — Current K3 mixed-plane active-basis failure:** applying that basis decomposition back to the current host shows the failure is now uniform across the whole live basis block. The support package and qutrit lift are already correct, but the entire full-rank `36`-column active complement still vanishes, so the live wall is now exactly the first genuine nonzero row-entry witness on that active basis block.
-- **CDXXXV — K3 mixed-plane inert-fan geometry:** the inert `9` are now identified geometrically, not just arithmetically. They are exactly the non-anchor, non-spoke points on the three quotient lines through anchor point `0`, with active spokes `15,16,17`, so exact K3 tail realization lives on the complement of one rigid anchored `3`-line fan in the exact `45`-point quotient geometry.
+- **CDXXXV — K3 mixed-plane inert-fan geometry:** the inert `9` are now identified geometrically, not just arithmetically. They are exactly the non-anchor, non-spoke points on the three quotient lines through anchor point `0`, with active spokes `15,16,17`, so exact K3 tail realization lives on the active complement to one rigid anchored `3`-line inert fan in the exact `45`-point quotient geometry.
 - **CDXXXVI — Current K3 mixed-plane inert-fan failure:** applying that geometric localization back to the current host shows the active complement to that rigid fan still vanishes. The support package and qutrit lift are already correct, so the live wall is now exactly the first genuine nonzero row-entry witness off that inert fan.
+- **CDXXXVII — K3 mixed-plane remote shell:** the anchored fan is exact but not exhaustive. The `12` points `3..14` completely off the `9` core/spoke lines already form a `3`-regular quotient subgraph on `18` lines, and the restricted off-diagonal curvature on those `12` columns already has full rank `12`, so the live wall is not confined to the fan sector.
+- **CDXXXVIII — Current K3 mixed-plane remote-shell failure:** applying that correction back to the current host shows the remote shell still vanishes too. So the current K3 side fails in both active sectors: the fan-adjacent sector and the full-rank remote `12`-point shell.
 
 ## Reader Route
 
@@ -187,7 +189,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-inert-fan failure** statement of `CDXXXVI`: the promoted observable shell
+remote-shell failure** statement of `CDXXXVIII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -357,7 +359,10 @@ still vanishes. `CDXXXV` then identifies the inert `9` geometrically as the
 non-anchor, non-spoke part of the three quotient lines through anchor point
 `0`, with active spokes `15,16,17`. `CDXXXVI` applies that back to the
 present host and shows the whole active complement to that rigid anchored
-fan still vanishes.
+fan still vanishes. `CDXXXVII` then corrects the obvious tunnel-vision risk:
+the `12` points `3..14` completely off the fan already form a `3`-regular
+remote shell on `18` lines with full curvature rank `12`. `CDXXXVIII` applies
+that back to the present host and shows this remote shell still vanishes too.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

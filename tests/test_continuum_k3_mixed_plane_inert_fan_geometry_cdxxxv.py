@@ -27,7 +27,7 @@ def test_phase_cdxxxv_wall_lives_off_rigid_anchored_inert_fan() -> None:
         "k3_mixed_plane_inert_fan_geometry_theorem"
     ]
     assert theorem[
-        "therefore_exact_k3_tail_realization_lives_on_the_complement_of_one_rigid_anchored_3_line_fan_in_the_45_point_quotient_geometry"
+        "therefore_exact_k3_tail_realization_lives_on_the_active_complement_to_one_rigid_anchored_3_line_inert_fan_in_the_45_point_quotient_geometry"
     ] is True
 
 

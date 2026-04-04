@@ -14,9 +14,9 @@ the three quotient lines through the common anchor point 0:
 - inert triples on those lines:
   [36, 40, 44], [38, 39, 43], [37, 41, 42]
 
-So the live wall is not only a 36-column basis complement. It is the
-complement of one rigid anchored 3-line fan inside the exact 45-point quotient
-geometry.
+So the live wall is not only a 36-column basis complement. It is the active
+complement to one rigid anchored 3-line inert fan inside the exact 45-point
+quotient geometry.
 """
 
 from __future__ import annotations
@@ -107,7 +107,7 @@ def build_k3_mixed_plane_inert_fan_geometry_summary() -> dict[str, Any]:
                     },
                 ]
             ),
-            "therefore_exact_k3_tail_realization_lives_on_the_complement_of_one_rigid_anchored_3_line_fan_in_the_45_point_quotient_geometry": (
+            "therefore_exact_k3_tail_realization_lives_on_the_active_complement_to_one_rigid_anchored_3_line_inert_fan_in_the_45_point_quotient_geometry": (
                 anchor_lines == [0, 1, 2]
                 and sorted(active_spokes) == [15, 16, 17]
                 and sorted(inert_union) == [36, 37, 38, 39, 40, 41, 42, 43, 44]
@@ -126,8 +126,8 @@ def build_k3_mixed_plane_inert_fan_geometry_summary() -> dict[str, Any]:
             "It is the union of the three inert triples on the three quotient "
             "lines through the common anchor point 0, with active spokes 15, "
             "16, and 17. So the live wall is the first nonzero row-entry "
-            "witness off one rigid anchored 3-line fan in the 45-point "
-            "quotient geometry."
+            "witness on the active complement to one rigid anchored 3-line "
+            "inert fan in the 45-point quotient geometry."
         ),
     }
 
