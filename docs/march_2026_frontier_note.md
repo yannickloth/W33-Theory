@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXXI`)
+### Latest promoted closure (`CCCLXXVI–CDXXIII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -289,6 +289,18 @@ speculative:
   sign-trivial holonomy, so the live wall is now exactly the first genuine
   non-identity unipotent sign-trivial holonomy witness on that same fixed
   host.
+- **CDXXII — K3 mixed-plane nilpotent holonomy increment:** the wall is now
+  concrete in the smallest adapted matrix language too. A non-identity
+  sign-trivial holonomy is exactly `I + N` with nonzero nilpotent increment
+  `N`, and over `F3` the two nonzero increments are gauge-equivalent. So exact
+  K3 tail realization is equivalent to one support-preserving nonzero
+  nilpotent holonomy increment on that same fixed host.
+- **CDXXIII — Current K3 mixed-plane nilpotent holonomy increment failure:**
+  applying that smallest matrix criterion to the current mixed-plane host now
+  makes the remaining failure minimal again. The support package and qutrit
+  lift are already correct, but the host still carries only the zero
+  nilpotent increment, so the live wall is now exactly the first genuine
+  nonzero nilpotent holonomy increment on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
