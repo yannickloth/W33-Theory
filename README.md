@@ -131,6 +131,7 @@ The newest public closure on `master` is:
 - **CDIII — K3 tail affine increment witness criterion:** because the current refined K3 point is exactly zero in every promoted witness coordinate, the affine target from `CDII` is already the exact increment packet `ΔC=14105`, `ΔL=143654`, `ΔQ_seed=3396050/3`, `ΔQ_sd1=3904481/4`. Any one such increment recovers the same exact scale `217/12`, so the remaining wall is now existence of any one exact affine increment witness on the fixed package.
 - **CDIV — K3 tail increment-realization equivalence:** the wall now collapses again on the fixed package. Exact K3 tail realization is equivalent to realizing any one exact affine increment witness, because the current K3 point is zero in witness coordinates and any one promoted increment already identifies the full affine target and therefore the unique minimal datum.
 - **CDV — K3 tail coordinate-extension equivalence:** the same wall is now local in any promoted witness chart. Because all four affine increments recover the same exact scale `217/12`, exact K3 tail realization is equivalently a `ΔC`-anchored, `ΔL`-anchored, `ΔQ_seed`-anchored, or `ΔQ_sd1`-anchored extension problem on the same fixed carrier-preserving package.
+- **CDVI — K3 tail canonical integral chart:** among those equivalent local charts, the least-complexity exact chart is now fixed too. The integral charts are exactly `ΔC=14105` and `ΔL=143654`, and `ΔC` is the smaller one, so the remaining wall is one canonical integral extension problem: realize `ΔC=14105` on the fixed carrier-preserving K3 package.
 
 ## Reader Route
 
@@ -156,7 +157,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **K3 tail
-coordinate-extension equivalence** statement of `CDV`: the promoted observable shell
+canonical integral chart** statement of `CDVI`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -233,7 +234,11 @@ identifies the full affine target and therefore the unique minimal datum.
 `CDV` packages the same wall locally: because all four promoted affine
 increments recover the same exact scale `217/12`, the remaining external
 question is equivalently a `ΔC`-, `ΔL`-, `ΔQ_seed`-, or `ΔQ_sd1`-anchored
-extension problem on the same fixed carrier-preserving K3 package.
+extension problem on the same fixed carrier-preserving K3 package. `CDVI`
+then chooses the least-complexity exact chart among them: the integral charts
+are exactly `ΔC=14105` and `ΔL=143654`, and `ΔC` is the smaller one. So the
+remaining wall is now one canonical integral extension problem, namely
+realizing `ΔC=14105` on the fixed carrier-preserving K3 package.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 

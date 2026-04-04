@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDV`)
+### Latest promoted closure (`CCCLXXVI–CDVI`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -198,6 +198,11 @@ speculative:
   equivalently a `ΔC`-anchored, `ΔL`-anchored, `ΔQ_seed`-anchored, or
   `ΔQ_sd1`-anchored extension problem on the same fixed carrier-preserving
   package.
+- **CDVI — K3 tail canonical integral chart:** among those equivalent local
+  charts, the least-complexity exact chart is now fixed too. The integral
+  charts are exactly `ΔC=14105` and `ΔL=143654`, and `ΔC` is the smaller one,
+  so the remaining wall is one canonical integral extension problem:
+  realizing `ΔC=14105` on the fixed carrier-preserving K3 package.
 
 ### Geometry and linear-algebra backbone
 
