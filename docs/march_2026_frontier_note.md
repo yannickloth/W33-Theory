@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDVIII`)
+### Latest promoted closure (`CCCLXXVI–CDIX`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -214,6 +214,12 @@ speculative:
   slot, because the unique minimal exact datum already has
   `C = 780 * (217/12) = 14105`. So the live wall is now one exact
   slot-activation problem on genuine K3-side data.
+- **CDIX — K3 tail splitness-breaking criterion:** the remaining external
+  wall is now even sharper. On the same fixed carrier-preserving package,
+  exact K3 tail realization is equivalent to breaking splitness in the
+  existing tail slot, because the present refined K3 shadow is still split
+  with zero extension class while the exact target is the unique nonzero
+  orbit in that same slot.
 
 ### Geometry and linear-algebra backbone
 

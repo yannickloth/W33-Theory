@@ -134,6 +134,7 @@ The newest public closure on `master` is:
 - **CDVI — K3 tail canonical integral chart:** among those equivalent local charts, the least-complexity exact chart is now fixed too. The integral charts are exactly `ΔC=14105` and `ΔL=143654`, and `ΔC` is the smaller one, so the remaining wall is one canonical integral extension problem: realize `ΔC=14105` on the fixed carrier-preserving K3 package.
 - **CDVII — K3 tail canonical-chart realization equivalence:** the wall now collapses again in that chart. Exact K3 tail realization is equivalent to solving the one canonical integral equation `ΔC=14105` on the fixed carrier-preserving package, since that chart is already an exact affine increment witness chart and all other promoted charts are equivalent to it.
 - **CDVIII — K3 tail canonical-chart slot equivalence:** the canonical chart is now visibly external too. On the fixed carrier-preserving package, solving `ΔC=14105` is equivalent to activating the unique nonzero tail slot, because the unique minimal exact datum already has `C=780*(217/12)=14105`. So the live wall is now one exact slot-activation problem on genuine K3-side data.
+- **CDIX — K3 tail splitness-breaking criterion:** the remaining external wall is now even sharper. On the same fixed carrier-preserving package, exact K3 tail realization is equivalent to breaking splitness in the existing tail slot, because the present K3 shadow is still split with zero extension class while the exact target is the unique nonzero orbit in that same slot.
 
 ## Reader Route
 
@@ -159,7 +160,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **K3 tail
-canonical-chart slot equivalence** statement of `CDVIII`: the promoted observable shell
+splitness-breaking criterion** statement of `CDIX`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -247,7 +248,10 @@ canonical chart is already an exact affine increment witness chart and all
 other promoted charts are equivalent to it. `CDVIII` then makes that chart
 genuinely external: the unique minimal exact datum already has
 `C=780*(217/12)=14105`, so solving `ΔC=14105` is equivalent to activating the
-unique nonzero tail slot on the same fixed K3 package.
+unique nonzero tail slot on the same fixed K3 package. `CDIX` sharpens the
+same wall one step further: since the present refined K3 shadow is still split
+with zero extension class, exact K3 tail realization is equivalent to
+breaking splitness in that existing tail slot.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
