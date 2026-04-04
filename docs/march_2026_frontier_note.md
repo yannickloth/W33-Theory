@@ -14,7 +14,7 @@ The strongest repo-native closure is best described as a **finite spectral-excep
 
 ## Verified
 
-### Latest promoted closure (`CCCLXXVI–CDXVI`)
+### Latest promoted closure (`CCCLXXVI–CDXVII`)
 
 The newest public increment on `master` is finite and conservative rather than
 speculative:
@@ -259,6 +259,12 @@ speculative:
   qutrit lift `I_81 ⊗ [[0,1],[0,0]]`, the only genuinely nontrivial missing
   datum is now the reduced nonzero fiber shift `[[0,1],[0,0]]` itself on
   that same fixed mixed-plane host.
+- **CDXVII — Current K3 mixed-plane fiber-shift failure:** applying that
+  smallest witness criterion to the actual current mixed-plane host now makes
+  the remaining failure maximally explicit. The support package and qutrit lift
+  are already correct, but the host still carries only the zero fiber shift,
+  so the live wall is exactly the first genuine nonzero reduced fiber-shift
+  witness on that same fixed host.
 
 ### Geometry and linear-algebra backbone
 
