@@ -156,6 +156,8 @@ The newest public closure on `master` is:
 - **CDXXVIII — Triangle-row support strictly refines holonomy class:** the local witness is now known to live beyond the older holonomy shadow. Every one of the six adapted holonomy classes already contains triangles with `0`, `1`, and `2` supported off-diagonal rows, including the identity class, so the live wall is genuinely precomplex-local and not reducible to parity or holonomy-class selection.
 - **CDXXIX — K3 mixed-plane row-entry witness:** the wall is now smaller than a whole row. Every supported row of the exact off-diagonal curvature block is one-sparse, with a single nonzero entry in `F3*`, so exact K3 tail realization is equivalent to one support-preserving nonzero row-entry witness on that same fixed mixed-plane host.
 - **CDXXX — Current K3 mixed-plane row-entry failure:** applying that one-entry criterion to the current host now makes the remaining failure minimal again. The support package and qutrit lift are already correct, but the host still carries no supported row entries at all, so the live wall is now exactly the first genuine nonzero row-entry witness on that same fixed host.
+- **CDXXXI — K3 mixed-plane active-column universality:** the wall is now known not to be a choice among the active columns either. The curvature block has `45` columns total, but exactly `36` are active, and each active column already carries supported row entries, both row components, and both nonzero `F3` values, so exact K3 tail realization is equivalent to a nonzero row-entry witness in any fixed supported curvature column.
+- **CDXXXII — Current K3 mixed-plane active-column failure:** applying that universality back to the current host shows the failure is uniform across all `36` active local charts. The support package and qutrit lift are already correct, but every active curvature column remains zero, so the live wall is now exactly the first genuine nonzero active-column-anchored row-entry witness on that same fixed host.
 
 ## Reader Route
 
@@ -181,7 +183,7 @@ The newest public closure on `master` is:
 ## Current Frontier
 
 The sharpest promoted closure on `master` is now the **current K3 mixed-plane
-row-entry failure** statement of `CDXXX`: the promoted observable shell
+active-column failure** statement of `CDXXXII`: the promoted observable shell
 `(S_single, S_page_max, D_dim, gap, width, chi) = (12,240,81,6,16,-40)`
 already reconstructs both the full spectral packet
 `(q; v,k,lam,mu; r^f,s^g) = (3; 40,12,2,4; 2^24,-4^15)` and the promoted
@@ -338,7 +340,11 @@ supported row is one-sparse, so a single nonzero row entry in `F3*` already
 serves as the exact local witness. `CDXXX` applies that smallest matrix-entry
 criterion back to the current host and shows the remaining failure is now
 exactly absence of that first genuine nonzero row-entry witness on the same
-fixed mixed-plane host.
+fixed mixed-plane host. `CDXXXI` then removes even the residual choice among
+supported curvature columns: the block has `45` columns total, but all `36`
+active columns already carry both row components and both nonzero `F3`
+values. `CDXXXII` applies that back to the present host and shows the
+remaining failure is now uniform across every active local column chart.
 
 The strongest closed statement is now the **Analytic-Finite Grand Chain** (Phase CCLXXX): the Riemann zeta function, E₈ theta series, Ramanujan tau function, σ₃ divisor function, and the modular form quartet (E₄, E₆, Δ, j) are ALL controlled by W(3,3) parameters.
 
