@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
-[![Tests](https://img.shields.io/badge/SOLVE__OPEN-703%2F703%20pass-brightgreen)]()
+[![Tests](https://img.shields.io/badge/SOLVE__OPEN-783%2F783%20pass-brightgreen)]()
 
 > **One graph. One equation. Zero free parameters.**
 
@@ -87,7 +87,7 @@ where F is the finite noncommutative geometry built from W(3,3).
 
 ## Computational Verification
 
-**`SOLVE_OPEN.py`** — 703 checks, 0 failures — closes forty-five open questions:
+**`SOLVE_OPEN.py`** — 783 checks, 0 failures — closes fifty-two open questions:
 
 | Question | Topic | Status |
 |:---------|:------|:-------|
@@ -136,6 +136,13 @@ where F is the finite noncommutative geometry built from W(3,3).
 | Q43 | Discrete gravity & Regge calculus | ✅ Closed |
 | Q44 | Information-theoretic completeness | ✅ Closed |
 | Q45 | Grand unified closure (29 domains, 2 inputs) | ✅ Closed |
+| Q46 | Spectral algebra & characteristic polynomial | ✅ Closed |
+| Q47 | Random matrix theory & spectral moments | ✅ Closed |
+| Q48 | Bose–Mesner algebra & association scheme | ✅ Closed |
+| Q49 | Anomaly cancellation & fermion counting | ✅ Closed |
+| Q50 | Tropical geometry & Baker–Norine theory | ✅ Closed |
+| Q51 | p-adic arithmetic & adelic structure | ✅ Closed |
+| Q52 | Statistical mechanics & partition function | ✅ Closed |
 
 Run the verification:
 ```bash
@@ -247,7 +254,7 @@ The graph parameters control classical mathematical objects with zero fitting:
 ### Core Scripts
 | File | Purpose |
 |:-----|:--------|
-| `SOLVE_OPEN.py` | Master verification — 703/703 checks, Q1–Q45 closed |
+| `SOLVE_OPEN.py` | Master verification — 783/783 checks, Q1–Q52 closed |
 | `SOLVE.py` | Core SRG computations and spectral analysis |
 | `PROOF.py` | Formal derivation chains |
 | `GRAND_SYNTHESIS.py` | Six-pillar unification |
