@@ -22,8 +22,8 @@ A computational derivation of the Standard Model of particle physics from a sing
 | sin²θ₁₃ (PMNS reactor) | 2/91 = 0.02198 | 0.02203 | 0.09σ |
 | sin²θ₁₂ (PMNS solar) | 4/13 = 0.30769 | 0.304 | 0.4σ |
 | sin²θ₂₃ (PMNS atm.) | 7/13 = 0.53846 | 0.573 | 1.6σ |
-| Ω_Λ (dark energy) | 9/13 = 0.6923 | 0.685 | 1.1% |
-| Ω_DM (dark matter) | 4/15 = 0.2667 | 0.264 | 0.5σ |
+| Ω_Λ (dark energy) | 41/60 = 0.6833 | 0.685 | 0.2% |
+| Ω_DM (dark matter) | 4/15 = 0.2667 | 0.265 | 0.6% |
 | sin θ_C (Cabibbo) | 3/13 | 0.2253 | 0.9σ |
 | m_p/m_e (proton-electron) | 1836.15 | 1836.15 | 0.01% |
 
@@ -221,9 +221,11 @@ All four SM anomaly conditions cancel exactly:
 - [grav²·U(1)], [SU(3)]²·U(1), [SU(2)]²·U(1), [U(1)]³
 
 ### Cosmological Parameters
-- Ω_Λ = q²/Φ₃ = 9/13 = 0.692 (Planck: 0.685 ± 0.007)
-- Ω_DM = μ/g = 4/15 = 0.267 (Planck: 0.264 ± 0.006)
-- Ω_b = 1 − Ω_Λ − Ω_DM − ... (baryonic remainder)
+- Tree-level: Ω_b = λ/v = 1/20, Ω_DM = (k−λ)/v = 1/4, Ω_Λ = (v−k)/v = 7/10, sum = 1
+- 1-loop correction: δ = λ/(vq) = 1/60 (baryon-DM coupling)
+- Physical: Ω_DM = 4/15 = μ/g = 0.267 (Planck: 0.265 ± 0.006)
+- Physical: Ω_Λ = 41/60 = 0.683 (Planck: 0.685 ± 0.007, 0.2% dev!)
+- Flatness preserved: Σ = 1 at every order
 
 ---
 
