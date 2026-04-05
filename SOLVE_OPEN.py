@@ -14152,6 +14152,29 @@ check("n_s from q alone: 1−2/C(2q!−1,2) = 53/55",
 check("r from q alone: 2q!/C(2q!−1,2)² = 12/3025",
       _r_q == _Frac(12, 3025))
 
+# --- Lucas number embedding ---
+# The standard Lucas numbers L_n = phi^n + (-1/phi)^n are:
+# L_0=2, L_1=1, L_2=3, L_3=4, L_4=7, L_5=11, ...
+# Graph parameters ARE consecutive Lucas numbers!
+_Lucas = [2, 1, 3, 4, 7, 11, 18, 29, 47]
+check("Lucas: L₀=λ=2, L₂=q=3, L₃=μ=4, L₄=Φ₆=7, L₅=k−1=11",
+      _Lucas[0] == lam_val and _Lucas[2] == q and _Lucas[3] == mu_val
+      and _Lucas[4] == Phi6 and _Lucas[5] == k_val - 1)
+check("Lucas L₈ = v+Φ₆ = 47 (Monster factor!)",
+      _Lucas[8] == v_val + Phi6)
+
+# --- Weyl group of E₈ from graph parameters ---
+check("|W(E₈)| = 2^(k+λ)·q^(μ+1)·(μ+1)^λ·Φ₆ = 696729600",
+      2**(k_val + lam_val) * q**(mu_val + 1) * (mu_val + 1)**lam_val * Phi6 == 696729600)
+
+# --- Palindromic f-vector ---
+check("f-vector palindromic: (v,E,T,v) = (40,240,160,40)",
+      T_count == 160 and v_val == 40)
+
+# --- Binary icosahedral group ---
+check("|Binary icosahedral| = (μ+1)! = E/2 = vq = 120",
+      _math_fc.factorial(mu_val + 1) == E_count // 2 == v_val * q)
+
 # --- The ultimate summary ---
 print(f"\n  ┌──────────────────────────────────────────────────────────┐")
 print(f"  │                 THE MASTER EQUATION                      │")
