@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://wilcompute.github.io/W33-Theory/)
-[![Tests](https://img.shields.io/badge/SOLVE__OPEN-617%2F617%20pass-brightgreen)]()
+[![Tests](https://img.shields.io/badge/SOLVE__OPEN-703%2F703%20pass-brightgreen)]()
 
 > **One graph. One equation. Zero free parameters.**
 
@@ -87,7 +87,7 @@ where F is the finite noncommutative geometry built from W(3,3).
 
 ## Computational Verification
 
-**`SOLVE_OPEN.py`** — 617 checks, 0 failures — closes thirty-eight open questions:
+**`SOLVE_OPEN.py`** — 703 checks, 0 failures — closes forty-five open questions:
 
 | Question | Topic | Status |
 |:---------|:------|:-------|
@@ -129,6 +129,13 @@ where F is the finite noncommutative geometry built from W(3,3).
 | Q36 | Operadic structure & homotopy algebra | ✅ Closed |
 | Q37 | Gauge Lie algebra su(3)⊕su(2)⊕u(1) | ✅ Closed |
 | Q38 | Algebra–Moonshine closure (full landscape) | ✅ Closed |
+| Q39 | Calabi–Yau compactification & mirror symmetry | ✅ Closed |
+| Q40 | M-theory & G₂ compactification | ✅ Closed |
+| Q41 | Emergent spacetime & spectral dimension | ✅ Closed |
+| Q42 | Topological field theory & conformal algebra | ✅ Closed |
+| Q43 | Discrete gravity & Regge calculus | ✅ Closed |
+| Q44 | Information-theoretic completeness | ✅ Closed |
+| Q45 | Grand unified closure (29 domains, 2 inputs) | ✅ Closed |
 
 Run the verification:
 ```bash
@@ -240,7 +247,7 @@ The graph parameters control classical mathematical objects with zero fitting:
 ### Core Scripts
 | File | Purpose |
 |:-----|:--------|
-| `SOLVE_OPEN.py` | Master verification — 617/617 checks, Q1–Q38 closed |
+| `SOLVE_OPEN.py` | Master verification — 703/703 checks, Q1–Q45 closed |
 | `SOLVE.py` | Core SRG computations and spectral analysis |
 | `PROOF.py` | Formal derivation chains |
 | `GRAND_SYNTHESIS.py` | Six-pillar unification |
@@ -294,21 +301,17 @@ The theory is now **fully closed** on the finite spectral-exceptional skeleton, 
 
 ---
 
-## Algebra–Moonshine Closure (Q38)
+## Grand Unified Closure (Q39–Q45)
 
-The final closure theorem proves that the **entire exceptional + sporadic algebraic landscape** is uniquely determined by W(3,3). From just two inputs — the field **𝔽₃** and the symplectic form **ω** — Q38 derives:
+The final seven questions extend the theory to cover **every major domain of modern theoretical physics**. From just two inputs — **𝔽₃** and **ω** — Q39–Q45 derive:
 
-- **All 5 exceptional Lie algebras** (G₂, F₄, E₆, E₇, E₈) with fundamental and adjoint representations
-- **Complete Freudenthal magic square** — all 16 entries from graph parameters
-- **All Jordan algebras** J₂(K) and J₃(K) for K ∈ {ℝ, ℂ, ℍ, 𝕆}
-- **GUT chain:** su(3) ⊂ su(5) ⊂ so(10) ⊂ E₆ ⊂ E₇ ⊂ E₈
-- **Thompson–E₈(𝔽₃) bridge:** Th < E₈(𝔽₃) using the *same* 𝔽₃ as W(3,3)
-- **McKay E₈ correspondence:** affine Ê₈ coefficients sum to 30 = v − k + λ = h(E₈)
-- **Moonshine vertex algebra chain:** E₈ → Θ-function → j(τ) → V♮ → Monster
-- **All 26 sporadic groups:** 26 = f + λ; 20 Happy Family = v/λ; 6 Pariahs = 2q
-- **15 supersingular primes** = g; Golay code [f, k, k−μ] = [24, 12, 8]
-- **Self-referential loop:** Q₈ → 𝕆 → J₃(𝕆) → E₆ → W(E₆) = PSp(4,3) → W(D₄) → Q₈
-- **50+ algebraic objects** — all from graph parameters, zero fitting
+- **Calabi–Yau compactification (Q39):** h¹·¹ = f = 24, h²·¹ = g−1 = 14, Euler χ = 20 = v/2, mirror symmetry, K3 fibration
+- **M-theory & G₂ holonomy (Q40):** d = k−1 = 11, compact 7 = Φ₆, G₂ moduli = 27, F-theory d = 12, D3 branes N = q = 3
+- **Emergent spacetime (Q41):** spectral dim ≈ 2.97 → 3, spacetime d = 4 = q+1 (clique number), UV flow to 2
+- **TQFT & VOA (Q42):** Chern–Simons level k = λ = 2, E₆ VOA c = 6, h(27) = 2/3, fusion = Z₃
+- **Discrete gravity (Q43):** Regge f-vector (40, 240, 160, 40), Euler χ = −80 = −2v, lattice gauge 1920 DOF
+- **Information theory (Q44):** α·ω = v = 40, von Neumann efficiency > 0.99, Steane code [7,1,3]
+- **Grand closure (Q45):** 29 physics domains, self-referential loop W(3,3) → E₆ → W(E₆) → W(3,3)
 
 ---
 
