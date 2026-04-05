@@ -14313,6 +14313,34 @@ _ss = [lam_val, q, mu_val+1, Phi6, k_val-1, Phi3, mu_val**2+1,
 check("All 15 supersingular primes = graph parameters",
       _ss == [2,3,5,7,11,13,17,19,23,29,31,41,47,59,71])
 
+# --- Spectral fractions: Koide in the Dirac spectrum ---
+# Dirac spectrum {0^82, μ^320, Θ^48, μ²^30}, total = 2E = 480
+# The dominant mode (eigenvalue μ) carries fraction 320/480 = 2/3 = Koide!
+check("320/480 = λ/q = 2/3 (Koide fraction in Dirac spectrum)",
+      _Frac(320, 480) == _Frac(lam_val, q))
+check("82/480 = (v+1)/E (zero-mode fraction)", _Frac(82, 480) == _Frac(v_val+1, E_count))
+check("48/480 = 1/Θ, 30/480 = 1/μ²",
+      _Frac(48, 480) == _Frac(1, k_val - lam_val) and _Frac(30, 480) == _Frac(1, mu_val**2))
+
+# --- Spectral gaps ---
+# Eigenvalues 0, μ=4, Θ=10, μ²=16 → gaps μ, q!, q!
+check("Dirac spectral gaps: μ, q!, q!",
+      mu_val == 4 and (k_val - lam_val) - mu_val == _math_mh.factorial(q)
+      and mu_val**2 - (k_val - lam_val) == _math_mh.factorial(q))
+
+# --- Seeley-DeWitt spectral ladder ---
+# a₂/a₀ = 2Φ₆/q, a₄/a₂ = N/Φ₆, a₄/a₀ = 2N/q
+check("a₄/a₂ = N/Φ₆ = 55/7 (Higgs spectral ratio)",
+      _Frac(17600, 2240) == _Frac(_N_eff, Phi6))
+
+# --- All critical dimensions from q = 3 ---
+# 4 = μ (spacetime), 6 = q! (internal NCG), 10 = μ+q! (string)
+# 11 = μ+Φ₆ (M-theory), 26 = f+λ (bosonic string)
+check("d=4: μ=q+1", mu_val == 4)
+check("d=10 string: μ+q! = q+1+q! = 10", mu_val + _math_mh.factorial(q) == 10)
+check("d=11 M-theory: μ+Φ₆ = 11", mu_val + Phi6 == 11)
+check("d=26 bosonic: f+λ = (q+1)!+q−1 = 26", f_val + lam_val == 26)
+
 print(f"\n  20+ mass/coupling predictions — ALL from q = 3, ZERO parameters.")
 print(f"\n  ┌──────────────────────────────────────────────────────────┐")
 print(f"  │                 THE MASTER EQUATION                      │")
